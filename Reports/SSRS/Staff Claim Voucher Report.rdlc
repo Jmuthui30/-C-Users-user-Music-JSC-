@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="No">
+          <DataField>No</DataField>
+        </Field>
+        <Field Name="Logo">
+          <DataField>Logo</DataField>
+        </Field>
+        <Field Name="Date">
+          <DataField>Date</DataField>
+        </Field>
+        <Field Name="RequestDate">
+          <DataField>RequestDate</DataField>
+        </Field>
+        <Field Name="BusinessUnit">
+          <DataField>BusinessUnit</DataField>
+        </Field>
+        <Field Name="BankCode">
+          <DataField>BankCode</DataField>
+        </Field>
+        <Field Name="Bank">
+          <DataField>Bank</DataField>
+        </Field>
+        <Field Name="NetAmount">
+          <DataField>NetAmount</DataField>
+        </Field>
+        <Field Name="NetAmountFormat">
+          <DataField>NetAmountFormat</DataField>
+        </Field>
+        <Field Name="ChequeNo">
+          <DataField>ChequeNo</DataField>
+        </Field>
+        <Field Name="Payee">
+          <DataField>Payee</DataField>
+        </Field>
+        <Field Name="Region">
+          <DataField>Region</DataField>
+        </Field>
+        <Field Name="State">
+          <DataField>State</DataField>
+        </Field>
+        <Field Name="Department">
+          <DataField>Department</DataField>
+        </Field>
+        <Field Name="EmployeeNo">
+          <DataField>EmployeeNo</DataField>
+        </Field>
+        <Field Name="DueDate">
+          <DataField>DueDate</DataField>
+        </Field>
+        <Field Name="DaysInTheField">
+          <DataField>DaysInTheField</DataField>
+        </Field>
+        <Field Name="AmountInWords">
+          <DataField>AmountInWords</DataField>
+        </Field>
+        <Field Name="Cashier">
+          <DataField>Cashier</DataField>
+        </Field>
+        <Field Name="PrintedDate">
+          <DataField>PrintedDate</DataField>
+        </Field>
+        <Field Name="PrintedBy">
+          <DataField>PrintedBy</DataField>
+        </Field>
+        <Field Name="PostedBy">
+          <DataField>PostedBy</DataField>
+        </Field>
+        <Field Name="FirstApprover">
+          <DataField>FirstApprover</DataField>
+        </Field>
+        <Field Name="SecondApprover">
+          <DataField>SecondApprover</DataField>
+        </Field>
+        <Field Name="ThirdApprover">
+          <DataField>ThirdApprover</DataField>
+        </Field>
+        <Field Name="FourthApprover">
+          <DataField>FourthApprover</DataField>
+        </Field>
+        <Field Name="FirstApproverDate">
+          <DataField>FirstApproverDate</DataField>
+        </Field>
+        <Field Name="SecondApproverDate">
+          <DataField>SecondApproverDate</DataField>
+        </Field>
+        <Field Name="ThirdApproverDate">
+          <DataField>ThirdApproverDate</DataField>
+        </Field>
+        <Field Name="FourthApproverDate">
+          <DataField>FourthApproverDate</DataField>
+        </Field>
+        <Field Name="FirstApproverSignature">
+          <DataField>FirstApproverSignature</DataField>
+        </Field>
+        <Field Name="SecondApproverSignature">
+          <DataField>SecondApproverSignature</DataField>
+        </Field>
+        <Field Name="ThirdApproverSignature">
+          <DataField>ThirdApproverSignature</DataField>
+        </Field>
+        <Field Name="FourthApproverSignature">
+          <DataField>FourthApproverSignature</DataField>
+        </Field>
+        <Field Name="EmployeeNo_Payments">
+          <DataField>EmployeeNo_Payments</DataField>
+        </Field>
+        <Field Name="SN">
+          <DataField>SN</DataField>
+        </Field>
+        <Field Name="AccountNo">
+          <DataField>AccountNo</DataField>
+        </Field>
+        <Field Name="Narration">
+          <DataField>Narration</DataField>
+        </Field>
+        <Field Name="AccountName">
+          <DataField>AccountName</DataField>
+        </Field>
+        <Field Name="WHTCode">
+          <DataField>WHTCode</DataField>
+        </Field>
+        <Field Name="WHTCodeFormat">
+          <DataField>WHTCodeFormat</DataField>
+        </Field>
+        <Field Name="WHTAmount">
+          <DataField>WHTAmount</DataField>
+        </Field>
+        <Field Name="WHTAmountFormat">
+          <DataField>WHTAmountFormat</DataField>
+        </Field>
+        <Field Name="Amount">
+          <DataField>Amount</DataField>
+        </Field>
+        <Field Name="AmountFormat">
+          <DataField>AmountFormat</DataField>
+        </Field>
+        <Field Name="Dr">
+          <DataField>Dr</DataField>
+        </Field>
+        <Field Name="DrFormat">
+          <DataField>DrFormat</DataField>
+        </Field>
+        <Field Name="Cr">
+          <DataField>Cr</DataField>
+        </Field>
+        <Field Name="CrFormat">
+          <DataField>CrFormat</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

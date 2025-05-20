@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="ReportFilters">
+          <DataField>ReportFilters</DataField>
+        </Field>
+        <Field Name="SN">
+          <DataField>SN</DataField>
+        </Field>
+        <Field Name="ID">
+          <DataField>ID</DataField>
+        </Field>
+        <Field Name="FuelDate">
+          <DataField>FuelDate</DataField>
+        </Field>
+        <Field Name="ReceiptNo">
+          <DataField>ReceiptNo</DataField>
+        </Field>
+        <Field Name="Vehicle">
+          <DataField>Vehicle</DataField>
+        </Field>
+        <Field Name="FueledOn">
+          <DataField>FueledOn</DataField>
+        </Field>
+        <Field Name="FuelCardLPONo">
+          <DataField>FuelCardLPONo</DataField>
+        </Field>
+        <Field Name="FuelVoucherNo">
+          <DataField>FuelVoucherNo</DataField>
+        </Field>
+        <Field Name="UnitCost">
+          <DataField>UnitCost</DataField>
+        </Field>
+        <Field Name="UnitCostFormat">
+          <DataField>UnitCostFormat</DataField>
+        </Field>
+        <Field Name="Capacity">
+          <DataField>Capacity</DataField>
+        </Field>
+        <Field Name="CapacityFormat">
+          <DataField>CapacityFormat</DataField>
+        </Field>
+        <Field Name="FuelCost">
+          <DataField>FuelCost</DataField>
+        </Field>
+        <Field Name="FuelCostFormat">
+          <DataField>FuelCostFormat</DataField>
+        </Field>
+        <Field Name="Driver">
+          <DataField>Driver</DataField>
+        </Field>
+        <Field Name="Mileage">
+          <DataField>Mileage</DataField>
+        </Field>
+        <Field Name="MileageFormat">
+          <DataField>MileageFormat</DataField>
+        </Field>
+        <Field Name="Station">
+          <DataField>Station</DataField>
+        </Field>
+        <Field Name="Site">
+          <DataField>Site</DataField>
+        </Field>
+        <Field Name="Project">
+          <DataField>Project</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

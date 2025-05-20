@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="No_RequisitionLines">
+          <DataField>No_RequisitionLines</DataField>
+        </Field>
+        <Field Name="Description_RequisitionLines">
+          <DataField>Description_RequisitionLines</DataField>
+        </Field>
+        <Field Name="UnitofMeasure_RequisitionLines">
+          <DataField>UnitofMeasure_RequisitionLines</DataField>
+        </Field>
+        <Field Name="UnitPrice_RequisitionLines">
+          <DataField>UnitPrice_RequisitionLines</DataField>
+        </Field>
+        <Field Name="UnitPrice_RequisitionLinesFormat">
+          <DataField>UnitPrice_RequisitionLinesFormat</DataField>
+        </Field>
+        <Field Name="Amount_RequisitionLines">
+          <DataField>Amount_RequisitionLines</DataField>
+        </Field>
+        <Field Name="Amount_RequisitionLinesFormat">
+          <DataField>Amount_RequisitionLinesFormat</DataField>
+        </Field>
+        <Field Name="GlobalDimension1Code_RequisitionLines">
+          <DataField>GlobalDimension1Code_RequisitionLines</DataField>
+        </Field>
+        <Field Name="GlobalDimension2Code_RequisitionLines">
+          <DataField>GlobalDimension2Code_RequisitionLines</DataField>
+        </Field>
+        <Field Name="QuantityIssued_RequisitionLines">
+          <DataField>QuantityIssued_RequisitionLines</DataField>
+        </Field>
+        <Field Name="QuantityIssued_RequisitionLinesFormat">
+          <DataField>QuantityIssued_RequisitionLinesFormat</DataField>
+        </Field>
+        <Field Name="RequisitionNo_RequisitionLines">
+          <DataField>RequisitionNo_RequisitionLines</DataField>
+        </Field>
+        <Field Name="ReqDate">
+          <DataField>ReqDate</DataField>
+        </Field>
+        <Field Name="IssuedDate_RequisitionLines">
+          <DataField>IssuedDate_RequisitionLines</DataField>
+        </Field>
+        <Field Name="UnitCost">
+          <DataField>UnitCost</DataField>
+        </Field>
+        <Field Name="UnitCostFormat">
+          <DataField>UnitCostFormat</DataField>
+        </Field>
+        <Field Name="JobNo">
+          <DataField>JobNo</DataField>
+        </Field>
+        <Field Name="SoNo">
+          <DataField>SoNo</DataField>
+        </Field>
+        <Field Name="Description_FixedAsset">
+          <DataField>Description_FixedAsset</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

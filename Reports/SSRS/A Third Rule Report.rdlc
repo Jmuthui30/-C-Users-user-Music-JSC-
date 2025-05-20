@@ -1,0 +1,2640 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:DataSourceID>54584eb0-8733-456b-a6e3-184dc1b2b1be</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <ReportItems>
+          <Tablix Name="Table1">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn>
+                  <Width>1.57857cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>3.90153cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>2.5cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>2.21014cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.94328cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>2.5cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>2.5cm</Width>
+                </TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>0.6cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox4">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>One Third Rule Report  </Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=Fields!UPPERCASE_FORMAT_DateSpecified_0___month_text___year4____.Value</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox4</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>0.075cm</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>7</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.846cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="PF_No__">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Staff No.</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>0.075cm</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Name_">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Name</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>0.075cm</PaddingLeft>
+                            <PaddingRight>0.075cm</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox7">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Designation</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox7</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>0.075cm</PaddingLeft>
+                            <PaddingRight>0.075cm</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="EarnDesc_1_">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Basic Salary</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>0.075cm</PaddingLeft>
+                            <PaddingRight>0.075cm</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Net_Pay_">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Net Pay</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>0.075cm</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox8">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Third Rule</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox8</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>0.075cm</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox21">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Excess/Deficit</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox21</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>0.075cm</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.42301cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Employee__No__">
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Employee__No__.Value</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>0.075cm</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="First_Name_________Middle_Name_______Last_Name_">
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!First_Name_________Middle_Name_______Last_Name_.Value</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>0.075cm</PaddingLeft>
+                            <PaddingRight>0.075cm</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Designation">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Designation.Value</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Designation</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>0.075cm</PaddingLeft>
+                            <PaddingRight>0.075cm</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Allowances_1_">
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Allowances_1_.Value</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <Format>=Fields!Allowances_1_Format.Value</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>0.075cm</PaddingLeft>
+                            <PaddingRight>0.075cm</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="NetPay">
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!NetPay.Value</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <Format>=Fields!NetPayFormat.Value</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>0.075cm</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox10">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=(Fields!Allowances_1_.Value)*(1/3)</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <Format>=Fields!Allowances_1_Format.Value</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox10</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>0.075cm</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox23">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=(Fields!NetPay.Value)-((Fields!Allowances_1_.Value)*(1/3))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <Format>=Fields!Allowances_1_Format.Value</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox23</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>0.075cm</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.71405cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox1">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>TOTAL</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox1</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>0.075cm</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>2</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox9">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox9</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>0.075cm</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Allowances_1__Control1000000009">
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(Fields!Allowances_1_.Value)</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Format>=First(Fields!Allowances_1__Control1000000009Format.Value)</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>0.075cm</PaddingLeft>
+                            <PaddingRight>0.075cm</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="NetPay_Control1000000039">
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(Fields!NetPay.Value)</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Format>=First(Fields!NetPay_Control1000000039Format.Value)</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>0.075cm</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox11">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(Fields!Allowances_1_.Value * (1 / 3))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <Format>=Fields!Allowances_1_Format.Value</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox10</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>0.075cm</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox24">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(Fields!NetPay.Value - (Fields!Allowances_1_.Value * (1 / 3)))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <Format>=Fields!Allowances_1_Format.Value</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox23</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>2.25pt</Width>
+                            </RightBorder>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>0.075cm</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember>
+                  <KeepWithGroup>After</KeepWithGroup>
+                  <RepeatOnNewPage>true</RepeatOnNewPage>
+                </TablixMember>
+                <TablixMember>
+                  <KeepWithGroup>After</KeepWithGroup>
+                  <RepeatOnNewPage>true</RepeatOnNewPage>
+                  <KeepTogether>true</KeepTogether>
+                </TablixMember>
+                <TablixMember>
+                  <Group Name="Table1_Details_Group">
+                    <DataElementName>Detail</DataElementName>
+                  </Group>
+                  <TablixMembers>
+                    <TablixMember />
+                  </TablixMembers>
+                  <DataElementName>Detail_Collection</DataElementName>
+                  <DataElementOutput>Output</DataElementOutput>
+                  <KeepTogether>true</KeepTogether>
+                </TablixMember>
+                <TablixMember>
+                  <KeepWithGroup>Before</KeepWithGroup>
+                  <KeepTogether>true</KeepTogether>
+                </TablixMember>
+              </TablixMembers>
+            </TablixRowHierarchy>
+            <DataSetName>DataSet_Result</DataSetName>
+            <Top>1.59846cm</Top>
+            <Height>2.58306cm</Height>
+            <Width>17.13352cm</Width>
+            <Style />
+          </Tablix>
+          <Image Name="Image1">
+            <Source>Database</Source>
+            <Value>=Fields!Logo.Value</Value>
+            <MIMEType>image/bmp</MIMEType>
+            <Sizing>FitProportional</Sizing>
+            <Left>2.15752in</Left>
+            <Height>0.60154in</Height>
+            <Width>2.28534in</Width>
+            <ZIndex>1</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Image>
+        </ReportItems>
+        <Height>4.18152cm</Height>
+        <Style />
+      </Body>
+      <Width>17.13352cm</Width>
+      <Page>
+        <PageHeight>52cm</PageHeight>
+        <PageWidth>29.7cm</PageWidth>
+        <LeftMargin>1cm</LeftMargin>
+        <RightMargin>2cm</RightMargin>
+        <TopMargin>1cm</TopMargin>
+        <BottomMargin>1cm</BottomMargin>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Cm</rd:ReportUnitType>
+  <rd:ReportID>85e0f601-5c21-4d36-b69b-7dcc986394cc</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="FORMAT_TODAY_0_4_">
+          <DataField>FORMAT_TODAY_0_4_</DataField>
+        </Field>
+        <Field Name="COMPANYNAME">
+          <DataField>COMPANYNAME</DataField>
+        </Field>
+        <Field Name="Logo">
+          <DataField>Logo</DataField>
+        </Field>
+        <Field Name="USERID">
+          <DataField>USERID</DataField>
+        </Field>
+        <Field Name="UPPERCASE_FORMAT_DateSpecified_0___month_text___year4____">
+          <DataField>UPPERCASE_FORMAT_DateSpecified_0___month_text___year4____</DataField>
+        </Field>
+        <Field Name="TIME">
+          <DataField>TIME</DataField>
+        </Field>
+        <Field Name="CostCenter">
+          <DataField>CostCenter</DataField>
+        </Field>
+        <Field Name="EarnDesc_1_">
+          <DataField>EarnDesc_1_</DataField>
+        </Field>
+        <Field Name="EarnDesc_2_">
+          <DataField>EarnDesc_2_</DataField>
+        </Field>
+        <Field Name="EarnDesc_3_">
+          <DataField>EarnDesc_3_</DataField>
+        </Field>
+        <Field Name="EarnDesc_4_">
+          <DataField>EarnDesc_4_</DataField>
+        </Field>
+        <Field Name="EarnDesc_5_">
+          <DataField>EarnDesc_5_</DataField>
+        </Field>
+        <Field Name="EarnDesc_6_">
+          <DataField>EarnDesc_6_</DataField>
+        </Field>
+        <Field Name="EarnDesc_7_">
+          <DataField>EarnDesc_7_</DataField>
+        </Field>
+        <Field Name="EarnDesc_8_">
+          <DataField>EarnDesc_8_</DataField>
+        </Field>
+        <Field Name="EarnDesc_9_">
+          <DataField>EarnDesc_9_</DataField>
+        </Field>
+        <Field Name="EarnDesc_10_">
+          <DataField>EarnDesc_10_</DataField>
+        </Field>
+        <Field Name="EarnDesc_11_">
+          <DataField>EarnDesc_11_</DataField>
+        </Field>
+        <Field Name="EarnDesc_12_">
+          <DataField>EarnDesc_12_</DataField>
+        </Field>
+        <Field Name="EarnDesc_13_">
+          <DataField>EarnDesc_13_</DataField>
+        </Field>
+        <Field Name="EarnDesc_14_">
+          <DataField>EarnDesc_14_</DataField>
+        </Field>
+        <Field Name="EarnDesc_15_">
+          <DataField>EarnDesc_15_</DataField>
+        </Field>
+        <Field Name="EarnDesc_16_">
+          <DataField>EarnDesc_16_</DataField>
+        </Field>
+        <Field Name="EarnDesc_17_">
+          <DataField>EarnDesc_17_</DataField>
+        </Field>
+        <Field Name="EarnDesc_18_">
+          <DataField>EarnDesc_18_</DataField>
+        </Field>
+        <Field Name="EarnDesc_19_">
+          <DataField>EarnDesc_19_</DataField>
+        </Field>
+        <Field Name="EarnDesc_20_">
+          <DataField>EarnDesc_20_</DataField>
+        </Field>
+        <Field Name="EarnDesc_21_">
+          <DataField>EarnDesc_21_</DataField>
+        </Field>
+        <Field Name="EarnDesc_22_">
+          <DataField>EarnDesc_22_</DataField>
+        </Field>
+        <Field Name="DedDesc_1_">
+          <DataField>DedDesc_1_</DataField>
+        </Field>
+        <Field Name="DedDesc_2_">
+          <DataField>DedDesc_2_</DataField>
+        </Field>
+        <Field Name="DedDesc_3_">
+          <DataField>DedDesc_3_</DataField>
+        </Field>
+        <Field Name="DedDesc_4_">
+          <DataField>DedDesc_4_</DataField>
+        </Field>
+        <Field Name="DedDesc_5_">
+          <DataField>DedDesc_5_</DataField>
+        </Field>
+        <Field Name="DedDesc_6_">
+          <DataField>DedDesc_6_</DataField>
+        </Field>
+        <Field Name="DedDesc_7_">
+          <DataField>DedDesc_7_</DataField>
+        </Field>
+        <Field Name="DedDesc_8_">
+          <DataField>DedDesc_8_</DataField>
+        </Field>
+        <Field Name="DedDesc_9_">
+          <DataField>DedDesc_9_</DataField>
+        </Field>
+        <Field Name="DedDesc_10_">
+          <DataField>DedDesc_10_</DataField>
+        </Field>
+        <Field Name="DedDesc_11_">
+          <DataField>DedDesc_11_</DataField>
+        </Field>
+        <Field Name="DedDesc_12_">
+          <DataField>DedDesc_12_</DataField>
+        </Field>
+        <Field Name="DedDesc_13_">
+          <DataField>DedDesc_13_</DataField>
+        </Field>
+        <Field Name="DedDesc_14_">
+          <DataField>DedDesc_14_</DataField>
+        </Field>
+        <Field Name="DedDesc_15_">
+          <DataField>DedDesc_15_</DataField>
+        </Field>
+        <Field Name="DedDesc_16_">
+          <DataField>DedDesc_16_</DataField>
+        </Field>
+        <Field Name="DedDesc_17_">
+          <DataField>DedDesc_17_</DataField>
+        </Field>
+        <Field Name="DedDesc_18_">
+          <DataField>DedDesc_18_</DataField>
+        </Field>
+        <Field Name="DedDesc_19_">
+          <DataField>DedDesc_19_</DataField>
+        </Field>
+        <Field Name="DedDesc_20_">
+          <DataField>DedDesc_20_</DataField>
+        </Field>
+        <Field Name="DedDesc_21_">
+          <DataField>DedDesc_21_</DataField>
+        </Field>
+        <Field Name="DedDesc_22_">
+          <DataField>DedDesc_22_</DataField>
+        </Field>
+        <Field Name="DedDesc_23_">
+          <DataField>DedDesc_23_</DataField>
+        </Field>
+        <Field Name="DedDesc_24_">
+          <DataField>DedDesc_24_</DataField>
+        </Field>
+        <Field Name="DedDesc_25_">
+          <DataField>DedDesc_25_</DataField>
+        </Field>
+        <Field Name="DedDesc_26_">
+          <DataField>DedDesc_26_</DataField>
+        </Field>
+        <Field Name="DedDesc_27_">
+          <DataField>DedDesc_27_</DataField>
+        </Field>
+        <Field Name="DedDesc_28_">
+          <DataField>DedDesc_28_</DataField>
+        </Field>
+        <Field Name="DedDesc_29_">
+          <DataField>DedDesc_29_</DataField>
+        </Field>
+        <Field Name="DedDesc_30_">
+          <DataField>DedDesc_30_</DataField>
+        </Field>
+        <Field Name="DedDesc_31_">
+          <DataField>DedDesc_31_</DataField>
+        </Field>
+        <Field Name="DedDesc_32_">
+          <DataField>DedDesc_32_</DataField>
+        </Field>
+        <Field Name="DedDesc_33_">
+          <DataField>DedDesc_33_</DataField>
+        </Field>
+        <Field Name="DedDesc_34_">
+          <DataField>DedDesc_34_</DataField>
+        </Field>
+        <Field Name="DedDesc_35_">
+          <DataField>DedDesc_35_</DataField>
+        </Field>
+        <Field Name="DedDesc_36_">
+          <DataField>DedDesc_36_</DataField>
+        </Field>
+        <Field Name="DedDesc_37_">
+          <DataField>DedDesc_37_</DataField>
+        </Field>
+        <Field Name="DedDesc_38_">
+          <DataField>DedDesc_38_</DataField>
+        </Field>
+        <Field Name="DedDesc_39_">
+          <DataField>DedDesc_39_</DataField>
+        </Field>
+        <Field Name="DedDesc_40_">
+          <DataField>DedDesc_40_</DataField>
+        </Field>
+        <Field Name="DedDesc_41_">
+          <DataField>DedDesc_41_</DataField>
+        </Field>
+        <Field Name="DedDesc_42_">
+          <DataField>DedDesc_42_</DataField>
+        </Field>
+        <Field Name="DedDesc_43_">
+          <DataField>DedDesc_43_</DataField>
+        </Field>
+        <Field Name="DedDesc_44_">
+          <DataField>DedDesc_44_</DataField>
+        </Field>
+        <Field Name="DedDesc_45_">
+          <DataField>DedDesc_45_</DataField>
+        </Field>
+        <Field Name="DedDesc_46_">
+          <DataField>DedDesc_46_</DataField>
+        </Field>
+        <Field Name="DedDesc_47_">
+          <DataField>DedDesc_47_</DataField>
+        </Field>
+        <Field Name="DedDesc_48_">
+          <DataField>DedDesc_48_</DataField>
+        </Field>
+        <Field Name="DedDesc_49_">
+          <DataField>DedDesc_49_</DataField>
+        </Field>
+        <Field Name="DedDesc_50_">
+          <DataField>DedDesc_50_</DataField>
+        </Field>
+        <Field Name="DedDesc_51_">
+          <DataField>DedDesc_51_</DataField>
+        </Field>
+        <Field Name="DedDesc_52_">
+          <DataField>DedDesc_52_</DataField>
+        </Field>
+        <Field Name="DedDesc_53_">
+          <DataField>DedDesc_53_</DataField>
+        </Field>
+        <Field Name="DedDesc_54_">
+          <DataField>DedDesc_54_</DataField>
+        </Field>
+        <Field Name="DedDesc_55_">
+          <DataField>DedDesc_55_</DataField>
+        </Field>
+        <Field Name="DedDesc_56_">
+          <DataField>DedDesc_56_</DataField>
+        </Field>
+        <Field Name="DedDesc_57_">
+          <DataField>DedDesc_57_</DataField>
+        </Field>
+        <Field Name="DedDesc_58_">
+          <DataField>DedDesc_58_</DataField>
+        </Field>
+        <Field Name="DedDesc_59_">
+          <DataField>DedDesc_59_</DataField>
+        </Field>
+        <Field Name="DedDesc_60_">
+          <DataField>DedDesc_60_</DataField>
+        </Field>
+        <Field Name="DedDesc_61_">
+          <DataField>DedDesc_61_</DataField>
+        </Field>
+        <Field Name="DedDesc_62_">
+          <DataField>DedDesc_62_</DataField>
+        </Field>
+        <Field Name="DedDesc_63_">
+          <DataField>DedDesc_63_</DataField>
+        </Field>
+        <Field Name="DedDesc_64_">
+          <DataField>DedDesc_64_</DataField>
+        </Field>
+        <Field Name="DedDesc_65_">
+          <DataField>DedDesc_65_</DataField>
+        </Field>
+        <Field Name="DedDesc_66_">
+          <DataField>DedDesc_66_</DataField>
+        </Field>
+        <Field Name="DedDesc_67_">
+          <DataField>DedDesc_67_</DataField>
+        </Field>
+        <Field Name="DedDesc_68_">
+          <DataField>DedDesc_68_</DataField>
+        </Field>
+        <Field Name="DedDesc_69_">
+          <DataField>DedDesc_69_</DataField>
+        </Field>
+        <Field Name="DedDesc_70_">
+          <DataField>DedDesc_70_</DataField>
+        </Field>
+        <Field Name="DedDesc_71_">
+          <DataField>DedDesc_71_</DataField>
+        </Field>
+        <Field Name="DedDesc_72_">
+          <DataField>DedDesc_72_</DataField>
+        </Field>
+        <Field Name="DedDesc_73_">
+          <DataField>DedDesc_73_</DataField>
+        </Field>
+        <Field Name="DedDesc_74_">
+          <DataField>DedDesc_74_</DataField>
+        </Field>
+        <Field Name="DedDesc_75_">
+          <DataField>DedDesc_75_</DataField>
+        </Field>
+        <Field Name="Other_Deductions_">
+          <DataField>Other_Deductions_</DataField>
+        </Field>
+        <Field Name="CCDesc_1_">
+          <DataField>CCDesc_1_</DataField>
+        </Field>
+        <Field Name="CCDesc_2_">
+          <DataField>CCDesc_2_</DataField>
+        </Field>
+        <Field Name="CCDesc_3_">
+          <DataField>CCDesc_3_</DataField>
+        </Field>
+        <Field Name="CCDesc_4_">
+          <DataField>CCDesc_4_</DataField>
+        </Field>
+        <Field Name="CCDesc_5_">
+          <DataField>CCDesc_5_</DataField>
+        </Field>
+        <Field Name="CCDesc_6_">
+          <DataField>CCDesc_6_</DataField>
+        </Field>
+        <Field Name="CCDesc_7_">
+          <DataField>CCDesc_7_</DataField>
+        </Field>
+        <Field Name="CCDesc_8_">
+          <DataField>CCDesc_8_</DataField>
+        </Field>
+        <Field Name="CCDesc_9_">
+          <DataField>CCDesc_9_</DataField>
+        </Field>
+        <Field Name="CCDesc_10_">
+          <DataField>CCDesc_10_</DataField>
+        </Field>
+        <Field Name="CCDesc_11_">
+          <DataField>CCDesc_11_</DataField>
+        </Field>
+        <Field Name="CCDesc_12_">
+          <DataField>CCDesc_12_</DataField>
+        </Field>
+        <Field Name="CCDesc_13_">
+          <DataField>CCDesc_13_</DataField>
+        </Field>
+        <Field Name="CCDesc_14_">
+          <DataField>CCDesc_14_</DataField>
+        </Field>
+        <Field Name="CCDesc_15_">
+          <DataField>CCDesc_15_</DataField>
+        </Field>
+        <Field Name="CCDesc_16_">
+          <DataField>CCDesc_16_</DataField>
+        </Field>
+        <Field Name="CCDesc_17_">
+          <DataField>CCDesc_17_</DataField>
+        </Field>
+        <Field Name="CCDesc_18_">
+          <DataField>CCDesc_18_</DataField>
+        </Field>
+        <Field Name="CCDesc_19_">
+          <DataField>CCDesc_19_</DataField>
+        </Field>
+        <Field Name="CCDesc_20_">
+          <DataField>CCDesc_20_</DataField>
+        </Field>
+        <Field Name="CCDesc_21_">
+          <DataField>CCDesc_21_</DataField>
+        </Field>
+        <Field Name="CCDesc_22_">
+          <DataField>CCDesc_22_</DataField>
+        </Field>
+        <Field Name="CCDesc_23_">
+          <DataField>CCDesc_23_</DataField>
+        </Field>
+        <Field Name="CCDesc_24_">
+          <DataField>CCDesc_24_</DataField>
+        </Field>
+        <Field Name="CCDesc_25_">
+          <DataField>CCDesc_25_</DataField>
+        </Field>
+        <Field Name="CCDesc_26_">
+          <DataField>CCDesc_26_</DataField>
+        </Field>
+        <Field Name="CCDesc_27_">
+          <DataField>CCDesc_27_</DataField>
+        </Field>
+        <Field Name="CCDesc_28_">
+          <DataField>CCDesc_28_</DataField>
+        </Field>
+        <Field Name="CCDesc_29_">
+          <DataField>CCDesc_29_</DataField>
+        </Field>
+        <Field Name="CCDesc_30_">
+          <DataField>CCDesc_30_</DataField>
+        </Field>
+        <Field Name="CCDesc_31_">
+          <DataField>CCDesc_31_</DataField>
+        </Field>
+        <Field Name="CCDesc_32_">
+          <DataField>CCDesc_32_</DataField>
+        </Field>
+        <Field Name="CCDesc_33_">
+          <DataField>CCDesc_33_</DataField>
+        </Field>
+        <Field Name="CCDesc_34_">
+          <DataField>CCDesc_34_</DataField>
+        </Field>
+        <Field Name="CCDesc_35_">
+          <DataField>CCDesc_35_</DataField>
+        </Field>
+        <Field Name="CCDesc_36_">
+          <DataField>CCDesc_36_</DataField>
+        </Field>
+        <Field Name="CCDesc_37_">
+          <DataField>CCDesc_37_</DataField>
+        </Field>
+        <Field Name="CCDesc_38_">
+          <DataField>CCDesc_38_</DataField>
+        </Field>
+        <Field Name="CCDesc_39_">
+          <DataField>CCDesc_39_</DataField>
+        </Field>
+        <Field Name="CCDesc_40_">
+          <DataField>CCDesc_40_</DataField>
+        </Field>
+        <Field Name="CCDesc_41_">
+          <DataField>CCDesc_41_</DataField>
+        </Field>
+        <Field Name="CCDesc_42_">
+          <DataField>CCDesc_42_</DataField>
+        </Field>
+        <Field Name="CCDesc_43_">
+          <DataField>CCDesc_43_</DataField>
+        </Field>
+        <Field Name="CCDesc_44_">
+          <DataField>CCDesc_44_</DataField>
+        </Field>
+        <Field Name="CCDesc_45_">
+          <DataField>CCDesc_45_</DataField>
+        </Field>
+        <Field Name="CCDesc_46_">
+          <DataField>CCDesc_46_</DataField>
+        </Field>
+        <Field Name="CCDesc_47_">
+          <DataField>CCDesc_47_</DataField>
+        </Field>
+        <Field Name="CCDesc_48_">
+          <DataField>CCDesc_48_</DataField>
+        </Field>
+        <Field Name="CCDesc_49_">
+          <DataField>CCDesc_49_</DataField>
+        </Field>
+        <Field Name="CCDesc_50_">
+          <DataField>CCDesc_50_</DataField>
+        </Field>
+        <Field Name="CCDesc_51_">
+          <DataField>CCDesc_51_</DataField>
+        </Field>
+        <Field Name="CCDesc_52_">
+          <DataField>CCDesc_52_</DataField>
+        </Field>
+        <Field Name="CCDesc_53_">
+          <DataField>CCDesc_53_</DataField>
+        </Field>
+        <Field Name="CCDesc_54_">
+          <DataField>CCDesc_54_</DataField>
+        </Field>
+        <Field Name="CCDesc_55_">
+          <DataField>CCDesc_55_</DataField>
+        </Field>
+        <Field Name="CCDesc_56_">
+          <DataField>CCDesc_56_</DataField>
+        </Field>
+        <Field Name="CCDesc_57_">
+          <DataField>CCDesc_57_</DataField>
+        </Field>
+        <Field Name="CCDesc_58_">
+          <DataField>CCDesc_58_</DataField>
+        </Field>
+        <Field Name="CCDesc_59_">
+          <DataField>CCDesc_59_</DataField>
+        </Field>
+        <Field Name="CCDesc_60_">
+          <DataField>CCDesc_60_</DataField>
+        </Field>
+        <Field Name="CCDesc_61_">
+          <DataField>CCDesc_61_</DataField>
+        </Field>
+        <Field Name="CCDesc_62_">
+          <DataField>CCDesc_62_</DataField>
+        </Field>
+        <Field Name="CCDesc_63_">
+          <DataField>CCDesc_63_</DataField>
+        </Field>
+        <Field Name="CCDesc_64_">
+          <DataField>CCDesc_64_</DataField>
+        </Field>
+        <Field Name="CCDesc_65_">
+          <DataField>CCDesc_65_</DataField>
+        </Field>
+        <Field Name="CCDesc_66_">
+          <DataField>CCDesc_66_</DataField>
+        </Field>
+        <Field Name="CCDesc_67_">
+          <DataField>CCDesc_67_</DataField>
+        </Field>
+        <Field Name="CCDesc_68_">
+          <DataField>CCDesc_68_</DataField>
+        </Field>
+        <Field Name="CCDesc_69_">
+          <DataField>CCDesc_69_</DataField>
+        </Field>
+        <Field Name="CCDesc_70_">
+          <DataField>CCDesc_70_</DataField>
+        </Field>
+        <Field Name="CCDesc_71_">
+          <DataField>CCDesc_71_</DataField>
+        </Field>
+        <Field Name="CCDesc_72_">
+          <DataField>CCDesc_72_</DataField>
+        </Field>
+        <Field Name="CCDesc_73_">
+          <DataField>CCDesc_73_</DataField>
+        </Field>
+        <Field Name="CCDesc_74_">
+          <DataField>CCDesc_74_</DataField>
+        </Field>
+        <Field Name="CCDesc_75_">
+          <DataField>CCDesc_75_</DataField>
+        </Field>
+        <Field Name="Net_Pay_">
+          <DataField>Net_Pay_</DataField>
+        </Field>
+        <Field Name="PF_No__">
+          <DataField>PF_No__</DataField>
+        </Field>
+        <Field Name="Name_">
+          <DataField>Name_</DataField>
+        </Field>
+        <Field Name="Employee__No__">
+          <DataField>Employee__No__</DataField>
+        </Field>
+        <Field Name="Allowances_1_">
+          <DataField>Allowances_1_</DataField>
+        </Field>
+        <Field Name="Allowances_1_Format">
+          <DataField>Allowances_1_Format</DataField>
+        </Field>
+        <Field Name="Allowances_2_">
+          <DataField>Allowances_2_</DataField>
+        </Field>
+        <Field Name="Allowances_2_Format">
+          <DataField>Allowances_2_Format</DataField>
+        </Field>
+        <Field Name="Allowances_3_">
+          <DataField>Allowances_3_</DataField>
+        </Field>
+        <Field Name="Allowances_3_Format">
+          <DataField>Allowances_3_Format</DataField>
+        </Field>
+        <Field Name="Allowances_4_">
+          <DataField>Allowances_4_</DataField>
+        </Field>
+        <Field Name="Allowances_4_Format">
+          <DataField>Allowances_4_Format</DataField>
+        </Field>
+        <Field Name="Allowances_5_">
+          <DataField>Allowances_5_</DataField>
+        </Field>
+        <Field Name="Allowances_5_Format">
+          <DataField>Allowances_5_Format</DataField>
+        </Field>
+        <Field Name="Allowances_6_">
+          <DataField>Allowances_6_</DataField>
+        </Field>
+        <Field Name="Allowances_6_Format">
+          <DataField>Allowances_6_Format</DataField>
+        </Field>
+        <Field Name="Allowances_7_">
+          <DataField>Allowances_7_</DataField>
+        </Field>
+        <Field Name="Allowances_7_Format">
+          <DataField>Allowances_7_Format</DataField>
+        </Field>
+        <Field Name="Allowances_8_">
+          <DataField>Allowances_8_</DataField>
+        </Field>
+        <Field Name="Allowances_8_Format">
+          <DataField>Allowances_8_Format</DataField>
+        </Field>
+        <Field Name="Allowances_9_">
+          <DataField>Allowances_9_</DataField>
+        </Field>
+        <Field Name="Allowances_9_Format">
+          <DataField>Allowances_9_Format</DataField>
+        </Field>
+        <Field Name="Allowances_10_">
+          <DataField>Allowances_10_</DataField>
+        </Field>
+        <Field Name="Allowances_10_Format">
+          <DataField>Allowances_10_Format</DataField>
+        </Field>
+        <Field Name="Allowances_11_">
+          <DataField>Allowances_11_</DataField>
+        </Field>
+        <Field Name="Allowances_11_Format">
+          <DataField>Allowances_11_Format</DataField>
+        </Field>
+        <Field Name="Allowances_12_">
+          <DataField>Allowances_12_</DataField>
+        </Field>
+        <Field Name="Allowances_12_Format">
+          <DataField>Allowances_12_Format</DataField>
+        </Field>
+        <Field Name="Allowances_13_">
+          <DataField>Allowances_13_</DataField>
+        </Field>
+        <Field Name="Allowances_13_Format">
+          <DataField>Allowances_13_Format</DataField>
+        </Field>
+        <Field Name="Allowances_14_">
+          <DataField>Allowances_14_</DataField>
+        </Field>
+        <Field Name="Allowances_14_Format">
+          <DataField>Allowances_14_Format</DataField>
+        </Field>
+        <Field Name="Allowances_15_">
+          <DataField>Allowances_15_</DataField>
+        </Field>
+        <Field Name="Allowances_15_Format">
+          <DataField>Allowances_15_Format</DataField>
+        </Field>
+        <Field Name="Allowances_16_">
+          <DataField>Allowances_16_</DataField>
+        </Field>
+        <Field Name="Allowances_16_Format">
+          <DataField>Allowances_16_Format</DataField>
+        </Field>
+        <Field Name="Allowances_17_">
+          <DataField>Allowances_17_</DataField>
+        </Field>
+        <Field Name="Allowances_17_Format">
+          <DataField>Allowances_17_Format</DataField>
+        </Field>
+        <Field Name="Allowances_18_">
+          <DataField>Allowances_18_</DataField>
+        </Field>
+        <Field Name="Allowances_18_Format">
+          <DataField>Allowances_18_Format</DataField>
+        </Field>
+        <Field Name="Allowances_19_">
+          <DataField>Allowances_19_</DataField>
+        </Field>
+        <Field Name="Allowances_19_Format">
+          <DataField>Allowances_19_Format</DataField>
+        </Field>
+        <Field Name="Allowances_20_">
+          <DataField>Allowances_20_</DataField>
+        </Field>
+        <Field Name="Allowances_20_Format">
+          <DataField>Allowances_20_Format</DataField>
+        </Field>
+        <Field Name="Allowances_21_">
+          <DataField>Allowances_21_</DataField>
+        </Field>
+        <Field Name="Allowances_21_Format">
+          <DataField>Allowances_21_Format</DataField>
+        </Field>
+        <Field Name="OtherEarn">
+          <DataField>OtherEarn</DataField>
+        </Field>
+        <Field Name="OtherEarnFormat">
+          <DataField>OtherEarnFormat</DataField>
+        </Field>
+        <Field Name="GrossPay">
+          <DataField>GrossPay</DataField>
+        </Field>
+        <Field Name="GrossPayFormat">
+          <DataField>GrossPayFormat</DataField>
+        </Field>
+        <Field Name="Deductions_1_">
+          <DataField>Deductions_1_</DataField>
+        </Field>
+        <Field Name="Deductions_1_Format">
+          <DataField>Deductions_1_Format</DataField>
+        </Field>
+        <Field Name="Deductions_2_">
+          <DataField>Deductions_2_</DataField>
+        </Field>
+        <Field Name="Deductions_2_Format">
+          <DataField>Deductions_2_Format</DataField>
+        </Field>
+        <Field Name="Deductions_3_">
+          <DataField>Deductions_3_</DataField>
+        </Field>
+        <Field Name="Deductions_3_Format">
+          <DataField>Deductions_3_Format</DataField>
+        </Field>
+        <Field Name="Deductions_4_">
+          <DataField>Deductions_4_</DataField>
+        </Field>
+        <Field Name="Deductions_4_Format">
+          <DataField>Deductions_4_Format</DataField>
+        </Field>
+        <Field Name="Deductions_5_">
+          <DataField>Deductions_5_</DataField>
+        </Field>
+        <Field Name="Deductions_5_Format">
+          <DataField>Deductions_5_Format</DataField>
+        </Field>
+        <Field Name="Deductions_6_">
+          <DataField>Deductions_6_</DataField>
+        </Field>
+        <Field Name="Deductions_6_Format">
+          <DataField>Deductions_6_Format</DataField>
+        </Field>
+        <Field Name="Deductions_7_">
+          <DataField>Deductions_7_</DataField>
+        </Field>
+        <Field Name="Deductions_7_Format">
+          <DataField>Deductions_7_Format</DataField>
+        </Field>
+        <Field Name="Deductions_8_">
+          <DataField>Deductions_8_</DataField>
+        </Field>
+        <Field Name="Deductions_8_Format">
+          <DataField>Deductions_8_Format</DataField>
+        </Field>
+        <Field Name="Deductions_9_">
+          <DataField>Deductions_9_</DataField>
+        </Field>
+        <Field Name="Deductions_9_Format">
+          <DataField>Deductions_9_Format</DataField>
+        </Field>
+        <Field Name="Deductions_10_">
+          <DataField>Deductions_10_</DataField>
+        </Field>
+        <Field Name="Deductions_10_Format">
+          <DataField>Deductions_10_Format</DataField>
+        </Field>
+        <Field Name="Deductions_11_">
+          <DataField>Deductions_11_</DataField>
+        </Field>
+        <Field Name="Deductions_11_Format">
+          <DataField>Deductions_11_Format</DataField>
+        </Field>
+        <Field Name="Deductions_12_">
+          <DataField>Deductions_12_</DataField>
+        </Field>
+        <Field Name="Deductions_12_Format">
+          <DataField>Deductions_12_Format</DataField>
+        </Field>
+        <Field Name="Deductions_13_">
+          <DataField>Deductions_13_</DataField>
+        </Field>
+        <Field Name="Deductions_13_Format">
+          <DataField>Deductions_13_Format</DataField>
+        </Field>
+        <Field Name="Deductions_14_">
+          <DataField>Deductions_14_</DataField>
+        </Field>
+        <Field Name="Deductions_14_Format">
+          <DataField>Deductions_14_Format</DataField>
+        </Field>
+        <Field Name="Deductions_15_">
+          <DataField>Deductions_15_</DataField>
+        </Field>
+        <Field Name="Deductions_15_Format">
+          <DataField>Deductions_15_Format</DataField>
+        </Field>
+        <Field Name="Deductions_16_">
+          <DataField>Deductions_16_</DataField>
+        </Field>
+        <Field Name="Deductions_16_Format">
+          <DataField>Deductions_16_Format</DataField>
+        </Field>
+        <Field Name="Deductions_17_">
+          <DataField>Deductions_17_</DataField>
+        </Field>
+        <Field Name="Deductions_17_Format">
+          <DataField>Deductions_17_Format</DataField>
+        </Field>
+        <Field Name="Deductions_18_">
+          <DataField>Deductions_18_</DataField>
+        </Field>
+        <Field Name="Deductions_18_Format">
+          <DataField>Deductions_18_Format</DataField>
+        </Field>
+        <Field Name="Deductions_19_">
+          <DataField>Deductions_19_</DataField>
+        </Field>
+        <Field Name="Deductions_19_Format">
+          <DataField>Deductions_19_Format</DataField>
+        </Field>
+        <Field Name="Deductions_20_">
+          <DataField>Deductions_20_</DataField>
+        </Field>
+        <Field Name="Deductions_20_Format">
+          <DataField>Deductions_20_Format</DataField>
+        </Field>
+        <Field Name="Deductions_21_">
+          <DataField>Deductions_21_</DataField>
+        </Field>
+        <Field Name="Deductions_21_Format">
+          <DataField>Deductions_21_Format</DataField>
+        </Field>
+        <Field Name="Deductions_22_">
+          <DataField>Deductions_22_</DataField>
+        </Field>
+        <Field Name="Deductions_22_Format">
+          <DataField>Deductions_22_Format</DataField>
+        </Field>
+        <Field Name="Deductions_23_">
+          <DataField>Deductions_23_</DataField>
+        </Field>
+        <Field Name="Deductions_23_Format">
+          <DataField>Deductions_23_Format</DataField>
+        </Field>
+        <Field Name="Deductions_24_">
+          <DataField>Deductions_24_</DataField>
+        </Field>
+        <Field Name="Deductions_24_Format">
+          <DataField>Deductions_24_Format</DataField>
+        </Field>
+        <Field Name="Deductions_25_">
+          <DataField>Deductions_25_</DataField>
+        </Field>
+        <Field Name="Deductions_25_Format">
+          <DataField>Deductions_25_Format</DataField>
+        </Field>
+        <Field Name="Deductions_26_">
+          <DataField>Deductions_26_</DataField>
+        </Field>
+        <Field Name="Deductions_26_Format">
+          <DataField>Deductions_26_Format</DataField>
+        </Field>
+        <Field Name="Deductions_27_">
+          <DataField>Deductions_27_</DataField>
+        </Field>
+        <Field Name="Deductions_27_Format">
+          <DataField>Deductions_27_Format</DataField>
+        </Field>
+        <Field Name="Deductions_28_">
+          <DataField>Deductions_28_</DataField>
+        </Field>
+        <Field Name="Deductions_28_Format">
+          <DataField>Deductions_28_Format</DataField>
+        </Field>
+        <Field Name="Deductions_29_">
+          <DataField>Deductions_29_</DataField>
+        </Field>
+        <Field Name="Deductions_29_Format">
+          <DataField>Deductions_29_Format</DataField>
+        </Field>
+        <Field Name="Deductions_30_">
+          <DataField>Deductions_30_</DataField>
+        </Field>
+        <Field Name="Deductions_30_Format">
+          <DataField>Deductions_30_Format</DataField>
+        </Field>
+        <Field Name="Deductions_31_">
+          <DataField>Deductions_31_</DataField>
+        </Field>
+        <Field Name="Deductions_31_Format">
+          <DataField>Deductions_31_Format</DataField>
+        </Field>
+        <Field Name="Deductions_32_">
+          <DataField>Deductions_32_</DataField>
+        </Field>
+        <Field Name="Deductions_32_Format">
+          <DataField>Deductions_32_Format</DataField>
+        </Field>
+        <Field Name="Deductions_33_">
+          <DataField>Deductions_33_</DataField>
+        </Field>
+        <Field Name="Deductions_33_Format">
+          <DataField>Deductions_33_Format</DataField>
+        </Field>
+        <Field Name="Deductions_34_">
+          <DataField>Deductions_34_</DataField>
+        </Field>
+        <Field Name="Deductions_34_Format">
+          <DataField>Deductions_34_Format</DataField>
+        </Field>
+        <Field Name="Deductions_35_">
+          <DataField>Deductions_35_</DataField>
+        </Field>
+        <Field Name="Deductions_35_Format">
+          <DataField>Deductions_35_Format</DataField>
+        </Field>
+        <Field Name="Deductions_36_">
+          <DataField>Deductions_36_</DataField>
+        </Field>
+        <Field Name="Deductions_36_Format">
+          <DataField>Deductions_36_Format</DataField>
+        </Field>
+        <Field Name="Deductions_37_">
+          <DataField>Deductions_37_</DataField>
+        </Field>
+        <Field Name="Deductions_37_Format">
+          <DataField>Deductions_37_Format</DataField>
+        </Field>
+        <Field Name="Deductions_38_">
+          <DataField>Deductions_38_</DataField>
+        </Field>
+        <Field Name="Deductions_38_Format">
+          <DataField>Deductions_38_Format</DataField>
+        </Field>
+        <Field Name="Deductions_39_">
+          <DataField>Deductions_39_</DataField>
+        </Field>
+        <Field Name="Deductions_39_Format">
+          <DataField>Deductions_39_Format</DataField>
+        </Field>
+        <Field Name="Deductions_40_">
+          <DataField>Deductions_40_</DataField>
+        </Field>
+        <Field Name="Deductions_40_Format">
+          <DataField>Deductions_40_Format</DataField>
+        </Field>
+        <Field Name="Deductions_41_">
+          <DataField>Deductions_41_</DataField>
+        </Field>
+        <Field Name="Deductions_41_Format">
+          <DataField>Deductions_41_Format</DataField>
+        </Field>
+        <Field Name="Deductions_42_">
+          <DataField>Deductions_42_</DataField>
+        </Field>
+        <Field Name="Deductions_42_Format">
+          <DataField>Deductions_42_Format</DataField>
+        </Field>
+        <Field Name="Deductions_43_">
+          <DataField>Deductions_43_</DataField>
+        </Field>
+        <Field Name="Deductions_43_Format">
+          <DataField>Deductions_43_Format</DataField>
+        </Field>
+        <Field Name="Deductions_44_">
+          <DataField>Deductions_44_</DataField>
+        </Field>
+        <Field Name="Deductions_44_Format">
+          <DataField>Deductions_44_Format</DataField>
+        </Field>
+        <Field Name="Deductions_45_">
+          <DataField>Deductions_45_</DataField>
+        </Field>
+        <Field Name="Deductions_45_Format">
+          <DataField>Deductions_45_Format</DataField>
+        </Field>
+        <Field Name="Deductions_46_">
+          <DataField>Deductions_46_</DataField>
+        </Field>
+        <Field Name="Deductions_46_Format">
+          <DataField>Deductions_46_Format</DataField>
+        </Field>
+        <Field Name="Deductions_47_">
+          <DataField>Deductions_47_</DataField>
+        </Field>
+        <Field Name="Deductions_47_Format">
+          <DataField>Deductions_47_Format</DataField>
+        </Field>
+        <Field Name="Deductions_48_">
+          <DataField>Deductions_48_</DataField>
+        </Field>
+        <Field Name="Deductions_48_Format">
+          <DataField>Deductions_48_Format</DataField>
+        </Field>
+        <Field Name="Deductions_49_">
+          <DataField>Deductions_49_</DataField>
+        </Field>
+        <Field Name="Deductions_49_Format">
+          <DataField>Deductions_49_Format</DataField>
+        </Field>
+        <Field Name="Deductions_50_">
+          <DataField>Deductions_50_</DataField>
+        </Field>
+        <Field Name="Deductions_50_Format">
+          <DataField>Deductions_50_Format</DataField>
+        </Field>
+        <Field Name="Deductions_51_">
+          <DataField>Deductions_51_</DataField>
+        </Field>
+        <Field Name="Deductions_51_Format">
+          <DataField>Deductions_51_Format</DataField>
+        </Field>
+        <Field Name="Deductions_52_">
+          <DataField>Deductions_52_</DataField>
+        </Field>
+        <Field Name="Deductions_52_Format">
+          <DataField>Deductions_52_Format</DataField>
+        </Field>
+        <Field Name="Deductions_53_">
+          <DataField>Deductions_53_</DataField>
+        </Field>
+        <Field Name="Deductions_53_Format">
+          <DataField>Deductions_53_Format</DataField>
+        </Field>
+        <Field Name="Deductions_54_">
+          <DataField>Deductions_54_</DataField>
+        </Field>
+        <Field Name="Deductions_54_Format">
+          <DataField>Deductions_54_Format</DataField>
+        </Field>
+        <Field Name="Deductions_55_">
+          <DataField>Deductions_55_</DataField>
+        </Field>
+        <Field Name="Deductions_55_Format">
+          <DataField>Deductions_55_Format</DataField>
+        </Field>
+        <Field Name="Deductions_56_">
+          <DataField>Deductions_56_</DataField>
+        </Field>
+        <Field Name="Deductions_56_Format">
+          <DataField>Deductions_56_Format</DataField>
+        </Field>
+        <Field Name="Deductions_57_">
+          <DataField>Deductions_57_</DataField>
+        </Field>
+        <Field Name="Deductions_57_Format">
+          <DataField>Deductions_57_Format</DataField>
+        </Field>
+        <Field Name="Deductions_58_">
+          <DataField>Deductions_58_</DataField>
+        </Field>
+        <Field Name="Deductions_58_Format">
+          <DataField>Deductions_58_Format</DataField>
+        </Field>
+        <Field Name="Deductions_59_">
+          <DataField>Deductions_59_</DataField>
+        </Field>
+        <Field Name="Deductions_59_Format">
+          <DataField>Deductions_59_Format</DataField>
+        </Field>
+        <Field Name="Deductions_60_">
+          <DataField>Deductions_60_</DataField>
+        </Field>
+        <Field Name="Deductions_60_Format">
+          <DataField>Deductions_60_Format</DataField>
+        </Field>
+        <Field Name="Deductions_61_">
+          <DataField>Deductions_61_</DataField>
+        </Field>
+        <Field Name="Deductions_61_Format">
+          <DataField>Deductions_61_Format</DataField>
+        </Field>
+        <Field Name="Deductions_62_">
+          <DataField>Deductions_62_</DataField>
+        </Field>
+        <Field Name="Deductions_62_Format">
+          <DataField>Deductions_62_Format</DataField>
+        </Field>
+        <Field Name="Deductions_63_">
+          <DataField>Deductions_63_</DataField>
+        </Field>
+        <Field Name="Deductions_63_Format">
+          <DataField>Deductions_63_Format</DataField>
+        </Field>
+        <Field Name="Deductions_64_">
+          <DataField>Deductions_64_</DataField>
+        </Field>
+        <Field Name="Deductions_64_Format">
+          <DataField>Deductions_64_Format</DataField>
+        </Field>
+        <Field Name="Deductions_65_">
+          <DataField>Deductions_65_</DataField>
+        </Field>
+        <Field Name="Deductions_65_Format">
+          <DataField>Deductions_65_Format</DataField>
+        </Field>
+        <Field Name="Deductions_66_">
+          <DataField>Deductions_66_</DataField>
+        </Field>
+        <Field Name="Deductions_66_Format">
+          <DataField>Deductions_66_Format</DataField>
+        </Field>
+        <Field Name="Deductions_67_">
+          <DataField>Deductions_67_</DataField>
+        </Field>
+        <Field Name="Deductions_67_Format">
+          <DataField>Deductions_67_Format</DataField>
+        </Field>
+        <Field Name="Deductions_68_">
+          <DataField>Deductions_68_</DataField>
+        </Field>
+        <Field Name="Deductions_68_Format">
+          <DataField>Deductions_68_Format</DataField>
+        </Field>
+        <Field Name="Deductions_69_">
+          <DataField>Deductions_69_</DataField>
+        </Field>
+        <Field Name="Deductions_69_Format">
+          <DataField>Deductions_69_Format</DataField>
+        </Field>
+        <Field Name="Deductions_70_">
+          <DataField>Deductions_70_</DataField>
+        </Field>
+        <Field Name="Deductions_70_Format">
+          <DataField>Deductions_70_Format</DataField>
+        </Field>
+        <Field Name="Deductions_71_">
+          <DataField>Deductions_71_</DataField>
+        </Field>
+        <Field Name="Deductions_71_Format">
+          <DataField>Deductions_71_Format</DataField>
+        </Field>
+        <Field Name="Deductions_72_">
+          <DataField>Deductions_72_</DataField>
+        </Field>
+        <Field Name="Deductions_72_Format">
+          <DataField>Deductions_72_Format</DataField>
+        </Field>
+        <Field Name="Deductions_73_">
+          <DataField>Deductions_73_</DataField>
+        </Field>
+        <Field Name="Deductions_73_Format">
+          <DataField>Deductions_73_Format</DataField>
+        </Field>
+        <Field Name="Deductions_74_">
+          <DataField>Deductions_74_</DataField>
+        </Field>
+        <Field Name="Deductions_74_Format">
+          <DataField>Deductions_74_Format</DataField>
+        </Field>
+        <Field Name="Deductions_75_">
+          <DataField>Deductions_75_</DataField>
+        </Field>
+        <Field Name="Deductions_75_Format">
+          <DataField>Deductions_75_Format</DataField>
+        </Field>
+        <Field Name="OtherDeduct">
+          <DataField>OtherDeduct</DataField>
+        </Field>
+        <Field Name="OtherDeductFormat">
+          <DataField>OtherDeductFormat</DataField>
+        </Field>
+        <Field Name="CompanyCosts_1_">
+          <DataField>CompanyCosts_1_</DataField>
+        </Field>
+        <Field Name="CompanyCosts_1_Format">
+          <DataField>CompanyCosts_1_Format</DataField>
+        </Field>
+        <Field Name="CompanyCosts_2_">
+          <DataField>CompanyCosts_2_</DataField>
+        </Field>
+        <Field Name="CompanyCosts_2_Format">
+          <DataField>CompanyCosts_2_Format</DataField>
+        </Field>
+        <Field Name="CompanyCosts_3_">
+          <DataField>CompanyCosts_3_</DataField>
+        </Field>
+        <Field Name="CompanyCosts_3_Format">
+          <DataField>CompanyCosts_3_Format</DataField>
+        </Field>
+        <Field Name="CompanyCosts_4_">
+          <DataField>CompanyCosts_4_</DataField>
+        </Field>
+        <Field Name="CompanyCosts_4_Format">
+          <DataField>CompanyCosts_4_Format</DataField>
+        </Field>
+        <Field Name="CompanyCosts_5_">
+          <DataField>CompanyCosts_5_</DataField>
+        </Field>
+        <Field Name="CompanyCosts_5_Format">
+          <DataField>CompanyCosts_5_Format</DataField>
+        </Field>
+        <Field Name="TotalDeductions">
+          <DataField>TotalDeductions</DataField>
+        </Field>
+        <Field Name="TotalDeductionsFormat">
+          <DataField>TotalDeductionsFormat</DataField>
+        </Field>
+        <Field Name="TotalCompanyCosts">
+          <DataField>TotalCompanyCosts</DataField>
+        </Field>
+        <Field Name="TotalCompanyCostsFormat">
+          <DataField>TotalCompanyCostsFormat</DataField>
+        </Field>
+        <Field Name="NetPay">
+          <DataField>NetPay</DataField>
+        </Field>
+        <Field Name="NetPayFormat">
+          <DataField>NetPayFormat</DataField>
+        </Field>
+        <Field Name="First_Name_________Middle_Name_______Last_Name_">
+          <DataField>First_Name_________Middle_Name_______Last_Name_</DataField>
+        </Field>
+        <Field Name="Allowances_1__Control1000000009">
+          <DataField>Allowances_1__Control1000000009</DataField>
+        </Field>
+        <Field Name="Allowances_1__Control1000000009Format">
+          <DataField>Allowances_1__Control1000000009Format</DataField>
+        </Field>
+        <Field Name="Allowances_2__Control1000000018">
+          <DataField>Allowances_2__Control1000000018</DataField>
+        </Field>
+        <Field Name="Allowances_2__Control1000000018Format">
+          <DataField>Allowances_2__Control1000000018Format</DataField>
+        </Field>
+        <Field Name="Allowances_3__Control1000000032">
+          <DataField>Allowances_3__Control1000000032</DataField>
+        </Field>
+        <Field Name="Allowances_3__Control1000000032Format">
+          <DataField>Allowances_3__Control1000000032Format</DataField>
+        </Field>
+        <Field Name="OtherEarn_Control1000000033">
+          <DataField>OtherEarn_Control1000000033</DataField>
+        </Field>
+        <Field Name="OtherEarn_Control1000000033Format">
+          <DataField>OtherEarn_Control1000000033Format</DataField>
+        </Field>
+        <Field Name="Deductions_1__Control1000000034">
+          <DataField>Deductions_1__Control1000000034</DataField>
+        </Field>
+        <Field Name="Deductions_1__Control1000000034Format">
+          <DataField>Deductions_1__Control1000000034Format</DataField>
+        </Field>
+        <Field Name="Deductions_2__Control1000000035">
+          <DataField>Deductions_2__Control1000000035</DataField>
+        </Field>
+        <Field Name="Deductions_2__Control1000000035Format">
+          <DataField>Deductions_2__Control1000000035Format</DataField>
+        </Field>
+        <Field Name="Deductions_3__Control1000000036">
+          <DataField>Deductions_3__Control1000000036</DataField>
+        </Field>
+        <Field Name="Deductions_3__Control1000000036Format">
+          <DataField>Deductions_3__Control1000000036Format</DataField>
+        </Field>
+        <Field Name="Deductions_4__Control1000000037">
+          <DataField>Deductions_4__Control1000000037</DataField>
+        </Field>
+        <Field Name="Deductions_4__Control1000000037Format">
+          <DataField>Deductions_4__Control1000000037Format</DataField>
+        </Field>
+        <Field Name="OtherDeduct_Control1000000038">
+          <DataField>OtherDeduct_Control1000000038</DataField>
+        </Field>
+        <Field Name="OtherDeduct_Control1000000038Format">
+          <DataField>OtherDeduct_Control1000000038Format</DataField>
+        </Field>
+        <Field Name="NetPay_Control1000000039">
+          <DataField>NetPay_Control1000000039</DataField>
+        </Field>
+        <Field Name="NetPay_Control1000000039Format">
+          <DataField>NetPay_Control1000000039Format</DataField>
+        </Field>
+        <Field Name="STRSUBSTNO__Employees__1__counter_">
+          <DataField>STRSUBSTNO__Employees__1__counter_</DataField>
+        </Field>
+        <Field Name="Prepared_By______________________________________________________">
+          <DataField>Prepared_By______________________________________________________</DataField>
+        </Field>
+        <Field Name="Approved_By_____________________________________________________">
+          <DataField>Approved_By_____________________________________________________</DataField>
+        </Field>
+        <Field Name="Approved_By_____________________________________________">
+          <DataField>Approved_By_____________________________________________</DataField>
+        </Field>
+        <Field Name="MASTER_ROLLCaption">
+          <DataField>MASTER_ROLLCaption</DataField>
+        </Field>
+        <Field Name="CurrReport_PAGENOCaption">
+          <DataField>CurrReport_PAGENOCaption</DataField>
+        </Field>
+        <Field Name="Other_AllowancesCaption">
+          <DataField>Other_AllowancesCaption</DataField>
+        </Field>
+        <Field Name="Date_of_Birth">
+          <DataField>Date_of_Birth</DataField>
+        </Field>
+        <Field Name="DateEngaged">
+          <DataField>DateEngaged</DataField>
+        </Field>
+        <Field Name="Gender">
+          <DataField>Gender</DataField>
+        </Field>
+        <Field Name="Grade">
+          <DataField>Grade</DataField>
+        </Field>
+        <Field Name="Station">
+          <DataField>Station</DataField>
+        </Field>
+        <Field Name="Designation">
+          <DataField>Designation</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

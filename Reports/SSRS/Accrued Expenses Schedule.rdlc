@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="Logo">
+          <DataField>Logo</DataField>
+        </Field>
+        <Field Name="Title">
+          <DataField>Title</DataField>
+        </Field>
+        <Field Name="Description">
+          <DataField>Description</DataField>
+        </Field>
+        <Field Name="PrepaymentAmount">
+          <DataField>PrepaymentAmount</DataField>
+        </Field>
+        <Field Name="PrepaymentAmountFormat">
+          <DataField>PrepaymentAmountFormat</DataField>
+        </Field>
+        <Field Name="Additions">
+          <DataField>Additions</DataField>
+        </Field>
+        <Field Name="AdditionsFormat">
+          <DataField>AdditionsFormat</DataField>
+        </Field>
+        <Field Name="BF">
+          <DataField>BF</DataField>
+        </Field>
+        <Field Name="BFFormat">
+          <DataField>BFFormat</DataField>
+        </Field>
+        <Field Name="PeriodsCovered">
+          <DataField>PeriodsCovered</DataField>
+        </Field>
+        <Field Name="PeriodsCoveredFormat">
+          <DataField>PeriodsCoveredFormat</DataField>
+        </Field>
+        <Field Name="PeriodName1">
+          <DataField>PeriodName1</DataField>
+        </Field>
+        <Field Name="PeriodAmount1">
+          <DataField>PeriodAmount1</DataField>
+        </Field>
+        <Field Name="PeriodAmount1Format">
+          <DataField>PeriodAmount1Format</DataField>
+        </Field>
+        <Field Name="PeriodName2">
+          <DataField>PeriodName2</DataField>
+        </Field>
+        <Field Name="PeriodAmount2">
+          <DataField>PeriodAmount2</DataField>
+        </Field>
+        <Field Name="PeriodAmount2Format">
+          <DataField>PeriodAmount2Format</DataField>
+        </Field>
+        <Field Name="PeriodName3">
+          <DataField>PeriodName3</DataField>
+        </Field>
+        <Field Name="PeriodAmount3">
+          <DataField>PeriodAmount3</DataField>
+        </Field>
+        <Field Name="PeriodAmount3Format">
+          <DataField>PeriodAmount3Format</DataField>
+        </Field>
+        <Field Name="PeriodName4">
+          <DataField>PeriodName4</DataField>
+        </Field>
+        <Field Name="PeriodAmount4">
+          <DataField>PeriodAmount4</DataField>
+        </Field>
+        <Field Name="PeriodAmount4Format">
+          <DataField>PeriodAmount4Format</DataField>
+        </Field>
+        <Field Name="PeriodName5">
+          <DataField>PeriodName5</DataField>
+        </Field>
+        <Field Name="PeriodAmount5">
+          <DataField>PeriodAmount5</DataField>
+        </Field>
+        <Field Name="PeriodAmount5Format">
+          <DataField>PeriodAmount5Format</DataField>
+        </Field>
+        <Field Name="PeriodName6">
+          <DataField>PeriodName6</DataField>
+        </Field>
+        <Field Name="PeriodAmount6">
+          <DataField>PeriodAmount6</DataField>
+        </Field>
+        <Field Name="PeriodAmount6Format">
+          <DataField>PeriodAmount6Format</DataField>
+        </Field>
+        <Field Name="PeriodName7">
+          <DataField>PeriodName7</DataField>
+        </Field>
+        <Field Name="PeriodAmount7">
+          <DataField>PeriodAmount7</DataField>
+        </Field>
+        <Field Name="PeriodAmount7Format">
+          <DataField>PeriodAmount7Format</DataField>
+        </Field>
+        <Field Name="PeriodName8">
+          <DataField>PeriodName8</DataField>
+        </Field>
+        <Field Name="PeriodAmount8">
+          <DataField>PeriodAmount8</DataField>
+        </Field>
+        <Field Name="PeriodAmount8Format">
+          <DataField>PeriodAmount8Format</DataField>
+        </Field>
+        <Field Name="PeriodName9">
+          <DataField>PeriodName9</DataField>
+        </Field>
+        <Field Name="PeriodAmount9">
+          <DataField>PeriodAmount9</DataField>
+        </Field>
+        <Field Name="PeriodAmount9Format">
+          <DataField>PeriodAmount9Format</DataField>
+        </Field>
+        <Field Name="PeriodName10">
+          <DataField>PeriodName10</DataField>
+        </Field>
+        <Field Name="PeriodAmount10">
+          <DataField>PeriodAmount10</DataField>
+        </Field>
+        <Field Name="PeriodAmount10Format">
+          <DataField>PeriodAmount10Format</DataField>
+        </Field>
+        <Field Name="PeriodName11">
+          <DataField>PeriodName11</DataField>
+        </Field>
+        <Field Name="PeriodAmount11">
+          <DataField>PeriodAmount11</DataField>
+        </Field>
+        <Field Name="PeriodAmount11Format">
+          <DataField>PeriodAmount11Format</DataField>
+        </Field>
+        <Field Name="PeriodName12">
+          <DataField>PeriodName12</DataField>
+        </Field>
+        <Field Name="PeriodAmount12">
+          <DataField>PeriodAmount12</DataField>
+        </Field>
+        <Field Name="PeriodAmount12Format">
+          <DataField>PeriodAmount12Format</DataField>
+        </Field>
+        <Field Name="CF">
+          <DataField>CF</DataField>
+        </Field>
+        <Field Name="CFFormat">
+          <DataField>CFFormat</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

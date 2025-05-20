@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="COMPANYNAME">
+          <DataField>COMPANYNAME</DataField>
+        </Field>
+        <Field Name="Logo">
+          <DataField>Logo</DataField>
+        </Field>
+        <Field Name="UPPERCASE_FORMAT__Payroll_Period__0___month_text___year4____">
+          <DataField>UPPERCASE_FORMAT__Payroll_Period__0___month_text___year4____</DataField>
+        </Field>
+        <Field Name="FORMAT_TODAY_0_4_">
+          <DataField>FORMAT_TODAY_0_4_</DataField>
+        </Field>
+        <Field Name="USERID">
+          <DataField>USERID</DataField>
+        </Field>
+        <Field Name="TIME">
+          <DataField>TIME</DataField>
+        </Field>
+        <Field Name="Assignment_Matrix_X1_Type">
+          <DataField>Assignment_Matrix_X1_Type</DataField>
+        </Field>
+        <Field Name="Assignment_Matrix_X1__Assignment_Matrix_X1__Description">
+          <DataField>Assignment_Matrix_X1__Assignment_Matrix_X1__Description</DataField>
+        </Field>
+        <Field Name="Assignment_Matrix_X1_Amount">
+          <DataField>Assignment_Matrix_X1_Amount</DataField>
+        </Field>
+        <Field Name="Assignment_Matrix_X1_AmountFormat">
+          <DataField>Assignment_Matrix_X1_AmountFormat</DataField>
+        </Field>
+        <Field Name="Assignment_Matrix_X1_Code">
+          <DataField>Assignment_Matrix_X1_Code</DataField>
+        </Field>
+        <Field Name="STRSUBSTNO__Total__1__Type_">
+          <DataField>STRSUBSTNO__Total__1__Type_</DataField>
+        </Field>
+        <Field Name="Assignment_Matrix_X1_Amount_Control1000000031">
+          <DataField>Assignment_Matrix_X1_Amount_Control1000000031</DataField>
+        </Field>
+        <Field Name="Assignment_Matrix_X1_Amount_Control1000000031Format">
+          <DataField>Assignment_Matrix_X1_Amount_Control1000000031Format</DataField>
+        </Field>
+        <Field Name="Net_Salary_">
+          <DataField>Net_Salary_</DataField>
+        </Field>
+        <Field Name="TotalNetPay">
+          <DataField>TotalNetPay</DataField>
+        </Field>
+        <Field Name="TotalNetPayFormat">
+          <DataField>TotalNetPayFormat</DataField>
+        </Field>
+        <Field Name="No_of_Employees_">
+          <DataField>No_of_Employees_</DataField>
+        </Field>
+        <Field Name="NoOfEmployees">
+          <DataField>NoOfEmployees</DataField>
+        </Field>
+        <Field Name="COMPANY_SUMMARYCaption">
+          <DataField>COMPANY_SUMMARYCaption</DataField>
+        </Field>
+        <Field Name="PERIOD_Caption">
+          <DataField>PERIOD_Caption</DataField>
+        </Field>
+        <Field Name="CurrReport_PAGENOCaption">
+          <DataField>CurrReport_PAGENOCaption</DataField>
+        </Field>
+        <Field Name="CODECaption">
+          <DataField>CODECaption</DataField>
+        </Field>
+        <Field Name="DESCRIPTIONCaption">
+          <DataField>DESCRIPTIONCaption</DataField>
+        </Field>
+        <Field Name="AMOUNTCaption">
+          <DataField>AMOUNTCaption</DataField>
+        </Field>
+        <Field Name="Assignment_Matrix_X1_Employee_No">
+          <DataField>Assignment_Matrix_X1_Employee_No</DataField>
+        </Field>
+        <Field Name="Assignment_Matrix_X1_Payroll_Period">
+          <DataField>Assignment_Matrix_X1_Payroll_Period</DataField>
+        </Field>
+        <Field Name="Assignment_Matrix_X1_Reference_No">
+          <DataField>Assignment_Matrix_X1_Reference_No</DataField>
+        </Field>
+        <Field Name="Taxableamount_AssignmentMatrixX1">
+          <DataField>Taxableamount_AssignmentMatrixX1</DataField>
+        </Field>
+        <Field Name="Taxableamount_AssignmentMatrixX1Format">
+          <DataField>Taxableamount_AssignmentMatrixX1Format</DataField>
+        </Field>
+        <Field Name="TaxDeductible_AssignmentMatrixX1">
+          <DataField>TaxDeductible_AssignmentMatrixX1</DataField>
+        </Field>
+        <Field Name="TaxCharged">
+          <DataField>TaxCharged</DataField>
+        </Field>
+        <Field Name="TaxChargedFormat">
+          <DataField>TaxChargedFormat</DataField>
+        </Field>
+        <Field Name="Contribution_Benefit">
+          <DataField>Contribution_Benefit</DataField>
+        </Field>
+        <Field Name="Contribution_BenefitFormat">
+          <DataField>Contribution_BenefitFormat</DataField>
+        </Field>
+        <Field Name="NonCashBenefit_AssignmentMatrixX1">
+          <DataField>NonCashBenefit_AssignmentMatrixX1</DataField>
+        </Field>
+        <Field Name="FORMAT_TODAY_0_4_1">
+          <DataField>FORMAT_TODAY_0_4_1</DataField>
+        </Field>
+        <Field Name="LOAN_STATUS_REPORT_">
+          <DataField>LOAN_STATUS_REPORT_</DataField>
+        </Field>
+        <Field Name="Loan_Application1__GETFILTERS">
+          <DataField>Loan_Application1__GETFILTERS</DataField>
+        </Field>
+        <Field Name="Loan_Application1__Loan_Product_Type_">
+          <DataField>Loan_Application1__Loan_Product_Type_</DataField>
+        </Field>
+        <Field Name="Loan_Application1__Employee_No_">
+          <DataField>Loan_Application1__Employee_No_</DataField>
+        </Field>
+        <Field Name="Loan_Application1__Employee_Name_">
+          <DataField>Loan_Application1__Employee_Name_</DataField>
+        </Field>
+        <Field Name="Loan_Application1__Loan_Application1___Approved_Amount_">
+          <DataField>Loan_Application1__Loan_Application1___Approved_Amount_</DataField>
+        </Field>
+        <Field Name="Loan_Application1__Loan_Application1___Approved_Amount_Format">
+          <DataField>Loan_Application1__Loan_Application1___Approved_Amount_Format</DataField>
+        </Field>
+        <Field Name="Loan_Application1__Loan_Application1___Total_Repayment_">
+          <DataField>Loan_Application1__Loan_Application1___Total_Repayment_</DataField>
+        </Field>
+        <Field Name="Loan_Application1__Loan_Application1___Total_Repayment_Format">
+          <DataField>Loan_Application1__Loan_Application1___Total_Repayment_Format</DataField>
+        </Field>
+        <Field Name="Balance">
+          <DataField>Balance</DataField>
+        </Field>
+        <Field Name="BalanceFormat">
+          <DataField>BalanceFormat</DataField>
+        </Field>
+        <Field Name="Loan_Application1__Loan_Application1___Interest_Amount_">
+          <DataField>Loan_Application1__Loan_Application1___Interest_Amount_</DataField>
+        </Field>
+        <Field Name="Loan_Application1__Loan_Application1___Interest_Amount_Format">
+          <DataField>Loan_Application1__Loan_Application1___Interest_Amount_Format</DataField>
+        </Field>
+        <Field Name="i">
+          <DataField>i</DataField>
+        </Field>
+        <Field Name="Loan_Application1__Loan_Application1___Approved_Amount__Control1000000008">
+          <DataField>Loan_Application1__Loan_Application1___Approved_Amount__Control1000000008</DataField>
+        </Field>
+        <Field Name="Loan_Application1__Loan_Application1___Approved_Amount__Control1000000008Format">
+          <DataField>Loan_Application1__Loan_Application1___Approved_Amount__Control1000000008Format</DataField>
+        </Field>
+        <Field Name="Loan_Application1__Loan_Application1___Interest_Amount__Control1000000009">
+          <DataField>Loan_Application1__Loan_Application1___Interest_Amount__Control1000000009</DataField>
+        </Field>
+        <Field Name="Loan_Application1__Loan_Application1___Interest_Amount__Control1000000009Format">
+          <DataField>Loan_Application1__Loan_Application1___Interest_Amount__Control1000000009Format</DataField>
+        </Field>
+        <Field Name="Loan_Application1__Loan_Application1___Total_Repayment__Control1000000011">
+          <DataField>Loan_Application1__Loan_Application1___Total_Repayment__Control1000000011</DataField>
+        </Field>
+        <Field Name="Loan_Application1__Loan_Application1___Total_Repayment__Control1000000011Format">
+          <DataField>Loan_Application1__Loan_Application1___Total_Repayment__Control1000000011Format</DataField>
+        </Field>
+        <Field Name="Balance_Control1000000016">
+          <DataField>Balance_Control1000000016</DataField>
+        </Field>
+        <Field Name="Balance_Control1000000016Format">
+          <DataField>Balance_Control1000000016Format</DataField>
+        </Field>
+        <Field Name="Loan_Application1_Loan_No">
+          <DataField>Loan_Application1_Loan_No</DataField>
+        </Field>
+        <Field Name="Loan_Application1_Payroll_Group">
+          <DataField>Loan_Application1_Payroll_Group</DataField>
+        </Field>
+        <Field Name="Loan_App_Description">
+          <DataField>Loan_App_Description</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

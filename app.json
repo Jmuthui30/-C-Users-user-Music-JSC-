@@ -1,0 +1,56 @@
+{
+  "id": "2b9102ab-c3d6-4647-bdc5-7fe38da421b4",
+  "name": "JSC 2.0_",
+  "publisher": "ALTAIR RETRO LTD",
+  "version": "1.0.1.240",
+  "brief": "",
+  "description": "",
+  "privacyStatement": "",
+  "EULA": "https://jsc.go.ke/",
+  "help": "https://jsc.go.ke/",
+  "url": "https://jsc.go.ke/", 
+  "dependencies": [
+    
+  ],
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "24.0.0.0",
+  
+  
+  "idRanges": [
+    {
+      "from": 1,
+      "to": 59999
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": true,
+    "includeSourceInSymbolFile": true
+  },
+  "runtime": "13.0",
+  "suppressWarnings": [
+    "AL0197",
+    "AL0254",
+    "AL0269",
+    "AL0299",
+    "AL0432",
+    "AL0482",
+    "AL0520",
+    "AL0523",
+    "AL0524",
+    "AL0545",
+    "AL0547",
+    "AL0551",
+    "AL0568",
+    "AL0600",
+    "AL0603",
+    "AL0604",
+    "AL0606",
+    "AL0655",
+    "AL0667",
+    "AL0685",
+    "AL0835",
+    "AL0729"
+  ]
+}

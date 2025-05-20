@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="Logo">
+          <DataField>Logo</DataField>
+        </Field>
+        <Field Name="CompName">
+          <DataField>CompName</DataField>
+        </Field>
+        <Field Name="DeptName">
+          <DataField>DeptName</DataField>
+        </Field>
+        <Field Name="Grade">
+          <DataField>Grade</DataField>
+        </Field>
+        <Field Name="Annual">
+          <DataField>Annual</DataField>
+        </Field>
+        <Field Name="Casual">
+          <DataField>Casual</DataField>
+        </Field>
+        <Field Name="Examination">
+          <DataField>Examination</DataField>
+        </Field>
+        <Field Name="Absent">
+          <DataField>Absent</DataField>
+        </Field>
+        <Field Name="Maternity">
+          <DataField>Maternity</DataField>
+        </Field>
+        <Field Name="CompAddress">
+          <DataField>CompAddress</DataField>
+        </Field>
+        <Field Name="AppNo">
+          <DataField>AppNo</DataField>
+        </Field>
+        <Field Name="AppDate">
+          <DataField>AppDate</DataField>
+        </Field>
+        <Field Name="EmpNo">
+          <DataField>EmpNo</DataField>
+        </Field>
+        <Field Name="EmpName">
+          <DataField>EmpName</DataField>
+        </Field>
+        <Field Name="LeaveCode">
+          <DataField>LeaveCode</DataField>
+        </Field>
+        <Field Name="StartDate">
+          <DataField>StartDate</DataField>
+        </Field>
+        <Field Name="EndDate">
+          <DataField>EndDate</DataField>
+        </Field>
+        <Field Name="ResumptionDate">
+          <DataField>ResumptionDate</DataField>
+        </Field>
+        <Field Name="DaysApplied">
+          <DataField>DaysApplied</DataField>
+        </Field>
+        <Field Name="DaysAppliedFormat">
+          <DataField>DaysAppliedFormat</DataField>
+        </Field>
+        <Field Name="Entitlement">
+          <DataField>Entitlement</DataField>
+        </Field>
+        <Field Name="EntitlementFormat">
+          <DataField>EntitlementFormat</DataField>
+        </Field>
+        <Field Name="DaysTakenToDate">
+          <DataField>DaysTakenToDate</DataField>
+        </Field>
+        <Field Name="DaysTakenToDateFormat">
+          <DataField>DaysTakenToDateFormat</DataField>
+        </Field>
+        <Field Name="LeaveBalance">
+          <DataField>LeaveBalance</DataField>
+        </Field>
+        <Field Name="LeaveBalanceFormat">
+          <DataField>LeaveBalanceFormat</DataField>
+        </Field>
+        <Field Name="AllowancePayable">
+          <DataField>AllowancePayable</DataField>
+        </Field>
+        <Field Name="Approver1">
+          <DataField>Approver1</DataField>
+        </Field>
+        <Field Name="Approver1Sign">
+          <DataField>Approver1Sign</DataField>
+        </Field>
+        <Field Name="Approver2">
+          <DataField>Approver2</DataField>
+        </Field>
+        <Field Name="Approver2Sign">
+          <DataField>Approver2Sign</DataField>
+        </Field>
+        <Field Name="Approver3">
+          <DataField>Approver3</DataField>
+        </Field>
+        <Field Name="Approver3Sign">
+          <DataField>Approver3Sign</DataField>
+        </Field>
+        <Field Name="Approver1Date">
+          <DataField>Approver1Date</DataField>
+        </Field>
+        <Field Name="Approver2Date">
+          <DataField>Approver2Date</DataField>
+        </Field>
+        <Field Name="Approver3Date">
+          <DataField>Approver3Date</DataField>
+        </Field>
+        <Field Name="BalanceBF">
+          <DataField>BalanceBF</DataField>
+        </Field>
+        <Field Name="BalanceBFFormat">
+          <DataField>BalanceBFFormat</DataField>
+        </Field>
+        <Field Name="LeaveEarnedToDate">
+          <DataField>LeaveEarnedToDate</DataField>
+        </Field>
+        <Field Name="LeaveEarnedToDateFormat">
+          <DataField>LeaveEarnedToDateFormat</DataField>
+        </Field>
+        <Field Name="NoDaysApplied">
+          <DataField>NoDaysApplied</DataField>
+        </Field>
+        <Field Name="NoDaysAppliedFormat">
+          <DataField>NoDaysAppliedFormat</DataField>
+        </Field>
+        <Field Name="DutiesTakenBy">
+          <DataField>DutiesTakenBy</DataField>
+        </Field>
+        <Field Name="PhoneNo">
+          <DataField>PhoneNo</DataField>
+        </Field>
+        <Field Name="Address">
+          <DataField>Address</DataField>
+        </Field>
+        <Field Name="Year">
+          <DataField>Year</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

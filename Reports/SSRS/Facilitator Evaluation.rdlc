@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="Logo">
+          <DataField>Logo</DataField>
+        </Field>
+        <Field Name="TitleOfAcademy">
+          <DataField>TitleOfAcademy</DataField>
+        </Field>
+        <Field Name="NameOfFacilitator">
+          <DataField>NameOfFacilitator</DataField>
+        </Field>
+        <Field Name="CourseTitle">
+          <DataField>CourseTitle</DataField>
+        </Field>
+        <Field Name="Date">
+          <DataField>Date</DataField>
+        </Field>
+        <Field Name="ClearObjectives">
+          <DataField>ClearObjectives</DataField>
+        </Field>
+        <Field Name="ClearObjectivesFormat">
+          <DataField>ClearObjectivesFormat</DataField>
+        </Field>
+        <Field Name="Organization">
+          <DataField>Organization</DataField>
+        </Field>
+        <Field Name="OrganizationFormat">
+          <DataField>OrganizationFormat</DataField>
+        </Field>
+        <Field Name="Ease">
+          <DataField>Ease</DataField>
+        </Field>
+        <Field Name="EaseFormat">
+          <DataField>EaseFormat</DataField>
+        </Field>
+        <Field Name="Usefulness">
+          <DataField>Usefulness</DataField>
+        </Field>
+        <Field Name="UsefulnessFormat">
+          <DataField>UsefulnessFormat</DataField>
+        </Field>
+        <Field Name="MeetingObjectives">
+          <DataField>MeetingObjectives</DataField>
+        </Field>
+        <Field Name="MeetingObjectivesFormat">
+          <DataField>MeetingObjectivesFormat</DataField>
+        </Field>
+        <Field Name="AddressNonCompliance">
+          <DataField>AddressNonCompliance</DataField>
+        </Field>
+        <Field Name="AddressNonComplianceFormat">
+          <DataField>AddressNonComplianceFormat</DataField>
+        </Field>
+        <Field Name="ParticipantsEngagement">
+          <DataField>ParticipantsEngagement</DataField>
+        </Field>
+        <Field Name="ParticipantsEngagementFormat">
+          <DataField>ParticipantsEngagementFormat</DataField>
+        </Field>
+        <Field Name="PracticalExamples">
+          <DataField>PracticalExamples</DataField>
+        </Field>
+        <Field Name="PracticalExamplesFormat">
+          <DataField>PracticalExamplesFormat</DataField>
+        </Field>
+        <Field Name="PrsocialBehaviour">
+          <DataField>PrsocialBehaviour</DataField>
+        </Field>
+        <Field Name="PrsocialBehaviourFormat">
+          <DataField>PrsocialBehaviourFormat</DataField>
+        </Field>
+        <Field Name="ConstructiveFeedback">
+          <DataField>ConstructiveFeedback</DataField>
+        </Field>
+        <Field Name="ConstructiveFeedbackFormat">
+          <DataField>ConstructiveFeedbackFormat</DataField>
+        </Field>
+        <Field Name="UseOfMaterials">
+          <DataField>UseOfMaterials</DataField>
+        </Field>
+        <Field Name="UseOfMaterialsFormat">
+          <DataField>UseOfMaterialsFormat</DataField>
+        </Field>
+        <Field Name="Competency">
+          <DataField>Competency</DataField>
+        </Field>
+        <Field Name="CompetencyFormat">
+          <DataField>CompetencyFormat</DataField>
+        </Field>
+        <Field Name="CommunicationSkills">
+          <DataField>CommunicationSkills</DataField>
+        </Field>
+        <Field Name="CommunicationSkillsFormat">
+          <DataField>CommunicationSkillsFormat</DataField>
+        </Field>
+        <Field Name="GeneralObservations">
+          <DataField>GeneralObservations</DataField>
+        </Field>
+        <Field Name="AreasOfImprovement">
+          <DataField>AreasOfImprovement</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

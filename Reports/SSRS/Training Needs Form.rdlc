@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="Logo">
+          <DataField>Logo</DataField>
+        </Field>
+        <Field Name="CompName">
+          <DataField>CompName</DataField>
+        </Field>
+        <Field Name="Address">
+          <DataField>Address</DataField>
+        </Field>
+        <Field Name="Address2">
+          <DataField>Address2</DataField>
+        </Field>
+        <Field Name="City">
+          <DataField>City</DataField>
+        </Field>
+        <Field Name="Country">
+          <DataField>Country</DataField>
+        </Field>
+        <Field Name="DateOfCounsel">
+          <DataField>DateOfCounsel</DataField>
+        </Field>
+        <Field Name="EmployeeName">
+          <DataField>EmployeeName</DataField>
+        </Field>
+        <Field Name="Gender">
+          <DataField>Gender</DataField>
+        </Field>
+        <Field Name="EmployeeFileNo">
+          <DataField>EmployeeFileNo</DataField>
+        </Field>
+        <Field Name="Location">
+          <DataField>Location</DataField>
+        </Field>
+        <Field Name="Department">
+          <DataField>Department</DataField>
+        </Field>
+        <Field Name="DateEmployed">
+          <DataField>DateEmployed</DataField>
+        </Field>
+        <Field Name="NoOfYearsInCompany">
+          <DataField>NoOfYearsInCompany</DataField>
+        </Field>
+        <Field Name="ConfirmationStatus">
+          <DataField>ConfirmationStatus</DataField>
+        </Field>
+        <Field Name="Position_Designation">
+          <DataField>Position_Designation</DataField>
+        </Field>
+        <Field Name="GradeLevelOfCounsellee">
+          <DataField>GradeLevelOfCounsellee</DataField>
+        </Field>
+        <Field Name="DateOfLastTraining">
+          <DataField>DateOfLastTraining</DataField>
+        </Field>
+        <Field Name="NoOfMonthsYearsInCurrentJob">
+          <DataField>NoOfMonthsYearsInCurrentJob</DataField>
+        </Field>
+        <Field Name="JobFunction">
+          <DataField>JobFunction</DataField>
+        </Field>
+        <Field Name="Skills">
+          <DataField>Skills</DataField>
+        </Field>
+        <Field Name="Missing">
+          <DataField>Missing</DataField>
+        </Field>
+        <Field Name="Required">
+          <DataField>Required</DataField>
+        </Field>
+        <Field Name="CommentsHoD">
+          <DataField>CommentsHoD</DataField>
+        </Field>
+        <Field Name="CommentsHR">
+          <DataField>CommentsHR</DataField>
+        </Field>
+        <Field Name="IssueDescription">
+          <DataField>IssueDescription</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

@@ -1,0 +1,44 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Microsoft cloud sandbox",
+            "request": "launch",
+            "type": "al",
+                        "environmentType": "Sandbox",
+            "environmentName": "Development",
+            "startupObjectId": 22,
+            "startupObjectType": "Page",
+            "schemaUpdateMode": "ForceSync",
+            "breakOnError": "All",
+            "launchBrowser": true,            
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": true,
+            "tenant": "07ec9f79-420c-41b8-9ce9-bbb984ac7c87"
+            //https://businesscentral.dynamics.com/5b7b8f6c-7b7d-49ce-bc63-39d21a39c4e1/KMET/?sandbox=true
+            //"server": "https://businesscentral.dynamics.com/07ec9f79-420c-41b8-9ce9-bbb984ac7c87/Development?company=UAT1&dc=0",
+           // "serverInstance": "BC"
+            
+
+        // //**************************************************
+        // "name": "Your own server",
+        // "request": "launch",
+        // "type": "al",
+        // "environmentType": "OnPrem",
+        // //217.15.164.255
+        // "server": "http://localhost:8080/BC240",
+        // "serverInstance": "BC240",
+        // "authentication": "Windows",
+        // "startupObjectId": 22,
+        // "port": 7049,
+        // "startupObjectType": "Page",
+        // "breakOnError": "All",
+        // "launchBrowser": true,
+        // "enableLongRunningSqlStatements": true,
+        // "enableSqlInformationDebugger": true,
+        // "tenant": "default",
+        // "usePublicURLFromServer": true
+        }
+    ]
+}
