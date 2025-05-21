@@ -459,8 +459,8 @@ codeunit 52116 "Portal Integration"
         exit(sent);
     end;
 
- procedure CreateImprestRequisition(No: Code[30]; AccountNo: Code[30]; Donor: Code[100]; Program: code[100]; TravelType: Integer;
-    Currency: Code[30]; Purpose: Text[2048]; Destination: Code[250]; TravelDate: Date; NoOfDays: Integer; ReturnDate: Date; Cashier: Code[30];EmpNo:Code[30]): Code[30]
+    procedure CreateImprestRequisition(No: Code[30]; AccountNo: Code[30]; Donor: Code[100]; Program: code[100]; TravelType: Integer;
+       Currency: Code[30]; Purpose: Text[2048]; Destination: Code[250]; TravelDate: Date; NoOfDays: Integer; ReturnDate: Date; Cashier: Code[30]; EmpNo: Code[30]): Code[30]
     var
     begin
         if ImprestHeader.Get(No) then begin
@@ -924,29 +924,88 @@ codeunit 52116 "Portal Integration"
 
     end;
 
-// procedure GetImprestBalance(No: Code[30]): Decimal
-//     var
-//         Customer: Record Customer;
-//         Payee: Record Payee;
-//     begin
-//         Payee.Reset();
-//         Payee.SetRange("Employee No.", No);
-//         if Payee.FindFirst() then
-//             if Customer.Get(Payee."Receivable Account No") then begin
-//                 Customer.CalcFields(Balance);
-//                 exit(Customer.Balance);
-//             end;
-//     end;
+    procedure PrintP9(EmployeeNo: Code[50]; Year: Integer) P9Base64Txt: Text
+    var
+        Payee: Record "Employee Master";
+        P9: Report "P9A";
+        Base64Convert: Codeunit "Base64 Convert";
+        TempBlob: Codeunit "Temp Blob";
+        EndDate, StartDate : Date;
+        P9Instream: InStream;
+        P9Outstream: OutStream;
+        DateFilterTxt: Text;
+        filename: Text;
+    begin
+        filename := 'P9_' + EmployeeNo + '_' + Format(Year) + '.pdf';
 
-//     procedure GetStaffNoFromCustNo(AccNo: Code[30]): Code[20]
-//     var
-//         PayeeRec: Record Payee;
-//     begin
-//         PayeeRec.Reset();
-//         PayeeRec.SetRange("Receivable Account No", AccNo);
-//         if PayeeRec.FindFirst() then
-//             exit(PayeeRec."Employee No.");
-//     end;
+        StartDate := DMY2Date(31, 1, Year);
+        EndDate := DMY2Date(31, 12, Year);
+        DateFilterTxt := Format(StartDate) + '..' + Format(EndDate);
+
+        Payee.Reset();
+        Payee.SetRange("No.", EmployeeNo);
+        Payee.SetFilter("Date Filter", DateFilterTxt);
+        if Payee.FindFirst() then begin
+            P9.SetTableView(Payee);
+            //  P9.InitPeriodFilter(DateFilterTxt);
+            TempBlob.CreateOutStream(P9Outstream);
+            if P9.SaveAs('', ReportFormat::Pdf, P9Outstream) then begin
+                TempBlob.CreateInStream(P9Instream);
+                P9Base64Txt := Base64Convert.ToBase64(P9Instream);
+                exit(P9Base64Txt);
+            end;
+        end;
+    end;
+
+    procedure PrintPaySlip(EmployeeNo: Code[50]; Period: Date) PayslipBase64Txt: Text
+    var
+        Employee: Record Employee;
+        Payee: Record "Employee Master";
+        EmailReport: Report Payslip;
+        Base64Convert: Codeunit "Base64 Convert";
+        TempBlob: Codeunit "Temp Blob";
+        IStream: InStream;
+        OStream: OutStream;
+    begin
+        Payee.Reset();
+        Payee.SetRange("No.", EmployeeNo);
+        Payee.SetRange("Date Filter", Period);
+        if Payee.FindFirst() then begin
+            Clear(EmailReport);
+
+            EmailReport.SetTableView(Payee);
+            TempBlob.CreateOutStream(OStream);
+            if EmailReport.SaveAs('', ReportFormat::Pdf, OStream) then begin
+                TempBlob.CreateInStream(IStream);
+                PayslipBase64Txt := Base64Convert.ToBase64(IStream);
+                exit(PayslipBase64Txt);
+            end;
+        end;
+    end;
+
+    // procedure GetImprestBalance(No: Code[30]): Decimal
+    //     var
+    //         Customer: Record Customer;
+    //         Payee: Record Payee;
+    //     begin
+    //         Payee.Reset();
+    //         Payee.SetRange("Employee No.", No);
+    //         if Payee.FindFirst() then
+    //             if Customer.Get(Payee."Receivable Account No") then begin
+    //                 Customer.CalcFields(Balance);
+    //                 exit(Customer.Balance);
+    //             end;
+    //     end;
+
+    //     procedure GetStaffNoFromCustNo(AccNo: Code[30]): Code[20]
+    //     var
+    //         PayeeRec: Record Payee;
+    //     begin
+    //         PayeeRec.Reset();
+    //         PayeeRec.SetRange("Receivable Account No", AccNo);
+    //         if PayeeRec.FindFirst() then
+    //             exit(PayeeRec."Employee No.");
+    //     end;
 
 
 }
