@@ -31,6 +31,10 @@ codeunit 52116 "Portal Integration"
         Applicants: Record Applicant;
         CompanyInformation: Record "Company Information";
         PortalUploads: Record "SharePoint Intergration";
+        ImprestLines: Record "Payment Lines";
+        PLines: Record "Payment Lines";
+        ImprestHeader: Record Payments;
+        PaymentsRec: Record Payments;
 
 
     procedure SubmitJobApplication(No: Code[30]; ApplicantNo: Code[30]): Boolean
@@ -448,7 +452,6 @@ codeunit 52116 "Portal Integration"
     var
         EmailMessage: Codeunit "Email Message";
         smtp: Codeunit Email;
-
     begin
         sent := false;
         EmailMessage.Create(Receipient, Subject, FormattedBody, true);
@@ -456,8 +459,553 @@ codeunit 52116 "Portal Integration"
         exit(sent);
     end;
 
+    procedure CreateImprestRequisition(No: Code[30]; AccountNo: Code[30]; Donor: Code[100]; Program: code[100]; TravelType: Integer;
+       Currency: Code[30]; Purpose: Text[2048]; Destination: Code[250]; TravelDate: Date; NoOfDays: Integer; ReturnDate: Date; Cashier: Code[30]; EmpNo: Code[30]): Code[30]
+    var
+    begin
+        if ImprestHeader.Get(No) then begin
+            ImprestHeader.Date := Today;
+            ImprestHeader."Time Inserted" := Time;
+            ImprestHeader.Cashier := Cashier;
+            ImprestHeader."Created By" := Cashier;
+            ImprestHeader."User Id" := Cashier;
+            ImprestHeader."Payment Type" := ImprestHeader."Payment Type"::Imprest;
+            ImprestHeader."Account Type" := ImprestHeader."Account Type"::Customer;
+            ImprestHeader."Account No." := CopyStr(AccountNo, 1, MaxStrLen(ImprestHeader."Account No."));
+            ImprestHeader.Validate("Account No.");
+            ImprestHeader.Payee := ImprestHeader."Account Name";
+            ImprestHeader."Shortcut Dimension 1 Code" := CopyStr(Donor, 1, MaxStrLen(ImprestHeader."Shortcut Dimension 1 Code"));
+            ImprestHeader."Shortcut Dimension 2 Code" := CopyStr(Program, 1, MaxStrLen(ImprestHeader."Shortcut Dimension 2 Code"));
+            ImprestHeader."Travel Type" := TravelType;
+            ImprestHeader.Currency := CopyStr(Currency, 1, MaxStrLen(ImprestHeader.Currency));
+            ImprestHeader."Payment Narration" := CopyStr(Purpose, 1, MaxStrLen(ImprestHeader."Payment Narration"));
+            ImprestHeader.Destination := CopyStr(Destination, 1, MaxStrLen(ImprestHeader.Destination));
+            ImprestHeader."Date of Project" := TravelDate;
+            ImprestHeader."Date of Completion" := ReturnDate;
+            ImprestHeader.Validate("Date of Completion");
+            ImprestHeader.Status := ImprestHeader.Status::Open;
+            ImprestHeader."Staff No." := EmpNo;
+            ImprestHeader.Modify(true);
+            exit(ImprestHeader."No.");
+        end else begin
+            ImprestHeader.Init();
+            ImprestHeader.Date := Today;
+            ImprestHeader."Time Inserted" := Time;
+            ImprestHeader.Cashier := Cashier;
+            ImprestHeader."Created By" := Cashier;
+            ImprestHeader."User Id" := Cashier;
+            ImprestHeader."Payment Type" := ImprestHeader."Payment Type"::Imprest;
+            ImprestHeader."Account Type" := ImprestHeader."Account Type"::Customer;
+            ImprestHeader."Account No." := CopyStr(AccountNo, 1, MaxStrLen(ImprestHeader."Account No."));
+            ImprestHeader.Validate("Account No.");
+            ImprestHeader.Payee := ImprestHeader."Account Name";
+            ImprestHeader."Shortcut Dimension 1 Code" := CopyStr(Donor, 1, MaxStrLen(ImprestHeader."Shortcut Dimension 1 Code"));
+            ImprestHeader."Shortcut Dimension 2 Code" := CopyStr(Program, 1, MaxStrLen(ImprestHeader."Shortcut Dimension 2 Code"));
+            ImprestHeader."Travel Type" := TravelType;
+            ImprestHeader.Currency := CopyStr(Currency, 1, MaxStrLen(ImprestHeader.Currency));
+            ImprestHeader."Payment Narration" := CopyStr(Purpose, 1, MaxStrLen(ImprestHeader."Payment Narration"));
+            ImprestHeader.Destination := CopyStr(Destination, 1, MaxStrLen(ImprestHeader.Destination));
+            ImprestHeader."Date of Project" := TravelDate;
+            ImprestHeader."Date of Completion" := ReturnDate;
+            ImprestHeader.Validate("Date of Completion");
+            ImprestHeader.Status := ImprestHeader.Status::Open;
+            ImprestHeader."Staff No." := EmpNo;
+            ImprestHeader.Insert(true);
+            exit(ImprestHeader."No.");
+        end;
+    end;
 
+    procedure CreateImprestRequisitionLines(No: Code[30]; ImprestType: Code[50]; DailyRate: Decimal; LineNo: Integer)
+    var
+    begin
+        if ImprestHeader.Get(No) then begin
+            ImprestLines.Reset();
+            ImprestLines.SetRange("Imprest No.", No);
+            ImprestLines.SetRange("Line No", LineNo);
+            ImprestLines.SetRange("Payment Type", ImprestLines."Payment Type"::Imprest);
+            if ImprestLines.Find('-') then begin
+                ImprestLines."Payment Type" := ImprestLines."Payment Type"::Imprest;
+                ImprestLines.No := CopyStr(No, 1, MaxStrLen(ImprestLines.No));
+                ImprestLines."No of Days" := ImprestHeader."No of Days";
+                ImprestLines."Expenditure Type" := CopyStr(ImprestType, 1, MaxStrLen(ImprestLines."Expenditure Type"));
+                ImprestLines.Validate("Expenditure Type");
+                ImprestLines."Daily Rate" := DailyRate;
+                ImprestLines.Validate("Daily Rate");
+                ImprestLines.Destination := ImprestHeader.Destination;
+                ImprestLines."Shortcut Dimension 1 Code" := ImprestLines."Shortcut Dimension 1 Code";
+                ImprestLines."Shortcut Dimension 2 Code" := ImprestHeader."Shortcut Dimension 2 Code";
+                ImprestLines.Modify();
+            end else begin
+                ImprestLines.Init();
+                ImprestLines."Payment Type" := ImprestLines."Payment Type"::Imprest;
+                ImprestLines.No := CopyStr(No, 1, MaxStrLen(ImprestLines.No));
+                ImprestLines."Expenditure Type" := CopyStr(ImprestType, 1, MaxStrLen(ImprestLines."Expenditure Type"));
+                ImprestLines.Validate("Expenditure Type");
+                ImprestLines."No of Days" := ImprestHeader."No of Days";
+                ImprestLines."Daily Rate" := DailyRate;
+                ImprestLines.Validate("Daily Rate");
+                ImprestLines.Destination := ImprestHeader.Destination;
+                ImprestLines."Shortcut Dimension 1 Code" := ImprestLines."Shortcut Dimension 1 Code";
+                ImprestLines."Shortcut Dimension 2 Code" := ImprestHeader."Shortcut Dimension 2 Code";
+                ImprestLines.Insert();
+            end;
+        end;
 
+    end;
+
+    procedure DeleteImprestLine(No: Code[30]; LineNo: Integer): Boolean
+    begin
+        ImprestLines.Reset();
+        ImprestLines.SetRange(No, No);
+        ImprestLines.SetRange("Line No", LineNo);
+        ImprestLines.SetRange("Payment Type", ImprestLines."Payment Type"::Imprest);
+        if ImprestLines.Find('-') then
+            if ImprestLines.Delete(true) then
+                exit(true);
+    end;
+
+    procedure CreateImprestSurRequisition(No: Code[30]; ImprestNo: Code[30]): Code[30]
+    var
+        ImpSurrLines: Record "Payment Lines";
+        PaymentLine: Record "Payment Lines";
+        PaymentRec: Record Payments;
+        ImprestFullySurrenderedLbl: Label 'The imprest %1 has been fully surrendered', Comment = '%1 = Imprest Issue Doc. No';
+    begin
+        if ImprestHeader.Get(No) then begin
+            ImprestHeader.Date := Today;
+            ImprestHeader."Time Inserted" := Time;
+            ImprestHeader."Payment Type" := ImprestHeader."Payment Type"::"Imprest Surrender";
+            ImprestHeader."Account Type" := ImprestHeader."Account Type"::Customer;
+            ImprestHeader."Imprest Issue Doc. No" := CopyStr(ImprestNo, 1, MaxStrLen(ImprestHeader."Imprest Issue Doc. No"));
+            if PaymentRec.Get(ImprestNo) then
+                if ImprestHeader."Payment Type" = ImprestHeader."Payment Type"::"Imprest Surrender" then begin
+                    if PaymentRec.Surrendered then
+                        Error(ImprestFullySurrenderedLbl, ImprestHeader."Imprest Issue Doc. No");
+
+                    ImprestHeader."Account Type" := PaymentRec."Account Type";
+                    ImprestHeader."Account No." := PaymentRec."Account No.";
+                    ImprestHeader.Validate("Account No.");
+                    ImprestHeader."Pay Mode" := PaymentRec."Pay Mode";
+                    ImprestHeader."Cheque No" := PaymentRec."Cheque No";
+                    ImprestHeader."Cheque Date" := PaymentRec."Cheque Date";
+                    ImprestHeader.Payee := PaymentRec.Payee;
+                    ImprestHeader.Destination := PaymentRec.Destination;
+                    ImprestHeader."Paying Bank Account" := PaymentRec."Paying Bank Account";
+                    ImprestHeader.Currency := PaymentRec.Currency;
+                    ImprestHeader."Payment Narration" := PaymentRec."Payment Narration";
+                    ImprestHeader."Multi-Donor" := PaymentRec."Multi-Donor";
+                    ImprestHeader."Staff No." := PaymentRec."Staff No.";
+                    ImprestHeader."Payment Narration" := PaymentRec."Payment Narration";
+                    ImprestHeader.Destination := PaymentRec.Destination;
+                    ImprestHeader."No of Days" := PaymentRec."No of Days";
+                    ImprestHeader."Date of Project" := PaymentRec."Date of Project";
+                    ImprestHeader."Date of Completion" := PaymentRec."Date of Completion";
+                    ImprestHeader."Due Date" := PaymentRec."Due Date";
+                    ImprestHeader."Posted Date" := PaymentRec."Posted Date";
+
+                    ImprestHeader."Shortcut Dimension 1 Code" := PaymentRec."Shortcut Dimension 1 Code";
+                    ImprestHeader.Validate("Shortcut Dimension 1 Code");
+                    ImprestHeader."Shortcut Dimension 2 Code" := PaymentRec."Shortcut Dimension 2 Code";
+                    ImprestHeader.Validate("Shortcut Dimension 2 Code");
+                    ImprestHeader."Dimension Set ID" := PaymentRec."Dimension Set ID";
+                    ImprestHeader."Shortcut Dimension 3 Code" := PaymentRec."Shortcut Dimension 3 Code";
+                    //ImprestHeader.Validate("Shortcut Dimension 3 Code");
+                    //ImprestHeader.Validate("Dimension Set ID");
+                    ImprestHeader.Status := ImprestHeader.Status::Open;
+                    ImprestHeader.Modify(true);
+                    exit(ImprestHeader."No.");
+                end;
+        end else begin
+            ImprestHeader.Init();
+            ImprestHeader.Date := Today;
+            ImprestHeader."Time Inserted" := Time;
+            ImprestHeader."Payment Type" := ImprestHeader."Payment Type"::"Imprest Surrender";
+            ImprestHeader."Account Type" := ImprestHeader."Account Type"::Customer;
+            ImprestHeader."Imprest Issue Doc. No" := CopyStr(ImprestNo, 1, MaxStrLen(ImprestHeader."Imprest Issue Doc. No"));
+            if PaymentRec.Get(ImprestNo) then
+                if ImprestHeader."Payment Type" = ImprestHeader."Payment Type"::"Imprest Surrender" then begin
+                    if PaymentRec.Surrendered then
+                        Error(ImprestFullySurrenderedLbl, ImprestHeader."Imprest Issue Doc. No");
+
+                    ImprestHeader."Account Type" := PaymentRec."Account Type";
+                    ImprestHeader."Account No." := PaymentRec."Account No.";
+                    ImprestHeader.Validate("Account No.");
+                    ImprestHeader."Pay Mode" := PaymentRec."Pay Mode";
+                    ImprestHeader."Cheque No" := PaymentRec."Cheque No";
+                    ImprestHeader."Cheque Date" := PaymentRec."Cheque Date";
+                    ImprestHeader.Payee := PaymentRec.Payee;
+                    ImprestHeader.Destination := PaymentRec.Destination;
+                    ImprestHeader."Paying Bank Account" := PaymentRec."Paying Bank Account";
+                    ImprestHeader.Currency := PaymentRec.Currency;
+                    ImprestHeader."Payment Narration" := PaymentRec."Payment Narration";
+                    ImprestHeader."Multi-Donor" := PaymentRec."Multi-Donor";
+                    ImprestHeader."Staff No." := PaymentRec."Staff No.";
+                    ImprestHeader."Payment Narration" := PaymentRec."Payment Narration";
+                    ImprestHeader.Destination := PaymentRec.Destination;
+                    ImprestHeader."No of Days" := PaymentRec."No of Days";
+                    ImprestHeader."Date of Project" := PaymentRec."Date of Project";
+                    ImprestHeader."Date of Completion" := PaymentRec."Date of Completion";
+                    ImprestHeader."Due Date" := PaymentRec."Due Date";
+                    ImprestHeader."Posted Date" := PaymentRec."Posted Date";
+
+                    ImprestHeader."Shortcut Dimension 1 Code" := PaymentRec."Shortcut Dimension 1 Code";
+                    //ImprestHeader.Validate("Shortcut Dimension 1 Code");
+                    ImprestHeader."Shortcut Dimension 2 Code" := PaymentRec."Shortcut Dimension 2 Code";
+                    //ImprestHeader.Validate("Shortcut Dimension 2 Code");
+                    ImprestHeader."Dimension Set ID" := PaymentRec."Dimension Set ID";
+                    ImprestHeader."Shortcut Dimension 3 Code" := PaymentRec."Shortcut Dimension 3 Code";
+                    //ImprestHeader.Validate("Shortcut Dimension 3 Code");
+                    // ImprestHeader.Validate("Dimension Set ID");
+                    ImprestHeader.Status := ImprestHeader.Status::Open;
+                    ImprestHeader.Insert(true);
+
+                    PaymentLine.Reset();
+                    PaymentLine.SetRange(No, PaymentRec."No.");
+                    if PaymentLine.Find('-') then
+                        repeat
+                            ImpSurrLines.Init();
+                            ImpSurrLines.TransferFields(PaymentLine);
+                            ImpSurrLines."Payment Type" := ImpSurrLines."Payment Type"::"Imprest Surrender";
+                            ImpSurrLines.No := ImprestHeader."No.";
+                            ImpSurrLines."Line No" := GetNextLineNo(ImprestHeader."No.");
+                            ImpSurrLines.Purpose := PaymentRec."Payment Narration";
+                            ImpSurrLines.Insert();
+                        until PaymentLine.Next() = 0;
+                end;
+            exit(ImprestHeader."No.");
+        end;
+    end;
+
+    procedure UpdateImprestSurrenderLine(No: Code[30]; LineNo: Integer; Amount: Decimal; ReceiptNo: Code[30]; ReceiptAmount: Decimal)
+    begin
+        ImprestLines.Reset();
+        ImprestLines.SetRange(No, No);
+        ImprestLines.SetRange("Line No", LineNo);
+        ImprestLines.SetRange("Payment Type", ImprestLines."Payment Type"::"Imprest Surrender");
+        if ImprestLines.Find('-') then
+            ImprestLines."Actual Spent" := Amount;
+        ImprestLines."Imprest Receipt No." := CopyStr(ReceiptNo, 1, MaxStrLen(ImprestLines."Imprest Receipt No."));
+        ImprestLines."Cash Receipt Amount" := ReceiptAmount;
+        ImprestLines.Modify();
+
+    end;
+
+    local procedure GetNextLineNo(No: Code[30]): Integer
+    var
+        paymentlines: Record "Payment Lines";
+    begin
+        paymentlines.Reset();
+        paymentlines.SetRange(paymentlines.No, No);
+        if paymentlines.FindLast() then
+            exit(paymentlines."Line No" + 10000)
+        else
+            exit(10000);
+    end;
+
+    procedure CreatePettyCash(No: Code[30]; AccountNo: Code[30]; PettyCashType: Integer; Purpose: Text; Cashier: Code[30]; Currency: Code[30]; EmpNo: Code[30]): Code[30]
+    var
+    begin
+        HrEmployees.Get(EmpNo);
+        if ImprestHeader.Get(No) then begin
+            ImprestHeader.Date := Today;
+            ImprestHeader."Time Inserted" := Time;
+            ImprestHeader.Cashier := Cashier;
+            ImprestHeader."Created By" := Cashier;
+            ImprestHeader."User Id" := Cashier;
+            ImprestHeader."Payment Type" := ImprestHeader."Payment Type"::"Petty Cash";
+            ImprestHeader."Account Type" := ImprestHeader."Account Type"::Customer;
+            ImprestHeader."Account No." := CopyStr(AccountNo, 1, MaxStrLen(ImprestHeader."Account No."));
+            ImprestHeader.Validate("Account No.");
+            ImprestHeader.Payee := ImprestHeader."Account Name";
+            ImprestHeader."Shortcut Dimension 1 Code" := HrEmployees."Global Dimension 1 Code";
+            ImprestHeader."Shortcut Dimension 2 Code" := HrEmployees."Global Dimension 2 Code";
+            ImprestHeader."Petty Cash Type" := PettyCashType;
+            ImprestHeader.Currency := CopyStr(Currency, 1, MaxStrLen(ImprestHeader.Currency));
+            ImprestHeader."Payment Narration" := CopyStr(Purpose, 1, MaxStrLen(ImprestHeader."Payment Narration"));
+            ImprestHeader.Status := ImprestHeader.Status::Open;
+            ImprestHeader."Staff No." := EmpNo;
+            ImprestHeader.Modify(true);
+            exit(ImprestHeader."No.");
+        end else begin
+            ImprestHeader.Init();
+            ImprestHeader.Date := Today;
+            ImprestHeader."Time Inserted" := Time;
+            ImprestHeader.Cashier := Cashier;
+            ImprestHeader."Created By" := Cashier;
+            ImprestHeader."User Id" := Cashier;
+            ImprestHeader."Payment Type" := ImprestHeader."Payment Type"::"Petty Cash";
+            ImprestHeader."Account Type" := ImprestHeader."Account Type"::Customer;
+            ImprestHeader."Account No." := CopyStr(AccountNo, 1, MaxStrLen(ImprestHeader."Account No."));
+            ImprestHeader.Validate("Account No.");
+            ImprestHeader.Payee := ImprestHeader."Account Name";
+            ImprestHeader."Shortcut Dimension 1 Code" := HrEmployees."Global Dimension 1 Code";
+            ImprestHeader."Shortcut Dimension 2 Code" := HrEmployees."Global Dimension 2 Code";
+            ImprestHeader."Petty Cash Type" := PettyCashType;
+            ImprestHeader.Currency := CopyStr(Currency, 1, MaxStrLen(ImprestHeader.Currency));
+            ImprestHeader."Payment Narration" := CopyStr(Purpose, 1, MaxStrLen(ImprestHeader."Payment Narration"));
+            ImprestHeader.Status := ImprestHeader.Status::Open;
+            ImprestHeader."Staff No." := EmpNo;
+            ImprestHeader.Insert(true);
+            exit(ImprestHeader."No.");
+        end;
+    end;
+
+    procedure CreatePettyCashLines(No: Code[30]; ImprestType: Code[50]; DailyRate: Decimal; LineNo: Integer; Narration: Text)
+    var
+    begin
+        if ImprestHeader.Get(No) then begin
+            ImprestLines.Reset();
+            ImprestLines.SetRange("Imprest No.", No);
+            ImprestLines.SetRange("Line No", LineNo);
+            ImprestLines.SetRange("Payment Type", ImprestLines."Payment Type"::"Petty Cash");
+            if ImprestLines.Find('-') then begin
+                ImprestLines."Payment Type" := ImprestLines."Payment Type"::"Petty Cash";
+                ImprestLines.No := CopyStr(No, 1, MaxStrLen(ImprestLines.No));
+                ImprestLines.Description := CopyStr(Narration, 1, MaxStrLen(ImprestLines.Description));
+                ImprestLines."Expenditure Type" := CopyStr(ImprestType, 1, MaxStrLen(ImprestLines."Expenditure Type"));
+                ImprestLines.Validate("Expenditure Type");
+                ImprestLines.Amount := DailyRate;
+                ImprestLines.Validate(Amount);
+                ImprestLines."Shortcut Dimension 1 Code" := ImprestLines."Shortcut Dimension 1 Code";
+                ImprestLines."Shortcut Dimension 2 Code" := ImprestHeader."Shortcut Dimension 2 Code";
+                ImprestLines.Modify();
+            end else begin
+                ImprestLines.Init();
+                ImprestLines."Payment Type" := ImprestLines."Payment Type"::"Petty Cash";
+                ImprestLines.No := CopyStr(No, 1, MaxStrLen(ImprestLines.No));
+                ImprestLines.Description := CopyStr(Narration, 1, MaxStrLen(ImprestLines.Description));
+                ImprestLines."Expenditure Type" := CopyStr(ImprestType, 1, MaxStrLen(ImprestLines."Expenditure Type"));
+                ImprestLines.Validate("Expenditure Type");
+                ImprestLines.Amount := DailyRate;
+                ImprestLines.Validate(Amount);
+                ImprestLines."Shortcut Dimension 1 Code" := ImprestLines."Shortcut Dimension 1 Code";
+                ImprestLines."Shortcut Dimension 2 Code" := ImprestHeader."Shortcut Dimension 2 Code";
+                ImprestLines.Insert();
+            end;
+        end;
+
+    end;
+
+    procedure DeletePettyCashLine(No: Code[30]; LineNo: Integer): Boolean
+    begin
+        ImprestLines.Reset();
+        ImprestLines.SetRange(No, No);
+        ImprestLines.SetRange("Line No", LineNo);
+        ImprestLines.SetRange("Payment Type", ImprestLines."Payment Type"::"Petty Cash");
+        if ImprestLines.Find('-') then
+            if ImprestLines.Delete(true) then
+                exit(true);
+    end;
+
+    procedure CreatePettySurRequisition(No: Code[30]; ImprestNo: Code[30]): Code[30]
+    var
+        ImpSurrLines: Record "Payment Lines";
+        PaymentLine: Record "Payment Lines";
+        PaymentRec: Record Payments;
+        ImprestFullySurrenderedLbl: Label 'The Petty Cash %1 has been fully surrendered', Comment = '%1 = Imprest Issue Doc. No';
+    begin
+        if ImprestHeader.Get(No) then begin
+            ImprestHeader.Date := Today;
+            ImprestHeader."Time Inserted" := Time;
+            ImprestHeader."Payment Type" := ImprestHeader."Payment Type"::"Petty Cash Surrender";
+            ImprestHeader."Account Type" := ImprestHeader."Account Type"::Customer;
+            ImprestHeader."Imprest Issue Doc. No" := CopyStr(ImprestNo, 1, MaxStrLen(ImprestHeader."Imprest Issue Doc. No"));
+            if PaymentRec.Get(ImprestNo) then
+                if ImprestHeader."Payment Type" = ImprestHeader."Payment Type"::"Petty Cash Surrender" then begin
+                    if PaymentRec.Surrendered then
+                        Error(ImprestFullySurrenderedLbl, ImprestHeader."Imprest Issue Doc. No");
+
+                    ImprestHeader."Account Type" := PaymentRec."Account Type";
+                    ImprestHeader."Account No." := PaymentRec."Account No.";
+                    ImprestHeader.Validate("Account No.");
+                    ImprestHeader."Pay Mode" := PaymentRec."Pay Mode";
+                    ImprestHeader."Cheque No" := PaymentRec."Cheque No";
+                    ImprestHeader."Cheque Date" := PaymentRec."Cheque Date";
+                    ImprestHeader.Payee := PaymentRec.Payee;
+                    ImprestHeader.Destination := PaymentRec.Destination;
+                    ImprestHeader."Paying Bank Account" := PaymentRec."Paying Bank Account";
+                    ImprestHeader.Currency := PaymentRec.Currency;
+                    ImprestHeader."Payment Narration" := PaymentRec."Payment Narration";
+                    ImprestHeader."Multi-Donor" := PaymentRec."Multi-Donor";
+                    ImprestHeader."Staff No." := PaymentRec."Staff No.";
+                    ImprestHeader."Payment Narration" := PaymentRec."Payment Narration";
+                    ImprestHeader.Destination := PaymentRec.Destination;
+                    ImprestHeader."No of Days" := PaymentRec."No of Days";
+                    ImprestHeader."Date of Project" := PaymentRec."Date of Project";
+                    ImprestHeader."Date of Completion" := PaymentRec."Date of Completion";
+                    ImprestHeader."Due Date" := PaymentRec."Due Date";
+                    ImprestHeader."Posted Date" := PaymentRec."Posted Date";
+
+                    ImprestHeader."Shortcut Dimension 1 Code" := PaymentRec."Shortcut Dimension 1 Code";
+                    ImprestHeader.Validate("Shortcut Dimension 1 Code");
+                    ImprestHeader."Shortcut Dimension 2 Code" := PaymentRec."Shortcut Dimension 2 Code";
+                    ImprestHeader.Validate("Shortcut Dimension 2 Code");
+                    ImprestHeader."Dimension Set ID" := PaymentRec."Dimension Set ID";
+                    ImprestHeader."Shortcut Dimension 3 Code" := PaymentRec."Shortcut Dimension 3 Code";
+                    //ImprestHeader.Validate("Shortcut Dimension 3 Code");
+                    //ImprestHeader.Validate("Dimension Set ID");
+                    ImprestHeader.Status := ImprestHeader.Status::Open;
+                    ImprestHeader.Modify(true);
+                    exit(ImprestHeader."No.");
+                end;
+        end else begin
+            ImprestHeader.Init();
+            ImprestHeader.Date := Today;
+            ImprestHeader."Time Inserted" := Time;
+            ImprestHeader."Payment Type" := ImprestHeader."Payment Type"::"Petty Cash Surrender";
+            ImprestHeader."Account Type" := ImprestHeader."Account Type"::Customer;
+            ImprestHeader."Imprest Issue Doc. No" := CopyStr(ImprestNo, 1, MaxStrLen(ImprestHeader."Imprest Issue Doc. No"));
+            if PaymentRec.Get(ImprestNo) then
+                if ImprestHeader."Payment Type" = ImprestHeader."Payment Type"::"Petty Cash Surrender" then begin
+                    if PaymentRec.Surrendered then
+                        Error(ImprestFullySurrenderedLbl, ImprestHeader."Imprest Issue Doc. No");
+
+                    ImprestHeader."Account Type" := PaymentRec."Account Type";
+                    ImprestHeader."Account No." := PaymentRec."Account No.";
+                    ImprestHeader.Validate("Account No.");
+                    ImprestHeader."Pay Mode" := PaymentRec."Pay Mode";
+                    ImprestHeader."Cheque No" := PaymentRec."Cheque No";
+                    ImprestHeader."Cheque Date" := PaymentRec."Cheque Date";
+                    ImprestHeader.Payee := PaymentRec.Payee;
+                    ImprestHeader.Destination := PaymentRec.Destination;
+                    ImprestHeader."Paying Bank Account" := PaymentRec."Paying Bank Account";
+                    ImprestHeader.Currency := PaymentRec.Currency;
+                    ImprestHeader."Payment Narration" := PaymentRec."Payment Narration";
+                    ImprestHeader."Multi-Donor" := PaymentRec."Multi-Donor";
+                    ImprestHeader."Staff No." := PaymentRec."Staff No.";
+                    ImprestHeader."Payment Narration" := PaymentRec."Payment Narration";
+                    ImprestHeader.Destination := PaymentRec.Destination;
+                    ImprestHeader."No of Days" := PaymentRec."No of Days";
+                    ImprestHeader."Date of Project" := PaymentRec."Date of Project";
+                    ImprestHeader."Date of Completion" := PaymentRec."Date of Completion";
+                    ImprestHeader."Due Date" := PaymentRec."Due Date";
+                    ImprestHeader."Posted Date" := PaymentRec."Posted Date";
+
+                    ImprestHeader."Shortcut Dimension 1 Code" := PaymentRec."Shortcut Dimension 1 Code";
+                    //ImprestHeader.Validate("Shortcut Dimension 1 Code");
+                    ImprestHeader."Shortcut Dimension 2 Code" := PaymentRec."Shortcut Dimension 2 Code";
+                    //ImprestHeader.Validate("Shortcut Dimension 2 Code");
+                    ImprestHeader."Dimension Set ID" := PaymentRec."Dimension Set ID";
+                    ImprestHeader."Shortcut Dimension 3 Code" := PaymentRec."Shortcut Dimension 3 Code";
+                    //ImprestHeader.Validate("Shortcut Dimension 3 Code");
+                    // ImprestHeader.Validate("Dimension Set ID");
+                    ImprestHeader.Status := ImprestHeader.Status::Open;
+                    ImprestHeader.Insert(true);
+
+                    PaymentLine.Reset();
+                    PaymentLine.SetRange(No, PaymentRec."No.");
+                    if PaymentLine.Find('-') then
+                        repeat
+                            ImpSurrLines.Init();
+                            ImpSurrLines.TransferFields(PaymentLine);
+                            ImpSurrLines."Payment Type" := ImpSurrLines."Payment Type"::"Petty Cash Surrender";
+                            ImpSurrLines.No := ImprestHeader."No.";
+                            ImpSurrLines."Line No" := GetNextLineNo(ImprestHeader."No.");
+                            ImpSurrLines.Purpose := PaymentRec."Payment Narration";
+                            ImpSurrLines.Insert();
+                        until PaymentLine.Next() = 0;
+                end;
+            exit(ImprestHeader."No.");
+        end;
+    end;
+
+    procedure UpdatePettyCashSurrenderLine(No: Code[30]; LineNo: Integer; Amount: Decimal; ReceiptNo: Code[30]; ReceiptAmount: Decimal)
+    begin
+        ImprestLines.Reset();
+        ImprestLines.SetRange(No, No);
+        ImprestLines.SetRange("Line No", LineNo);
+        ImprestLines.SetRange("Payment Type", ImprestLines."Payment Type"::"Petty Cash Surrender");
+        if ImprestLines.Find('-') then begin
+            ImprestLines."Actual Spent" := Amount;
+            ImprestLines."Imprest Receipt No." := CopyStr(ReceiptNo, 1, MaxStrLen(ImprestLines."Imprest Receipt No."));
+            ImprestLines."Cash Receipt Amount" := ReceiptAmount;
+            ImprestLines.Modify();
+        end;
+
+    end;
+
+    procedure PrintP9(EmployeeNo: Code[50]; Year: Integer) P9Base64Txt: Text
+    var
+        Payee: Record "Employee Master";
+        P9: Report "P9A";
+        Base64Convert: Codeunit "Base64 Convert";
+        TempBlob: Codeunit "Temp Blob";
+        EndDate, StartDate : Date;
+        P9Instream: InStream;
+        P9Outstream: OutStream;
+        DateFilterTxt: Text;
+        filename: Text;
+    begin
+        filename := 'P9_' + EmployeeNo + '_' + Format(Year) + '.pdf';
+
+        StartDate := DMY2Date(31, 1, Year);
+        EndDate := DMY2Date(31, 12, Year);
+        DateFilterTxt := Format(StartDate) + '..' + Format(EndDate);
+
+        Payee.Reset();
+        Payee.SetRange("No.", EmployeeNo);
+        Payee.SetFilter("Date Filter", DateFilterTxt);
+        if Payee.FindFirst() then begin
+            P9.SetTableView(Payee);
+            //  P9.InitPeriodFilter(DateFilterTxt);
+            TempBlob.CreateOutStream(P9Outstream);
+            if P9.SaveAs('', ReportFormat::Pdf, P9Outstream) then begin
+                TempBlob.CreateInStream(P9Instream);
+                P9Base64Txt := Base64Convert.ToBase64(P9Instream);
+                exit(P9Base64Txt);
+            end;
+        end;
+    end;
+
+    procedure PrintPaySlip(EmployeeNo: Code[50]; Period: Date) PayslipBase64Txt: Text
+    var
+        Employee: Record Employee;
+        Payee: Record "Employee Master";
+        EmailReport: Report Payslip;
+        Base64Convert: Codeunit "Base64 Convert";
+        TempBlob: Codeunit "Temp Blob";
+        IStream: InStream;
+        OStream: OutStream;
+    begin
+        Payee.Reset();
+        Payee.SetRange("No.", EmployeeNo);
+        Payee.SetRange("Date Filter", Period);
+        if Payee.FindFirst() then begin
+            Clear(EmailReport);
+
+            EmailReport.SetTableView(Payee);
+            TempBlob.CreateOutStream(OStream);
+            if EmailReport.SaveAs('', ReportFormat::Pdf, OStream) then begin
+                TempBlob.CreateInStream(IStream);
+                PayslipBase64Txt := Base64Convert.ToBase64(IStream);
+                exit(PayslipBase64Txt);
+            end;
+        end;
+    end;
+
+    // procedure GetImprestBalance(No: Code[30]): Decimal
+    //     var
+    //         Customer: Record Customer;
+    //         Payee: Record Payee;
+    //     begin
+    //         Payee.Reset();
+    //         Payee.SetRange("Employee No.", No);
+    //         if Payee.FindFirst() then
+    //             if Customer.Get(Payee."Receivable Account No") then begin
+    //                 Customer.CalcFields(Balance);
+    //                 exit(Customer.Balance);
+    //             end;
+    //     end;
+
+    //     procedure GetStaffNoFromCustNo(AccNo: Code[30]): Code[20]
+    //     var
+    //         PayeeRec: Record Payee;
+    //     begin
+    //         PayeeRec.Reset();
+    //         PayeeRec.SetRange("Receivable Account No", AccNo);
+    //         if PayeeRec.FindFirst() then
+    //             exit(PayeeRec."Employee No.");
+    //     end;
 
 
 }
