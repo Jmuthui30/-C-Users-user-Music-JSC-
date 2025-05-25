@@ -182,11 +182,11 @@ page 51031 Receipt
                     ToolTip = 'Specifies the value of the Posted field';
                 }
             }
-            part("Receipt Lines"; "Receipt Lines")
+            part("Receipt Lines"; "Receipts Lines")
             {
                 Caption = 'Receipt Lines';
                 Editable = PostedEditable;
-                // SubPageLink = No = field("No.");
+                SubPageLink = No = field("No.");
                 Visible = NormalReceiptLines;
             }
             part(Control18; "Imprest Surrender Lines")

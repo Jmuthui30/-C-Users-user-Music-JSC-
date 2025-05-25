@@ -371,7 +371,7 @@ page 51073 "Approved/Posted Petty Cash"
                         //DocPrint.PrintPurchHeader(Rec);
 
                         Payments.SetRange("No.", Rec."No.");
-                        Report.Run(Report::"Petty Cash Voucher", true, false, Payments)
+                        Report.Run(Report::"Petty Cash Vouchers", true, false, Payments)
                     end;
                 }
             }

@@ -22,7 +22,7 @@ page 51107 "Finance Management Cues"
                 field(Imprests; Rec.Imprests)
                 {
                     Caption = 'Imprests';
-                    DrillDownPageId = Imprests;
+                    DrillDownPageId = Imprestsjsc;
                     ToolTip = 'Specifies the value of the Imprests field';
                 }
                 field(PettyCash; Rec."Petty cash")
@@ -34,13 +34,13 @@ page 51107 "Finance Management Cues"
                 field(Receipt; Rec.Receipts)
                 {
                     Caption = 'Receipts';
-                    DrillDownPageId = Receipts;
+                    DrillDownPageId = Receiptsjsc;
                     ToolTip = 'Specifies the value of the Receipts field';
                 }
                 field("Imprest Surrenders"; Rec."Imprest Surrenders")
                 {
                     Caption = 'Imprest Surrenders';
-                    DrillDownPageId = "Imprest Surrenders";
+                    DrillDownPageId = "Imprest Surrenderss";
                     ToolTip = 'Specifies the value of the Imprest Surrenders field';
                 }
                 field("Petty Cash Surrenders"; Rec."Petty Cash Surrenders")

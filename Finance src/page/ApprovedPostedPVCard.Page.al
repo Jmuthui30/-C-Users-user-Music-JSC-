@@ -479,10 +479,11 @@ page 51062 "Approved/Posted PV Card"
                             PLines.SetRange(No, PaymentRec."No.");
                             if PLines.FindFirst() then
                                 if PLines."Account Type" <> PLines."Account Type"::Vendor then
-                                    Report.Run(Report::"Payment Voucher", true, false, PaymentRec)
+                                    Report.Run(Report::"Payment Vouchers", true, false, PaymentRec)
                                 else
                                     Report.Run(Report::"Payment Voucher-Vendor", true, false, PaymentRec);
                         end;
+                        //mjk
                     end;
                 }
                 action(PaymentAdvice)

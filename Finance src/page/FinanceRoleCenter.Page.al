@@ -1994,7 +1994,7 @@ page 51061 "Finance Role Center"
                     action(Imprests1)
                     {
                         Caption = 'Imprests';
-                        RunObject = page Imprests;
+                        RunObject = page Imprestsjsc;
                         ToolTip = 'Executes the Imprests action';
                     }
                     action(ImprestSurr)

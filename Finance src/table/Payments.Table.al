@@ -1945,8 +1945,8 @@ table 51004 Payments
 
                 "Shortcut Dimension 1 Code" := UserSetupRec."Global Dimension 1 Code";
                 "Shortcut Dimension 2 Code" := UserSetupRec."Global Dimension 2 Code";
-                Validate("Shortcut Dimension 1 Code");
-                Validate("Shortcut Dimension 2 Code");
+                // Validate("Shortcut Dimension 1 Code");
+                //  Validate("Shortcut Dimension 2 Code");
 
                 if Customer.Get(UserSetupRec."Customer No.") then begin
                     Customer.CalcFields("Balance (LCY)");

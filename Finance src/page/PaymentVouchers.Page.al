@@ -2,7 +2,7 @@ page 51035 "Payment Vouchers"
 {
     ApplicationArea = All;
     Caption = 'Payment Vouchers';
-    CardPageId = "Payment Voucher";
+    CardPageId = "Payment Voucher card";
     Editable = false;
     PageType = List;
     SourceTable = Payments;

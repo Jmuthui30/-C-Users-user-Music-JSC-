@@ -2,7 +2,7 @@ page 51011 "Petty Cash List"
 {
     ApplicationArea = All;
     Caption = 'Petty Cash List';
-    CardPageId = "Petty Cash";
+    CardPageId = "Petty Cashs";
     DeleteAllowed = false;
     Editable = false;
     PageType = List;
