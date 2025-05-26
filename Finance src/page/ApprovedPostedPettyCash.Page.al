@@ -167,6 +167,8 @@ page 51073 "Approved/Posted Petty Cash"
                 {
                     ToolTip = 'Specifies the value of the Total Receiving Amount (LCY) field';
                 }
+                field("Surrender Status"; "Surrender Status") { ApplicationArea = all; Visible = false; }
+                field(Surrendered; Surrendered) { ApplicationArea = all; Visible = false; }
             }
             part(ImprestLines; "Petty Cash Lines")
             {

@@ -183,6 +183,7 @@ page 51012 "Petty Cashs"
                     ToolTip = 'Specifies the value of the Cashier field';
                     Importance = Additional;
                 }
+                field("Payment Type"; "Payment Type") { ApplicationArea = all; Visible = false; }
             }
             part(ImprestLines; "Petty Cash Lines")
             {

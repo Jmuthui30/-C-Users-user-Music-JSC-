@@ -95,10 +95,10 @@ page 51064 "Approved/Post Imprest Card"
                         ToolTip = 'Specifies the value of the Paying Bank Account field';
                         Visible = DocReleased;
                     }
-                    field("Payment Release Date";Rec."Payment Release Date")
-                        {
-                            ApplicationArea=All;
-                        }
+                    field("Payment Release Date"; Rec."Payment Release Date")
+                    {
+                        ApplicationArea = All;
+                    }
                     group(Control69)
                     {
                         ShowCaption = false;
@@ -123,7 +123,7 @@ page 51064 "Approved/Post Imprest Card"
                             ToolTip = 'Specifies the value of the Cheque Date field';
                             Visible = DocReleased;
                         }
-                        
+
                     }
                 }
                 field("Travel Type"; Rec."Travel Type")
@@ -232,6 +232,8 @@ page 51064 "Approved/Post Imprest Card"
                     ToolTip = 'Specifies the value of the Posted Date field';
                     Visible = DocPosted;
                 }
+                field("Surrender Status"; "Surrender Status") { ApplicationArea = all; Visible = false; }
+                field(Surrendered;Surrendered) { ApplicationArea = all; Visible = false; }
             }
             part(ImprestLines; "Imprest Lines")
             {
