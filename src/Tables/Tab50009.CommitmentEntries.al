@@ -10,13 +10,13 @@ table 50009 "Commitment Entries"
         {
             trigger OnValidate()
             begin
-            /*
-                IF "Commitment No" <> xRec."Commitment No" THEN BEGIN
-                    GenLedgerSetup.GET();
-                    NoSeriesMgt.TestManual( GenLedgerSetup."Commitment No");
-                     "Commitment No" := '';
-                END;
-                 */
+                /*
+                    IF "Commitment No" <> xRec."Commitment No" THEN BEGIN
+                        GenLedgerSetup.GET();
+                        NoSeriesMgt.TestManual( GenLedgerSetup."Commitment No");
+                         "Commitment No" := '';
+                    END;
+                     */
             end;
         }
         field(2; "Commitment Date"; Date)
@@ -24,7 +24,7 @@ table 50009 "Commitment Entries"
         }
         field(3; "Commitment Type"; Option)
         {
-            OptionMembers = , Committed, Reversal, LPO, Imprest;
+            OptionMembers = ,Committed,Reversal,LPO,Imprest;
         }
         field(4; Account; Code[20])
         {
@@ -58,12 +58,12 @@ table 50009 "Commitment Entries"
         field(12; "Global Dimension 1"; Code[20])
         {
             CaptionClass = '1,1,1';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
         }
         field(13; "Global Dimension 2"; Code[20])
         {
             CaptionClass = '1,1,2';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
         field(14; "Line No."; Integer)
         {
@@ -71,10 +71,10 @@ table 50009 "Commitment Entries"
         }
         field(15; "Account No."; Code[20])
         {
-            TableRelation = IF("Account Type"=CONST("G/L Account"))"G/L Account"
-            ELSE IF("Account Type"=CONST(Customer))Customer
-            ELSE IF("Account Type"=CONST(Vendor))Vendor
-            ELSE IF("Account Type"=CONST("Fixed Asset"))"Fixed Asset";
+            TableRelation = IF ("Account Type" = CONST("G/L Account")) "G/L Account"
+            ELSE IF ("Account Type" = CONST(Customer)) Customer
+            ELSE IF ("Account Type" = CONST(Vendor)) Vendor
+            ELSE IF ("Account Type" = CONST("Fixed Asset")) "Fixed Asset";
         }
         field(16; "Account Name"; Text[100])
         {
@@ -85,7 +85,7 @@ table 50009 "Commitment Entries"
         field(18; "Account Type"; Option)
         {
             OptionCaption = 'G/L Account,Customer,Vendor,Bank Account,Fixed Asset';
-            OptionMembers = "G/L Account", Customer, Vendor, "Bank Account", "Fixed Asset";
+            OptionMembers = "G/L Account",Customer,Vendor,"Bank Account","Fixed Asset";
         }
         field(19; "Uncommittment Date"; Date)
         {
@@ -122,10 +122,12 @@ table 50009 "Commitment Entries"
           AdvancedFinanceSetup.TESTFIELD(AdvancedFinanceSetup."Commitment Nos.");
           NoSeriesMgt.InitSeries(AdvancedFinanceSetup."Commitment Nos.",xRec."No. Series",0D,"No.","No. Series");
         END;*/
-        User:=UserId;
-        "Commitment Date":=Today;
+        User := UserId;
+        "Commitment Date" := Today;
     end;
-    var GenLedgerSetup: Record "General Ledger Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    AdvancedFinanceSetup: Record "Advanced Finance Setup";
+
+    var
+        GenLedgerSetup: Record "General Ledger Setup";
+        NoSeriesMgt: Codeunit NoSeriesManagement;
+        AdvancedFinanceSetup: Record "Advanced Finance Setup";
 }

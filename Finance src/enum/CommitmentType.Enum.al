@@ -1,4 +1,4 @@
-enum 56090 "Commitment Type"
+enum 50090 "Commitment Type"
 {
     Extensible = true;
 

@@ -11,6 +11,58 @@
       <rd:DataSourceID>03bec23f-8ae1-4287-a922-84c8ecdf117a</rd:DataSourceID>
     </DataSource>
   </DataSources>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+      <Fields>
+        <Field Name="Company_Name">
+          <DataField>Company_Name</DataField>
+        </Field>
+        <Field Name="Company_Address">
+          <DataField>Company_Address</DataField>
+        </Field>
+        <Field Name="Company_Picture">
+          <DataField>Company_Picture</DataField>
+        </Field>
+        <Field Name="Company_PostCode">
+          <DataField>Company_PostCode</DataField>
+        </Field>
+        <Field Name="No_GLAccount">
+          <DataField>No_GLAccount</DataField>
+        </Field>
+        <Field Name="Name_GLAccount">
+          <DataField>Name_GLAccount</DataField>
+        </Field>
+        <Field Name="BudgetedAmount_GLAccount">
+          <DataField>BudgetedAmount_GLAccount</DataField>
+        </Field>
+        <Field Name="BudgetedAmount_GLAccountFormat">
+          <DataField>BudgetedAmount_GLAccountFormat</DataField>
+        </Field>
+        <Field Name="NetChange_GLAccount">
+          <DataField>NetChange_GLAccount</DataField>
+        </Field>
+        <Field Name="NetChange_GLAccountFormat">
+          <DataField>NetChange_GLAccountFormat</DataField>
+        </Field>
+        <Field Name="Commitment_GLAccount">
+          <DataField>Commitment_GLAccount</DataField>
+        </Field>
+        <Field Name="Commitment_GLAccountFormat">
+          <DataField>Commitment_GLAccountFormat</DataField>
+        </Field>
+        <Field Name="DiffPct">
+          <DataField>DiffPct</DataField>
+        </Field>
+        <Field Name="DiffPctFormat">
+          <DataField>DiffPctFormat</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -56,7 +108,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">No GLAccount</Value>
+                                  <Value>No GLAccount</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -90,7 +142,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Name GLAccount</Value>
+                                  <Value>Name GLAccount</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -113,7 +165,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -125,7 +176,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Budgeted Amount GLAccount</Value>
+                                  <Value>Budgeted Amount GLAccount</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -159,7 +210,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Actuals</Value>
+                                  <Value>Actuals</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -193,7 +244,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Commitment GLAccount</Value>
+                                  <Value>Commitment GLAccount</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -227,7 +278,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Total</Value>
+                                  <Value>Total</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -261,7 +312,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Balance</Value>
+                                  <Value>Balance</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -295,7 +346,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Diff Pct</Value>
+                                  <Value>Diff Pct</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -334,7 +385,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!No_GLAccount.Value</Value>
+                                  <Value>=Fields!No_GLAccount.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -367,7 +418,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!Name_GLAccount.Value</Value>
+                                  <Value>=Fields!Name_GLAccount.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -400,7 +451,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!BudgetedAmount_GLAccount.Value</Value>
+                                  <Value>=Fields!BudgetedAmount_GLAccount.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -434,7 +485,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!NetChange_GLAccount.Value</Value>
+                                  <Value>=Fields!NetChange_GLAccount.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -468,7 +519,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!Commitment_GLAccount.Value</Value>
+                                  <Value>=Fields!Commitment_GLAccount.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -502,7 +553,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!NetChange_GLAccount.Value+Fields!Commitment_GLAccount.Value</Value>
+                                  <Value>=Fields!NetChange_GLAccount.Value+Fields!Commitment_GLAccount.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -536,7 +587,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!BudgetedAmount_GLAccount.Value-(Fields!NetChange_GLAccount.Value+Fields!Commitment_GLAccount.Value)</Value>
+                                  <Value>=Fields!BudgetedAmount_GLAccount.Value-(Fields!NetChange_GLAccount.Value+Fields!Commitment_GLAccount.Value)</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -570,7 +621,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!DiffPct.Value</Value>
+                                  <Value>=Fields!DiffPct.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -638,7 +689,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value EvaluationMode="Auto">=First(Fields!Company_Name.Value, "DataSet_Result")</Value>
+                    <Value>=First(Fields!Company_Name.Value, "DataSet_Result")</Value>
                     <Style>
                       <FontFamily>Tahoma</FontFamily>
                       <FontSize>8pt</FontSize>
@@ -670,7 +721,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value EvaluationMode="Auto">=First(Fields!Company_Address.Value, "DataSet_Result")</Value>
+                    <Value>=First(Fields!Company_Address.Value, "DataSet_Result")</Value>
                     <Style>
                       <FontFamily>Tahoma</FontFamily>
                       <FontSize>8pt</FontSize>
@@ -702,7 +753,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value EvaluationMode="Auto">=First(Fields!Company_PostCode.Value, "DataSet_Result")</Value>
+                    <Value>=First(Fields!Company_PostCode.Value, "DataSet_Result")</Value>
                     <Style>
                       <FontFamily>Tahoma</FontFamily>
                       <FontSize>8pt</FontSize>
@@ -732,7 +783,6 @@
             <Value>=First(Fields!Company_Picture.Value, "DataSet_Result")</Value>
             <MIMEType>image/jpeg</MIMEType>
             <Sizing>FitProportional</Sizing>
-            <Top>0in</Top>
             <Left>3.63417in</Left>
             <Height>0.71528in</Height>
             <Width>1.29167in</Width>
@@ -753,6 +803,12 @@
       </Page>
     </ReportSection>
   </ReportSections>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>4</NumberOfColumns>
+      <NumberOfRows>2</NumberOfRows>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -792,56 +848,4 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Fields>
-        <Field Name="Company_Name">
-          <DataField>Company_Name</DataField>
-        </Field>
-        <Field Name="Company_Address">
-          <DataField>Company_Address</DataField>
-        </Field>
-        <Field Name="Company_Picture">
-          <DataField>Company_Picture</DataField>
-        </Field>
-        <Field Name="Company_PostCode">
-          <DataField>Company_PostCode</DataField>
-        </Field>
-        <Field Name="No_GLAccount">
-          <DataField>No_GLAccount</DataField>
-        </Field>
-        <Field Name="Name_GLAccount">
-          <DataField>Name_GLAccount</DataField>
-        </Field>
-        <Field Name="BudgetedAmount_GLAccount">
-          <DataField>BudgetedAmount_GLAccount</DataField>
-        </Field>
-        <Field Name="BudgetedAmount_GLAccountFormat">
-          <DataField>BudgetedAmount_GLAccountFormat</DataField>
-        </Field>
-        <Field Name="NetChange_GLAccount">
-          <DataField>NetChange_GLAccount</DataField>
-        </Field>
-        <Field Name="NetChange_GLAccountFormat">
-          <DataField>NetChange_GLAccountFormat</DataField>
-        </Field>
-        <Field Name="Commitment_GLAccount">
-          <DataField>Commitment_GLAccount</DataField>
-        </Field>
-        <Field Name="Commitment_GLAccountFormat">
-          <DataField>Commitment_GLAccountFormat</DataField>
-        </Field>
-        <Field Name="DiffPct">
-          <DataField>DiffPct</DataField>
-        </Field>
-        <Field Name="DiffPctFormat">
-          <DataField>DiffPctFormat</DataField>
-        </Field>
-      </Fields>
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-    </DataSet>
-  </DataSets>
 </Report>
