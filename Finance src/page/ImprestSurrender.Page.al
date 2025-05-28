@@ -330,6 +330,30 @@ page 51026 "Imprests Surrender"
                         CurrPage.Close();
                     end;
                 }
+                action(ImportDocument)
+                {
+                    Caption = 'Import Document to Sharepoint';
+                    ApplicationArea = All;
+                    Image = Attach;
+                    ToolTip = 'Add a file as an attachment. You can attach images as well as documents.';
+
+                    trigger OnAction()
+                    var
+                        SharepointHandler: Codeunit "Portal Integration";
+                    begin
+                        SharepointHandler.UploadFilesToSharePoint(Rec."No.", 'IMPREST SURRENDER');
+                    end;
+                }
+
+                action("Sharepoint Attachments")
+                {
+                    ApplicationArea = all;
+                    Ellipsis = true;
+                    Image = Attachments;
+                    Visible = true;
+                    RunObject = page "Portal Uploads";
+                    RunPageLink = "Document No" = field("No.");
+                }
                 separator(Action33)
                 {
                 }
@@ -411,6 +435,12 @@ page 51026 "Imprests Surrender"
                 Caption = 'Process', Comment = 'Generated from the PromotedActionCategories property index 1.';
 
                 actionref("Clear Lines_Promoted"; "Clear Lines")
+                {
+                }
+                actionref(ImportDocument_Promoted; ImportDocument)
+                {
+                }
+                actionref(AttachmentsPortal_Promoted; "Sharepoint Attachments")
                 {
                 }
             }

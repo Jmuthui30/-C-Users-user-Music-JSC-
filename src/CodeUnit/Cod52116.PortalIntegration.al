@@ -983,6 +983,189 @@ codeunit 52116 "Portal Integration"
         end;
     end;
 
+    procedure UploadFilesToSharePoint(DocNo: Code[30]; Type: Code[100])
+    var
+        HttpClient: HttpClient;
+        HttpRequestMessage: HttpRequestMessage;
+        HttpResponseMessage: HttpResponseMessage;
+        RequestHeaders: HttpHeaders;
+        ContentHeaders: HttpHeaders;
+        JsonResponse: JsonObject;
+        AuthToken: SecretText;
+        SharePointFileUrl: Text;
+        ResponseText: Text;
+        OutStream: OutStream;
+        FileContent: InStream;
+        TempBlob: Codeunit "Temp Blob";
+        FileName: Text;
+        MimeType: Text;
+        EncodedPath: Text;
+        HeaderName: Text;
+        HeaderValue: Text;
+        Headers: HttpHeaders;
+        ContentHeader: HttpHeaders;
+        RequestContent: HttpContent;
+        DownloadUrl: Text;
+        PortalUploads: Record "SharePoint Intergration";
+
+    begin
+        // Get OAuth token
+        AuthToken := GetOAuthToken();
+
+        if AuthToken.IsEmpty() then
+            Error('Failed to obtain access token.');
+
+        if not UploadIntoStream('Select a File to Import', '', '', FileName, FileContent) then
+            Error('No file selected.');
+
+        // Copy to TempBlob and get a fresh stream
+        TempBlob.CreateOutStream(OutStream);
+        CopyStream(OutStream, FileContent);
+        TempBlob.CreateInStream(FileContent); // Get fresh InStream for upload
+
+        // Set MIME type based on file extension
+        MimeType := GetMimeType(FileName);
+
+        // Encode path and build URL
+        EncodedPath := EncodeUrl(Type + '/' + DocNo + '/' + FileName);
+        SharePointFileUrl :=
+          'https://graph.microsoft.com/v1.0/sites/jscgoke.sharepoint.com,7a664df7-dd2a-4923-bce4-84150f6ffee0' +
+          '/drives/b!901meirdI0m85IQVD2_-4L6kylRennlChB-b4Io3UUz6HTryvLeBToA5e2mq2Zea/root:/' + EncodedPath + ':/content';
+
+
+        // Initialize the HTTP request
+        HttpRequestMessage.SetRequestUri(SharePointFileUrl);
+        HttpRequestMessage.Method := 'PUT';
+        HttpRequestMessage.GetHeaders(Headers);
+        Headers.Add('Authorization', SecretStrSubstNo('Bearer %1', AuthToken));
+        RequestContent.GetHeaders(ContentHeader);
+        ContentHeader.Clear();
+        ContentHeader.Add('Content-Type', MimeType);
+        HttpRequestMessage.Content.WriteFrom(FileContent);
+        // Send the HTTP request
+        if HttpClient.Send(HttpRequestMessage, HttpResponseMessage) then begin
+            if HttpResponseMessage.IsSuccessStatusCode() then begin
+                HttpResponseMessage.Content.ReadAs(ResponseText);
+                JsonResponse.ReadFrom(ResponseText);
+                ExtractCleanDownloadUrl(JsonResponse, DownloadUrl);
+                PortalUploads.Init();
+                PortalUploads."Document No" := DocNo;
+                PortalUploads.Description := FileName;
+                PortalUploads.LocalUrl := DownloadUrl;
+                PortalUploads.SP_URL_Returned := DownloadUrl;
+                PortalUploads.Uploaded := true;
+                PortalUploads.Fetch_To_Sharepoint := true;
+                PortalUploads.Polled := true;
+                PortalUploads.Base_URL := 'https://jscgoke.sharepoint.com/sites/jscportals/ERP%20Document' + '/' + 'PAYMENT VOUCHER' + '/';
+                PortalUploads.Insert(true);
+                Message('Uploaded Successfully');
+            end else begin
+                //Report errors!
+                HttpResponseMessage.Content.ReadAs(ResponseText);
+                Error('Failed to upload files to SharePoint: %1 %2', HttpResponseMessage.HttpStatusCode(), ResponseText);
+            end;
+        end else
+            Error('Failed to upload files to SharePoint: %1 %2', HttpResponseMessage.HttpStatusCode(), ResponseText);
+    end;
+
+
+    local procedure EncodeUrl(Value: Text): Text
+    var
+        EncodedText: Text;
+    begin
+        EncodedText := Value;
+        EncodedText := StrSubstNo(EncodedText, ' ', '%20');
+        EncodedText := StrSubstNo(EncodedText, '#', '%23');
+        EncodedText := StrSubstNo(EncodedText, '%', '%25');
+        EncodedText := StrSubstNo(EncodedText, '&', '%26');
+        EncodedText := StrSubstNo(EncodedText, '+', '%2B');
+        EncodedText := StrSubstNo(EncodedText, '?', '%3F');
+        EncodedText := StrSubstNo(EncodedText, '/', '%2F');
+        exit(EncodedText);
+    end;
+
+
+    local procedure GetMimeType(FileName: Text): Text
+    var
+        DotPosition: Integer;
+        Extension: Text;
+    begin
+        DotPosition := StrPos(FileName, '.');
+        if DotPosition > 0 then
+            Extension := LowerCase(CopyStr(FileName, DotPosition + 1))
+        else
+            Extension := '';
+
+        case Extension of
+            'pdf':
+                exit('application/pdf');
+            'txt':
+                exit('text/plain');
+            'xlsx':
+                exit('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            'csv':
+                exit('text/csv');
+            'docx':
+                exit('application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            else
+                exit('application/octet-stream');
+        end;
+    end;
+
+    procedure GetOAuthToken(): SecretText
+    var
+        AuthToken: SecretText;
+        ClientID: Text;
+        ClientSecret: SecretText;
+        TenantID: Text;
+        OAuthAuthorityUrl: Text;
+        Scopes: List of [Text];
+        OAuth2: Codeunit OAuth2;
+        ClientSecretRaw: Text;
+    begin
+        TenantID := '07ec9f79-420c-41b8-9ce9-bbb984ac7c87';
+        ClientID := '7ab09a0d-1749-45f7-ad91-1e129ed141cd';
+        ClientSecretRaw := 'BHS8Q~9VYRbspq.F1mAI4pIaGTw5tRo53Pf_Ba23';
+        ClientSecret := ClientSecretRaw;
+
+        // Authority URL (omit the /token suffix)
+        OAuthAuthorityUrl := 'https://login.microsoftonline.com/' + TenantID;
+
+        // Scope for Microsoft Graph application permissions
+        Scopes.Add('https://graph.microsoft.com/.default');
+
+        // Acquire token using client credentials flow
+        if not OAuth2.AcquireTokenWithClientCredentials(ClientID, ClientSecret, OAuthAuthorityUrl, '', Scopes, AuthToken) then
+            Error('Failed to acquire access token: %1', GetLastErrorText());
+
+        exit(AuthToken);
+    end;
+
+    local procedure ExtractCleanDownloadUrl(var JsonObject: JsonObject; var CleanUrl: Text)
+    var
+        FullUrl: Text;
+        Token: JsonToken;
+        Pos: Integer;
+    begin
+        if JsonObject.Get('@microsoft.graph.downloadUrl', Token) then begin
+            FullUrl := Token.AsValue().AsText();
+
+            // Find the position after UniqueId param
+            Pos := StrPos(FullUrl, '&');
+            if Pos > 0 then
+                CleanUrl := CopyStr(FullUrl, 1, Pos - 1)
+            else
+                CleanUrl := FullUrl; // No extra params found
+        end;
+    end;
+
+
+    local procedure ExtractJsonValueAsText(var JsonObject: JsonObject; Keys: Text; var Value: Text)
+    begin
+        if JsonObject.Get(Keys, JsonToken) then
+            Value := JsonToken.AsValue().AsText();
+    end;
+
     // procedure GetImprestBalance(No: Code[30]): Decimal
     //     var
     //         Customer: Record Customer;
