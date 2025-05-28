@@ -35,9 +35,9 @@ report 51014 "Budget Utilization"
             column(NetChange_GLAccount; "G/L Account"."Net Change")
             {
             }
-            // column(Commitment_GLAccount; "G/L Account".Commitment)
-            // {
-            // }
+            column(Commitment_GLAccount; "G/L Account".Commitment)
+            {
+            }
             column(DiffPct; DiffPct)
             {
             }
