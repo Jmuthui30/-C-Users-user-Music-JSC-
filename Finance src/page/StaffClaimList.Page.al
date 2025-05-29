@@ -2,7 +2,7 @@ page 51039 "Staff Claim List"
 {
     ApplicationArea = All;
     Caption = 'Staff Claim List';
-    CardPageId = "Staff Claim";
+    CardPageId = "Staff Claim JSC";
     DeleteAllowed = false;
     Editable = false;
     PageType = List;
