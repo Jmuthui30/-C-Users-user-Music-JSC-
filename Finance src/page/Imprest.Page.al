@@ -288,7 +288,7 @@ page 51020 Imprestjsc
                         ToolTip = 'Specifies the value of the EFT Date field';
                     }
                 }
-                field("Paying Type";"Paying Type"){ApplicationArea=all;Visible=false;}
+                field("Paying Type"; "Paying Type") { ApplicationArea = all; Visible = false; }
             }
             part(ImprestLines; "Imprest Lines")
             {
@@ -334,6 +334,33 @@ page 51020 Imprestjsc
     {
         area(Navigation)
         {
+            group(Sharepoint)
+            {
+                action(ImportDocument)
+                {
+                    Caption = 'Import Document to Sharepoint';
+                    ApplicationArea = All;
+                    Image = Attach;
+                    ToolTip = 'Add a file as an attachment. You can attach images as well as documents.';
+
+                    trigger OnAction()
+                    var
+                        SharepointHandler: Codeunit "Portal Integration";
+                    begin
+                        SharepointHandler.UploadFilesToSharePoint(Rec."No.", 'IMPREST');
+                    end;
+                }
+
+                action("Sharepoint Attachments")
+                {
+                    ApplicationArea = all;
+                    Ellipsis = true;
+                    Image = Attachments;
+                    Visible = true;
+                    RunObject = page "Portal Uploads";
+                    RunPageLink = "Document No" = field("No.");
+                }
+            }
             action(Approvals)
             {
                 Caption = 'Approvals';
@@ -505,6 +532,12 @@ page 51020 Imprestjsc
                 {
                 }
                 actionref(Approvals_Promoted; Approvals)
+                {
+                }
+                actionref(ImportDocument_Promoted; ImportDocument)
+                {
+                }
+                actionref(AttachmentsPortal_Promoted; "Sharepoint Attachments")
                 {
                 }
             }

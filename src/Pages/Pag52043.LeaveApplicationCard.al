@@ -198,6 +198,38 @@ page 52043 "Leave Application Card"
         {
             group(Action34)
             {
+                action(ImportDocument)
+                {
+                    Caption = 'Import Document to Sharepoint';
+                    ApplicationArea = All;
+                    Image = Attach;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    PromotedIsBig = true;
+                    PromotedOnly = true;
+                    ToolTip = 'Add a file as an attachment. You can attach images as well as documents.';
+
+                    trigger OnAction()
+                    var
+                        SharepointHandler: Codeunit "Portal Integration";
+                    begin
+                        SharepointHandler.UploadFilesToSharePoint(Rec."Application No", 'LEAVE');
+                    end;
+                }
+
+                action("Sharepoint Attachments")
+                {
+                    ApplicationArea = all;
+                    Ellipsis = true;
+                    Image = Attachments;
+                    Visible = true;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    PromotedIsBig = true;
+                    PromotedOnly = true;
+                    RunObject = page "Portal Uploads";
+                    RunPageLink = "Document No" = field("Application No");
+                }
                 action("Send For Approval")
                 {
                     Caption = 'Send Approval Request';

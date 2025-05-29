@@ -203,6 +203,42 @@ page 50059 "Imprest Memo Header"
     {
         area(Processing)
         {
+
+            group(Sharepoint)
+            {
+                action(ImportDocument)
+                {
+                    Caption = 'Import Document to Sharepoint';
+                    ApplicationArea = All;
+                    Image = Attach;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    PromotedIsBig = true;
+                    PromotedOnly = true;
+                    ToolTip = 'Add a file as an attachment. You can attach images as well as documents.';
+
+                    trigger OnAction()
+                    var
+                        SharepointHandler: Codeunit "Portal Integration";
+                    begin
+                        SharepointHandler.UploadFilesToSharePoint(Rec."No.", 'MEMO');
+                    end;
+                }
+
+                action("Sharepoint Attachments")
+                {
+                    ApplicationArea = all;
+                    Ellipsis = true;
+                    Image = Attachments;
+                    Visible = true;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    PromotedIsBig = true;
+                    PromotedOnly = true;
+                    RunObject = page "Portal Uploads";
+                    RunPageLink = "Document No" = field("No.");
+                }
+            }
             group(Approval)
             {
                 Caption = 'Approval';

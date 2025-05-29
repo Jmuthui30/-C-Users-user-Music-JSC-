@@ -135,7 +135,7 @@ page 52122 "Petty Cash Header"
             {
                 Editable = Rec.Status = Rec.Status::Open;
                 ApplicationArea = All;
-                SubPageLink = No=FIELD("No.");
+                SubPageLink = No = FIELD("No.");
                 UpdatePropagation = Both;
             }
         }
@@ -144,7 +144,7 @@ page 52122 "Petty Cash Header"
             part(Control2; "Petty Cash Document Subpage")
             {
                 ApplicationArea = All;
-                SubPageLink = "Document No."=FIELD("No."), "Table ID"=CONST(52105);
+                SubPageLink = "Document No." = FIELD("No."), "Table ID" = CONST(52105);
             }
             systempart(Control16; Notes)
             {
@@ -156,6 +156,37 @@ page 52122 "Petty Cash Header"
     {
         area(Reporting)
         {
+
+            action(ImportDocument)
+            {
+                Caption = 'Import Document to Sharepoint';
+                ApplicationArea = All;
+                Image = Attach;
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+                ToolTip = 'Add a file as an attachment. You can attach images as well as documents.';
+
+                trigger OnAction()
+                var
+                    SharepointHandler: Codeunit "Portal Integration";
+                begin
+                    SharepointHandler.UploadFilesToSharePoint(Rec."No.", 'PETTY CASH');
+                end;
+            }
+
+            action("Sharepoint Attachments")
+            {
+                ApplicationArea = all;
+                Ellipsis = true;
+                Image = Attachments;
+                Visible = true;
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+                RunObject = page "Portal Uploads";
+                RunPageLink = "Document No" = field("No.");
+            }
             action(Print)
             {
                 ApplicationArea = All;
@@ -195,7 +226,7 @@ page 52122 "Petty Cash Header"
                 PromotedIsBig = true;
                 PromotedCategory = Category8;
                 RunObject = Page "Petty Cash Documents";
-                RunPageLink = "Document No."=FIELD("No."), "Table ID"=CONST(52105);
+                RunPageLink = "Document No." = FIELD("No."), "Table ID" = CONST(52105);
             }
             action("View SharePoint Documents")
             {
@@ -207,7 +238,8 @@ page 52122 "Petty Cash Header"
 
                 trigger OnAction()
                 begin
-                    if Rec."SharePoint Link" = '' then Error('There is no link to documents uploaded in SharePoint. Please contact the SharePoint Administrator.')
+                    if Rec."SharePoint Link" = '' then
+                        Error('There is no link to documents uploaded in SharePoint. Please contact the SharePoint Administrator.')
                     else
                         HyperLink(Rec."SharePoint Link");
                 end;
@@ -424,26 +456,30 @@ page 52122 "Petty Cash Header"
     begin
         SetControlAppearance;
     end;
+
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        Rec.Status:=Rec.Status::Open;
+        Rec.Status := Rec.Status::Open;
     end;
+
     local procedure SetControlAppearance()
     var
         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
         WorkflowWebhookMgt: Codeunit "Workflow Webhook Management";
     begin
-        OpenApprovalEntriesExistForCurrUser:=ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(Rec.RecordId);
-        OpenApprovalEntriesExist:=ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
-        CanCancelApprovalForRecord:=ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
+        OpenApprovalEntriesExistForCurrUser := ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(Rec.RecordId);
+        OpenApprovalEntriesExist := ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
+        CanCancelApprovalForRecord := ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
         WorkflowWebhookMgt.GetCanRequestAndCanCancel(Rec.RecordId, CanRequestApprovalForFlow, CanCancelApprovalForFlow);
     end;
-    var ApprovalsMgt: Codeunit "Approvals Mgmt. Ext";
-    OpenApprovalEntriesExistForCurrUser: Boolean;
-    OpenApprovalEntriesExist: Boolean;
-    CanCancelApprovalForRecord: Boolean;
-    CanRequestApprovalForFlow: Boolean;
-    CanCancelApprovalForFlow: Boolean;
-    PettyCashMgt: Codeunit "Petty Cash Management";
-    BankAccount: Record "Bank Account";
+
+    var
+        ApprovalsMgt: Codeunit "Approvals Mgmt. Ext";
+        OpenApprovalEntriesExistForCurrUser: Boolean;
+        OpenApprovalEntriesExist: Boolean;
+        CanCancelApprovalForRecord: Boolean;
+        CanRequestApprovalForFlow: Boolean;
+        CanCancelApprovalForFlow: Boolean;
+        PettyCashMgt: Codeunit "Petty Cash Management";
+        BankAccount: Record "Bank Account";
 }
