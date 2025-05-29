@@ -169,6 +169,8 @@ page 51073 "Approved/Posted Petty Cash"
                 }
                 field("Surrender Status"; "Surrender Status") { ApplicationArea = all; Visible = false; }
                 field(Surrendered; Surrendered) { ApplicationArea = all; Visible = false; }
+                field(Posted; Posted) { ApplicationArea = all; Visible = false; }
+                field("Staff No."; "Staff No.") { ApplicationArea = all; Visible = false; }
             }
             part(ImprestLines; "Petty Cash Lines")
             {
