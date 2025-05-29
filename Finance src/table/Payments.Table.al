@@ -1121,7 +1121,7 @@ table 51004 Payments
         field(50036; Destination; Code[100])
         {
             Caption = 'Destination';
-            //  TableRelation = Destination."Destination Code";
+            TableRelation = Destination."Destination Code";
 
             trigger OnValidate()
             begin
