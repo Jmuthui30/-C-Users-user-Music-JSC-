@@ -288,7 +288,7 @@ page 51020 Imprestjsc
                         ToolTip = 'Specifies the value of the EFT Date field';
                     }
                 }
-                field("Paying Type"; "Paying Type") { ApplicationArea = all; Visible = false; }
+                field("Payment Type";"Payment Type") { ApplicationArea = all; Visible = false; }
             }
             part(ImprestLines; "Imprest Lines")
             {

@@ -2306,6 +2306,14 @@ page 51061 "Finance Role Center"
                         RunObject = page "Payment Types";
                         ToolTip = 'Executes the Payments Voucher Types action';
                     }
+                    action(Destinations)
+                    {
+                        Image = Holiday;
+                        RunObject = page "Destination Code";
+                        ApplicationArea = All;
+                        ToolTip = 'Executes the Destinations action';
+                        Caption = 'Destinations';
+                    }
                     action("Petty Cash Types")
                     {
                         Caption = 'Petty Cash Types';

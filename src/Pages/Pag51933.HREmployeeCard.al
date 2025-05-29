@@ -108,6 +108,23 @@ page 51933 "HR Employee Card"
                     Importance = Additional;
                     ToolTip = 'Specifies whether to limit access to data for the data subject during daily operations. This is useful, for example, when protecting data from changes while it is under privacy review.';
                 }
+                    field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code")
+            {
+                ApplicationArea = All;
+            }
+            field("Global Dimension 2 Code"; Rec."Global Dimension 1 Code")
+            {
+                ApplicationArea = All;
+            }
+            
+            field("User ID"; "User ID")
+            {
+                ApplicationArea = all;
+            }
+            field("Imprest Account"; "Imprest Account")
+            {
+                ApplicationArea = all;
+            }
             }
             group("Important Dates")
             {

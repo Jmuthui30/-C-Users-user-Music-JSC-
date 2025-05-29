@@ -1140,6 +1140,30 @@ tableextension 51424 "ExtEmployee" extends "Employee"
             OptionMembers = " ",Mombasa,Kwale,Kilifi,"Tana River",Lamu,"Taita-Taveta",Garissa,Wajir,Mandera,Marsabit,Isiolo,Meru,"Tharaka-Nithi",Embu,Kitui,Machakos,Makueni,Nyandarua,Nyeri,Kirinyaga,"Murang’a",Kiambu,Turkana,"West Pokot",Samburu,"Trans-Nzoia","Uasin Gishu","Elgeyo-Marakwet",Nandi,Baringo,Laikipia,Nakuru,Narok,Kajiado,Kericho,Bomet,Kakamega,Vihiga,Bungoma,Busia,Siaya,Kisumu,"Homa Bay",Migori,Kisii,Nyamira,Nairobi;
             Caption = 'Home County';
         }
+        field(52169; "Imprest Account"; Code[20])
+        {
+            DataClassification = CustomerContent;
+            TableRelation = Customer;
+            Caption = 'Imprest Account';
+        }
+        field(52170; "User ID"; Code[50])
+        {
+            DataClassification = CustomerContent;
+            TableRelation = "User Setup"."User ID";
+            Caption = 'User ID';
+
+            trigger OnValidate()
+            var
+                UserIDExistsErr: Label 'Employee with User ID %1 already exists';
+            begin
+                if "User ID" <> '' then begin
+                    EmployeeRec.Reset();
+                    EmployeeRec.SetRange("User ID", "User ID");
+                    if EmployeeRec.FindFirst() then
+                        Error(UserIDExistsErr, "User ID");
+                end;
+            end;
+        }
     }
 
     trigger OnInsert()
@@ -1151,6 +1175,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
     end;
 
     var
+        EmployeeRec: Record Employee;
         RecruitmentNeed: Record "Recruitment Needs";
         HRDatesExt: Codeunit "HR Dates Mgt";
         Branches: Record "Bank Branches";
