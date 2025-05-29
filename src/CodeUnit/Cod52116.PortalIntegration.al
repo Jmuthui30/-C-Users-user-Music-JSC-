@@ -5,6 +5,12 @@ codeunit 52116 "Portal Integration"
     var
         HrEmployees: Record Employee;
 
+        Committment: Codeunit "Commitments Mgt Finance";
+        ApprovalsMgmtFin: Codeunit "Approval Mgt Finance Ext";
+        ApprovalMgt: Codeunit "Approval Mgt Finance Ext";
+        CashManagementSetup: Record "Cash Management Setups";
+        GeneralLedgerSetup: Record "General Ledger Setup";
+        ErrorMsg: Text[250];
         Leave: Record "Leave Application";
         NoSeriesMgt: Codeunit NoSeriesManagement;
         LeaveSetup: Record "Leave Type";
@@ -402,28 +408,27 @@ codeunit 52116 "Portal Integration"
         end;
     end;
 
-    procedure SendLeaveForApproval(No: Code[50])
+    procedure SendLeaveForApproval(DocNo: Code[50])
     var
-        DocumentLink: Boolean;
+        ApprovalMgt: Codeunit "Approval Mgt HR Ext";
+        HRMgt: Codeunit "HR Management";
     begin
         Leave.Reset();
-        Leave.SetRange("Application No", No);
+        Leave.SetRange("Application No", DocNo);
         if Leave.Find('-') then begin
-            if HrApprovalsMgmt.CheckLeaveRequestWorkflowEnabled(Leave) then
-                HrApprovalsMgmt.OnSendLeaveRequestApproval(Leave);
+            HRMgt.CheckIfLeaveRelieversExist(Leave);
+            if ApprovalMgt.CheckLeaveRequestWorkflowEnabled(Leave) then
+                ApprovalMgt.OnSendLeaveRequestApproval(Leave);
+            UpdateApprovalEntries(DocNo, Leave."User ID");
         end;
     end;
 
-    procedure CancelLeaveApproval(No: Code[50])
+    procedure CancelLeaveApproval(DocNo: Code[50])
     var
+        ApprovalMgt: Codeunit "Approval Mgt HR Ext";
     begin
-        Leave.Reset();
-        Leave.SetRange("Application No", No);
-        Leave.SetRange(Status, Leave.Status::"Pending Approval");
-        if Leave.Find('-') then begin
-            HrApprovalsMgmt.OnCancelLeaveRequestApproval(Leave);
-            WorkflowWebhookMgt.FindAndCancel(Leave.RecordId);
-        end;
+        Leave.Get(DocNo);
+        ApprovalMgt.OnCancelLeaveRequestApproval(Leave);
     end;
 
     procedure ApplicantProfile(No: Code[40]; var Base64Txt: Text)
@@ -1112,7 +1117,7 @@ codeunit 52116 "Portal Integration"
         end;
     end;
 
-    procedure GetOAuthToken(): SecretText
+    local procedure GetOAuthToken(): SecretText
     var
         AuthToken: SecretText;
         ClientID: Text;
@@ -1166,29 +1171,132 @@ codeunit 52116 "Portal Integration"
             Value := JsonToken.AsValue().AsText();
     end;
 
-    // procedure GetImprestBalance(No: Code[30]): Decimal
-    //     var
-    //         Customer: Record Customer;
-    //         Payee: Record Payee;
-    //     begin
-    //         Payee.Reset();
-    //         Payee.SetRange("Employee No.", No);
-    //         if Payee.FindFirst() then
-    //             if Customer.Get(Payee."Receivable Account No") then begin
-    //                 Customer.CalcFields(Balance);
-    //                 exit(Customer.Balance);
-    //             end;
-    //     end;
+    procedure SendPaymentsApproval(DocNo: Code[50]): Text
+    begin
+        CashManagementSetup.Get;
+        GeneralLedgerSetup.Get;
 
-    //     procedure GetStaffNoFromCustNo(AccNo: Code[30]): Code[20]
-    //     var
-    //         PayeeRec: Record Payee;
-    //     begin
-    //         PayeeRec.Reset();
-    //         PayeeRec.SetRange("Receivable Account No", AccNo);
-    //         if PayeeRec.FindFirst() then
-    //             exit(PayeeRec."Employee No.");
-    //     end;
+        with PaymentsRec do begin
+            Reset;
+            SetRange("No.", DocNo);
+            if FindFirst then begin
+                //TestFields
+                case "Payment Type" of
 
+
+                    "Payment Type"::Imprest:
+                        begin
+                            CalcFields("Imprest Amount");
+                            if "Imprest Amount" <= 0 then
+                                Error('Imprest Amount can not be less than or equal to 0');
+
+                            TestField("Payment Narration");
+
+                            Committment.CheckImprestCommittment(PaymentsRec);
+                            Committment.ImprestCommittment(PaymentsRec, ErrorMsg);
+                            if ErrorMsg <> '' then
+                                Error(ErrorMsg);
+                            Commit;
+                            if ApprovalsMgmtFin.CheckPaymentsApprovalsWorkflowEnabled(PaymentsRec) then
+                                ApprovalsMgmtFin.OnSendPaymentsForApproval(PaymentsRec);
+                            UpdateApprovalEntries(DocNo, PaymentsRec."User Id");
+                        end;
+
+                    "Payment Type"::"Imprest Surrender":
+                        begin
+                            TestField("Surrender Date");
+                            TestField("Imprest Issue Doc. No");
+                            CalcFields("Remaining Amount");
+                            if "Remaining Amount" <> 0 then
+                                Error('Please account for all imprest amount');
+                            if ApprovalsMgmtFin.CheckPaymentsApprovalsWorkflowEnabled(PaymentsRec) then
+                                ApprovalsMgmtFin.OnSendPaymentsForApproval(PaymentsRec);
+                            UpdateApprovalEntries(DocNo, PaymentsRec."User Id");
+                        end;
+
+                    "Payment Type"::"Petty Cash":
+                        begin
+                            CalcFields("Petty Cash Amount");
+                            if "Petty Cash Amount" <= 0 then
+                                Error('Petty Cash Amount can not be less than or equal to 0');
+
+                            TestField("Payment Narration");
+
+                            Committment.CheckPettyCashCommittment(PaymentsRec);
+                            Committment.PettyCashCommittment(PaymentsRec, ErrorMsg);
+                            if ErrorMsg <> '' then
+                                Error(ErrorMsg);
+                            Commit;
+                            if ApprovalsMgmtFin.CheckPaymentsApprovalsWorkflowEnabled(PaymentsRec) then
+                                ApprovalsMgmtFin.OnSendPaymentsForApproval(PaymentsRec);
+                            UpdateApprovalEntries(DocNo, PaymentsRec."User Id");
+                        end;
+                    "Payment Type"::"Petty Cash Surrender":
+                        begin
+                            TestField("Surrender Date");
+                            TestField("Petty Cash Issue Doc.No");
+                            CalcFields("Remaining Amount");
+                            if "Remaining Amount" <> 0 then
+                                Error('Please account for all Petty Cash amount');
+                            if ApprovalsMgmtFin.CheckPaymentsApprovalsWorkflowEnabled(PaymentsRec) then
+                                ApprovalsMgmtFin.OnSendPaymentsForApproval(PaymentsRec);
+                            UpdateApprovalEntries(DocNo, PaymentsRec."User Id");
+                        end;
+
+
+                end;
+
+
+            end;
+        end;
+    end;
+
+    procedure CancelPaymentsApproval(DocNo: Code[50]): Text
+    begin
+        with PaymentsRec do begin
+            Reset;
+            SetRange("No.", DocNo);
+            if FindFirst then begin
+                case "Payment Type" of
+                    "Payment Type"::Imprest:
+                        begin
+                            Committment.CancelPaymentsCommitments(PaymentsRec);
+                            ApprovalMgt.OnCancelPaymentsApprovalRequest(PaymentsRec);
+                        end;
+
+                    "Payment Type"::"Imprest Surrender":
+                        begin
+                            ApprovalMgt.OnCancelPaymentsApprovalRequest(PaymentsRec);
+                        end;
+                    "Payment Type"::"Petty Cash":
+                        begin
+                            Committment.CancelPaymentsCommitments(PaymentsRec);
+                            ApprovalMgt.OnCancelPaymentsApprovalRequest(PaymentsRec);
+                        end;
+
+                    "Payment Type"::"Petty Cash Surrender":
+                        begin
+                            ApprovalMgt.OnCancelPaymentsApprovalRequest(PaymentsRec);
+                        end;
+                end;
+
+            end;
+        end;
+    end;
+
+    procedure UpdateApprovalEntries(DocNo: Code[100]; SenderID: Code[50])
+    var
+        ApprovalEntryRec: Record "Approval Entry";
+    begin
+        //Update USERID on Approval Entries
+        ApprovalEntryRec.Reset();
+        ApprovalEntryRec.SetRange("Document No.", DocNo);
+        ApprovalEntryRec.SetFilter(Status, '%1|%2', ApprovalEntryRec.Status::Created, ApprovalEntryRec.Status::Open);
+        if ApprovalEntryRec.Find('-') then
+            repeat
+                ApprovalEntryRec."Sender ID" := SenderID;
+                ApprovalEntryRec.Modify();
+            until ApprovalEntryRec.Next() = 0;
+    end;
 
 }
