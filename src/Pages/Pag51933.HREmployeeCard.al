@@ -116,6 +116,7 @@ page 51933 "HR Employee Card"
             {
                 ApplicationArea = All;
             }
+            
             field("User ID"; "User ID")
             {
                 ApplicationArea = all;
