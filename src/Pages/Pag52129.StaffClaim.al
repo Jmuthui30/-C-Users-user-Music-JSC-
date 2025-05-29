@@ -7,7 +7,7 @@ page 52129 "Staff Claim"
     InsertAllowed = false;
     PageType = Card;
     SourceTable = "Imprest Header";
-    SourceTableView = WHERE(Type=CONST(Surrender), "Staff Claim"=CONST(true));
+    SourceTableView = WHERE(Type = CONST(Surrender), "Staff Claim" = CONST(true));
 
     layout
     {
@@ -131,7 +131,7 @@ page 52129 "Staff Claim"
             part(Control14; "Staff Claim Details")
             {
                 ApplicationArea = All;
-                SubPageLink = "No."=FIELD("No.");
+                SubPageLink = "No." = FIELD("No.");
                 UpdatePropagation = Both;
             }
         }
@@ -140,7 +140,7 @@ page 52129 "Staff Claim"
             part(Control2; "Cash & Claim Document Subpage")
             {
                 ApplicationArea = All;
-                SubPageLink = "Document No."=FIELD("No."), "Table ID"=CONST(50463);
+                SubPageLink = "Document No." = FIELD("No."), "Table ID" = CONST(50463);
             }
             systempart(Control13; Notes)
             {
@@ -184,27 +184,60 @@ page 52129 "Staff Claim"
                     ImprestMgt.CheckForCashAvailability(Rec);
                 end;
             }
+            action(ImportDocument)
+            {
+                Caption = 'Import Document to Sharepoint';
+                ApplicationArea = All;
+                Image = Attach;
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+                ToolTip = 'Add a file as an attachment. You can attach images as well as documents.';
+
+                trigger OnAction()
+                var
+                    SharepointHandler: Codeunit "Portal Integration";
+                begin
+                    SharepointHandler.UploadFilesToSharePoint(Rec."No.", 'IMPREST SURRENDER');
+                end;
+            }
+
+            action("Sharepoint Attachments")
+            {
+                ApplicationArea = all;
+                Ellipsis = true;
+                Image = Attachments;
+                Visible = true;
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+                RunObject = page "Portal Uploads";
+                RunPageLink = "Document No" = field("No.");
+            }
             action("Attach Documents")
             {
                 ApplicationArea = All;
                 Image = Attach;
                 Promoted = true;
+                Visible = false;
                 PromotedIsBig = true;
                 PromotedCategory = Category8;
                 RunObject = Page "Cash & Claim Documents";
-                RunPageLink = "Document No."=FIELD("No."), "Table ID"=CONST(50463);
+                RunPageLink = "Document No." = FIELD("No."), "Table ID" = CONST(50463);
             }
             action("View SharePoint Documents")
             {
                 ApplicationArea = All;
                 Image = ViewDocumentLine;
                 Promoted = true;
+                Visible = false;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
 
                 trigger OnAction()
                 begin
-                    if Rec."SharePoint Link" = '' then Error('There is no link to documents uploaded in SharePoint. Please contact the SharePoint Administrator.')
+                    if Rec."SharePoint Link" = '' then
+                        Error('There is no link to documents uploaded in SharePoint. Please contact the SharePoint Administrator.')
                     else
                         HyperLink(Rec."SharePoint Link");
                 end;
@@ -240,18 +273,18 @@ page 52129 "Staff Claim"
                 trigger OnAction()
                 begin
                     if Confirm('You are about to close this Staff Claim Voucher, Be aware that you wont be able to recover this Voucher!', false) = true then begin
-                        Rec."Request Posted":=true;
-                        Rec."Request Posted By":=UserId;
-                        Rec."Request Posted Date":=Today;
-                        Rec.Type:=Rec.Type::Surrender;
-                        Rec."Surrender Date":=Today;
-                        Rec."Surrender Posted":=true;
-                        Rec."Surrender Posted By":=UserId;
-                        Rec."Surrender Posted Date":=Today;
-                        Rec.Status:=Rec.Status::Closed;
-                        Rec."Claim Posted":=true;
-                        Rec."Claim Posted By":=UserId;
-                        Rec."Claim Posted Date":=Today;
+                        Rec."Request Posted" := true;
+                        Rec."Request Posted By" := UserId;
+                        Rec."Request Posted Date" := Today;
+                        Rec.Type := Rec.Type::Surrender;
+                        Rec."Surrender Date" := Today;
+                        Rec."Surrender Posted" := true;
+                        Rec."Surrender Posted By" := UserId;
+                        Rec."Surrender Posted Date" := Today;
+                        Rec.Status := Rec.Status::Closed;
+                        Rec."Claim Posted" := true;
+                        Rec."Claim Posted By" := UserId;
+                        Rec."Claim Posted Date" := Today;
                         Rec.Modify;
                         Message('Voucher Closed.');
                     end;
@@ -453,43 +486,51 @@ page 52129 "Staff Claim"
     begin
         PayModeEditability;
     end;
+
     trigger OnInit()
     begin
         PayModeEditability;
     end;
+
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        Rec.Type:=Rec.Type::Surrender;
-        Rec."Staff Claim":=true;
-        Rec."Surrender Date":=Today;
+        Rec.Type := Rec.Type::Surrender;
+        Rec."Staff Claim" := true;
+        Rec."Surrender Date" := Today;
     end;
+
     trigger OnAfterGetRecord()
     begin
         SetControlAppearance;
         PayModeEditability;
     end;
+
     local procedure PayModeEditability()
     begin
-        if Rec."Claim Pay Mode" = 'EFT' then EFTEditable:=false
+        if Rec."Claim Pay Mode" = 'EFT' then
+            EFTEditable := false
         else
-            EFTEditable:=true;
+            EFTEditable := true;
     end;
+
     local procedure SetControlAppearance()
     var
         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
         WorkflowWebhookMgt: Codeunit "Workflow Webhook Management";
     begin
-        OpenApprovalEntriesExistForCurrUser:=ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(Rec.RecordId);
-        OpenApprovalEntriesExist:=ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
-        CanCancelApprovalForRecord:=ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
+        OpenApprovalEntriesExistForCurrUser := ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(Rec.RecordId);
+        OpenApprovalEntriesExist := ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
+        CanCancelApprovalForRecord := ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
         WorkflowWebhookMgt.GetCanRequestAndCanCancel(Rec.RecordId, CanRequestApprovalForFlow, CanCancelApprovalForFlow);
     end;
-    var ImprestMgt: Codeunit "Imprest Management";
-    ApprovalsMgt: Codeunit "Approvals Mgmt. Ext";
-    OpenApprovalEntriesExistForCurrUser: Boolean;
-    OpenApprovalEntriesExist: Boolean;
-    CanCancelApprovalForRecord: Boolean;
-    CanRequestApprovalForFlow: Boolean;
-    CanCancelApprovalForFlow: Boolean;
-    EFTEditable: Boolean;
+
+    var
+        ImprestMgt: Codeunit "Imprest Management";
+        ApprovalsMgt: Codeunit "Approvals Mgmt. Ext";
+        OpenApprovalEntriesExistForCurrUser: Boolean;
+        OpenApprovalEntriesExist: Boolean;
+        CanCancelApprovalForRecord: Boolean;
+        CanRequestApprovalForFlow: Boolean;
+        CanCancelApprovalForFlow: Boolean;
+        EFTEditable: Boolean;
 }
