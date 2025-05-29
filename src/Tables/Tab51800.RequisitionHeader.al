@@ -15,27 +15,27 @@ table 51800 "Requisition Header"
                     UsersRec.Reset;
                     UsersRec.SetRange("Employee No.", "Employee Code");
                     if UsersRec.FindFirst then begin
-                        "Requested For":=UsersRec."User ID";
-                        "Purchaser Code":=UsersRec."User ID";
-                    //Ibrahim Wasiu: Code comment for not working for Self Service
-                    /*if EmpRec.Get(UsersRec."Employee No") then begin
-                            "Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
-                            "Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
-                        end;*/
+                        "Requested For" := UsersRec."User ID";
+                        "Purchaser Code" := UsersRec."User ID";
+                        //Ibrahim Wasiu: Code comment for not working for Self Service
+                        /*if EmpRec.Get(UsersRec."Employee No") then begin
+                                "Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                                "Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                            end;*/
                     end;
                 end;
-                if EmpRec.Get("Employee Code")then begin
-                    "Global Dimension 1 Code":=EmpRec."Global Dimension 1 Code";
-                    "Global Dimension 2 Code":=EmpRec."Global Dimension 2 Code";
-                    "Global Dimension 3 Code":=EmpRec."Global Dimension 3 Code";
+                if EmpRec.Get("Employee Code") then begin
+                    "Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                    "Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                    "Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
                 end;
-                if NAVemp.Get("Employee Code")then "Employee Name":=NAVemp.FullName();
-            //     end else
-            //         Error('QuantJumps User Setup for %1 have not been done', "Employee Name");
-            // end else
-            //     if "SSP Created" then begin
-            //         //Code
-            //     end;
+                if NAVemp.Get("Employee Code") then "Employee Name" := NAVemp.FullName();
+                //     end else
+                //         Error('QuantJumps User Setup for %1 have not been done', "Employee Name");
+                // end else
+                //     if "SSP Created" then begin
+                //         //Code
+                //     end;
             end;
         }
         field(3; "Employee Name"; Text[50])
@@ -48,7 +48,7 @@ table 51800 "Requisition Header"
         field(6; "Requisition Date"; Date)
         {
         }
-        field(7; Status;Enum "Document Status")
+        field(7; Status; Enum "Document Status")
         {
             DataClassification = CustomerContent;
             Editable = false;
@@ -57,8 +57,9 @@ table 51800 "Requisition Header"
             begin
                 Lines.Reset;
                 Lines.SetRange("Requisition No", "No.");
-                if Lines.Find('-')then begin
-                    repeat Lines.Status:=Status;
+                if Lines.Find('-') then begin
+                    repeat
+                        Lines.Status := Status;
                         Lines.Modify;
                     until Lines.Next = 0;
                 end;
@@ -80,14 +81,14 @@ table 51800 "Requisition Header"
         field(11; "Global Dimension 1 Code"; Code[20])
         {
             CaptionClass = '1,1,1';
-            Editable = false;
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=FILTER(1));
+            // Editable = false;
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = FILTER(1));
 
             trigger OnValidate()
             begin
                 Lines.Reset;
                 Lines.SetRange("Requisition No", "No.");
-                if Lines.Find('-')then Lines.ModifyAll("Global Dimension 1 Code", "Global Dimension 1 Code");
+                if Lines.Find('-') then Lines.ModifyAll("Global Dimension 1 Code", "Global Dimension 1 Code");
             end;
         }
         field(12; "Global Dimension 2 Code"; Code[20])
@@ -95,20 +96,20 @@ table 51800 "Requisition Header"
             CaptionClass = '1,1,2';
             Caption = 'Global Dimension 2 Code';
             Editable = false;
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
 
             trigger OnValidate()
             begin
                 Lines.Reset;
                 Lines.SetRange("Requisition No", "No.");
-                if Lines.Find('-')then Lines.ModifyAll("Global Dimension 2 Code", "Global Dimension 2 Code");
+                if Lines.Find('-') then Lines.ModifyAll("Global Dimension 2 Code", "Global Dimension 2 Code");
             end;
         }
         field(13; "Global Dimension 3 Code"; Code[20])
         {
             CaptionClass = '1,2,3';
             Caption = 'Global Dimension 3 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(3));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(3));
         }
         field(14; "Procurement Plan"; Code[20])
         {
@@ -117,7 +118,7 @@ table 51800 "Requisition Header"
         field(15; "Document Type"; Option)
         {
             OptionCaption = 'Quote,Order,Invoice,Credit Memo,Blanket Order,Return Order,None,Purchase Requisition,Store Requisition,Imprest,Claim-Accounting,Appointment,Payment Voucher';
-            OptionMembers = Quote, "Order", Invoice, "Credit Memo", "Blanket Order", "Return Order", "None", "Purchase Requisition", "Store Requisition", Imprest, "Claim-Accounting", Appointment, "Payment Voucher";
+            OptionMembers = Quote,"Order",Invoice,"Credit Memo","Blanket Order","Return Order","None","Purchase Requisition","Store Requisition",Imprest,"Claim-Accounting",Appointment,"Payment Voucher";
         }
         field(16; "Currency Code"; Code[10])
         {
@@ -126,13 +127,13 @@ table 51800 "Requisition Header"
         field(17; "Requisition Type"; Option)
         {
             OptionCaption = 'Quote,Order,Invoice,Credit Memo,Blanket Order,Return Order,None,Purchase Requisition,Store Requisition,Imprest,Claim-Accounting,Appointment,Payment Voucher,S_Store Requisition,J_Store Requisition';
-            OptionMembers = Quote, "Order", Invoice, "Credit Memo", "Blanket Order", "Return Order", "None", "Purchase Requisition", "Store Requisition", Imprest, "Claim-Accounting", Appointment, "Payment Voucher", "S_Store Requisition", "J_Store Requisition";
+            OptionMembers = Quote,"Order",Invoice,"Credit Memo","Blanket Order","Return Order","None","Purchase Requisition","Store Requisition",Imprest,"Claim-Accounting",Appointment,"Payment Voucher","S_Store Requisition","J_Store Requisition";
 
             trigger OnValidate()
             begin
                 Lines.Reset;
                 Lines.SetRange("Requisition No", "No.");
-                if Lines.Find('-')then Lines.ModifyAll("Requisition Type", "Requisition Type");
+                if Lines.Find('-') then Lines.ModifyAll("Requisition Type", "Requisition Type");
             end;
         }
         field(18; Posted; Boolean)
@@ -140,7 +141,7 @@ table 51800 "Requisition Header"
         }
         field(19; "No of Approvals"; Integer)
         {
-            CalcFormula = Count("Approval Entry" WHERE("Table ID"=CONST(51800), "Document No."=FIELD("No.")));
+            CalcFormula = Count("Approval Entry" WHERE("Table ID" = CONST(51800), "Document No." = FIELD("No.")));
             Editable = false;
             FieldClass = FlowField;
         }
@@ -156,13 +157,13 @@ table 51800 "Requisition Header"
 
             trigger OnValidate()
             begin
-            /*PurchLine.RESET;
-                PurchLine.SETRANGE("Requisition No","No.");
-                IF PurchLine.FIND('-') THEN BEGIN REPEAT
-                  PurchLine.VALIDATE("Location Code","Location Code");
-                  PurchLine.MODIFY;
-                UNTIL PurchLine.NEXT = 0;
-                END;*/
+                /*PurchLine.RESET;
+                    PurchLine.SETRANGE("Requisition No","No.");
+                    IF PurchLine.FIND('-') THEN BEGIN REPEAT
+                      PurchLine.VALIDATE("Location Code","Location Code");
+                      PurchLine.MODIFY;
+                    UNTIL PurchLine.NEXT = 0;
+                    END;*/
             end;
         }
         field(23; Received; Boolean)
@@ -189,7 +190,7 @@ table 51800 "Requisition Header"
         field(30; "PR Closed By"; Option)
         {
             OptionCaption = ' ,Direct Receipt of Goods/Services,Purchase Order,Rejection';
-            OptionMembers = " ", "Direct Receipt of Goods/Services", "Purchase Order", Rejection;
+            OptionMembers = " ","Direct Receipt of Goods/Services","Purchase Order",Rejection;
         }
         field(31; "Closed Date"; Date)
         {
@@ -199,12 +200,12 @@ table 51800 "Requisition Header"
         }
         field(33; "Quantity Requested"; Decimal)
         {
-            CalcFormula = Sum("Requisition Lines".Quantity WHERE("Requisition No"=FIELD("No.")));
+            CalcFormula = Sum("Requisition Lines".Quantity WHERE("Requisition No" = FIELD("No.")));
             FieldClass = FlowField;
         }
         field(34; Amount; Decimal)
         {
-            CalcFormula = Sum("Requisition Lines".Amount WHERE("Requisition No"=FIELD("No.")));
+            CalcFormula = Sum("Requisition Lines".Amount WHERE("Requisition No" = FIELD("No.")));
             FieldClass = FlowField;
         }
         field(35; "Reason Code"; Code[50])
@@ -213,25 +214,25 @@ table 51800 "Requisition Header"
 
             trigger OnValidate()
             begin
-                if Expenses.Get("Reason Code")then begin
-                    Reason:=Expenses.Description;
-                    "Account Type":=Expenses."Account Type";
-                    "Account No":=Expenses."Account No";
+                if Expenses.Get("Reason Code") then begin
+                    Reason := Expenses.Description;
+                    "Account Type" := Expenses."Account Type";
+                    "Account No" := Expenses."Account No";
                 end;
             end;
         }
         field(36; "Account Type"; Option)
         {
             OptionCaption = 'G/L Account,Vendor,Customer,Item,Fixed Asset';
-            OptionMembers = "G/L Account", Vendor, Customer, Item, "Fixed Asset";
+            OptionMembers = "G/L Account",Vendor,Customer,Item,"Fixed Asset";
         }
         field(37; "Account No"; Code[20])
         {
-            TableRelation = IF("Account Type"=CONST("G/L Account"))"G/L Account" WHERE("Account Type"=CONST(Posting), Blocked=CONST(false))
-            ELSE IF("Account Type"=CONST(Vendor))Vendor
-            ELSE IF("Account Type"=CONST(Customer))Customer
-            ELSE IF("Account Type"=CONST(Item))Item
-            ELSE IF("Account Type"=CONST("Fixed Asset"))"Fixed Asset";
+            TableRelation = IF ("Account Type" = CONST("G/L Account")) "G/L Account" WHERE("Account Type" = CONST(Posting), Blocked = CONST(false))
+            ELSE IF ("Account Type" = CONST(Vendor)) Vendor
+            ELSE IF ("Account Type" = CONST(Customer)) Customer
+            ELSE IF ("Account Type" = CONST(Item)) Item
+            ELSE IF ("Account Type" = CONST("Fixed Asset")) "Fixed Asset";
         }
         field(38; "Requested For"; Code[50])
         {
@@ -240,11 +241,11 @@ table 51800 "Requisition Header"
 
             trigger OnValidate()
             begin
-                if UsersRec.Get("Requested For")then begin
-                    if EmpRec.Get(UsersRec."Employee No.")then begin
-                        "Global Dimension 1 Code":=EmpRec."Global Dimension 1 Code";
-                        "Global Dimension 2 Code":=EmpRec."Global Dimension 2 Code";
-                        "Global Dimension 3 Code":=EmpRec."Global Dimension 3 Code";
+                if UsersRec.Get("Requested For") then begin
+                    if EmpRec.Get(UsersRec."Employee No.") then begin
+                        "Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                        "Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                        "Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
                     end;
                 end;
             end;
@@ -278,13 +279,13 @@ table 51800 "Requisition Header"
         }
         field(47; "Pending Approvals"; Integer)
         {
-            CalcFormula = Count("Approval Entry" WHERE("Table ID"=CONST(51800), "Document No."=FIELD("No."), Status=FILTER(Open|Created)));
+            CalcFormula = Count("Approval Entry" WHERE("Table ID" = CONST(51800), "Document No." = FIELD("No."), Status = FILTER(Open | Created)));
             Caption = 'Pending Approvals';
             FieldClass = FlowField;
         }
         field(48; "Empty No."; Boolean)
         {
-            CalcFormula = Exist("Requisition Lines" WHERE(No=CONST(''), "Requisition No"=FIELD("No.")));
+            CalcFormula = Exist("Requisition Lines" WHERE(No = CONST(''), "Requisition No" = FIELD("No.")));
             FieldClass = FlowField;
         }
         field(49; "SharePoint Link"; Text[250])
@@ -292,13 +293,13 @@ table 51800 "Requisition Header"
         }
         field(51839; "Store Req. Qty. Requested"; Decimal)
         {
-            CalcFormula = Sum("Requisition Lines".Quantity WHERE("Requisition No"=FIELD("No.")));
+            CalcFormula = Sum("Requisition Lines".Quantity WHERE("Requisition No" = FIELD("No.")));
             Editable = false;
             FieldClass = FlowField;
         }
         field(51840; "Store Req. Qty. Issued"; Decimal)
         {
-            CalcFormula = Sum("Requisition Lines"."Quantity Issued" WHERE("Requisition No"=FIELD("No.")));
+            CalcFormula = Sum("Requisition Lines"."Quantity Issued" WHERE("Requisition No" = FIELD("No.")));
             Editable = false;
             FieldClass = FlowField;
         }
@@ -345,7 +346,7 @@ table 51800 "Requisition Header"
             var
                 AmountLimit: Record "Amount Limit Type";
             begin
-                if AmountLimit.get("Amount Limit Code")then "Amount Limit Description":=AmountLimit.Description;
+                if AmountLimit.get("Amount Limit Code") then "Amount Limit Description" := AmountLimit.Description;
             end;
         }
         field(51850; "Amount Limit Description"; Text[50])
@@ -363,7 +364,7 @@ table 51800 "Requisition Header"
         }
         field(51853; Approvers; Integer)
         {
-            CalcFormula = Count("Approval Entry" WHERE("Table ID"=CONST(51800), "Document No."=FIELD("No."), Status=FILTER(Approved)));
+            CalcFormula = Count("Approval Entry" WHERE("Table ID" = CONST(51800), "Document No." = FIELD("No."), Status = FILTER(Approved)));
             FieldClass = FlowField;
             Caption = 'Approvers';
         }
@@ -398,35 +399,39 @@ table 51800 "Requisition Header"
                 NoSeriesMgt.InitSeries(PurchSetup."J_Store Requisition Nos.", xRec."No.", 0D, "No.", "Procurement Plan");
             end;
         end;
-        "Raised by":=UserId;
+        "Raised by" := UserId;
         /*"Requisition Date" := WorkDate;
         "Needed By Date" := WorkDate;
         "Expiration Date" := WorkDate;*/
-        if(not "PR Created") and (not "SSP Created")then begin
-            "Requested For":=UserId;
-            "Purchaser Code":=UserId;
-            if UsersRec.Get(UserId)then begin
+        if (not "PR Created") and (not "SSP Created") then begin
+            "Requested For" := UserId;
+            "Purchaser Code" := UserId;
+            if UsersRec.Get(UserId) then begin
                 UsersRec.TestField("Employee No.");
-                "Employee Code":=UsersRec."Employee No.";
+                "Employee Code" := UsersRec."Employee No.";
                 Validate("Employee Code");
             end;
         end;
-        "Requisition Date":=Today;
-        "Needed By Date":=Today;
-        "Expiration Date":=Today;
-        "Procurement Plan":=PurchSetup."Effective Procurement Plan";
+        "Requisition Date" := Today;
+        "Needed By Date" := Today;
+        "Expiration Date" := Today;
+        "Procurement Plan" := PurchSetup."Effective Procurement Plan";
     end;
-    var PurchSetup: Record "Procurement Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    UsersRec: Record "User Setup";
-    NAVemp: Record Employee;
-    EmpRec: Record "Employee Master";
-    Expenses: Record "Expense Codes";
-    Lines: Record "Requisition Lines";
-    procedure AssitEdit(): Boolean begin
+
+    var
+        PurchSetup: Record "Procurement Setup";
+        NoSeriesMgt: Codeunit NoSeriesManagement;
+        UsersRec: Record "User Setup";
+        NAVemp: Record Employee;
+        EmpRec: Record "Employee Master";
+        Expenses: Record "Expense Codes";
+        Lines: Record "Requisition Lines";
+
+    procedure AssitEdit(): Boolean
+    begin
         PurchSetup.Get;
         PurchSetup.TestField("Store Requisition Nos.");
-        if NoSeriesMgt.SelectSeries(PurchSetup."Store Requisition Nos.", xRec."No. Series", "No. Series")then begin
+        if NoSeriesMgt.SelectSeries(PurchSetup."Store Requisition Nos.", xRec."No. Series", "No. Series") then begin
             NoSeriesMgt.SetSeries("No.");
             exit(true);
         end;

@@ -54,6 +54,7 @@ page 50059 "Imprest Memo Header"
                 field("Activity Location"; Rec."Activity Location")
                 {
                 }
+                //  field()
                 field("Departure Location"; Rec."Departure Location")
                 {
                 }
@@ -193,7 +194,7 @@ page 50059 "Imprest Memo Header"
             part(Control01; "Imprest Memo Lines")
             {
                 ApplicationArea = All;
-                SubPageLink = "No."=FIELD("No.");
+                SubPageLink = "No." = FIELD("No.");
                 UpdatePropagation = Both;
             }
         }
@@ -280,8 +281,7 @@ page 50059 "Imprest Memo Header"
                             ApprovalsMgmt.RejectRecordApprovalRequest(Rec.RecordId);
                             CurrPage.Update(true);
                         end
-                        else
-                        begin
+                        else begin
                             exit;
                         end;
                     end;
@@ -474,36 +474,42 @@ page 50059 "Imprest Memo Header"
     var
         WorkflowWebhookMgt: Codeunit "Workflow Webhook Management";
     begin
-        OpenApprovalEntriesExistForCurrUser:=ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(Rec.RecordId);
-        OpenApprovalEntriesExist:=ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
-        CanCancelApprovalForRecord:=ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
+        OpenApprovalEntriesExistForCurrUser := ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(Rec.RecordId);
+        OpenApprovalEntriesExist := ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
+        CanCancelApprovalForRecord := ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
         WorkflowWebhookMgt.GetCanRequestAndCanCancel(Rec.RecordId, CanRequestApprovalForFlow, CanCancelApprovalForFlow);
     end;
+
     trigger OnAfterGetRecord()
     begin
         SetControlAppearance();
-    // if GeneralSettings.IsSelfService() then
-    //     Rec.SetRange("Created By", UserId);
+        // if GeneralSettings.IsSelfService() then
+        //     Rec.SetRange("Created By", UserId);
     end;
+
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        Rec.Status:=Rec.Status::Open;
+        Rec.Status := Rec.Status::Open;
     end;
-    trigger OnInsertRecord(BelowxRec: Boolean): Boolean begin
-        Rec.Status:=Rec.Status::Open;
+
+    trigger OnInsertRecord(BelowxRec: Boolean): Boolean
+    begin
+        Rec.Status := Rec.Status::Open;
     end;
-    var OpenApprovalEntriesExistForCurrUser: Boolean;
-    OpenApprovalEntriesExist: Boolean;
-    ShowWorkflowStatus: Boolean;
-    DocumentIsPosted: Boolean;
-    CanCancelApprovalForRecord: Boolean;
-    CanRequestApprovalForFlow: Boolean;
-    CanCancelApprovalForFlow: Boolean;
-    ApprovalsMngt: Codeunit "Approvals Mgmt. Ext";
-    ApprovalsMgmt: Codeunit "Approvals Mgmt.";
-    Text000: Label 'Are you sure you want to approve the Imprest Memo %1 ?';
-    Text001: Label 'Are you sure you want to reject the Imprest Memo %1 ?';
-    HRCom: Codeunit "HR Communication Management";
-    CommitmentMgt: Codeunit "Commitment Management";
-    GeneralSettings: Codeunit GeneralSettings;
+
+    var
+        OpenApprovalEntriesExistForCurrUser: Boolean;
+        OpenApprovalEntriesExist: Boolean;
+        ShowWorkflowStatus: Boolean;
+        DocumentIsPosted: Boolean;
+        CanCancelApprovalForRecord: Boolean;
+        CanRequestApprovalForFlow: Boolean;
+        CanCancelApprovalForFlow: Boolean;
+        ApprovalsMngt: Codeunit "Approvals Mgmt. Ext";
+        ApprovalsMgmt: Codeunit "Approvals Mgmt.";
+        Text000: Label 'Are you sure you want to approve the Imprest Memo %1 ?';
+        Text001: Label 'Are you sure you want to reject the Imprest Memo %1 ?';
+        HRCom: Codeunit "HR Communication Management";
+        CommitmentMgt: Codeunit "Commitment Management";
+        GeneralSettings: Codeunit GeneralSettings;
 }

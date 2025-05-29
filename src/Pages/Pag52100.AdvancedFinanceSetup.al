@@ -2,7 +2,8 @@ page 52100 "Advanced Finance Setup"
 {
     // version THL- ADV.FIN 1.0
     DeleteAllowed = false;
-    InsertAllowed = false;
+    InsertAllowed = true;
+    Editable = true;
     PageType = Card;
     ApplicationArea = All;
     UsageCategory = Administration;
@@ -66,7 +67,7 @@ page 52100 "Advanced Finance Setup"
                     var
                         PatRec: Record "RegEx Pattern";
                     begin
-                        if page.RunModal(Page::Patterns, PatRec) = action::LookupOK then Rec."Email Pattern":=PatRec.RegEx;
+                        if page.RunModal(Page::Patterns, PatRec) = action::LookupOK then Rec."Email Pattern" := PatRec.RegEx;
                     end;
                 }
                 field("Narration Pattern"; Rec."Narration Pattern")
@@ -77,7 +78,7 @@ page 52100 "Advanced Finance Setup"
                     var
                         PatRec: Record "RegEx Pattern";
                     begin
-                        if page.RunModal(Page::Patterns, PatRec) = action::LookupOK then Rec."Narration Pattern":=PatRec.RegEx;
+                        if page.RunModal(Page::Patterns, PatRec) = action::LookupOK then Rec."Narration Pattern" := PatRec.RegEx;
                     end;
                 }
             }

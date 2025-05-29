@@ -23,6 +23,8 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
             {
                 ApplicationArea = All;
             }
+            field("Salary Scale"; "Salary Scale")
+            { }
         }
         modify("Job Title")
         {
@@ -41,7 +43,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                 Promoted = true;
                 PromotedIsBig = true;
                 RunObject = Page "HR Employee Card";
-                RunPageLink = "No."=FIELD("No.");
+                RunPageLink = "No." = FIELD("No.");
             }
             action("Payroll Information")
             {
@@ -51,7 +53,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 RunObject = Page "Payroll Infromation";
-                RunPageLink = "No."=FIELD("No.");
+                RunPageLink = "No." = FIELD("No.");
             }
             action("Admin Infromation")
             {
@@ -61,7 +63,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 RunObject = Page "Admin Infromation";
-                RunPageLink = "No."=FIELD("No.");
+                RunPageLink = "No." = FIELD("No.");
             }
             action("Separation Infromation")
             {
@@ -71,7 +73,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 RunObject = Page "Exit Information";
-                RunPageLink = "No."=FIELD("No.");
+                RunPageLink = "No." = FIELD("No.");
             }
             action("Delete Blank Emp")
             {
@@ -92,5 +94,6 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
             }
         }
     }
-    var myInt: Integer;
+    var
+        myInt: Integer;
 }

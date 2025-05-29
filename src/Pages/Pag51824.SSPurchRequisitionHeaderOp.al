@@ -4,7 +4,7 @@ page 51824 "SS Purch Requisition Header-Op"
     Caption = 'New Purchase Requisition';
     PageType = Card;
     SourceTable = "Requisition Header";
-    SourceTableView = WHERE(Status=CONST(Open), "Requisition Type"=CONST("Purchase Requisition"), "PR Created"=CONST(false));
+    SourceTableView = WHERE(Status = CONST(Open), "Requisition Type" = CONST("Purchase Requisition"), "PR Created" = CONST(false));
 
     layout
     {
@@ -26,6 +26,7 @@ page 51824 "SS Purch Requisition Header-Op"
                 {
                     ApplicationArea = All;
                     ShowMandatory = true;
+
                 }
                 field("Global Dimension 2 Code"; Rec."Global Dimension 2 Code")
                 {
@@ -50,8 +51,8 @@ page 51824 "SS Purch Requisition Header-Op"
                     ApplicationArea = All;
                     ToolTip = 'Enter the title of the purchase request''s.';
                     Visible = false;
-                //ShowMandatory = true;
-                //Importance = Promoted;
+                    //ShowMandatory = true;
+                    //Importance = Promoted;
                 }
                 field(Reason; Rec.Reason)
                 {
@@ -157,7 +158,7 @@ page 51824 "SS Purch Requisition Header-Op"
             part(Control16; "SS Requisition Lines")
             {
                 ApplicationArea = All;
-                SubPageLink = "Requisition No"=FIELD("No.");
+                SubPageLink = "Requisition No" = FIELD("No.");
                 UpdatePropagation = Both;
             }
         }
@@ -166,7 +167,7 @@ page 51824 "SS Purch Requisition Header-Op"
             part(Control9; "Requisition Documents Subpage")
             {
                 ApplicationArea = All;
-                SubPageLink = "Document No."=FIELD("No."), "Table ID"=CONST(51800);
+                SubPageLink = "Document No." = FIELD("No."), "Table ID" = CONST(51800);
             }
             systempart(Control15; Notes)
             {
@@ -185,7 +186,7 @@ page 51824 "SS Purch Requisition Header-Op"
                 Promoted = true;
                 PromotedIsBig = true;
                 RunObject = Page "Requisition Documents";
-                RunPageLink = "Document No."=FIELD("No."), "Table ID"=CONST(51800);
+                RunPageLink = "Document No." = FIELD("No."), "Table ID" = CONST(51800);
             }
             action("Send Approval Request")
             {
@@ -204,13 +205,15 @@ page 51824 "SS Purch Requisition Header-Op"
                     Rec.TestField(Reason);
                     Rec.CalcFields("Empty No.");
                     if Rec."Empty No." = true then Error('The No. must be filled on the lines.');
-                    if(Rec."Global Dimension 1 Code" = '')then Error('The FundProject Code and Site Code cannot be blank for requisition %1', Rec."No.");
+                    if (Rec."Global Dimension 1 Code" = '') then Error('The FundProject Code and Site Code cannot be blank for requisition %1', Rec."No.");
                     Lines.Reset;
                     Lines.SetRange("Requisition No", Rec."No.");
-                    if Lines.FindSet then repeat if(Lines.Type = Lines.Type::Item) and (Lines.Description = '')then Error('The Item Status of the selected item cannot be inactive for requisition %1', Lines."Line No");
+                    if Lines.FindSet then
+                        repeat
+                            if (Lines.Type = Lines.Type::Item) and (Lines.Description = '') then Error('The Item Status of the selected item cannot be inactive for requisition %1', Lines."Line No");
                             Lines.TestField(Quantity);
                             //PurchMgt.ProcurementCheck(Rec);
-                            if(Lines."Global Dimension 1 Code" = '')then Error('The Department Code cannot be blank for requisition lines %1', Lines."Line No");
+                            if (Lines."Global Dimension 1 Code" = '') then Error('The Department Code cannot be blank for requisition lines %1', Lines."Line No");
                         until Lines.Next = 0;
                     ApprovalsMgt.OnSendRequisitionForApproval(Rec);
                 end;
@@ -245,16 +248,19 @@ page 51824 "SS Purch Requisition Header-Op"
     }
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        Rec."Requisition Type":=Rec."Requisition Type"::"Purchase Requisition";
-        Rec.Status:=Rec.Status::Open;
+        Rec."Requisition Type" := Rec."Requisition Type"::"Purchase Requisition";
+        Rec.Status := Rec.Status::Open;
     end;
+
     trigger OnOpenPage()
     begin
         Rec.SetRange("Raised by", UserId);
     end;
-    var PurchMgt: Codeunit "Purchases Management";
-    Lines: Record "Requisition Lines";
-    ItemRec: Record Item;
-    ProcureHeader: Record "Procurement Plan Header";
-    ProcureLines: Record "Procurement Plan Lines";
+
+    var
+        PurchMgt: Codeunit "Purchases Management";
+        Lines: Record "Requisition Lines";
+        ItemRec: Record Item;
+        ProcureHeader: Record "Procurement Plan Header";
+        ProcureLines: Record "Procurement Plan Lines";
 }
