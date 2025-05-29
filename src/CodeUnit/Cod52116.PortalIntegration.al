@@ -1112,7 +1112,7 @@ codeunit 52116 "Portal Integration"
         end;
     end;
 
-    procedure GetOAuthToken(): SecretText
+    local procedure GetOAuthToken(): SecretText
     var
         AuthToken: SecretText;
         ClientID: Text;
