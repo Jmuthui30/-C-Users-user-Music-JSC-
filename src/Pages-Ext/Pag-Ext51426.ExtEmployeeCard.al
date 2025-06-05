@@ -38,7 +38,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                 ApplicationArea = All;
             }
             field("Salary Scale"; "Salary Scale")
-            { }
+            { ApplicationArea = all; }
         }
         modify("Job Title")
         {
