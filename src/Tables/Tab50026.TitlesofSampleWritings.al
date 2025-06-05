@@ -26,6 +26,10 @@ table 50026 "Titles of Sample Writings"
         {
 
         }
+        field(7; Description; Text[2048])
+        {
+
+        }
     }
     keys
     {

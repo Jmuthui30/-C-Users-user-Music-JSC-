@@ -21,6 +21,7 @@ page 50068 "Attachments Setup"
                     ToolTip = 'Specifies the value of the Description field.', Comment = '%';
                     ApplicationArea = all;
                 }
+                field("Attachment Type"; "Attachment Type") { ApplicationArea = all; }
             }
         }
     }

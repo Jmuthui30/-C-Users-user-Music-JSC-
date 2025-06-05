@@ -135,6 +135,10 @@ page 51954 "Company Jobs"
                     ApplicationArea = All;
                     Caption = 'Sample Writing';
                 }
+                field("Minimum Sample Writings"; "Minimum Sample Writings")
+                {
+                    ApplicationArea = all;
+                }
                 field(Status; Rec.Status)
                 {
                     ApplicationArea = all;

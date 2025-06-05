@@ -16,6 +16,11 @@ table 52075 Attachments
             DataClassification = CustomerContent;
             Caption = 'Description';
         }
+        field(3; "Attachment Type"; Option)
+        {
+            OptionCaption = ',Job Attachments,Sample Writting';
+            OptionMembers = ,"Job Attachments","Sample Writting";
+        }
     }
 
     keys

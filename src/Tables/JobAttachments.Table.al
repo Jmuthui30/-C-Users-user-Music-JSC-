@@ -10,7 +10,8 @@ table 52074 "Job Attachments"
         }
         field(2; Attachment; Code[20])
         {
-            TableRelation = Attachments;
+           TableRelation = Attachments WHERE("Attachment Type" = CONST("Job Attachments"));
+
             Caption = 'Attachment';
 
             trigger OnValidate()

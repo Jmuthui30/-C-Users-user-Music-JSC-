@@ -25,6 +25,10 @@ page 50028 "Titles of Sample Writings"
                     ApplicationArea = All;
 
                 }
+                field(Description; Description)
+                {
+                    ApplicationArea = all;
+                }
                 field("Attachment Link"; Rec."Attachment Link")
                 {
                     ApplicationArea = All;

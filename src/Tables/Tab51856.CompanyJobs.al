@@ -309,6 +309,9 @@ table 51856 "Company Jobs"
             Caption = 'Description Programme';
             //TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
+        field(148; "Minimum Sample Writings"; Integer)
+        {
+        }
     }
     keys
     {
