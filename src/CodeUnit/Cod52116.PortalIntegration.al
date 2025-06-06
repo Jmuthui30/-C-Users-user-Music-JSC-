@@ -86,17 +86,10 @@ codeunit 52116 "Portal Integration"
                 JobApplication."Application Status" := JobApplication."Application Status"::Submited;
                 if JobApplication.Insert(true) then
                     if Applicants.Get(ApplicantNo) then
-                        //         //         Applicants."Submitted Date" := Today;
-                        //         // Applicants."Submitted Time" := Time;
-                        //         RecruitmentNeeds.Reset();
-                        // RecruitmentNeeds.SetRange("Job ID", No);
-                        // if RecruitmentNeeds.FindFirst() then begin
-                        //     //     Applicants."Recruitment Needs NO" := RecruitmentNeeds."No.";
-                Applicants.Submitted := true;
+                        Applicants.Submitted := true;
+                Applicants."Recruitment Needs NO" := RecruitmentNeeds."No.";
                 Applicants."Submitted Date" := Today;
                 Applicants."Submitted Time" := Time;
-                //     JobApplication."Recruitment Needs No." := RecruitmentNeeds."No.";
-                // end;
                 Applicants.Modify();
 
 

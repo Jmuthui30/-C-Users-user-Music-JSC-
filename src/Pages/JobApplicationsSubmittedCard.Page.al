@@ -56,6 +56,7 @@ page 57015 "Job Appl-Submitted Card"
                     ToolTip = 'Specifies the value of the Application Status field.';
                     Editable = false;
                 }
+
             }
         }
     }
