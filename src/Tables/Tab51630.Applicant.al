@@ -474,13 +474,13 @@ table 51630 "Applicant"
             var
                 RecApplicant: Record Applicant;
             begin
-                IF "National ID" <> '' THEN BEGIN
-                    RecApplicant.RESET;
-                    RecApplicant.SETRANGE(RecApplicant."National ID", "National ID");
-                    IF RecApplicant.FIND('-')THEN BEGIN
-                        IF(RecApplicant."No." <> "No.")THEN ERROR('ID No. already exists.Belong to 1%', RecApplicant.FullName);
-                    END;
-                END;
+                // IF "National ID" <> '' THEN BEGIN
+                //     RecApplicant.RESET;
+                //     RecApplicant.SETRANGE(RecApplicant."National ID", "National ID");
+                //     IF RecApplicant.FIND('-')THEN BEGIN
+                //         IF(RecApplicant."No." <> "No.")THEN ERROR('ID No. already exists.Belong to 1%', RecApplicant.FullName);
+                //     END;
+                // END;
             end;
         }
         field(83; Profession; Code[20])
