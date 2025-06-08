@@ -475,6 +475,8 @@ table 51880 "Recruitment Needs"
         }
         field(123; "Terms and Conditions 2"; Text[2048])
         { }
+           field(230 ;"Terms and Conditions 3"; Text[2048])
+        { }
         field(120; "Job Academic and Professional"; Text[2048])
         { }
         field(121; "Submitted Applicant Count"; Integer)

@@ -245,6 +245,13 @@ page 58082 "Recruitment Request New"
                     ToolTip = 'Specifies the value of the Positions field';
 
                 }
+                  field("Terms and Conditions 3"; "Terms and Conditions 3")
+                {
+                    MultiLine = true;
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Terms field';
+
+                }
             }
             part(RecruitmentCosts; "Recruitment Costs")
             {
