@@ -251,6 +251,13 @@ page 56045 "Recruitment Card Archive"
                     ToolTip = 'Specifies the value of the Positions field';
 
                 }
+                field("Terms and Conditions 3"; "Terms and Conditions 3")
+                {
+                    MultiLine = true;
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Positions field';
+
+                }
             }
             part(Control6; "Qualified Interviewee Listpart")
             {
