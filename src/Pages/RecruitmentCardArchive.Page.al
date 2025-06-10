@@ -179,6 +179,29 @@ page 56045 "Recruitment Card Archive"
                     MultiLine = true;
                 }
             }
+
+            group("Judge Function")
+            {
+                field("Judge Function Title"; "Judge Function Title")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the';
+                }
+                grid(function)
+                {
+                    field("Functions of the Judge"; "Functions of the Judge")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the';
+                    }
+                    field("Functions of the Judge1"; "Functions of the Judge1")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the';
+                    }
+                }
+
+            }
             group("Constitutional and Statutory Requirements for Appointment:")
             {
                 field("Constitution Requirement"; "Constitution Requirement")

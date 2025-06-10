@@ -12,6 +12,19 @@ report 51454 "Client Payroll Calculator"
 
             trigger OnAfterGetRecord()
             begin
+                //*******************************************************************************************************
+                IF "Date of Birth" <> 0D THEN BEGIN
+                    IF HRSetup.GET(0) THEN BEGIN
+                        IF CALCDATE(HRSetup."Minimum Employee Age", "Date of Birth") > TODAY THEN
+                            ERROR('Employee bellow the mininmum  age of Employment %1', HRSetup."Minimum Employee Age");
+
+                        IF CALCDATE(HRSetup."Retirement Age", "Date of Birth") < TODAY THEN
+                            ERROR('Employee Above the Retirement age of Employment %1', HRSetup."Retirement Age");
+
+                    END;
+                END;
+
+                //******************************************************************************************************
                 NoOfHoursPerMonth := CalcNoOfWorkingDaysInAmonth(DateSpecified, Employee."Company Code");
                 CompRec.Get(Employee."Company Code");
                 TaxCode := CompRec."Tax Table";
@@ -497,6 +510,8 @@ report 51454 "Client Payroll Calculator"
     end;
 
     var
+        HRSetup: Record "Human Resources Setup";
+
         AmountRemaining: Decimal;
         TaxCode: Code[10];
         IncomeTax: Decimal;

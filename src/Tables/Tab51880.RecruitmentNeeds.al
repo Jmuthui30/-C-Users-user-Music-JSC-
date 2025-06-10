@@ -475,7 +475,7 @@ table 51880 "Recruitment Needs"
         }
         field(123; "Terms and Conditions 2"; Text[2048])
         { }
-           field(230 ;"Terms and Conditions 3"; Text[2048])
+        field(230; "Terms and Conditions 3"; Text[2048])
         { }
         field(120; "Job Academic and Professional"; Text[2048])
         { }
@@ -497,8 +497,12 @@ table 51880 "Recruitment Needs"
         { }
         field(124; Grade; Code[20])
         { }
-             field(231 ;"Constitution Requirement"; Text[2048])
+        field(231; "Constitution Requirement"; Text[2048])
         { }
+        field(234; "Judge Function Title"; Text[100]) { }
+        field(232; "Functions of the Judge"; Text[2048]) { }
+        field(233; "Functions of the Judge1"; Text[2048]) { }
+
 
 
     }

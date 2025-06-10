@@ -172,6 +172,29 @@ page 56085 "Recruitment Card"
                     MultiLine = true;
                 }
             }
+
+            group("Judge Function")
+            {
+                field("Judge Function Title"; "Judge Function Title")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the';
+                }
+                grid(function)
+                {
+                    field("Functions of the Judge"; "Functions of the Judge")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the';
+                    }
+                    field("Functions of the Judge1"; "Functions of the Judge1")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the';
+                    }
+                }
+
+            }
             group("Constitution Requirement:")
             {
                 field("Constitution Requirement"; "Constitution Requirement")
@@ -340,6 +363,45 @@ page 56085 "Recruitment Card"
                         end;
                     end;
                 }
+            }
+
+            action("Job Recruitment")
+            {
+                Promoted = true;
+                PromotedCategory = Category5;
+                PromotedIsBig = true;
+                Image = RemoveContacts;
+                ToolTip = 'Executes the Remove from Portal action';
+                Caption = 'Job Recruitment Report';
+                trigger OnAction()
+                var
+                    RecruitmentNeeds: Record "Recruitment Needs";
+                begin
+                    RecruitmentNeeds.Reset();
+                    RecruitmentNeeds.SetRange(RecruitmentNeeds."No.", "No.");
+                    if RecruitmentNeeds.Find('-') then
+                        Report.Run(53000, true, false, RecruitmentNeeds);
+
+                end;
+            }
+            action("THE COURT OF APPEAL")
+            {
+                Promoted = true;
+                PromotedCategory = Category5;
+                PromotedIsBig = true;
+                Image = RemoveContacts;
+                ToolTip = 'Executes the Remove from Portal action';
+                Caption = 'THE COURT OF APPEAL';
+                trigger OnAction()
+                var
+                    RecruitmentNeeds: Record "Recruitment Needs";
+                begin
+                    RecruitmentNeeds.Reset();
+                    RecruitmentNeeds.SetRange(RecruitmentNeeds."No.", "No.");
+                    if RecruitmentNeeds.Find('-') then
+                        Report.Run(53010, true, false, RecruitmentNeeds);
+
+                end;
             }
         }
     }

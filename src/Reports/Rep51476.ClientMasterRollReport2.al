@@ -19,6 +19,8 @@ report 51476 "Client Master Roll Report2"
             column(COMPANYNAME; CompInfo.Name)
             {
             }
+            column(Ethnic_Group; "Ethnic Group") { }
+            column(Departure_Date; "Departure Date") { }
             /*column(CurrReport_PAGENO;CurrReport.PageNo)
             {
             }*/
@@ -442,7 +444,7 @@ report 51476 "Client Master Roll Report2"
             column(DedDesc_100_; DedDesc[100])
             {
             }
-            column(Other_Deductions_;'Other Deductions')
+            column(Other_Deductions_; 'Other Deductions')
             {
             }
             column(CCDesc_1_; CCDesc[1])
@@ -745,13 +747,13 @@ report 51476 "Client Master Roll Report2"
             column(CCDesc_100_; CCDesc[100])
             {
             }
-            column(Net_Pay_;'Net Pay')
+            column(Net_Pay_; 'Net Pay')
             {
             }
-            column(PF_No__;'PF No.')
+            column(PF_No__; 'PF No.')
             {
             }
-            column(Name_;'Name')
+            column(Name_; 'Name')
             {
             }
             column(Employee__No__; "Payroll No.")
@@ -1261,13 +1263,13 @@ report 51476 "Client Master Roll Report2"
             column(STRSUBSTNO__Employees__1__counter_; StrSubstNo('Employees=%1', counter))
             {
             }
-            column(Prepared_By______________________________________________________;'Prepared By.....................................................')
+            column(Prepared_By______________________________________________________; 'Prepared By.....................................................')
             {
             }
-            column(Approved_By_____________________________________________________;'Approved By....................................................')
+            column(Approved_By_____________________________________________________; 'Approved By....................................................')
             {
             }
-            column(Approved_By_____________________________________________;'Approved By............................................')
+            column(Approved_By_____________________________________________; 'Approved By............................................')
             {
             }
             column(MASTER_ROLLCaption; MASTER_ROLLCaptionLbl)
@@ -1306,35 +1308,35 @@ report 51476 "Client Master Roll Report2"
             trigger OnAfterGetRecord()
             begin
                 Employee.CalcFields(Employee."Total Allowances", Employee."Total Deductions");
-                if(Employee."Total Allowances" + Employee."Total Deductions") = 0 then CurrReport.Skip;
+                if (Employee."Total Allowances" + Employee."Total Deductions") = 0 then CurrReport.Skip;
                 //if (Assignmat.Amount <= 0)
                 //then begin
                 //CurrReport.Skip()
                 //end;
-                counter:=counter + 1;
-                NetPay:=Employee."Total Allowances" + Employee."Total Deductions";
-                NetPay:=Payroll.NetPayRounding(NetPay, Employee."Company Code");
-                if HREmployee.Get(Employee."No.")then Designation:=HREmployee."Job Title";
+                counter := counter + 1;
+                NetPay := Employee."Total Allowances" + Employee."Total Deductions";
+                NetPay := Payroll.NetPayRounding(NetPay, Employee."Company Code");
+                if HREmployee.Get(Employee."No.") then Designation := HREmployee."Job Title";
                 if SendToEFT then begin
                     Banks.Get(Employee."Bank Code");
                     CashMgt.InsertEFTEntries(Employee."Bank Code", Employee."Bank Branch", Employee."Bank Account Number", EmpName, NetPay, Banks.Name);
                 end;
-                if NAVEmp.Get(Employee."No.")then begin
-                    EmpName:=NAVEmp."First Name" + ' ' + NAVEmp."Last Name";
+                if NAVEmp.Get(Employee."No.") then begin
+                    EmpName := NAVEmp."First Name" + ' ' + NAVEmp."Last Name";
                 end;
-                for i:=1 to 100 do begin
+                for i := 1 to 100 do begin
                     Clear(Allowances[i]);
                     Clear(Deductions[i]);
                     Clear(CompanyCosts[i]);
                 end;
-                OtherEarn:=0;
-                OtherDeduct:=0;
-                Totallowances:=0;
-                OtherDeduct:=0;
-                TotalDeductions:=0;
-                TotalRelief:=0;
-                TotalCompanyCosts:=0;
-                for i:=1 to NoOfEarnings do begin
+                OtherEarn := 0;
+                OtherDeduct := 0;
+                Totallowances := 0;
+                OtherDeduct := 0;
+                TotalDeductions := 0;
+                TotalRelief := 0;
+                TotalCompanyCosts := 0;
+                for i := 1 to NoOfEarnings do begin
                     Assignmat.Reset;
                     Assignmat.SetRange(Assignmat."Employee No", Employee."No.");
                     Assignmat.SetRange(Assignmat.Type, Assignmat.Type::Payment);
@@ -1342,16 +1344,16 @@ report 51476 "Client Master Roll Report2"
                     Assignmat.SetRange(Assignmat.Company, Employee.GetFilter("Company Code"));
                     Assignmat.SetRange(Assignmat."Payroll Period", DateSpecified);
                     Assignmat.SetFilter(Assignmat.Amount, '<>%1', 0);
-                    if Assignmat.Find('-')then Allowances[i]:=Assignmat.Amount;
-                    if Assignmat."Normal Earnings" then Totallowances:=Totallowances + Allowances[i]
-                    else
-                    begin
-                        Totallowances:=Totallowances - Allowances[i];
-                        TotalRelief:=TotalRelief - Allowances[i];
+                    if Assignmat.Find('-') then Allowances[i] := Assignmat.Amount;
+                    if Assignmat."Normal Earnings" then
+                        Totallowances := Totallowances + Allowances[i]
+                    else begin
+                        Totallowances := Totallowances - Allowances[i];
+                        TotalRelief := TotalRelief - Allowances[i];
                     end;
                 end;
-                OtherEarn:=Employee."Total Allowances" - (Totallowances - TotalRelief);
-                for i:=1 to 100 do begin
+                OtherEarn := Employee."Total Allowances" - (Totallowances - TotalRelief);
+                for i := 1 to 100 do begin
                     Assignmat.Reset;
                     Assignmat.SetRange(Assignmat."Employee No", Employee."No.");
                     Assignmat.SetRange(Company, Employee.GetFilter("Company Code"));
@@ -1360,11 +1362,11 @@ report 51476 "Client Master Roll Report2"
                     Assignmat.SetRange(Assignmat.Code, deductcode[i]);
                     Assignmat.SetRange(Assignmat."Payroll Period", DateSpecified);
                     Assignmat.SetFilter(Assignmat.Amount, '<>%1', 0);
-                    if Assignmat.Find('-')then Deductions[i]:=Abs(Assignmat.Amount);
-                    TotalDeductions:=TotalDeductions + Deductions[i];
+                    if Assignmat.Find('-') then Deductions[i] := Abs(Assignmat.Amount);
+                    TotalDeductions := TotalDeductions + Deductions[i];
                 end;
-                OtherDeduct:=Abs(Employee."Total Deductions" + TotalDeductions);
-                for i:=1 to NoOfDeductions do begin
+                OtherDeduct := Abs(Employee."Total Deductions" + TotalDeductions);
+                for i := 1 to NoOfDeductions do begin
                     Assignmat.Reset;
                     Assignmat.SetRange(Assignmat."Employee No", Employee."No.");
                     Assignmat.SetRange(Assignmat.Type, Assignmat.Type::Deduction);
@@ -1372,16 +1374,17 @@ report 51476 "Client Master Roll Report2"
                     Assignmat.SetRange(Assignmat."Payroll Period", DateSpecified);
                     Assignmat.SetRange(Assignmat.Company, Employee.GetFilter("Company Code"));
                     Assignmat.SetFilter(Assignmat."Employer Amount", '<>%1', 0);
-                    if Assignmat.Find('-')then CompanyCosts[i]:=Abs(Assignmat."Employer Amount");
-                    TotalCompanyCosts:=TotalCompanyCosts + CompanyCosts[i];
+                    if Assignmat.Find('-') then CompanyCosts[i] := Abs(Assignmat."Employer Amount");
+                    TotalCompanyCosts := TotalCompanyCosts + CompanyCosts[i];
                 end;
                 // Get Employee Age
                 begin
-                    if HREmployee.Get(Employee."No.")then begin
-                        Age:=Dates.DetermineAge(HREmployee."Birth Date", Today);
+                    if HREmployee.Get(Employee."No.") then begin
+                        Age := Dates.DetermineAge(HREmployee."Birth Date", Today);
                     end;
                 end;
             end;
+
             trigger OnPreDataItem()
             begin
                 //CurrReport.CreateTotals(Allowances,Deductions,OtherEarn,OtherDeduct,NetPay);
@@ -1413,17 +1416,19 @@ report 51476 "Client Master Roll Report2"
     begin
         if Employee.GetFilter("Company Code") = '' then Error('You must select a company to report for.');
         if Employee.GetFilter("Pay Period Filter") = '' then Error('You must select a pay period to report for.');
-        DateSpecified:=Employee.GetRangeMin(Employee."Pay Period Filter");
+        DateSpecified := Employee.GetRangeMin(Employee."Pay Period Filter");
         //Earnings
         EarnRec.Reset;
         EarnRec.SetRange(Company, Employee.GetFilter("Company Code"));
         EarnRec.SetRange(EarnRec."Show on Master Roll", true);
-        if EarnRec.Find('-')then repeat EarnRec.SetFilter("Pay Period Filter", '%1', DateSpecified);
+        if EarnRec.Find('-') then
+            repeat
+                EarnRec.SetFilter("Pay Period Filter", '%1', DateSpecified);
                 EarnRec.CalcFields("Total Amount");
                 if EarnRec."Total Amount" <> 0 then begin
-                    i:=i + 1;
-                    Earncode[i]:=EarnRec.Code;
-                    EarnDesc[i]:=EarnRec.Description;
+                    i := i + 1;
+                    Earncode[i] := EarnRec.Code;
+                    EarnDesc[i] := EarnRec.Description;
                 end;
             until EarnRec.Next = 0;
         //Earnings
@@ -1431,12 +1436,14 @@ report 51476 "Client Master Roll Report2"
         EarnRec.SetRange(Company, Employee.GetFilter("Company Code"));
         EarnRec.SetRange(EarnRec."Show on Master Roll", true);
         EarnRec.SetRange(EarnRec."Earning Type", EarnRec."Earning Type"::"Tax Relief");
-        if EarnRec.Find('-')then repeat EarnRec.SetFilter("Pay Period Filter", '%1', DateSpecified);
+        if EarnRec.Find('-') then
+            repeat
+                EarnRec.SetFilter("Pay Period Filter", '%1', DateSpecified);
                 EarnRec.CalcFields("Total Amount");
                 if EarnRec."Total Amount" <> 0 then begin
-                    i:=i + 1;
-                    Earncode[i]:=EarnRec.Code;
-                    EarnDesc[i]:=EarnRec.Description;
+                    i := i + 1;
+                    Earncode[i] := EarnRec.Code;
+                    EarnDesc[i] := EarnRec.Description;
                 end;
             until EarnRec.Next = 0;
         //Earnings
@@ -1444,84 +1451,92 @@ report 51476 "Client Master Roll Report2"
         EarnRec.SetRange(Company, Employee.GetFilter("Company Code"));
         EarnRec.SetRange(EarnRec."Show on Master Roll", true);
         EarnRec.SetRange(EarnRec."Calculation Method", EarnRec."Calculation Method"::"% of SHIF");
-        if EarnRec.Find('-')then repeat EarnRec.SetFilter("Pay Period Filter", '%1', DateSpecified);
+        if EarnRec.Find('-') then
+            repeat
+                EarnRec.SetFilter("Pay Period Filter", '%1', DateSpecified);
                 EarnRec.CalcFields("Total Amount");
                 if EarnRec."Total Amount" <> 0 then begin
-                    i:=i + 1;
-                    Earncode[i]:=EarnRec.Code;
-                    EarnDesc[i]:=EarnRec.Description;
+                    i := i + 1;
+                    Earncode[i] := EarnRec.Code;
+                    EarnDesc[i] := EarnRec.Description;
                 end;
             until EarnRec.Next = 0;
-        NoOfEarnings:=i;
+        NoOfEarnings := i;
         //Deductions
         DedRec.Reset;
         DedRec.SetRange(Company, Employee.GetFilter("Company Code"));
         DedRec.SetRange(DedRec."Show on Master Roll", true);
-        if DedRec.Find('-')then repeat DedRec.SetFilter("Pay Period Filter", '%1', DateSpecified);
+        if DedRec.Find('-') then
+            repeat
+                DedRec.SetFilter("Pay Period Filter", '%1', DateSpecified);
                 DedRec.CalcFields("Total Amount");
                 if DedRec."Total Amount" <> 0 then begin
-                    j:=j + 1;
-                    deductcode[j]:=DedRec.Code;
-                    DedDesc[j]:=DedRec.Description;
+                    j := j + 1;
+                    deductcode[j] := DedRec.Code;
+                    DedDesc[j] := DedRec.Description;
                 end;
             until DedRec.Next = 0;
-        NoOfDeductions:=j;
+        NoOfDeductions := j;
         //Company Costs
         CCRec.Reset;
         CCRec.SetRange(Company, Employee.GetFilter("Company Code"));
         CCRec.SetRange(CCRec."Show on Master Roll", true);
-        if CCRec.Find('-')then repeat CCRec.SetFilter("Pay Period Filter", '%1', DateSpecified);
+        if CCRec.Find('-') then
+            repeat
+                CCRec.SetFilter("Pay Period Filter", '%1', DateSpecified);
                 CCRec.CalcFields("Total Amount Employer");
                 if CCRec."Total Amount Employer" <> 0 then begin
-                    k:=k + 1;
-                    CCcode[k]:=CCRec.Code;
-                    CCDesc[k]:='ER ' + CCRec.Description;
+                    k := k + 1;
+                    CCcode[k] := CCRec.Code;
+                    CCDesc[k] := 'ER ' + CCRec.Description;
                 end;
             until CCRec.Next = 0;
         CompInfo.Get(Employee.GetFilter("Company Code"));
         CompInfo.CalcFields(Picture);
     end;
-    var Allowances: array[100]of Decimal;
-    Deductions: array[100]of Decimal;
-    CompanyCosts: array[100]of Decimal;
-    EarnRec: Record "Client Earnings";
-    DedRec: Record "Client Deductions";
-    CCRec: Record "Client Deductions";
-    Earncode: array[100]of Code[20];
-    deductcode: array[100]of Code[20];
-    CCcode: array[100]of Code[20];
-    EarnDesc: array[100]of Text[50];
-    DedDesc: array[100]of Text[50];
-    CCDesc: array[100]of Text[50];
-    i: Integer;
-    j: Integer;
-    k: Integer;
-    Assignmat: Record "Client Payroll Matrix";
-    DateSpecified: Date;
-    Totallowances: Decimal;
-    TotalDeductions: Decimal;
-    TotalCompanyCosts: Decimal;
-    OtherEarn: Decimal;
-    OtherDeduct: Decimal;
-    counter: Integer;
-    HRSetup: Record "Human Resources Setup";
-    NetPay: Decimal;
-    Payroll: Codeunit "Client Payroll Calculator";
-    MASTER_ROLLCaptionLbl: Label 'MASTER ROLL';
-    CurrReport_PAGENOCaptionLbl: Label 'Page';
-    Other_AllowancesCaptionLbl: Label 'Other Allowances';
-    NAVEmp: Record "Client Employee Master";
-    EmpName: Text;
-    CompInfo: Record "Client Company Information";
-    SendToEFT: Boolean;
-    CashMgt: Codeunit "Cash Management";
-    Banks: Record "Commercial Banks";
-    TotalRelief: Decimal;
-    NoOfEarnings: Integer;
-    NoOfDeductions: Integer;
-    HREmployee: Record Employee;
-    Designation: Text[250];
-    DateOfEngagement: Date;
-    Age: Text[100];
-    Dates: Codeunit "HR Dates";
+
+    var
+        Allowances: array[100] of Decimal;
+        Deductions: array[100] of Decimal;
+        CompanyCosts: array[100] of Decimal;
+        EarnRec: Record "Client Earnings";
+        DedRec: Record "Client Deductions";
+        CCRec: Record "Client Deductions";
+        Earncode: array[100] of Code[20];
+        deductcode: array[100] of Code[20];
+        CCcode: array[100] of Code[20];
+        EarnDesc: array[100] of Text[50];
+        DedDesc: array[100] of Text[50];
+        CCDesc: array[100] of Text[50];
+        i: Integer;
+        j: Integer;
+        k: Integer;
+        Assignmat: Record "Client Payroll Matrix";
+        DateSpecified: Date;
+        Totallowances: Decimal;
+        TotalDeductions: Decimal;
+        TotalCompanyCosts: Decimal;
+        OtherEarn: Decimal;
+        OtherDeduct: Decimal;
+        counter: Integer;
+        HRSetup: Record "Human Resources Setup";
+        NetPay: Decimal;
+        Payroll: Codeunit "Client Payroll Calculator";
+        MASTER_ROLLCaptionLbl: Label 'MASTER ROLL';
+        CurrReport_PAGENOCaptionLbl: Label 'Page';
+        Other_AllowancesCaptionLbl: Label 'Other Allowances';
+        NAVEmp: Record "Client Employee Master";
+        EmpName: Text;
+        CompInfo: Record "Client Company Information";
+        SendToEFT: Boolean;
+        CashMgt: Codeunit "Cash Management";
+        Banks: Record "Commercial Banks";
+        TotalRelief: Decimal;
+        NoOfEarnings: Integer;
+        NoOfDeductions: Integer;
+        HREmployee: Record Employee;
+        Designation: Text[250];
+        DateOfEngagement: Date;
+        Age: Text[100];
+        Dates: Codeunit "HR Dates";
 }

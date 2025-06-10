@@ -51,6 +51,7 @@ page 50059 "Imprest Memo Header"
                 field(Purpose; Rec.Purpose)
                 {
                 }
+
                 field("Activity Location"; Rec."Activity Location")
                 {
                 }
@@ -86,7 +87,9 @@ page 50059 "Imprest Memo Header"
                 field(Approvers; Rec.Approvers)
                 {
                 }
+
             }
+
             group(Options)
             {
                 Caption = 'Options';
@@ -191,6 +194,20 @@ page 50059 "Imprest Memo Header"
                 {
                 }
             }
+
+            group(message)
+            {
+                field("Message body"; "Message body")
+                {
+                    MultiLine = true;
+                }
+                field("Message body 1"; "Message body 1")
+                {
+                    MultiLine = true;
+
+                }
+            }
+
             part(Control01; "Imprest Memo Lines")
             {
                 ApplicationArea = All;
