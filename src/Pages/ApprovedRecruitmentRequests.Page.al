@@ -33,6 +33,14 @@ page 56084 "Approved Recruitment Requests"
                 {
                     ToolTip = 'Specifies the value of the Positions field';
                 }
+                field("Submitted jobs Count"; "Submitted jobs Count")
+                {
+                    ApplicationArea = all;
+                    Caption = 'Applicant Submitted';
+                    ToolTip = 'Specifies the value of the Reason for Recruitment(text) field';
+                    Editable = false;
+
+                }
                 field(Approved; Rec.Approved)
                 {
                     ToolTip = 'Specifies the value of the Approved field';
@@ -112,6 +120,21 @@ page 56084 "Approved Recruitment Requests"
 
     actions
     {
+        area(processing)
+        {
+            action("List of Applicant submitted")
+            {
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                Image = List;
+                ToolTip = 'Executes the Remove from Portal action';
+                RunObject = Page "Job Applications - Submitted'";
+                RunPageLink = Submitted = const(true), "Recruitment Needs No." = field("No.");
+
+
+            }
+        }
     }
 }
 

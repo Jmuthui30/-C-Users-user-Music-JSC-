@@ -112,6 +112,7 @@ page 51954 "Company Jobs"
                     ShowMandatory = true;
                     NotBlank = true;
                 }
+
                 field("Objective"; Rec."Objective")
                 {
                     ApplicationArea = all;

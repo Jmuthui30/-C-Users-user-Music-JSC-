@@ -173,6 +173,14 @@ page 58082 "Recruitment Request New"
                     ToolTip = 'Specifies the value of the Positions field';
                 }
             }
+            group("Constituion Requirement:")
+            {
+                field("Constitution Requirement"; "Constitution Requirement")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Constitution Requirement field';
+                }
+            }
             group("Reporting Responsibilities:")
             {
                 field("Reporting Responsibilities"; "Reporting Responsibilities")
@@ -245,7 +253,7 @@ page 58082 "Recruitment Request New"
                     ToolTip = 'Specifies the value of the Positions field';
 
                 }
-                  field("Terms and Conditions 3"; "Terms and Conditions 3")
+                field("Terms and Conditions 3"; "Terms and Conditions 3")
                 {
                     MultiLine = true;
                     ApplicationArea = All;

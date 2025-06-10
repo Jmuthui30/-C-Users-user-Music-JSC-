@@ -169,6 +169,16 @@ page 56085 "Recruitment Card"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Positions field';
+                    MultiLine = true;
+                }
+            }
+            group("Constitution Requirement:")
+            {
+                field("Constitution Requirement"; "Constitution Requirement")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Constitution Requirement field';
+                    MultiLine = true;
                 }
             }
             group("Reporting Responsibilities:")
