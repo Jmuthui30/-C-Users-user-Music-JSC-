@@ -176,6 +176,16 @@ page 56045 "Recruitment Card Archive"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Positions field';
+                    MultiLine = true;
+                }
+            }
+            group("Constitutional and Statutory Requirements for Appointment:")
+            {
+                field("Constitution Requirement"; "Constitution Requirement")
+                {
+                    ApplicationArea = All;
+                    MultiLine = true;
+                    ToolTip = 'Specifies the value of the Constitutional and Statutory Requirements for Appointment field';
                 }
             }
             group("Reporting Responsibilities:")

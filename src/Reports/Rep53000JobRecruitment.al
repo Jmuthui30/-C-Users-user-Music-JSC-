@@ -30,6 +30,7 @@ report 53000 "Job Recruitment Report"
             column(Job_Academic_and_Professional; "Job Academic and Professional") { }
             column(Terms_and_Conditions; "Terms and Conditions") { }
             column(Terms_and_Conditions_2; "Terms and Conditions 2") { }
+            column(Terms_and_Conditions_3; "Terms and Conditions 3") { }
 
             dataitem(Academic_Prof_; "Job Qualifications")
             {//DataItemTableView = SORTING(Code)ORDER(Descending)WHERE("Institution Code"=FILTER(<>''));

@@ -497,6 +497,8 @@ table 51880 "Recruitment Needs"
         { }
         field(124; Grade; Code[20])
         { }
+             field(231 ;"Constitution Requirement"; Text[2048])
+        { }
 
 
     }
