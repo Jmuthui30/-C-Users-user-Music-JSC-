@@ -136,21 +136,26 @@ codeunit 52116 "Portal Integration"
     var
         EmployeeLeaves: Record "HR Leave Ledger Entries";
         TotalLeaveDays: Decimal;
+        LeavePeriod: Record "Leave Period";
     begin
         if HrEmployees.Get(EmpNo) then begin
-            EmployeeLeaves.Reset;
-            EmployeeLeaves.SetRange("Staff No.", EmpNo);
-            EmployeeLeaves.SetRange("Leave Type", LeaveCode);
-            EmployeeLeaves.SetRange(Closed, false);
+            LeavePeriod.Reset();
+            LeavePeriod.SetRange(Closed, false);
+            if LeavePeriod.Find('-') then begin
+                EmployeeLeaves.Reset;
+                EmployeeLeaves.SetRange("Staff No.", EmpNo);
+                EmployeeLeaves.SetRange("Leave Type", LeaveCode);
+                EmployeeLeaves.SetRange(Closed, false);
+                EmployeeLeaves.SetRange("Leave Period Code", LeavePeriod."Leave Period Code");
+                if EmployeeLeaves.FindSet() then begin
+                    repeat
+                        TotalLeaveDays += EmployeeLeaves."No. of days";
+                    until EmployeeLeaves.Next() = 0;
+                end;
 
-            if EmployeeLeaves.FindSet() then begin
-                repeat
-                    TotalLeaveDays += EmployeeLeaves."No. of days";
-                until EmployeeLeaves.Next() = 0;
+                LeaveBalance := TotalLeaveDays;
+                exit(LeaveBalance);
             end;
-
-            LeaveBalance := TotalLeaveDays;
-            exit(LeaveBalance);
         end;
     end;
 
