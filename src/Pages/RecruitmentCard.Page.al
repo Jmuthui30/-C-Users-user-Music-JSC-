@@ -180,17 +180,20 @@ page 56085 "Recruitment Card"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the';
                 }
+
                 grid(function)
                 {
                     field("Functions of the Judge"; "Functions of the Judge")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the';
+                        MultiLine = true;
                     }
                     field("Functions of the Judge1"; "Functions of the Judge1")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the';
+                        MultiLine = true;
                     }
                 }
 
