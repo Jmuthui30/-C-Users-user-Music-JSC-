@@ -159,6 +159,7 @@ page 51020 Imprestjsc
                     ShowMandatory = true;
                     ToolTip = 'Specifies the value of the Purpose field';
                 }
+
                 field(Destination; Rec.Destination)
                 {
                     Caption = 'Destination';
@@ -288,7 +289,7 @@ page 51020 Imprestjsc
                         ToolTip = 'Specifies the value of the EFT Date field';
                     }
                 }
-                field("Payment Type";"Payment Type") { ApplicationArea = all; Visible = false; }
+                field("Payment Type"; "Payment Type") { ApplicationArea = all; Visible = false; }
             }
             part(ImprestLines; "Imprest Lines")
             {
