@@ -406,6 +406,25 @@ page 56045 "Recruitment Card Archive"
 
                     end;
                 }
+                action("OFFICE OF JUDGE")
+                {
+                    Promoted = true;
+                    PromotedCategory = Category5;
+                    PromotedIsBig = true;
+                    Image = RemoveContacts;
+                    ToolTip = 'Executes the Remove from Portal action';
+                    Caption = 'OFFICE OF JUDGE ';
+                    trigger OnAction()
+                    var
+                        RecruitmentNeeds: Record "Recruitment Needs";
+                    begin
+                        RecruitmentNeeds.Reset();
+                        RecruitmentNeeds.SetRange(RecruitmentNeeds."No.", "No.");
+                        if RecruitmentNeeds.Find('-') then
+                            Report.Run(53011, true, false, RecruitmentNeeds);
+
+                    end;
+                }
 
                 action("List of Jobs submitted")
                 {

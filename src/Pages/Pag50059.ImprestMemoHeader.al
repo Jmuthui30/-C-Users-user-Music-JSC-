@@ -520,6 +520,21 @@ page 50059 "Imprest Memo Header"
                         Message('Completed');
                     end;
                 }
+                action(ReportMemo)
+                {
+                    ApplicationArea = All;
+
+                    ;
+                    Caption = 'Memo Report';
+                    Image = SendConfirmation;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    PromotedIsBig = true;
+                    PromotedOnly = true;
+                    RunObject = report "Memo Report";
+                    //Visible = Rec.Status = Rec.Status::Released;
+
+                }
             }
         }
     }

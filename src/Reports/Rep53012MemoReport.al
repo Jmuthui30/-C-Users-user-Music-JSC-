@@ -51,13 +51,13 @@ report 53012 "Memo Report"
 
         actions
         {
-            area(processing)
-            {
-                action(LayoutName)
-                {
+            // area(processing)
+            // {
+            //     action(LayoutName)
+            //     {
 
-                }
-            }
+            //     }
+            // }
         }
     }
 
