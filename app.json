@@ -2,7 +2,11 @@
   "id": "2b9102ab-c3d6-4647-bdc5-7fe38da421b4",
   "name": "JSC 2.0_",
   "publisher": "ALTAIR RETRO LTD",
+<<<<<<< HEAD
   "version": "1.0.1.259",
+=======
+  "version": "1.0.1.252",
+>>>>>>> 274c3c39e0aeadd04df246f2e8751b8c5c4d42f7
   "brief": "",
   "description": "",
   "privacyStatement": "",
