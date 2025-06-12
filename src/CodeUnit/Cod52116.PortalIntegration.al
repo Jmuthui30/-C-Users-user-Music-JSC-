@@ -102,11 +102,22 @@ codeunit 52116 "Portal Integration"
     var
 
     begin
-        // IF CompanyInformation.GET THEN
+
         PortalUploads.Reset();
         PortalUploads.SetRange("Document No", DocumentNo);
         PortalUploads.SetRange(Description, Description);
         if PortalUploads.Find('-') then begin
+            PortalUploads.Delete();
+            PortalUploads.INIT;
+            PortalUploads."Document No" := DocumentNo;
+            PortalUploads.Description := Description;
+            PortalUploads.LocalUrl := Url;
+            PortalUploads.Uploaded := TRUE;
+            PortalUploads.Fetch_To_Sharepoint := TRUE;
+            IF PortalUploads.INSERT(TRUE) THEN BEGIN
+                uploaded := TRUE;
+                EXIT(uploaded);
+            END;
         end else begin
             PortalUploads.INIT;
             PortalUploads."Document No" := DocumentNo;
