@@ -1,6 +1,6 @@
 codeunit 52116 "Portal Integration"
 {
-    Permissions = tabledata "Job Application" = RIMD;
+    Permissions = tabledata "Job Application" = RIMD, tabledata "Approval Entry" = RIMD;
 
     var
         HrEmployees: Record Employee;
@@ -355,6 +355,7 @@ codeunit 52116 "Portal Integration"
     procedure CreateLeaveApplication(EmpNo: Code[50]; LeaveType: Code[30]; StartDate: Date; Days: Decimal; Reliever: Code[30]; Remarks: Text[2048]; ApplicationNo: Code[50]) No: Code[30]
     var
         HRSetup: Record "Human Resources Setup";
+        LeaveReliever: Record "Leave Relievers";
     begin
 
         HrEmployees.Reset();
@@ -372,13 +373,23 @@ codeunit 52116 "Portal Integration"
                 Leave.Validate("Leave Code");
                 Leave."Start Date" := StartDate;
                 Leave."Days Applied" := Days;
+                Leave."User ID" := 'DEVELOPER';
                 Leave.Validate("Start Date");
                 Leave."Duties Taken Over By" := Reliever;
                 Leave.Validate("Duties Taken Over By");
                 Leave.Comments := Remarks;
                 Leave.Status := Leave.Status::Open;
                 if Leave.Modify(true) then
-                    No := Leave."Application No";
+                    LeaveReliever.Reset();
+                LeaveReliever.SetRange("Leave Code", Leave."Application No");
+                if LeaveReliever.Find('-') then
+                    LeaveReliever.Delete();
+                LeaveReliever.Init();
+                LeaveReliever."Staff No" := CopyStr(Reliever, 1, MaxStrLen(LeaveReliever."Staff No"));
+                LeaveReliever."Leave Code" := Leave."Application No";
+                LeaveReliever.Validate("Staff No");
+                LeaveReliever.Insert();
+                No := Leave."Application No";
                 exit(No);
             end else begin
                 Leave.Init();
@@ -398,9 +409,15 @@ codeunit 52116 "Portal Integration"
                 Leave."Duties Taken Over By" := Reliever;
                 Leave.Validate("Duties Taken Over By");
                 Leave.Comments := Remarks;
+                Leave."User ID" := 'DEVELOPER';
                 Leave.Status := Leave.Status::Open;
                 if Leave.Modify(true) then
-                    No := Leave."Application No";
+                    LeaveReliever.Init();
+                LeaveReliever."Staff No" := CopyStr(Reliever, 1, MaxStrLen(LeaveReliever."Staff No"));
+                LeaveReliever."Leave Code" := Leave."Application No";
+                LeaveReliever.Validate("Staff No");
+                LeaveReliever.Insert();
+                No := Leave."Application No";
                 exit(No);
             end;
         end;
@@ -480,7 +497,7 @@ codeunit 52116 "Portal Integration"
             ImprestHeader."Shortcut Dimension 1 Code" := CopyStr(Donor, 1, MaxStrLen(ImprestHeader."Shortcut Dimension 1 Code"));
             ImprestHeader."Shortcut Dimension 2 Code" := CopyStr(Program, 1, MaxStrLen(ImprestHeader."Shortcut Dimension 2 Code"));
             ImprestHeader."Travel Type" := TravelType;
-            ImprestHeader.Currency := CopyStr(Currency, 1, MaxStrLen(ImprestHeader.Currency));
+            //ImprestHeader.Currency := CopyStr(Currency, 1, MaxStrLen(ImprestHeader.Currency));
             ImprestHeader."Payment Narration" := CopyStr(Purpose, 1, MaxStrLen(ImprestHeader."Payment Narration"));
             ImprestHeader.Destination := CopyStr(Destination, 1, MaxStrLen(ImprestHeader.Destination));
             ImprestHeader."Date of Project" := TravelDate;
@@ -505,7 +522,7 @@ codeunit 52116 "Portal Integration"
             ImprestHeader."Shortcut Dimension 1 Code" := CopyStr(Donor, 1, MaxStrLen(ImprestHeader."Shortcut Dimension 1 Code"));
             ImprestHeader."Shortcut Dimension 2 Code" := CopyStr(Program, 1, MaxStrLen(ImprestHeader."Shortcut Dimension 2 Code"));
             ImprestHeader."Travel Type" := TravelType;
-            ImprestHeader.Currency := CopyStr(Currency, 1, MaxStrLen(ImprestHeader.Currency));
+            //ImprestHeader.Currency := CopyStr(Currency, 1, MaxStrLen(ImprestHeader.Currency));
             ImprestHeader."Payment Narration" := CopyStr(Purpose, 1, MaxStrLen(ImprestHeader."Payment Narration"));
             ImprestHeader.Destination := CopyStr(Destination, 1, MaxStrLen(ImprestHeader.Destination));
             ImprestHeader."Date of Project" := TravelDate;
