@@ -210,6 +210,7 @@ page 51026 "Imprests Surrender"
                     Enabled = false;
                     ToolTip = 'Specifies the value of the Cashier field';
                 }
+                field("Payment Type";"Payment Type"){ApplicationArea=all;Visible=false;}
             }
             part(Control19; "Imprest Surrender Lines")
             {

@@ -158,6 +158,7 @@ page 51016 "Petty Cash Surrender"
                     Enabled = false;
                     ToolTip = 'Specifies the value of the Cashier field';
                 }
+                field("Payment Type"; "Payment Type") { ApplicationArea = all; Visible = false; }
             }
             part("Petty Cash Surrender Lines"; "Imprest Surrender Lines")
             {

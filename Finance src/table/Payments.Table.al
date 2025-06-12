@@ -1934,10 +1934,11 @@ table 51004 Payments
     var
         UserSetupRec: Record "User Setup";
     begin
+         if GuiAllowed then begin
         if not UserSetupRec.Get(UserId) then
             Error(NoUserAccErr)
         else
-            if GuiAllowed then begin
+           
                 UserSetupRec.TestField("Customer No.");
                 UserSetupRec.TestField("Responsibility Centre");
                 UserSetupRec.TestField("Global Dimension 1 Code");
