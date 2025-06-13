@@ -143,9 +143,11 @@ table 50023 "Applicant Current Employment"
     }
     keys
     {
-        key(Key1; "Applicant No.", "Employer/Institution Name", "Currently Employment", "Line No")
+        key(Key1; "Applicant No.", "Employer/Institution Name", "Currently Employment")
         {
         }
+        key(key2; "Line No") { }
+
     }
     var
         Dates: Codeunit "HR Dates Mgt";
