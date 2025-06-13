@@ -46,6 +46,10 @@ table 52076 "SharePoint Intergration"
         {
             ExtendedDatatype = URL;
         }
+        field(11; "Document Type"; Code[250])
+        {
+
+        }
     }
 
     keys
