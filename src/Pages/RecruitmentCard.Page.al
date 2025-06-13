@@ -206,6 +206,7 @@ page 56085 "Recruitment Card"
                     ToolTip = 'Specifies the value of the Constitution Requirement field';
                     MultiLine = true;
                 }
+
             }
             group("Reporting Responsibilities:")
             {
@@ -271,6 +272,18 @@ page 56085 "Recruitment Card"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Positions field';
 
+                }
+                field("Terms and Conditions 2"; "Terms and Conditions 2")
+                {
+                    MultiLine = true;
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Positions field';
+                }
+                field("Terms and Conditions 3"; "Terms and Conditions 3")
+                {
+                    MultiLine = true;
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Positions field';
                 }
             }
             part(RecruitmentCosts; "Recruitment Costs")
