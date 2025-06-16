@@ -926,8 +926,12 @@ page 51984 "Applicant Card-All"
                 begin
                     Rec.Reset;
                     Rec.SetRange("No.", Rec."No.");
+
+                    //  Rec.SetRange("Job ID","Job ID");
                     REPORT.Run(Report::"Applicant Form", true, false, Rec);
                 end;
+
+
             }
         }
     }

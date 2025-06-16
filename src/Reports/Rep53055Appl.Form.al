@@ -8,12 +8,15 @@ report 53055 "Applicant Form"
     {
         dataitem(Applicant; Applicant)
         {
+            //mjk
             RequestFilterFields = "No.";
+            column(No_; "No.") { }
             column(Position_Applied_For; "Position Applied For") { }
             column(Vacancy_No_; "Vacancy No.") { }
             column(Title; Title)
             {
             }
+            column(Job_ID; "Job ID") { }
 
             column(Personal_Title; "Personal Title") { }
             column(FullName; FullName)

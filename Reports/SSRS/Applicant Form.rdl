@@ -448,28 +448,28 @@
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox55">
+                        <Textbox Name="No_">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!No_.Value</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Times New Roman</FontFamily>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
-                                    <Color>#000000</Color>
+                                    <Color>LightGrey</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox55</rd:DefaultName>
+                          <rd:DefaultName>No_</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -973,7 +973,7 @@
                                     <FontFamily>Times New Roman</FontFamily>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
-                                    <Format>dd/mm/yyyy</Format>
+                                    <Format>MM/dd/yyyy</Format>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
                                   </Style>
@@ -3525,7 +3525,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -13317,6 +13316,9 @@ Z4KtmBl+B15devmeMyM/982QooqY5Pl8dVQj9yG8ZiXvUf3nNeLP+CnXiSa61WPwZ8NfB3hbT7iHy7OW
   <DataSets>
     <DataSet Name="DataSet_Result">
       <Fields>
+        <Field Name="No_">
+          <DataField>No_</DataField>
+        </Field>
         <Field Name="Position_Applied_For">
           <DataField>Position_Applied_For</DataField>
         </Field>
@@ -13325,6 +13327,9 @@ Z4KtmBl+B15devmeMyM/982QooqY5Pl8dVQj9yG8ZiXvUf3nNeLP+CnXiSa61WPwZ8NfB3hbT7iHy7OW
         </Field>
         <Field Name="Title">
           <DataField>Title</DataField>
+        </Field>
+        <Field Name="Job_ID">
+          <DataField>Job_ID</DataField>
         </Field>
         <Field Name="Personal_Title">
           <DataField>Personal_Title</DataField>
