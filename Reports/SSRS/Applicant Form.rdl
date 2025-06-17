@@ -973,7 +973,7 @@
                                     <FontFamily>Times New Roman</FontFamily>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
-                                    <Format>MM/dd/yyyy</Format>
+                                    <Format>dd/MM/yyyy</Format>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
                                   </Style>
@@ -988,26 +988,6 @@
                               <Style>Solid</Style>
                               <Width>0.25pt</Width>
                             </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>0.25pt</Width>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>0.25pt</Width>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>0.25pt</Width>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>0.25pt</Width>
-                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -10084,7 +10064,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!Applicant_Employer_Institution_Name.Value</Value>
+                                  <Value>=Fields!Relevant_Institution.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -10714,7 +10694,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!Substantive_Post.Value</Value>
+                                  <Value>=Fields!Substantive_Post7.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -11160,21 +11140,21 @@
                     <TablixCell />
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox317">
+                        <Textbox Name="Criminal_Declaration">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=IIf(Fields!Criminal_Declaration.Value =TRUE, "YES","NO")</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox317</rd:DefaultName>
+                          <rd:DefaultName>Criminal_Declaration</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -11240,21 +11220,21 @@
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox309">
+                        <Textbox Name="Criminal_Decl__Specification">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!Criminal_Decl__Specification.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox309</rd:DefaultName>
+                          <rd:DefaultName>Criminal_Decl__Specification</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -11317,21 +11297,21 @@
                     <TablixCell />
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox295">
+                        <Textbox Name="Dismissal_Declaration">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=IIf(Fields!Dismissal_Declaration.Value =TRUE, "YES","NO")</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox295</rd:DefaultName>
+                          <rd:DefaultName>Dismissal_Declaration</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -11397,21 +11377,21 @@
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox300">
+                        <Textbox Name="Dismissal_Decl__Specification">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!Dismissal_Decl__Specification.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox300</rd:DefaultName>
+                          <rd:DefaultName>Dismissal_Decl__Specification</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -11496,6 +11476,7 @@
                 <TablixMember />
               </TablixMembers>
             </TablixRowHierarchy>
+            <DataSetName>DataSet_Result</DataSetName>
             <Top>19.49388in</Top>
             <Left>0.42167in</Left>
             <Height>2.25in</Height>
@@ -13493,6 +13474,9 @@ Z4KtmBl+B15devmeMyM/982QooqY5Pl8dVQj9yG8ZiXvUf3nNeLP+CnXiSa61WPwZ8NfB3hbT7iHy7OW
         <Field Name="Criminal_Decl__Specification">
           <DataField>Criminal_Decl__Specification</DataField>
         </Field>
+        <Field Name="Dismissal_Decl__Specification">
+          <DataField>Dismissal_Decl__Specification</DataField>
+        </Field>
         <Field Name="Dismissal_Declaration">
           <DataField>Dismissal_Declaration</DataField>
         </Field>
@@ -13585,6 +13569,9 @@ Z4KtmBl+B15devmeMyM/982QooqY5Pl8dVQj9yG8ZiXvUf3nNeLP+CnXiSa61WPwZ8NfB3hbT7iHy7OW
         </Field>
         <Field Name="Applicant_Gross_Salary__KSH_Format">
           <DataField>Applicant_Gross_Salary__KSH_Format</DataField>
+        </Field>
+        <Field Name="Substantive_Post7">
+          <DataField>Substantive_Post7</DataField>
         </Field>
         <Field Name="Sample_Title">
           <DataField>Sample_Title</DataField>

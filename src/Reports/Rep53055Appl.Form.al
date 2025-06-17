@@ -148,7 +148,7 @@ report 53055 "Applicant Form"
             }
             column(Criminal_Declaration; "Criminal Declaration") { }
             column(Criminal_Decl__Specification; "Criminal Decl. Specification") { }
-            //  column(Disability_Description;"Disability Description"){}
+            column(Dismissal_Decl__Specification; "Dismissal Decl. Specification") { }
             column(Dismissal_Declaration; "Dismissal Declaration") { }
             column(City; City) { }
             //column()
@@ -206,6 +206,7 @@ report 53055 "Applicant Form"
                 column(Applicant_Employment_Period; "Employment Period") { }
                 column(Applicant_Expected_Salary__KSH_; "Expected Salary (KSH)") { }
                 column(Applicant_Gross_Salary__KSH_; "Gross Salary (KSH)") { }
+                column(Substantive_Post7; "Substantive Post") { }
             }
             dataitem("Titles of Sample Writings"; "Titles of Sample Writings")
             {
