@@ -477,8 +477,9 @@ codeunit 52116 "Portal Integration"
             if RecruitmentNeeds.Find('-') then
                 Applicant."Job Description" := RecruitmentNeeds."Job Description";
             Applicant."Recruitment Needs NO" := RecruitmentNeeds."No.";
-            Applicant."Job Applied For" := RecruitmentNeeds."Job Description";
+            Applicant."Job Applied For" := RecruitmentNeeds.Description;
             Applicant."Vacancy No." := Format(RecruitmentNeeds.Positions);
+            Applicant."Position Applied For" := RecruitmentNeeds.Description;
             Applicant.Modify();
             ApplicantReport.SetTableView(Applicant);
             TempBlob.CreateOutStream(StatementOutstream);
