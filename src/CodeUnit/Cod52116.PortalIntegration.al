@@ -466,10 +466,20 @@ codeunit 52116 "Portal Integration"
         ApplicantReport: Report 53055;
         Base64Convert: Codeunit "Base64 Convert";
         Applicant: Record "Applicant";
+        RecruitmentNeeds: Record "Recruitment Needs";
     begin
+
         Applicant.Reset;
         Applicant.SetRange("No.", No);
         if Applicant.Find('-') then begin
+            RecruitmentNeeds.Reset();
+            RecruitmentNeeds.SetRange("Job ID", Applicant."Job ID");
+            if RecruitmentNeeds.Find('-') then
+                Applicant."Job Description" := RecruitmentNeeds."Job Description";
+            Applicant."Recruitment Needs NO" := RecruitmentNeeds."No.";
+            Applicant."Job Applied For" := RecruitmentNeeds."Job Description";
+            Applicant."Vacancy No." := Format(RecruitmentNeeds.Positions);
+            Applicant.Modify();
             ApplicantReport.SetTableView(Applicant);
             TempBlob.CreateOutStream(StatementOutstream);
             if ApplicantReport.SaveAs('', ReportFormat::Pdf, StatementOutstream) then begin

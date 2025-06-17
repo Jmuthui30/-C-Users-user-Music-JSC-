@@ -146,6 +146,7 @@ report 53055 "Applicant Form"
             column(Current_Expected_Salary; "Current/Expected Salary")
             {
             }
+            column(Expected_Salary; "Expected Salary") { }
             column(Criminal_Declaration; "Criminal Declaration") { }
             column(Criminal_Decl__Specification; "Criminal Decl. Specification") { }
             column(Dismissal_Decl__Specification; "Dismissal Decl. Specification") { }

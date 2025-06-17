@@ -6723,14 +6723,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Current_Expected_Salary">
+                        <Textbox Name="Expected_Salary">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!Current_Expected_Salary.Value</Value>
+                                  <Value>=Fields!Expected_Salary.Value</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Times New Roman</FontFamily>
@@ -6745,32 +6745,12 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Current_Expected_Salary</rd:DefaultName>
+                          <rd:DefaultName>Expected_Salary</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
                               <Width>0.25pt</Width>
                             </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>0.25pt</Width>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>0.25pt</Width>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>0.25pt</Width>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>0.25pt</Width>
-                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -10794,7 +10774,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!Sector_Of_Employement.Value</Value>
+                                  <Value>=Fields!Applicant_Sector.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -13467,6 +13447,12 @@ Z4KtmBl+B15devmeMyM/982QooqY5Pl8dVQj9yG8ZiXvUf3nNeLP+CnXiSa61WPwZ8NfB3hbT7iHy7OW
         </Field>
         <Field Name="Current_Expected_SalaryFormat">
           <DataField>Current_Expected_SalaryFormat</DataField>
+        </Field>
+        <Field Name="Expected_Salary">
+          <DataField>Expected_Salary</DataField>
+        </Field>
+        <Field Name="Expected_SalaryFormat">
+          <DataField>Expected_SalaryFormat</DataField>
         </Field>
         <Field Name="Criminal_Declaration">
           <DataField>Criminal_Declaration</DataField>
