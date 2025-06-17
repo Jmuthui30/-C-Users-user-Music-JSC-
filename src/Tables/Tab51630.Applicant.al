@@ -17,25 +17,25 @@ table 51630 "Applicant"
                 if "No." <> xRec."No." then begin
                     HumanResSetup.Get;
                     NoSeriesMgt.TestManual(HumanResSetup."Applicants Nos.");
-                    "No. Series":='';
-                //
+                    "No. Series" := '';
+                    //
                 end;
                 HumanResSetup.Get;
-                "Probation Period":=HumanResSetup."Probation Period";
-                "Probation Termination Notice":=HumanResSetup."Probation Termination Notice";
-                "Annual Leave Days":=HumanResSetup."Annual Leave Days";
-                "Leave Notice Period":=HumanResSetup."Leave Notice Period";
-                "Contract Termination Notice":=HumanResSetup."Contract Termination Notice";
-                "Hours Worked Per Week":=HumanResSetup."Hours Worked Per Week";
-                "Days Worked Per Week":=HumanResSetup."Days Worked Per Week";
-                "Reporting Time":=HumanResSetup."Reporting Time";
-                "Closing Time":=HumanResSetup."Closing Time";
-                "Lunch Break Duration":=HumanResSetup."Lunch Break Duration";
-                "Lunch Start Time":=HumanResSetup."Lunch Start Time";
-                "Lunch End Time":=HumanResSetup."Lunch End Time";
-                "Week Start Day":=HumanResSetup."Week Start Day";
-                "Week End Day":=HumanResSetup."Week End Day";
-                "Offer Signed By":=HumanResSetup."Offers Signed By";
+                "Probation Period" := HumanResSetup."Probation Period";
+                "Probation Termination Notice" := HumanResSetup."Probation Termination Notice";
+                "Annual Leave Days" := HumanResSetup."Annual Leave Days";
+                "Leave Notice Period" := HumanResSetup."Leave Notice Period";
+                "Contract Termination Notice" := HumanResSetup."Contract Termination Notice";
+                "Hours Worked Per Week" := HumanResSetup."Hours Worked Per Week";
+                "Days Worked Per Week" := HumanResSetup."Days Worked Per Week";
+                "Reporting Time" := HumanResSetup."Reporting Time";
+                "Closing Time" := HumanResSetup."Closing Time";
+                "Lunch Break Duration" := HumanResSetup."Lunch Break Duration";
+                "Lunch Start Time" := HumanResSetup."Lunch Start Time";
+                "Lunch End Time" := HumanResSetup."Lunch End Time";
+                "Week Start Day" := HumanResSetup."Week Start Day";
+                "Week End Day" := HumanResSetup."Week End Day";
+                "Offer Signed By" := HumanResSetup."Offers Signed By";
                 Modify;
             end;
         }
@@ -57,7 +57,7 @@ table 51630 "Applicant"
 
             trigger OnValidate()
             begin
-                if("Search Name" = UpperCase(xRec.Initials)) or ("Search Name" = '')then "Search Name":=Initials;
+                if ("Search Name" = UpperCase(xRec.Initials)) or ("Search Name" = '') then "Search Name" := Initials;
             end;
         }
         field(6; "Position Applied For"; Text[200])
@@ -91,7 +91,7 @@ table 51630 "Applicant"
             // ValidateTableRelation = false;
             trigger OnValidate()
             begin
-            //PostCode.ValidateCity(City, "Post Code", "Home County", "Country/Region Code", (CurrFieldNo <> 0) and GuiAllowed);
+                //PostCode.ValidateCity(City, "Post Code", "Home County", "Country/Region Code", (CurrFieldNo <> 0) and GuiAllowed);
             end;
         }
         field(11; "Post Code"; Code[20])
@@ -114,8 +114,8 @@ table 51630 "Applicant"
                  //  PostCode.ValidatePostCode(City, "Post Code", "Home County", "Country/Region Code", (CurrFieldNo <> 0) and GuiAllowed);
                 PostCode.RESET;
                 PostCode.SETRANGE(PostCode.Code, "Post Code");
-                IF PostCode.FIND('-')THEN BEGIN
-                    City:=PostCode.City;
+                IF PostCode.FIND('-') THEN BEGIN
+                    City := PostCode.City;
                 END;
             end;
         }
@@ -139,7 +139,7 @@ table 51630 "Applicant"
         field(16; "Alt. Address Code"; Code[10])
         {
             Caption = 'Alt. Address Code';
-            TableRelation = "Alternative Address".Code WHERE("Employee No."=FIELD("No."));
+            TableRelation = "Alternative Address".Code WHERE("Employee No." = FIELD("No."));
         }
         field(17; "Alt. Address Start Date"; Date)
         {
@@ -161,7 +161,7 @@ table 51630 "Applicant"
             trigger OnValidate()
             begin
                 AgeValidation;
-                Age:=HRDatesExt.DetermineDatesDiffrence("Birth Date", Today);
+                Age := HRDatesExt.DetermineDatesDiffrence("Birth Date", Today);
             end;
         }
         field(21; "Social Security No."; Text[30])
@@ -177,7 +177,7 @@ table 51630 "Applicant"
         {
             Caption = 'Union Membership No.';
         }
-        field(24; Gender;Enum "Employee Gender")
+        field(24; Gender; Enum "Employee Gender")
         {
             Caption = 'Gender';
         }
@@ -189,7 +189,7 @@ table 51630 "Applicant"
         field(26; "Manager No."; Code[20])
         {
             Caption = 'Manager No.';
-            TableRelation = Employee where(Status=const(Active));
+            TableRelation = Employee where(Status = const(Active));
         }
         field(27; "Emplymt. Contract Code"; Code[10])
         {
@@ -212,7 +212,7 @@ table 51630 "Applicant"
         {
             Caption = 'Status';
             OptionCaption = '"Active",Inactive,Terminated/Withdrawn';
-            OptionMembers = Active, Inactive, Terminated;
+            OptionMembers = Active,Inactive,Terminated;
 
             //Editable = false;
             trigger OnValidate()
@@ -244,7 +244,7 @@ table 51630 "Applicant"
         {
             CaptionClass = '1,1,1';
             Caption = 'Global Dimension 1 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1), Blocked=const(false));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1), Blocked = const(false));
 
             trigger OnValidate()
             begin
@@ -255,7 +255,7 @@ table 51630 "Applicant"
         {
             CaptionClass = '1,1,2';
             Caption = 'Global Dimension 2 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2), Blocked=const(false));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2), Blocked = const(false));
 
             trigger OnValidate()
             begin
@@ -266,16 +266,16 @@ table 51630 "Applicant"
         {
             CaptionClass = '1,2,3';
             Caption = 'Global Dimension 3 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(3), Blocked=const(false));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(3), Blocked = const(false));
         }
         field(39; "Resource No."; Code[20])
         {
             Caption = 'Resource No.';
-            TableRelation = Resource WHERE(Type=CONST(Person));
+            TableRelation = Resource WHERE(Type = CONST(Person));
         }
         field(40; Comment; Boolean)
         {
-            CalcFormula = Exist("Human Resource Comment Line" WHERE("Table Name"=CONST(Employee), "No."=FIELD("No.")));
+            CalcFormula = Exist("Human Resource Comment Line" WHERE("Table Name" = CONST(Employee), "No." = FIELD("No.")));
             Caption = 'Comment';
             Editable = false;
             FieldClass = FlowField;
@@ -290,14 +290,14 @@ table 51630 "Applicant"
             CaptionClass = '1,3,1';
             Caption = 'Global Dimension 1 Filter';
             FieldClass = FlowFilter;
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1), Blocked=const(false));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1), Blocked = const(false));
         }
         field(43; "Global Dimension 2 Filter"; Code[20])
         {
             CaptionClass = '1,3,2';
             Caption = 'Global Dimension 2 Filter';
             FieldClass = FlowFilter;
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2), Blocked=const(false));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2), Blocked = const(false));
         }
         field(44; "Cause of Absence Filter"; Code[10])
         {
@@ -307,9 +307,9 @@ table 51630 "Applicant"
         }
         field(45; "Total Absence (Base)"; Decimal)
         {
-            CalcFormula = Sum("Employee Absence"."Quantity (Base)" WHERE("Employee No."=FIELD("No."), "Cause of Absence Code"=FIELD("Cause of Absence Filter"), "From Date"=FIELD("Date Filter")));
+            CalcFormula = Sum("Employee Absence"."Quantity (Base)" WHERE("Employee No." = FIELD("No."), "Cause of Absence Code" = FIELD("Cause of Absence Filter"), "From Date" = FIELD("Date Filter")));
             Caption = 'Total Absence (Base)';
-            DecimalPlaces = 0: 5;
+            DecimalPlaces = 0 : 5;
             Editable = false;
             FieldClass = FlowField;
         }
@@ -321,7 +321,7 @@ table 51630 "Applicant"
         {
             Caption = 'Employee No. Filter';
             FieldClass = FlowFilter;
-            TableRelation = Employee where(Status=const(Active));
+            TableRelation = Employee where(Status = const(Active));
         }
         field(48; Pager; Text[30])
         {
@@ -368,11 +368,11 @@ table 51630 "Applicant"
             var
                 CompanyJobs: Record "Company Jobs";
             begin
-                If CompanyJobs.Get("Job ID")then "Position Applied For":=CompanyJobs.Name;
-                "Vacancy No.":=Format(CompanyJobs."No of Posts");
+                If CompanyJobs.Get("Job ID") then "Position Applied For" := CompanyJobs.Name;
+                "Vacancy No." := Format(CompanyJobs."No of Posts");
             end;
         }
-        field(58; "Applicant Type";Enum ApplicantType)
+        field(58; "Applicant Type"; Enum ApplicantType)
         {
             DataClassification = ToBeClassified;
         }
@@ -442,19 +442,19 @@ table 51630 "Applicant"
         field(78; "Offer Status"; Option)
         {
             OptionCaption = 'Applicant,Offer Made,Accepted Offer,Reported to Work,Rejected Offer,Failed';
-            OptionMembers = Applicant, "Offer Made", "Accepted Offer", "Reported to Work", "Rejected Offer", Failed;
+            OptionMembers = Applicant,"Offer Made","Accepted Offer","Reported to Work","Rejected Offer",Failed;
             Editable = false;
         }
         field(79; Shortlisting; Option)
         {
             DataClassification = ToBeClassified;
             OptionCaption = 'Open,Passed,Failed';
-            OptionMembers = Open, Passed, Failed;
+            OptionMembers = Open,Passed,Failed;
             Editable = false;
         }
         field(80; "Total Interview Marks"; Decimal)
         {
-            CalcFormula = Sum("Job Interview Rating".Marks WHERE("Applicant No"=FIELD("No.")));
+            CalcFormula = Sum("Job Interview Rating".Marks WHERE("Applicant No" = FIELD("No.")));
             Editable = false;
             FieldClass = FlowField;
         }
@@ -462,7 +462,7 @@ table 51630 "Applicant"
         {
             DataClassification = ToBeClassified;
             OptionCaption = ' ,Passed,Failed';
-            OptionMembers = " ", Passed, Failed;
+            OptionMembers = " ",Passed,Failed;
             Editable = true;
         }
         field(82; "National ID"; Code[10])
@@ -511,7 +511,7 @@ table 51630 "Applicant"
         field(89; "Passport No."; Code[10])
         {
         }
-        field(90; "Marital Status";Enum MaritalStatus)
+        field(90; "Marital Status"; Enum MaritalStatus)
         {
         }
         field(91; "NSSF No"; Code[20])
@@ -526,7 +526,7 @@ table 51630 "Applicant"
         field(94; "Full / Part Time"; Option)
         {
             OptionCaption = 'Full Time,Part Time';
-            OptionMembers = "Full Time", "Part Time";
+            OptionMembers = "Full Time","Part Time";
         }
         field(95; "Contract Type"; Code[10])
         {
@@ -553,8 +553,8 @@ table 51630 "Applicant"
         }
         field(102; Nationality; Option)
         {
-            OptionMembers = Kenyan, Others;
-        // TableRelation = "Country/Region".Code;
+            OptionMembers = Kenyan,Others;
+            // TableRelation = "Country/Region".Code;
         }
         field(222; "Nationality New"; Code[30])
         {
@@ -589,7 +589,7 @@ table 51630 "Applicant"
 
             trigger OnValidate()
             begin
-                if not "Criminal Declaration" then "Criminal Decl. Specification":='';
+                if not "Criminal Declaration" then "Criminal Decl. Specification" := '';
             end;
         }
         field(111; "Criminal Decl. Specification"; Text[250])
@@ -602,7 +602,7 @@ table 51630 "Applicant"
 
             trigger OnValidate()
             begin
-                if not "Dismissal Declaration" then "Dismissal Decl. Specification":='';
+                if not "Dismissal Declaration" then "Dismissal Decl. Specification" := '';
             end;
         }
         field(113; "Dismissal Decl. Specification"; Text[250])
@@ -624,7 +624,7 @@ table 51630 "Applicant"
         field(117; "Passport Photo"; Text[2048])
         {
             Caption = 'Passport Photo (Optional)';
-        //Subtype = Bitmap;
+            //Subtype = Bitmap;
         }
         field(118; "Identification Document"; Text[2048])
         {
@@ -668,7 +668,7 @@ table 51630 "Applicant"
         field(128; "Mediacal Examination"; Option)
         {
             Caption = 'Examination Results';
-            OptionMembers = " ", Passed, Failed;
+            OptionMembers = " ",Passed,Failed;
             Editable = false;
         }
         field(129; "Annual Gross Salary"; Decimal)
@@ -694,7 +694,7 @@ table 51630 "Applicant"
         {
             Caption = 'Qualified';
         }
-        field(259; "Job Applied For"; Code[20])
+        field(259; "Job Applied For"; Code[2000])
         {
             Editable = true;
             TableRelation = "Company Job";
@@ -704,12 +704,12 @@ table 51630 "Applicant"
             begin
                 Jobs.Reset();
                 Jobs.SetRange("Job ID", "Job Applied For");
-                if Jobs.Find('-')then begin
-                    "Job Description":=Jobs."Job Description";
-                    Practical:=Jobs.Practical;
-                    Classroom:=Jobs.Classroom;
-                    "Oral (Board)":=Jobs."Oral Interview (Board)";
-                    Oral:=Jobs."Oral Interview";
+                if Jobs.Find('-') then begin
+                    "Job Description" := Jobs."Job Description";
+                    Practical := Jobs.Practical;
+                    Classroom := Jobs.Classroom;
+                    "Oral (Board)" := Jobs."Oral Interview (Board)";
+                    Oral := Jobs."Oral Interview";
                 end;
             end;
         }
@@ -736,7 +736,7 @@ table 51630 "Applicant"
         }
         field(261; "Total Score"; Decimal)
         {
-            CalcFormula = sum("Applicants Qualification".Score where(No=field("No.")));
+            CalcFormula = sum("Applicants Qualification".Score where(No = field("No.")));
             FieldClass = FlowField;
             Caption = 'Total Score';
         }
@@ -746,11 +746,11 @@ table 51630 "Applicant"
 
             trigger OnValidate()
             begin
-                if Jobs.Get("Job Applied For")then begin
-                    Oral:=Jobs."Oral Interview";
-                    "Oral (Board)":=Jobs."Oral Interview (Board)";
-                    Classroom:=Jobs.Classroom;
-                    Practical:=Jobs.Practical;
+                if Jobs.Get("Job Applied For") then begin
+                    Oral := Jobs."Oral Interview";
+                    "Oral (Board)" := Jobs."Oral Interview (Board)";
+                    Classroom := Jobs.Classroom;
+                    Practical := Jobs.Practical;
                     Modify();
                 end;
             end;
@@ -761,7 +761,7 @@ table 51630 "Applicant"
 
             trigger OnValidate()
             begin
-                if "Interview Date" > Today()then Error('Date can not be in the future');
+                if "Interview Date" > Today() then Error('Date can not be in the future');
             end;
         }
         field(281; "Interview Time"; Time)
@@ -771,7 +771,7 @@ table 51630 "Applicant"
         field(282; "Personal Title"; Option)
         {
             OptionCaption = ',Mr,Mrs,Ms,Dr,Prof,Other';
-            OptionMembers = , Mr, Mrs, Ms, Dr, Prof, Other;
+            OptionMembers = ,Mr,Mrs,Ms,Dr,Prof,Other;
         }
         field(287; "First Language Read"; Boolean)
         {
@@ -807,7 +807,7 @@ table 51630 "Applicant"
         field(305; "Sector Of Employement"; Option)
         {
             OptionCaption = ',Public,Private,Academia,Corporate,Others (Specify),';
-            OptionMembers = , Public, Private, Academia, Corporate, Others;
+            OptionMembers = ,Public,Private,Academia,Corporate,Others;
         }
         field(306; "Others Description"; Text[2048])
         {
@@ -827,12 +827,12 @@ table 51630 "Applicant"
         field(311; "Terms of Service"; Option)
         {
             OptionCaption = ',Pensionable,Contract,Others (Specify),';
-            OptionMembers = , Pensionable, Contract, Others;
+            OptionMembers = ,Pensionable,Contract,Others;
         }
         field(312; "Other Language (R/W/S)"; Code[10])
         {
             DataClassification = CustomerContent;
-        //TableRelation = Language.Code;
+            //TableRelation = Language.Code;
         }
         field(313; "Other Language Read"; Boolean)
         {
@@ -846,7 +846,7 @@ table 51630 "Applicant"
         field(316; "SampleWritings count"; Integer)
         {
             FieldClass = FlowField;
-            CalcFormula = count("Titles of Sample Writings" where("Source No"=field("No.")));
+            CalcFormula = count("Titles of Sample Writings" where("Source No" = field("No.")));
         }
         field(317; "Nationality Name"; Code[100])
         {
@@ -870,7 +870,7 @@ table 51630 "Applicant"
         field(386; "Sub Ethnic Group"; Code[20])
         {
             DataClassification = ToBeClassified;
-        // TableRelation = "Ethnic Groups";
+            // TableRelation = "Ethnic Groups";
         }
     }
     keys
@@ -904,91 +904,106 @@ table 51630 "Applicant"
     begin
         OnDeleteApplicant(Rec);
     end;
+
     trigger OnInsert()
     begin
         if "No." = '' then begin
             HumanResSetup.Get;
             HumanResSetup.TestField("Applicants Nos.");
             NoSeriesMgt.InitSeries(HumanResSetup."Applicants Nos.", xRec."No. Series", 0D, "No.", "No. Series");
-            "Probation Period":=HumanResSetup."Probation Period";
-            "Probation Termination Notice":=HumanResSetup."Probation Termination Notice";
-            "Annual Leave Days":=HumanResSetup."Annual Leave Days";
-            "Leave Notice Period":=HumanResSetup."Leave Notice Period";
-            "Contract Termination Notice":=HumanResSetup."Contract Termination Notice";
-            "Hours Worked Per Week":=HumanResSetup."Hours Worked Per Week";
-            "Days Worked Per Week":=HumanResSetup."Days Worked Per Week";
-            "Reporting Time":=HumanResSetup."Reporting Time";
-            "Closing Time":=HumanResSetup."Closing Time";
-            "Lunch Break Duration":=HumanResSetup."Lunch Break Duration";
-            "Lunch Start Time":=HumanResSetup."Lunch Start Time";
-            "Lunch End Time":=HumanResSetup."Lunch End Time";
-            "Week Start Day":=HumanResSetup."Week Start Day";
-            "Week End Day":=HumanResSetup."Week End Day";
-            "Offer Signed By":=HumanResSetup."Offers Signed By";
+            "Probation Period" := HumanResSetup."Probation Period";
+            "Probation Termination Notice" := HumanResSetup."Probation Termination Notice";
+            "Annual Leave Days" := HumanResSetup."Annual Leave Days";
+            "Leave Notice Period" := HumanResSetup."Leave Notice Period";
+            "Contract Termination Notice" := HumanResSetup."Contract Termination Notice";
+            "Hours Worked Per Week" := HumanResSetup."Hours Worked Per Week";
+            "Days Worked Per Week" := HumanResSetup."Days Worked Per Week";
+            "Reporting Time" := HumanResSetup."Reporting Time";
+            "Closing Time" := HumanResSetup."Closing Time";
+            "Lunch Break Duration" := HumanResSetup."Lunch Break Duration";
+            "Lunch Start Time" := HumanResSetup."Lunch Start Time";
+            "Lunch End Time" := HumanResSetup."Lunch End Time";
+            "Week Start Day" := HumanResSetup."Week Start Day";
+            "Week End Day" := HumanResSetup."Week End Day";
+            "Offer Signed By" := HumanResSetup."Offers Signed By";
         end;
         //
         OnInsertApplicant(Rec);
-        "Created Date":=CurrentDateTime;
+        "Created Date" := CurrentDateTime;
     end;
+
     trigger OnModify()
     begin
-        "Last Date Modified":=Today;
+        "Last Date Modified" := Today;
     end;
+
     trigger OnRename()
     begin
-        "Last Date Modified":=Today;
+        "Last Date Modified" := Today;
     end;
-    var HumanResSetup: Record "Human Resources Setup";
-    Employee: Record Applicant;
-    PostCode: Record "Post Code";
-    EmployeeQualification: Record "Employee Qualification";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    DimMgt: Codeunit DimensionManagement;
-    Text000: Label 'Before you can use Online Map, you must fill in the Online Map Setup window.\See Setting Up Online Map in Help.';
-    HRDatesExt: Codeunit "HR Dates Mgt";
-    CompanyJob: Record "Company Job";
-    Jobs: Record "Company Job";
-    procedure AssistEdit(OldEmployee: Record Applicant): Boolean begin
-        Employee:=Rec;
+
+    var
+        HumanResSetup: Record "Human Resources Setup";
+        Employee: Record Applicant;
+        PostCode: Record "Post Code";
+        EmployeeQualification: Record "Employee Qualification";
+        NoSeriesMgt: Codeunit NoSeriesManagement;
+        DimMgt: Codeunit DimensionManagement;
+        Text000: Label 'Before you can use Online Map, you must fill in the Online Map Setup window.\See Setting Up Online Map in Help.';
+        HRDatesExt: Codeunit "HR Dates Mgt";
+        CompanyJob: Record "Company Job";
+        Jobs: Record "Company Job";
+
+    procedure AssistEdit(OldEmployee: Record Applicant): Boolean
+    begin
+        Employee := Rec;
         HumanResSetup.Get;
         HumanResSetup.TestField("Applicants Nos.");
-        if NoSeriesMgt.SelectSeries(HumanResSetup."Applicants Nos.", OldEmployee."No. Series", Employee."No. Series")then begin
+        if NoSeriesMgt.SelectSeries(HumanResSetup."Applicants Nos.", OldEmployee."No. Series", Employee."No. Series") then begin
             HumanResSetup.Get;
             HumanResSetup.TestField("Applicants Nos.");
             NoSeriesMgt.SetSeries(Employee."No.");
-            Rec:=Employee;
+            Rec := Employee;
             exit(true);
         end;
     end;
-    procedure FullName(): Text[100]begin
+
+    procedure FullName(): Text[100]
+    begin
         if "Middle Name" = '' then exit("First Name" + ' ' + "Last Name");
         exit("First Name" + ' ' + "Middle Name" + ' ' + "Last Name");
     end;
+
     local procedure ValidateShortcutDimCode(FieldNumber: Integer; var ShortcutDimCode: Code[20])
     begin
         DimMgt.ValidateDimValueCode(FieldNumber, ShortcutDimCode);
         DimMgt.SaveDefaultDim(DATABASE::Employee, "No.", FieldNumber, ShortcutDimCode);
         Modify;
     end;
+
     procedure DisplayMap()
     var
         MapPoint: Record "Online Map Setup";
         MapMgt: Codeunit "Online Map Management";
     begin
-        if MapPoint.FindFirst then MapMgt.MakeSelection(DATABASE::Employee, GetPosition)
+        if MapPoint.FindFirst then
+            MapMgt.MakeSelection(DATABASE::Employee, GetPosition)
         else
             Message(Text000);
     end;
+
     [IntegrationEvent(false, false)]
     procedure OnInsertApplicant(var Applicant: Record Applicant)
     begin
     end;
+
     [IntegrationEvent(false, false)]
     procedure OnDeleteApplicant(var Applicant: Record Applicant)
     begin
     end;
+
     local procedure AgeValidation()
     begin
-        if "Birth Date" <> 0D then if((Date2DMY(WorkDate, 3) - Date2DMY("Birth Date", 3)) < 18)then Error('You cannot employ an underage candidate');
+        if "Birth Date" <> 0D then if ((Date2DMY(WorkDate, 3) - Date2DMY("Birth Date", 3)) < 18) then Error('You cannot employ an underage candidate');
     end;
 }
