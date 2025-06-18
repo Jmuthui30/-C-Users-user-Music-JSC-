@@ -51,7 +51,7 @@ table 51630 "Applicant"
         {
             Caption = 'Last Name';
         }
-        field(5; Initials; Text[30])
+        field(5; Initials; Text[50])
         {
             Caption = 'Initials';
 
@@ -75,7 +75,7 @@ table 51630 "Applicant"
         {
             Caption = 'Address';
         }
-        field(9; "Physical Address"; Text[50])
+        field(9; "Physical Address"; Text[250])
         {
             Caption = 'Address 2';
         }

@@ -478,7 +478,7 @@ codeunit 52116 "Portal Integration"
                 Applicant."Job Description" := RecruitmentNeeds."Job Description";
             Applicant."Recruitment Needs NO" := RecruitmentNeeds."No.";
             Applicant."Job Applied For" := RecruitmentNeeds.Description;
-            Applicant."Vacancy No." := Format(RecruitmentNeeds.Positions);
+            Applicant."Vacancy No." := Format(RecruitmentNeeds."Memo Ref No.");
             Applicant."Position Applied For" := RecruitmentNeeds.Description;
             Applicant.Modify();
             ApplicantReport.SetTableView(Applicant);
