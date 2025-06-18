@@ -791,12 +791,12 @@ table 51630 "Applicant"
         field(301; "Second Language Speak"; Boolean)
         {
         }
-        field(302; "First Language (R/W/S)"; Code[10])
+        field(302; "First Language (R/W/S)"; Code[100])
         {
             DataClassification = CustomerContent;
             TableRelation = Language.Code;
         }
-        field(303; "Second Language (R/W/S)"; Code[10])
+        field(303; "Second Language (R/W/S)"; Code[100])
         {
             DataClassification = CustomerContent;
             TableRelation = Language.Code;
@@ -829,7 +829,7 @@ table 51630 "Applicant"
             OptionCaption = ',Pensionable,Contract,Others (Specify),';
             OptionMembers = ,Pensionable,Contract,Others;
         }
-        field(312; "Other Language (R/W/S)"; Code[10])
+        field(312; "Other Language (R/W/S)"; Code[1000])
         {
             DataClassification = CustomerContent;
             //TableRelation = Language.Code;
