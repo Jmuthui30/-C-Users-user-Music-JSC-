@@ -46,21 +46,24 @@ codeunit 52116 "Portal Integration"
     procedure SubmitJobApplication(No: Code[30]; ApplicantNo: Code[30]): Boolean
     var
         RecruitmentNeeds: Record "Recruitment Needs";
-
+        JobApplication: Record "Job Application";
+        Applicants: Record Applicant;
     begin
+        // Check if job is already closed
         RecruitmentNeeds.Reset();
         RecruitmentNeeds.SetRange("Job ID", No);
         RecruitmentNeeds.SetRange(Status, RecruitmentNeeds.Status::Closed);
         RecruitmentNeeds.SetRange("Advertisement Status", RecruitmentNeeds."Advertisement Status"::Closed);
-        RecruitmentNeeds.SetRange("Advertisment Status", RecruitmentNeeds."Advertisment Status"::Closed);
-        if RecruitmentNeeds.Find('-') then Error('Your Cannot Submitted,Job Aready closed');
-        JobApplication.Reset();
-        JobApplication.SetRange(JobApplication."Applicant No.", ApplicantNo);
-        JobApplication.SetRange(JobApplication."Job Applied Code", No);
-        JobApplication.SetRange(Submitted, true);
-        if JobApplication.Find('-') then begin
+        if RecruitmentNeeds.Find('-') then
+            Error('You cannot submit; job is already closed.');
 
-        end else begin
+        // Look for an unsubmitted application
+        JobApplication.Reset();
+        JobApplication.SetRange("Applicant No.", ApplicantNo);
+        JobApplication.SetRange("Job Applied Code", No);
+        JobApplication.SetRange(Submitted, false);
+        if JobApplication.Find('-') then begin
+            // Update Applicant's Job ID
             Applicants.Reset();
             Applicants.SetRange("No.", ApplicantNo);
             if Applicants.Find('-') then begin
@@ -68,12 +71,16 @@ codeunit 52116 "Portal Integration"
                 Applicants.Validate("Job ID");
                 Applicants.Modify();
                 Commit();
-                JobApplication.Init();
+
+                // Update existing job application
                 JobApplication."Applicant Type" := JobApplication."Applicant Type"::External;
                 JobApplication."Job Applied Code" := No;
                 JobApplication.Validate("Job Applied Code");
                 JobApplication."Applicant No." := ApplicantNo;
-                JobApplication."Applicant Name" := Applicants."First Name" + ' ' + Applicants."Middle Name" + ' ' + Applicants."Last Name";
+                JobApplication."Applicant Name" :=
+                    Applicants."First Name" + ' ' +
+                    Applicants."Middle Name" + ' ' +
+                    Applicants."Last Name";
                 JobApplication.Gender := Applicants.Gender;
                 JobApplication."Date-Time Created" := CurrentDateTime;
                 JobApplication.Submitted := true;
@@ -84,19 +91,61 @@ codeunit 52116 "Portal Integration"
                     JobApplication."Recruitment Needs No." := RecruitmentNeeds."No.";
 
                 JobApplication."Application Status" := JobApplication."Application Status"::Submited;
-                if JobApplication.Insert(true) then
-                    if Applicants.Get(ApplicantNo) then
-                        Applicants.Submitted := true;
-                Applicants."Recruitment Needs NO" := RecruitmentNeeds."No.";
-                Applicants."Submitted Date" := Today;
-                Applicants."Submitted Time" := Time;
-                Applicants.Modify();
 
+                if JobApplication.Modify(true) then
+                    if Applicants.Get(ApplicantNo) then begin
+                        Applicants.Submitted := true;
+                        Applicants."Recruitment Needs NO" := RecruitmentNeeds."No.";
+                        Applicants."Submitted Date" := Today;
+                        Applicants."Submitted Time" := Time;
+                        Applicants.Modify();
+                    end;
+                     exit(true);
+            end;
+        end else begin
+            // New application
+            Applicants.Reset();
+            Applicants.SetRange("No.", ApplicantNo);
+            if Applicants.Find('-') then begin
+                Applicants."Job ID" := No;
+                Applicants.Validate("Job ID");
+                Applicants.Modify();
+                Commit();
+
+                JobApplication.Init();
+                JobApplication."Applicant Type" := JobApplication."Applicant Type"::External;
+                JobApplication."Job Applied Code" := No;
+                JobApplication.Validate("Job Applied Code");
+                JobApplication."Applicant No." := ApplicantNo;
+                JobApplication."Applicant Name" :=
+                    Applicants."First Name" + ' ' +
+                    Applicants."Middle Name" + ' ' +
+                    Applicants."Last Name";
+                JobApplication.Gender := Applicants.Gender;
+                JobApplication."Date-Time Created" := CurrentDateTime;
+                JobApplication.Submitted := true;
+
+                RecruitmentNeeds.Reset();
+                RecruitmentNeeds.SetRange("Job ID", No);
+                if RecruitmentNeeds.FindFirst() then
+                    JobApplication."Recruitment Needs No." := RecruitmentNeeds."No.";
+
+                JobApplication."Application Status" := JobApplication."Application Status"::Submited;
+
+                if JobApplication.Insert(true) then
+                    if Applicants.Get(ApplicantNo) then begin
+                        Applicants.Submitted := true;
+                        Applicants."Recruitment Needs NO" := RecruitmentNeeds."No.";
+                        Applicants."Submitted Date" := Today;
+                        Applicants."Submitted Time" := Time;
+                        Applicants.Modify();
+                    end;
 
                 exit(true);
             end;
         end;
     end;
+
 
     procedure fnInsertPortalAttachments(DocumentNo: Code[100]; Description: Text; Url: Text; Type: Text) uploaded: Boolean
     var
@@ -1334,6 +1383,29 @@ codeunit 52116 "Portal Integration"
                 ApprovalEntryRec."Sender ID" := SenderID;
                 ApprovalEntryRec.Modify();
             until ApprovalEntryRec.Next() = 0;
+    end;
+
+    procedure WithdrwawApplications(DocNo: Code[50]): Text
+    var
+        JobApplications: Record "Job Application";
+    begin
+        JobApplications.reset();
+        JobApplications.SetRange("No.", DocNo);
+        if JobApplications.FindFirst() then begin
+            JobApplications."Application Status" := JobApplications."Application Status"::Application;
+            JobApplications.Submitted := false;
+            JobApplications.Modify(true);
+            Applicants.Reset();
+            Applicants.SetRange("No.", JobApplications."Applicant No.");
+            if Applicants.FindFirst() then begin
+                Applicants.Submitted := false;
+                Applicants.Modify(true);
+                exit(Applicants."No.");
+            end else begin
+                Error('No application found with the specified document number: %1', DocNo);
+                exit('');
+            end;
+        end;
     end;
 
 }

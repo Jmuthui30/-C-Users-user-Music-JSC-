@@ -41,9 +41,12 @@ table 52003 "Job Application"
                         end;
                     "Applicant Type"::"Internal":
                         begin
-                            if Employee.Get("Applicant No.") then;
-                            "Applicant Name" := Employee.FullName();
-                            Gender := Employee.Gender;
+                            // if Applicants.Get("Applicant No.") then
+                            //     Employee.Reset();
+                            // Employee.SetRange("ID No.", Applicants."National ID");
+                            // if Employee.FindFirst() then
+                            //     "Applicant Name" := Employee.FullName();
+                            // Gender := Employee.Gender;
                         end;
                 end;
             end;
@@ -75,6 +78,7 @@ table 52003 "Job Application"
                 JobApplications.Reset();
                 JobApplications.SetRange("Applicant No.", "Applicant No.");
                 JobApplications.SetRange("Job Applied Code", "Job Applied Code");
+                JobApplications.SetRange(Submitted, true);
                 if JobApplications.FindFirst() then
                     Error(AlreadyAppliedErr, JobApplications."Job Title");
 
