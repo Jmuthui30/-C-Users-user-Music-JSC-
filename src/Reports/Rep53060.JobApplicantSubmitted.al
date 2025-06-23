@@ -138,6 +138,7 @@ report 53060 "Job Applicant Submitted"
                 Column(Dat; arrFieldValues[Number])
                 {
 
+
                 }
                 trigger OnPreDataItem()
                 begin
@@ -215,6 +216,23 @@ report 53060 "Job Applicant Submitted"
                         end;
 
                     }
+                    field(ShowIDNO; ShowIDNO)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show ID No.';
+                        ToolTip = 'Specifies whether to show the Date of Birth column';
+                        Trigger OnValidate()
+                        var
+                        begin
+
+#pragma warning disable AL0133
+                            // InitalizeFieldIds(Appl.FieldNo());
+#pragma warning restore AL0133
+
+                        end;
+
+                    }
+
 
 
 
@@ -257,6 +275,7 @@ report 53060 "Job Applicant Submitted"
     end;
 
     var
+        // ApplicantApp: Record Applicant;
         [InDataSet]
         ShowGender: Boolean;
         ShowAge: Boolean;

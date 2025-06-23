@@ -739,14 +739,20 @@ page 51742 "HR & Admin Manager Role Center"
                         RunObject = report "Appl. Submit J list";
                     }
                     //update quo cod
+                    action("All ApplicantsSubmited report222")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Applicants Submited job List';
+                        RunObject = report "Applicant job Submitted";
+                    }
 
                 }
-                // action("All ApplicantsSubmited up")
-                // {
-                //     ApplicationArea = All;
-                //     Caption = 'Applicants Submited Profile ';
-                //     RunObject = report "update quo code";
-                // }
+                action(List_submitted)
+                {
+                    ApplicationArea = All;
+                    Caption = 'List of Submitted Job ';
+                    RunObject = page "Applicant Submitted Job";
+                }
 
 
             }
