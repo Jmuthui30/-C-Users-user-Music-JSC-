@@ -11,103 +11,6 @@
       <rd:DataSourceID>7d77ed2d-b234-4e57-9149-5161568896e4</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="Job_code">
-          <DataField>Job_code</DataField>
-        </Field>
-        <Field Name="Job_Title">
-          <DataField>Job_Title</DataField>
-        </Field>
-        <Field Name="Applicant_Name">
-          <DataField>Applicant_Name</DataField>
-        </Field>
-        <Field Name="IDNO">
-          <DataField>IDNO</DataField>
-        </Field>
-        <Field Name="Birth_Date">
-          <DataField>Birth_Date</DataField>
-        </Field>
-        <Field Name="Age">
-          <DataField>Age</DataField>
-        </Field>
-        <Field Name="Gender">
-          <DataField>Gender</DataField>
-        </Field>
-        <Field Name="Home_County">
-          <DataField>Home_County</DataField>
-        </Field>
-        <Field Name="Ethnic_Group">
-          <DataField>Ethnic_Group</DataField>
-        </Field>
-        <Field Name="Sub_Ethnic_Group">
-          <DataField>Sub_Ethnic_Group</DataField>
-        </Field>
-        <Field Name="Mobile_Phone_No_">
-          <DataField>Mobile_Phone_No_</DataField>
-        </Field>
-        <Field Name="Alternative_Phone_No_">
-          <DataField>Alternative_Phone_No_</DataField>
-        </Field>
-        <Field Name="E_Mail">
-          <DataField>E_Mail</DataField>
-        </Field>
-        <Field Name="Disability">
-          <DataField>Disability</DataField>
-        </Field>
-        <Field Name="Disability_Description">
-          <DataField>Disability_Description</DataField>
-        </Field>
-        <Field Name="NCPWD_Certificate_No_">
-          <DataField>NCPWD_Certificate_No_</DataField>
-        </Field>
-        <Field Name="Dismissal_Declaration">
-          <DataField>Dismissal_Declaration</DataField>
-        </Field>
-        <Field Name="Dismissal_Decl__Specification">
-          <DataField>Dismissal_Decl__Specification</DataField>
-        </Field>
-        <Field Name="Physical_Address">
-          <DataField>Physical_Address</DataField>
-        </Field>
-        <Field Name="Postal_Address">
-          <DataField>Postal_Address</DataField>
-        </Field>
-        <Field Name="Post_Code">
-          <DataField>Post_Code</DataField>
-        </Field>
-        <Field Name="City">
-          <DataField>City</DataField>
-        </Field>
-        <Field Name="First_Language__R_W_S_">
-          <DataField>First_Language__R_W_S_</DataField>
-        </Field>
-        <Field Name="First_Language_Read">
-          <DataField>First_Language_Read</DataField>
-        </Field>
-        <Field Name="First_Language_Speak">
-          <DataField>First_Language_Speak</DataField>
-        </Field>
-        <Field Name="First_Language_Write">
-          <DataField>First_Language_Write</DataField>
-        </Field>
-        <Field Name="Number">
-          <DataField>Number</DataField>
-        </Field>
-        <Field Name="Caption">
-          <DataField>Caption</DataField>
-        </Field>
-        <Field Name="Dat">
-          <DataField>Dat</DataField>
-        </Field>
-      </Fields>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -528,12 +431,6 @@
       </Page>
     </ReportSection>
   </ReportSections>
-  <ReportParametersLayout>
-    <GridLayoutDefinition>
-      <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
-    </GridLayoutDefinition>
-  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -573,4 +470,101 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="Job_code">
+          <DataField>Job_code</DataField>
+        </Field>
+        <Field Name="Job_Title">
+          <DataField>Job_Title</DataField>
+        </Field>
+        <Field Name="Applicant_Name">
+          <DataField>Applicant_Name</DataField>
+        </Field>
+        <Field Name="IDNO">
+          <DataField>IDNO</DataField>
+        </Field>
+        <Field Name="Birth_Date">
+          <DataField>Birth_Date</DataField>
+        </Field>
+        <Field Name="Age">
+          <DataField>Age</DataField>
+        </Field>
+        <Field Name="Gender">
+          <DataField>Gender</DataField>
+        </Field>
+        <Field Name="Home_County">
+          <DataField>Home_County</DataField>
+        </Field>
+        <Field Name="Ethnic_Group">
+          <DataField>Ethnic_Group</DataField>
+        </Field>
+        <Field Name="Sub_Ethnic_Group">
+          <DataField>Sub_Ethnic_Group</DataField>
+        </Field>
+        <Field Name="Mobile_Phone_No_">
+          <DataField>Mobile_Phone_No_</DataField>
+        </Field>
+        <Field Name="Alternative_Phone_No_">
+          <DataField>Alternative_Phone_No_</DataField>
+        </Field>
+        <Field Name="E_Mail">
+          <DataField>E_Mail</DataField>
+        </Field>
+        <Field Name="Disability">
+          <DataField>Disability</DataField>
+        </Field>
+        <Field Name="Disability_Description">
+          <DataField>Disability_Description</DataField>
+        </Field>
+        <Field Name="NCPWD_Certificate_No_">
+          <DataField>NCPWD_Certificate_No_</DataField>
+        </Field>
+        <Field Name="Dismissal_Declaration">
+          <DataField>Dismissal_Declaration</DataField>
+        </Field>
+        <Field Name="Dismissal_Decl__Specification">
+          <DataField>Dismissal_Decl__Specification</DataField>
+        </Field>
+        <Field Name="Physical_Address">
+          <DataField>Physical_Address</DataField>
+        </Field>
+        <Field Name="Postal_Address">
+          <DataField>Postal_Address</DataField>
+        </Field>
+        <Field Name="Post_Code">
+          <DataField>Post_Code</DataField>
+        </Field>
+        <Field Name="City">
+          <DataField>City</DataField>
+        </Field>
+        <Field Name="First_Language__R_W_S_">
+          <DataField>First_Language__R_W_S_</DataField>
+        </Field>
+        <Field Name="First_Language_Read">
+          <DataField>First_Language_Read</DataField>
+        </Field>
+        <Field Name="First_Language_Speak">
+          <DataField>First_Language_Speak</DataField>
+        </Field>
+        <Field Name="First_Language_Write">
+          <DataField>First_Language_Write</DataField>
+        </Field>
+        <Field Name="Number">
+          <DataField>Number</DataField>
+        </Field>
+        <Field Name="Caption">
+          <DataField>Caption</DataField>
+        </Field>
+        <Field Name="Dat">
+          <DataField>Dat</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>
