@@ -42,12 +42,17 @@ page 56200 "Applicant Submitted Job"
         area(Processing)
         {
             action(update)
+
             {
+                Promoted = true;
+                Image = View;
+                PromotedCategory = Category4;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+                RunObject = report "update Job Appl.";
+                RunPageMode = View;
+                Caption = 'UpDate Job Submitted.';
 
-                trigger OnAction()
-                begin
-
-                end;
             }
         }
     }
