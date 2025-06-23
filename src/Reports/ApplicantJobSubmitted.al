@@ -6,8 +6,9 @@ report 52970 "Applicant job Submitted"
 
     dataset
     {
-        dataitem("Applicant Submitted Job"; "Applicant Submitted Job")
+        dataitem(ApplicantSubmittedJob; "Applicant Submitted Job")
         {
+            RequestFilterFields = "Job code", Gender;
             column(Job_code; "Job code") { }
             column(Job_Title; "Job Title") { }
             column(Applicant_Name; "Applicant Name") { }
@@ -67,11 +68,14 @@ report 52970 "Applicant job Submitted"
                 Clear(arrFieldValues);
                 Clear(arrayIndex);
                 for arrayIndex := 1 to arrlength do begin
-                    recref.GetTable(ApplSubmittedJob);
+                    recref.GetTable(ApplicantSubmittedJob);
                     FieldRef := recref.Field(arrFieldIds[arrayIndex]);
                     arrFieldValues[arrayIndex] := fieldref.Value();
                 end;
             End;
+
+
+
         }
     }
 
@@ -85,114 +89,76 @@ report 52970 "Applicant job Submitted"
             {
                 group(Options)
                 {
-                    field(ShowGender; ShowGender)
+                    grid(OptionsGrid)
                     {
-                        ApplicationArea = All;
-                        Caption = 'Show Gender';
-                        ToolTip = 'Specifies whether to show the Gender column';
-                        Trigger OnValidate()
-                        var
-                        begin
+                        field(ShowPostAddress; ShowPostAddress)
+                        {
+                            ApplicationArea = All;
+                            Caption = 'Show Postal Address';
+                            ToolTip = 'Specifies whether to show the Postal Address column';
+                            Trigger OnValidate()
+                            var
+                            begin
 
-                            InitalizeFieldIds(Appl.FieldNo(Gender));
+                                InitalizeFieldIds(Appl.FieldNo("Postal Address"));
 
-                        end;
+                            end;
+                        }
+                        field(ShowMobile; ShowMobile)
+                        {
+                            ApplicationArea = All;
+                            Caption = 'Show Mobile Phone No.';
+                            ToolTip = 'Specifies whether to show the Mobile Phone No. column';
+                            Trigger OnValidate()
+                            var
+                            begin
+
+                                InitalizeFieldIds(Appl.FieldNo("Mobile Phone No."));
+
+                            end;
+                        }
+                        field(ShowEMail; ShowEMail)
+                        {
+                            ApplicationArea = All;
+                            Caption = 'Show E-Mail';
+                            ToolTip = 'Specifies whether to show the E-Mail column';
+                            Trigger OnValidate()
+                            var
+                            begin
+
+                                InitalizeFieldIds(Appl.FieldNo("E-Mail"));
+
+                            end;
+                        }
                     }
-                    field(ShowAge; ShowAge)
+                    grid(OptionsGrid2)
                     {
-                        ApplicationArea = All;
-                        Caption = 'Show Age';
-                        ToolTip = 'Specifies whether to show the Age column';
-                        Trigger OnValidate()
-                        var
-                        begin
-
-                            InitalizeFieldIds(Appl.FieldNo(Age));
-
-                        end;
+                        field(ShowGender; ShowGender)
+                        {
+                            ApplicationArea = All;
+                        }
                     }
-                    field(ShowDateOfBirth; ShowDateOfBirth)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Show Date of Birth';
-                        ToolTip = 'Specifies whether to show the Date of Birth column';
-                        Trigger OnValidate()
-                        var
-                        begin
-
-                            InitalizeFieldIds(Appl.FieldNo("Birth Date"));
-
-                        end;
-                    }
-                    field(ShowHomeCounty; ShowHomeCounty)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Show Home County';
-                        ToolTip = 'Specifies whether to show the Date of Birth column';
-                        Trigger OnValidate()
-                        var
-                        begin
-                            InitalizeFieldIds(Appl.FieldNo("Home County"));
-                        end;
-                    }
-                    field(ShowEthnicGroup; ShowEthnicGroup)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Show Ethnic Group';
-                        ToolTip = 'Specifies whether to show the Date of Birth column';
-                        Trigger OnValidate()
-                        var
-                        begin
-                            InitalizeFieldIds(Appl.FieldNo("Ethnic Group"));
-                        end;
-                    }
-
-                    field(ShowDisability; ShowDisability)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Show Disability';
-                        ToolTip = 'Specifies whether to show the Date of Birth column';
-                        Trigger OnValidate()
-                        var
-                        begin
-                            InitalizeFieldIds(Appl.FieldNo(Disability));
-                        end;
-                    }
-                    field(ShowDisabilityDescr; ShowDisability)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Show Disability Description';
-                        ToolTip = 'Specifies whether to show the Date of Birth column';
-                        Trigger OnValidate()
-                        var
-                        begin
-                            InitalizeFieldIds(Appl.FieldNo("Disability Description"));
-                        end;
-                    }
-                    field(ShowNCPWD; ShowNCPWD)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Show NCPWD Certificate No.';
-                        ToolTip = 'Specifies whether to show the Date of Birth column';
-                        Trigger OnValidate()
-                        var
-                        begin
-                            InitalizeFieldIds(Appl.FieldNo("NCPWD Certificate No."));
-                        end;
-                    }
-
                 }
             }
         }
 
-        actions
-        {
-            area(processing)
-            {
-
-            }
-
-        }
+        trigger OnQueryClosePage(CloseAction: Action): Boolean
+        var
+            fieldref: FieldRef;
+            Recref: RecordRef;
+        Begin
+            compinfo.Get();
+            Compinfo.CalcFields(compinfo.Picture);
+            arrlength := arrayIndex;
+            Clear(arrayIndex);
+            for arrayIndex := 1 to arrlength do begin
+                Recref.GetTable(ApplicantSubmittedJob);
+                fieldref := recref.Field(arrFieldIds[arrayIndex]);
+                arrFieldCaptions[arrayIndex] := FieldRef.Caption();
+            end;
+            Clear(arrayIndex);
+            //Nofcolums := 
+        end;
     }
 
     rendering
@@ -204,6 +170,21 @@ report 52970 "Applicant job Submitted"
             Caption = 'Job Submitted';
         }
     }
+    Trigger OnInitReport()
+    var
+        fieldref: FieldRef;
+    Begin
+        compinfo.Get();
+        Compinfo.CalcFields(compinfo.Picture);
+        // Clear(arrayIndex);
+        // for arrayIndex := 1 to 20 do begin
+        //     Recref.GetTable(HRMJobApplicationsB);
+        //     fieldref := recref.Field(arrFieldIds[arrayIndex]);
+        //     arrFieldCaptions[arrayIndex] := FieldRef.Caption();
+        // end;
+        // Clear(arrayIndex);
+        //Nofcolums := 0;
+    End;
 
     var
         ShowGender: Boolean;

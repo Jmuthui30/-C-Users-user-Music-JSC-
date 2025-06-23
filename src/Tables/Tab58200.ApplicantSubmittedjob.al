@@ -9,6 +9,11 @@ table 58200 "Applicant Submitted Job"
             DataClassification = ToBeClassified;
 
         }
+        field(211; "Applicant No."; Code[50])
+        {
+            DataClassification = ToBeClassified;
+
+        }
         field(2; "Job Title"; Text[1000]) { DataClassification = ToBeClassified; }
         field(3; "Applicant Name"; text[1000]) { DataClassification = ToBeClassified; }
         field(4; IDNO; code[20]) { DataClassification = ToBeClassified; }
@@ -410,13 +415,47 @@ table 58200 "Applicant Submitted Job"
         field(62; "Professional From Date"; Date) { DataClassification = ToBeClassified; }
 
         field(63; "Professional To Date"; Date) { DataClassification = ToBeClassified; }
+        field(70; "Professional Name"; Text[1000])
+        {
+            DataClassification = ToBeClassified;
+            NotBlank = false;
+        }
+        field(71; "Professional Reg No."; Code[200])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(78; "Professional Date of Admission"; Date)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(79; "Professional Membership Type"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+        }
         //******************************************************************************************** Professional
         field(64; "Professional Qualification 2"; text[1000]) { DataClassification = ToBeClassified; }
         field(65; "Professional Institution 2"; text[1000]) { DataClassification = ToBeClassified; }
         field(66; "Professional From Date 2"; Date) { DataClassification = ToBeClassified; }
 
         field(67; "Professional To Date 2"; Date) { DataClassification = ToBeClassified; }
-        //*********************************************************************************************Profession
+        field(92; "Professional Name 2"; Text[1000])
+        {
+            DataClassification = ToBeClassified;
+            NotBlank = false;
+        }
+        field(91; "Professional Reg No. 2"; Code[200])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(98; "Professional Date of Admn 2"; Date)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(99; "Professional Membership Type 2"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+        }
+        //*********************************************************************************************Profession2
         field(68; "Professional Qualification 3"; text[1000]) { DataClassification = ToBeClassified; }
         field(69; "Professional Institution 3"; text[1000]) { DataClassification = ToBeClassified; }
         field(72; "Professional From Date 3"; Date) { DataClassification = ToBeClassified; }
@@ -434,29 +473,47 @@ table 58200 "Applicant Submitted Job"
         }
 
         field(82; "Admission Date"; Date) { DataClassification = ToBeClassified; }
-        //******************************************************************************Professional Bodies 2
+        //******************************************************************************Professional Bodies 3
         field(83; "Professional Bodies 2"; text[1000]) { DataClassification = ToBeClassified; }
 
         field(84; "Membership No. 2"; code[100]) { DataClassification = ToBeClassified; }
         field(85; "Admission Date 2"; Date) { DataClassification = ToBeClassified; }
-        //******************************************************************************Professional Bodies
+        //******************************************************************************Professional Bodies4
         field(86; "Professional Bodies 3"; text[1000]) { DataClassification = ToBeClassified; }
 
         field(87; "Membership No. 3"; code[100]) { DataClassification = ToBeClassified; }
         field(88; "Admission Date 3"; Date) { DataClassification = ToBeClassified; }
+
         //******************************************************************************Relevant  Course
+        field(132; "Name of the Course"; Text[100])
+        {
+            DataClassification = ToBeClassified;
+            NotBlank = true;
+        }
         field(140; "Name Course"; code[100]) { DataClassification = ToBeClassified; }
         field(141; "Course Int"; text[1000]) { DataClassification = ToBeClassified; }
         field(142; "From Date course"; Date) { DataClassification = ToBeClassified; }
         field(143; "To Date course"; Date) { DataClassification = ToBeClassified; }
         field(144; "Duration course"; text[1000]) { DataClassification = ToBeClassified; }
         //******************************************************************************Relevant  Course2
+
+        field(131; "Name of the Course 2"; Text[100])
+        {
+            DataClassification = ToBeClassified;
+            NotBlank = true;
+        }
         field(145; "Name Course 2"; code[100]) { DataClassification = ToBeClassified; }
         field(146; "Course Int 2"; text[1000]) { DataClassification = ToBeClassified; }
         field(147; "From Date course 2"; Date) { DataClassification = ToBeClassified; }
         field(148; "To Date course 2"; Date) { DataClassification = ToBeClassified; }
         field(149; "Duration course 2"; text[1000]) { DataClassification = ToBeClassified; }
         //******************************************************************************Relevant  Course 3
+
+        field(133; "Name of the Course 3"; Text[100])
+        {
+            DataClassification = ToBeClassified;
+            NotBlank = true;
+        }
         field(150; "Name Course 3"; code[100]) { DataClassification = ToBeClassified; }
         field(151; "Course Int 3"; text[1000]) { DataClassification = ToBeClassified; }
         field(152; "From Date course 3"; Date) { DataClassification = ToBeClassified; }
@@ -502,6 +559,33 @@ table 58200 "Applicant Submitted Job"
         field(322; "Recruitment Needs NO"; Code[100])
         {
         }
+        field(224; "Date-Time Created"; DateTime)
+        {
+            Caption = 'Date-Time Created';
+            Editable = false;
+        }
+        field(225; Submitted; Boolean)
+        {
+            Caption = 'Submitted';
+        }
+        field(226; "Job Applied Code"; Code[50])
+        {
+            Caption = 'Job Applied Code';
+            trigger OnValidate()
+            var
+            begin
+
+            end;
+        }
+        field(90; "Marital Status"; Enum MaritalStatus)
+        {
+        }
+        field(89; "Passport No."; Code[10])
+        {
+        }
+        field(254; "Years Of Experience"; Decimal)
+        {
+        }
 
 
 
@@ -512,10 +596,11 @@ table 58200 "Applicant Submitted Job"
 
     keys
     {
-        key(Key1; "Job code")
+        key(Key1; "Job code", "job title", "Applicant No.")
         {
             Clustered = true;
         }
+
     }
 
     fieldgroups
