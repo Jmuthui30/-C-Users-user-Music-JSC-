@@ -15,10 +15,13 @@ report 53072 "update Job Appl."
             }
             trigger OnAfterGetRecord()
             begin
-                if not Confirm('Update all applicant job records?') then
-                    exit;
-                JobAppl.SetCurrentKey("Recruitment Needs No.", "Job Title", "No.");
-                JobAppl.SetFilter("Recruitment Needs No.", '<>%1', '');
+
+
+
+                IF CONFIRM('Update all applicant job records?', TRUE) = FALSE THEN EXIT;
+                JobAppl.Reset();
+                JobAppl.SetCurrentKey("Recruitment Needs No.", "Recruitment Needs No.");
+                ///JobAppl.SetFilter("Recruitment Needs No.", '<>%1', '');
                 if JobAppl.FindSet() then begin
                     repeat
                         // Check if this application already exists in submitted jobs
@@ -39,7 +42,7 @@ report 53072 "update Job Appl."
                                 ApplicantSubmittedJob.Age := ApplicantApp.Age;
                                 ApplicantSubmittedJob."Birth Date" := ApplicantApp."Birth Date";
                                 ApplicantSubmittedJob."Nationality New" := ApplicantApp."Nationality New";
-                                ApplicantSubmittedJob.IDNO := ApplicantApp."Identification Document";
+                                ApplicantSubmittedJob.IDNO := ApplicantApp."National ID";
                                 ApplicantSubmittedJob."Home County" := ApplicantApp."Home County";
                                 ApplicantSubmittedJob."Ethnic Group" := ApplicantApp."Ethnic Group";
                                 ApplicantSubmittedJob."Marital Status" := ApplicantApp."Marital Status";
@@ -76,8 +79,48 @@ report 53072 "update Job Appl."
                                 ApplicantSubmittedJob."Other Language Read" := ApplicantApp."Other Language Read";
                                 ApplicantSubmittedJob."Other Language Write" := ApplicantApp."Other Language Write";
                                 ApplicantSubmittedJob."Other Language Speak" := ApplicantApp."Other Language Speak";
-
                             end;
+                            //****************************************************************************************
+                            if ApplicantEmpl.Get(JobAppl."Applicant No.") then begin
+                                if ApplicantEmpl.FindLast() then begin
+                                    repeat
+                                        if ApplicantEmpl.Next() <> 0 then begin
+                                            ApplicantSubmittedJob.Employer := ApplicantEmpl."Applicant No.";
+                                            ApplicantSubmittedJob."Sector Of Employement" := ApplicantEmpl.Sector;
+                                            ApplicantSubmittedJob."Designation Employer" := ApplicantEmpl."Sector Specification";
+                                            ApplicantSubmittedJob."From Date Employer" := ApplicantEmpl."From Date";
+                                            ApplicantSubmittedJob."To Date Employer" := ApplicantEmpl."To Date";
+
+                                            //Employment History 2
+                                            if ApplicantEmpl.Next() <> 0 then begin
+                                                ApplicantSubmittedJob."Employer 2" := ApplicantEmpl."Applicant No.";
+                                                ApplicantSubmittedJob."From Date Employer 2" := ApplicantEmpl."From Date";
+                                                ApplicantSubmittedJob."To Date Employer 2" := ApplicantEmpl."To Date";
+                                                ApplicantSubmittedJob."Designation Employer 2" := ApplicantEmpl."Sector Specification";
+
+                                                //Employment History 3
+                                                if ApplicantEmpl.Next() <> 0 then begin
+                                                    ApplicantSubmittedJob."Employer 3" := ApplicantEmpl."Applicant No.";
+                                                    ApplicantSubmittedJob."From Date Employer 3" := ApplicantEmpl."From Date";
+                                                    ApplicantSubmittedJob."To Date Employer 3" := ApplicantEmpl."To Date";
+                                                    ApplicantSubmittedJob."Designation Employer 3" := ApplicantEmpl."Sector Specification";
+
+                                                    //Employment History 4
+                                                    if ApplicantEmpl.Next() <> 0 then begin
+                                                        ApplicantSubmittedJob."Employer 4" := ApplicantEmpl."Applicant No.";
+                                                        ApplicantSubmittedJob."From Date Employer 4" := ApplicantEmpl."From Date";
+                                                        ApplicantSubmittedJob."To Date Employer 4" := ApplicantEmpl."To Date";
+                                                        ApplicantSubmittedJob."Designation Employer 4" := ApplicantEmpl."Sector Specification";
+                                                    end;
+                                                end;
+                                            end;
+                                        end;
+                                    until ApplicantEmpl.Next() = 0;
+                                end
+                                //     //end if;
+                            end;
+
+
                             if ApplicantSubmittedJob.Insert() then
                                 InsertCount += 1;
                         end;

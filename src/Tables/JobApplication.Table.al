@@ -161,7 +161,7 @@ table 52003 "Job Application"
         field(22; "Interview Period"; DateTime) { }
         field(23; "Recruitment Needs No."; Code[50])
         {
-            TableRelation = "Recruitment Needs"."No." where(Status = filter(Archived | Closed));
+            TableRelation = "Recruitment Needs"."No." where(Status = filter(Released | Archived | Closed));
 
         }
         field(24; "Date of Birth"; Date) { }

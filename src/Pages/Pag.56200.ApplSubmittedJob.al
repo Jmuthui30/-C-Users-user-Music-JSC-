@@ -28,7 +28,96 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
-                // field()
+                field(Gender; Gender)
+                {
+                    ApplicationArea = All;
+                }
+
+                field("Mobile Phone No."; "Mobile Phone No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("E-Mail"; "E-Mail")
+                {
+                    ApplicationArea = All;
+                }
+
+
+                field("Applicant No."; "Applicant No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Sub Ethnic Group"; "Sub Ethnic Group")
+                {
+                    ApplicationArea = All;
+                }
+                field(City; City)
+                {
+                    ApplicationArea = All;
+                }
+                field("Home County"; "Home County")
+                {
+                    ApplicationArea = All;
+                }
+                field("Post Code"; "Post Code")
+                {
+                    ApplicationArea = All;
+                }
+                field("Date-Time Created"; "Date-Time Created")
+                {
+                    ApplicationArea = All;
+                }
+                field(Employer; Employer)
+                {
+                    ApplicationArea = All;
+                }
+                Field("To Date Employer"; "To Date Employer")
+                {
+                    ApplicationArea = All;
+                }
+                Field("From Date Employer"; "From Date Employer")
+                {
+                    ApplicationArea = All;
+                }
+                FIELD("Designation Employer"; "Designation Employer")
+                {
+                    ApplicationArea = All;
+                }
+                Field("Employer 2"; "Employer 2")
+                {
+                    ApplicationArea = All;
+                }
+                Field("To Date Employer 2"; "To Date Employer 2")
+                {
+                    ApplicationArea = All;
+                }
+                Field("From Date Employer 2"; "From Date Employer 2")
+                {
+                    ApplicationArea = All;
+                }
+                FIELD("Designation Employer 2"; "Designation Employer 2")
+                {
+                    ApplicationArea = All;
+                }
+                Field("Employer 3"; "Employer 3")
+                {
+                    ApplicationArea = All;
+                }
+
+                Field("To Date Employer 3"; "To Date Employer 3")
+                {
+                    ApplicationArea = All;
+                }
+                Field("From Date Employer 3"; "From Date Employer 3")
+                {
+                    ApplicationArea = All;
+                }
+
+                FIELD("Designation Employer 3"; "Designation Employer 3")
+                {
+                    ApplicationArea = All;
+                }
+
             }
         }
         area(Factboxes)
@@ -46,14 +135,44 @@ page 56200 "Applicant Submitted Job"
             {
                 Promoted = true;
                 Image = View;
-                PromotedCategory = Category4;
+                PromotedCategory = process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
                 RunObject = report "update Job Appl.";
                 RunPageMode = View;
                 Caption = 'UpDate Job Submitted.';
+                ApplicationArea = All;
 
             }
+            action(Clear)
+
+            {
+                Promoted = true;
+                Image = Delete;
+                PromotedCategory = process;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+
+                Caption = 'Clear Job Submitted.';
+                ApplicationArea = All;
+                trigger OnAction()
+                var
+                    ApplicantSubmittedJob: record "Applicant Submitted Job";
+                begin
+                    if not Confirm('Are you sure you want to clear all submitted job records?') then
+                        exit;
+
+                    ApplicantSubmittedJob.Reset();
+                    ApplicantSubmittedJob.DeleteAll();
+                    Commit();
+                    Message('All submitted job records have been cleared.');
+                end;
+
+            }
+
+
+
+
             action(update1)
 
             {
@@ -63,6 +182,8 @@ page 56200 "Applicant Submitted Job"
                 PromotedIsBig = true;
                 PromotedOnly = true;
                 Caption = 'UpDate Job Submitted.';
+                visible = false;
+                ApplicationArea = All;
                 trigger OnAction()
                 var
                     ApplicantSubmittedJob: record "Applicant Submitted Job";

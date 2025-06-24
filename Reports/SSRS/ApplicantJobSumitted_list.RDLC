@@ -552,6 +552,66 @@ End Function
         <Field Name="First_Language_Write">
           <DataField>First_Language_Write</DataField>
         </Field>
+        <Field Name="Second_Language__R_W_S_">
+          <DataField>Second_Language__R_W_S_</DataField>
+        </Field>
+        <Field Name="Second_Language_Read">
+          <DataField>Second_Language_Read</DataField>
+        </Field>
+        <Field Name="Second_Language_Speak">
+          <DataField>Second_Language_Speak</DataField>
+        </Field>
+        <Field Name="Second_Language_Write">
+          <DataField>Second_Language_Write</DataField>
+        </Field>
+        <Field Name="Other_Language__R_W_S_">
+          <DataField>Other_Language__R_W_S_</DataField>
+        </Field>
+        <Field Name="Other_Language_Read">
+          <DataField>Other_Language_Read</DataField>
+        </Field>
+        <Field Name="Other_Language_Speak">
+          <DataField>Other_Language_Speak</DataField>
+        </Field>
+        <Field Name="Other_Language_Write">
+          <DataField>Other_Language_Write</DataField>
+        </Field>
+        <Field Name="Employer">
+          <DataField>Employer</DataField>
+        </Field>
+        <Field Name="From_Date_Employer">
+          <DataField>From_Date_Employer</DataField>
+        </Field>
+        <Field Name="To_Date_Employer">
+          <DataField>To_Date_Employer</DataField>
+        </Field>
+        <Field Name="Designation_Employer">
+          <DataField>Designation_Employer</DataField>
+        </Field>
+        <Field Name="Employer_2">
+          <DataField>Employer_2</DataField>
+        </Field>
+        <Field Name="From_Date_Employer_2">
+          <DataField>From_Date_Employer_2</DataField>
+        </Field>
+        <Field Name="To_Date_Employer_2">
+          <DataField>To_Date_Employer_2</DataField>
+        </Field>
+        <Field Name="Designation_Employer_2">
+          <DataField>Designation_Employer_2</DataField>
+        </Field>
+        <Field Name="Employer_3">
+          <DataField>Employer_3</DataField>
+        </Field>
+        <Field Name="From_Date_Employer_3">
+          <DataField>From_Date_Employer_3</DataField>
+        </Field>
+        <Field Name="To_Date_Employer_3">
+          <DataField>To_Date_Employer_3</DataField>
+        </Field>
+        <Field Name="Designation_Employer_3">
+          <DataField>Designation_Employer_3</DataField>
+        </Field>
         <Field Name="Number">
           <DataField>Number</DataField>
         </Field>

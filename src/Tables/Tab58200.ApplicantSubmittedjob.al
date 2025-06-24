@@ -596,10 +596,14 @@ table 58200 "Applicant Submitted Job"
 
     keys
     {
-        key(Key1; "Job code", "job title", "Applicant No.")
+        key(Key1; "Job code")
         {
             Clustered = true;
         }
+        key(Key2; "Job Title", "Applicant Name", "Applicant No.")
+        {
+        }
+
 
     }
 
