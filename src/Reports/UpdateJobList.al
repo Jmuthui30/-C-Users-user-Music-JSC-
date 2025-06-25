@@ -8,7 +8,7 @@ report 53072 "update Job Appl."
     {
         dataitem("Job Application"; "Job Application")
         {
-            RequestFilterFields = "Recruitment Needs No.", "Job Title", "No.", "Applicant No.";
+            RequestFilterFields = "No.", "Recruitment Needs No.", "Job Title", "Applicant No.";
             column(No_; "No.")
             {
 
@@ -20,9 +20,10 @@ report 53072 "update Job Appl."
 
                 IF CONFIRM('Update all applicant job records?', TRUE) = FALSE THEN EXIT;
                 JobAppl.Reset();
-                JobAppl.SetCurrentKey("Recruitment Needs No.", "Recruitment Needs No.");
-                ///JobAppl.SetFilter("Recruitment Needs No.", '<>%1', '');
-                if JobAppl.FindSet() then begin
+                InsertCount := 0;
+                // Set filters for Job Application
+                JobAppl.SetRange("No.", "Job Application"."No.");
+                IF JobAppl.FindFirst THEN begin
                     repeat
                         // Check if this application already exists in submitted jobs
                         if not ApplicantSubmittedJob.Get(JobAppl."Recruitment Needs No.") then begin
@@ -81,57 +82,259 @@ report 53072 "update Job Appl."
                                 ApplicantSubmittedJob."Other Language Speak" := ApplicantApp."Other Language Speak";
                             end;
                             //****************************************************************************************
-                            if ApplicantEmpl.Get(JobAppl."Applicant No.") then begin
-                                if ApplicantEmpl.FindLast() then begin
-                                    repeat
-                                        if ApplicantEmpl.Next() <> 0 then begin
-                                            ApplicantSubmittedJob.Employer := ApplicantEmpl."Applicant No.";
-                                            ApplicantSubmittedJob."Sector Of Employement" := ApplicantEmpl.Sector;
-                                            ApplicantSubmittedJob."Designation Employer" := ApplicantEmpl."Sector Specification";
-                                            ApplicantSubmittedJob."From Date Employer" := ApplicantEmpl."From Date";
-                                            ApplicantSubmittedJob."To Date Employer" := ApplicantEmpl."To Date";
 
-                                            //Employment History 2
-                                            if ApplicantEmpl.Next() <> 0 then begin
-                                                ApplicantSubmittedJob."Employer 2" := ApplicantEmpl."Applicant No.";
-                                                ApplicantSubmittedJob."From Date Employer 2" := ApplicantEmpl."From Date";
-                                                ApplicantSubmittedJob."To Date Employer 2" := ApplicantEmpl."To Date";
-                                                ApplicantSubmittedJob."Designation Employer 2" := ApplicantEmpl."Sector Specification";
-
-                                                //Employment History 3
-                                                if ApplicantEmpl.Next() <> 0 then begin
-                                                    ApplicantSubmittedJob."Employer 3" := ApplicantEmpl."Applicant No.";
-                                                    ApplicantSubmittedJob."From Date Employer 3" := ApplicantEmpl."From Date";
-                                                    ApplicantSubmittedJob."To Date Employer 3" := ApplicantEmpl."To Date";
-                                                    ApplicantSubmittedJob."Designation Employer 3" := ApplicantEmpl."Sector Specification";
-
-                                                    //Employment History 4
-                                                    if ApplicantEmpl.Next() <> 0 then begin
-                                                        ApplicantSubmittedJob."Employer 4" := ApplicantEmpl."Applicant No.";
-                                                        ApplicantSubmittedJob."From Date Employer 4" := ApplicantEmpl."From Date";
-                                                        ApplicantSubmittedJob."To Date Employer 4" := ApplicantEmpl."To Date";
-                                                        ApplicantSubmittedJob."Designation Employer 4" := ApplicantEmpl."Sector Specification";
-                                                    end;
-                                                end;
-                                            end;
-                                        end;
-                                    until ApplicantEmpl.Next() = 0;
-                                end
-                                //     //end if;
-                            end;
 
 
                             if ApplicantSubmittedJob.Insert() then
                                 InsertCount += 1;
                         end;
                     until JobAppl.Next() = 0;
-
-                    Commit();
-                    Message('%1 applicant job records updated successfully.', ApplicantSubmittedJob.Count);
-                end
-                else begin
-                    Message('No applicant job records found to update.');
                 end;
+                Commit();
+
+                // //*********************************************************
+                ApplicantEmpl.Reset();
+                ApplicantEmpl.SetRange("Applicant No.", applicantSubmittedJob."Applicant No.");
+                ApplicantEmpl.SetCurrentKey("From Date"); // Ensure records are sorted (e.g., newest first)
+                if ApplicantEmpl.FindSet() then begin
+                    EmploymentRecordCount := 0; // Reset the count for each applicant
+                    repeat
+                        EmploymentRecordCount += 1; // Increment the count for each employment record
+                        case EmploymentRecordCount of
+                            1:
+                                begin
+                                    ApplicantSubmittedJob.Employer := ApplicantEmpl."Applicant No.";
+                                    ApplicantSubmittedJob."Sector Of Employement" := ApplicantEmpl.Sector;
+                                    ApplicantSubmittedJob."Designation Employer" := ApplicantEmpl."Sector Specification";
+                                    ApplicantSubmittedJob."From Date Employer" := ApplicantEmpl."From Date";
+                                    ApplicantSubmittedJob."To Date Employer" := ApplicantEmpl."To Date";
+                                end;
+                            2:
+                                begin
+                                    ApplicantSubmittedJob."Employer 2" := ApplicantEmpl."Applicant No.";
+                                    ApplicantSubmittedJob."From Date Employer 2" := ApplicantEmpl."From Date";
+                                    ApplicantSubmittedJob."To Date Employer 2" := ApplicantEmpl."To Date";
+                                    ApplicantSubmittedJob."Designation Employer 2" := ApplicantEmpl."Sector Specification";
+                                end;
+                            3:
+                                begin
+                                    ApplicantSubmittedJob."Employer 3" := ApplicantEmpl."Applicant No.";
+                                    ApplicantSubmittedJob."From Date Employer 3" := ApplicantEmpl."From Date";
+                                    ApplicantSubmittedJob."To Date Employer 3" := ApplicantEmpl."To Date";
+                                    ApplicantSubmittedJob."Designation Employer 3" := ApplicantEmpl."Sector Specification";
+                                end;
+                            4:
+                                begin
+                                    ApplicantSubmittedJob."Employer 4" := ApplicantEmpl."Applicant No.";
+                                    ApplicantSubmittedJob."From Date Employer 4" := ApplicantEmpl."From Date";
+                                    ApplicantSubmittedJob."To Date Employer 4" := ApplicantEmpl."To Date";
+                                    ApplicantSubmittedJob."Designation Employer 4" := ApplicantEmpl."Sector Specification";
+                                end;
+                        end;
+
+                        if EmploymentRecordCount = 4 then
+                            break;
+                    until ApplicantEmpl.Next() = 0;
+
+                    // Only modify once after all updates
+                    if EmploymentRecordCount > 0 then
+                        ApplicantSubmittedJob.Modify();
+                end;
+                //*********************************************end of applicant employment history
+                //*********************************************************************************education
+                ApplicantsQual.Reset();
+                ApplicantsQual.SetRange("Employee No.", applicantSubmittedJob."Applicant No.");
+                ApplicantsQual.SetCurrentKey("From Date"); // Ensure records are sorted (e.g.,
+                // newest first)
+                if ApplicantsQual.FindSet() then begin
+                    EducationRecordCount := 0;
+                    if ApplicantsQual."Qualification Type" = ApplicantsQual."Qualification Type"::Academic then begin
+                        repeat
+                            EducationRecordCount += 1; // Increment the count for each education record
+                            case EducationRecordCount of
+                                1:
+                                    begin
+                                        ApplicantSubmittedJob."Qualification Code" := ApplicantsQual.Qualification;
+                                        ApplicantSubmittedJob."Institution/Company" := ApplicantsQual."Institution/Company";
+                                        ApplicantSubmittedJob."From Date" := ApplicantsQual."From Date";
+                                        ApplicantSubmittedJob."To Date" := ApplicantsQual."To Date";
+                                        ApplicantSubmittedJob."Grade/Class" := ApplicantsQual."Grade/Class";
+                                        applicantSubmittedJob."Area of Specialization" := ApplicantsQual."Area of Specialization";
+                                    end;
+                                2:
+                                    begin
+                                        ApplicantSubmittedJob."Qualification Code 2" := ApplicantsQual.Qualification;
+                                        ApplicantSubmittedJob."Institution/Company 2" := ApplicantsQual."Institution/Company";
+                                        ApplicantSubmittedJob."From Date 2" := ApplicantsQual."From Date";
+                                        ApplicantSubmittedJob."To Date 2" := ApplicantsQual."To Date";
+                                        ApplicantSubmittedJob."Grade/Class 2" := ApplicantsQual."Grade/Class";
+                                        applicantSubmittedJob."Area of Specialization 2" := ApplicantsQual."Area of Specialization";
+                                    end;
+                                3:
+                                    begin
+                                        ApplicantSubmittedJob."Qualification Code 3" := ApplicantsQual.Qualification;
+                                        ApplicantSubmittedJob."Institution/Company 3" := ApplicantsQual."Institution/Company";
+                                        ApplicantSubmittedJob."From Date 3" := ApplicantsQual."From Date";
+                                        ApplicantSubmittedJob."To Date 3" := ApplicantsQual."To Date";
+                                        ApplicantSubmittedJob."Grade/Class 3" := ApplicantsQual."Grade/Class";
+                                        applicantSubmittedJob."Area of Specialization 3" := ApplicantsQual."Area of Specialization";
+                                    end;
+                                4:
+                                    begin
+                                        ApplicantSubmittedJob."Qualification Code 4" := ApplicantsQual.Qualification;
+                                        ApplicantSubmittedJob."Institution/Company 4" := ApplicantsQual."Institution/Company";
+                                        ApplicantSubmittedJob."From Date 4" := ApplicantsQual."From Date";
+                                        ApplicantSubmittedJob."To Date 4" := ApplicantsQual."To Date";
+                                        ApplicantSubmittedJob."Grade/Class 4" := ApplicantsQual."Grade/Class";
+                                        applicantSubmittedJob."Area of Specialization 4" := ApplicantsQual."Area of Specialization";
+                                    end;
+                            end;
+                            if EducationRecordCount = 4 then
+                                break;
+                        until ApplicantsQual.Next() = 0;
+                    end;
+
+
+                    // Only modify once after all updates
+                    if EducationRecordCount > 0 then
+                        ApplicantSubmittedJob.Modify();
+                end;
+                //*********************************************end of applicant education history
+
+                ApplicantsQual.Reset();
+                ApplicantsQual.SetRange("Employee No.", applicantSubmittedJob."Applicant No.");
+                ApplicantsQual.SetCurrentKey("From Date"); // Ensure records are sorted (e.g.,
+                // newest first)
+                if ApplicantsQual.FindSet() then begin
+                    ProfessionalRecordCount := 0;
+                    if ApplicantsQual."Qualification Type" = ApplicantsQual."Qualification Type"::Professional then begin
+                        repeat
+                            ProfessionalRecordCount += 1; // Increment the count for each education record
+                            case ProfessionalRecordCount of
+                                1:
+                                    begin
+                                        applicantSubmittedJob."Professional Qualification" := ApplicantsQual."Qualification Code";
+                                        ApplicantSubmittedJob."Professional Institution" := ApplicantsQual."Institution/Company";
+                                        ApplicantSubmittedJob."Professional From Date" := ApplicantsQual."From Date";
+                                        ApplicantSubmittedJob."Professional Date of Admission" := ApplicantsQual."To Date";
+                                        ApplicantSubmittedJob."Professional Name" := ApplicantsQual."Area of Specialization";
+                                    end;
+                                2:
+                                    begin
+                                        ApplicantSubmittedJob."Professional Qualification 2" := ApplicantsQual."Qualification Code";
+                                        ApplicantSubmittedJob."Professional Institution 2" := ApplicantsQual."Institution/Company";
+                                        ApplicantSubmittedJob."Professional From Date 2" := ApplicantsQual."From Date";
+                                        ApplicantSubmittedJob."Professional Date of Admn 2" := ApplicantsQual."To Date";
+                                        ApplicantSubmittedJob."Professional Name 2" := ApplicantsQual."Area of Specialization";
+                                    end;
+                                3:
+                                    begin
+                                        ApplicantSubmittedJob."Professional Qualification 3" := ApplicantsQual."Qualification Code";
+                                        ApplicantSubmittedJob."Professional Institution 3" := ApplicantsQual."Institution/Company";
+                                        ApplicantSubmittedJob."Professional From Date 3" := ApplicantsQual."From Date";
+                                        //ApplicantSubmittedJob.proff := ApplicantsQual."To Date";
+                                        // ApplicantSubmittedJob."Professional Name 3" := ApplicantsQual."Area of Specialization";
+                                    end;
+
+                            end;
+                            if ProfessionalRecordCount = 3 then
+                                break;
+                        until ApplicantsQual.Next() = 0;
+                        applicantSubmittedJob.Modify();
+                    end;
+                end;
+                //*************************************************************************************** ApplicantProfessionalBodies
+                ApplicantProfessionalBodies.Reset();
+                ApplicantProfessionalBodies.SetRange("Applicant No.", applicantSubmittedJob."Applicant No.");
+                // newest first)
+                if ApplicantProfessionalBodies.FindSet() then begin
+                    ProfessionalBodiesRecordCount := 0; // Reset the count for each applicant
+                    repeat
+                        ProfessionalBodiesRecordCount += 1; // Increment the count for each professional bodies record
+                        case ProfessionalBodiesRecordCount of
+                            1:
+                                begin
+                                    ApplicantSubmittedJob."Professional Bodies" := ApplicantProfessionalBodies.Code;
+                                    ApplicantSubmittedJob."Admission Date" := ApplicantProfessionalBodies."Date of Admission";
+                                    ApplicantSubmittedJob."Membership No." := ApplicantProfessionalBodies."Membership/Registration No.";
+                                end;
+                            2:
+                                begin
+                                    applicantSubmittedJob."Professional Bodies 2" := ApplicantProfessionalBodies.Code;
+                                    ApplicantSubmittedJob."Admission Date 2" := ApplicantProfessionalBodies."Date of Admission";
+                                    ApplicantSubmittedJob."Membership No. 2" := ApplicantProfessionalBodies."Membership/Registration No.";
+                                end;
+                            3:
+                                begin
+                                    ApplicantSubmittedJob."Professional Bodies 3" := ApplicantProfessionalBodies.Code;
+                                    ApplicantSubmittedJob."Admission Date 3" := ApplicantProfessionalBodies."Date of Admission";
+                                    ApplicantSubmittedJob."Membership No. 3" := ApplicantProfessionalBodies."Membership/Registration No.";
+                                end;
+
+                        end;
+
+                        if ProfessionalBodiesRecordCount = 3 then
+                            break;
+                    until ApplicantProfessionalBodies.Next() = 0;
+                    /// Only modify once after all updates
+                    if ProfessionalBodiesRecordCount > 0 then
+                        ApplicantSubmittedJob.Modify();
+                end;
+                //*************************************************************************************** Relevant Courses & Trainings
+                RelevantCourse.Reset();
+                RelevantCourse.SetRange("Source No", applicantSubmittedJob."Applicant No.");
+                RelevantCourse.SetCurrentKey("From Date"); // Ensure records are sorted (e.g.,
+                // newest first)
+                if RelevantCourse.FindSet() then begin
+                    courseRecordCount := 0; // Reset the count for each applicant
+                    repeat
+                        courseRecordCount += 1; // Increment the count for each relevant course record
+                        case courseRecordCount of
+                            1:
+                                begin
+                                    ApplicantSubmittedJob."Name Course" := RelevantCourse."Source No";
+                                    ApplicantSubmittedJob."Name of the Course" := RelevantCourse."Name of the Course";
+                                    ApplicantSubmittedJob."Course Int" := RelevantCourse."University/College/Institution";
+                                    ApplicantSubmittedJob."From Date course" := RelevantCourse."From Date";
+                                    ApplicantSubmittedJob."To Date course" := RelevantCourse."To Date";
+                                    ApplicantSubmittedJob."Duration course" := RelevantCourse.Duration;
+                                end;
+                            2:
+                                begin
+                                    ApplicantSubmittedJob."Name Course 2" := RelevantCourse."Source No";
+                                    ApplicantSubmittedJob."Name of the Course 2" := RelevantCourse."Name of the Course";
+                                    ApplicantSubmittedJob."Course Int 2" := RelevantCourse."University/College/Institution";
+                                    ApplicantSubmittedJob."From Date course 2" := RelevantCourse."From Date";
+                                    ApplicantSubmittedJob."To Date course 2" := RelevantCourse."To Date";
+                                    ApplicantSubmittedJob."Duration course 2" := RelevantCourse.Duration;
+                                end;
+                            3:
+                                begin
+                                    ApplicantSubmittedJob."Name Course 3" := RelevantCourse."Source No";
+                                    ApplicantSubmittedJob."Name of the Course 3" := RelevantCourse."Name of the Course";
+                                    ApplicantSubmittedJob."Course Int 3" := RelevantCourse."University/College/Institution";
+                                    ApplicantSubmittedJob."From Date course 3" := RelevantCourse."From Date";
+                                    //ApplicantSubmittedJob.proff := RelevantCourse.ToDate;
+                                end;
+
+                        end;
+                        if courseRecordCount = 3 then
+                            break;
+                        if RelevantCourse.Next() = 0 then
+                            break;
+                    until false;
+                    // Only modify once after all updates
+                    if courseRecordCount > 0 then
+                        ApplicantSubmittedJob.Modify();
+                end;
+
+
+                //     Commit();
+                Message('%1 applicant job records updated successfully.', ApplicantSubmittedJob.Count);
+                // end
+                // else begin
+                //         Message('No applicant job records found to update.');
+                //     end;
             end;
 
         }
@@ -181,4 +384,9 @@ report 53072 "update Job Appl."
         RelevantCourse: record "Relevant Courses & Trainings";
         QualificationApp: Record Qualification;
         InsertCount: Integer;
+        EmploymentRecordCount: Integer; // Variable to track the number of employment records processed
+        EducationRecordCount: Integer; // Variable to track the number of education records processed
+        ProfessionalRecordCount: Integer;
+        ProfessionalBodiesRecordCount: Integer; // Variable to track the number of professional bodies records processed
+        courseRecordCount: Integer; // Variable to track the number of relevant courses records processed
 }

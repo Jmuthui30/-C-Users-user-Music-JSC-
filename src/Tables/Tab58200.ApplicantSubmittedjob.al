@@ -462,7 +462,7 @@ table 58200 "Applicant Submitted Job"
 
         field(73; "Professional To Date 3"; Date)
         { DataClassification = ToBeClassified; }
-
+        //****************************************************************
         field(80; "Professional Bodies"; text[1000])
         {
             DataClassification = ToBeClassified;

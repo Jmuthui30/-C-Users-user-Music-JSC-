@@ -55,6 +55,62 @@ report 52970 "Applicant job Submitted"
             column(From_Date_Employer_3; "From Date Employer 3") { }
             column(To_Date_Employer_3; "To Date Employer 3") { }
             column(Designation_Employer_3; "Designation Employer 3") { }
+            column(Qualification_Code; "Qualification Code") { }
+            column(Grade_Class; "Grade/Class") { }
+            column(Institution_Company; "Institution/Company") { }
+            column(To_Date; "To Date") { }
+            column(From_Date; "From Date") { }
+            column(Area_of_Specialization; "Area of Specialization") { }
+            column(Qualification_Code_2; "Qualification Code 2") { }
+            column(Area_of_Specialization_2; "Area of Specialization 2") { }
+            column(Institution_Company_2; "Institution/Company 2") { }
+            column(To_Date_2; "To Date 2") { }
+            column(From_Date_2; "From Date 2") { }
+            column(Grade_Class_2; "Grade/Class 2") { }
+            column(Qualification_Code_3; "Qualification Code 3") { }
+            column(Area_of_Specialization_3; "Area of Specialization 3") { }
+            column(Institution_Company_3; "Institution/Company 3") { }
+            column(To_Date_3; "To Date 3") { }
+            column(From_Date_3; "From Date 3") { }
+            column(Grade_Class_3; "Grade/Class 3") { }
+            column(Professional_Qualification; "Professional Qualification") { }
+            column(Professional_Institution; "Professional Institution") { }
+            column(Professional_From_Date; "Professional From Date") { }
+            column(Professional_Date_of_Admission; "Professional Date of Admission") { }
+            column(Professional_Name; "Professional Name") { }
+            column(Professional_Qualification_2; "Professional Qualification 2") { }
+            column(Professional_Institution_2; "Professional Institution 2") { }
+            column(Professional_From_Date_2; "Professional From Date 2") { }
+            column(Professional_Date_of_Admn_2; "Professional Date of Admn 2") { }
+            column(Professional_Name_2; "Professional Name 2") { }
+            column(Professional_Qualification_3; "Professional Qualification 3") { }
+            column(Professional_Institution_3; "Professional Institution 3") { }
+            column(Professional_From_Date_3; "Professional From Date 3") { }
+            column(Professional_Bodies; "Professional Bodies") { }
+            column(Membership_No_; "Membership No.") { }
+            column(Admission_Date; "Admission Date") { }
+            column(Professional_Bodies_2; "Professional Bodies 2") { }
+            column(Membership_No_2; "Membership No. 2") { }
+            column(Admission_Date_2; "Admission Date 2") { }
+            column(Professional_Bodies_3; "Professional Bodies 3") { }
+            column(Membership_No_3; "Membership No. 3") { }
+            column(Admission_Date_3; "Admission Date 3") { }
+            column(Name_of_the_Course; "Name of the Course") { }
+            column(Course_Int; "Course Int") { }
+            column(From_Date_course; "From Date course") { }
+            column(To_Date_course; "To Date course") { }
+            column(Duration_course; "Duration course") { }
+            column(Name_of_the_Course_2; "Name of the Course 2") { }
+            column(Course_Int_2; "Course Int 2") { }
+            column(From_Date_course_2; "From Date course 2") { }
+            column(To_Date_course_2; "To Date course 2") { }
+            column(Duration_course_2; "Duration course 2") { }
+            column(Name_of_the_Course_3; "Name of the Course 3") { }
+            column(Course_Int_3; "Course Int 3") { }
+            column(From_Date_course_3; "From Date course 3") { }
+            column(To_Date_course_3; "To Date course 3") { }
+            column(Duration_course_3; "Duration course 3") { }
+
 
             dataitem(IntegerTab; Integer)
             {
@@ -96,7 +152,6 @@ report 52970 "Applicant job Submitted"
             End;
 
 
-
         }
     }
 
@@ -108,7 +163,7 @@ report 52970 "Applicant job Submitted"
         {
             area(Content)
             {
-                group(Options)
+                group(GeneralDetails)
                 {
                     grid(OptionsGrid)
                     {
@@ -405,77 +460,258 @@ report 52970 "Applicant job Submitted"
 
                     }
 
-                    grid(OptionsGrid5)
-                    {
-                        field(ShowEmploymentHistory; ShowEmploymentHistory)
-                        {
-                            ApplicationArea = All;
-                            Caption = 'Show Employment History';
-                            ToolTip = 'Specifies whether to show the Employment History columns';
-                            Trigger OnValidate()
-                            var
-                            begin
-
-                                InitalizeFieldIds(Appl.FieldNo(Employer));
-                                InitalizeFieldIds(Appl.FieldNo("From Date Employer"));
-                                InitalizeFieldIds(Appl.FieldNo("To Date Employer"));
-                                InitalizeFieldIds(Appl.FieldNo("Designation Employer"));
 
 
-                            end;
-                        }
-                        field(ShowEmploymentHistory2; ShowEmploymentHistory2)
-                        {
-                            ApplicationArea = All;
-                            Caption = 'Show Employment History 2';
-                            ToolTip = 'Specifies whether to show the Employment History 2 columns';
-                            Trigger OnValidate()
-                            var
-                            begin
-
-                                InitalizeFieldIds(Appl.FieldNo("Employer 2"));
-                                InitalizeFieldIds(Appl.FieldNo("From Date Employer 2"));
-                                InitalizeFieldIds(Appl.FieldNo("To Date Employer 2"));
-                                InitalizeFieldIds(Appl.FieldNo("Designation Employer 2"));
-
-                            end;
-                        }
-                        field(ShowEmploymentHistory3; ShowEmploymentHistory3)
-                        {
-                            ApplicationArea = All;
-                            Caption = 'Show Employment History 3';
-                            ToolTip = 'Specifies whether to show the Employment History 3 columns';
-                            Trigger OnValidate()
-                            var
-                            begin
-
-                                InitalizeFieldIds(Appl.FieldNo("Employer 3"));
-                                InitalizeFieldIds(Appl.FieldNo("From Date Employer 3"));
-                                InitalizeFieldIds(Appl.FieldNo("To Date Employer 3"));
-                                InitalizeFieldIds(Appl.FieldNo("Designation Employer 3"));
-
-                            end;
-                        }
-                        field(ShowACademic; ShowACademic)
-                        {
-                            ApplicationArea = All;
-                            Caption = 'Show Academic Qualifications';
-                            ToolTip = 'Specifies whether to show the Academic Qualifications column';
-                            Trigger OnValidate()
-                            var
-                            begin
-
-                                //InitalizeFieldIds(Appl.FieldNo());
-
-                            end;
-                        }
-                    }
 
 
                 }
-            }
-        }
 
+                group(ACademic)
+                {
+                    field(ShowACademic; ShowACademic)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Academic Qualification';
+                        ToolTip = 'Specifies whether to show the Academic Qualification column';
+                        Trigger OnValidate()
+                        var
+                        begin
+                            InitalizeFieldIds(Appl.FieldNo("Qualification Code"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date"));
+                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization"));
+                            initalizeFieldIds(Appl.FieldNo("Institution/Company"));
+                            initalizeFieldIds(Appl.FieldNo("Grade/Class"));
+                        end;
+                    }
+                    field(ShowACademic2; ShowACademic2)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Academic Qualification';
+                        ToolTip = 'Specifies whether to show the Academic Qualification column';
+                        Trigger OnValidate()
+                        var
+                        begin
+                            InitalizeFieldIds(Appl.FieldNo("Qualification Code 2"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date 2"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date 2"));
+                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization 2"));
+                            initalizeFieldIds(Appl.FieldNo("Institution/Company 2"));
+                            initalizeFieldIds(Appl.FieldNo("Grade/Class 2"));
+                        end;
+                    }
+
+                }
+                group(Professional)
+                {
+                    field(ShowProfessional; ShowProfessional)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Professional Qualification';
+                        ToolTip = 'Specifies whether to show the Professional Qualification column';
+                        Trigger OnValidate()
+                        var
+                        begin
+                            InitalizeFieldIds(Appl.FieldNo("Professional Qualification"));
+                            InitalizeFieldIds(Appl.FieldNo("Professional From Date"));
+                            InitalizeFieldIds(Appl.FieldNo("Professional Date of Admission"));
+                            InitalizeFieldIds(Appl.FieldNo("Professional Name"));
+                            InitalizeFieldIds(Appl.FieldNo("Professional Institution"));
+                        end;
+                    }
+                    field(ShowProfessional2; ShowProfessional2)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Professional Qualification 2';
+                        ToolTip = 'Specifies whether to show the Professional Qualification 2 column';
+                        Trigger OnValidate()
+                        var
+                        begin
+                            InitalizeFieldIds(Appl.FieldNo("Professional Qualification 2"));
+                            InitalizeFieldIds(Appl.FieldNo("Professional From Date 2"));
+                            InitalizeFieldIds(Appl.FieldNo("Professional Date of Admn 2"));
+                            InitalizeFieldIds(Appl.FieldNo("Professional Name 2"));
+                            InitalizeFieldIds(Appl.FieldNo("Professional Institution 2"));
+
+                        end;
+                    }
+                    field(ShowProfessional3; ShowProfessional3)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Professional Qualification 3';
+                        ToolTip = 'Specifies whether to show the Professional Qualification 3 column';
+                        Trigger OnValidate()
+                        var
+                        begin
+                            InitalizeFieldIds(Appl.FieldNo("Professional Qualification 3"));
+                            InitalizeFieldIds(Appl.FieldNo("Professional From Date 3"));
+                            InitalizeFieldIds(Appl.FieldNo("Professional Institution 3"));
+
+                        end;
+                    }
+
+                }
+                group(professionalBodies)
+                {
+                    field(ShowProfessionalBodies; ShowProfessionalBodies)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Professional Bodies';
+                        ToolTip = 'Specifies whether to show the Professional Bodies column';
+                        Trigger OnValidate()
+                        var
+                        begin
+                            InitalizeFieldIds(Appl.FieldNo("Professional Bodies"));
+                            InitalizeFieldIds(Appl.FieldNo("Membership No."));
+                            InitalizeFieldIds(Appl.FieldNo("Admission Date"));
+                        end;
+                    }
+                    field(ShowProfessionalBodies2; ShowProfessionalBodies2)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Professional Bodies 2';
+                        ToolTip = 'Specifies whether to show the Professional Bodies 2 column';
+                        Trigger OnValidate()
+                        var
+                        begin
+                            InitalizeFieldIds(Appl.FieldNo("Professional Bodies 2"));
+                            InitalizeFieldIds(Appl.FieldNo("Membership No. 2"));
+                            InitalizeFieldIds(Appl.FieldNo("Admission Date 2"));
+
+                        end;
+                    }
+                    field(ShowProfessionalBodies3; ShowProfessionalBodies3)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Professional Bodies 3';
+                        ToolTip = 'Specifies whether to show the Professional Bodies 3 column';
+                        Trigger OnValidate()
+                        var
+                        begin
+                            InitalizeFieldIds(Appl.FieldNo("Professional Bodies 3"));
+                            InitalizeFieldIds(Appl.FieldNo("Membership No. 3"));
+                            InitalizeFieldIds(Appl.FieldNo("Admission Date 3"));
+
+                        end;
+                    }
+
+                }
+
+                group(employmentHistory)
+                {
+
+                    field(ShowEmploymentHistory; ShowEmploymentHistory)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Employment History';
+                        ToolTip = 'Specifies whether to show the Employment History columns';
+                        Trigger OnValidate()
+                        var
+                        begin
+
+                            InitalizeFieldIds(Appl.FieldNo(Employer));
+                            InitalizeFieldIds(Appl.FieldNo("From Date Employer"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date Employer"));
+                            InitalizeFieldIds(Appl.FieldNo("Designation Employer"));
+
+
+                        end;
+                    }
+                    field(ShowEmploymentHistory2; ShowEmploymentHistory2)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Employment History 2';
+                        ToolTip = 'Specifies whether to show the Employment History 2 columns';
+                        Trigger OnValidate()
+                        var
+                        begin
+
+                            InitalizeFieldIds(Appl.FieldNo("Employer 2"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date Employer 2"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date Employer 2"));
+                            InitalizeFieldIds(Appl.FieldNo("Designation Employer 2"));
+
+                        end;
+                    }
+                    field(ShowEmploymentHistory3; ShowEmploymentHistory3)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Employment History 3';
+                        ToolTip = 'Specifies whether to show the Employment History 3 columns';
+                        Trigger OnValidate()
+                        var
+                        begin
+
+                            InitalizeFieldIds(Appl.FieldNo("Employer 3"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date Employer 3"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date Employer 3"));
+                            InitalizeFieldIds(Appl.FieldNo("Designation Employer 3"));
+
+                        end;
+                    }
+                }
+
+                group(relevantCourses)
+                {
+                    field(ShowRelevantCourse; ShowRelevantCourse)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Relevant Course';
+                        ToolTip = 'Specifies whether to show the Relevant Course columns';
+                        Trigger OnValidate()
+                        var
+                        begin
+
+                            InitalizeFieldIds(Appl.FieldNo("Name of the Course"));
+                            InitalizeFieldIds(Appl.FieldNo("Course Int"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date course"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date course"));
+                            InitalizeFieldIds(Appl.FieldNo("Duration course"));
+
+                        end;
+                    }
+                    field(ShowRelevantCourse2; ShowRelevantCourse2)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Relevant Course 2';
+                        ToolTip = 'Specifies whether to show the Relevant Course 2 columns';
+                        Trigger OnValidate()
+                        var
+                        begin
+
+                            InitalizeFieldIds(Appl.FieldNo("Name of the Course 2"));
+                            InitalizeFieldIds(Appl.FieldNo("Course Int 2"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date course 2"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date course 2"));
+                            InitalizeFieldIds(Appl.FieldNo("Duration course 2"));
+
+                        end;
+                    }
+                    field(ShowRelevantCourse3; ShowRelevantCourse3)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Relevant Course 3';
+                        ToolTip = 'Specifies whether to show the Relevant Course 3 columns';
+                        Trigger OnValidate()
+                        var
+                        begin
+
+                            InitalizeFieldIds(Appl.FieldNo("Name of the Course 3"));
+                            InitalizeFieldIds(Appl.FieldNo("Course Int 3"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date course 3"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date course 3"));
+                            InitalizeFieldIds(Appl.FieldNo("Duration course 3"));
+
+                        end;
+                    }
+
+                }
+
+
+            }
+
+
+        }
         trigger OnQueryClosePage(CloseAction: Action): Boolean
         var
             fieldref: FieldRef;
@@ -554,10 +790,25 @@ report 52970 "Applicant job Submitted"
         ShowMobile: Boolean;
         ShowEMail: Boolean;
         ShowACademic: Boolean;
+        ShowACademic2: Boolean;
+        ShowACademic3: Boolean;
         ShowProfessional: Boolean;
         ShowProfessionalBodies: Boolean;
+        ShowProfessional1: Boolean;
+        ShowProfessionalBodies1: Boolean;
+        ShowProfessional2: Boolean;
+        ShowProfessionalBodies2: Boolean;
+        ShowProfessional3: Boolean;
+        ShowProfessionalBodies3: Boolean;
+
+
         ShowRelevantCourse: Boolean;
         ShowEmploymentHistory: Boolean;
+        ShowRelevantCourse2: Boolean;
+
+        ShowRelevantCourse3: Boolean;
+        ShowRelevantCourse4: Boolean;
+
         arrayIndex: Integer;
         compinfo: Record "Company Information";
         arrlength: Integer;
