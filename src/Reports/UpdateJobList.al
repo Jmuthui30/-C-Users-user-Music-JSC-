@@ -154,7 +154,7 @@ report 53072 "update Job Appl."
                             case EducationRecordCount of
                                 1:
                                     begin
-                                        ApplicantSubmittedJob."Qualification Code" := ApplicantsQual.Qualification;
+                                        ApplicantSubmittedJob."Qualification Code" := ApplicantsQual.Description;
                                         ApplicantSubmittedJob."Institution/Company" := ApplicantsQual."Institution/Company";
                                         ApplicantSubmittedJob."From Date" := ApplicantsQual."From Date";
                                         ApplicantSubmittedJob."To Date" := ApplicantsQual."To Date";
@@ -163,7 +163,7 @@ report 53072 "update Job Appl."
                                     end;
                                 2:
                                     begin
-                                        ApplicantSubmittedJob."Qualification Code 2" := ApplicantsQual.Qualification;
+                                        ApplicantSubmittedJob."Qualification Code 2" := ApplicantsQual.Description;
                                         ApplicantSubmittedJob."Institution/Company 2" := ApplicantsQual."Institution/Company";
                                         ApplicantSubmittedJob."From Date 2" := ApplicantsQual."From Date";
                                         ApplicantSubmittedJob."To Date 2" := ApplicantsQual."To Date";
@@ -172,7 +172,7 @@ report 53072 "update Job Appl."
                                     end;
                                 3:
                                     begin
-                                        ApplicantSubmittedJob."Qualification Code 3" := ApplicantsQual.Qualification;
+                                        ApplicantSubmittedJob."Qualification Code 3" := ApplicantsQual.Description;
                                         ApplicantSubmittedJob."Institution/Company 3" := ApplicantsQual."Institution/Company";
                                         ApplicantSubmittedJob."From Date 3" := ApplicantsQual."From Date";
                                         ApplicantSubmittedJob."To Date 3" := ApplicantsQual."To Date";
@@ -181,7 +181,7 @@ report 53072 "update Job Appl."
                                     end;
                                 4:
                                     begin
-                                        ApplicantSubmittedJob."Qualification Code 4" := ApplicantsQual.Qualification;
+                                        ApplicantSubmittedJob."Qualification Code 4" := ApplicantsQual.Description;
                                         ApplicantSubmittedJob."Institution/Company 4" := ApplicantsQual."Institution/Company";
                                         ApplicantSubmittedJob."From Date 4" := ApplicantsQual."From Date";
                                         ApplicantSubmittedJob."To Date 4" := ApplicantsQual."To Date";
@@ -239,9 +239,12 @@ report 53072 "update Job Appl."
                             end;
                             if ProfessionalRecordCount = 3 then
                                 break;
+
                         until ApplicantsQual.Next() = 0;
-                        applicantSubmittedJob.Modify();
                     end;
+                    // Only modify once after all updates
+                    if ProfessionalRecordCount > 0 then
+                        applicantSubmittedJob.Modify();
                 end;
                 //*************************************************************************************** ApplicantProfessionalBodies
                 ApplicantProfessionalBodies.Reset();
@@ -277,6 +280,7 @@ report 53072 "update Job Appl."
                             break;
                     until ApplicantProfessionalBodies.Next() = 0;
                     /// Only modify once after all updates
+
                     if ProfessionalBodiesRecordCount > 0 then
                         ApplicantSubmittedJob.Modify();
                 end;
@@ -320,10 +324,7 @@ report 53072 "update Job Appl."
                         end;
                         if courseRecordCount = 3 then
                             break;
-                        if RelevantCourse.Next() = 0 then
-                            break;
-                    until false;
-                    // Only modify once after all updates
+                    until RelevantCourse.Next() = 0;
                     if courseRecordCount > 0 then
                         ApplicantSubmittedJob.Modify();
                 end;
@@ -331,10 +332,7 @@ report 53072 "update Job Appl."
 
                 //     Commit();
                 Message('%1 applicant job records updated successfully.', ApplicantSubmittedJob.Count);
-                // end
-                // else begin
-                //         Message('No applicant job records found to update.');
-                //     end;
+
             end;
 
         }
