@@ -242,26 +242,33 @@ report 53072 "update Job Appl."
                                 1:
                                     begin
                                         applicantSubmittedJob."Professional Qualification" := ApplicantsQual."Qualification Code";
+                                        qualificationApp.Get(ApplicantSubmittedJob."Professional Qualification");
+                                        ApplicantSubmittedJob."Professional Name" := qualificationApp.Description;
                                         ApplicantSubmittedJob."Professional Institution" := ApplicantsQual."Institution/Company";
                                         ApplicantSubmittedJob."Professional From Date" := ApplicantsQual."From Date";
                                         ApplicantSubmittedJob."Professional Date of Admission" := ApplicantsQual."To Date";
-                                        ApplicantSubmittedJob."Professional Name" := ApplicantsQual."Area of Specialization";
+                                        ApplicantSubmittedJob."Area of Specialization PROF" := ApplicantsQual."Area of Specialization";
+
                                     end;
                                 2:
                                     begin
-                                        ApplicantSubmittedJob."Professional Qualification 2" := ApplicantsQual."Qualification Code";
+                                        applicantSubmittedJob."Professional Qualification 2" := ApplicantsQual."Qualification Code";
+                                        qualificationApp.Get(ApplicantSubmittedJob."Professional Qualification 2");
+                                        ApplicantSubmittedJob."Professional Name 2" := qualificationApp.Description;
                                         ApplicantSubmittedJob."Professional Institution 2" := ApplicantsQual."Institution/Company";
                                         ApplicantSubmittedJob."Professional From Date 2" := ApplicantsQual."From Date";
                                         ApplicantSubmittedJob."Professional Date of Admn 2" := ApplicantsQual."To Date";
-                                        ApplicantSubmittedJob."Professional Name 2" := ApplicantsQual."Area of Specialization";
+                                        ApplicantSubmittedJob."Area of Specialization PROF 2" := ApplicantsQual."Area of Specialization";
                                     end;
                                 3:
                                     begin
-                                        ApplicantSubmittedJob."Professional Qualification 3" := ApplicantsQual."Qualification Code";
+                                        applicantSubmittedJob."Professional Qualification 3" := ApplicantsQual."Qualification Code";
+                                        qualificationApp.Get(ApplicantSubmittedJob."Professional Qualification 3");
+                                        ApplicantSubmittedJob."Professional Name 3" := qualificationApp.Description;
                                         ApplicantSubmittedJob."Professional Institution 3" := ApplicantsQual."Institution/Company";
                                         ApplicantSubmittedJob."Professional From Date 3" := ApplicantsQual."From Date";
-                                        //ApplicantSubmittedJob.proff := ApplicantsQual."To Date";
-                                        // ApplicantSubmittedJob."Professional Name 3" := ApplicantsQual."Area of Specialization";
+                                        ApplicantSubmittedJob."Professional Date of Admn 3" := ApplicantsQual."To Date";
+                                        ApplicantSubmittedJob."Area of Specialization PROF 3" := ApplicantsQual."Area of Specialization";
                                     end;
 
                             end;
@@ -285,22 +292,29 @@ report 53072 "update Job Appl."
                         case ProfessionalBodiesRecordCount of
                             1:
                                 begin
-                                    ApplicantSubmittedJob."Professional Bodies" := ApplicantProfessionalBodies.Code;
+                                    ApplicantSubmittedJob."Professional Bodies" := ApplicantProfessionalBodies.Name;
+                                    applicantSubmittedJob."Professional Code" := ApplicantProfessionalBodies.Code;
                                     ApplicantSubmittedJob."Admission Date" := ApplicantProfessionalBodies."Date of Admission";
                                     ApplicantSubmittedJob."Membership No." := ApplicantProfessionalBodies."Membership/Registration No.";
+                                    ApplicantSubmittedJob."Professional Membership Type" := ApplicantProfessionalBodies."Membership Type";
+
                                 end;
                             2:
-                                begin
-                                    applicantSubmittedJob."Professional Bodies 2" := ApplicantProfessionalBodies.Code;
+                                Begin
+                                    ApplicantSubmittedJob."Professional Bodies 2" := ApplicantProfessionalBodies.Name;
+                                    ApplicantSubmittedJob."Professional Code" := ApplicantProfessionalBodies.Code;
                                     ApplicantSubmittedJob."Admission Date 2" := ApplicantProfessionalBodies."Date of Admission";
                                     ApplicantSubmittedJob."Membership No. 2" := ApplicantProfessionalBodies."Membership/Registration No.";
-                                end;
+                                    ApplicantSubmittedJob."Professional Membership Type 2" := ApplicantProfessionalBodies."Membership/Registration No.";
+                                End;
                             3:
                                 begin
-                                    ApplicantSubmittedJob."Professional Bodies 3" := ApplicantProfessionalBodies.Code;
+                                    ApplicantSubmittedJob."Professional Bodies 3" := ApplicantProfessionalBodies.Name;
+                                    ApplicantSubmittedJob."Professional Code 3" := ApplicantProfessionalBodies.Code;
                                     ApplicantSubmittedJob."Admission Date 3" := ApplicantProfessionalBodies."Date of Admission";
                                     ApplicantSubmittedJob."Membership No. 3" := ApplicantProfessionalBodies."Membership/Registration No.";
-                                end;
+                                    ApplicantSubmittedJob."Professional Membership Type 3" := ApplicantProfessionalBodies."Membership Type";
+                                End;
 
                         end;
 
@@ -346,7 +360,9 @@ report 53072 "update Job Appl."
                                     ApplicantSubmittedJob."Name of the Course 3" := RelevantCourse."Name of the Course";
                                     ApplicantSubmittedJob."Course Int 3" := RelevantCourse."University/College/Institution";
                                     ApplicantSubmittedJob."From Date course 3" := RelevantCourse."From Date";
-                                    //ApplicantSubmittedJob.proff := RelevantCourse.ToDate;
+                                    ApplicantSubmittedJob."To Date course 3" := RelevantCourse."To Date";
+                                    applicantSubmittedJob."Duration course 3" := RelevantCourse.Duration;
+
                                 end;
 
                         end;

@@ -476,10 +476,13 @@ table 58200 "Applicant Submitted Job"
         {
             DataClassification = ToBeClassified;
         }
-        field(79; "Professional Membership Type"; Code[200])
+
+        Field(763; "Area of Specialization PROF"; Text[1000])
         {
+            Caption = 'Area of Specialization';
             DataClassification = ToBeClassified;
         }
+
         //******************************************************************************************** Professional
         field(64; "Professional Qualification 2"; text[1000]) { DataClassification = ToBeClassified; }
         field(65; "Professional Institution 2"; text[1000]) { DataClassification = ToBeClassified; }
@@ -499,8 +502,10 @@ table 58200 "Applicant Submitted Job"
         {
             DataClassification = ToBeClassified;
         }
-        field(99; "Professional Membership Type 2"; Code[20])
+
+        Field(764; "Area of Specialization PROF 2"; Text[1000])
         {
+            Caption = 'Area of Specialization';
             DataClassification = ToBeClassified;
         }
         //*********************************************************************************************Profession2
@@ -510,7 +515,25 @@ table 58200 "Applicant Submitted Job"
 
         field(73; "Professional To Date 3"; Date)
         { DataClassification = ToBeClassified; }
-        //****************************************************************
+        Field(767; "Area of Specialization PROF 3"; Text[1000])
+        {
+            Caption = 'Area of Specialization';
+            DataClassification = ToBeClassified;
+        }
+        field(492; "Professional Name 3"; Text[1000])
+        {
+            DataClassification = ToBeClassified;
+            NotBlank = false;
+        }
+        field(498; "Professional Date of Admn 3"; Date)
+        {
+            DataClassification = ToBeClassified;
+        }
+        //**************************************************************** professional bodies
+        field(781; "Professional Code"; code[100])
+        {
+            DataClassification = ToBeClassified;
+        }
         field(80; "Professional Bodies"; text[1000])
         {
             DataClassification = ToBeClassified;
@@ -521,16 +544,37 @@ table 58200 "Applicant Submitted Job"
         }
 
         field(82; "Admission Date"; Date) { DataClassification = ToBeClassified; }
+        field(79; "Professional Membership Type"; Code[200])
+        {
+            DataClassification = ToBeClassified;
+        }
+
         //******************************************************************************Professional Bodies 3
+        field(782; "Professional Code 2"; code[100])
+        {
+            DataClassification = ToBeClassified;
+        }
         field(83; "Professional Bodies 2"; text[1000]) { DataClassification = ToBeClassified; }
 
         field(84; "Membership No. 2"; code[100]) { DataClassification = ToBeClassified; }
         field(85; "Admission Date 2"; Date) { DataClassification = ToBeClassified; }
+        field(99; "Professional Membership Type 2"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+        }
         //******************************************************************************Professional Bodies4
+        field(783; "Professional Code 3"; code[100])
+        {
+            DataClassification = ToBeClassified;
+        }
         field(86; "Professional Bodies 3"; text[1000]) { DataClassification = ToBeClassified; }
 
         field(87; "Membership No. 3"; code[100]) { DataClassification = ToBeClassified; }
         field(88; "Admission Date 3"; Date) { DataClassification = ToBeClassified; }
+        field(93; "Professional Membership Type 3"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+        }
 
         //******************************************************************************Relevant  Course
         field(132; "Name of the Course"; Text[100])

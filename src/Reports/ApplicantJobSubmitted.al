@@ -119,42 +119,65 @@ report 52970 "Applicant job Submitted"
             column(Grade_Class_5; "Grade/Class 5") { }
             //*************************************************************************************professional qualifications
             column(Professional_Qualification; "Professional Qualification") { }
+            column(Professional_Name; "Professional Name") { }
+            column(Area_of_Specialization_PROF; "Area of Specialization PROF") { }
             column(Professional_Institution; "Professional Institution") { }
             column(Professional_From_Date; "Professional From Date") { }
             column(Professional_Date_of_Admission; "Professional Date of Admission") { }
-            column(Professional_Name; "Professional Name") { }
+            //*************************************************************************************
             column(Professional_Qualification_2; "Professional Qualification 2") { }
+            column(Professional_Name_2; "Professional Name 2") { }
+            column(Area_of_Specialization_PROF_2; "Area of Specialization PROF 2") { }
             column(Professional_Institution_2; "Professional Institution 2") { }
             column(Professional_From_Date_2; "Professional From Date 2") { }
             column(Professional_Date_of_Admn_2; "Professional Date of Admn 2") { }
-            column(Professional_Name_2; "Professional Name 2") { }
+            //*************************************************************************************
             column(Professional_Qualification_3; "Professional Qualification 3") { }
+            column(Professional_Name_3; "Professional Name 3") { }
+            column(Area_of_Specialization_PROF_3; "Area of Specialization PROF 3") { }
             column(Professional_Institution_3; "Professional Institution 3") { }
+
             column(Professional_From_Date_3; "Professional From Date 3") { }
-            column(Professional_Bodies; "Professional Bodies") { }
-            column(Membership_No_; "Membership No.") { }
-            column(Admission_Date; "Admission Date") { }
-            column(Professional_Bodies_2; "Professional Bodies 2") { }
-            column(Membership_No_2; "Membership No. 2") { }
-            column(Admission_Date_2; "Admission Date 2") { }
-            column(Professional_Bodies_3; "Professional Bodies 3") { }
-            column(Membership_No_3; "Membership No. 3") { }
-            column(Admission_Date_3; "Admission Date 3") { }
-            column(Name_of_the_Course; "Name of the Course") { }
-            column(Course_Int; "Course Int") { }
-            column(From_Date_course; "From Date course") { }
-            column(To_Date_course; "To Date course") { }
-            column(Duration_course; "Duration course") { }
-            column(Name_of_the_Course_2; "Name of the Course 2") { }
-            column(Course_Int_2; "Course Int 2") { }
-            column(From_Date_course_2; "From Date course 2") { }
-            column(To_Date_course_2; "To Date course 2") { }
-            column(Duration_course_2; "Duration course 2") { }
-            column(Name_of_the_Course_3; "Name of the Course 3") { }
-            column(Course_Int_3; "Course Int 3") { }
-            column(From_Date_course_3; "From Date course 3") { }
-            column(To_Date_course_3; "To Date course 3") { }
-            column(Duration_course_3; "Duration course 3") { }
+            column(Professional_Date_of_Admn_3; "Professional Date of Admn 3") { }
+            //*************************************************************************************
+            Column(Professional_Code; "Professional Code") { }
+            Column(Professional_Bodies; "Professional Bodies") { }
+            Column(Admission_Date; "Admission Date") { }
+            Column(Membership_No; "Membership No.") { }
+            Column(Professional_Membership_Type; "Professional Membership Type") { }
+            //***********************************
+            Column(Professional_Code_2; "Professional Code 2") { }
+            Column(Professional_Bodies_2; "Professional Bodies 2") { }
+            Column(Admission_Date_2; "Admission Date 2") { }
+            Column(Membership_No__2; "Membership No. 2") { }
+            Column(Professional_Membership_Type_2; "Professional Membership Type 2") { }
+            //**********************************************************************************
+            Column(Professional_Code_3; "Professional Code 3") { }
+            Column(Professional_Bodies_3; "Professional Bodies 3") { }
+            Column(Admission_Date_3; "Admission Date 3") { }
+            Column(Membership_No__3; "Membership No. 3") { }
+            Column(Professional_Membership_Type_3; "Professional Membership Type 3") { }
+            //**********************************************************************************COURSECO
+            Column(Name_Course; "Name Course") { }
+            Column(Name_of_the_Course; "Name of the Course") { }
+            Column(Course_Int; "Course Int") { }
+            Column(From_Date_course; "From Date course") { }
+            Column(To_Date_course; "To Date course") { }
+            Column(Duration_course; "Duration course") { }
+            //**************************************************************8
+            Column(Name_Course_2; "Name Course 2") { }
+            Column(Name_of_the_Course_2; "Name of the Course 2") { }
+            Column(Course_Int_2; "Course Int 2") { }
+            Column(From_Date_course_2; "From Date course 2") { }
+            Column(To_Date_course_2; "To Date course 2") { }
+            Column(Duration_course_2; "Duration course 2") { }
+            //*************************************************************
+            Column(Name_Course_3; "Name Course 3") { }
+            Column(Name_of_the_Course_3; "Name of the Course 3") { }
+            Column(Course_Int_3; "Course Int 3") { }
+            Column(From_Date_course_3; "From Date course 3") { }
+            Column(To_Date_course_3; "To Date course 3") { }
+            Column(Duration_course_3; "Duration course 3") { }
 
 
             dataitem(IntegerTab; Integer)
@@ -527,6 +550,7 @@ report 52970 "Applicant job Submitted"
                             InitalizeFieldIds(Appl.FieldNo("Area of Specialization"));
                             initalizeFieldIds(Appl.FieldNo("Institution/Company"));
                             initalizeFieldIds(Appl.FieldNo("Grade/Class"));
+
                         end;
                     }
                     field(ShowACademic2; ShowACademic2)
@@ -543,6 +567,57 @@ report 52970 "Applicant job Submitted"
                             InitalizeFieldIds(Appl.FieldNo("Area of Specialization 2"));
                             initalizeFieldIds(Appl.FieldNo("Institution/Company 2"));
                             initalizeFieldIds(Appl.FieldNo("Grade/Class 2"));
+                        end;
+                    }
+                    field(ShowACademic3; ShowACademic3)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Academic Qualification';
+                        ToolTip = 'Specifies whether to show the Academic Qualification column';
+                        Trigger OnValidate()
+                        var
+                        begin
+                            InitalizeFieldIds(Appl.FieldNo("Qualification Code 3"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date 3"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date 3"));
+                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization 3"));
+                            initalizeFieldIds(Appl.FieldNo("Institution/Company 3"));
+                            initalizeFieldIds(Appl.FieldNo("Grade/Class 3"));
+
+                        end;
+                    }
+                    field(ShowACademic4; ShowACademic4)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Academic Qualification';
+                        ToolTip = 'Specifies whether to show the Academic Qualification column';
+                        Trigger OnValidate()
+                        var
+                        begin
+                            InitalizeFieldIds(Appl.FieldNo("Qualification Code 4"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date 4"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date 4"));
+                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization 4"));
+                            initalizeFieldIds(Appl.FieldNo("Institution/Company 4"));
+                            initalizeFieldIds(Appl.FieldNo("Grade/Class 4"));
+
+                        end;
+                    }
+                    field(ShowACademic5; ShowACademic5)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Academic Qualification';
+                        ToolTip = 'Specifies whether to show the Academic Qualification column';
+                        Trigger OnValidate()
+                        var
+                        begin
+                            InitalizeFieldIds(Appl.FieldNo("Qualification Code 5"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date 5"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date 5"));
+                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization 5"));
+                            initalizeFieldIds(Appl.FieldNo("Institution/Company 5"));
+                            initalizeFieldIds(Appl.FieldNo("Grade/Class 5"));
+
                         end;
                     }
 
@@ -562,6 +637,7 @@ report 52970 "Applicant job Submitted"
                             InitalizeFieldIds(Appl.FieldNo("Professional Date of Admission"));
                             InitalizeFieldIds(Appl.FieldNo("Professional Name"));
                             InitalizeFieldIds(Appl.FieldNo("Professional Institution"));
+                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization PROF"));
                         end;
                     }
                     field(ShowProfessional2; ShowProfessional2)
@@ -577,6 +653,7 @@ report 52970 "Applicant job Submitted"
                             InitalizeFieldIds(Appl.FieldNo("Professional Date of Admn 2"));
                             InitalizeFieldIds(Appl.FieldNo("Professional Name 2"));
                             InitalizeFieldIds(Appl.FieldNo("Professional Institution 2"));
+                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization PROF 2"));
 
                         end;
                     }
@@ -590,7 +667,10 @@ report 52970 "Applicant job Submitted"
                         begin
                             InitalizeFieldIds(Appl.FieldNo("Professional Qualification 3"));
                             InitalizeFieldIds(Appl.FieldNo("Professional From Date 3"));
+                            InitalizeFieldIds(Appl.FieldNo("Professional Date of Admn 3"));
+                            InitalizeFieldIds(Appl.FieldNo("Professional Name 3"));
                             InitalizeFieldIds(Appl.FieldNo("Professional Institution 3"));
+                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization PROF 3"));
 
                         end;
                     }
@@ -609,21 +689,25 @@ report 52970 "Applicant job Submitted"
                             InitalizeFieldIds(Appl.FieldNo("Professional Bodies"));
                             InitalizeFieldIds(Appl.FieldNo("Membership No."));
                             InitalizeFieldIds(Appl.FieldNo("Admission Date"));
+                            InitalizeFieldIds(Appl.FieldNo("Professional Code"));
+                            InitalizeFieldIds(Appl.FieldNo("Professional Membership Type"));
                         end;
                     }
-                    field(ShowProfessionalBodies2; ShowProfessionalBodies2)
+                    field(ShowProfessionalBodies1; ShowProfessionalBodies1)
                     {
                         ApplicationArea = All;
                         Caption = 'Show Professional Bodies 2';
-                        ToolTip = 'Specifies whether to show the Professional Bodies 2 column';
+                        ToolTip = 'Specifies whether to show the Professional Bodies 1 column';
                         Trigger OnValidate()
                         var
                         begin
                             InitalizeFieldIds(Appl.FieldNo("Professional Bodies 2"));
                             InitalizeFieldIds(Appl.FieldNo("Membership No. 2"));
                             InitalizeFieldIds(Appl.FieldNo("Admission Date 2"));
-
+                            InitalizeFieldIds(Appl.FieldNo("Professional Code 2"));
+                            InitalizeFieldIds(Appl.FieldNo("Professional Membership Type 2"));
                         end;
+
                     }
                     field(ShowProfessionalBodies3; ShowProfessionalBodies3)
                     {
@@ -636,9 +720,13 @@ report 52970 "Applicant job Submitted"
                             InitalizeFieldIds(Appl.FieldNo("Professional Bodies 3"));
                             InitalizeFieldIds(Appl.FieldNo("Membership No. 3"));
                             InitalizeFieldIds(Appl.FieldNo("Admission Date 3"));
-
+                            InitalizeFieldIds(Appl.FieldNo("Professional Code 3"));
+                            InitalizeFieldIds(Appl.FieldNo("Professional Membership Type 3"));
                         end;
+
+
                     }
+
 
                 }
 
@@ -706,7 +794,7 @@ report 52970 "Applicant job Submitted"
                         Trigger OnValidate()
                         var
                         begin
-
+                            InitalizeFieldIds(Appl.FieldNo("Name Course"));
                             InitalizeFieldIds(Appl.FieldNo("Name of the Course"));
                             InitalizeFieldIds(Appl.FieldNo("Course Int"));
                             InitalizeFieldIds(Appl.FieldNo("From Date course"));
@@ -729,6 +817,7 @@ report 52970 "Applicant job Submitted"
                             InitalizeFieldIds(Appl.FieldNo("From Date course 2"));
                             InitalizeFieldIds(Appl.FieldNo("To Date course 2"));
                             InitalizeFieldIds(Appl.FieldNo("Duration course 2"));
+                            InitalizeFieldIds(Appl.FieldNo("Name Course 2"));
 
                         end;
                     }
@@ -746,6 +835,7 @@ report 52970 "Applicant job Submitted"
                             InitalizeFieldIds(Appl.FieldNo("From Date course 3"));
                             InitalizeFieldIds(Appl.FieldNo("To Date course 3"));
                             InitalizeFieldIds(Appl.FieldNo("Duration course 3"));
+                            InitalizeFieldIds(Appl.FieldNo("Name Course 3"));
 
                         end;
                     }
@@ -837,6 +927,8 @@ report 52970 "Applicant job Submitted"
         ShowACademic: Boolean;
         ShowACademic2: Boolean;
         ShowACademic3: Boolean;
+        ShowACademic4: Boolean;
+        ShowACademic5: Boolean;
         ShowProfessional: Boolean;
         ShowProfessionalBodies: Boolean;
         ShowProfessional1: Boolean;
