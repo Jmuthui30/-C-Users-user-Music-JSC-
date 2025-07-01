@@ -43,36 +43,81 @@ report 52970 "Applicant job Submitted"
             column(Other_Language_Read; "Other Language Read") { }
             column(Other_Language_Speak; "Other Language Speak") { }
             column(Other_Language_Write; "Other Language Write") { }
+            //*************************************************************************************
             column(Employer; Employer) { }
+            column(Sector_Of_Employement; "Sector Of Employement") { }
+            column(Substantive_Post; "Substantive Post") { }
             column(From_Date_Employer; "From Date Employer") { }
             column(To_Date_Employer; "To Date Employer") { }
+            column(Employment_Period; "Employment Period") { }
             column(Designation_Employer; "Designation Employer") { }
+
+            //********************************************************************
             column(Employer_2; "Employer 2") { }
+            column(Sector_Of_Employement_2; "Sector Of Employement 2") { }
+
+            column(Substantive_Post_2; "Substantive Post 2") { }
             column(From_Date_Employer_2; "From Date Employer 2") { }
             column(To_Date_Employer_2; "To Date Employer 2") { }
+            column(Employment_Period_2; "Employment Period 2") { }
             column(Designation_Employer_2; "Designation Employer 2") { }
+            //********************************************************************
             column(Employer_3; "Employer 3") { }
+            column(Sector_Of_Employement_3; "Sector Of Employement 3") { }
+            column(Substantive_Post_3; "Substantive Post 3") { }
             column(From_Date_Employer_3; "From Date Employer 3") { }
             column(To_Date_Employer_3; "To Date Employer 3") { }
+            column(Employment_Period_3; "Employment Period 3") { }
             column(Designation_Employer_3; "Designation Employer 3") { }
+            //********************************************************************
+            column(Employer_4; "Employer 4") { }
+            column(Sector_Of_Employement_4; "Sector Of Employement 4") { }
+            column(Substantive_Post_4; "Substantive Post 4") { }
+            column(From_Date_Employer_4; "From Date Employer 4") { }
+            column(To_Date_Employer_4; "To Date Employer 4") { }
+            column(Employment_Period_4; "Employment Period 4") { }
+            column(Designation_Employer_4; "Designation Employer 4") { }
+            //********************************************************************end of Employer 4
+            //*************************************************************************************academic qualifications
+
             column(Qualification_Code; "Qualification Code") { }
-            column(Grade_Class; "Grade/Class") { }
+            column(Area_of_Specialization; "Area of Specialization") { }
             column(Institution_Company; "Institution/Company") { }
             column(To_Date; "To Date") { }
             column(From_Date; "From Date") { }
-            column(Area_of_Specialization; "Area of Specialization") { }
+
+            column(Grade_Class; "Grade/Class") { }
+            //*************************************************************************************
+
+
             column(Qualification_Code_2; "Qualification Code 2") { }
             column(Area_of_Specialization_2; "Area of Specialization 2") { }
             column(Institution_Company_2; "Institution/Company 2") { }
             column(To_Date_2; "To Date 2") { }
             column(From_Date_2; "From Date 2") { }
             column(Grade_Class_2; "Grade/Class 2") { }
+            //*************************************************************************************
             column(Qualification_Code_3; "Qualification Code 3") { }
             column(Area_of_Specialization_3; "Area of Specialization 3") { }
             column(Institution_Company_3; "Institution/Company 3") { }
             column(To_Date_3; "To Date 3") { }
             column(From_Date_3; "From Date 3") { }
             column(Grade_Class_3; "Grade/Class 3") { }
+            //*************************************************************************************
+            column(Qualification_Code_4; "Qualification Code 4") { }
+            column(Area_of_Specialization_4; "Area of Specialization 4") { }
+            column(Institution_Company_4; "Institution/Company 4") { }
+            column(To_Date_4; "To Date 4") { }
+            column(From_Date_4; "From Date 4") { }
+            column(Grade_Class_4; "Grade/Class 4") { }
+            //*************************************************************************************
+            column(Qualification_Code_5; "Qualification Code 5") { }
+            column(Area_of_Specialization_5; "Area of Specialization 5") { }
+            column(Institution_Company_5; "Institution/Company 5") { }
+            column(To_Date_5; "To Date 5") { }
+            column(From_Date_5; "From Date 5") { }
+            column(Grade_Class_5; "Grade/Class 5") { }
+            //*************************************************************************************professional qualifications
             column(Professional_Qualification; "Professional Qualification") { }
             column(Professional_Institution; "Professional Institution") { }
             column(Professional_From_Date; "Professional From Date") { }

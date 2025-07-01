@@ -103,32 +103,42 @@ report 53072 "update Job Appl."
                         case EmploymentRecordCount of
                             1:
                                 begin
-                                    ApplicantSubmittedJob.Employer := ApplicantEmpl."Applicant No.";
+                                    if ApplicantEmpl."Currently Employment" then
+                                        ApplicantSubmittedJob.Employer := ApplicantEmpl."Employer/Institution Name";
                                     ApplicantSubmittedJob."Sector Of Employement" := ApplicantEmpl.Sector;
                                     ApplicantSubmittedJob."Designation Employer" := ApplicantEmpl."Sector Specification";
                                     ApplicantSubmittedJob."From Date Employer" := ApplicantEmpl."From Date";
                                     ApplicantSubmittedJob."To Date Employer" := ApplicantEmpl."To Date";
+                                    applicantSubmittedJob."Current Employer" := ApplicantEmpl."Currently Employment";
+                                    applicantSubmittedJob."Substantive Post" := ApplicantEmpl."Substantive Post";
+                                    applicantSubmittedJob."Employment Period" := ApplicantEmpl."Employment Period";
                                 end;
                             2:
                                 begin
-                                    ApplicantSubmittedJob."Employer 2" := ApplicantEmpl."Applicant No.";
+                                    ApplicantSubmittedJob."Employer 2" := ApplicantEmpl."Employer/Institution Name";
                                     ApplicantSubmittedJob."From Date Employer 2" := ApplicantEmpl."From Date";
                                     ApplicantSubmittedJob."To Date Employer 2" := ApplicantEmpl."To Date";
                                     ApplicantSubmittedJob."Designation Employer 2" := ApplicantEmpl."Sector Specification";
+                                    applicantSubmittedJob."Substantive Post 2" := ApplicantEmpl."Substantive Post";
+                                    applicantSubmittedJob."Employment Period 2" := ApplicantEmpl."Employment Period";
                                 end;
                             3:
                                 begin
-                                    ApplicantSubmittedJob."Employer 3" := ApplicantEmpl."Applicant No.";
+                                    ApplicantSubmittedJob."Employer 3" := ApplicantEmpl."Employer/Institution Name";
                                     ApplicantSubmittedJob."From Date Employer 3" := ApplicantEmpl."From Date";
                                     ApplicantSubmittedJob."To Date Employer 3" := ApplicantEmpl."To Date";
                                     ApplicantSubmittedJob."Designation Employer 3" := ApplicantEmpl."Sector Specification";
+                                    applicantSubmittedJob."Substantive Post 3" := ApplicantEmpl."Substantive Post";
+                                    applicantSubmittedJob."Employment Period 3" := ApplicantEmpl."Employment Period";
                                 end;
                             4:
                                 begin
-                                    ApplicantSubmittedJob."Employer 4" := ApplicantEmpl."Applicant No.";
+                                    ApplicantSubmittedJob."Employer 4" := ApplicantEmpl."Employer/Institution Name";
                                     ApplicantSubmittedJob."From Date Employer 4" := ApplicantEmpl."From Date";
                                     ApplicantSubmittedJob."To Date Employer 4" := ApplicantEmpl."To Date";
                                     ApplicantSubmittedJob."Designation Employer 4" := ApplicantEmpl."Sector Specification";
+                                    applicantSubmittedJob."Substantive Post 4" := ApplicantEmpl."Substantive Post";
+                                    applicantSubmittedJob."Employment Period 4" := ApplicantEmpl."Employment Period";
                                 end;
                         end;
 
@@ -154,42 +164,60 @@ report 53072 "update Job Appl."
                             case EducationRecordCount of
                                 1:
                                     begin
-                                        ApplicantSubmittedJob."Qualification Code" := ApplicantsQual.Description;
+
+                                        ApplicantSubmittedJob."Qualification Code" := ApplicantsQual."Qualification Code";
+                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code");
+                                        applicantSubmittedJob."Area of Specialization" := QualificationApp.Description;
                                         ApplicantSubmittedJob."Institution/Company" := ApplicantsQual."Institution/Company";
                                         ApplicantSubmittedJob."From Date" := ApplicantsQual."From Date";
                                         ApplicantSubmittedJob."To Date" := ApplicantsQual."To Date";
                                         ApplicantSubmittedJob."Grade/Class" := ApplicantsQual."Grade/Class";
-                                        applicantSubmittedJob."Area of Specialization" := ApplicantsQual."Area of Specialization";
+
                                     end;
                                 2:
                                     begin
-                                        ApplicantSubmittedJob."Qualification Code 2" := ApplicantsQual.Description;
+                                        ApplicantSubmittedJob."Qualification Code 2" := ApplicantsQual."Qualification Code";
+                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 2");
+                                        applicantSubmittedJob."Area of Specialization 2" := QualificationApp.Description;
                                         ApplicantSubmittedJob."Institution/Company 2" := ApplicantsQual."Institution/Company";
                                         ApplicantSubmittedJob."From Date 2" := ApplicantsQual."From Date";
                                         ApplicantSubmittedJob."To Date 2" := ApplicantsQual."To Date";
                                         ApplicantSubmittedJob."Grade/Class 2" := ApplicantsQual."Grade/Class";
-                                        applicantSubmittedJob."Area of Specialization 2" := ApplicantsQual."Area of Specialization";
                                     end;
                                 3:
                                     begin
-                                        ApplicantSubmittedJob."Qualification Code 3" := ApplicantsQual.Description;
+                                        ApplicantSubmittedJob."Qualification Code 3" := ApplicantsQual."Qualification Code";
+                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 3");
+                                        applicantSubmittedJob."Area of Specialization 3" := QualificationApp.Description;
                                         ApplicantSubmittedJob."Institution/Company 3" := ApplicantsQual."Institution/Company";
                                         ApplicantSubmittedJob."From Date 3" := ApplicantsQual."From Date";
                                         ApplicantSubmittedJob."To Date 3" := ApplicantsQual."To Date";
                                         ApplicantSubmittedJob."Grade/Class 3" := ApplicantsQual."Grade/Class";
-                                        applicantSubmittedJob."Area of Specialization 3" := ApplicantsQual."Area of Specialization";
                                     end;
                                 4:
                                     begin
-                                        ApplicantSubmittedJob."Qualification Code 4" := ApplicantsQual.Description;
+                                        ApplicantSubmittedJob."Qualification Code 4" := ApplicantsQual."Qualification Code";
+                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 4");
+                                        applicantSubmittedJob."Area of Specialization 4" := QualificationApp.Description;
                                         ApplicantSubmittedJob."Institution/Company 4" := ApplicantsQual."Institution/Company";
                                         ApplicantSubmittedJob."From Date 4" := ApplicantsQual."From Date";
                                         ApplicantSubmittedJob."To Date 4" := ApplicantsQual."To Date";
                                         ApplicantSubmittedJob."Grade/Class 4" := ApplicantsQual."Grade/Class";
-                                        applicantSubmittedJob."Area of Specialization 4" := ApplicantsQual."Area of Specialization";
+                                    end;
+                                5:
+                                    begin
+                                        ApplicantSubmittedJob."Qualification Code 5" := ApplicantsQual."Qualification Code";
+                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 5");
+                                        applicantSubmittedJob."Area of Specialization 5" := QualificationApp.Description;
+
+                                        ApplicantSubmittedJob."Institution/Company 5" := ApplicantsQual."Institution/Company";
+                                        ApplicantSubmittedJob."From Date 5" := ApplicantsQual."From Date";
+                                        ApplicantSubmittedJob."To Date 5" := ApplicantsQual."To Date";
+                                        ApplicantSubmittedJob."Grade/Class 5" := ApplicantsQual."Grade/Class";
+
                                     end;
                             end;
-                            if EducationRecordCount = 4 then
+                            if EducationRecordCount = 5 then
                                 break;
                         until ApplicantsQual.Next() = 0;
                     end;
@@ -331,7 +359,7 @@ report 53072 "update Job Appl."
 
 
                 //     Commit();
-                Message('%1 applicant job records updated successfully.', ApplicantSubmittedJob.Count);
+                // Message('%1 applicant job records updated successfully.', ApplicantSubmittedJob.Count);
 
             end;
 
@@ -387,4 +415,5 @@ report 53072 "update Job Appl."
         ProfessionalRecordCount: Integer;
         ProfessionalBodiesRecordCount: Integer; // Variable to track the number of professional bodies records processed
         courseRecordCount: Integer; // Variable to track the number of relevant courses records processed
+
 }

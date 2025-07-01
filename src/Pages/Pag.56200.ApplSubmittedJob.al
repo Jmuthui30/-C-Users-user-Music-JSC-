@@ -75,6 +75,10 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
+                field("Substantive Post"; "Substantive Post")
+                {
+                    ApplicationArea = All;
+                }
                 Field("To Date Employer"; "To Date Employer")
                 {
                     ApplicationArea = All;
@@ -83,11 +87,25 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
+
+                field("Employment Period"; "Employment Period")
+                {
+                    ApplicationArea = All;
+                }
                 FIELD("Designation Employer"; "Designation Employer")
                 {
                     ApplicationArea = All;
                 }
+                //********************************************************************
                 Field("Employer 2"; "Employer 2")
+                {
+                    ApplicationArea = All;
+                }
+                Field("Sector Of Employement 2"; "Sector Of Employement 2")
+                {
+                    ApplicationArea = All;
+                }
+                field("Substantive Post 2"; "Substantive Post 2")
                 {
                     ApplicationArea = All;
                 }
@@ -99,11 +117,24 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
+                field("Employment Period 2"; "Employment Period 2")
+                {
+                    ApplicationArea = All;
+                }
                 FIELD("Designation Employer 2"; "Designation Employer 2")
                 {
                     ApplicationArea = All;
                 }
+                //********************************************************************
                 Field("Employer 3"; "Employer 3")
+                {
+                    ApplicationArea = All;
+                }
+                Field("Sector Of Employement 3"; "Sector Of Employement 3")
+                {
+                    ApplicationArea = All;
+                }
+                field("Substantive Post 3"; "Substantive Post 3")
                 {
                     ApplicationArea = All;
                 }
@@ -116,11 +147,46 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
+                field("Employment Period 3"; "Employment Period 3")
+                {
+                    ApplicationArea = All;
+                }
 
                 FIELD("Designation Employer 3"; "Designation Employer 3")
                 {
                     ApplicationArea = All;
                 }
+                //********************************************************************
+                Field("Employer 4"; "Employer 4")
+                {
+                    ApplicationArea = All;
+                }
+                Field("Sector Of Employement 4"; "Sector Of Employement 4")
+                {
+                    ApplicationArea = All;
+                }
+                field("Substantive Post 4"; "Substantive Post 4")
+                {
+                    ApplicationArea = All;
+                }
+                Field("To Date Employer 4"; "To Date Employer 4")
+                {
+                    ApplicationArea = All;
+                }
+                Field("From Date Employer 4"; "From Date Employer 4")
+                {
+                    ApplicationArea = All;
+                }
+                field("Employment Period 4"; "Employment Period 4")
+                {
+                    ApplicationArea = All;
+                }
+                FIELD("Designation Employer 4"; "Designation Employer 4")
+                {
+                    ApplicationArea = All;
+                }
+                //********************************************************************end Employer 4
+                //*************************************************************************************academic qualifications
                 field("Name of the Course"; "Name of the Course")
                 {
                     ApplicationArea = All;
