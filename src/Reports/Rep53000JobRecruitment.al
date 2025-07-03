@@ -20,6 +20,8 @@ report 53000 "Job Recruitment Report"
             }
             column(Vacancy_Announcement; "Vacancy Announcement") { }
             column(Memo_Ref_No_; "Memo Ref No.") { }
+            column(Functions_of_the_Judge; "Functions of the Judge") { }
+            column(Experience; Experience) { }
             column(Positions; Positions) { }
             column(Terms_of_Service_; "Terms of Service:") { }
             column(Remuneration_; "Remuneration:") { }

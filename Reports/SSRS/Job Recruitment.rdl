@@ -9,7 +9,7 @@
       <am:Name>MSRB</am:Name>
       <am:Version>15.0.20283.0</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-06-08T16:54:57.8602434Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2025-07-03T19:41:46.1698046Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -22,6 +22,109 @@
       <rd:DataSourceID>9789ee90-87b6-4fe5-bff8-4fdacee032d1</rd:DataSourceID>
     </DataSource>
   </DataSources>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+      <Fields>
+        <Field Name="No_">
+          <DataField>No_</DataField>
+        </Field>
+        <Field Name="Description">
+          <DataField>Description</DataField>
+        </Field>
+        <Field Name="Vacancy_Announcement">
+          <DataField>Vacancy_Announcement</DataField>
+        </Field>
+        <Field Name="Memo_Ref_No_">
+          <DataField>Memo_Ref_No_</DataField>
+        </Field>
+        <Field Name="Functions_of_the_Judge">
+          <DataField>Functions_of_the_Judge</DataField>
+        </Field>
+        <Field Name="Experience">
+          <DataField>Experience</DataField>
+        </Field>
+        <Field Name="Positions">
+          <DataField>Positions</DataField>
+        </Field>
+        <Field Name="Terms_of_Service_">
+          <DataField>Terms_of_Service_</DataField>
+        </Field>
+        <Field Name="Remuneration_">
+          <DataField>Remuneration_</DataField>
+        </Field>
+        <Field Name="Job_Purpose">
+          <DataField>Job_Purpose</DataField>
+        </Field>
+        <Field Name="Reporting_Responsibilities">
+          <DataField>Reporting_Responsibilities</DataField>
+        </Field>
+        <Field Name="Area_Of_Deployment">
+          <DataField>Area_Of_Deployment</DataField>
+        </Field>
+        <Field Name="Key_Duties___Responsibilities_">
+          <DataField>Key_Duties___Responsibilities_</DataField>
+        </Field>
+        <Field Name="Job_Academic_and_Professional">
+          <DataField>Job_Academic_and_Professional</DataField>
+        </Field>
+        <Field Name="Terms_and_Conditions">
+          <DataField>Terms_and_Conditions</DataField>
+        </Field>
+        <Field Name="Terms_and_Conditions_2">
+          <DataField>Terms_and_Conditions_2</DataField>
+        </Field>
+        <Field Name="Terms_and_Conditions_3">
+          <DataField>Terms_and_Conditions_3</DataField>
+        </Field>
+        <Field Name="Academic_Prof_Code">
+          <DataField>Academic_Prof_Code</DataField>
+        </Field>
+        <Field Name="Academic_Prof_Job_Id">
+          <DataField>Academic_Prof_Job_Id</DataField>
+        </Field>
+        <Field Name="Academic_Prof_Qualification">
+          <DataField>Academic_Prof_Qualification</DataField>
+        </Field>
+        <Field Name="Academic_Prof_Qualification_Type">
+          <DataField>Academic_Prof_Qualification_Type</DataField>
+        </Field>
+        <Field Name="Academic_Prof_Area_of_Specialization">
+          <DataField>Academic_Prof_Area_of_Specialization</DataField>
+        </Field>
+        <Field Name="Qualification_Code">
+          <DataField>Qualification_Code</DataField>
+        </Field>
+        <Field Name="Job_Id">
+          <DataField>Job_Id</DataField>
+        </Field>
+        <Field Name="Qualification">
+          <DataField>Qualification</DataField>
+        </Field>
+        <Field Name="Qualification_Type">
+          <DataField>Qualification_Type</DataField>
+        </Field>
+        <Field Name="Area_of_Specialization">
+          <DataField>Area_of_Specialization</DataField>
+        </Field>
+        <Field Name="Job_QQualification_Code">
+          <DataField>Job_QQualification_Code</DataField>
+        </Field>
+        <Field Name="Job_QQualification_Type">
+          <DataField>Job_QQualification_Type</DataField>
+        </Field>
+        <Field Name="Job_QArea_of_Specialization">
+          <DataField>Job_QArea_of_Specialization</DataField>
+        </Field>
+        <Field Name="Source_No">
+          <DataField>Source_No</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -540,7 +643,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -1096,7 +1198,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!Academic_Prof_Area_of_Specialization.Value</Value>
+                                  <Value>=Fields!Functions_of_the_Judge.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -1270,7 +1372,7 @@
                 </FilterValues>
               </Filter>
             </Filters>
-            <Top>16.80851cm</Top>
+            <Top>18.4721cm</Top>
             <Left>0.85491cm</Left>
             <Height>1.2cm</Height>
             <Width>17.99633cm</Width>
@@ -1470,6 +1572,130 @@
               </Border>
             </Style>
           </Tablix>
+          <Tablix Name="Tablix16">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn>
+                  <Width>17.99633cm</Width>
+                </TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>0.6cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox67">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Job Experience</Value>
+                                  <Style>
+                                    <FontStyle>Italic</FontStyle>
+                                    <FontFamily>Bookman Old Style</FontFamily>
+                                    <FontSize>12pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox54</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>DarkGoldenrod</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.6cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox68">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Experience.Value</Value>
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox55</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember>
+                  <KeepWithGroup>After</KeepWithGroup>
+                </TablixMember>
+                <TablixMember>
+                  <Group Name="Details7" />
+                </TablixMember>
+              </TablixMembers>
+            </TablixRowHierarchy>
+            <DataSetName>DataSet_Result</DataSetName>
+            <Filters>
+              <Filter>
+                <FilterExpression>=Fields!Academic_Prof_Area_of_Specialization.Value</FilterExpression>
+                <Operator>GreaterThan</Operator>
+                <FilterValues>
+                  <FilterValue>0</FilterValue>
+                </FilterValues>
+              </Filter>
+            </Filters>
+            <Top>17.09571cm</Top>
+            <Left>0.85491cm</Left>
+            <Height>1.2cm</Height>
+            <Width>17.99633cm</Width>
+            <ZIndex>10</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Tablix>
         </ReportItems>
         <Height>27.72908cm</Height>
         <Style />
@@ -1487,6 +1713,12 @@
       </Page>
     </ReportSection>
   </ReportSections>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>4</NumberOfColumns>
+      <NumberOfRows>2</NumberOfRows>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -1554,101 +1786,4 @@ xT+zh468Lu5OkNqMC8+bYHzQfw6/pXnl3o+oafI0dzZXFs6nDLNEykfmK/UTy19Kr3Wm2t8my5top1/u
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
   <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Fields>
-        <Field Name="No_">
-          <DataField>No_</DataField>
-        </Field>
-        <Field Name="Description">
-          <DataField>Description</DataField>
-        </Field>
-        <Field Name="Vacancy_Announcement">
-          <DataField>Vacancy_Announcement</DataField>
-        </Field>
-        <Field Name="Memo_Ref_No_">
-          <DataField>Memo_Ref_No_</DataField>
-        </Field>
-        <Field Name="Positions">
-          <DataField>Positions</DataField>
-        </Field>
-        <Field Name="Terms_of_Service_">
-          <DataField>Terms_of_Service_</DataField>
-        </Field>
-        <Field Name="Remuneration_">
-          <DataField>Remuneration_</DataField>
-        </Field>
-        <Field Name="Job_Purpose">
-          <DataField>Job_Purpose</DataField>
-        </Field>
-        <Field Name="Reporting_Responsibilities">
-          <DataField>Reporting_Responsibilities</DataField>
-        </Field>
-        <Field Name="Area_Of_Deployment">
-          <DataField>Area_Of_Deployment</DataField>
-        </Field>
-        <Field Name="Key_Duties___Responsibilities_">
-          <DataField>Key_Duties___Responsibilities_</DataField>
-        </Field>
-        <Field Name="Job_Academic_and_Professional">
-          <DataField>Job_Academic_and_Professional</DataField>
-        </Field>
-        <Field Name="Terms_and_Conditions">
-          <DataField>Terms_and_Conditions</DataField>
-        </Field>
-        <Field Name="Terms_and_Conditions_2">
-          <DataField>Terms_and_Conditions_2</DataField>
-        </Field>
-        <Field Name="Terms_and_Conditions_3">
-          <DataField>Terms_and_Conditions_3</DataField>
-        </Field>
-        <Field Name="Academic_Prof_Code">
-          <DataField>Academic_Prof_Code</DataField>
-        </Field>
-        <Field Name="Academic_Prof_Job_Id">
-          <DataField>Academic_Prof_Job_Id</DataField>
-        </Field>
-        <Field Name="Academic_Prof_Qualification">
-          <DataField>Academic_Prof_Qualification</DataField>
-        </Field>
-        <Field Name="Academic_Prof_Qualification_Type">
-          <DataField>Academic_Prof_Qualification_Type</DataField>
-        </Field>
-        <Field Name="Academic_Prof_Area_of_Specialization">
-          <DataField>Academic_Prof_Area_of_Specialization</DataField>
-        </Field>
-        <Field Name="Qualification_Code">
-          <DataField>Qualification_Code</DataField>
-        </Field>
-        <Field Name="Job_Id">
-          <DataField>Job_Id</DataField>
-        </Field>
-        <Field Name="Qualification">
-          <DataField>Qualification</DataField>
-        </Field>
-        <Field Name="Qualification_Type">
-          <DataField>Qualification_Type</DataField>
-        </Field>
-        <Field Name="Area_of_Specialization">
-          <DataField>Area_of_Specialization</DataField>
-        </Field>
-        <Field Name="Job_QQualification_Code">
-          <DataField>Job_QQualification_Code</DataField>
-        </Field>
-        <Field Name="Job_QQualification_Type">
-          <DataField>Job_QQualification_Type</DataField>
-        </Field>
-        <Field Name="Job_QArea_of_Specialization">
-          <DataField>Job_QArea_of_Specialization</DataField>
-        </Field>
-        <Field Name="Source_No">
-          <DataField>Source_No</DataField>
-        </Field>
-      </Fields>
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-    </DataSet>
-  </DataSets>
 </Report>
