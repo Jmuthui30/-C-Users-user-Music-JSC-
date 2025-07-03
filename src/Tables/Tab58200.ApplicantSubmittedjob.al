@@ -232,6 +232,22 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
+        field(25; "Area of Specialization"; Text[1000])
+        {
+            Caption = 'Name';
+            DataClassification = ToBeClassified;
+        }
+        field(26; "Institution/Company"; Text[1000])
+        {
+            Caption = 'Institution';
+            DataClassification = ToBeClassified;
+        }
+
+        field(27; "Grade/Class"; Text[1000])
+        {
+            Caption = 'Grade/Class';
+            DataClassification = ToBeClassified;
+        }
         field(23; "From Date"; Date)
         {
             Caption = 'From Date';
@@ -252,22 +268,7 @@ table 58200 "Applicant Submitted Job"
             end;
         }
 
-        field(25; "Area of Specialization"; Text[1000])
-        {
-            Caption = 'Description';
-            DataClassification = ToBeClassified;
-        }
-        field(26; "Institution/Company"; Text[1000])
-        {
-            Caption = 'Institution/Company';
-            DataClassification = ToBeClassified;
-        }
 
-        field(27; "Grade/Class"; Text[1000])
-        {
-            Caption = 'Grade/Class';
-            DataClassification = ToBeClassified;
-        }
         //***************************************************************************************Academ 2
         field(29; "Qualification Code 2"; Code[2000])
         {
@@ -278,6 +279,22 @@ table 58200 "Applicant Submitted Job"
             trigger OnValidate()
             begin
             end;
+        }
+        field(32; "Area of Specialization 2"; Text[1000])
+        {
+            Caption = 'Name';
+            DataClassification = ToBeClassified;
+        }
+        field(33; "Institution/Company 2"; Text[1000])
+        {
+            Caption = 'Institution/Company';
+            DataClassification = ToBeClassified;
+        }
+
+        field(34; "Grade/Class 2"; Text[1000])
+        {
+            Caption = 'Grade/Class';
+            DataClassification = ToBeClassified;
         }
         field(30; "From Date 2"; Date)
         {
@@ -299,22 +316,7 @@ table 58200 "Applicant Submitted Job"
             end;
         }
 
-        field(32; "Area of Specialization 2"; Text[1000])
-        {
-            Caption = 'Description';
-            DataClassification = ToBeClassified;
-        }
-        field(33; "Institution/Company 2"; Text[1000])
-        {
-            Caption = 'Institution/Company';
-            DataClassification = ToBeClassified;
-        }
 
-        field(34; "Grade/Class 2"; Text[1000])
-        {
-            Caption = 'Grade/Class';
-            DataClassification = ToBeClassified;
-        }
         //******************************************************************************************Academ 3
         field(35; "Qualification Code 3"; Code[2000])
         {

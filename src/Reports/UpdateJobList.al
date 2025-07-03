@@ -18,7 +18,7 @@ report 53072 "update Job Appl."
 
 
 
-                IF CONFIRM('Update all applicant job records?', TRUE) = FALSE THEN EXIT;
+
                 JobAppl.Reset();
                 InsertCount := 0;
                 // Set filters for Job Application

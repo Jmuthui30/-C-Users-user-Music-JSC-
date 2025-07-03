@@ -823,14 +823,14 @@ xT+zh468Lu5OkNqMC8+bYHzQfw6/pXnl3o+oafI0dzZXFs6nDLNEykfmK/UTy19Kr3Wm2t8my5top1/u
         <Field Name="Institution_Company">
           <DataField>Institution_Company</DataField>
         </Field>
+        <Field Name="Grade_Class">
+          <DataField>Grade_Class</DataField>
+        </Field>
         <Field Name="To_Date">
           <DataField>To_Date</DataField>
         </Field>
         <Field Name="From_Date">
           <DataField>From_Date</DataField>
-        </Field>
-        <Field Name="Grade_Class">
-          <DataField>Grade_Class</DataField>
         </Field>
         <Field Name="Qualification_Code_2">
           <DataField>Qualification_Code_2</DataField>

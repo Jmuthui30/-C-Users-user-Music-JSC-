@@ -83,10 +83,11 @@ report 52970 "Applicant job Submitted"
             column(Qualification_Code; "Qualification Code") { }
             column(Area_of_Specialization; "Area of Specialization") { }
             column(Institution_Company; "Institution/Company") { }
+            column(Grade_Class; "Grade/Class") { }
             column(To_Date; "To Date") { }
             column(From_Date; "From Date") { }
 
-            column(Grade_Class; "Grade/Class") { }
+
             //*************************************************************************************
 
 
@@ -544,12 +545,12 @@ report 52970 "Applicant job Submitted"
                         Trigger OnValidate()
                         var
                         begin
-                            InitalizeFieldIds(Appl.FieldNo("Qualification Code"));
-                            InitalizeFieldIds(Appl.FieldNo("From Date"));
-                            InitalizeFieldIds(Appl.FieldNo("To Date"));
                             InitalizeFieldIds(Appl.FieldNo("Area of Specialization"));
                             initalizeFieldIds(Appl.FieldNo("Institution/Company"));
                             initalizeFieldIds(Appl.FieldNo("Grade/Class"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date"));
+
 
                         end;
                     }
@@ -561,12 +562,12 @@ report 52970 "Applicant job Submitted"
                         Trigger OnValidate()
                         var
                         begin
-                            InitalizeFieldIds(Appl.FieldNo("Qualification Code 2"));
-                            InitalizeFieldIds(Appl.FieldNo("From Date 2"));
-                            InitalizeFieldIds(Appl.FieldNo("To Date 2"));
                             InitalizeFieldIds(Appl.FieldNo("Area of Specialization 2"));
                             initalizeFieldIds(Appl.FieldNo("Institution/Company 2"));
                             initalizeFieldIds(Appl.FieldNo("Grade/Class 2"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date 2"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date 2"));
+
                         end;
                     }
                     field(ShowACademic3; ShowACademic3)
@@ -577,12 +578,12 @@ report 52970 "Applicant job Submitted"
                         Trigger OnValidate()
                         var
                         begin
-                            InitalizeFieldIds(Appl.FieldNo("Qualification Code 3"));
-                            InitalizeFieldIds(Appl.FieldNo("From Date 3"));
-                            InitalizeFieldIds(Appl.FieldNo("To Date 3"));
                             InitalizeFieldIds(Appl.FieldNo("Area of Specialization 3"));
                             initalizeFieldIds(Appl.FieldNo("Institution/Company 3"));
                             initalizeFieldIds(Appl.FieldNo("Grade/Class 3"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date 3"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date 3"));
+
 
                         end;
                     }
@@ -594,12 +595,12 @@ report 52970 "Applicant job Submitted"
                         Trigger OnValidate()
                         var
                         begin
-                            InitalizeFieldIds(Appl.FieldNo("Qualification Code 4"));
-                            InitalizeFieldIds(Appl.FieldNo("From Date 4"));
-                            InitalizeFieldIds(Appl.FieldNo("To Date 4"));
                             InitalizeFieldIds(Appl.FieldNo("Area of Specialization 4"));
                             initalizeFieldIds(Appl.FieldNo("Institution/Company 4"));
                             initalizeFieldIds(Appl.FieldNo("Grade/Class 4"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date 4"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date 4"));
+
 
                         end;
                     }
@@ -611,12 +612,12 @@ report 52970 "Applicant job Submitted"
                         Trigger OnValidate()
                         var
                         begin
-                            InitalizeFieldIds(Appl.FieldNo("Qualification Code 5"));
-                            InitalizeFieldIds(Appl.FieldNo("From Date 5"));
-                            InitalizeFieldIds(Appl.FieldNo("To Date 5"));
                             InitalizeFieldIds(Appl.FieldNo("Area of Specialization 5"));
                             initalizeFieldIds(Appl.FieldNo("Institution/Company 5"));
                             initalizeFieldIds(Appl.FieldNo("Grade/Class 5"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date 5"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date 5"));
+
 
                         end;
                     }
