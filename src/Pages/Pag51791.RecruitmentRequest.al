@@ -75,6 +75,7 @@ page 58082 "Recruitment Request New"
                     ToolTip = 'Specifies the value of the Reason for Recruitment field';
                     ShowMandatory = true;
                 }
+                
                 field("Requested By"; Rec."Requested By")
                 {
                     Visible = false;
@@ -132,6 +133,7 @@ page 58082 "Recruitment Request New"
                     Visible = false;
                     ToolTip = 'Specifies the value of the Total Recruitment Costs field.';
                 }
+
             }
 
             group("Job Title:")
@@ -247,6 +249,15 @@ page 58082 "Recruitment Request New"
                     Editable = Rec.Status = Rec.Status::Open;
                     SubPageLink = "Job Id" = field("Job ID");
                     ApplicationArea = All;
+                }
+            }
+            group("Experience:")
+            {
+                field("Experience"; "Experience")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Experience field';
+                    MultiLine = true;
                 }
             }
             group("Job Core Competencies:")

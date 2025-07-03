@@ -872,6 +872,7 @@ table 51630 "Applicant"
             DataClassification = ToBeClassified;
             // TableRelation = "Ethnic Groups";
         }
+
     }
     keys
     {

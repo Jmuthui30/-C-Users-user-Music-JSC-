@@ -220,6 +220,15 @@ page 56045 "Recruitment Card Archive"
 
                 }
             }
+            group("Experience:")
+            {
+                field("Experience"; "Experience")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Experience field';
+                    MultiLine = true;
+                }
+            }
             group("Area of Deployment:")
             {
                 field("Area Of Deployment"; "Area Of Deployment")
