@@ -867,7 +867,7 @@ table 51630 "Applicant"
         field(322; "Recruitment Needs NO"; Code[100])
         {
         }
-        field(386; "Sub Ethnic Group"; Code[20])
+        field(386; "Sub Ethnic Group"; Code[100])
         {
             DataClassification = ToBeClassified;
             // TableRelation = "Ethnic Groups";
