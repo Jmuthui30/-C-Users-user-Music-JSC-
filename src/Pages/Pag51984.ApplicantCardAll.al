@@ -206,6 +206,11 @@ page 51984 "Applicant Card-All"
                     // Visible = Rec.Nationality = Rec.Nationality::Kenyan;
                     // Enabled = Rec.Nationality = Rec.Nationality::Kenyan;
                 }
+                field("Sub Ethnic Group";"Sub Ethnic Group")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the Sub Ethnic Group.';                 
+                }
                 field(Initials; Rec.Initials)
                 {
                     ApplicationArea = All;
