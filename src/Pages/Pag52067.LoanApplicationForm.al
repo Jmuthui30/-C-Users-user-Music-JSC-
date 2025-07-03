@@ -262,34 +262,38 @@ page 52067 "Loan Application Form"
 
                     trigger OnAction()
                     begin
+
                         if Rec."Loan Status" = Rec."Loan Status"::Issued then Error('Loan Already Issued');
                         if Rec."Issued Date" = 0D then Error('You must specify the issue date before issuing the loan');
                         if Rec."Approved Amount" = 0 then Error('You must specify the Approved amount before issuing the loan');
                         if Rec."Opening Loan" = false then begin
+                            Message('Here1');
                             Schedule.Reset;
                             Schedule.SetRange("Loan No", Rec."Loan No");
                             Schedule.SetRange(Schedule."Employee No", Rec."Employee No");
                             Schedule.CalcSums(Schedule."Monthly Interest", Schedule."Principal Repayment");
                             if not Schedule.Find('-') then Error('No schedule created yet');
                             Emp.Get(Rec."Employee No");
+                            Message('Here2');
                             AssMatrix.Init;
                             AssMatrix."Employee No" := Rec."Employee No";
                             AssMatrix.Type := AssMatrix.Type::Deduction;
                             AssMatrix."Reference No" := Rec."Loan No";
-                            //AssMatrix."Not for CRA Computation" := TRUE;
+
                             if Rec."Deduction Code" = '' then
                                 Error('Loan %1 must be associated with a deduction', Rec."Loan Product Type")
                             else
-                                AssMatrix.Code := Rec."Deduction Code";
+                                Message('dedu Code is %1', Rec."Deduction Code");
+                            AssMatrix.Code := Rec."Deduction Code";
                             AssMatrix.Validate(AssMatrix.Code);
                             AssMatrix."Payroll Period" := Rec."Issued Date";
-                            //AssMatrix.Description:=Description;
                             AssMatrix."Payroll Group" := Emp."Employee Group";
                             AssMatrix."Global Dimension 1 code" := Emp."Global Dimension 1 Code";
                             AssMatrix.Amount := Schedule."Principal Repayment" - Schedule."Monthly Interest";
                             AssMatrix."Next Period Entry" := true;
-                            AssMatrix.Validate(AssMatrix.Amount);
+                            //AssMatrix.Validate(AssMatrix.Amount);
                             AssMatrix.Insert;
+                            Message('Here3');
                             /*
                             IF LoanProduct.GET("Loan Product Type") THEN BEGIN
                             IF LoanProduct."Issuing Account Type" = LoanProduct."Issuing Account Type"::"3" THEN BEGIN
@@ -426,6 +430,7 @@ page 52067 "Loan Application Form"
                             */
                             Rec."Loan Status" := Rec."Loan Status"::Issued;
                             Rec.Modify;
+                            Message('Here4');
                             Message('Loan Issued');
                         end;
                     end;
