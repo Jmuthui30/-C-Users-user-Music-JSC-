@@ -85,7 +85,9 @@ table 51439 "Loan Application"
         }
         field(7; "Issued Date"; Date)
         {
-            TableRelation = "Payroll Period"."Starting Date";
+            //TableRelation = "Payroll Period"."Starting Date";
+            TableRelation = "Client Payroll Period"."Starting Date";
+
 
             trigger OnValidate()
             begin
@@ -164,7 +166,9 @@ table 51439 "Loan Application"
         }
         field(22; "Period Repayment"; Decimal)
         {
-            CalcFormula = Sum("Payroll Matrix".Amount WHERE("Employee No" = FIELD("Employee No"), Type = CONST(Deduction), Code = FIELD("Deduction Code"), "Payroll Period" = FIELD(UPPERLIMIT("Date filter")), "Reference No" = FIELD("Loan No")));
+            //  CalcFormula = Sum("Payroll Matrix".Amount WHERE("Employee No" = FIELD("Employee No"), Type = CONST(Deduction), Code = FIELD("Deduction Code"), "Payroll Period" = FIELD(UPPERLIMIT("Date filter")), "Reference No" = FIELD("Loan No")));
+            CalcFormula = sum("Client Payroll Matrix".Amount where("Employee No" = field("Employee No"), Type = CONST(Deduction), Code = FIELD("Deduction Code"), "Payroll Period" = FIELD(UPPERLIMIT("Date filter")), "Reference No" = FIELD("Loan No")));
+
             Editable = false;
             FieldClass = FlowField;
         }
@@ -186,11 +190,11 @@ table 51439 "Loan Application"
         }
         field(28; "Interest Deduction Code"; Code[100])
         {
-            TableRelation = Deductions;
+            TableRelation = "Client Deductions".Code;
         }
         field(29; "Deduction Code"; Code[100])
         {
-            TableRelation = Deductions;
+            TableRelation = "Client Deductions".Code;
         }
         field(30; "Debtors Code"; Code[10])
         {
@@ -199,7 +203,9 @@ table 51439 "Loan Application"
         }
         field(31; "Interest Amount"; Decimal)
         {
-            CalcFormula = Sum("Payroll Matrix".Amount WHERE("Employee No" = FIELD("Employee No"), Type = CONST(Deduction), Code = FIELD("Interest Deduction Code"), "Payroll Period" = FIELD(UPPERLIMIT("Date filter")), "Reference No" = FIELD("Loan No")));
+            // CalcFormula = Sum("Payroll Matrix".Amount WHERE("Employee No" = FIELD("Employee No"), Type = CONST(Deduction), Code = FIELD("Interest Deduction Code"), "Payroll Period" = FIELD(UPPERLIMIT("Date filter")), "Reference No" = FIELD("Loan No")));
+            CalcFormula = sum("Client Payroll Matrix".Amount where("Employee No" = field("Employee No"), Type = CONST(Deduction), Code = FIELD("Interest Deduction Code"), "Payroll Period" = FIELD(UPPERLIMIT("Date filter")), "Reference No" = FIELD("Loan No")));
+
             FieldClass = FlowField;
         }
         field(32; "External Document No"; Code[20])
@@ -208,6 +214,7 @@ table 51439 "Loan Application"
         field(33; Receipts; Decimal)
         {
             CalcFormula = Sum("Receipt Lines".Amount WHERE("Account No." = FIELD("Debtors Code"), "Advance Loan No." = FIELD("Loan No")));
+
             Description = '//Sum("Non Payroll Receipts".Amount WHERE (Loan No=FIELD(Loan No),Receipt Date=FIELD(Date filter)))';
             Editable = false;
             FieldClass = FlowField;
@@ -237,7 +244,8 @@ table 51439 "Loan Application"
         }
         field(39; StopagePeriod; Date)
         {
-            TableRelation = "Payroll Period"."Starting Date";
+            // TableRelation = "Payroll Period"."Starting Date";
+            TableRelation = "Client Payroll Period"."Starting Date";
         }
         field(40; Reason; Text[30])
         {
@@ -304,7 +312,8 @@ table 51439 "Loan Application"
         FlatPeriodInterval: Code[10];
         LineNoInt: Integer;
         RemainingPrincipalAmountDec: Decimal;
-        AssMatrix: Record "Payroll Matrix";
+        // AssMatrix: Record "Payroll Matrix";
+        AssMatrix: Record "Client Payroll Matrix";
         Topups: Record "Loan Top-up";
         RepaymentAmt: Decimal;
         PreviewShedule: Record "Loan Schedule";
@@ -312,7 +321,8 @@ table 51439 "Loan Application"
         LoanBalance: Decimal;
         TopupAmt: Decimal;
         EndDate: Date;
-        PayPeriodRec: Record "Payroll Period";
+        // PayPeriodRec: Record "Payroll Period";
+        PayPeriodRec: Record "Client Payroll Period";
 
     procedure DebtService(Principal: Decimal; Interest: Decimal; PayPeriods: Integer): Decimal
     var

@@ -13,7 +13,7 @@ table 51440 "Loan Product"
                 if Code <> xRec.Code then begin
                     SalesSetup.Get;
                     NoSeriesMgt.TestManual(HRsetup."Loan Product Type Nos.");
-                    "No Series":='';
+                    "No Series" := '';
                 end;
             end;
         }
@@ -22,11 +22,11 @@ table 51440 "Loan Product"
         }
         field(3; "Interest Rate"; Decimal)
         {
-            DecimalPlaces = 2: 10;
+            DecimalPlaces = 2 : 10;
         }
         field(4; "Interest Calculation Method"; Option)
         {
-            OptionMembers = " ", "Flat Rate", "Reducing Balance";
+            OptionMembers = " ","Flat Rate","Reducing Balance";
         }
         field(5; "No Series"; Code[10])
         {
@@ -41,7 +41,7 @@ table 51440 "Loan Product"
         field(8; Rounding; Option)
         {
             OptionCaption = 'Nearest,Down,Up';
-            OptionMembers = Nearest, Down, Up;
+            OptionMembers = Nearest,Down,Up;
         }
         field(28; "Rounding Precision"; Decimal)
         {
@@ -51,34 +51,34 @@ table 51440 "Loan Product"
         }
         field(29; "Loan Category"; Option)
         {
-            OptionMembers = " ", Advance, "Bisco Loan", "Other Loan";
+            OptionMembers = " ",Advance,"Bisco Loan","Other Loan";
         }
         field(30; "Calculate Interest"; Boolean)
         {
         }
         field(31; "Interest Deduction Code"; Code[10])
         {
-            TableRelation = Deductions;
+            TableRelation = "Client Deductions".Code;
         }
         field(32; "Deduction Code"; Code[50])
         {
-            TableRelation = Deductions;
+            TableRelation = "Client Deductions".Code;
         }
         field(33; Internal; Boolean)
         {
         }
         field(34; "Fringe Benefit Code"; Code[10])
         {
-            TableRelation = Earnings;
+            TableRelation = "Client Earnings".Code;
         }
         field(35; "Calculate On"; Option)
         {
             OptionCaption = ' ,Opening Balance,Closing Balance';
-            OptionMembers = " ", "Opening Balance", "Closing Balance";
+            OptionMembers = " ","Opening Balance","Closing Balance";
         }
         field(36; "Principal Deduction Code"; Code[10])
         {
-            TableRelation = Deductions;
+            TableRelation = "Client Deductions".Code;
         }
     }
     keys
@@ -93,7 +93,8 @@ table 51440 "Loan Product"
     fieldgroups
     {
     }
-    var SalesSetup: Record "Sales & Receivables Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    HRsetup: Record "QuantumJumps Payroll Setup";
+    var
+        SalesSetup: Record "Sales & Receivables Setup";
+        NoSeriesMgt: Codeunit NoSeriesManagement;
+        HRsetup: Record "QuantumJumps Payroll Setup";
 }
