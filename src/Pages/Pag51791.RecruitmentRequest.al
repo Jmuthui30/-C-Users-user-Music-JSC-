@@ -75,7 +75,7 @@ page 58082 "Recruitment Request New"
                     ToolTip = 'Specifies the value of the Reason for Recruitment field';
                     ShowMandatory = true;
                 }
-                
+
                 field("Requested By"; Rec."Requested By")
                 {
                     Visible = false;
