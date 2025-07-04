@@ -163,6 +163,15 @@ page 56085 "Recruitment Card"
                 }
 
             }
+            group("Mission Statement:")
+            {
+                field("Mission Statement"; "Mission Statement")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Positions field';
+                    MultiLine = true;
+                }
+            }
             group("Job Purpose:")
             {
                 field("Job Purpose"; "Job Purpose")
@@ -179,23 +188,24 @@ page 56085 "Recruitment Card"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the';
+                    // MultiLine = true;
                 }
 
-                grid(function)
+                // grid(function)
+                // {
+                field("Functions of the Judge"; "Functions of the Judge")
                 {
-                    field("Functions of the Judge"; "Functions of the Judge")
-                    {
-                        ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the';
-                        MultiLine = true;
-                    }
-                    field("Functions of the Judge1"; "Functions of the Judge1")
-                    {
-                        ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the';
-                        MultiLine = true;
-                    }
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the';
+                    MultiLine = true;
                 }
+                field("Functions of the Judge1"; "Functions of the Judge1")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the';
+                    MultiLine = true;
+                }
+                // }
 
             }
             group("Constitution Requirement:")
@@ -251,6 +261,15 @@ page 56085 "Recruitment Card"
                     Editable = Rec.Status = Rec.Status::Open;
                     SubPageLink = "Job Id" = field("Job ID");
                     ApplicationArea = All;
+                }
+            }
+            group("Experience:")
+            {
+                field("Experience"; "Experience")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Experience field';
+                    MultiLine = true;
                 }
             }
             group("Job Core Competencies:")

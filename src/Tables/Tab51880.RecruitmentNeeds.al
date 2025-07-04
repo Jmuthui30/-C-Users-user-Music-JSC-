@@ -507,7 +507,12 @@ table 51880 "Recruitment Needs"
             Caption = 'Experience';
             DataClassification = ToBeClassified;
         }
-        
+        field(236; "Mission Statement"; Text[2048])
+        {
+            Caption = 'Mission Statement';
+            DataClassification = ToBeClassified;
+        }
+
 
 
 
