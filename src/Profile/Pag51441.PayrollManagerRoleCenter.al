@@ -734,13 +734,13 @@ page 51441 "Payroll Manager Role Center"
                 {
                     ApplicationArea = All;
                     Caption = 'Loan Products';
-                    RunObject = Page "Loan Product Type list";
+                    RunObject = Page "Client Loan Product Type list";
                 }
                 action("Loan Application")
                 {
                     ApplicationArea = All;
                     Caption = ' Loan Application';
-                    RunObject = Page "Loan Application List";
+                    RunObject = Page "Client Loan Application List";
                 }
             }
             group(HREmployeeManamentGroup)

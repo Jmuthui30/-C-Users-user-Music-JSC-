@@ -22,112 +22,6 @@
       <rd:DataSourceID>9789ee90-87b6-4fe5-bff8-4fdacee032d1</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="No_">
-          <DataField>No_</DataField>
-        </Field>
-        <Field Name="Description">
-          <DataField>Description</DataField>
-        </Field>
-        <Field Name="Vacancy_Announcement">
-          <DataField>Vacancy_Announcement</DataField>
-        </Field>
-        <Field Name="Memo_Ref_No_">
-          <DataField>Memo_Ref_No_</DataField>
-        </Field>
-        <Field Name="Judge_Function_Title">
-          <DataField>Judge_Function_Title</DataField>
-        </Field>
-        <Field Name="Functions_of_the_Judge">
-          <DataField>Functions_of_the_Judge</DataField>
-        </Field>
-        <Field Name="Experience">
-          <DataField>Experience</DataField>
-        </Field>
-        <Field Name="Positions">
-          <DataField>Positions</DataField>
-        </Field>
-        <Field Name="Terms_of_Service_">
-          <DataField>Terms_of_Service_</DataField>
-        </Field>
-        <Field Name="Remuneration_">
-          <DataField>Remuneration_</DataField>
-        </Field>
-        <Field Name="Job_Purpose">
-          <DataField>Job_Purpose</DataField>
-        </Field>
-        <Field Name="Reporting_Responsibilities">
-          <DataField>Reporting_Responsibilities</DataField>
-        </Field>
-        <Field Name="Area_Of_Deployment">
-          <DataField>Area_Of_Deployment</DataField>
-        </Field>
-        <Field Name="Key_Duties___Responsibilities_">
-          <DataField>Key_Duties___Responsibilities_</DataField>
-        </Field>
-        <Field Name="Job_Academic_and_Professional">
-          <DataField>Job_Academic_and_Professional</DataField>
-        </Field>
-        <Field Name="Terms_and_Conditions">
-          <DataField>Terms_and_Conditions</DataField>
-        </Field>
-        <Field Name="Terms_and_Conditions_2">
-          <DataField>Terms_and_Conditions_2</DataField>
-        </Field>
-        <Field Name="Terms_and_Conditions_3">
-          <DataField>Terms_and_Conditions_3</DataField>
-        </Field>
-        <Field Name="Academic_Prof_Code">
-          <DataField>Academic_Prof_Code</DataField>
-        </Field>
-        <Field Name="Academic_Prof_Job_Id">
-          <DataField>Academic_Prof_Job_Id</DataField>
-        </Field>
-        <Field Name="Academic_Prof_Qualification">
-          <DataField>Academic_Prof_Qualification</DataField>
-        </Field>
-        <Field Name="Academic_Prof_Qualification_Type">
-          <DataField>Academic_Prof_Qualification_Type</DataField>
-        </Field>
-        <Field Name="Academic_Prof_Area_of_Specialization">
-          <DataField>Academic_Prof_Area_of_Specialization</DataField>
-        </Field>
-        <Field Name="Qualification_Code">
-          <DataField>Qualification_Code</DataField>
-        </Field>
-        <Field Name="Job_Id">
-          <DataField>Job_Id</DataField>
-        </Field>
-        <Field Name="Qualification">
-          <DataField>Qualification</DataField>
-        </Field>
-        <Field Name="Qualification_Type">
-          <DataField>Qualification_Type</DataField>
-        </Field>
-        <Field Name="Area_of_Specialization">
-          <DataField>Area_of_Specialization</DataField>
-        </Field>
-        <Field Name="Job_QQualification_Code">
-          <DataField>Job_QQualification_Code</DataField>
-        </Field>
-        <Field Name="Job_QQualification_Type">
-          <DataField>Job_QQualification_Type</DataField>
-        </Field>
-        <Field Name="Job_QArea_of_Specialization">
-          <DataField>Job_QArea_of_Specialization</DataField>
-        </Field>
-        <Field Name="Source_No">
-          <DataField>Source_No</DataField>
-        </Field>
-      </Fields>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -1694,12 +1588,6 @@
       </Page>
     </ReportSection>
   </ReportSections>
-  <ReportParametersLayout>
-    <GridLayoutDefinition>
-      <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
-    </GridLayoutDefinition>
-  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -1767,4 +1655,110 @@ xT+zh468Lu5OkNqMC8+bYHzQfw6/pXnl3o+oafI0dzZXFs6nDLNEykfmK/UTy19Kr3Wm2t8my5top1/u
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
   <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="No_">
+          <DataField>No_</DataField>
+        </Field>
+        <Field Name="Description">
+          <DataField>Description</DataField>
+        </Field>
+        <Field Name="Vacancy_Announcement">
+          <DataField>Vacancy_Announcement</DataField>
+        </Field>
+        <Field Name="Memo_Ref_No_">
+          <DataField>Memo_Ref_No_</DataField>
+        </Field>
+        <Field Name="Judge_Function_Title">
+          <DataField>Judge_Function_Title</DataField>
+        </Field>
+        <Field Name="Functions_of_the_Judge">
+          <DataField>Functions_of_the_Judge</DataField>
+        </Field>
+        <Field Name="Experience">
+          <DataField>Experience</DataField>
+        </Field>
+        <Field Name="Positions">
+          <DataField>Positions</DataField>
+        </Field>
+        <Field Name="Terms_of_Service_">
+          <DataField>Terms_of_Service_</DataField>
+        </Field>
+        <Field Name="Remuneration_">
+          <DataField>Remuneration_</DataField>
+        </Field>
+        <Field Name="Job_Purpose">
+          <DataField>Job_Purpose</DataField>
+        </Field>
+        <Field Name="Reporting_Responsibilities">
+          <DataField>Reporting_Responsibilities</DataField>
+        </Field>
+        <Field Name="Area_Of_Deployment">
+          <DataField>Area_Of_Deployment</DataField>
+        </Field>
+        <Field Name="Key_Duties___Responsibilities_">
+          <DataField>Key_Duties___Responsibilities_</DataField>
+        </Field>
+        <Field Name="Job_Academic_and_Professional">
+          <DataField>Job_Academic_and_Professional</DataField>
+        </Field>
+        <Field Name="Terms_and_Conditions">
+          <DataField>Terms_and_Conditions</DataField>
+        </Field>
+        <Field Name="Terms_and_Conditions_2">
+          <DataField>Terms_and_Conditions_2</DataField>
+        </Field>
+        <Field Name="Terms_and_Conditions_3">
+          <DataField>Terms_and_Conditions_3</DataField>
+        </Field>
+        <Field Name="Academic_Prof_Code">
+          <DataField>Academic_Prof_Code</DataField>
+        </Field>
+        <Field Name="Academic_Prof_Job_Id">
+          <DataField>Academic_Prof_Job_Id</DataField>
+        </Field>
+        <Field Name="Academic_Prof_Qualification">
+          <DataField>Academic_Prof_Qualification</DataField>
+        </Field>
+        <Field Name="Academic_Prof_Qualification_Type">
+          <DataField>Academic_Prof_Qualification_Type</DataField>
+        </Field>
+        <Field Name="Academic_Prof_Area_of_Specialization">
+          <DataField>Academic_Prof_Area_of_Specialization</DataField>
+        </Field>
+        <Field Name="Qualification_Code">
+          <DataField>Qualification_Code</DataField>
+        </Field>
+        <Field Name="Job_Id">
+          <DataField>Job_Id</DataField>
+        </Field>
+        <Field Name="Qualification">
+          <DataField>Qualification</DataField>
+        </Field>
+        <Field Name="Qualification_Type">
+          <DataField>Qualification_Type</DataField>
+        </Field>
+        <Field Name="Area_of_Specialization">
+          <DataField>Area_of_Specialization</DataField>
+        </Field>
+        <Field Name="Job_QQualification_Code">
+          <DataField>Job_QQualification_Code</DataField>
+        </Field>
+        <Field Name="Job_QQualification_Type">
+          <DataField>Job_QQualification_Type</DataField>
+        </Field>
+        <Field Name="Job_QArea_of_Specialization">
+          <DataField>Job_QArea_of_Specialization</DataField>
+        </Field>
+        <Field Name="Source_No">
+          <DataField>Source_No</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>

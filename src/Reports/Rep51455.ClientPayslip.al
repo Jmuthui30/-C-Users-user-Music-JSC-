@@ -882,7 +882,7 @@ report 51455 "Client Payslip"
                     PAYE := 0;
                     TaxableAmt := PayrollMatrix."Taxable amount";
                     PAYE := PayrollMatrix.Amount;
-                    Message('Less Pension Contr amount IS %1', PayrollMatrix."Less Pension Contribution");
+                    // Message('Less Pension Contr amount IS %1', PayrollMatrix."Less Pension Contribution");
                 end;
                 i := i + 1;
                 Earn.Reset;
@@ -1129,23 +1129,26 @@ report 51455 "Client Payslip"
                 Deduct.Reset;
                 Deduct.SetRange(Deduct."Show Balance", true);
                 Deduct.SetRange(Loan, true);
-                Deduct.SetFilter(Deduct."Calculation Method", '<>%1', Deduct."Calculation Method"::"% of Basic Pay");
-                Deduct.SetRange(Deduct.Shares, false);
-                Deduct.SetRange(Deduct."Salary Recovery", false);
                 if Deduct.Find('-') then begin
                     repeat
                         LoanBalance := 0;
                         TotalBulkRepayments := 0;
                         TotalRepayments := 0;
+
                         //Balances
+
                         PayrollMatrix.Reset;
                         PayrollMatrix.SetRange(PayrollMatrix."Payroll Period", 0D, DateSpecified);
-                        PayrollMatrix.SetFilter(Type, '%1|%2', PayrollMatrix.Type::Deduction, PayrollMatrix.Type::Loan);
-                        PayrollMatrix.SetRange(Code, Deduct.Code);
-                        PayrollMatrix.SetRange("Employee No", "No.");
-                        PayrollMatrix.SetRange(PayrollMatrix.Paye, false);
+                        PayrollMatrix.SetFilter(PayrollMatrix.Type, '%1', PayrollMatrix.Type::Deduction);
+                        PayrollMatrix.SetRange(PayrollMatrix.Code, Deduct.Code);
+                        PayrollMatrix.SetRange(PayrollMatrix."Employee No", "No.");
                         if PayrollMatrix.Find('-') then begin
+                            //Message('Employ no is %1', PayrollMatrix."Employee No");
+                            //  Message('Payroll Period is %1', DateSpecified);
+
+
                             PayrollMatrix.CalcSums(Amount);
+                            // message('PayrollMatrix."Reference No"is %1', PayrollMatrix."Reference No");
                             LoanBalances.Reset;
                             LoanBalances.SetRange(LoanBalances."Date filter", 0D, DateSpecified);
                             LoanBalances.SetRange(LoanBalances."Deduction Code", PayrollMatrix.Code);
@@ -1154,6 +1157,7 @@ report 51455 "Client Payslip"
                             LoanBalances.SetRange("Stop Loan", false);
                             if LoanBalances.Find('-') then begin
                                 repeat
+
                                     if loanType.Get(LoanBalances."Client Loan Product Type") then begin
                                         if loanType."Interest Calculation Method" = loanType."Interest Calculation Method"::"Flat Rate" then begin
                                             LoanBalances.CalcFields(LoanBalances."Total Repayment", LoanBalances."Total Loan");
@@ -1164,7 +1168,9 @@ report 51455 "Client Payslip"
                                                 LoanTopUps.SetRange(LoanTopUps."Loan No", LoanBalances."Loan No");
                                                 LoanTopUps.SetRange("Payroll Period", 0D, DateSpecified);
                                                 LoanTopUps.CalcSums(Amount);
+
                                                 LineAmt := LoanTopUps.Amount;
+
                                                 LoanBalance := LoanBalance + LineAmt;
                                             end
                                             else
@@ -1172,6 +1178,7 @@ report 51455 "Client Payslip"
                                             LoanBalance := LoanBalance + LoanBalances."Total Repayment";
                                         end;
                                         if loanType."Interest Calculation Method" = loanType."Interest Calculation Method"::"Reducing Balance" then begin
+
                                             RepSchedule.Reset;
                                             RepSchedule.SetCurrentKey("Loan Category", "Employee No", "Repayment Date");
                                             //RepSchedule.SetFilter("Loan Category", empl, "Repayment Date", "Loan No");
@@ -1180,11 +1187,17 @@ report 51455 "Client Payslip"
                                             RepSchedule.SetRange(RepSchedule."Loan No", PayrollMatrix."Reference No");
                                             RepSchedule.SetRange(RepSchedule."Repayment Date", DateSpecified);
                                             RepSchedule.SetRange(RepSchedule."Loan No", PayrollMatrix."Reference No");
+                                            //  Message('line is %1....# Monthly Repayment is  %2 ', RepSchedule."Remaining Debt", RepSchedule."Monthly Repayment");
                                             RepSchedule.CalcSums(RepSchedule."Remaining Debt", "Monthly Repayment");
+
+
+                                            LoanBalance := LoanBalance + RepSchedule."Remaining Debt";
                                             LoanBalance := RepSchedule."Remaining Debt";
                                             LDescription := loanType.Description;
                                             OpeningBalance := RepSchedule."Remaining Debt" + RepSchedule."Monthly Repayment";
                                             PeriodInstallment := RepSchedule."Monthly Repayment";
+                                            // Message('instal is %1', PeriodInstallment);
+
                                             ReferenceNo := PayrollMatrix."Reference No";
                                             //Message('my bal%1', RepSchedule."Remaining Debt");
                                             //Message('My product is%1', LDescription);
@@ -1192,7 +1205,7 @@ report 51455 "Client Payslip"
                                     end;
                                 until LoanBalances.Next = 0;
                                 // LoanBalance := LoanBalance;
-                                //Message('my bal%1', LoanBalance);
+                                // Message('my bal%1', LoanBalance);
                             end;
                         end;
                         if LoanBalance <> 0 then begin
@@ -1222,6 +1235,7 @@ report 51455 "Client Payslip"
                             Evaluate(ArrEarningsAmt[1, i], Format(Abs(PayrollRounding(TotalToDate, Employee."Company Code"))));
                             ArrEarningsAmt[1, i] := ChckRound(ArrEarningsAmt[1, i]);
                             i := i + 1;
+                            Message('arrearn is %1', ArrEarningsAmt[1, i]);
                         end;
                     until loanType.Next = 0;
                 end;

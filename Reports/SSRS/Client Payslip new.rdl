@@ -1,0 +1,1004 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="Addr_1__1_">
+          <DataField>Addr_1__1_</DataField>
+        </Field>
+        <Field Name="Addr_1__2_">
+          <DataField>Addr_1__2_</DataField>
+        </Field>
+        <Field Name="Addr_1_3">
+          <DataField>Addr_1_3</DataField>
+        </Field>
+        <Field Name="Addr_1_4">
+          <DataField>Addr_1_4</DataField>
+        </Field>
+        <Field Name="DeptArr_1_1_">
+          <DataField>DeptArr_1_1_</DataField>
+        </Field>
+        <Field Name="StationArr_1_1">
+          <DataField>StationArr_1_1</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_1_">
+          <DataField>ArrEarnings_1_1_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_2_">
+          <DataField>ArrEarnings_1_2_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_3_">
+          <DataField>ArrEarnings_1_3_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_1_">
+          <DataField>ArrEarningsAmt_1_1_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_2_">
+          <DataField>ArrEarningsAmt_1_2_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_3_">
+          <DataField>ArrEarningsAmt_1_3_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_4_">
+          <DataField>ArrEarnings_1_4_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_4_">
+          <DataField>ArrEarningsAmt_1_4_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_5_">
+          <DataField>ArrEarnings_1_5_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_5_">
+          <DataField>ArrEarningsAmt_1_5_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_6_">
+          <DataField>ArrEarnings_1_6_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_6_">
+          <DataField>ArrEarningsAmt_1_6_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_7_">
+          <DataField>ArrEarnings_1_7_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_7_">
+          <DataField>ArrEarningsAmt_1_7_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_8_">
+          <DataField>ArrEarnings_1_8_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_8_">
+          <DataField>ArrEarningsAmt_1_8_</DataField>
+        </Field>
+        <Field Name="UPPERCASE_FORMAT_DateSpecified_0___month_text___year4____">
+          <DataField>UPPERCASE_FORMAT_DateSpecified_0___month_text___year4____</DataField>
+        </Field>
+        <Field Name="CoName">
+          <DataField>CoName</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_9_">
+          <DataField>ArrEarningsAmt_1_9_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_10_">
+          <DataField>ArrEarningsAmt_1_10_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_11_">
+          <DataField>ArrEarningsAmt_1_11_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_12_">
+          <DataField>ArrEarningsAmt_1_12_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_13_">
+          <DataField>ArrEarningsAmt_1_13_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_14_">
+          <DataField>ArrEarningsAmt_1_14_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_15_">
+          <DataField>ArrEarningsAmt_1_15_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_16_">
+          <DataField>ArrEarningsAmt_1_16_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_9_">
+          <DataField>ArrEarnings_1_9_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_10_">
+          <DataField>ArrEarnings_1_10_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_11_">
+          <DataField>ArrEarnings_1_11_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_12_">
+          <DataField>ArrEarnings_1_12_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_13_">
+          <DataField>ArrEarnings_1_13_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_14_">
+          <DataField>ArrEarnings_1_14_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_15_">
+          <DataField>ArrEarnings_1_15_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_16_">
+          <DataField>ArrEarnings_1_16_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_17_">
+          <DataField>ArrEarningsAmt_1_17_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_17_">
+          <DataField>ArrEarnings_1_17_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_18_">
+          <DataField>ArrEarnings_1_18_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_19_">
+          <DataField>ArrEarnings_1_19_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_20_">
+          <DataField>ArrEarnings_1_20_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_21_">
+          <DataField>ArrEarnings_1_21_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_22_">
+          <DataField>ArrEarnings_1_22_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_23_">
+          <DataField>ArrEarnings_1_23_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_25_">
+          <DataField>ArrEarnings_1_25_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_26_">
+          <DataField>ArrEarnings_1_26_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_34_">
+          <DataField>ArrEarnings_1_34_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_33_">
+          <DataField>ArrEarnings_1_33_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_32_">
+          <DataField>ArrEarnings_1_32_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_31_">
+          <DataField>ArrEarnings_1_31_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_30_">
+          <DataField>ArrEarnings_1_30_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_29_">
+          <DataField>ArrEarnings_1_29_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_28_">
+          <DataField>ArrEarnings_1_28_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_27_">
+          <DataField>ArrEarnings_1_27_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_41_">
+          <DataField>ArrEarnings_1_41_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_40_">
+          <DataField>ArrEarnings_1_40_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_39_">
+          <DataField>ArrEarnings_1_39_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_38_">
+          <DataField>ArrEarnings_1_38_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_37_">
+          <DataField>ArrEarnings_1_37_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_36_">
+          <DataField>ArrEarnings_1_36_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_35_">
+          <DataField>ArrEarnings_1_35_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_33_">
+          <DataField>ArrEarningsAmt_1_33_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_32_">
+          <DataField>ArrEarningsAmt_1_32_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_31_">
+          <DataField>ArrEarningsAmt_1_31_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_30_">
+          <DataField>ArrEarningsAmt_1_30_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_29_">
+          <DataField>ArrEarningsAmt_1_29_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_28_">
+          <DataField>ArrEarningsAmt_1_28_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_27_">
+          <DataField>ArrEarningsAmt_1_27_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_26_">
+          <DataField>ArrEarningsAmt_1_26_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_25_">
+          <DataField>ArrEarningsAmt_1_25_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_24_">
+          <DataField>ArrEarningsAmt_1_24_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_23_">
+          <DataField>ArrEarningsAmt_1_23_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_22_">
+          <DataField>ArrEarningsAmt_1_22_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_21_">
+          <DataField>ArrEarningsAmt_1_21_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_20_">
+          <DataField>ArrEarningsAmt_1_20_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_19_">
+          <DataField>ArrEarningsAmt_1_19_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_18_">
+          <DataField>ArrEarningsAmt_1_18_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_24_">
+          <DataField>ArrEarnings_1_24_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_39_">
+          <DataField>ArrEarningsAmt_1_39_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_38_">
+          <DataField>ArrEarningsAmt_1_38_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_37_">
+          <DataField>ArrEarningsAmt_1_37_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_36_">
+          <DataField>ArrEarningsAmt_1_36_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_35_">
+          <DataField>ArrEarningsAmt_1_35_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_34_">
+          <DataField>ArrEarningsAmt_1_34_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_41_">
+          <DataField>ArrEarningsAmt_1_41_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_40_">
+          <DataField>ArrEarningsAmt_1_40_</DataField>
+        </Field>
+        <Field Name="Message2_1_1_">
+          <DataField>Message2_1_1_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_43_">
+          <DataField>ArrEarningsAmt_1_43_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_42_">
+          <DataField>ArrEarningsAmt_1_42_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_45_">
+          <DataField>ArrEarningsAmt_1_45_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_44_">
+          <DataField>ArrEarningsAmt_1_44_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_45_">
+          <DataField>ArrEarnings_1_45_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_44_">
+          <DataField>ArrEarnings_1_44_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_43_">
+          <DataField>ArrEarnings_1_43_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_42_">
+          <DataField>ArrEarnings_1_42_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_48_">
+          <DataField>ArrEarningsAmt_1_48_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_46_">
+          <DataField>ArrEarningsAmt_1_46_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_47_">
+          <DataField>ArrEarningsAmt_1_47_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_48_">
+          <DataField>ArrEarnings_1_48_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_47_">
+          <DataField>ArrEarnings_1_47_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_46_">
+          <DataField>ArrEarnings_1_46_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_49_">
+          <DataField>ArrEarningsAmt_1_49_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_50_">
+          <DataField>ArrEarningsAmt_1_50_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_51_">
+          <DataField>ArrEarningsAmt_1_51_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_52_">
+          <DataField>ArrEarningsAmt_1_52_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_53_">
+          <DataField>ArrEarningsAmt_1_53_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_54_">
+          <DataField>ArrEarningsAmt_1_54_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_55_">
+          <DataField>ArrEarningsAmt_1_55_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_56_">
+          <DataField>ArrEarningsAmt_1_56_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_57_">
+          <DataField>ArrEarningsAmt_1_57_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_58_">
+          <DataField>ArrEarningsAmt_1_58_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_59_">
+          <DataField>ArrEarningsAmt_1_59_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_60_">
+          <DataField>ArrEarningsAmt_1_60_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_49_">
+          <DataField>ArrEarnings_1_49_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_50_">
+          <DataField>ArrEarnings_1_50_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_51_">
+          <DataField>ArrEarnings_1_51_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_52_">
+          <DataField>ArrEarnings_1_52_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_53_">
+          <DataField>ArrEarnings_1_53_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_54_">
+          <DataField>ArrEarnings_1_54_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_55_">
+          <DataField>ArrEarnings_1_55_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_56_">
+          <DataField>ArrEarnings_1_56_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_57_">
+          <DataField>ArrEarnings_1_57_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_58_">
+          <DataField>ArrEarnings_1_58_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_59_">
+          <DataField>ArrEarnings_1_59_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_60_">
+          <DataField>ArrEarnings_1_60_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_61_">
+          <DataField>ArrEarnings_1_61_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_62_">
+          <DataField>ArrEarnings_1_62_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_63_">
+          <DataField>ArrEarnings_1_63_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_73_">
+          <DataField>ArrEarnings_1_73_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_64_">
+          <DataField>ArrEarnings_1_64_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_65_">
+          <DataField>ArrEarnings_1_65_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_66_">
+          <DataField>ArrEarnings_1_66_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_67_">
+          <DataField>ArrEarnings_1_67_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_68_">
+          <DataField>ArrEarnings_1_68_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_69_">
+          <DataField>ArrEarnings_1_69_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_70_">
+          <DataField>ArrEarnings_1_70_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_71_">
+          <DataField>ArrEarnings_1_71_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_72_">
+          <DataField>ArrEarnings_1_72_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_74_">
+          <DataField>ArrEarnings_1_74_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_75_">
+          <DataField>ArrEarnings_1_75_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_76_">
+          <DataField>ArrEarnings_1_76_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_77_">
+          <DataField>ArrEarnings_1_77_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_78_">
+          <DataField>ArrEarnings_1_78_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_79_">
+          <DataField>ArrEarnings_1_79_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_80_">
+          <DataField>ArrEarnings_1_80_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_81_">
+          <DataField>ArrEarnings_1_81_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_82_">
+          <DataField>ArrEarnings_1_82_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_83_">
+          <DataField>ArrEarnings_1_83_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_84_">
+          <DataField>ArrEarnings_1_84_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_85_">
+          <DataField>ArrEarnings_1_85_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_86_">
+          <DataField>ArrEarnings_1_86_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_87_">
+          <DataField>ArrEarnings_1_87_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_88_">
+          <DataField>ArrEarnings_1_88_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_89_">
+          <DataField>ArrEarnings_1_89_</DataField>
+        </Field>
+        <Field Name="ArrEarnings_1_90_">
+          <DataField>ArrEarnings_1_90_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_61_">
+          <DataField>ArrEarningsAmt_1_61_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_62_">
+          <DataField>ArrEarningsAmt_1_62_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_63_">
+          <DataField>ArrEarningsAmt_1_63_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_64_">
+          <DataField>ArrEarningsAmt_1_64_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_65_">
+          <DataField>ArrEarningsAmt_1_65_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_66_">
+          <DataField>ArrEarningsAmt_1_66_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_67_">
+          <DataField>ArrEarningsAmt_1_67_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_68_">
+          <DataField>ArrEarningsAmt_1_68_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_69_">
+          <DataField>ArrEarningsAmt_1_69_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_70_">
+          <DataField>ArrEarningsAmt_1_70_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_71_">
+          <DataField>ArrEarningsAmt_1_71_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_72_">
+          <DataField>ArrEarningsAmt_1_72_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_73_">
+          <DataField>ArrEarningsAmt_1_73_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_74_">
+          <DataField>ArrEarningsAmt_1_74_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_75_">
+          <DataField>ArrEarningsAmt_1_75_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_76_">
+          <DataField>ArrEarningsAmt_1_76_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_77_">
+          <DataField>ArrEarningsAmt_1_77_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_78_">
+          <DataField>ArrEarningsAmt_1_78_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_79_">
+          <DataField>ArrEarningsAmt_1_79_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_80_">
+          <DataField>ArrEarningsAmt_1_80_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_81_">
+          <DataField>ArrEarningsAmt_1_81_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_82_">
+          <DataField>ArrEarningsAmt_1_82_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_83_">
+          <DataField>ArrEarningsAmt_1_83_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_84_">
+          <DataField>ArrEarningsAmt_1_84_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_85_">
+          <DataField>ArrEarningsAmt_1_85_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_86_">
+          <DataField>ArrEarningsAmt_1_86_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_87_">
+          <DataField>ArrEarningsAmt_1_87_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_88_">
+          <DataField>ArrEarningsAmt_1_88_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_89_">
+          <DataField>ArrEarningsAmt_1_89_</DataField>
+        </Field>
+        <Field Name="ArrEarningsAmt_1_90_">
+          <DataField>ArrEarningsAmt_1_90_</DataField>
+        </Field>
+        <Field Name="Logo">
+          <DataField>Logo</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_1_">
+          <DataField>BalanceArray_1_1_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_1_Format">
+          <DataField>BalanceArray_1_1_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_2_">
+          <DataField>BalanceArray_1_2_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_2_Format">
+          <DataField>BalanceArray_1_2_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_3_">
+          <DataField>BalanceArray_1_3_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_3_Format">
+          <DataField>BalanceArray_1_3_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_4_">
+          <DataField>BalanceArray_1_4_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_4_Format">
+          <DataField>BalanceArray_1_4_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_5_">
+          <DataField>BalanceArray_1_5_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_5_Format">
+          <DataField>BalanceArray_1_5_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_6_">
+          <DataField>BalanceArray_1_6_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_6_Format">
+          <DataField>BalanceArray_1_6_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_7_">
+          <DataField>BalanceArray_1_7_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_7_Format">
+          <DataField>BalanceArray_1_7_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_8_">
+          <DataField>BalanceArray_1_8_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_8_Format">
+          <DataField>BalanceArray_1_8_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_9_">
+          <DataField>BalanceArray_1_9_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_9_Format">
+          <DataField>BalanceArray_1_9_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_10_">
+          <DataField>BalanceArray_1_10_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_10_Format">
+          <DataField>BalanceArray_1_10_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_11_">
+          <DataField>BalanceArray_1_11_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_11_Format">
+          <DataField>BalanceArray_1_11_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_12_">
+          <DataField>BalanceArray_1_12_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_12_Format">
+          <DataField>BalanceArray_1_12_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_13_">
+          <DataField>BalanceArray_1_13_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_13_Format">
+          <DataField>BalanceArray_1_13_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_14_">
+          <DataField>BalanceArray_1_14_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_14_Format">
+          <DataField>BalanceArray_1_14_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_15_">
+          <DataField>BalanceArray_1_15_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_15_Format">
+          <DataField>BalanceArray_1_15_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_16_">
+          <DataField>BalanceArray_1_16_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_16_Format">
+          <DataField>BalanceArray_1_16_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_17_">
+          <DataField>BalanceArray_1_17_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_17_Format">
+          <DataField>BalanceArray_1_17_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_19_">
+          <DataField>BalanceArray_1_19_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_19_Format">
+          <DataField>BalanceArray_1_19_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_18_">
+          <DataField>BalanceArray_1_18_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_18_Format">
+          <DataField>BalanceArray_1_18_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_20_">
+          <DataField>BalanceArray_1_20_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_20_Format">
+          <DataField>BalanceArray_1_20_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_22_">
+          <DataField>BalanceArray_1_22_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_22_Format">
+          <DataField>BalanceArray_1_22_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_21_">
+          <DataField>BalanceArray_1_21_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_21_Format">
+          <DataField>BalanceArray_1_21_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_23_">
+          <DataField>BalanceArray_1_23_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_23_Format">
+          <DataField>BalanceArray_1_23_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_26_">
+          <DataField>BalanceArray_1_26_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_26_Format">
+          <DataField>BalanceArray_1_26_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_25_">
+          <DataField>BalanceArray_1_25_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_25_Format">
+          <DataField>BalanceArray_1_25_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_24_">
+          <DataField>BalanceArray_1_24_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_24_Format">
+          <DataField>BalanceArray_1_24_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_28_">
+          <DataField>BalanceArray_1_28_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_28_Format">
+          <DataField>BalanceArray_1_28_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_27_">
+          <DataField>BalanceArray_1_27_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_27_Format">
+          <DataField>BalanceArray_1_27_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_30_">
+          <DataField>BalanceArray_1_30_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_30_Format">
+          <DataField>BalanceArray_1_30_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_29_">
+          <DataField>BalanceArray_1_29_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_29_Format">
+          <DataField>BalanceArray_1_29_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_32_">
+          <DataField>BalanceArray_1_32_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_32_Format">
+          <DataField>BalanceArray_1_32_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_31_">
+          <DataField>BalanceArray_1_31_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_31_Format">
+          <DataField>BalanceArray_1_31_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_34_">
+          <DataField>BalanceArray_1_34_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_34_Format">
+          <DataField>BalanceArray_1_34_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_33_">
+          <DataField>BalanceArray_1_33_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_33_Format">
+          <DataField>BalanceArray_1_33_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_36_">
+          <DataField>BalanceArray_1_36_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_36_Format">
+          <DataField>BalanceArray_1_36_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_35_">
+          <DataField>BalanceArray_1_35_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_35_Format">
+          <DataField>BalanceArray_1_35_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_38_">
+          <DataField>BalanceArray_1_38_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_38_Format">
+          <DataField>BalanceArray_1_38_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_37_">
+          <DataField>BalanceArray_1_37_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_37_Format">
+          <DataField>BalanceArray_1_37_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_40_">
+          <DataField>BalanceArray_1_40_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_40_Format">
+          <DataField>BalanceArray_1_40_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_39_">
+          <DataField>BalanceArray_1_39_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_39_Format">
+          <DataField>BalanceArray_1_39_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_41_">
+          <DataField>BalanceArray_1_41_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_41_Format">
+          <DataField>BalanceArray_1_41_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_42_">
+          <DataField>BalanceArray_1_42_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_42_Format">
+          <DataField>BalanceArray_1_42_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_43_">
+          <DataField>BalanceArray_1_43_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_43_Format">
+          <DataField>BalanceArray_1_43_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_44_">
+          <DataField>BalanceArray_1_44_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_44_Format">
+          <DataField>BalanceArray_1_44_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_46_">
+          <DataField>BalanceArray_1_46_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_46_Format">
+          <DataField>BalanceArray_1_46_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_45_">
+          <DataField>BalanceArray_1_45_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_45_Format">
+          <DataField>BalanceArray_1_45_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_48_">
+          <DataField>BalanceArray_1_48_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_48_Format">
+          <DataField>BalanceArray_1_48_Format</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_47_">
+          <DataField>BalanceArray_1_47_</DataField>
+        </Field>
+        <Field Name="BalanceArray_1_47_Format">
+          <DataField>BalanceArray_1_47_Format</DataField>
+        </Field>
+        <Field Name="STRSUBSTNO__Date__1__2__TODAY_TIME_">
+          <DataField>STRSUBSTNO__Date__1__2__TODAY_TIME_</DataField>
+        </Field>
+        <Field Name="USERID">
+          <DataField>USERID</DataField>
+        </Field>
+        <Field Name="EarningsCaption">
+          <DataField>EarningsCaption</DataField>
+        </Field>
+        <Field Name="Employee_No_Caption">
+          <DataField>Employee_No_Caption</DataField>
+        </Field>
+        <Field Name="Name_Caption">
+          <DataField>Name_Caption</DataField>
+        </Field>
+        <Field Name="Design_CaptionLbl">
+          <DataField>Design_CaptionLbl</DataField>
+        </Field>
+        <Field Name="StationCaptionLbl">
+          <DataField>StationCaptionLbl</DataField>
+        </Field>
+        <Field Name="Dept_Caption">
+          <DataField>Dept_Caption</DataField>
+        </Field>
+        <Field Name="AgeCaptionLbl">
+          <DataField>AgeCaptionLbl</DataField>
+        </Field>
+        <Field Name="IDnocaptionLbl">
+          <DataField>IDnocaptionLbl</DataField>
+        </Field>
+        <Field Name="AmountCaption">
+          <DataField>AmountCaption</DataField>
+        </Field>
+        <Field Name="ID_Number">
+          <DataField>ID_Number</DataField>
+        </Field>
+        <Field Name="Pay_slipCaption">
+          <DataField>Pay_slipCaption</DataField>
+        </Field>
+        <Field Name="EmptyStringCaption">
+          <DataField>EmptyStringCaption</DataField>
+        </Field>
+        <Field Name="CurrReport_PAGENOCaption">
+          <DataField>CurrReport_PAGENOCaption</DataField>
+        </Field>
+        <Field Name="Employee_No_">
+          <DataField>Employee_No_</DataField>
+        </Field>
+        <Field Name="Loan_Balance">
+          <DataField>Loan_Balance</DataField>
+        </Field>
+        <Field Name="Loan_BalanceFormat">
+          <DataField>Loan_BalanceFormat</DataField>
+        </Field>
+        <Field Name="PeriodInstallment">
+          <DataField>PeriodInstallment</DataField>
+        </Field>
+        <Field Name="PeriodInstallmentFormat">
+          <DataField>PeriodInstallmentFormat</DataField>
+        </Field>
+        <Field Name="OpeningBalance">
+          <DataField>OpeningBalance</DataField>
+        </Field>
+        <Field Name="OpeningBalanceFormat">
+          <DataField>OpeningBalanceFormat</DataField>
+        </Field>
+        <Field Name="ReferenceNo">
+          <DataField>ReferenceNo</DataField>
+        </Field>
+        <Field Name="LDescription">
+          <DataField>LDescription</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

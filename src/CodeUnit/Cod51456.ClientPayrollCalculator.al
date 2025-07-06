@@ -429,6 +429,13 @@ codeunit 51456 "Client Payroll Calculator"
         CurrentUser: Code[50];
         IStream: InStream;
         Content: File;
+          EmailMessage: Codeunit "Email Message";
+        PasswordHandler: Codeunit "Password Handler";
+        SMSMsg: Label 'Hi.Use password %1 for opening Tender-%2.';
+        Receipient: List of [Text];
+        EmailBody: Text;
+        SMSBody: Text;
+        OpeningPassword: Text;
     begin
         Clear(ReportParameters);
         Clear(XmlParameters);
@@ -485,6 +492,8 @@ codeunit 51456 "Client Payroll Calculator"
                 Report.SaveAs(51455, XmlParameters, ReportFormat::Pdf, outStreamReport, RecRef);
                 Mail.AddAttachment(Format(Period, 0, '<Month Text>-<Year4>') + ' Payslip ' + Employee."No." + '.pdf', 'PDF', inStreamReport);
                 Email.Send(Mail);
+
+               //  SMSBody := StrSubstNo(SMSMsg, CommitteeMember."Opening Password", TenderRec.Title);
             end;
         end;
     end;

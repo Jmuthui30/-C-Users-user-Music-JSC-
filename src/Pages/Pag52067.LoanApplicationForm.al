@@ -286,9 +286,11 @@ page 52067 "Loan Application Form"
                                 Message('dedu Code is %1', Rec."Deduction Code");
                             AssMatrix.Code := Rec."Deduction Code";
                             AssMatrix.Validate(AssMatrix.Code);
+                            AssMatrix.Company := 'JSC';
                             AssMatrix."Payroll Period" := Rec."Issued Date";
-                            AssMatrix."Payroll Group" := Emp."Employee Group";
+                            AssMatrix."Payroll Group" := EmpRec."Employee Posting Group";
                             AssMatrix."Global Dimension 1 code" := Emp."Global Dimension 1 Code";
+                            AssMatrix.Description := 'Loan Repayment';
                             AssMatrix.Amount := Schedule."Principal Repayment" - Schedule."Monthly Interest";
                             AssMatrix."Next Period Entry" := true;
                             //AssMatrix.Validate(AssMatrix.Amount);
