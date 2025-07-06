@@ -501,7 +501,11 @@ table 51880 "Recruitment Needs"
         { }
         field(234; "Judge Function Title"; Text[100]) { }
         field(232; "Functions of the Judge"; Text[2048]) { }
-        field(233; "Functions of the Judge1"; Text[2048]) { }
+        field(233; "Functions of the Judge1"; Text[2048])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Functions of the Judge1';
+        }
         field(235; "Experience"; Text[2048])
         {
             Caption = 'Experience';

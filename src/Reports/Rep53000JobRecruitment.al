@@ -18,9 +18,12 @@ report 53000 "Job Recruitment Report"
             {
 
             }
-            column(Vacancy_Announcement; "Vacancy Announcement") { }
-            column(Memo_Ref_No_; "Memo Ref No.") { }
-            column(Judge_Function_Title; "Judge Function Title") { }
+            column(Vacancy_Announcement; "Vacancy Announcement")
+            { }
+            column(Memo_Ref_No_; "Memo Ref No.")
+            { }
+            column(Judge_Function_Title; "Judge Function Title")
+            { }
             column(Functions_of_the_Judge; "Functions of the Judge") { }
             column(Experience; Experience) { }
             column(Positions; Positions) { }
