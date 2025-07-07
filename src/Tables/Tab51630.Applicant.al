@@ -592,7 +592,7 @@ table 51630 "Applicant"
                 if not "Criminal Declaration" then "Criminal Decl. Specification" := '';
             end;
         }
-        field(111; "Criminal Decl. Specification"; Text[250])
+        field(111; "Criminal Decl. Specification"; Text[1050])
         {
             Caption = 'Please Give Details of the case and any penalty for each offence';
         }
@@ -605,7 +605,7 @@ table 51630 "Applicant"
                 if not "Dismissal Declaration" then "Dismissal Decl. Specification" := '';
             end;
         }
-        field(113; "Dismissal Decl. Specification"; Text[250])
+        field(113; "Dismissal Decl. Specification"; Text[1050])
         {
             //ToolTip = 'Dismissal Declaration Specification';
             Caption = 'Please Give Details';
