@@ -1150,13 +1150,14 @@ report 51455 "Client Payslip"
                             PayrollMatrix.CalcSums(Amount);
                             // message('PayrollMatrix."Reference No"is %1', PayrollMatrix."Reference No");
                             LoanBalances.Reset;
-                            LoanBalances.SetRange(LoanBalances."Date filter", 0D, DateSpecified);
+                            //LoanBalances.SetRange(LoanBalances."Date filter", 0D, DateSpecified);
                             LoanBalances.SetRange(LoanBalances."Deduction Code", PayrollMatrix.Code);
-                            //Message('My loan is%1 and %2', LoanBalances."Deduction Code", PayrollMatrix.Code);
                             LoanBalances.SetRange("Employee No", "No.");
                             LoanBalances.SetRange("Stop Loan", false);
                             if LoanBalances.Find('-') then begin
                                 repeat
+                                    Message('My loan is%1 and %2...#stop is %3, no of employ is  %4', LoanBalances."Loan No", PayrollMatrix.Code, LoanBalances."Stop Loan", LoanBalances."Employee No");
+
 
                                     if loanType.Get(LoanBalances."Client Loan Product Type") then begin
                                         if loanType."Interest Calculation Method" = loanType."Interest Calculation Method"::"Flat Rate" then begin
@@ -1178,18 +1179,17 @@ report 51455 "Client Payslip"
                                             LoanBalance := LoanBalance + LoanBalances."Total Repayment";
                                         end;
                                         if loanType."Interest Calculation Method" = loanType."Interest Calculation Method"::"Reducing Balance" then begin
-
+                                            Message('loantype is ', loanType."Deduction Code");
                                             RepSchedule.Reset;
                                             RepSchedule.SetCurrentKey("Loan Category", "Employee No", "Repayment Date");
                                             //RepSchedule.SetFilter("Loan Category", empl, "Repayment Date", "Loan No");
-                                            RepSchedule.SetRange(RepSchedule."Loan Category", loanType.Code);
-                                            RepSchedule.SetRange("Employee No", "No.");
-                                            RepSchedule.SetRange(RepSchedule."Loan No", PayrollMatrix."Reference No");
+
+                                            RepSchedule.SetRange("Employee No", LoanBalances."Employee No");
+                                            RepSchedule.SetRange(RepSchedule."Loan No", LoanBalances."Loan No");
                                             RepSchedule.SetRange(RepSchedule."Repayment Date", DateSpecified);
-                                            RepSchedule.SetRange(RepSchedule."Loan No", PayrollMatrix."Reference No");
-                                            //  Message('line is %1....# Monthly Repayment is  %2 ', RepSchedule."Remaining Debt", RepSchedule."Monthly Repayment");
                                             RepSchedule.CalcSums(RepSchedule."Remaining Debt", "Monthly Repayment");
 
+                                            Message('line is %1....# Monthly Repayment is  %2 ', RepSchedule."Remaining Debt", RepSchedule."Monthly Repayment");
 
                                             LoanBalance := LoanBalance + RepSchedule."Remaining Debt";
                                             LoanBalance := RepSchedule."Remaining Debt";

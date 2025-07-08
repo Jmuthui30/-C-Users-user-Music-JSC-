@@ -42,7 +42,7 @@ codeunit 52116 "Portal Integration"
         ImprestHeader: Record Payments;
         PaymentsRec: Record Payments;
 
-
+    [ServiceEnabled]
     procedure SubmitJobApplication(No: Code[30]; ApplicantNo: Code[30]): Boolean
     var
         RecruitmentNeeds: Record "Recruitment Needs";
@@ -100,7 +100,7 @@ codeunit 52116 "Portal Integration"
                         Applicants."Submitted Time" := Time;
                         Applicants.Modify();
                     end;
-                     exit(true);
+                exit(true);
             end;
         end else begin
             // New application
@@ -146,7 +146,7 @@ codeunit 52116 "Portal Integration"
         end;
     end;
 
-
+    [ServiceEnabled]
     procedure fnInsertPortalAttachments(DocumentNo: Code[100]; Description: Text; Url: Text; Type: Text) uploaded: Boolean
     var
 
@@ -192,6 +192,7 @@ codeunit 52116 "Portal Integration"
         PortalUploads.MODIFY;
     end;
 
+    [ServiceEnabled]
     procedure CheckLeaveDaysAvailable(EmpNo: Code[30]; LeaveCode: Code[30]) LeaveBalance: Decimal
     var
         EmployeeLeaves: Record "HR Leave Ledger Entries";
@@ -291,6 +292,7 @@ codeunit 52116 "Portal Integration"
         end;
     end;
 
+    [ServiceEnabled]
     procedure DetermineLeaveReturnDate(startDate: Date; DaysApplied: Decimal; LeaveCode: Code[30]; EmpNo: Code[20]) ReturnDate: Date
     var
         HRSetup: Record "Human Resources Setup";
@@ -379,7 +381,7 @@ codeunit 52116 "Portal Integration"
 
     end;
 
-
+    [ServiceEnabled]
     procedure CheckDateStatusLeave(CalendarCode: Code[20]; TargetDate: Date; Var Description: Text[50]): Boolean
     var
         BaseCalChange: record "Base Calendar Change";
@@ -412,6 +414,7 @@ codeunit 52116 "Portal Integration"
         Description := '';
     end;
 
+    [ServiceEnabled]
     procedure CreateLeaveApplication(EmpNo: Code[50]; LeaveType: Code[30]; StartDate: Date; Days: Decimal; Reliever: Code[30]; Remarks: Text[2048]; ApplicationNo: Code[50]) No: Code[30]
     var
         HRSetup: Record "Human Resources Setup";
@@ -483,6 +486,7 @@ codeunit 52116 "Portal Integration"
         end;
     end;
 
+    [ServiceEnabled]
     procedure SendLeaveForApproval(DocNo: Code[50])
     var
         ApprovalMgt: Codeunit "Approval Mgt HR Ext";
@@ -498,6 +502,7 @@ codeunit 52116 "Portal Integration"
         end;
     end;
 
+    [ServiceEnabled]
     procedure CancelLeaveApproval(DocNo: Code[50])
     var
         ApprovalMgt: Codeunit "Approval Mgt HR Ext";
@@ -539,6 +544,7 @@ codeunit 52116 "Portal Integration"
         end;
     end;
 
+    [ServiceEnabled]
     procedure SENDEMAIL(Subject: Text; Receipient: Code[250]; FormattedBody: Text) sent: Boolean
     var
         EmailMessage: Codeunit "Email Message";
@@ -1015,6 +1021,7 @@ codeunit 52116 "Portal Integration"
 
     end;
 
+    [ServiceEnabled]
     procedure PrintP9(EmployeeNo: Code[50]; Year: Integer) P9Base64Txt: Text
     var
         Payee: Record "Employee Master";
@@ -1048,6 +1055,7 @@ codeunit 52116 "Portal Integration"
         end;
     end;
 
+    [ServiceEnabled]
     procedure PrintPaySlip(EmployeeNo: Code[50]; Period: Date) PayslipBase64Txt: Text
     var
         Employee: Record Employee;
