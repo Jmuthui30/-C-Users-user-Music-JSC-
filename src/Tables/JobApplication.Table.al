@@ -102,8 +102,14 @@ table 52003 "Job Application"
         {
             OptionMembers = "External","Internal";
             OptionCaption = 'External,Internal';
+            Caption = 'Job Type';
+        }
+        field(58; "Applicant Types"; Enum ApplicantType)
+        {
+            DataClassification = ToBeClassified;
             Caption = 'Applicant Type';
         }
+
         field(10; "Application Status"; Enum "Job Application Status")
         {
             Caption = 'Application Status';

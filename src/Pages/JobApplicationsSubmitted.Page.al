@@ -24,6 +24,10 @@ page 57000 "Job Applications - Submitted'"
                 {
                     ToolTip = 'Specifies the value of the Applicant Type field';
                 }
+                field("Applicant Types"; "Applicant Types")
+                {
+                    tooltip = 'Specifies the value of the Applicant Types field';
+                }
                 field("Applicant No."; Rec."Applicant No.")
                 {
                     ToolTip = 'Specifies the value of the Applicant No. field.';

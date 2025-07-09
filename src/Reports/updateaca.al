@@ -2,27 +2,28 @@ report 53070 "update quo code"
 {
     UsageCategory = ReportsAndAnalysis;
     ApplicationArea = All;
-    DefaultRenderingLayout = LayoutName;
+    DefaultRenderingLayout = Applupdate;
 
     dataset
     {
-        dataitem(Qualification; Qualification)
+        dataitem(Applicant; Applicant)
         {
-            RequestFilterFields = Code;
-            column(Code; Code)
+            RequestFilterFields = "No.";
+            column(No_; "No.")
             {
 
             }
             trigger OnAfterGetRecord()
             begin
                 AppQ.Reset();
-                AppQ.SetRange(AppQ."Qualification Code", Code);
+                AppQ.SetRange(AppQ."Applicant No.", "No.");
                 if AppQ.Find('-') then begin
                     repeat
-                        AppQ.Description := Description;
+                        AppQ."Applicant Types" := "Applicant Type";
                         AppQ.Modify()
                     until AppQ.Next() = 0;
                 end;
+                //*******************************************************************************
             end;
 
         }
@@ -54,14 +55,18 @@ report 53070 "update quo code"
 
     rendering
     {
-        layout(LayoutName)
+        layout(Applupdate)
         {
-            Type = Excel;
-            LayoutFile = 'mySpreadsheet.xlsx';
+            Type = RDLC;
+            LayoutFile = './Reports/SSRS/update quo code.RDLC';
+            Caption = 'Job Submitted';
         }
     }
 
     var
         myInt: Integer;
-        AppQ: Record "Applicants Qualification";
+        AppQ: Record "Job Application";
+
+
+        JobApplication: record "Job Application";
 }

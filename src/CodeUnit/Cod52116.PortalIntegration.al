@@ -42,7 +42,7 @@ codeunit 52116 "Portal Integration"
         ImprestHeader: Record Payments;
         PaymentsRec: Record Payments;
 
-    [ServiceEnabled]
+    /// [ServiceEnabled]
     procedure SubmitJobApplication(No: Code[30]; ApplicantNo: Code[30]): Boolean
     var
         RecruitmentNeeds: Record "Recruitment Needs";
@@ -74,6 +74,7 @@ codeunit 52116 "Portal Integration"
 
                 // Update existing job application
                 JobApplication."Applicant Type" := JobApplication."Applicant Type"::External;
+                // JobApplication."Applicant Type" := JobApplication."Applicant Type"::External;
                 JobApplication."Job Applied Code" := No;
                 JobApplication.Validate("Job Applied Code");
                 JobApplication."Applicant No." := ApplicantNo;
@@ -84,6 +85,7 @@ codeunit 52116 "Portal Integration"
                 JobApplication.Gender := Applicants.Gender;
                 JobApplication."Date-Time Created" := CurrentDateTime;
                 JobApplication.Submitted := true;
+                JobApplication."Applicant Types" := applicants."Applicant Type";
 
                 RecruitmentNeeds.Reset();
                 RecruitmentNeeds.SetRange("Job ID", No);
@@ -95,6 +97,7 @@ codeunit 52116 "Portal Integration"
                 if JobApplication.Modify(true) then
                     if Applicants.Get(ApplicantNo) then begin
                         Applicants.Submitted := true;
+
                         Applicants."Recruitment Needs NO" := RecruitmentNeeds."No.";
                         Applicants."Submitted Date" := Today;
                         Applicants."Submitted Time" := Time;
@@ -114,6 +117,7 @@ codeunit 52116 "Portal Integration"
 
                 JobApplication.Init();
                 JobApplication."Applicant Type" := JobApplication."Applicant Type"::External;
+
                 JobApplication."Job Applied Code" := No;
                 JobApplication.Validate("Job Applied Code");
                 JobApplication."Applicant No." := ApplicantNo;
@@ -124,6 +128,7 @@ codeunit 52116 "Portal Integration"
                 JobApplication.Gender := Applicants.Gender;
                 JobApplication."Date-Time Created" := CurrentDateTime;
                 JobApplication.Submitted := true;
+                JobApplication."Applicant Types" := applicants."Applicant Type";
 
                 RecruitmentNeeds.Reset();
                 RecruitmentNeeds.SetRange("Job ID", No);
@@ -511,6 +516,7 @@ codeunit 52116 "Portal Integration"
         ApprovalMgt.OnCancelLeaveRequestApproval(Leave);
     end;
 
+    [ServiceEnabled]
     procedure ApplicantProfile(No: Code[40]; var Base64Txt: Text)
     var
         Filename: Text[100];

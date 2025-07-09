@@ -74,8 +74,8 @@ page 58133 "Leave Periods"
 
                 trigger OnAction()
                 begin
-                    //if Confirm('Are you sure you want to close %1 leave period', false, Rec."Leave Period Code") then
-                    //  HRMgt.CloseLeavePeriod(Rec);
+                    if Confirm('Are you sure you want to close %1 leave period', false, Rec."Leave Period Code") then
+                        HRMgt.CloseLeavePeriod(Rec);
                 end;
             }
         }
@@ -83,7 +83,7 @@ page 58133 "Leave Periods"
 
     var
         LeavePeriods: Record "Leave Period";
-    // HRMgt: Codeunit "HR Management";
+        HRMgt: Codeunit "HR Management";
 }
 
 
