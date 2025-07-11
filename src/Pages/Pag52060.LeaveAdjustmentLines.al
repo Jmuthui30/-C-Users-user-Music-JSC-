@@ -10,6 +10,7 @@ page 58060 "Leave Adjustment Lines"
         {
             repeater(Group)
             {
+
                 field("Staff No."; Rec."Staff No.")
                 {
                     ToolTip = 'Specifies the value of the Staff No. field';
@@ -62,6 +63,11 @@ page 58060 "Leave Adjustment Lines"
                 field("Employment Type"; Rec."Employment Type")
                 {
                     ToolTip = 'Specifies the value of the Employment Type field';
+                }
+                field("Header No."; "Header No.")
+                {
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Employee Name field';
                 }
             }
         }

@@ -30,6 +30,11 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
             {
                 ApplicationArea = All;
             }
+            field("Base Calendar"; "Base Calendar")
+            {
+                ApplicationArea = All;
+
+            }
         }
         addafter(Gender)
         {
@@ -45,9 +50,24 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
             Editable = false;
             ApplicationArea = All;
         }
+        addafter(general)
+        {
+            part(LeaveStatistics; "Leave Statistics Factbox")
+            {
+                Caption = 'Leave Statistics';
+                SubPageLink = "No." = field("No.");
+                ///SubPageLink = "No." = field("Employee No");
+
+            }
+
+        }
+
+
     }
+
     actions
     {
+
         addafter(Attachments)
         {
             action("Employee Card")
@@ -57,6 +77,16 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                 Promoted = true;
                 PromotedIsBig = true;
                 RunObject = Page "HR Employee Card";
+                RunPageLink = "No." = FIELD("No.");
+            }
+            action("Employee Leaves")
+            {
+                ApplicationArea = All;
+                Caption = 'Employee Leaves';
+                Image = Alerts;
+                Promoted = true;
+                PromotedCategory = Process;
+                RunObject = Page "Employee Leaves Card";
                 RunPageLink = "No." = FIELD("No.");
             }
             action("Payroll Information")
@@ -108,6 +138,10 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
             }
         }
     }
+
+
+
+
     var
         myInt: Integer;
 }

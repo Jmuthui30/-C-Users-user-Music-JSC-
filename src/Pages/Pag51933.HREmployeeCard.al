@@ -108,23 +108,27 @@ page 51933 "HR Employee Card"
                     Importance = Additional;
                     ToolTip = 'Specifies whether to limit access to data for the data subject during daily operations. This is useful, for example, when protecting data from changes while it is under privacy review.';
                 }
-                    field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code")
-            {
-                ApplicationArea = All;
-            }
-            field("Global Dimension 2 Code"; Rec."Global Dimension 1 Code")
-            {
-                ApplicationArea = All;
-            }
-            
-            field("User ID"; "User ID")
-            {
-                ApplicationArea = all;
-            }
-            field("Imprest Account"; "Imprest Account")
-            {
-                ApplicationArea = all;
-            }
+                field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code")
+                {
+                    ApplicationArea = All;
+                }
+                field("Global Dimension 2 Code"; Rec."Global Dimension 1 Code")
+                {
+                    ApplicationArea = All;
+                }
+
+                field("User ID"; "User ID")
+                {
+                    ApplicationArea = all;
+                }
+                field("Imprest Account"; "Imprest Account")
+                {
+                    ApplicationArea = all;
+                }
+                field("Base Calendar"; "Base Calendar")
+                {
+                    ApplicationArea = all;
+                }
             }
             group("Important Dates")
             {
@@ -164,12 +168,12 @@ page 51933 "HR Employee Card"
 
                     trigger OnValidate()
                     begin
-                        if(Rec."Birth Date" <> 0D)then begin
-                            if Emp."Has Special Needs" = false then D:=CalcDate('<+60Y>', Rec."Birth Date");
-                            RetirementDate:=Format(D);
-                            If(Rec."Birth Date" <> 0D)then begin
-                                if Emp."Has Special Needs" = true then D:=CalcDate('<+65Y>', Rec."Birth Date");
-                                RetirementDate:=Format(D);
+                        if (Rec."Birth Date" <> 0D) then begin
+                            if Emp."Has Special Needs" = false then D := CalcDate('<+60Y>', Rec."Birth Date");
+                            RetirementDate := Format(D);
+                            If (Rec."Birth Date" <> 0D) then begin
+                                if Emp."Has Special Needs" = true then D := CalcDate('<+65Y>', Rec."Birth Date");
+                                RetirementDate := Format(D);
                             end;
                         end;
                     end;
@@ -230,7 +234,7 @@ page 51933 "HR Employee Card"
 
                         trigger OnValidate()
                         begin
-                            IsCountyVisible:=FormatAddress.UseCounty(Rec."Country/Region Code");
+                            IsCountyVisible := FormatAddress.UseCounty(Rec."Country/Region Code");
                         end;
                     }
                     field(ShowMap; ShowMapLbl)
@@ -425,13 +429,13 @@ page 51933 "HR Employee Card"
             part(Control3; "Employee Picture")
             {
                 ApplicationArea = BasicHR;
-                SubPageLink = "No."=FIELD("No.");
+                SubPageLink = "No." = FIELD("No.");
             }
             part("Attached Documents"; "Document Attachment Factbox")
             {
                 ApplicationArea = All;
                 Caption = 'Attachments';
-                SubPageLink = "Table ID"=CONST(5200), "No."=FIELD("No.");
+                SubPageLink = "Table ID" = CONST(5200), "No." = FIELD("No.");
             }
             systempart(Control1900383207; Links)
             {
@@ -456,7 +460,7 @@ page 51933 "HR Employee Card"
                 Promoted = true;
                 PromotedIsBig = true;
                 RunObject = Page "HR Employee Card";
-                RunPageLink = "No."=FIELD("No.");
+                RunPageLink = "No." = FIELD("No.");
             }
             action("Payroll Information")
             {
@@ -467,7 +471,7 @@ page 51933 "HR Employee Card"
                 PromotedIsBig = true;
                 //RunObject = Page "Payroll Infromation";
                 RunObject = Page "Client Payroll Infromation";
-                RunPageLink = "No."=FIELD("No.");
+                RunPageLink = "No." = FIELD("No.");
             }
             action("Admin Infromation")
             {
@@ -477,7 +481,7 @@ page 51933 "HR Employee Card"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 RunObject = Page "Admin Infromation";
-                RunPageLink = "No."=FIELD("No.");
+                RunPageLink = "No." = FIELD("No.");
             }
             action("Separation Infromation")
             {
@@ -487,7 +491,7 @@ page 51933 "HR Employee Card"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 RunObject = Page "Exit Information";
-                RunPageLink = "No."=FIELD("No.");
+                RunPageLink = "No." = FIELD("No.");
             }
         }
         area(navigation)
@@ -503,7 +507,7 @@ page 51933 "HR Employee Card"
                     Caption = 'Co&mments';
                     Image = ViewComments;
                     RunObject = Page "Human Resource Comment Sheet";
-                    RunPageLink = "Table Name"=CONST(Employee), "No."=FIELD("No.");
+                    RunPageLink = "Table Name" = CONST(Employee), "No." = FIELD("No.");
                     ToolTip = 'View or add comments for the record.';
                 }
                 action(Dimensions)
@@ -512,7 +516,7 @@ page 51933 "HR Employee Card"
                     Caption = 'Dimensions';
                     Image = Dimensions;
                     RunObject = Page "Default Dimensions";
-                    RunPageLink = "Table ID"=CONST(5200), "No."=FIELD("No.");
+                    RunPageLink = "Table ID" = CONST(5200), "No." = FIELD("No.");
                     ShortCutKey = 'Shift+Ctrl+D';
                     ToolTip = 'View or edit dimensions, such as area, project, or department, that you can assign to sales and purchase documents to distribute costs and analyze transaction history.';
                 }
@@ -522,7 +526,7 @@ page 51933 "HR Employee Card"
                     Caption = '&Picture';
                     Image = Picture;
                     RunObject = Page "Employee Picture";
-                    RunPageLink = "No."=FIELD("No.");
+                    RunPageLink = "No." = FIELD("No.");
                     ToolTip = 'View or add a picture of the employee or, for example, the company''s logo.';
                 }
                 action(AlternativeAddresses)
@@ -531,7 +535,7 @@ page 51933 "HR Employee Card"
                     Caption = '&Alternate Addresses';
                     Image = Addresses;
                     RunObject = Page "Alternative Address List";
-                    RunPageLink = "Employee No."=FIELD("No.");
+                    RunPageLink = "Employee No." = FIELD("No.");
                     ToolTip = 'Open the list of addresses that are registered for the employee.';
                 }
                 action("&Relatives")
@@ -540,7 +544,7 @@ page 51933 "HR Employee Card"
                     Caption = '&Relatives';
                     Image = Relatives;
                     RunObject = Page "Employee Relatives";
-                    RunPageLink = "Employee No."=FIELD("No.");
+                    RunPageLink = "Employee No." = FIELD("No.");
                     ToolTip = 'Open the list of relatives that are registered for the employee.';
                 }
                 action("Mi&sc. Article Information")
@@ -549,7 +553,7 @@ page 51933 "HR Employee Card"
                     Caption = 'Mi&sc. Article Information';
                     Image = Filed;
                     RunObject = Page "Misc. Article Information";
-                    RunPageLink = "Employee No."=FIELD("No.");
+                    RunPageLink = "Employee No." = FIELD("No.");
                     ToolTip = 'Open the list of miscellaneous articles that are registered for the employee.';
                 }
                 action("&Confidential Information")
@@ -558,7 +562,7 @@ page 51933 "HR Employee Card"
                     Caption = '&Confidential Information';
                     Image = Lock;
                     RunObject = Page "Confidential Information";
-                    RunPageLink = "Employee No."=FIELD("No.");
+                    RunPageLink = "Employee No." = FIELD("No.");
                     ToolTip = 'Open the list of any confidential information that is registered for the employee.';
                 }
                 action("Q&ualifications")
@@ -567,7 +571,7 @@ page 51933 "HR Employee Card"
                     Caption = 'Q&ualifications';
                     Image = Certificate;
                     RunObject = Page "Employee Qualifications";
-                    RunPageLink = "Employee No."=FIELD("No.");
+                    RunPageLink = "Employee No." = FIELD("No.");
                     ToolTip = 'Open the list of qualifications that are registered for the employee.';
                 }
                 action("A&bsences")
@@ -576,7 +580,7 @@ page 51933 "HR Employee Card"
                     Caption = 'A&bsences';
                     Image = Absence;
                     RunObject = Page "Employee Absences";
-                    RunPageLink = "Employee No."=FIELD("No.");
+                    RunPageLink = "Employee No." = FIELD("No.");
                     ToolTip = 'View absence information for the employee.';
                 }
                 separator(Separator23)
@@ -588,7 +592,7 @@ page 51933 "HR Employee Card"
                     Caption = 'Absences by Ca&tegories';
                     Image = AbsenceCategory;
                     RunObject = Page "Empl. Absences by Categories";
-                    RunPageLink = "No."=FIELD("No."), "Employee No. Filter"=FIELD("No.");
+                    RunPageLink = "No." = FIELD("No."), "Employee No. Filter" = FIELD("No.");
                     ToolTip = 'View categorized absence information for the employee.';
                 }
                 action("Misc. Articles &Overview")
@@ -618,8 +622,8 @@ page 51933 "HR Employee Card"
                     Promoted = true;
                     PromotedCategory = Process;
                     RunObject = Page "Employee Ledger Entries";
-                    RunPageLink = "Employee No."=FIELD("No.");
-                    RunPageView = SORTING("Employee No.")ORDER(Descending);
+                    RunPageLink = "Employee No." = FIELD("No.");
+                    RunPageView = SORTING("Employee No.") ORDER(Descending);
                     ShortCutKey = 'Ctrl+F7';
                     ToolTip = 'View the history of transactions that have been posted for the selected record.';
                 }
@@ -653,7 +657,7 @@ page 51933 "HR Employee Card"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     RunObject = Page "Employee Ledger Entries";
-                    RunPageLink = "Employee No."=FIELD("No."), "Remaining Amount"=FILTER(<0), "Applies-to ID"=FILTER('');
+                    RunPageLink = "Employee No." = FIELD("No."), "Remaining Amount" = FILTER(< 0), "Applies-to ID" = FILTER('');
                     ToolTip = 'View employee ledger entries for the record with remaining amount that have not been paid yet.';
                 }
             }
@@ -667,7 +671,7 @@ page 51933 "HR Employee Card"
                     Promoted = true;
                     PromotedCategory = Process;
                     RunObject = Page "Employee Leaves Card";
-                    RunPageLink = "No."=FIELD("No.");
+                    RunPageLink = "No." = FIELD("No.");
                 }
                 action("Absence Registration")
                 {
@@ -688,7 +692,7 @@ page 51933 "HR Employee Card"
                     Promoted = true;
                     PromotedCategory = Process;
                     RunObject = Page "Employee Displine Card";
-                    RunPageLink = "No."=FIELD("No.");
+                    RunPageLink = "No." = FIELD("No.");
                 }
                 action("Employee Next Of Kin")
                 {
@@ -698,7 +702,7 @@ page 51933 "HR Employee Card"
                     Promoted = true;
                     PromotedCategory = Process;
                     RunObject = Page "Employee Kins Card";
-                    RunPageLink = "No."=FIELD("No.");
+                    RunPageLink = "No." = FIELD("No.");
                 }
                 action("Employee Dependants")
                 {
@@ -708,7 +712,7 @@ page 51933 "HR Employee Card"
                     Promoted = true;
                     PromotedCategory = Process;
                     RunObject = Page "Employee Dependants Card";
-                    RunPageLink = "No."=FIELD("No.");
+                    RunPageLink = "No." = FIELD("No.");
                 }
                 action("Employee Qualifications")
                 {
@@ -718,7 +722,7 @@ page 51933 "HR Employee Card"
                     Promoted = true;
                     PromotedCategory = Process;
                     RunObject = Page "Employee Qualification Card";
-                    RunPageLink = "No."=FIELD("No.");
+                    RunPageLink = "No." = FIELD("No.");
                 }
                 action("Promotion History")
                 {
@@ -728,7 +732,7 @@ page 51933 "HR Employee Card"
                     Promoted = true;
                     PromotedCategory = Process;
                     RunObject = Page "Emp Promotion History Card";
-                    RunPageLink = "No."=FIELD("No.");
+                    RunPageLink = "No." = FIELD("No.");
                 }
                 action("Employment History")
                 {
@@ -738,7 +742,7 @@ page 51933 "HR Employee Card"
                     Promoted = true;
                     PromotedCategory = Process;
                     RunObject = Page "Employment History Card";
-                    RunPageLink = "No."=FIELD("No.");
+                    RunPageLink = "No." = FIELD("No.");
                 }
                 action("Succession Planning")
                 {
@@ -748,7 +752,7 @@ page 51933 "HR Employee Card"
                     Promoted = true;
                     PromotedCategory = Process;
                     RunObject = Page "Emp Succession Planning Card";
-                    RunPageLink = "No."=FIELD("No.");
+                    RunPageLink = "No." = FIELD("No.");
                 }
                 action("Career Planning")
                 {
@@ -758,7 +762,7 @@ page 51933 "HR Employee Card"
                     Promoted = true;
                     PromotedCategory = Process;
                     RunObject = Page "Employee Career Plan Card";
-                    RunPageLink = "No."=FIELD("No.");
+                    RunPageLink = "No." = FIELD("No.");
                 }
                 action(Separation)
                 {
@@ -768,87 +772,92 @@ page 51933 "HR Employee Card"
                     Promoted = true;
                     PromotedCategory = Process;
                     RunObject = Page "Employee Separation Card";
-                    RunPageLink = "No."=FIELD("No.");
+                    RunPageLink = "No." = FIELD("No.");
                 }
             }
         }
     }
     trigger OnAfterGetRecord()
     begin
-        Age:='';
-        LengthOfService:='';
-        RetirementDate:='';
+        Age := '';
+        LengthOfService := '';
+        RetirementDate := '';
         //Recalculate Important Dates
-        if(Rec."Termination Date" = 0D)then begin
-            if(Rec."Birth Date" <> 0D)then Age:=Dates.DetermineAge(Rec."Birth Date", Today);
-            if(Rec."Employment Date" <> 0D)then LengthOfService:=Dates.DetermineAge(Rec."Employment Date", Today);
-            if(Rec."Birth Date" <> 0D)then begin
-                if Emp."Has Special Needs" = false then D:=CalcDate('<+60Y>', Rec."Birth Date");
-                RetirementDate:=Format(D);
-                If(Rec."Birth Date" <> 0D)then begin
-                    if Emp."Has Special Needs" = true then D:=CalcDate('<+65Y>', Rec."Birth Date");
-                    RetirementDate:=Format(D);
+        if (Rec."Termination Date" = 0D) then begin
+            if (Rec."Birth Date" <> 0D) then Age := Dates.DetermineAge(Rec."Birth Date", Today);
+            if (Rec."Employment Date" <> 0D) then LengthOfService := Dates.DetermineAge(Rec."Employment Date", Today);
+            if (Rec."Birth Date" <> 0D) then begin
+                if Emp."Has Special Needs" = false then D := CalcDate('<+60Y>', Rec."Birth Date");
+                RetirementDate := Format(D);
+                If (Rec."Birth Date" <> 0D) then begin
+                    if Emp."Has Special Needs" = true then D := CalcDate('<+65Y>', Rec."Birth Date");
+                    RetirementDate := Format(D);
                 end;
             end;
         end;
     end;
+
     trigger OnOpenPage()
     begin
         SetNoFieldVisible;
-        IsCountyVisible:=FormatAddress.UseCounty(Rec."Country/Region Code");
-        Age:='';
-        LengthOfService:='';
-        RetirementDate:='';
+        IsCountyVisible := FormatAddress.UseCounty(Rec."Country/Region Code");
+        Age := '';
+        LengthOfService := '';
+        RetirementDate := '';
         //Recalculate Important Dates
-        if(Rec."Termination Date" = 0D)then begin
-            if(Rec."Birth Date" <> 0D)then Age:=Dates.DetermineAge(Rec."Birth Date", Today);
-            if(Rec."Employment Date" <> 0D)then LengthOfService:=Dates.DetermineAge(Rec."Employment Date", Today);
-            if(Rec."Birth Date" <> 0D)then begin
-                if Emp."Has Special Needs" = false then D:=CalcDate('<+60Y>', Rec."Birth Date");
-                RetirementDate:=Format(D);
-                If(Rec."Birth Date" <> 0D)then begin
-                    if Emp."Has Special Needs" = true then D:=CalcDate('<+65Y>', Rec."Birth Date");
-                    RetirementDate:=Format(D);
+        if (Rec."Termination Date" = 0D) then begin
+            if (Rec."Birth Date" <> 0D) then Age := Dates.DetermineAge(Rec."Birth Date", Today);
+            if (Rec."Employment Date" <> 0D) then LengthOfService := Dates.DetermineAge(Rec."Employment Date", Today);
+            if (Rec."Birth Date" <> 0D) then begin
+                if Emp."Has Special Needs" = false then D := CalcDate('<+60Y>', Rec."Birth Date");
+                RetirementDate := Format(D);
+                If (Rec."Birth Date" <> 0D) then begin
+                    if Emp."Has Special Needs" = true then D := CalcDate('<+65Y>', Rec."Birth Date");
+                    RetirementDate := Format(D);
                 end;
             end;
         end;
     end;
+
     trigger OnClosePage()
     begin
         SetNoFieldVisible;
-        IsCountyVisible:=FormatAddress.UseCounty(Rec."Country/Region Code");
-        Age:='';
-        LengthOfService:='';
-        RetirementDate:='';
+        IsCountyVisible := FormatAddress.UseCounty(Rec."Country/Region Code");
+        Age := '';
+        LengthOfService := '';
+        RetirementDate := '';
         //Recalculate Important Dates
-        if(Rec."Termination Date" = 0D)then begin
-            if(Rec."Birth Date" <> 0D)then Age:=Dates.DetermineAge(Rec."Birth Date", Today);
-            if(Rec."Employment Date" <> 0D)then LengthOfService:=Dates.DetermineAge(Rec."Employment Date", Today);
-            if(Rec."Birth Date" <> 0D)then begin
-                if Emp."Has Special Needs" = false then D:=CalcDate('<+60Y>', Rec."Birth Date");
-                RetirementDate:=Format(D);
-                If(Rec."Birth Date" <> 0D)then begin
-                    if Emp."Has Special Needs" = true then D:=CalcDate('<+65Y>', Rec."Birth Date");
-                    RetirementDate:=Format(D);
+        if (Rec."Termination Date" = 0D) then begin
+            if (Rec."Birth Date" <> 0D) then Age := Dates.DetermineAge(Rec."Birth Date", Today);
+            if (Rec."Employment Date" <> 0D) then LengthOfService := Dates.DetermineAge(Rec."Employment Date", Today);
+            if (Rec."Birth Date" <> 0D) then begin
+                if Emp."Has Special Needs" = false then D := CalcDate('<+60Y>', Rec."Birth Date");
+                RetirementDate := Format(D);
+                If (Rec."Birth Date" <> 0D) then begin
+                    if Emp."Has Special Needs" = true then D := CalcDate('<+65Y>', Rec."Birth Date");
+                    RetirementDate := Format(D);
                 end;
             end;
         end;
     end;
-    var ShowMapLbl: Label 'Show on Map';
-    FormatAddress: Codeunit 365;
-    NoFieldVisible: Boolean;
-    IsCountyVisible: Boolean;
-    Dates: Codeunit "HR Dates";
-    Age: Text[100];
-    LengthOfService: Text[100];
-    RetirementDate: Text[100];
-    D: Date;
-    EmployeeMaster: Record "Client Employee Master";
-    Emp: Record Employee;
+
+    var
+        ShowMapLbl: Label 'Show on Map';
+        FormatAddress: Codeunit 365;
+        NoFieldVisible: Boolean;
+        IsCountyVisible: Boolean;
+        Dates: Codeunit "HR Dates";
+        Age: Text[100];
+        LengthOfService: Text[100];
+        RetirementDate: Text[100];
+        D: Date;
+        EmployeeMaster: Record "Client Employee Master";
+        Emp: Record Employee;
+
     local procedure SetNoFieldVisible()
     var
         DocumentNoVisibility: Codeunit DocumentNoVisibility;
     begin
-        NoFieldVisible:=DocumentNoVisibility.EmployeeNoIsVisible;
+        NoFieldVisible := DocumentNoVisibility.EmployeeNoIsVisible;
     end;
 }

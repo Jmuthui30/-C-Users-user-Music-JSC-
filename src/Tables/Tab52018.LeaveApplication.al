@@ -107,11 +107,11 @@ table 52018 "Leave Application"
                 if GuiAllowed then begin
                     if "Days Applied" > "Leave Earned to Date" then
                         //    Error(LeaveEarnedToDateErr, "Leave Earned to Date");
-                        Message(LeaveEarnedToDateErr, "Leave Earned to Date");
+                        // Message(LeaveEarnedToDateErr, "Leave Earned to Date");
 
 
-                    if "Days Applied" > "Leave Balance" then
-                        Error(Error008);
+                        if "Days Applied" > "Leave Balance" then
+                            Error(Error008);
                 end;
 
                 Validate("Start Date");
@@ -140,10 +140,10 @@ table 52018 "Leave Application"
                 LeaveLedger.SetRange(Closed, false);
                 if LeaveLedger.FindLast() then
                     if (LeaveLedger."Leave End Date" > "Start Date") and (LeaveLedger."Leave Start Date" < "Start Date") then
-                        Error('You have a running %1 leave ending on %2', LeaveLedger."Leave Type", LeaveLedger."Leave End Date");
+                        // Error('You have a running %1 leave ending on %2', LeaveLedger."Leave Type", LeaveLedger."Leave End Date");
 
-                if xRec.Status <> Status::Open then
-                    Error('You cannot change a document an approved document');
+                        if xRec.Status <> Status::Open then
+                            Error('You cannot change a document an approved document');
 
                 HumanResSetup.Get();
                 // HumanResSetup.TestField(HumanResSetup."Default Base Calendar");
@@ -151,18 +151,19 @@ table 52018 "Leave Application"
                 //Get employee base calendar
                 EmployeeRec.Get("Employee No");
                 if EmployeeRec."Base Calendar" <> '' then
-                    BaseCalenderCode := EmployeeRec."Base Calendar"
-                else
-                    //BaseCalenderCode := HumanResSetup."Default Base Calendar";
+                    BaseCalenderCode := EmployeeRec."Base Calendar";
+                // else
+                //     BaseCalenderCode := HumanResSetup."Base Calender Code";
 
                 NoOfWorkingDays := 0;
                 if "Days Applied" <> 0 then
                     if "Start Date" <> 0D then begin
                         NextWorkingDate := "Start Date";
                         repeat
-                            // if not HRmgt.CheckNonWorkingDay(BaseCalenderCode, NextWorkingDate, Description) then
-                            NoOfWorkingDays := NoOfWorkingDays + 1;
+                            if not HRmgt.CheckNonWorkingDay(BaseCalenderCode, NextWorkingDate, Description) then
+                                NoOfWorkingDays := NoOfWorkingDays + 1;
 
+                            // Message(' NoOfWorkingDays is %1..NextWorkingDate%2', NoOfWorkingDays, NextWorkingDate);
                             if LeaveTypes.Get("Leave Code") then begin
                                 if LeaveTypes."Inclusive of Holidays" then begin
                                     BaseCalendar.Reset();
@@ -201,9 +202,10 @@ table 52018 "Leave Application"
 
                             NextWorkingDate := CalcDate('1D', NextWorkingDate);
                         until NoOfWorkingDays = "Days Applied";
-                        Message('enddate is %1', NextWorkingDate);
+
                         "End Date" := NextWorkingDate - 1;
                         "Resumption Date" := NextWorkingDate;
+                        Message('enddate is %1', "Resumption Date");
                     end;
 
                 //check if the date that the person is supposed to report back is a working day or not
@@ -234,8 +236,8 @@ table 52018 "Leave Application"
                         until Nextmonth >= "Start Date";
                         NoofMonthsWorked := NoofMonthsWorked - 1;
                         "No. of Months Worked" := NoofMonthsWorked;
-                        Message('HERE');
-                        Message('day is %1..#  noofmonth is %2', LeaveTypes.Days, NoofMonthsWorked);
+                        // Message('HERE');
+                        //  Message('day is %1..#  noofmonth is %2', LeaveTypes.Days, NoofMonthsWorked);
                         if LeaveTypes.Get("Leave Code") then
                             "Leave Earned to Date" := 30;// Round(((LeaveTypes.Days / 12) * NoofMonthsWorked), 1, '<');
                         //"Leave Entitlment" := "Leave Earned to Date";

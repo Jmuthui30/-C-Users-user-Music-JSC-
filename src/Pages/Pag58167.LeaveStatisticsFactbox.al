@@ -38,11 +38,7 @@ page 58167 "Leave Statistics Factbox"
                     ToolTip = 'Specifies the value of the Recalled Days field.';
                     Caption = 'Recalled Days';
                 }
-                //field("Days Absent"; Rec."Days Absent")
-                // {
-                //     ToolTip = 'Specifies the value of the Days Absent field.';
-                //     Caption = 'Days Absent';
-                // }
+
                 field("Balance brought forward"; Rec."Leave Balance Brought Forward")
                 {
                     ToolTip = 'Specifies the value of the Balance brought forward field.';
