@@ -78,21 +78,23 @@ page 58059 "Leave Adjustment Header"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
+                RunObject = Report "Batch Allocation";
                 ToolTip = 'Executes the Post action';
                 Caption = 'Batch Allocation';
+                // RunPageLink = "Leave Adjustment Header" = field(Code);
 
-                trigger OnAction()
-                begin
-                    Rec.TestField(Posted, false);
-                    Rec.TestField(Status, Rec.Status::Released);
-                    if Confirm(Text001, false) then
-                        //  HRMgnt.LeaveAdjustment(Rec.Code);
-                        Message('succefully Uploaded');
-                    CurrPage.Close();
+                // trigger OnAction()
+                // begin
+                //     Rec.TestField(Posted, false);
+                //     Rec.TestField(Status, Rec.Status::Released);
+                //     if Confirm(Text001, false) then
+                //         //  HRMgnt.LeaveAdjustment(Rec.Code);
+                //         Message('succefully Uploaded');
+                //     CurrPage.Close();
 
 
 
-                end;
+                // end;
             }
             action(Post)
             {

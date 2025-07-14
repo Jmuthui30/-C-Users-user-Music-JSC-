@@ -64,8 +64,8 @@ End Function
   <DataSets>
     <DataSet Name="DataSet_Result">
       <Fields>
-        <Field Name="Leave_Adjustments_No_">
-          <DataField>Leave_Adjustments_No_</DataField>
+        <Field Name="Code">
+          <DataField>Code</DataField>
         </Field>
       </Fields>
       <Query>
