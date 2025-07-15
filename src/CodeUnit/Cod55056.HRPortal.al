@@ -346,8 +346,6 @@ codeunit 55056 HRPortal
         end else begin
             status := 'danger*An error occured while submitting your Reliever Line';
         end;
-
-
     end;
 
     procedure DeleteLeaveReleiver(ApplicationNo: Code[50]; Reliever: Code[30]) status: Text
@@ -1356,7 +1354,7 @@ codeunit 55056 HRPortal
         PortalUploads.LocalUrl := Url;
         PortalUploads.Uploaded := TRUE;
         PortalUploads.Fetch_To_Sharepoint := TRUE;
-        PortalUploads.Base_URL := 'https://jscgoke.sharepoint.com/sites/ERP/ERP%20Documents/FAWE' + '/' + Type + '/';
+        PortalUploads.Base_URL := 'https://jscgoke.sharepoint.com/sites/jscportals/ERP%20Documents/JSC' + '/' + Type + '/';
         if PortalUploads.Insert(true) then begin
             status := 'success*Portal document has been created succesfully*' + Format(PortalUploads."Entry No");
         end else begin
