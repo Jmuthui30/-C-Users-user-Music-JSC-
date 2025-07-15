@@ -15,8 +15,10 @@ report 53099 "Batch Allocation"
 
             trigger OnAfterGetRecord()
             begin
+
                 Init();
                 leaveAdjustmentLine."Header No." := Code;
+
                 leaveAdjustmentLine."Staff No." := Employee."No.";
                 leaveAdjustmentLine."Employee Name" := Employee.Name;
                 leaveAdjustmentLine."Leave Period" := LeavePeriod;

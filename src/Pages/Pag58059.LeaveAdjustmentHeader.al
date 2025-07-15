@@ -88,12 +88,8 @@ page 58059 "Leave Adjustment Header"
                     leaveAdjustmentHeader.SetRange(Code, Rec.Code);
                     if not leaveAdjustmentHeader.FindFirst() then
                         report.Run(53099, true, false, leaveAdjustmentHeader);
-
                     Message('succefully Uploaded');
                     CurrPage.Close();
-
-
-
                 end;
             }
             action(Post)
