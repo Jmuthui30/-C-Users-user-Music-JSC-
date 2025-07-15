@@ -423,6 +423,38 @@ page 51933 "HR Employee Card"
                     ToolTip = 'Specifies the employment status of the employee.';
                 }
             }
+            group("Previous Employment")
+            {
+                Caption = 'Previous Employment';
+
+                field(lastEmployer; Rec."Last Employer")
+                {
+                    ApplicationArea = BasicHR;
+                    ToolTip = 'Specifies the name of the employee''s last employer.';
+                }
+                field("Last Employer Contact"; "Last Employer Contact")
+                {
+                    ApplicationArea = BasicHR;
+                    ToolTip = 'Specifies the date when the employee last worked for the company.';
+                }
+                field("Last Position Held"; "Last Position Held")
+                {
+                    ApplicationArea = BasicHR;
+                    ToolTip = 'Specifies the position that the employee held at the last employment.';
+                }
+                field("Last Date Salary"; "Last Date Salary")
+                {
+                    ApplicationArea = BasicHR;
+                    ToolTip = 'Specifies the date when the employee last received a salary from the last employer.';
+                }
+
+                field("Last joining Date"; "Last joining Date")
+                {
+                    ApplicationArea = BasicHR;
+                    ToolTip = 'Specifies the date when the employee last joined the company.';
+                }
+
+            }
         }
         area(factboxes)
         {

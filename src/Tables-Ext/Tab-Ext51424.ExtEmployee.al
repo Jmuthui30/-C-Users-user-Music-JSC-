@@ -1164,6 +1164,49 @@ tableextension 51424 "ExtEmployee" extends "Employee"
                 end;
             end;
         }
+        field(52333; "Last Date Salary"; Date)
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Previous Date Salary';
+        }
+
+        field(52334; "Last Position Held"; Text[100])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Previous Position Held';
+        }
+        field(52335; "Last Employer"; Code[30])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Previous Employer';
+        }
+        field(52336; "Last Employer Contact"; Code[30])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Previous Employer Contact';
+        }
+        field(52337; "Last Employer Email"; Code[80])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Previous Employer Email';
+        }
+        field(52338; "Last Employer Address"; Text[250])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Previous Employer Address';
+        }
+        field(52339; "Last joining Date"; Date)
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Previous Joining Date';
+        }
+        field(52340; "Salary Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Previous Salary Amount';
+        }
+
+
     }
 
     trigger OnInsert()

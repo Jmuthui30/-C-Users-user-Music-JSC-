@@ -56,18 +56,20 @@ codeunit 52004 "Workflow Responses HR"
     var
         Leave: Record "Leave Application";
     begin
-        Leave.Reset();
-        Leave.SetRange("Application No", LeaveReq."Application No");
-        if Leave.FindFirst() then begin
-            Leave.Status := Leave.Status::Open;
+        // Leave.Reset();
+        // Leave.SetRange("Application No", LeaveReq."Application No");
+        // if Leave.FindFirst() then begin
+
+        //     Leave.Status := Leave.Status::Open;
+        //     Leave.Modify(true);
+        // end;
+
+        if leave.Get(LeaveReq."Application No") then begin
+            Leave."Status" := Leave."Status"::Open;
+
             Leave.Modify(true);
         end;
     end;
-
-
-
-
-
 
 
 

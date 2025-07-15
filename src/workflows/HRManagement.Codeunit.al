@@ -997,11 +997,11 @@ codeunit 52001 "HR Management"
     begin
         Employee.Reset();
         if Employee.Get(Leave."Employee No") then begin
-            Employee.TestField("E-Mail");
+            Employee.TestField("Company E-Mail");
             Clear(Receipient);
             CompanyInfo.Get();
             CompanyInfo.TestField(Name);
-            Receipient.Add(Employee."E-Mail");
+            Receipient.Add(Employee."Company E-Mail");
             Subject := 'Leave Recall';
             TimeNow := Format(Time);
             FormattedBody := StrSubstNo(RecallMsg, (Employee."First Name" + ' ' + Employee."Last Name"),

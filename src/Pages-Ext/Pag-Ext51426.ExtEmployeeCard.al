@@ -35,6 +35,10 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                 ApplicationArea = All;
 
             }
+            field("E-Mail Employee"; "E-Mail")
+            {
+                ApplicationArea = All;
+            }
         }
         addafter(Gender)
         {
