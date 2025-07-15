@@ -28,7 +28,7 @@ codeunit 52005 "Approval Mgt HR Ext"
             Database::"Leave Application":
                 begin
                     RecRef.SetTable(LeaveRequest);
-                    // ApprovalEntryArgument."Document Type" := ApprovalEntryArgument."Document Type"::;
+                    ApprovalEntryArgument."Document Type" := ApprovalEntryArgument."Document Type"::LeaveApplication;
                     ApprovalEntryArgument."Document No." := LeaveRequest."Application No";
                     ApprovalEntryArgument."Salespers./Purch. Code" := '';
                 end;

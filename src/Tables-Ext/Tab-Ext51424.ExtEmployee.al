@@ -223,6 +223,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
         }
         field(52016; "Leave Period Filter"; Code[20])
         {
+            // TableRelation = "Leave Period"."Leave Period Code";
             TableRelation = "Leave Period"."Leave Period Code";
             Caption = 'Leave Period Filter';
             FieldClass = FlowFilter;
@@ -230,7 +231,8 @@ tableextension 51424 "ExtEmployee" extends "Employee"
         field(52017; "Leave Type Filter"; Code[20])
         {
             Caption = 'Leave Type Filter';
-            TableRelation = "Leave Type".Code;
+            // TableRelation = "Leave Type".Code;
+            TableRelation = "Leave Type".Code where(Status = const(Active));
             FieldClass = FlowFilter;
         }
         field(52018; Signature; MediaSet)
@@ -963,6 +965,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
             Editable = false;
             Description = 'With Flowfilters';
             CalcFormula = sum("HR Leave Ledger Entries"."No. of days" where("Staff No." = field("No."),
+            Closed = FILTER(false),
                                                                             "Leave Period Code" = field("Leave Period Filter"),
                                                                             "Leave Type" = field("Leave Type Filter")));
             Caption = 'Leave Balance';
@@ -998,6 +1001,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
             Editable = false;
             Description = 'With Flowfilters';
             CalcFormula = - sum("HR Leave Ledger Entries"."No. of days" where("Staff No." = field("No."),
+             Closed = FILTER(false),
                                                                             "Leave Period Code" = field("Leave Period Filter"),
                                                                             "Leave Type" = field("Leave Type Filter"),
                                                                             "Leave Entry Type" = const(Negative)));
@@ -1024,6 +1028,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
         {
             //CalcFormula = lookup("Leave Type".Days where(Code = field("Leave Type Filter")));
             CalcFormula = sum("HR Leave Ledger Entries"."No. of days" where("Staff No." = field("No."),
+             Closed = FILTER(false),
                                                                             "Transaction Type" = filter("Leave Allocation"),
                                                                             "Leave Type" = field("Leave Type Filter"),
                                                                             "Leave Period Code" = field("Leave Period Filter")));

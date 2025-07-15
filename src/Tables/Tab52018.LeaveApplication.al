@@ -2,6 +2,8 @@ table 52018 "Leave Application"
 {
     DataClassification = CustomerContent;
     Caption = 'Leave Application';
+    LookupPageId = "Leave Application List";
+    DrillDownPageId = "Leave Application List";
     fields
     {
         field(1; "Employee No"; Code[20])
