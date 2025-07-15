@@ -442,8 +442,8 @@ tableextension 51424 "ExtEmployee" extends "Employee"
         field(52058; "Ethnic Origin"; Option)
         {
             DataClassification = CustomerContent;
-            OptionCaption = 'African,Indian,White,Coloured';
-            OptionMembers = African,Indian,White,Coloured;
+            OptionCaption = ' ,African,Indian,White,Coloured';
+            OptionMembers = " ",African,Indian,White,Coloured;
             Caption = 'Ethnic Origin';
         }
         field(52059; "First Language (R/W/S)"; Code[20])
@@ -1204,6 +1204,10 @@ tableextension 51424 "ExtEmployee" extends "Employee"
         {
             DataClassification = CustomerContent;
             Caption = 'Previous Salary Amount';
+        }
+        field(52341; "Days to Retirement"; Text[250])
+        {
+            DataClassification = CustomerContent;
         }
 
 
