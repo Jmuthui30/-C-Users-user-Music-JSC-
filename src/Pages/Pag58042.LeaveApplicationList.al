@@ -61,6 +61,10 @@ page 58042 "Leave Application List"
                 {
                     ToolTip = 'Specifies the value of the Resumption Date field';
                 }
+                field("Leave Balance"; Rec."Leave Balance")
+                {
+                    ToolTip = 'Specifies the value of the Available Leave Balance field';
+                }
             }
         }
     }

@@ -128,7 +128,7 @@ codeunit 55056 HRPortal
                 HRPortalUsers."Last Modified Date" := Today;
                 HRPortalUsers.Insert(true);
             end;
-            SendEmailNotification(HRPortalUsers."Authentication Email", 'Password Reset', 'Your one time password is <strong>' + Format(password) + '</strong>');
+            SendEmailNotification(employeeEmail, 'Password Reset', 'Your one time password is <strong>' + Format(password) + '</strong>');
             status := 'success*We have sent a one time password to your email (' + employeeEmail + '). Use it to log in to your account';
         end;
     end;
