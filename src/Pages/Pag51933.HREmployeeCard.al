@@ -112,7 +112,7 @@ page 51933 "HR Employee Card"
                 {
                     ApplicationArea = All;
                 }
-                field("Global Dimension 2 Code"; Rec."Global Dimension 1 Code")
+                field("Global Dimension 2 Code"; Rec."Global Dimension 2 Code")
                 {
                     ApplicationArea = All;
                 }
@@ -129,6 +129,24 @@ page 51933 "HR Employee Card"
                 {
                     ApplicationArea = all;
                 }
+                field(Religion;Religion)
+                {
+                    ApplicationArea= All;
+                }
+                field("Ethnic Origin";"Ethnic Origin")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
+                }
+                field("Ethnic Name";"Ethnic Name")
+                {
+                    ApplicationArea = All;
+                }
+                field("Marital Status";"Marital Status")
+                {
+                    ApplicationArea = All;
+                }
+
             }
             group("Important Dates")
             {
@@ -137,6 +155,7 @@ page 51933 "HR Employee Card"
                 field("Birth Date"; Rec."Birth Date")
                 {
                     ApplicationArea = BasicHR;
+                    Caption = 'Date of Birth';
                     Importance = Promoted;
                     ShowMandatory = true;
                     NotBlank = true;
@@ -151,6 +170,7 @@ page 51933 "HR Employee Card"
                 field("Employment Date"; Rec."Employment Date")
                 {
                     ApplicationArea = BasicHR;
+                    Caption = 'Date of Appointment';
                     Importance = Promoted;
                     ToolTip = 'Specifies the date when the employee began to work for the company.';
                 }
@@ -160,7 +180,7 @@ page 51933 "HR Employee Card"
                     Caption = 'Length Of Service';
                     Editable = false;
                 }
-                field(RetirementDate; RetirementDate)
+                field("Retirement Date"; "Retirement Date")
                 {
                     ApplicationArea = All;
                     Caption = 'Retirement Date';
@@ -170,13 +190,18 @@ page 51933 "HR Employee Card"
                     begin
                         if (Rec."Birth Date" <> 0D) then begin
                             if Emp."Has Special Needs" = false then D := CalcDate('<+60Y>', Rec."Birth Date");
-                            RetirementDate := Format(D);
+                            "Retirement Date" := D;
                             If (Rec."Birth Date" <> 0D) then begin
                                 if Emp."Has Special Needs" = true then D := CalcDate('<+65Y>', Rec."Birth Date");
-                                RetirementDate := Format(D);
+                                "Retirement Date" := D;
                             end;
                         end;
                     end;
+                }
+                field("Days to Retirement"; "Days to Retirement")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
                 }
             }
             group("SuccessionPlanning")
@@ -716,6 +741,19 @@ page 51933 "HR Employee Card"
                     RunObject = Page "Absence Registration";
                     ToolTip = 'Register absence for the employee.';
                 }
+
+                action("Employee Assets")
+                {
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'Employee Assets';
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    PromotedIsBig = true;
+                    Image = FixedAssets;
+                    RunObject = page "Fixed Asset List";
+                    RunPageLink = "Responsible Employee" = field("No.");
+                }
+
                 action("Employee Disciplinary Cases")
                 {
                     ApplicationArea = All;
@@ -826,6 +864,16 @@ page 51933 "HR Employee Card"
                     RetirementDate := Format(D);
                 end;
             end;
+            "Employee Age" := Dates.DetermineAge(Rec."Birth Date", Today);
+            if (Rec."Birth Date" <> 0D) then begin
+                if Emp."Has Special Needs" = false then D := CalcDate('<+60Y>', Rec."Birth Date");
+                "Retirement Date" := D;
+                If (Rec."Birth Date" <> 0D) then begin
+                    if Emp."Has Special Needs" = true then D := CalcDate('<+65Y>', Rec."Birth Date");
+                    "Retirement Date" := D;
+                end;
+            end;
+            "Days to Retirement" := HRDates.DetermineDatesDiffrence(Today,"Retirement Date")
         end;
     end;
 
@@ -846,6 +894,15 @@ page 51933 "HR Employee Card"
                 If (Rec."Birth Date" <> 0D) then begin
                     if Emp."Has Special Needs" = true then D := CalcDate('<+65Y>', Rec."Birth Date");
                     RetirementDate := Format(D);
+                end;
+                "Employee Age" := Dates.DetermineAge(Rec."Birth Date", Today);
+                if (Rec."Birth Date" <> 0D) then begin
+                    if Emp."Has Special Needs" = false then D := CalcDate('<+60Y>', Rec."Birth Date");
+                    "Retirement Date" := D;
+                    If (Rec."Birth Date" <> 0D) then begin
+                        if Emp."Has Special Needs" = true then D := CalcDate('<+65Y>', Rec."Birth Date");
+                        "Retirement Date" := D;
+                    end;
                 end;
             end;
         end;
@@ -879,6 +936,7 @@ page 51933 "HR Employee Card"
         NoFieldVisible: Boolean;
         IsCountyVisible: Boolean;
         Dates: Codeunit "HR Dates";
+        HRDates: Codeunit "HR Dates Mgt";
         Age: Text[100];
         LengthOfService: Text[100];
         RetirementDate: Text[100];
