@@ -49,6 +49,10 @@ page 58042 "Leave Application List"
                 {
                     ToolTip = 'Specifies the value of the Leave Period field';
                 }
+                field(Comments; Rec.Comments)
+                {
+                    ToolTip = 'Specifies the value of the Comments field.', Comment = '%';
+                }
             }
         }
     }
