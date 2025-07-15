@@ -53,6 +53,14 @@ page 58042 "Leave Application List"
                 {
                     ToolTip = 'Specifies the value of the Comments field.', Comment = '%';
                 }
+                field("Leave Code"; Rec."Leave Code")
+                {
+                    ToolTip = 'Specifies the value of the Leave Type field';
+                }
+                field("Resumption Date"; Rec."Resumption Date")
+                {
+                    ToolTip = 'Specifies the value of the Resumption Date field';
+                }
             }
         }
     }
