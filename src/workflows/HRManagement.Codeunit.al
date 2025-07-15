@@ -555,15 +555,17 @@ codeunit 52001 "HR Management"
             LeaveRelievers.SetRange("Leave Code", ApplicationNo);
             if LeaveRelievers.FindSet() then
                 repeat
+                    Message('Reliever: %1', LeaveRelievers."Staff Name");
                     Employee.Reset();
                     if Employee.Get(LeaveRelievers."Staff No") then
-                        if Employee."E-Mail" <> '' then begin
+                        if Employee."Company E-Mail" <> '' then begin
                             CompanyInfo.Get();
                             CompanyInfo.TestField(Name);
                             SenderAddress := CompanyInfo."E-Mail";
                             SenderName := CompanyInfo.Name;
                             Clear(Receipient);
-                            Receipient.Add(Employee."E-Mail");
+                            Receipient.Add(Employee."Company E-Mail");
+                            Message('Reliever Email: %1', Employee."Company E-Mail");
                             Subject := ('Relieving - ' + SpaceLbl + LeaveApp."Employee No" + SpaceLbl + LeaveApp."Employee Name");
                             TimeNow := Format(Time);
                             FormattedRelieverBody := StrSubstNo(RelievingEmpMsg, Employee."First Name", LeaveApp."Employee No", LeaveApp."Employee Name", LeaveApp."Start Date", LeaveApp."End Date", CompanyInfo.Name);
@@ -573,35 +575,35 @@ codeunit 52001 "HR Management"
                 until LeaveRelievers.Next() = 0;
 
         end;
-        //Get Relievers
-        if LeaveApp.Get(ApplicationNo) then begin
-            LeaveRelievers.Reset();
-            LeaveRelievers.SetRange("Leave Code", ApplicationNo);
-            if LeaveRelievers.FindSet() then begin
-                i := 1;
-                repeat
-                    if i = 1 then
-                        Relievers := LeaveRelievers."Staff Name"
-                    else
-                        Relievers := Relievers + ', ' + LeaveRelievers."Staff Name";
+        // //Get Relievers
+        // if LeaveApp.Get(ApplicationNo) then begin
+        //     LeaveRelievers.Reset();
+        //     LeaveRelievers.SetRange("Leave Code", ApplicationNo);
+        //     if LeaveRelievers.FindSet() then begin
+        //         i := 1;
+        //         repeat
+        //             if i = 1 then
+        //                 Relievers := LeaveRelievers."Staff Name"
+        //             else
+        //                 Relievers := Relievers + ', ' + LeaveRelievers."Staff Name";
 
-                    i := i + 1;
+        //             i := i + 1;
 
-                until LeaveRelievers.Next() = 0;
-            end;
-        end;
+        //         until LeaveRelievers.Next() = 0;
+        //     end;
+        // end;
 
         //Notify Employee
         if LeaveApp.Get(ApplicationNo) then begin
             Employee.Reset();
             if Employee.Get(LeaveApp."Employee No") then
-                if Employee."E-Mail" <> '' then begin
+                if Employee."Company E-Mail" <> '' then begin
                     CompanyInfo.Get();
                     CompanyInfo.TestField(Name);
                     SenderAddress := CompanyInfo."E-Mail";
                     SenderName := CompanyInfo.Name;
                     Clear(Receipient);
-                    Receipient.Add(Employee."E-Mail");
+                    Receipient.Add(Employee."Company E-Mail");
                     Subject := ('Leave Application - ' + SpaceLbl + LeaveApp."Application No");
                     TimeNow := Format(Time);
                     FormattedApplicantBody := StrSubstNo(ApplicantMsg, Employee."First Name", LeaveApp."Application No", GetLeaveName(LeaveApp."Leave Code"), LeaveApp."Start Date", LeaveApp."End Date", LeaveApp."Resumption Date", LeaveApp."Duties Taken Over By",
@@ -620,13 +622,13 @@ codeunit 52001 "HR Management"
             // UserSetup.SetRange("HOD User", true);
             if UserSetup.FindFirst() then
                 if Employee.Get(UserSetup."Employee No.") then
-                    if Employee."E-Mail" <> '' then begin
+                    if Employee."Company E-Mail" <> '' then begin
                         CompanyInfo.Get();
                         CompanyInfo.TestField(Name);
                         SenderAddress := CompanyInfo."E-Mail";
                         SenderName := CompanyInfo.Name;
                         Clear(Receipient);
-                        Receipient.Add(Employee."E-Mail");
+                        Receipient.Add(Employee."Company E-Mail");
                         Subject := ('Employee - ' + SpaceLbl + LeaveApp."Employee No" + SpaceLbl + '-' + SpaceLbl + LeaveApp."Employee Name" + SpaceLbl + 'Leave');
                         TimeNow := Format(Time);
                         FormattedHODBody := StrSubstNo(HODMsg, Employee."First Name", LeaveApp."Employee No", LeaveApp."Employee Name", LeaveApp."Start Date", LeaveApp."End Date",

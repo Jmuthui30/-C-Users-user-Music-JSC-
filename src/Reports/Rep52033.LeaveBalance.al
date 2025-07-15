@@ -31,13 +31,7 @@ report 52033 "Leave Balance"
                 column(LastName_Employee; Employee."Last Name")
                 {
                 }
-                /*
-                column(CurrentLeavePeriod_Employee; Employee."Salary Arrears")
-                {
-                }
-                column(Department; Employee."Responsibility Center")
-                {
-                }
+
                 column(Entitlement; Employee."Leave Entitlement")
                 {
                 }
@@ -56,9 +50,7 @@ report 52033 "Leave Balance"
                 column(Taken; Employee."Leave Days Taken")
                 {
                 }
-                column(Absent; Employee."Days Absent")
-                {
-                }*/
+
                 column(Company_Name; CompanyInfo.Name)
                 {
                 }

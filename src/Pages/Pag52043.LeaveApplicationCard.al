@@ -337,7 +337,8 @@ page 52043 "Leave Application Card"
                 trigger OnAction()
                 begin
                     HRMgt.NotifyLeaveReliever(rec."Application No");
-                    //                   HRMgnt.SendLeaveNotice(HRMgnt.GetEmail("Employee No"),Employee.Name,"Application No","Employee No");
+                    Message('Notification sent to the reliever.');
+                    CurrPage.Close();
                 end;
             }
         }

@@ -129,20 +129,20 @@ page 51933 "HR Employee Card"
                 {
                     ApplicationArea = all;
                 }
-                field(Religion;Religion)
+                field(Religion; Religion)
                 {
-                    ApplicationArea= All;
+                    ApplicationArea = All;
                 }
-                field("Ethnic Origin";"Ethnic Origin")
+                field("Ethnic Origin"; "Ethnic Origin")
                 {
                     ApplicationArea = All;
                     Visible = false;
                 }
-                field("Ethnic Name";"Ethnic Name")
+                field("Ethnic Name"; "Ethnic Name")
                 {
                     ApplicationArea = All;
                 }
-                field("Marital Status";"Marital Status")
+                field("Marital Status"; "Marital Status")
                 {
                     ApplicationArea = All;
                 }
@@ -334,6 +334,16 @@ page 51933 "HR Employee Card"
             group(Administration)
             {
                 Caption = 'Administration';
+                field("Leave Period Filter"; "Leave Period Filter")
+                {
+                    ApplicationArea = BasicHR;
+                    ToolTip = 'Specifies the leave period filter for the employee.';
+                }
+                field("Leave Type Filter"; "Leave Type Filter")
+                {
+                    ApplicationArea = BasicHR;
+                    ToolTip = 'Specifies the leave type filter for the employee.';
+                }
 
                 field("Inactive Date"; Rec."Inactive Date")
                 {
@@ -483,6 +493,13 @@ page 51933 "HR Employee Card"
         }
         area(factboxes)
         {
+            part(LeaveStatistics; "Leave Statistics Factbox")
+            {
+                Caption = 'Leave Statistics';
+                SubPageLink = "No." = field("No.");
+                ApplicationArea = BasicHR;
+
+            }
             part(Control3; "Employee Picture")
             {
                 ApplicationArea = BasicHR;
@@ -873,7 +890,7 @@ page 51933 "HR Employee Card"
                     "Retirement Date" := D;
                 end;
             end;
-            "Days to Retirement" := HRDates.DetermineDatesDiffrence(Today,"Retirement Date")
+            "Days to Retirement" := HRDates.DetermineDatesDiffrence(Today, "Retirement Date")
         end;
     end;
 
