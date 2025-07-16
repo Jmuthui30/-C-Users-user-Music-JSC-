@@ -1352,7 +1352,7 @@ codeunit 55056 HRPortal
 
     begin
         PortalUploads.INIT;
-        PortalUploads."Document No" := DocumentNo;
+        PortalUploads."Application No" := DocumentNo;
         PortalUploads.Description := Description;
         PortalUploads.LocalUrl := Url;
         PortalUploads.Uploaded := TRUE;

@@ -7,7 +7,7 @@ table 55057 "SharePoint Intergrations"
             DataClassification = ToBeClassified;
             AutoIncrement = true;
         }
-        field(2; "Document No"; Code[250])
+        field(2; "Application No"; Code[250])
         {
 
         }
