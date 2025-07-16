@@ -113,11 +113,7 @@ report 51602 "Leave Balance new"
                 EmpLeaveApps.Reset;
                 EmpLeaveApps.SetRange("Employee No", "No.");
                 EmpLeaveApps.SetRange("Maturity Date", EndDate);
-                //EmpLeaveApps.SetRange(Status, EmpLeaveApps.Status::Released); IB, Date: 14/04/2022
-                //EmpLeaveApps.SetFilter(Status, '%1|%2', EmpLeaveApps.Status::"Pending Approval", EmpLeaveApps.Status::Released);
-                EmpLeaveApps.SetFilter(Status, '%1', EmpLeaveApps.Status::Released);
                 EmpLeaveApps.SetRange("Leave Code", Leavefilter);
-                //EmpLeaveApps.SetFilter(EmpLeaveApps."Start Date", '<=%1', DateFilter); //IB, Date: 21/04/2022, To allow the report to be run b4 the actual leave is taken.
                 if EmpLeaveApps.Find('-') then begin
                     repeat
                         TotalTaken := TotalTaken + EmpLeaveApps."Days Applied";
@@ -155,11 +151,9 @@ report 51602 "Leave Balance new"
                 field(LeaveFilter; Leavefilter)
                 {
                     ApplicationArea = All;
-
+                    TableRelation = "Leave Period"."Leave Period Code";
                     trigger OnLookup(var Text: Text): Boolean
                     begin
-                        LeaveTypes.Reset;
-                        if PAGE.RunModal(Page::"Leave Setup", LeaveTypes) = ACTION::LookupOK then Leavefilter := LeaveTypes.Code;
                     end;
                 }
                 field(MaturityDateFilter; MaturityDateFilter)
@@ -189,7 +183,9 @@ report 51602 "Leave Balance new"
     var
         Emp: Record Employee;
         Name: Text[50];
-        AcctPeriod: Record "Accounting Period";
+        // AcctPeriod: Record "Accounting Period";
+        AcctPeriod: Record "Payroll Period";
+        AccPeriod: Record "Payroll Period";
         MaturityDateFilter: Date;
         CompanyInfo: Record "Company Information";
         EmpLeaveApps: Record "Leave Application";

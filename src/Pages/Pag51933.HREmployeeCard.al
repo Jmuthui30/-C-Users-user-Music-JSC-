@@ -173,6 +173,11 @@ page 51933 "HR Employee Card"
                     Caption = 'Date of Appointment';
                     Importance = Promoted;
                     ToolTip = 'Specifies the date when the employee began to work for the company.';
+                    trigger OnValidate()
+                    begin
+                        if Rec."Employment Date" <> 0D then
+                            "Days to Retirement" := HRDates.DetermineDatesDiffrence(Today, "Retirement Date");
+                    end;
                 }
                 field(LengthOfService; LengthOfService)
                 {

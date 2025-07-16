@@ -329,6 +329,19 @@ page 52043 "Leave Application Card"
                     DocumentAttachmentDetails.RunModal();
                 end;
             }
+
+
+            action(Attachments1)
+            {
+                Caption = 'Attached Documents';
+                Image = Attach;
+                Promoted = true;
+                PromotedCategory = Category5;
+                ToolTip = 'Add a file as an attachment. You can attach images as well as documents.';
+                RunObject = page "Attached Document";
+                RunPageLink = "Document No" = field("Application No");
+
+            }
             action("Notify Empoyees")
             {
                 Image = Holiday;

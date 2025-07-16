@@ -1265,6 +1265,7 @@ page 51742 "HR & Admin Manager Role Center"
                     }
                     action("Leave Balancesnew")
                     {
+                        Visible = false;
                         RunObject = report "Leave Balance new";
                         ApplicationArea = All;
                         ToolTip = 'Executes the Leave Balances action';
