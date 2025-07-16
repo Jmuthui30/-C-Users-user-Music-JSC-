@@ -262,34 +262,36 @@ page 50071 "Approval Entries Custom"
                 end;
             }
         }
-        area(Promoted)
-        {
-            group(Category_Process)
-            {
-                Caption = 'Process', Comment = 'Generated from the PromotedActionCategories property index 1.';
 
-                actionref("&Delegate_Promoted"; "&Delegate")
-                {
-                }
-                actionref(Record_Promoted; Record)
-                {
-                }
-                actionref(Comments_Promoted; Comments)
-                {
-                }
-                group(Category_Show)
-                {
-                    Caption = 'Show';
+        //To uncomment due to publishing error @Brian
+        // area(Promoted)
+        // {
+        //     group(Category_Process)
+        //     {
+        //         Caption = 'Process', Comment = 'Generated from the PromotedActionCategories property index 1.';
 
-                    actionref("All Entries_Promoted"; "All Entries")
-                    {
-                    }
-                    actionref("O&verdue Entries_Promoted"; "O&verdue Entries")
-                    {
-                    }
-                }
-            }
-        }
+        //         actionref("&Delegate_Promoted"; "&Delegate")
+        //         {
+        //         }
+        //         actionref(Record_Promoted; Record)
+        //         {
+        //         }
+        //         actionref(Comments_Promoted; Comments)
+        //         {
+        //         }
+        //         group(Category_Show)
+        //         {
+        //             Caption = 'Show';
+
+        //             actionref("All Entries_Promoted"; "All Entries")
+        //             {
+        //             }
+        //             actionref("O&verdue Entries_Promoted"; "O&verdue Entries")
+        //             {
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     trigger OnAfterGetCurrRecord()
