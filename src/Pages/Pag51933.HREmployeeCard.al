@@ -129,20 +129,20 @@ page 51933 "HR Employee Card"
                 {
                     ApplicationArea = all;
                 }
-                field(Religion;Religion)
+                field(Religion; Religion)
                 {
-                    ApplicationArea= All;
+                    ApplicationArea = All;
                 }
-                field("Ethnic Origin";"Ethnic Origin")
+                field("Ethnic Origin"; "Ethnic Origin")
                 {
                     ApplicationArea = All;
                     Visible = false;
                 }
-                field("Ethnic Name";"Ethnic Name")
+                field("Ethnic Name"; "Ethnic Name")
                 {
                     ApplicationArea = All;
                 }
-                field("Marital Status";"Marital Status")
+                field("Marital Status"; "Marital Status")
                 {
                     ApplicationArea = All;
                 }
@@ -173,6 +173,11 @@ page 51933 "HR Employee Card"
                     Caption = 'Date of Appointment';
                     Importance = Promoted;
                     ToolTip = 'Specifies the date when the employee began to work for the company.';
+                    trigger OnValidate()
+                    begin
+                        if Rec."Employment Date" <> 0D then
+                            "Days to Retirement" := HRDates.DetermineDatesDiffrence(Today, "Retirement Date");
+                    end;
                 }
                 field(LengthOfService; LengthOfService)
                 {
@@ -873,7 +878,7 @@ page 51933 "HR Employee Card"
                     "Retirement Date" := D;
                 end;
             end;
-            "Days to Retirement" := HRDates.DetermineDatesDiffrence(Today,"Retirement Date")
+            "Days to Retirement" := HRDates.DetermineDatesDiffrence(Today, "Retirement Date")
         end;
     end;
 
