@@ -11,6 +11,127 @@
       <rd:DataSourceID>55013957-1647-45a2-b095-a1c170ca94a5</rd:DataSourceID>
     </DataSource>
   </DataSources>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+      <Fields>
+        <Field Name="LeaveTypeCode">
+          <DataField>LeaveTypeCode</DataField>
+        </Field>
+        <Field Name="No_Employee">
+          <DataField>No_Employee</DataField>
+        </Field>
+        <Field Name="FirstName_Employee">
+          <DataField>FirstName_Employee</DataField>
+        </Field>
+        <Field Name="MiddleName_Employee">
+          <DataField>MiddleName_Employee</DataField>
+        </Field>
+        <Field Name="LastName_Employee">
+          <DataField>LastName_Employee</DataField>
+        </Field>
+        <Field Name="Entitlement">
+          <DataField>Entitlement</DataField>
+        </Field>
+        <Field Name="EntitlementFormat">
+          <DataField>EntitlementFormat</DataField>
+        </Field>
+        <Field Name="Balance">
+          <DataField>Balance</DataField>
+        </Field>
+        <Field Name="BalanceFormat">
+          <DataField>BalanceFormat</DataField>
+        </Field>
+        <Field Name="Adjustment">
+          <DataField>Adjustment</DataField>
+        </Field>
+        <Field Name="AdjustmentFormat">
+          <DataField>AdjustmentFormat</DataField>
+        </Field>
+        <Field Name="BroughtForward">
+          <DataField>BroughtForward</DataField>
+        </Field>
+        <Field Name="BroughtForwardFormat">
+          <DataField>BroughtForwardFormat</DataField>
+        </Field>
+        <Field Name="Recall">
+          <DataField>Recall</DataField>
+        </Field>
+        <Field Name="RecallFormat">
+          <DataField>RecallFormat</DataField>
+        </Field>
+        <Field Name="Taken">
+          <DataField>Taken</DataField>
+        </Field>
+        <Field Name="TakenFormat">
+          <DataField>TakenFormat</DataField>
+        </Field>
+        <Field Name="Company_Name">
+          <DataField>Company_Name</DataField>
+        </Field>
+        <Field Name="Comp_Logo">
+          <DataField>Comp_Logo</DataField>
+        </Field>
+        <Field Name="Email">
+          <DataField>Email</DataField>
+        </Field>
+        <Field Name="Website">
+          <DataField>Website</DataField>
+        </Field>
+        <Field Name="Tel_No">
+          <DataField>Tel_No</DataField>
+        </Field>
+        <Field Name="Address">
+          <DataField>Address</DataField>
+        </Field>
+        <Field Name="City">
+          <DataField>City</DataField>
+        </Field>
+        <Field Name="Country">
+          <DataField>Country</DataField>
+        </Field>
+        <Field Name="Post_Code">
+          <DataField>Post_Code</DataField>
+        </Field>
+        <Field Name="Global_Dimension_1_Code">
+          <DataField>Global_Dimension_1_Code</DataField>
+        </Field>
+        <Field Name="LeaveEarnedToDate">
+          <DataField>LeaveEarnedToDate</DataField>
+        </Field>
+        <Field Name="LeaveEarnedToDateFormat">
+          <DataField>LeaveEarnedToDateFormat</DataField>
+        </Field>
+        <Field Name="LeaveLiability">
+          <DataField>LeaveLiability</DataField>
+        </Field>
+        <Field Name="LeaveLiabilityFormat">
+          <DataField>LeaveLiabilityFormat</DataField>
+        </Field>
+        <Field Name="LeaveBalToDate">
+          <DataField>LeaveBalToDate</DataField>
+        </Field>
+        <Field Name="LeaveBalToDateFormat">
+          <DataField>LeaveBalToDateFormat</DataField>
+        </Field>
+        <Field Name="Forfeited">
+          <DataField>Forfeited</DataField>
+        </Field>
+        <Field Name="ForfeitedFormat">
+          <DataField>ForfeitedFormat</DataField>
+        </Field>
+        <Field Name="LeaveTypeFilter">
+          <DataField>LeaveTypeFilter</DataField>
+        </Field>
+        <Field Name="ReportFilters">
+          <DataField>ReportFilters</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -670,7 +791,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -1780,7 +1900,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=(Fields!Entitlement.Value + Fields!BroughtForward.Value) - Fields!Taken.Value</Value>
+                                  <Value>=Fields!Balance.Value</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2500,7 +2620,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum((Fields!Entitlement.Value + Fields!BroughtForward.Value) - Fields!Taken.Value)</Value>
+                                  <Value>=SUM(Fields!Balance.Value)</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2745,6 +2865,12 @@
       </Page>
     </ReportSection>
   </ReportSections>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>4</NumberOfColumns>
+      <NumberOfRows>2</NumberOfRows>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -2784,125 +2910,4 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Fields>
-        <Field Name="LeaveTypeCode">
-          <DataField>LeaveTypeCode</DataField>
-        </Field>
-        <Field Name="No_Employee">
-          <DataField>No_Employee</DataField>
-        </Field>
-        <Field Name="FirstName_Employee">
-          <DataField>FirstName_Employee</DataField>
-        </Field>
-        <Field Name="MiddleName_Employee">
-          <DataField>MiddleName_Employee</DataField>
-        </Field>
-        <Field Name="LastName_Employee">
-          <DataField>LastName_Employee</DataField>
-        </Field>
-        <Field Name="Entitlement">
-          <DataField>Entitlement</DataField>
-        </Field>
-        <Field Name="EntitlementFormat">
-          <DataField>EntitlementFormat</DataField>
-        </Field>
-        <Field Name="Balance">
-          <DataField>Balance</DataField>
-        </Field>
-        <Field Name="BalanceFormat">
-          <DataField>BalanceFormat</DataField>
-        </Field>
-        <Field Name="Adjustment">
-          <DataField>Adjustment</DataField>
-        </Field>
-        <Field Name="AdjustmentFormat">
-          <DataField>AdjustmentFormat</DataField>
-        </Field>
-        <Field Name="BroughtForward">
-          <DataField>BroughtForward</DataField>
-        </Field>
-        <Field Name="BroughtForwardFormat">
-          <DataField>BroughtForwardFormat</DataField>
-        </Field>
-        <Field Name="Recall">
-          <DataField>Recall</DataField>
-        </Field>
-        <Field Name="RecallFormat">
-          <DataField>RecallFormat</DataField>
-        </Field>
-        <Field Name="Taken">
-          <DataField>Taken</DataField>
-        </Field>
-        <Field Name="TakenFormat">
-          <DataField>TakenFormat</DataField>
-        </Field>
-        <Field Name="Company_Name">
-          <DataField>Company_Name</DataField>
-        </Field>
-        <Field Name="Comp_Logo">
-          <DataField>Comp_Logo</DataField>
-        </Field>
-        <Field Name="Email">
-          <DataField>Email</DataField>
-        </Field>
-        <Field Name="Website">
-          <DataField>Website</DataField>
-        </Field>
-        <Field Name="Tel_No">
-          <DataField>Tel_No</DataField>
-        </Field>
-        <Field Name="Address">
-          <DataField>Address</DataField>
-        </Field>
-        <Field Name="City">
-          <DataField>City</DataField>
-        </Field>
-        <Field Name="Country">
-          <DataField>Country</DataField>
-        </Field>
-        <Field Name="Post_Code">
-          <DataField>Post_Code</DataField>
-        </Field>
-        <Field Name="Global_Dimension_1_Code">
-          <DataField>Global_Dimension_1_Code</DataField>
-        </Field>
-        <Field Name="LeaveEarnedToDate">
-          <DataField>LeaveEarnedToDate</DataField>
-        </Field>
-        <Field Name="LeaveEarnedToDateFormat">
-          <DataField>LeaveEarnedToDateFormat</DataField>
-        </Field>
-        <Field Name="LeaveLiability">
-          <DataField>LeaveLiability</DataField>
-        </Field>
-        <Field Name="LeaveLiabilityFormat">
-          <DataField>LeaveLiabilityFormat</DataField>
-        </Field>
-        <Field Name="LeaveBalToDate">
-          <DataField>LeaveBalToDate</DataField>
-        </Field>
-        <Field Name="LeaveBalToDateFormat">
-          <DataField>LeaveBalToDateFormat</DataField>
-        </Field>
-        <Field Name="Forfeited">
-          <DataField>Forfeited</DataField>
-        </Field>
-        <Field Name="ForfeitedFormat">
-          <DataField>ForfeitedFormat</DataField>
-        </Field>
-        <Field Name="LeaveTypeFilter">
-          <DataField>LeaveTypeFilter</DataField>
-        </Field>
-        <Field Name="ReportFilters">
-          <DataField>ReportFilters</DataField>
-        </Field>
-      </Fields>
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-    </DataSet>
-  </DataSets>
 </Report>
