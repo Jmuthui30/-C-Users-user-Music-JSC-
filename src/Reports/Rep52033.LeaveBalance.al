@@ -15,10 +15,7 @@ report 52033 "Leave Balance"
             }
             dataitem(Employee; Employee)
             {
-                //  DataItemTableView = where(Status = const(Active), "Employee Type" = filter(<> "Board Member"));
-                ////   DataItemLink = "Leave Type Filter" = field(Code);
-                //  RequestFilterFields = "Leave Period Filter", "No.", "Responsibility Center";
-                //CalcFields = "Leave Balance", "Leave Balance Brought Forward", "Leave Recall Days", "Leave Days Taken", "Days Absent", "Leave Entitlement", "Leave Adjustment";
+                RequestFilterFields = "Leave Period Filter", "No.";
                 column(No_Employee; Employee."No.")
                 {
                 }
@@ -102,7 +99,6 @@ report 52033 "Leave Balance"
 
                 trigger OnPreDataItem()
                 begin
-                    //   LeavePeriodFilter := GetFilter("Leave Period Filter");
                 end;
 
 
@@ -114,20 +110,9 @@ report 52033 "Leave Balance"
                     LeaveEarnedToDate := 0;
                     LeaveBalToDate := 0;
 
-                    // if "Leave Type"."Earn Days" then
-                    //     LeaveEarnedToDate := HRMgt.GetLeaveDaysEarnedToDate(Employee, "Leave Type".Code)
-                    // else
-                    //    //// LeaveEarnedToDate := Employee."Leave Entitlement";
-
-                    // //Leave Liability
-                    // if "Leave Type"."Annual Leave" then
-                    //     LeaveLiability := HRMgt.GetLeaveLiability(Employee, LeaveEarnedToDate)
-                    // else
                     LeaveLiability := 0;
 
-                    // Forfeited := Employee."Leave Balance" - "Leave Type"."Max Carry Forward Days";
 
-                    //LeaveBalToDate := LeaveEarnedToDate - Abs("Leave Days Taken");
                     if Forfeited < 0 then
                         Forfeited := 0;
                 end;
@@ -155,7 +140,6 @@ report 52033 "Leave Balance"
     var
         CompanyInfo: Record "Company Information";
         AccPeriod: Record "Payroll Period";
-        //HRMgt: Codeunit "HR Management";
         FiscalStartDate: Date;
         MaturityDateFilter: Date;
         Adjustment: Decimal;
