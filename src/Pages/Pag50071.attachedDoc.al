@@ -114,22 +114,7 @@ page 52971 "Attached Document"
                 end;
             }
         }
-        area(Promoted)
-        {
-            actionref(Preview_Promoted; Preview)
-            {
-            }
 
-            actionref(AttachFromEmail_Promoted; AttachFromEmail)
-            {
-            }
-            actionref(UploadFile_Promoted; UploadFile)
-            {
-            }
-            actionref(AttachMultipleFiles_Promoted; AttachmentsUpload)
-            {
-            }
-        }
 
 
 
