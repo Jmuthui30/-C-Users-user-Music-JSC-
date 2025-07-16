@@ -230,7 +230,7 @@ codeunit 55057 HRPortalQueries
     begin
         // Filter to the same dimensions used in the FlowField.
         EmployeeLeaves.SetRange("Staff No.", EmpNo);
-        EmployeeLeaves.SetRange("Leave Type", LeaveCode);
+        //EmployeeLeaves.SetRange("Leave Type", LeaveCode);
         EmployeeLeaves.SetRange(Closed, false);
 
         // Ask the DB‑server to sum the field, just like the FlowField does.
