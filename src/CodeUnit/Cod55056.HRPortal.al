@@ -128,7 +128,7 @@ codeunit 55056 HRPortal
                 HRPortalUsers."Last Modified Date" := Today;
                 HRPortalUsers.Insert(true);
             end;
-            SendEmailNotification(HRPortalUsers."Authentication Email", 'Password Reset', 'Your one time password is <strong>' + Format(password) + '</strong>');
+            SendEmailNotification(employeeEmail, 'Password Reset', 'Your one time password is <strong>' + Format(password) + '</strong>');
             status := 'success*We have sent a one time password to your email (' + employeeEmail + '). Use it to log in to your account';
         end;
     end;
@@ -211,8 +211,6 @@ codeunit 55056 HRPortal
         exit(status);
     end;
 
-
-
     procedure FAWEFnResetPassword(emailaddress: Text) passChangestatus: Text
     var
         RandomDigit: Text;
@@ -272,6 +270,7 @@ codeunit 55056 HRPortal
     var
         HRSetup: Record "Human Resources Setup";
         LeaveReliever: Record "Leave Relievers";
+        HRmgt: Codeunit "HR Management";
     begin
         HrEmployees.Reset();
         HrEmployees.SetRange("No.", EmpNo);
@@ -279,13 +278,14 @@ codeunit 55056 HRPortal
             Leave.Reset();
             Leave.SetRange("Application No", ApplicationNo);
             if Leave.Find('-') then begin
+
                 Leave."Apply on behalf" := onBehalf;
                 Leave."Employee No" := HrEmployees."No.";
                 Leave.Validate("Employee No");
                 Leave."Employee Name" := HrEmployees."First Name" + ' ' + HrEmployees."Middle Name" + ' ' + HrEmployees."Last Name";
                 Leave."Mobile No" := HrEmployees."Mobile Phone No.";
                 Leave."Email Adress" := HrEmployees."Company E-Mail";
-                Leave."Leave Period" := HrEmployees."Base Calendar";
+                Leave."Leave Period" := HRmgt.GetCurrentLeavePeriodCode();
                 //Leave."Responsibility Center" := HrEmployees."Responsibility Center";
                 Leave."Application Date" := today;
                 Leave."Leave Code" := CopyStr(LeaveType, 1, MaxStrLen(Leave."Leave Code"));
@@ -311,7 +311,7 @@ codeunit 55056 HRPortal
                 Leave."Employee Name" := HrEmployees."First Name" + ' ' + HrEmployees."Middle Name" + ' ' + HrEmployees."Last Name";
                 Leave."Mobile No" := HrEmployees."Mobile Phone No.";
                 Leave."Email Adress" := HrEmployees."Company E-Mail";
-                Leave."Leave Period" := HrEmployees."Base Calendar";
+                Leave."Leave Period" := HRmgt.GetCurrentLeavePeriodCode();
                 //Leave."Responsibility Center" := HrEmployees."Responsibility Center";
                 Leave."Application Date" := today;
                 Leave."Leave Code" := CopyStr(LeaveType, 1, MaxStrLen(Leave."Leave Code"));
@@ -346,8 +346,6 @@ codeunit 55056 HRPortal
         end else begin
             status := 'danger*An error occured while submitting your Reliever Line';
         end;
-
-
     end;
 
     procedure DeleteLeaveReleiver(ApplicationNo: Code[50]; Reliever: Code[30]) status: Text
@@ -494,7 +492,7 @@ codeunit 55056 HRPortal
         if ApprovalMgtHR.CheckLeaveRequestWorkflowEnabled(LeaveApplication) then
             ApprovalMgtHR.OnSendLeaveRequestApproval(LeaveApplication);
         UpdateApprovalEntries(DocNo, UserID);
-        status := 'success*Doccument has been successfully sent for approval';
+        status := 'success*Document has been successfully sent for approval';
     end;
 
 
@@ -502,7 +500,7 @@ codeunit 55056 HRPortal
     begin
         LeaveApplication.Get(DocNo);
         ApprovalMgtHR.OnCancelLeaveRequestApproval(LeaveApplication);
-        status := 'success*Doccument approval cancelled succesfully';
+        status := 'success*Document approval cancelled succesfully';
     end;
 
     procedure UpdateApprovalEntries(DocNo: Code[100]; SenderID: Code[100])
@@ -677,7 +675,7 @@ codeunit 55056 HRPortal
                             if ApprovalsMgmtFin.CheckPaymentsApprovalsWorkflowEnabled(PaymentsRec) then
                                 ApprovalsMgmtFin.OnSendPaymentsForApproval(PaymentsRec);
                             UpdateApprovalEntries(DocNo, PaymentsRec."User Id");
-                            rtn := 'success*Doccument has been successfully sent for approval';
+                            rtn := 'success*Document has been successfully sent for approval';
                         end;
 
                     "Payment Type"::"Imprest Surrender":
@@ -690,7 +688,7 @@ codeunit 55056 HRPortal
                             if ApprovalsMgmtFin.CheckPaymentsApprovalsWorkflowEnabled(PaymentsRec) then
                                 ApprovalsMgmtFin.OnSendPaymentsForApproval(PaymentsRec);
                             UpdateApprovalEntries(DocNo, PaymentsRec."User Id");
-                            rtn := 'success*Doccument has been successfully sent for approval';
+                            rtn := 'success*Document has been successfully sent for approval';
                         end;
 
                     "Payment Type"::"Petty Cash":
@@ -709,7 +707,7 @@ codeunit 55056 HRPortal
                             if ApprovalsMgmtFin.CheckPaymentsApprovalsWorkflowEnabled(PaymentsRec) then
                                 ApprovalsMgmtFin.OnSendPaymentsForApproval(PaymentsRec);
                             UpdateApprovalEntries(DocNo, PaymentsRec."User Id");
-                            rtn := 'success*Doccument has been successfully sent for approval';
+                            rtn := 'success*Document has been successfully sent for approval';
                         end;
                     "Payment Type"::"Petty Cash Surrender":
                         begin
@@ -721,7 +719,7 @@ codeunit 55056 HRPortal
                             if ApprovalsMgmtFin.CheckPaymentsApprovalsWorkflowEnabled(PaymentsRec) then
                                 ApprovalsMgmtFin.OnSendPaymentsForApproval(PaymentsRec);
                             UpdateApprovalEntries(DocNo, PaymentsRec."User Id");
-                            rtn := 'success*Doccument has been successfully sent for approval';
+                            rtn := 'success*Document has been successfully sent for approval';
                         end;
 
 
@@ -743,25 +741,25 @@ codeunit 55056 HRPortal
                         begin
                             Committment.CancelPaymentsCommitments(PaymentsRec);
                             ApprovalMgt.OnCancelPaymentsApprovalRequest(PaymentsRec);
-                            rtn := 'success*Doccument approval has been cancelled successfully.';
+                            rtn := 'success*Document approval has been cancelled successfully.';
                         end;
 
                     "Payment Type"::"Imprest Surrender":
                         begin
                             ApprovalMgt.OnCancelPaymentsApprovalRequest(PaymentsRec);
-                            rtn := 'success*Doccument approval has been cancelled successfully.';
+                            rtn := 'success*Document approval has been cancelled successfully.';
                         end;
                     "Payment Type"::"Petty Cash":
                         begin
                             Committment.CancelPaymentsCommitments(PaymentsRec);
                             ApprovalMgt.OnCancelPaymentsApprovalRequest(PaymentsRec);
-                            rtn := 'success*Doccument approval has been cancelled successfully.';
+                            rtn := 'success*Document approval has been cancelled successfully.';
                         end;
 
                     "Payment Type"::"Petty Cash Surrender":
                         begin
                             ApprovalMgt.OnCancelPaymentsApprovalRequest(PaymentsRec);
-                            rtn := 'success*Doccument approval has been cancelled successfully.';
+                            rtn := 'success*Document approval has been cancelled successfully.';
                         end;
 
                 end;
@@ -1356,7 +1354,7 @@ codeunit 55056 HRPortal
         PortalUploads.LocalUrl := Url;
         PortalUploads.Uploaded := TRUE;
         PortalUploads.Fetch_To_Sharepoint := TRUE;
-        PortalUploads.Base_URL := 'https://fawers.sharepoint.com/sites/ERP/ERP%20Documents/FAWE' + '/' + Type + '/';
+        PortalUploads.Base_URL := 'https://jscgoke.sharepoint.com/sites/jscportals/ERP%20Documents/JSC' + '/' + Type + '/';
         if PortalUploads.Insert(true) then begin
             status := 'success*Portal document has been created succesfully*' + Format(PortalUploads."Entry No");
         end else begin

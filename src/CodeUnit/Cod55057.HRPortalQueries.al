@@ -228,21 +228,29 @@ codeunit 55057 HRPortalQueries
         EmployeeLeaves: Record "HR Leave Ledger Entries";
         TotalLeaveDays: Decimal;
     begin
-        if HrEmployees.Get(EmpNo) then begin
-            EmployeeLeaves.Reset;
-            EmployeeLeaves.SetRange("Staff No.", EmpNo);
-            EmployeeLeaves.SetRange("Leave Type", LeaveCode);
-            EmployeeLeaves.SetRange(Closed, false);
+        // Filter to the same dimensions used in the FlowField.
+        EmployeeLeaves.SetRange("Staff No.", EmpNo);
+        //EmployeeLeaves.SetRange("Leave Type", LeaveCode);
+        EmployeeLeaves.SetRange(Closed, false);
 
-            if EmployeeLeaves.FindSet() then begin
-                repeat
-                    TotalLeaveDays += EmployeeLeaves."No. of days";
-                until EmployeeLeaves.Next() = 0;
-            end;
+        // Ask the DB‑server to sum the field, just like the FlowField does.
+        EmployeeLeaves.CalcSums("No. of days");
+        LeaveBalance := EmployeeLeaves."No. of days";
+        // if HrEmployees.Get(EmpNo) then begin
+        //     EmployeeLeaves.Reset;
+        //     EmployeeLeaves.SetRange("Staff No.", EmpNo);
+        //     EmployeeLeaves.SetRange("Leave Type", LeaveCode);
+        //     EmployeeLeaves.SetRange(Closed, false);
 
-            LeaveBalance := TotalLeaveDays;
-            exit(LeaveBalance);
-        end;
+        //     if EmployeeLeaves.FindSet() then begin
+        //         repeat
+        //             TotalLeaveDays += EmployeeLeaves."No. of days";
+        //         until EmployeeLeaves.Next() = 0;
+        //     end;
+
+        //     LeaveBalance := TotalLeaveDays;
+        //     exit(LeaveBalance);
+        // end;
     end;
 
     procedure EmployeePhoto(StaffNo: Code[20]; VAR PictureText: text)
@@ -262,5 +270,146 @@ codeunit 55057 HRPortalQueries
                 PictureText := Base64.ToBase64(InStream);
             end;
         end;
+    end;
+
+    procedure DetermineLeaveReturnDate(startDate: DateTime; DaysApplied: Decimal; LeaveCode: Code[30]; EmpNo: Code[20]) status: Text
+    var
+        HRSetup: Record "Human Resources Setup";
+        LeaveTypes: Record "Leave Type";
+        Description: Text[150];
+        NextWorkingDate: Date;
+        CalendarMgmt: Codeunit "Calendar Management";
+        BaseCalendar: Record "Base Calendar Change";
+        BaseCalender: Record Date;
+        CustCalendarChange: record "Customized Calendar Change";
+        EndDate: Date;
+        BaseCalenderCode: Code[10];
+        ReturnDate: Date;
+        ResumptionDate: Date;
+        LeaveLedger: Record "HR Leave Ledger Entries";
+        HumanResSetup: Record "Human Resources Setup";
+        HRMgt: Codeunit "HR Management";
+        AccPeriod: Record "Payroll Period";
+        FiscalStart: Date;
+        LeaveEntitlement: Decimal;
+        LeaveEntitlementRec: Record "Leave Entitlement Entry";
+        LeaveTypeRec: Record "Leave Type";
+        DaysEarnedPerMonth: Decimal;
+        leaveBalave: Decimal;
+    begin
+
+        begin
+
+            HumanResSetup.Get();
+            // HumanResSetup.TestField(HumanResSetup."Default Base Calendar");
+
+            //Get employee base calendar
+            EmployeeRec.Get(EmpNo);
+            if EmployeeRec."Base Calendar" <> '' then
+                BaseCalenderCode := EmployeeRec."Base Calendar";
+            // else
+            //     BaseCalenderCode := HumanResSetup."Base Calender Code";
+
+            NoOfWorkingDays := 0;
+            if DaysApplied <> 0 then
+                if DT2Date(startDate) <> 0D then begin
+                    NextWorkingDate := DT2Date(startDate);
+                    repeat
+                        if not HRmgt.CheckNonWorkingDay(BaseCalenderCode, NextWorkingDate, Description) then
+                            NoOfWorkingDays := NoOfWorkingDays + 1;
+
+                        // Message(' NoOfWorkingDays is %1..NextWorkingDate%2', NoOfWorkingDays, NextWorkingDate);
+                        if LeaveTypes.Get(LeaveCode) then begin
+                            if LeaveTypes."Inclusive of Holidays" then begin
+                                BaseCalendar.Reset();
+                                BaseCalendar.SetRange(BaseCalendar."Base Calendar Code", BaseCalenderCode);
+                                BaseCalendar.SetRange(BaseCalendar.Date, NextWorkingDate);
+                                BaseCalendar.SetRange(BaseCalendar.Nonworking, true);
+                                BaseCalendar.SetRange(BaseCalendar."Recurring System", BaseCalendar."Recurring System"::"Annual Recurring");
+                                if BaseCalendar.Find('-') then
+                                    NoOfWorkingDays := NoOfWorkingDays + 1;
+                            end;
+
+                            if LeaveTypes."Inclusive of Saturday" then begin
+                                BaseCalender.Reset();
+                                BaseCalender.SetRange(BaseCalender."Period Type", BaseCalender."Period Type"::Date);
+                                BaseCalender.SetRange(BaseCalender."Period Start", NextWorkingDate);
+                                BaseCalender.SetRange(BaseCalender."Period No.", 6);
+
+                                if BaseCalender.Find('-') then
+                                    NoOfWorkingDays := NoOfWorkingDays + 1;
+                            end;
+
+
+                            if LeaveTypes."Inclusive of Sunday" then begin
+                                BaseCalender.Reset();
+                                BaseCalender.SetRange(BaseCalender."Period Type", BaseCalender."Period Type"::Date);
+                                BaseCalender.SetRange(BaseCalender."Period Start", NextWorkingDate);
+                                BaseCalender.SetRange(BaseCalender."Period No.", 7);
+                                if BaseCalender.Find('-') then
+                                    NoOfWorkingDays := NoOfWorkingDays + 1;
+                            end;
+
+
+                            if LeaveTypes."Off/Holidays Days Leave" then;
+
+                        end;
+
+                        NextWorkingDate := CalcDate('1D', NextWorkingDate);
+                    until NoOfWorkingDays = DaysApplied;
+
+                    EndDate := NextWorkingDate - 1;
+                    ResumptionDate := NextWorkingDate;
+                    Message('enddate is %1', ResumptionDate);
+                end;
+
+            //check if the date that the person is supposed to report back is a working day or not
+            //get base calendar to use
+            NonWorkingDay := false;
+            if DT2Date(startDate) <> 0D then
+                while NonWorkingDay = false
+                  do begin
+                    //NonWorkingDay := HRmgt.CheckNonWorkingDay(HumanResSetup."Default Base Calendar", "Resumption Date", Dsptn);
+                    if NonWorkingDay then begin
+                        NonWorkingDay := false;
+                        ResumptionDate := CalcDate('1D', ResumptionDate);
+                    end
+                    else
+                        NonWorkingDay := true;
+                end;
+
+            AccPeriod.Reset();
+            AccPeriod.SetRange("Starting Date", 0D, Today);
+            AccPeriod.SetRange("New Fiscal Year", true);
+            if AccPeriod.Find('+') then begin
+                FiscalStart := AccPeriod."Starting Date";
+                MaturityDate := CalcDate('1Y', AccPeriod."Starting Date") - 1;
+            end;
+
+            LeaveEntitlement := 0;
+            DaysEarnedPerMonth := 0;
+
+            EmployeeRec.TestField("Country/Region Code");
+            LeaveTypes.Get(LeaveCode);
+
+            LeaveEntitlementRec.Reset();
+            LeaveEntitlementRec.SetRange("Leave Type Code", LeaveTypes.Code);
+            LeaveEntitlementRec.SetRange("Employee Category", EmployeeRec."Employee Category");
+            LeaveEntitlementRec.SetRange("Country/Region Code", EmployeeRec."Country/Region Code");
+            if LeaveEntitlementRec.FindFirst() then begin
+                LeaveEntitlement := LeaveEntitlementRec.Days;
+                if LeaveTypeRec."Earn Days" then begin
+                    LeaveEntitlementRec.TestField("Days Earned per Month");
+                    DaysEarnedPerMonth := LeaveEntitlementRec."Days Earned per Month";
+                end;
+            end;
+            leaveBalave := CheckLeaveDaysAvailable(EmployeeRec."No.", 'ANNUAL');
+
+            status := Format(EndDate) + '*' + Format(ResumptionDate) + '*' + Format(LeaveEntitlement)
++ '*' + Format(leaveBalave)
+
+        end;
+
+
     end;
 }
