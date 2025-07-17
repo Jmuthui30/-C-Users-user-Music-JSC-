@@ -60,6 +60,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
             {
                 Caption = 'Leave Statistics';
                 SubPageLink = "No." = field("No.");
+                ApplicationArea = All;
                 ///SubPageLink = "No." = field("Employee No");
 
             }
