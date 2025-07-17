@@ -440,18 +440,42 @@ codeunit 55056 HRPortal
     var
         RecRef: RecordRef;
         Employee: Record "Client Employee Master";
+
     begin
         TempBlob_lRec.CreateOutStream(OutStr, TEXTENCODING::UTF8);
         Employee.Reset;
-        Employee.SetRange(Employee."No.", employeeNumber);
-        Employee.SetFilter(Employee."Date Filter", Format(Format(DT2DATE(startDate)) + '..' + Format(DT2DATE(endDate))));
-        Employee.SetFilter("Pay Period Filter", Format(Format(DT2DATE(startDate)) + '..' + Format(DT2DATE(endDate))));
+        Employee.SetFilter("Company Code", 'Judicial Service Commission');
         if Employee.FindSet then begin
             RecRef.GetTable(Employee);
             Report.SaveAs(Report::"Client P9A", '', ReportFormat::Pdf, OutStr, RecRef);
             FileManagement_lCdu.BLOBExport(TempBlob_lRec, STRSUBSTNO('P9_%1.Pdf', Employee."No."), TRUE);
             TempBlob_lRec.CreateInstream(InStr, TEXTENCODING::UTF8);
             BaseImage := Base64Convert.ToBase64(InStr);
+        end;
+    end;
+
+    procedure FAWEgenerateP92(employeeNumber: Code[20]; startDate: DateTime; endDate: DateTime) BaseImage: Text
+    var
+        RecRef: RecordRef;
+        Employee: Record "Client Employee Master";
+        ClientP9AReport: Report "Client P9A";
+        Filename: Text[100];
+        TempBlob: Codeunit "Temp Blob";
+        StatementOutstream: OutStream;
+        StatementInstream: InStream;
+    begin
+        TempBlob_lRec.CreateOutStream(OutStr, TEXTENCODING::UTF8);
+        Employee.Reset;
+        Employee.SetFilter("Company Code", 'Judicial Service Commission');
+        if Employee.FindSet then begin
+            ClientP9AReport.SetPeriod(DT2DATE(startDate), DT2DATE(endDate));
+            ClientP9AReport.SetTableView(Employee);
+            TempBlob.CreateOutStream(StatementOutstream);
+            if ClientP9AReport.SaveAs('', ReportFormat::Pdf, StatementOutstream) then begin
+                TempBlob.CreateInStream(StatementInstream);
+                BaseImage := Base64Convert.ToBase64(StatementInstream);
+                exit(BaseImage);
+            end;
         end;
     end;
 
