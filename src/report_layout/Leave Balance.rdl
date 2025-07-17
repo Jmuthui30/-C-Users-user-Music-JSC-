@@ -11,6 +11,88 @@
       <rd:DataSourceID>ba761850-590f-48de-bd8b-24ecb9e9467e</rd:DataSourceID>
     </DataSource>
   </DataSources>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+      <Fields>
+        <Field Name="No_Employee">
+          <DataField>No_Employee</DataField>
+        </Field>
+        <Field Name="Name">
+          <DataField>Name</DataField>
+        </Field>
+        <Field Name="Balance_B_FCaptionLbl">
+          <DataField>Balance_B_FCaptionLbl</DataField>
+        </Field>
+        <Field Name="BalanceCaptionLbl">
+          <DataField>BalanceCaptionLbl</DataField>
+        </Field>
+        <Field Name="NameCaptionLbl">
+          <DataField>NameCaptionLbl</DataField>
+        </Field>
+        <Field Name="EntitlmentCaptionLbl">
+          <DataField>EntitlmentCaptionLbl</DataField>
+        </Field>
+        <Field Name="Days_TakenCaptionLbl">
+          <DataField>Days_TakenCaptionLbl</DataField>
+        </Field>
+        <Field Name="Days_RecalledCaptionLbl">
+          <DataField>Days_RecalledCaptionLbl</DataField>
+        </Field>
+        <Field Name="Days_AbsentCaptionLbl">
+          <DataField>Days_AbsentCaptionLbl</DataField>
+        </Field>
+        <Field Name="ANNUAL_LEAVE_BALANCE_CaptionLbl">
+          <DataField>ANNUAL_LEAVE_BALANCE_CaptionLbl</DataField>
+        </Field>
+        <Field Name="BalanceBF">
+          <DataField>BalanceBF</DataField>
+        </Field>
+        <Field Name="BalanceBFFormat">
+          <DataField>BalanceBFFormat</DataField>
+        </Field>
+        <Field Name="Entitlement">
+          <DataField>Entitlement</DataField>
+        </Field>
+        <Field Name="EntitlementFormat">
+          <DataField>EntitlementFormat</DataField>
+        </Field>
+        <Field Name="TotalRecalls">
+          <DataField>TotalRecalls</DataField>
+        </Field>
+        <Field Name="TotalRecallsFormat">
+          <DataField>TotalRecallsFormat</DataField>
+        </Field>
+        <Field Name="TotalAbsence">
+          <DataField>TotalAbsence</DataField>
+        </Field>
+        <Field Name="TotalAbsenceFormat">
+          <DataField>TotalAbsenceFormat</DataField>
+        </Field>
+        <Field Name="TotalTaken">
+          <DataField>TotalTaken</DataField>
+        </Field>
+        <Field Name="TotalTakenFormat">
+          <DataField>TotalTakenFormat</DataField>
+        </Field>
+        <Field Name="Balance">
+          <DataField>Balance</DataField>
+        </Field>
+        <Field Name="BalanceFormat">
+          <DataField>BalanceFormat</DataField>
+        </Field>
+        <Field Name="Picture">
+          <DataField>Picture</DataField>
+        </Field>
+        <Field Name="DateFilter">
+          <DataField>DateFilter</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -1064,7 +1146,7 @@
           </Border>
         </Style>
       </Body>
-      <Width>17.49294cm</Width>
+      <Width>18.6571cm</Width>
       <Page>
         <PageHeader>
           <Height>3.10583cm</Height>
@@ -1181,6 +1263,12 @@
       </Page>
     </ReportSection>
   </ReportSections>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>4</NumberOfColumns>
+      <NumberOfRows>2</NumberOfRows>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -1220,86 +1308,4 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
   <rd:ReportID>a9c26b03-5f4c-4ffa-8d30-0f714aa57b43</rd:ReportID>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Fields>
-        <Field Name="No_Employee">
-          <DataField>No_Employee</DataField>
-        </Field>
-        <Field Name="Name">
-          <DataField>Name</DataField>
-        </Field>
-        <Field Name="Balance_B_FCaptionLbl">
-          <DataField>Balance_B_FCaptionLbl</DataField>
-        </Field>
-        <Field Name="BalanceCaptionLbl">
-          <DataField>BalanceCaptionLbl</DataField>
-        </Field>
-        <Field Name="NameCaptionLbl">
-          <DataField>NameCaptionLbl</DataField>
-        </Field>
-        <Field Name="EntitlmentCaptionLbl">
-          <DataField>EntitlmentCaptionLbl</DataField>
-        </Field>
-        <Field Name="Days_TakenCaptionLbl">
-          <DataField>Days_TakenCaptionLbl</DataField>
-        </Field>
-        <Field Name="Days_RecalledCaptionLbl">
-          <DataField>Days_RecalledCaptionLbl</DataField>
-        </Field>
-        <Field Name="Days_AbsentCaptionLbl">
-          <DataField>Days_AbsentCaptionLbl</DataField>
-        </Field>
-        <Field Name="ANNUAL_LEAVE_BALANCE_CaptionLbl">
-          <DataField>ANNUAL_LEAVE_BALANCE_CaptionLbl</DataField>
-        </Field>
-        <Field Name="BalanceBF">
-          <DataField>BalanceBF</DataField>
-        </Field>
-        <Field Name="BalanceBFFormat">
-          <DataField>BalanceBFFormat</DataField>
-        </Field>
-        <Field Name="Entitlement">
-          <DataField>Entitlement</DataField>
-        </Field>
-        <Field Name="EntitlementFormat">
-          <DataField>EntitlementFormat</DataField>
-        </Field>
-        <Field Name="TotalRecalls">
-          <DataField>TotalRecalls</DataField>
-        </Field>
-        <Field Name="TotalRecallsFormat">
-          <DataField>TotalRecallsFormat</DataField>
-        </Field>
-        <Field Name="TotalAbsence">
-          <DataField>TotalAbsence</DataField>
-        </Field>
-        <Field Name="TotalAbsenceFormat">
-          <DataField>TotalAbsenceFormat</DataField>
-        </Field>
-        <Field Name="TotalTaken">
-          <DataField>TotalTaken</DataField>
-        </Field>
-        <Field Name="TotalTakenFormat">
-          <DataField>TotalTakenFormat</DataField>
-        </Field>
-        <Field Name="Balance">
-          <DataField>Balance</DataField>
-        </Field>
-        <Field Name="BalanceFormat">
-          <DataField>BalanceFormat</DataField>
-        </Field>
-        <Field Name="Picture">
-          <DataField>Picture</DataField>
-        </Field>
-        <Field Name="DateFilter">
-          <DataField>DateFilter</DataField>
-        </Field>
-      </Fields>
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-    </DataSet>
-  </DataSets>
 </Report>

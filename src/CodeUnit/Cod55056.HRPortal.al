@@ -486,12 +486,15 @@ codeunit 55056 HRPortal
     end;
 
     procedure SendLeaveApproval(DocNo: Code[50]; UserID: Code[50]) status: Text
+    var
+        HRMgt: Codeunit "HR Management";
     begin
         LeaveApplication.Get(DocNo);
 
         if ApprovalMgtHR.CheckLeaveRequestWorkflowEnabled(LeaveApplication) then
             ApprovalMgtHR.OnSendLeaveRequestApproval(LeaveApplication);
         UpdateApprovalEntries(DocNo, UserID);
+        HRMgt.NotifyLeaveReliever(LeaveApplication."Application No");
         status := 'success*Document has been successfully sent for approval';
     end;
 
@@ -1349,7 +1352,7 @@ codeunit 55056 HRPortal
 
     begin
         PortalUploads.INIT;
-        PortalUploads."Document No" := DocumentNo;
+        PortalUploads."Application No" := DocumentNo;
         PortalUploads.Description := Description;
         PortalUploads.LocalUrl := Url;
         PortalUploads.Uploaded := TRUE;

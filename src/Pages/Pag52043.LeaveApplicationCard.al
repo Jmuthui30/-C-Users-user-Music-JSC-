@@ -333,7 +333,7 @@ page 52043 "Leave Application Card"
 
             action(Attachments1)
             {
-                Caption = 'Attachmented Documents';
+                Caption = 'Attached Documents';
                 Image = Attach;
                 Promoted = true;
                 PromotedCategory = Category5;
