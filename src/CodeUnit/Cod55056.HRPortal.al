@@ -466,7 +466,7 @@ codeunit 55056 HRPortal
     begin
         TempBlob_lRec.CreateOutStream(OutStr, TEXTENCODING::UTF8);
         Employee.Reset;
-        Employee.SetFilter("Company Code", 'Judicial Service Commission');
+        Employee.SetFilter("Company Code", COMPANYNAME);
         if Employee.FindSet then begin
             ClientP9AReport.SetPeriod(DT2DATE(startDate), DT2DATE(endDate));
             ClientP9AReport.SetTableView(Employee);
