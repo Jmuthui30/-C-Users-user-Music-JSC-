@@ -99,7 +99,8 @@ report 53099 "Batch Allocation"
             {
                 action(LayoutName)
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = All;  
+                    
                 }
             }
         }
