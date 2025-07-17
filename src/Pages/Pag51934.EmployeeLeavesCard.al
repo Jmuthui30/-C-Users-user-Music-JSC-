@@ -47,33 +47,39 @@ page 51934 "Employee Leaves Card"
                 {
                     ToolTip = 'Specifies the value of the Leave Entitlment field.';
                     Caption = 'Leave Entitlement';
+                    ApplicationArea = All;
                 }
 
                 field("Leave Adjustment"; "Leave Adjustment")
                 {
                     ToolTip = 'Specifies the value of the Leave Entitlment field.';
                     Caption = 'Leave Adjustment';
+                    ApplicationArea = All;
                 }
                 field("Recalled Days"; Rec."Leave Recall Days")
                 {
                     ToolTip = 'Specifies the value of the Recalled Days field.';
                     Caption = 'Recalled Days';
+                    ApplicationArea = All;
                 }
 
                 field("Balance brought forward"; Rec."Leave Balance Brought Forward")
                 {
                     ToolTip = 'Specifies the value of the Balance brought forward field.';
                     Caption = 'Balance Brought Forward';
+                    ApplicationArea = All;
                 }
                 field("Total Leave Days Taken"; Rec."Leave Days Taken")
                 {
                     ToolTip = 'Specifies the value of the Total Leave Days Taken field.';
                     Caption = 'Leave Days Taken';
+                    ApplicationArea = All;
                 }
                 field("Leave Balance"; Rec."Leave Balance")
                 {
                     ToolTip = 'Specifies the value of the Leave balance field.';
                     Caption = 'Leave Balance';
+                    ApplicationArea = All;
                 }
             }
             part(Control1; "Employee Leave Assignment")

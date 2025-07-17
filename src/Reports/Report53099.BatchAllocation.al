@@ -74,16 +74,18 @@ report 53099 "Batch Allocation"
                     {
                         TableRelation = "Leave Type".Code;
                         Caption = 'Leave Type';
-
+                        ApplicationArea = All;
                     }
                     field(TransactionType; TransactionType)
                     {
                         Caption = 'Transaction Type';
+                        ApplicationArea = All;
 
                     }
                     field(EntitlementAdjustment; EntitlementAdjustment)
                     {
                         Caption = 'Entitlement Adjustment';
+                        ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Entitlement Adjustment field';
                     }
 
@@ -97,7 +99,7 @@ report 53099 "Batch Allocation"
             {
                 action(LayoutName)
                 {
-
+                    ApplicationArea = All;
                 }
             }
         }
