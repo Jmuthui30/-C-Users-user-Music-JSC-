@@ -407,50 +407,52 @@ codeunit 55056 HRPortal
         StatementOutstream: OutStream;
         StatementInstream: InStream;
         Base64Convert: Codeunit "Base64 Convert";
-        //PaySlipReport: Report "New Payslipx";
-        Employees: Record Employee;
+        PaySlipReport: Report "Client Payslip";
+        Employee: Record "Client Employee Master";
         DateFilter: Date;
         DateFilterTxt: Text;
     begin
-        // DateFilterTxt := Format(payPeriod);
-        // TempBlob_lRec.CreateOutStream(OutStr, TEXTENCODING::UTF8);
-        // Employee.Reset;
-        // //Employee.SetRange(Employee."No.", employeeNumber);
-        // Employee.SetRange(Employee."Employee No. Filter", employeeNumber);
-        // Employee.SetRange("Pay Period Filter", Dt2Date(payPeriod));
-        // if Employee.FindFirst() then begin
-        //     PaySlipReport.InitPayrollFilter(DateFilterTxt);
-        //     PaySlipReport.SetTableView(Employee);
-        //     TempBlob.CreateOutStream(StatementOutstream);
-        //     if PaySlipReport.SaveAs('', ReportFormat::Pdf, StatementOutstream) then begin
-        //         TempBlob.CreateInStream(StatementInstream);
-        //         BaseImage := Base64Convert.ToBase64(StatementInstream);
-        //         exit(BaseImage);
-        //     end;
-        //     // RecRef.GetTable(Employee);
-        //     // Report.SaveAs(Report::"New Payslipx", '', ReportFormat::Pdf, OutStr, RecRef);
-        //     // FileManagement_lCdu.BLOBExport(TempBlob_lRec, STRSUBSTNO('payslip_%1.Pdf', Employee."No."), TRUE);
-        //     // TempBlob_lRec.CreateInstream(InStr, TEXTENCODING::UTF8);
-        //     // BaseImage := Base64Convert.ToBase64(InStr);
-        // end;
+        DateFilterTxt := Format(payPeriod);
+        TempBlob_lRec.CreateOutStream(OutStr, TEXTENCODING::UTF8);
+        Employee.Reset;
+        //Employee.SetRange(Employee."No.", employeeNumber);
+        Employee.SetRange(Employee."No.", employeeNumber);
+        Employee.SetRange("Pay Period Filter", Dt2Date(payPeriod));
+        Employee.SetRange(Status, Employee.Status::Active);
+        if Employee.FindFirst() then begin
+            //PaySlipReport.InitPayrollFilter(DateFilterTxt);
+            PaySlipReport.SetTableView(Employee);
+            TempBlob.CreateOutStream(StatementOutstream);
+            if PaySlipReport.SaveAs('', ReportFormat::Pdf, StatementOutstream) then begin
+                TempBlob.CreateInStream(StatementInstream);
+                BaseImage := Base64Convert.ToBase64(StatementInstream);
+                exit(BaseImage);
+            end;
+            // RecRef.GetTable(Employee);
+            // Report.SaveAs(Report::"New Payslipx", '', ReportFormat::Pdf, OutStr, RecRef);
+            // FileManagement_lCdu.BLOBExport(TempBlob_lRec, STRSUBSTNO('payslip_%1.Pdf', Employee."No."), TRUE);
+            // TempBlob_lRec.CreateInstream(InStr, TEXTENCODING::UTF8);
+            // BaseImage := Base64Convert.ToBase64(InStr);
+        end;
     end;
 
     procedure FAWEgenerateP9(employeeNumber: Code[20]; startDate: DateTime; endDate: DateTime) BaseImage: Text
     var
         RecRef: RecordRef;
+        Employee: Record "Client Employee Master";
     begin
-        // TempBlob_lRec.CreateOutStream(OutStr, TEXTENCODING::UTF8);
-        // Employee.Reset;
-        // Employee.SetRange(Employee."No.", employeeNumber);
-        // Employee.SetFilter(Employee."Date Filter", Format(Format(DT2DATE(startDate)) + '..' + Format(DT2DATE(endDate))));
-        // Employee.SetFilter("Pay Period Filter", Format(Format(DT2DATE(startDate)) + '..' + Format(DT2DATE(endDate))));
-        // if Employee.FindSet then begin
-        //     RecRef.GetTable(Employee);
-        //     Report.SaveAs(Report::"P9A Report", '', ReportFormat::Pdf, OutStr, RecRef);
-        //     FileManagement_lCdu.BLOBExport(TempBlob_lRec, STRSUBSTNO('P9_%1.Pdf', Employee."No."), TRUE);
-        //     TempBlob_lRec.CreateInstream(InStr, TEXTENCODING::UTF8);
-        //     BaseImage := Base64Convert.ToBase64(InStr);
-        // end;
+        TempBlob_lRec.CreateOutStream(OutStr, TEXTENCODING::UTF8);
+        Employee.Reset;
+        Employee.SetRange(Employee."No.", employeeNumber);
+        Employee.SetFilter(Employee."Date Filter", Format(Format(DT2DATE(startDate)) + '..' + Format(DT2DATE(endDate))));
+        Employee.SetFilter("Pay Period Filter", Format(Format(DT2DATE(startDate)) + '..' + Format(DT2DATE(endDate))));
+        if Employee.FindSet then begin
+            RecRef.GetTable(Employee);
+            Report.SaveAs(Report::"Client P9A", '', ReportFormat::Pdf, OutStr, RecRef);
+            FileManagement_lCdu.BLOBExport(TempBlob_lRec, STRSUBSTNO('P9_%1.Pdf', Employee."No."), TRUE);
+            TempBlob_lRec.CreateInstream(InStr, TEXTENCODING::UTF8);
+            BaseImage := Base64Convert.ToBase64(InStr);
+        end;
     end;
 
     procedure PrintP9(EmployeeNo: Code[50]; Year: Integer) P9Base64Txt: Text
