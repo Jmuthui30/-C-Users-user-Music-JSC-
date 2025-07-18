@@ -138,8 +138,8 @@ report 53077 "Update Submit Appl."
 
         //ApplicantsQual.Qualification := QualificationApp.Description;
 
-        IF ApplicantsQual.Get(qualificationApp.Code) then
-            PopulateAreaofSpecialization();
+        // IF ApplicantsQual.Get(qualificationApp.Code) then
+        //     PopulateAreaofSpecialization();
 
         // Validate data if required
         if ValidateDataBeforeInsert then
