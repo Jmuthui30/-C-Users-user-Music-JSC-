@@ -709,7 +709,8 @@ report 52970 "Applicant job Submitted"
                     FIELD(ShowACademic6; ShowACademic6)
                     {
                         ApplicationArea = All;
-                        Caption = 'Show BACHELORS';
+                        Caption = 'Show Degree';
+
                         ToolTip = 'Specifies whether to show the Academic Qualification column';
                         Trigger OnValidate()
                         var

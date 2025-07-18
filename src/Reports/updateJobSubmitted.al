@@ -136,6 +136,11 @@ report 53077 "Update Submit Appl."
         if ApplicantApp.Get("Job Application"."Applicant No.") then
             PopulateApplicantPersonalData();
 
+        //ApplicantsQual.Qualification := QualificationApp.Description;
+
+        IF ApplicantsQual.Get(qualificationApp.Code) then
+            PopulateAreaofSpecialization();
+
         // Validate data if required
         if ValidateDataBeforeInsert then
             if not ValidateRequiredFields() then
@@ -225,6 +230,7 @@ report 53077 "Update Submit Appl."
         PopulateLanguageSkills();
     end;
 
+
     local procedure PopulateLanguageSkills()
     begin
         ApplicantSubmittedJob."First Language (R/W/S)" := ApplicantApp."First Language (R/W/S)";
@@ -239,6 +245,11 @@ report 53077 "Update Submit Appl."
         ApplicantSubmittedJob."Other Language Read" := ApplicantApp."Other Language Read";
         ApplicantSubmittedJob."Other Language Write" := ApplicantApp."Other Language Write";
         ApplicantSubmittedJob."Other Language Speak" := ApplicantApp."Other Language Speak";
+    end;
+
+    local procedure PopulateAreaofSpecialization()
+    begin
+        ApplicantsQual.Qualification := QualificationApp.Description;
     end;
 
     local procedure ValidateRequiredFields(): Boolean
@@ -335,14 +346,109 @@ report 53077 "Update Submit Appl."
         case RecordNumber of
             1:
                 begin
-                    ApplicantSubmittedJob."Qualification Code" := ApplicantsQual."Qualification Code";
-                    if QualificationApp.Get(ApplicantSubmittedJob."Qualification Code") then
-                        if (QualificationApp.Code = 'KACE') or (QualificationApp.Code = 'KCE') then
-                            ApplicantSubmittedJob."Area of Specialization" := QualificationApp.Description;
+                    //  ApplicantSubmittedJob."Qualification Code" := ApplicantsQual."Qualification Code";
+
+                    if (ApplicantsQual."Qualification Code" = 'KACE') or (ApplicantsQual."Qualification Code" = 'KCE') then
+                        ApplicantSubmittedJob."Area of Specialization" := ApplicantsQual.Description;
                     ApplicantSubmittedJob."Institution/Company" := ApplicantsQual."Institution/Company";
                     ApplicantSubmittedJob."From Date" := ApplicantsQual."From Date";
                     ApplicantSubmittedJob."To Date" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Grade/Class" := ApplicantsQual."Grade/Class";
+                end;
+            2:
+                begin
+
+
+                    if ApplicantsQual."Qualification Code" = 'KCSE' then
+                        ApplicantSubmittedJob."Area of Specialization 1" := ApplicantsQual.Description;
+                    ApplicantSubmittedJob."Institution/Company 1" := ApplicantsQual."Institution/Company";
+                    ApplicantSubmittedJob."From Date 1" := ApplicantsQual."From Date";
+                    ApplicantSubmittedJob."To Date 1" := ApplicantsQual."To Date";
+                    ApplicantSubmittedJob."Grade/Class 1" := ApplicantsQual."Grade/Class";
+
+                end;
+            3:
+                begin
+                    //  applicantSubmittedJob."Qualification Code 3" := ApplicantsQual."Qualification Code";
+
+                    if ApplicantsQual."Qualification Code" = '70000..79999' then
+                        ApplicantSubmittedJob."Area of Specialization 3" := ApplicantsQual.Description;
+                    ApplicantSubmittedJob."Institution/Company 3" := ApplicantsQual."Institution/Company";
+                    ApplicantSubmittedJob."From Date 3" := ApplicantsQual."From Date";
+                    ApplicantSubmittedJob."To Date 3" := ApplicantsQual."To Date";
+                    ApplicantSubmittedJob."Grade/Class 3" := ApplicantsQual."Grade/Class";
+                end;
+            4:
+                begin
+                    if ApplicantsQual."Qualification Code" = '50000..59999' then
+                        ApplicantSubmittedJob."Institution/Company 4" := ApplicantsQual."Institution/Company";
+                    ApplicantSubmittedJob."From Date 4" := ApplicantsQual."From Date";
+                    ApplicantSubmittedJob."To Date 4" := ApplicantsQual."To Date";
+                    ApplicantSubmittedJob."Grade/Class 4" := ApplicantsQual."Grade/Class";
+                    ApplicantSubmittedJob."Area of Specialization 4" := ApplicantsQual.Description;
+                end;
+            5:
+                begin
+
+                    if ApplicantsQual."Qualification Code" = '40000..49999' then
+                        applicantSubmittedJob."Area of Specialization 5" := ApplicantsQual.Description;
+                    ApplicantSubmittedJob."Institution/Company 5" := ApplicantsQual."Institution/Company";
+                    ApplicantSubmittedJob."From Date 5" := ApplicantsQual."From Date";
+                    ApplicantSubmittedJob."To Date 5" := ApplicantsQual."To Date";
+                    ApplicantSubmittedJob."Grade/Class 5" := ApplicantsQual."Grade/Class";
+
+                end;
+            6:
+                begin
+                    if ApplicantsQual."Qualification Code" = '30000..39999' then
+                        applicantSubmittedJob."Area of Specialization 6" := ApplicantsQual.Description;
+                    applicantSubmittedJob."Qualification Code 6" := ApplicantsQual."Qualification Code";
+                    ApplicantSubmittedJob."Institution/Company 6" := ApplicantsQual."Institution/Company";
+                    ApplicantSubmittedJob."From Date 6" := ApplicantsQual."From Date";
+                    ApplicantSubmittedJob."To Date 6" := ApplicantsQual."To Date";
+                    ApplicantSubmittedJob."Grade/Class 6" := ApplicantsQual."Grade/Class";
+
+                end;
+            7:
+                begin
+
+                    if ApplicantsQual."Qualification Code" = '60000..60009' then
+                        applicantSubmittedJob."Area of Specialization 2" := ApplicantsQual.Description;
+                    ApplicantSubmittedJob."Institution/Company 2" := ApplicantsQual."Institution/Company";
+                    ApplicantSubmittedJob."From Date 2" := ApplicantsQual."From Date";
+                    ApplicantSubmittedJob."To Date 2" := ApplicantsQual."To Date";
+                    ApplicantSubmittedJob."Grade/Class 2" := ApplicantsQual."Grade/Class";
+
+                end;
+            8:
+                begin
+                    if ApplicantsQual."Qualification Code" = '20000..29999' then
+                        applicantSubmittedJob."Area of Specialization 8" := ApplicantsQual.Description;
+                    ApplicantSubmittedJob."Institution/Company 8" := ApplicantsQual."Institution/Company";
+                    ApplicantSubmittedJob."From Date 8" := ApplicantsQual."From Date";
+                    ApplicantSubmittedJob."To Date 8" := ApplicantsQual."To Date";
+                    ApplicantSubmittedJob."Grade/Class 8" := ApplicantsQual."Grade/Class";
+
+                end;
+            9:
+                begin
+                    if ApplicantsQual."Qualification Code" = '10000..19999' then
+                        applicantSubmittedJob."Area of Specialization 9" := ApplicantsQual.Description;
+                    ApplicantSubmittedJob."Institution/Company 9" := ApplicantsQual."Institution/Company";
+                    ApplicantSubmittedJob."From Date 9" := ApplicantsQual."From Date";
+                    ApplicantSubmittedJob."To Date 9" := ApplicantsQual."To Date";
+                    ApplicantSubmittedJob."Grade/Class 9" := ApplicantsQual."Grade/Class";
+
+                end;
+            10:
+                begin
+                    if ApplicantsQual."Qualification Code" = '80000..89999' then
+                        applicantSubmittedJob."Area of Specialization 10" := ApplicantsQual.Description;
+                    ApplicantSubmittedJob."Institution/Company 10" := ApplicantsQual."Institution/Company";
+                    ApplicantSubmittedJob."From Date 10" := ApplicantsQual."From Date";
+                    ApplicantSubmittedJob."To Date 10" := ApplicantsQual."To Date";
+                    ApplicantSubmittedJob."Grade/Class 10" := ApplicantsQual."Grade/Class";
+
                 end;
         // Continue for remaining education records...
         end;

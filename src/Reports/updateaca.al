@@ -6,24 +6,31 @@ report 53070 "update quo code"
 
     dataset
     {
-        dataitem(Applicant; Applicant)
+        //Qualification  "Applicants Qualification
+        dataitem("Applicants Qualification"; "Applicants Qualification")
         {
-            RequestFilterFields = "No.";
-            column(No_; "No.")
+            // RequestFilterFields = "Qualification Type", Code;
+            column(Employee_No_; "Employee No.")
             {
 
             }
             trigger OnAfterGetRecord()
             begin
                 AppQ.Reset();
-                AppQ.SetRange(AppQ."Applicant No.", "No.");
+                AppQ.SetRange(AppQ."Employee No.", "Employee No.");
                 if AppQ.Find('-') then begin
-                    repeat
-                        AppQ."Applicant Types" := "Applicant Type";
-                        AppQ.Modify()
-                    until AppQ.Next() = 0;
+                    if AppQ.Description = 'Other' then begin
+                        repeat
+                            AppQ.Description := Qualification;
+                            AppQ.Modify()
+                                             until AppQ.Next() = 0;
+
+                    end;
+
                 end;
                 //*******************************************************************************
+
+
             end;
 
         }
@@ -65,7 +72,7 @@ report 53070 "update quo code"
 
     var
         myInt: Integer;
-        AppQ: Record "Job Application";
+        AppQ: Record "Applicants Qualification";
 
 
         JobApplication: record "Job Application";
