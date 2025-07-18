@@ -825,6 +825,20 @@ page 56200 "Applicant Submitted Job"
                 ApplicationArea = All;
 
             }
+            action(updated)
+
+            {
+                Promoted = true;
+                Image = View;
+                PromotedCategory = Category10;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+                RunObject = report "Update Submit Appl.";
+                RunPageMode = View;
+                Caption = 'UpDate Submitted New.';
+                ApplicationArea = All;
+
+            }
             action(Clear)
 
             {
