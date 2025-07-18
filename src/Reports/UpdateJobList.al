@@ -95,7 +95,7 @@ report 53072 "update Job Appl."
                 // //*********************************************************
                 ApplicantEmpl.Reset();
                 ApplicantEmpl.SetRange("Applicant No.", applicantSubmittedJob."Applicant No.");
-                ApplicantEmpl.SetCurrentKey("From Date"); // Ensure records are sorted (e.g., newest first)
+                ApplicantEmpl.SetCurrentKey("To Date"); // Ensure records are sorted (e.g., newest first)
                 if ApplicantEmpl.FindSet() then begin
                     EmploymentRecordCount := 0; // Reset the count for each applicant
                     repeat
@@ -103,15 +103,16 @@ report 53072 "update Job Appl."
                         case EmploymentRecordCount of
                             1:
                                 begin
-                                    if ApplicantEmpl."Currently Employment" then
+                                    if ApplicantEmpl."Currently Employment" = true then begin
+                                        applicantSubmittedJob."Current Employer" := ApplicantEmpl."Currently Employment";
+                                        ApplicantSubmittedJob."Sector Of Employement" := ApplicantEmpl.Sector;
+                                        ApplicantSubmittedJob."Designation Employer" := ApplicantEmpl."Sector Specification";
+                                        ApplicantSubmittedJob."From Date Employer" := ApplicantEmpl."From Date";
+                                        ApplicantSubmittedJob."To Date Employer" := ApplicantEmpl."To Date";
+                                        applicantSubmittedJob."Substantive Post" := ApplicantEmpl."Substantive Post";
+                                        applicantSubmittedJob."Employment Period" := ApplicantEmpl."Employment Period";
                                         ApplicantSubmittedJob.Employer := ApplicantEmpl."Employer/Institution Name";
-                                    ApplicantSubmittedJob."Sector Of Employement" := ApplicantEmpl.Sector;
-                                    ApplicantSubmittedJob."Designation Employer" := ApplicantEmpl."Sector Specification";
-                                    ApplicantSubmittedJob."From Date Employer" := ApplicantEmpl."From Date";
-                                    ApplicantSubmittedJob."To Date Employer" := ApplicantEmpl."To Date";
-                                    applicantSubmittedJob."Current Employer" := ApplicantEmpl."Currently Employment";
-                                    applicantSubmittedJob."Substantive Post" := ApplicantEmpl."Substantive Post";
-                                    applicantSubmittedJob."Employment Period" := ApplicantEmpl."Employment Period";
+                                    end;
                                 end;
                             2:
                                 begin
@@ -140,9 +141,63 @@ report 53072 "update Job Appl."
                                     applicantSubmittedJob."Substantive Post 4" := ApplicantEmpl."Substantive Post";
                                     applicantSubmittedJob."Employment Period 4" := ApplicantEmpl."Employment Period";
                                 end;
+                            5:
+                                begin
+                                    ApplicantSubmittedJob."Employer 5" := ApplicantEmpl."Employer/Institution Name";
+                                    ApplicantSubmittedJob."From Date Employer 5" := ApplicantEmpl."From Date";
+                                    ApplicantSubmittedJob."To Date Employer 5" := ApplicantEmpl."To Date";
+                                    ApplicantSubmittedJob."Designation Employer 5" := ApplicantEmpl."Sector Specification";
+                                    applicantSubmittedJob."Substantive Post 5" := ApplicantEmpl."Substantive Post";
+                                    applicantSubmittedJob."Employment Period 5" := ApplicantEmpl."Employment Period";
+                                end;
+                            6:
+                                begin
+                                    ApplicantSubmittedJob."Employer 6" := ApplicantEmpl."Employer/Institution Name";
+                                    ApplicantSubmittedJob."From Date Employer 6" := ApplicantEmpl."From Date";
+                                    ApplicantSubmittedJob."To Date Employer 6" := ApplicantEmpl."To Date";
+                                    ApplicantSubmittedJob."Designation Employer 6" := ApplicantEmpl."Sector Specification";
+                                    applicantSubmittedJob."Substantive Post 6" := ApplicantEmpl."Substantive Post";
+                                    applicantSubmittedJob."Employment Period 6" := ApplicantEmpl."Employment Period";
+                                end;
+                            7:
+                                begin
+                                    ApplicantSubmittedJob."Employer 7" := ApplicantEmpl."Employer/Institution Name";
+                                    ApplicantSubmittedJob."From Date Employer 7" := ApplicantEmpl."From Date";
+                                    ApplicantSubmittedJob."To Date Employer 7" := ApplicantEmpl."To Date";
+                                    ApplicantSubmittedJob."Designation Employer 7" := ApplicantEmpl."Sector Specification";
+                                    applicantSubmittedJob."Substantive Post 7" := ApplicantEmpl."Substantive Post";
+                                    applicantSubmittedJob."Employment Period 7" := ApplicantEmpl."Employment Period";
+                                end;
+                            8:
+                                begin
+                                    ApplicantSubmittedJob."Employer 8" := ApplicantEmpl."Employer/Institution Name";
+                                    ApplicantSubmittedJob."From Date Employer 8" := ApplicantEmpl."From Date";
+                                    ApplicantSubmittedJob."To Date Employer 8" := ApplicantEmpl."To Date";
+                                    ApplicantSubmittedJob."Designation Employer 8" := ApplicantEmpl."Sector Specification";
+                                    applicantSubmittedJob."Substantive Post 8" := ApplicantEmpl."Substantive Post";
+                                    applicantSubmittedJob."Employment Period 8" := ApplicantEmpl."Employment Period";
+                                end;
+                            9:
+                                begin
+                                    ApplicantSubmittedJob."Employer 9" := ApplicantEmpl."Employer/Institution Name";
+                                    ApplicantSubmittedJob."From Date Employer 9" := ApplicantEmpl."From Date";
+                                    ApplicantSubmittedJob."To Date Employer 9" := ApplicantEmpl."To Date";
+                                    ApplicantSubmittedJob."Designation Employer 9" := ApplicantEmpl."Sector Specification";
+                                    applicantSubmittedJob."Substantive Post 9" := ApplicantEmpl."Substantive Post";
+                                    applicantSubmittedJob."Employment Period 9" := ApplicantEmpl."Employment Period";
+                                end;
+                            10:
+                                begin
+                                    ApplicantSubmittedJob."Employer 10" := ApplicantEmpl."Employer/Institution Name";
+                                    ApplicantSubmittedJob."From Date Employer 10" := ApplicantEmpl."From Date";
+                                    ApplicantSubmittedJob."To Date Employer 10" := ApplicantEmpl."To Date";
+                                    ApplicantSubmittedJob."Designation Employer 10" := ApplicantEmpl."Sector Specification";
+                                    applicantSubmittedJob."Substantive Post 10" := ApplicantEmpl."Substantive Post";
+                                    applicantSubmittedJob."Employment Period 10" := ApplicantEmpl."Employment Period";
+                                end;
                         end;
 
-                        if EmploymentRecordCount = 4 then
+                        if EmploymentRecordCount = 10 then
                             break;
                     until ApplicantEmpl.Next() = 0;
 
@@ -154,7 +209,7 @@ report 53072 "update Job Appl."
                 //*********************************************************************************education
                 ApplicantsQual.Reset();
                 ApplicantsQual.SetRange("Employee No.", applicantSubmittedJob."Applicant No.");
-                ApplicantsQual.SetCurrentKey("From Date"); // Ensure records are sorted (e.g.,
+                ApplicantsQual.SetCurrentKey("To Date"); // Ensure records are sorted (e.g.,
                 // newest first)
                 if ApplicantsQual.FindSet() then begin
                     EducationRecordCount := 0;
@@ -167,7 +222,8 @@ report 53072 "update Job Appl."
 
                                         ApplicantSubmittedJob."Qualification Code" := ApplicantsQual."Qualification Code";
                                         qualificationApp.Get(ApplicantSubmittedJob."Qualification Code");
-                                        applicantSubmittedJob."Area of Specialization" := QualificationApp.Description;
+                                        if QualificationApp.Level = 0 then
+                                            applicantSubmittedJob."Area of Specialization" := QualificationApp.Description;
                                         ApplicantSubmittedJob."Institution/Company" := ApplicantsQual."Institution/Company";
                                         ApplicantSubmittedJob."From Date" := ApplicantsQual."From Date";
                                         ApplicantSubmittedJob."To Date" := ApplicantsQual."To Date";
@@ -178,7 +234,8 @@ report 53072 "update Job Appl."
                                     begin
                                         ApplicantSubmittedJob."Qualification Code 2" := ApplicantsQual."Qualification Code";
                                         qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 2");
-                                        applicantSubmittedJob."Area of Specialization 2" := QualificationApp.Description;
+                                        if QualificationApp.Level = 1 then
+                                            applicantSubmittedJob."Area of Specialization 2" := QualificationApp.Description;
                                         ApplicantSubmittedJob."Institution/Company 2" := ApplicantsQual."Institution/Company";
                                         ApplicantSubmittedJob."From Date 2" := ApplicantsQual."From Date";
                                         ApplicantSubmittedJob."To Date 2" := ApplicantsQual."To Date";
@@ -188,7 +245,8 @@ report 53072 "update Job Appl."
                                     begin
                                         ApplicantSubmittedJob."Qualification Code 3" := ApplicantsQual."Qualification Code";
                                         qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 3");
-                                        applicantSubmittedJob."Area of Specialization 3" := QualificationApp.Description;
+                                        if QualificationApp.Level = 2 then
+                                            applicantSubmittedJob."Area of Specialization 3" := QualificationApp.Description;
                                         ApplicantSubmittedJob."Institution/Company 3" := ApplicantsQual."Institution/Company";
                                         ApplicantSubmittedJob."From Date 3" := ApplicantsQual."From Date";
                                         ApplicantSubmittedJob."To Date 3" := ApplicantsQual."To Date";
@@ -198,7 +256,8 @@ report 53072 "update Job Appl."
                                     begin
                                         ApplicantSubmittedJob."Qualification Code 4" := ApplicantsQual."Qualification Code";
                                         qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 4");
-                                        applicantSubmittedJob."Area of Specialization 4" := QualificationApp.Description;
+                                        if QualificationApp.Level = 4 then
+                                            applicantSubmittedJob."Area of Specialization 4" := QualificationApp.Description;
                                         ApplicantSubmittedJob."Institution/Company 4" := ApplicantsQual."Institution/Company";
                                         ApplicantSubmittedJob."From Date 4" := ApplicantsQual."From Date";
                                         ApplicantSubmittedJob."To Date 4" := ApplicantsQual."To Date";
@@ -208,13 +267,69 @@ report 53072 "update Job Appl."
                                     begin
                                         ApplicantSubmittedJob."Qualification Code 5" := ApplicantsQual."Qualification Code";
                                         qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 5");
-                                        applicantSubmittedJob."Area of Specialization 5" := QualificationApp.Description;
+                                        if QualificationApp.Level = 5 then
+                                            applicantSubmittedJob."Area of Specialization 5" := QualificationApp.Description;
 
                                         ApplicantSubmittedJob."Institution/Company 5" := ApplicantsQual."Institution/Company";
                                         ApplicantSubmittedJob."From Date 5" := ApplicantsQual."From Date";
                                         ApplicantSubmittedJob."To Date 5" := ApplicantsQual."To Date";
                                         ApplicantSubmittedJob."Grade/Class 5" := ApplicantsQual."Grade/Class";
 
+                                    end;
+                                6:
+                                    begin
+                                        ApplicantSubmittedJob."Qualification Code 6" := ApplicantsQual."Qualification Code";
+                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 6");
+                                        if QualificationApp.Level = 6 then
+                                            applicantSubmittedJob."Area of Specialization 6" := QualificationApp.Description;
+                                        ApplicantSubmittedJob."Institution/Company 6" := ApplicantsQual."Institution/Company";
+                                        ApplicantSubmittedJob."From Date 6" := ApplicantsQual."From Date";
+                                        ApplicantSubmittedJob."To Date 6" := ApplicantsQual."To Date";
+                                        ApplicantSubmittedJob."Grade/Class 6" := ApplicantsQual."Grade/Class";
+                                    end;
+                                7:
+                                    begin
+                                        ApplicantSubmittedJob."Qualification Code 7" := ApplicantsQual."Qualification Code";
+                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 7");
+                                        if QualificationApp.Level = 7 then
+                                            applicantSubmittedJob."Area of Specialization 7" := QualificationApp.Description;
+                                        ApplicantSubmittedJob."Institution/Company 7" := ApplicantsQual."Institution/Company";
+                                        ApplicantSubmittedJob."From Date 7" := ApplicantsQual."From Date";
+                                        ApplicantSubmittedJob."To Date 7" := ApplicantsQual."To Date";
+                                        ApplicantSubmittedJob."Grade/Class 7" := ApplicantsQual."Grade/Class";
+                                    end;
+                                8:
+                                    begin
+                                        ApplicantSubmittedJob."Qualification Code 8" := ApplicantsQual."Qualification Code";
+                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 8");
+                                        if QualificationApp.Level = 8 then
+                                            applicantSubmittedJob."Area of Specialization 8" := QualificationApp.Description;
+                                        ApplicantSubmittedJob."Institution/Company 8" := ApplicantsQual."Institution/Company";
+                                        ApplicantSubmittedJob."From Date 8" := ApplicantsQual."From Date";
+                                        ApplicantSubmittedJob."To Date 8" := ApplicantsQual."To Date";
+                                        ApplicantSubmittedJob."Grade/Class 8" := ApplicantsQual."Grade/Class";
+                                    end;
+                                9:
+                                    begin
+                                        ApplicantSubmittedJob."Qualification Code 9" := ApplicantsQual."Qualification Code";
+                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 9");
+                                        if QualificationApp.Level = 9 then
+                                            applicantSubmittedJob."Area of Specialization 9" := QualificationApp.Description;
+                                        ApplicantSubmittedJob."Institution/Company 9" := ApplicantsQual."Institution/Company";
+                                        ApplicantSubmittedJob."From Date 9" := ApplicantsQual."From Date";
+                                        ApplicantSubmittedJob."To Date 9" := ApplicantsQual."To Date";
+                                        ApplicantSubmittedJob."Grade/Class 9" := ApplicantsQual."Grade/Class";
+                                    end;
+                                10:
+                                    begin
+                                        ApplicantSubmittedJob."Qualification Code 10" := ApplicantsQual."Qualification Code";
+                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 10");
+                                        if QualificationApp.Level = 10 then
+                                            applicantSubmittedJob."Area of Specialization 10" := QualificationApp.Description;
+                                        ApplicantSubmittedJob."Institution/Company 10" := ApplicantsQual."Institution/Company";
+                                        ApplicantSubmittedJob."From Date 10" := ApplicantsQual."From Date";
+                                        ApplicantSubmittedJob."To Date 10" := ApplicantsQual."To Date";
+                                        ApplicantSubmittedJob."Grade/Class 10" := ApplicantsQual."Grade/Class";
                                     end;
                             end;
                             if EducationRecordCount = 5 then
