@@ -95,7 +95,7 @@ report 53072 "update Job Appl."
                 // //*********************************************************
                 ApplicantEmpl.Reset();
                 ApplicantEmpl.SetRange("Applicant No.", applicantSubmittedJob."Applicant No.");
-                ApplicantEmpl.SetCurrentKey("To Date"); // Ensure records are sorted (e.g., newest first)
+                ApplicantEmpl.SetCurrentKey("From Date"); // Ensure records are sorted (e.g., newest first)
                 if ApplicantEmpl.FindSet() then begin
                     EmploymentRecordCount := 0; // Reset the count for each applicant
                     repeat
@@ -208,7 +208,7 @@ report 53072 "update Job Appl."
                 //*********************************************************************************education
                 ApplicantsQual.Reset();
                 ApplicantsQual.SetRange("Employee No.", applicantSubmittedJob."Applicant No.");
-                ApplicantsQual.SetCurrentKey("To Date"); // Ensure records are sorted (e.g.,
+                ApplicantsQual.SetCurrentKey("From Date"); // Ensure records are sorted (e.g.,
                 // newest first)
                 if ApplicantsQual.FindSet() then begin
                     EducationRecordCount := 0;
@@ -220,116 +220,145 @@ report 53072 "update Job Appl."
                                     begin
 
                                         ApplicantSubmittedJob."Qualification Code" := ApplicantsQual."Qualification Code";
-                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code");
-                                        if ((QualificationApp.Code = 'KACE') or (QualificationApp.Code = 'KCE')) then
-                                            applicantSubmittedJob."Area of Specialization" := QualificationApp.Description;
-                                        ApplicantSubmittedJob."Institution/Company" := ApplicantsQual."Institution/Company";
-                                        ApplicantSubmittedJob."From Date" := ApplicantsQual."From Date";
-                                        ApplicantSubmittedJob."To Date" := ApplicantsQual."To Date";
-                                        ApplicantSubmittedJob."Grade/Class" := ApplicantsQual."Grade/Class";
-
+                                        if (qualificationApp.Code in ['KACE', 'KCE']) then begin
+                                            qualificationApp.Reset();
+                                            qualificationApp.SetRange("Code", ApplicantsQual."Qualification Code");
+                                            if qualificationApp.FindSet() then
+                                                applicantSubmittedJob."Area of Specialization" := QualificationApp.Description;
+                                            ApplicantSubmittedJob."Institution/Company" := ApplicantsQual."Institution/Company";
+                                            ApplicantSubmittedJob."From Date" := ApplicantsQual."From Date";
+                                            ApplicantSubmittedJob."To Date" := ApplicantsQual."To Date";
+                                            ApplicantSubmittedJob."Grade/Class" := ApplicantsQual."Grade/Class";
+                                        end;
                                     end;
                                 2:
                                     begin
                                         ApplicantSubmittedJob."Qualification Code 1" := ApplicantsQual."Qualification Code";
-                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 1");
-                                        if QualificationApp.Code = 'KCSE' then
-                                            applicantSubmittedJob."Area of Specialization 1" := QualificationApp.Description;
-                                        ApplicantSubmittedJob."Institution/Company 1" := ApplicantsQual."Institution/Company";
-                                        ApplicantSubmittedJob."From Date 1" := ApplicantsQual."From Date";
-                                        ApplicantSubmittedJob."To Date 1" := ApplicantsQual."To Date";
-                                        ApplicantSubmittedJob."Grade/Class 1" := ApplicantsQual."Grade/Class";
+                                        if QualificationApp.Code = 'KCSE' then begin
+                                            qualificationApp.Reset();
+                                            qualificationApp.SetRange("Code", ApplicantsQual."Qualification Code");
+                                            if qualificationApp.FindSet() then
+                                                //qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 1");
 
+                                                applicantSubmittedJob."Area of Specialization 1" := QualificationApp.Description;
+                                            ApplicantSubmittedJob."Institution/Company 1" := ApplicantsQual."Institution/Company";
+                                            ApplicantSubmittedJob."From Date 1" := ApplicantsQual."From Date";
+                                            ApplicantSubmittedJob."To Date 1" := ApplicantsQual."To Date";
+                                            ApplicantSubmittedJob."Grade/Class 1" := ApplicantsQual."Grade/Class";
+                                        end
                                     end;
                                 3:
                                     begin
                                         ApplicantSubmittedJob."Qualification Code 3" := ApplicantsQual."Qualification Code";
-                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 3");
-                                        if QualificationApp.Level = 2 then
-                                            applicantSubmittedJob."Area of Specialization 3" := QualificationApp.Description;
-                                        ApplicantSubmittedJob."Institution/Company 3" := ApplicantsQual."Institution/Company";
-                                        ApplicantSubmittedJob."From Date 3" := ApplicantsQual."From Date";
-                                        ApplicantSubmittedJob."To Date 3" := ApplicantsQual."To Date";
-                                        ApplicantSubmittedJob."Grade/Class 3" := ApplicantsQual."Grade/Class";
+                                        if QualificationApp.Level = 2 then begin
+                                            qualificationApp.Reset();
+                                            qualificationApp.SetRange("Code", ApplicantsQual."Qualification Code");
+                                            if qualificationApp.FindSet() then
+                                                applicantSubmittedJob."Area of Specialization 3" := QualificationApp.Description;
+                                            ApplicantSubmittedJob."Institution/Company 3" := ApplicantsQual."Institution/Company";
+                                            ApplicantSubmittedJob."From Date 3" := ApplicantsQual."From Date";
+                                            ApplicantSubmittedJob."To Date 3" := ApplicantsQual."To Date";
+                                            ApplicantSubmittedJob."Grade/Class 3" := ApplicantsQual."Grade/Class";
+                                        end;
                                     end;
                                 4:
                                     begin
                                         ApplicantSubmittedJob."Qualification Code 4" := ApplicantsQual."Qualification Code";
-                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 4");
-                                        if QualificationApp.Level = 4 then
-                                            applicantSubmittedJob."Area of Specialization 4" := QualificationApp.Description;
-                                        ApplicantSubmittedJob."Institution/Company 4" := ApplicantsQual."Institution/Company";
-                                        ApplicantSubmittedJob."From Date 4" := ApplicantsQual."From Date";
-                                        ApplicantSubmittedJob."To Date 4" := ApplicantsQual."To Date";
-                                        ApplicantSubmittedJob."Grade/Class 4" := ApplicantsQual."Grade/Class";
+                                        if QualificationApp.Level = 4 then begin
+                                            qualificationApp.Reset();
+                                            qualificationApp.SetRange("Code", ApplicantsQual."Qualification Code");
+                                            if qualificationApp.FindSet() then
+                                                applicantSubmittedJob."Area of Specialization 4" := QualificationApp.Description;
+                                            ApplicantSubmittedJob."Institution/Company 4" := ApplicantsQual."Institution/Company";
+                                            ApplicantSubmittedJob."From Date 4" := ApplicantsQual."From Date";
+                                            ApplicantSubmittedJob."To Date 4" := ApplicantsQual."To Date";
+                                            ApplicantSubmittedJob."Grade/Class 4" := ApplicantsQual."Grade/Class";
+                                        end;
                                     end;
                                 5:
                                     begin
                                         ApplicantSubmittedJob."Qualification Code 5" := ApplicantsQual."Qualification Code";
-                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 5");
-                                        if QualificationApp.Level = 5 then
-                                            applicantSubmittedJob."Area of Specialization 5" := QualificationApp.Description;
-
-                                        ApplicantSubmittedJob."Institution/Company 5" := ApplicantsQual."Institution/Company";
-                                        ApplicantSubmittedJob."From Date 5" := ApplicantsQual."From Date";
-                                        ApplicantSubmittedJob."To Date 5" := ApplicantsQual."To Date";
-                                        ApplicantSubmittedJob."Grade/Class 5" := ApplicantsQual."Grade/Class";
-
+                                        if QualificationApp.Level = 5 then begin
+                                            qualificationApp.Reset();
+                                            qualificationApp.SetRange("Code", ApplicantsQual."Qualification Code");
+                                            if qualificationApp.FindSet() then
+                                                applicantSubmittedJob."Area of Specialization 5" := QualificationApp.Description;
+                                            ApplicantSubmittedJob."Institution/Company 5" := ApplicantsQual."Institution/Company";
+                                            ApplicantSubmittedJob."From Date 5" := ApplicantsQual."From Date";
+                                            ApplicantSubmittedJob."To Date 5" := ApplicantsQual."To Date";
+                                            ApplicantSubmittedJob."Grade/Class 5" := ApplicantsQual."Grade/Class";
+                                        end;
                                     end;
                                 6:
                                     begin
                                         ApplicantSubmittedJob."Qualification Code 6" := ApplicantsQual."Qualification Code";
-                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 6");
-                                        if QualificationApp.Level = 6 then
-                                            applicantSubmittedJob."Area of Specialization 6" := QualificationApp.Description;
-                                        ApplicantSubmittedJob."Institution/Company 6" := ApplicantsQual."Institution/Company";
-                                        ApplicantSubmittedJob."From Date 6" := ApplicantsQual."From Date";
-                                        ApplicantSubmittedJob."To Date 6" := ApplicantsQual."To Date";
-                                        ApplicantSubmittedJob."Grade/Class 6" := ApplicantsQual."Grade/Class";
+                                        if QualificationApp.Level = 6 then begin
+                                            qualificationApp.Reset();
+                                            qualificationApp.SetRange("Code", ApplicantsQual."Qualification Code");
+                                            if qualificationApp.FindSet() then
+                                                applicantSubmittedJob."Area of Specialization 6" := QualificationApp.Description;
+                                            ApplicantSubmittedJob."Institution/Company 6" := ApplicantsQual."Institution/Company";
+                                            ApplicantSubmittedJob."From Date 6" := ApplicantsQual."From Date";
+                                            ApplicantSubmittedJob."To Date 6" := ApplicantsQual."To Date";
+                                            ApplicantSubmittedJob."Grade/Class 6" := ApplicantsQual."Grade/Class";
+                                        end;
+
                                     end;
                                 7:
                                     begin
                                         ApplicantSubmittedJob."Qualification Code 2" := ApplicantsQual."Qualification Code";
-                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 2");
-                                        if QualificationApp.Level = 1 then
-                                            applicantSubmittedJob."Area of Specialization 2" := QualificationApp.Description;
-                                        ApplicantSubmittedJob."Institution/Company 2" := ApplicantsQual."Institution/Company";
-                                        ApplicantSubmittedJob."From Date 2" := ApplicantsQual."From Date";
-                                        ApplicantSubmittedJob."To Date 2" := ApplicantsQual."To Date";
-                                        ApplicantSubmittedJob."Grade/Class 2" := ApplicantsQual."Grade/Class";
+                                        if QualificationApp.Level = 1 then begin
+                                            qualificationApp.Reset();
+                                            qualificationApp.SetRange("Code", ApplicantsQual."Qualification Code");
+                                            if qualificationApp.FindSet() then
+                                                applicantSubmittedJob."Area of Specialization 2" := QualificationApp.Description;
+                                            ApplicantSubmittedJob."Institution/Company 2" := ApplicantsQual."Institution/Company";
+                                            ApplicantSubmittedJob."From Date 2" := ApplicantsQual."From Date";
+                                            ApplicantSubmittedJob."To Date 2" := ApplicantsQual."To Date";
+                                            ApplicantSubmittedJob."Grade/Class 2" := ApplicantsQual."Grade/Class";
+                                        end;
                                     end;
                                 8:
                                     begin
                                         ApplicantSubmittedJob."Qualification Code 8" := ApplicantsQual."Qualification Code";
-                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 8");
-                                        if QualificationApp.Level = 8 then
-                                            applicantSubmittedJob."Area of Specialization 8" := QualificationApp.Description;
-                                        ApplicantSubmittedJob."Institution/Company 8" := ApplicantsQual."Institution/Company";
-                                        ApplicantSubmittedJob."From Date 8" := ApplicantsQual."From Date";
-                                        ApplicantSubmittedJob."To Date 8" := ApplicantsQual."To Date";
-                                        ApplicantSubmittedJob."Grade/Class 8" := ApplicantsQual."Grade/Class";
+                                        if QualificationApp.Level = 8 then begin
+                                            qualificationApp.Reset();
+                                            qualificationApp.SetRange("Code", ApplicantsQual."Qualification Code");
+                                            if qualificationApp.FindSet() then
+                                                applicantSubmittedJob."Area of Specialization 8" := QualificationApp.Description;
+                                            ApplicantSubmittedJob."Institution/Company 8" := ApplicantsQual."Institution/Company";
+                                            ApplicantSubmittedJob."From Date 8" := ApplicantsQual."From Date";
+                                            ApplicantSubmittedJob."To Date 8" := ApplicantsQual."To Date";
+                                            ApplicantSubmittedJob."Grade/Class 8" := ApplicantsQual."Grade/Class";
+                                        end;
                                     end;
                                 9:
                                     begin
                                         ApplicantSubmittedJob."Qualification Code 9" := ApplicantsQual."Qualification Code";
-                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 9");
-                                        if QualificationApp.Level = 9 then
-                                            applicantSubmittedJob."Area of Specialization 9" := QualificationApp.Description;
-                                        ApplicantSubmittedJob."Institution/Company 9" := ApplicantsQual."Institution/Company";
-                                        ApplicantSubmittedJob."From Date 9" := ApplicantsQual."From Date";
-                                        ApplicantSubmittedJob."To Date 9" := ApplicantsQual."To Date";
-                                        ApplicantSubmittedJob."Grade/Class 9" := ApplicantsQual."Grade/Class";
+                                        if QualificationApp.Level = 9 then begin
+                                            qualificationApp.Reset();
+                                            qualificationApp.SetRange("Code", ApplicantsQual."Qualification Code");
+                                            if qualificationApp.FindSet() then
+                                                applicantSubmittedJob."Area of Specialization 9" := QualificationApp.Description;
+                                            ApplicantSubmittedJob."Institution/Company 9" := ApplicantsQual."Institution/Company";
+                                            ApplicantSubmittedJob."From Date 9" := ApplicantsQual."From Date";
+                                            ApplicantSubmittedJob."To Date 9" := ApplicantsQual."To Date";
+                                            ApplicantSubmittedJob."Grade/Class 9" := ApplicantsQual."Grade/Class";
+                                        end;
                                     end;
                                 10:
                                     begin
                                         ApplicantSubmittedJob."Qualification Code 10" := ApplicantsQual."Qualification Code";
-                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 10");
-                                        if QualificationApp.Level = 10 then
-                                            applicantSubmittedJob."Area of Specialization 10" := QualificationApp.Description;
-                                        ApplicantSubmittedJob."Institution/Company 10" := ApplicantsQual."Institution/Company";
-                                        ApplicantSubmittedJob."From Date 10" := ApplicantsQual."From Date";
-                                        ApplicantSubmittedJob."To Date 10" := ApplicantsQual."To Date";
-                                        ApplicantSubmittedJob."Grade/Class 10" := ApplicantsQual."Grade/Class";
+                                        if QualificationApp.Level = 10 then begin
+                                            qualificationApp.Reset();
+                                            qualificationApp.SetRange("Code", ApplicantsQual."Qualification Code");
+                                            if qualificationApp.FindSet() then
+                                                applicantSubmittedJob."Area of Specialization 10" := QualificationApp.Description;
+                                            ApplicantSubmittedJob."Institution/Company 10" := ApplicantsQual."Institution/Company";
+                                            ApplicantSubmittedJob."From Date 10" := ApplicantsQual."From Date";
+                                            ApplicantSubmittedJob."To Date 10" := ApplicantsQual."To Date";
+                                            ApplicantSubmittedJob."Grade/Class 10" := ApplicantsQual."Grade/Class";
+                                        end;
                                     end;
                             end;
                             if EducationRecordCount = 5 then
