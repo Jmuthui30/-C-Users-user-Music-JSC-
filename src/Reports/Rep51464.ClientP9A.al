@@ -775,6 +775,12 @@ report 51464 "Client P9A"
         CompCode := Employee.GetFilter("Company Code");
     end;
 
+    procedure SetPeriod(StartDt: Date; EndDt: Date)
+    begin
+        StringDate := StartDt;
+        EndDate := EndDt;
+    end;
+
     var
         TOTALCummPAYE: Decimal;
         TOTALSHIF_InsuranceRelief: Decimal;
