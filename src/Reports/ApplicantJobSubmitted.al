@@ -11,26 +11,31 @@ report 52970 "Applicant job Submitted"
             RequestFilterFields = "Job code", Gender;
             column(Job_code; "Job code") { }
             column(Job_Title; "Job Title") { }
+            column(Applicant_No_; "Applicant No.") { }
             column(Applicant_Name; "Applicant Name") { }
             column(IDNO; IDNO) { }
+            column(Gender; Gender) { }
             column(Birth_Date; "Birth Date") { }
             column(Age; Age) { }
-            column(Gender; Gender) { }
+            column(Disability; Disability) { }
+            column(Disability_Description; "Disability Description") { }
+            column(NCPWD_Certificate_No_; "NCPWD Certificate No.") { }
             column(Home_County; "Home County") { }
             column(Ethnic_Group; "Ethnic Group") { }
             column(Sub_Ethnic_Group; "Sub Ethnic Group") { }
             column(Mobile_Phone_No_; "Mobile Phone No.") { }
             column(Alternative_Phone_No_; "Alternative Phone No.") { }
             column(E_Mail; "E-Mail") { }
-            column(Disability; Disability) { }
-            column(Disability_Description; "Disability Description") { }
-            column(NCPWD_Certificate_No_; "NCPWD Certificate No.") { }
-            column(Dismissal_Declaration; "Dismissal Declaration") { }
-            column(Dismissal_Decl__Specification; "Dismissal Decl. Specification") { }
-            column(Physical_Address; "Physical Address") { }
+
             column(Postal_Address; "Postal Address") { }
             column(Post_Code; "Post Code") { }
             column(City; City) { }
+
+            column(Dismissal_Declaration; "Dismissal Declaration") { }
+            column(Dismissal_Decl__Specification; "Dismissal Decl. Specification") { }
+            column(Physical_Address; "Physical Address") { }
+
+
             column(First_Language__R_W_S_; "First Language (R/W/S)") { }
             column(First_Language_Read; "First Language Read") { }
             column(First_Language_Speak; "First Language Speak") { }
@@ -43,6 +48,98 @@ report 52970 "Applicant job Submitted"
             column(Other_Language_Read; "Other Language Read") { }
             column(Other_Language_Speak; "Other Language Speak") { }
             column(Other_Language_Write; "Other Language Write") { }
+            //*************************************************************************************academic qualifications
+
+            //Kenya Certifcate of Advanced Education
+
+            column(Area_of_Specialization; "Area of Specialization") { }
+            column(Institution_Company; "Institution/Company") { }
+            column(Grade_Class; "Grade/Class") { }
+            column(To_Date; "To Date") { }
+            column(From_Date; "From Date") { }
+
+            column(Area_of_Specialization_1; "Area of Specialization 1") { }
+            column(Institution_Company_1; "Institution/Company 1") { }
+            column(Grade_Class_1; "Grade/Class 1") { }
+            column(To_Date_1; "To Date 1") { }
+            column(From_Date_1; "From Date 1") { }
+
+
+            //*************************************************************************************Artisan Certificate
+
+            column(Area_of_Specialization_10; "Area of Specialization 10") { }
+            column(Institution_Company_10; "Institution/Company 10") { }
+            column(Grade_Class_10; "Grade/Class 10") { }
+            column(To_Date_10; "To Date 10") { }
+            column(From_Date_10; "From Date 10") { }
+
+
+
+            //*************************************************************************************Certificate
+
+            //
+            column(Area_of_Specialization_3; "Area of Specialization 3") { }
+            column(Institution_Company_3; "Institution/Company 3") { }
+            column(Grade_Class_3; "Grade/Class 3") { }
+            column(To_Date_3; "To Date 3") { }
+            column(From_Date_3; "From Date 3") { }
+
+            //*************************************************************************************Diploma
+
+
+            column(Area_of_Specialization_4; "Area of Specialization 4") { }
+            column(Institution_Company_4; "Institution/Company 4") { }
+            column(Grade_Class_4; "Grade/Class 4") { }
+            column(To_Date_4; "To Date 4") { }
+            column(From_Date_4; "From Date 4") { }
+
+            //*************************************************************************************HIGHERDIPLOMA
+
+
+            column(Area_of_Specialization_5; "Area of Specialization 5") { }
+            column(Institution_Company_5; "Institution/Company 5") { }
+            column(Grade_Class_5; "Grade/Class 5") { }
+            column(To_Date_5; "To Date 5") { }
+            column(From_Date_5; "From Date 5") { }
+
+            //*************************************************************************************Degree
+
+            column(Area_of_Specialization_6; "Area of Specialization 6") { }
+            column(Institution_Company_6; "Institution/Company 6") { }
+            column(Grade_Class_6; "Grade/Class 6") { }
+            column(To_Date_6; "To Date 6") { }
+            column(From_Date_6; "From Date 6") { }
+            //*************************************************************************************Postgraduate
+
+
+
+
+            column(Area_of_Specialization_2; "Area of Specialization 2") { }
+            column(Institution_Company_2; "Institution/Company 2") { }
+            column(Grade_Class_2; "Grade/Class 2") { }
+            column(To_Date_2; "To Date 2") { }
+            column(From_Date_2; "From Date 2") { }
+
+            //*************************************************************************************Masters
+
+            column(Area_of_Specialization_8; "Area of Specialization 8") { }
+            column(Institution_Company_8; "Institution/Company 8") { }
+            column(Grade_Class_8; "Grade/Class 8") { }
+            column(To_Date_8; "To Date 8") { }
+            column(From_Date_8; "From Date 8") { }
+
+            //************************************************************************************PhD (Doctor of Philosophy)
+
+            column(Area_of_Specialization_9; "Area of Specialization 9") { }
+            column(Institution_Company_9; "Institution/Company 9") { }
+            column(Grade_Class_9; "Grade/Class 9") { }
+            column(To_Date_9; "To Date 9") { }
+            column(From_Date_9; "From Date 9") { }
+
+
+
+            //*************************************************************************************end of academic qualifications
+
             //*************************************************************************************Employment History
             column(Employer; Employer) { }
             column(Sector_Of_Employement; "Sector Of Employement") { }
@@ -119,80 +216,6 @@ report 52970 "Applicant job Submitted"
             column(Employment_Period_10; "Employment Period 10") { }
             //*************************************************************************************end of Employment History  
 
-            //*************************************************************************************academic qualifications
-
-            //Kenya Certifcate of Advanced Education
-
-            column(Area_of_Specialization; "Area of Specialization") { }
-            column(Institution_Company; "Institution/Company") { }
-            column(Grade_Class; "Grade/Class") { }
-            column(To_Date; "To Date") { }
-            column(From_Date; "From Date") { }
-
-
-            //*************************************************************************************Postgraduate
-
-            //P
-
-
-            column(Area_of_Specialization_2; "Area of Specialization 2") { }
-            column(Institution_Company_2; "Institution/Company 2") { }
-            column(To_Date_2; "To Date 2") { }
-            column(From_Date_2; "From Date 2") { }
-            column(Grade_Class_2; "Grade/Class 2") { }
-            //*************************************************************************************Certificate
-
-            //
-            column(Area_of_Specialization_3; "Area of Specialization 3") { }
-            column(Institution_Company_3; "Institution/Company 3") { }
-            column(To_Date_3; "To Date 3") { }
-            column(From_Date_3; "From Date 3") { }
-            column(Grade_Class_3; "Grade/Class 3") { }
-            //*************************************************************************************Diploma
-
-
-            column(Area_of_Specialization_4; "Area of Specialization 4") { }
-            column(Institution_Company_4; "Institution/Company 4") { }
-            column(To_Date_4; "To Date 4") { }
-            column(From_Date_4; "From Date 4") { }
-            column(Grade_Class_4; "Grade/Class 4") { }
-            //*************************************************************************************HIGHERDIPLOMA
-
-
-            column(Area_of_Specialization_5; "Area of Specialization 5") { }
-            column(Institution_Company_5; "Institution/Company 5") { }
-            column(To_Date_5; "To Date 5") { }
-            column(From_Date_5; "From Date 5") { }
-            column(Grade_Class_5; "Grade/Class 5") { }
-            //*************************************************************************************Degree
-
-            column(Area_of_Specialization_6; "Area of Specialization 6") { }
-            column(Institution_Company_6; "Institution/Company 6") { }
-            column(To_Date_6; "To Date 6") { }
-            column(From_Date_6; "From Date 6") { }
-            column(Grade_Class_6; "Grade/Class 6") { }
-            //*************************************************************************************Masters
-            column(Area_of_Specialization_8; "Area of Specialization 8") { }
-            column(Institution_Company_8; "Institution/Company 8") { }
-            column(To_Date_8; "To Date 8") { }
-            column(From_Date_8; "From Date 8") { }
-            column(Grade_Class_8; "Grade/Class 8") { }
-            //************************************************************************************PhD (Doctor of Philosophy)
-
-            column(Area_of_Specialization_9; "Area of Specialization 9") { }
-            column(Institution_Company_9; "Institution/Company 9") { }
-            column(To_Date_9; "To Date 9") { }
-            column(From_Date_9; "From Date 9") { }
-            column(Grade_Class_9; "Grade/Class 9") { }
-            //*************************************************************************************Artisan Certificate
-
-            column(Area_of_Specialization_10; "Area of Specialization 10") { }
-            column(Institution_Company_10; "Institution/Company 10") { }
-            column(To_Date_10; "To Date 10") { }
-            column(From_Date_10; "From Date 10") { }
-            column(Grade_Class_10; "Grade/Class 10") { }
-
-            //*************************************************************************************end of academic qualifications
 
             //*************************************************************************************professional qualifications
 
@@ -578,7 +601,177 @@ report 52970 "Applicant job Submitted"
 
                 }
 
+                group(ACademic)
+                {
+                    Caption = 'Academic Qualifications';
+                    field(ShowACademic; ShowACademic)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Primary Education';
+                        ToolTip = 'Specifies whether to show the Academic Qualification column';
+                        Trigger OnValidate()
+                        var
+                        begin
+                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization"));
+                            initalizeFieldIds(Appl.FieldNo("Institution/Company"));
+                            initalizeFieldIds(Appl.FieldNo("Grade/Class"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date"));
 
+
+                        end;
+                    }
+                    field(ShowACademic1; ShowACademic1)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Secondary/High School Education';
+                        ToolTip = 'Specifies whether to show the Academic Qualification column';
+                        Trigger OnValidate()
+                        var
+                        begin
+                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization 1"));
+                            initalizeFieldIds(Appl.FieldNo("Institution/Company 1"));
+                            initalizeFieldIds(Appl.FieldNo("Grade/Class 1"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date 1"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date 1"));
+
+                        end;
+                    }
+                    FIELD(ShowACademic10; ShowACademic10)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Artisan Certificate';
+                        ToolTip = 'Specifies whether to show the Academic Qualification column';
+                        Trigger OnValidate()
+                        var
+                        begin
+                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization 10"));
+                            initalizeFieldIds(Appl.FieldNo("Institution/Company 10"));
+                            initalizeFieldIds(Appl.FieldNo("Grade/Class 10"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date 10"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date 10"));
+
+                        end;
+                    }
+
+
+                    field(ShowACademic3; ShowACademic3)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Certificate';
+                        ToolTip = 'Specifies whether to show the Academic Qualification column';
+                        Trigger OnValidate()
+                        var
+                        begin
+                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization 3"));
+                            initalizeFieldIds(Appl.FieldNo("Institution/Company 3"));
+                            initalizeFieldIds(Appl.FieldNo("Grade/Class 3"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date 3"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date 3"));
+
+
+                        end;
+                    }
+                    field(ShowACademic4; ShowACademic4)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Diploma';
+                        ToolTip = 'Specifies whether to show the Academic Qualification column';
+                        Trigger OnValidate()
+                        var
+                        begin
+                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization 4"));
+                            initalizeFieldIds(Appl.FieldNo("Institution/Company 4"));
+                            initalizeFieldIds(Appl.FieldNo("Grade/Class 4"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date 4"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date 4"));
+
+
+                        end;
+                    }
+                    field(ShowACademic5; ShowACademic5)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Higher Diploma';
+                        ToolTip = 'Specifies whether to show the Academic Qualification column';
+                        Trigger OnValidate()
+                        var
+                        begin
+                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization 5"));
+                            initalizeFieldIds(Appl.FieldNo("Institution/Company 5"));
+                            initalizeFieldIds(Appl.FieldNo("Grade/Class 5"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date 5"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date 5"));
+
+
+                        end;
+                    }
+                    FIELD(ShowACademic6; ShowACademic6)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show BACHELORS';
+                        ToolTip = 'Specifies whether to show the Academic Qualification column';
+                        Trigger OnValidate()
+                        var
+                        begin
+                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization 6"));
+                            initalizeFieldIds(Appl.FieldNo("Institution/Company 6"));
+                            initalizeFieldIds(Appl.FieldNo("Grade/Class 6"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date 6"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date 6"));
+                        end;
+                    }
+                    field(ShowACademic2; ShowACademic2)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Postgraduate';
+                        ToolTip = 'Specifies whether to show the Academic Qualification column';
+                        Trigger OnValidate()
+                        var
+                        begin
+                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization 2"));
+                            initalizeFieldIds(Appl.FieldNo("Institution/Company 2"));
+                            initalizeFieldIds(Appl.FieldNo("Grade/Class 2"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date 2"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date 2"));
+
+                        end;
+                    }
+
+                    FIELD(ShowACademic8; ShowACademic8)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Masters';
+                        ToolTip = 'Specifies whether to show the Academic Qualification column';
+                        Trigger OnValidate()
+                        var
+                        begin
+                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization 8"));
+                            initalizeFieldIds(Appl.FieldNo("Institution/Company 8"));
+                            initalizeFieldIds(Appl.FieldNo("Grade/Class 8"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date 8"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date 8"));
+
+                        end;
+                    }
+                    FIELD(ShowACademic9; ShowACademic9)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show PhD (Doctor of Philosophy)';
+                        ToolTip = 'Specifies whether to show the Academic Qualification column';
+                        Trigger OnValidate()
+                        var
+                        begin
+                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization 9"));
+                            initalizeFieldIds(Appl.FieldNo("Institution/Company 9"));
+                            initalizeFieldIds(Appl.FieldNo("Grade/Class 9"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date 9"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date 9"));
+
+                        end;
+                    }
+
+                }
 
                 group(employmentHistory)
                 {
@@ -665,12 +858,13 @@ report 52970 "Applicant job Submitted"
                             InitalizeFieldIds(Appl.FieldNo("Designation Employer 5"));
                             initalizeFieldIds(Appl.FieldNo("Sector Of Employement 5"));
 
+
                         end;
                     }
                     FIELD(ShowEmploymentHistory6; ShowEmploymentHistory6)
                     {
                         ApplicationArea = All;
-                        Caption = 'Show Employment History 6';
+                        Caption = 'Show Employment History ';
                         ToolTip = 'Specifies whether to show the Employment History 6 columns';
                         Trigger OnValidate()
                         var
@@ -731,162 +925,26 @@ report 52970 "Applicant job Submitted"
                             initalizeFieldIds(Appl.FieldNo("Sector Of Employement 9"));
                         end;
                     }
+                    field(ShowEmploymentHistory10; ShowEmploymentHistory10)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Show Employment History 10';
+                        ToolTip = 'Specifies whether to show the Employment History 10 columns';
+                        Trigger OnValidate()
+                        var
+                        begin
+                            InitalizeFieldIds(Appl.FieldNo("Employer 10"));
+                            InitalizeFieldIds(Appl.FieldNo("From Date Employer 10"));
+                            InitalizeFieldIds(Appl.FieldNo("To Date Employer 10"));
+                            InitalizeFieldIds(Appl.FieldNo("Designation Employer 10"));
+                            initalizeFieldIds(Appl.FieldNo("Sector Of Employement 10"));
+
+                        end;
+                    }
 
 
                 }
-                group(ACademic)
-                {
-                    Caption = 'Academic Qualifications';
-                    field(ShowACademic; ShowACademic)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Show KCSE';
-                        ToolTip = 'Specifies whether to show the Academic Qualification column';
-                        Trigger OnValidate()
-                        var
-                        begin
-                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization"));
-                            initalizeFieldIds(Appl.FieldNo("Institution/Company"));
-                            initalizeFieldIds(Appl.FieldNo("Grade/Class"));
-                            InitalizeFieldIds(Appl.FieldNo("From Date"));
-                            InitalizeFieldIds(Appl.FieldNo("To Date"));
 
-
-                        end;
-                    }
-                    field(ShowACademic2; ShowACademic2)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Show Postgraduate';
-                        ToolTip = 'Specifies whether to show the Academic Qualification column';
-                        Trigger OnValidate()
-                        var
-                        begin
-                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization 2"));
-                            initalizeFieldIds(Appl.FieldNo("Institution/Company 2"));
-                            initalizeFieldIds(Appl.FieldNo("Grade/Class 2"));
-                            InitalizeFieldIds(Appl.FieldNo("From Date 2"));
-                            InitalizeFieldIds(Appl.FieldNo("To Date 2"));
-
-                        end;
-                    }
-                    field(ShowACademic3; ShowACademic3)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Show Certificate';
-                        ToolTip = 'Specifies whether to show the Academic Qualification column';
-                        Trigger OnValidate()
-                        var
-                        begin
-                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization 3"));
-                            initalizeFieldIds(Appl.FieldNo("Institution/Company 3"));
-                            initalizeFieldIds(Appl.FieldNo("Grade/Class 3"));
-                            InitalizeFieldIds(Appl.FieldNo("From Date 3"));
-                            InitalizeFieldIds(Appl.FieldNo("To Date 3"));
-
-
-                        end;
-                    }
-                    field(ShowACademic4; ShowACademic4)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Show Diploma';
-                        ToolTip = 'Specifies whether to show the Academic Qualification column';
-                        Trigger OnValidate()
-                        var
-                        begin
-                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization 4"));
-                            initalizeFieldIds(Appl.FieldNo("Institution/Company 4"));
-                            initalizeFieldIds(Appl.FieldNo("Grade/Class 4"));
-                            InitalizeFieldIds(Appl.FieldNo("From Date 4"));
-                            InitalizeFieldIds(Appl.FieldNo("To Date 4"));
-
-
-                        end;
-                    }
-                    field(ShowACademic5; ShowACademic5)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Show HIGHERDIPLOMA';
-                        ToolTip = 'Specifies whether to show the Academic Qualification column';
-                        Trigger OnValidate()
-                        var
-                        begin
-                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization 5"));
-                            initalizeFieldIds(Appl.FieldNo("Institution/Company 5"));
-                            initalizeFieldIds(Appl.FieldNo("Grade/Class 5"));
-                            InitalizeFieldIds(Appl.FieldNo("From Date 5"));
-                            InitalizeFieldIds(Appl.FieldNo("To Date 5"));
-
-
-                        end;
-                    }
-                    FIELD(ShowACademic6; ShowACademic6)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Show Degree';
-                        ToolTip = 'Specifies whether to show the Academic Qualification column';
-                        Trigger OnValidate()
-                        var
-                        begin
-                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization 6"));
-                            initalizeFieldIds(Appl.FieldNo("Institution/Company 6"));
-                            initalizeFieldIds(Appl.FieldNo("Grade/Class 6"));
-                            InitalizeFieldIds(Appl.FieldNo("From Date 6"));
-                            InitalizeFieldIds(Appl.FieldNo("To Date 6"));
-                        end;
-                    }
-
-                    FIELD(ShowACademic8; ShowACademic8)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Show Masters';
-                        ToolTip = 'Specifies whether to show the Academic Qualification column';
-                        Trigger OnValidate()
-                        var
-                        begin
-                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization 8"));
-                            initalizeFieldIds(Appl.FieldNo("Institution/Company 8"));
-                            initalizeFieldIds(Appl.FieldNo("Grade/Class 8"));
-                            InitalizeFieldIds(Appl.FieldNo("From Date 8"));
-                            InitalizeFieldIds(Appl.FieldNo("To Date 8"));
-
-                        end;
-                    }
-                    FIELD(ShowACademic9; ShowACademic9)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Show PhD (Doctor of Philosophy)';
-                        ToolTip = 'Specifies whether to show the Academic Qualification column';
-                        Trigger OnValidate()
-                        var
-                        begin
-                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization 9"));
-                            initalizeFieldIds(Appl.FieldNo("Institution/Company 9"));
-                            initalizeFieldIds(Appl.FieldNo("Grade/Class 9"));
-                            InitalizeFieldIds(Appl.FieldNo("From Date 9"));
-                            InitalizeFieldIds(Appl.FieldNo("To Date 9"));
-
-                        end;
-                    }
-                    FIELD(ShowACademic10; ShowACademic10)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Show Artisan Certificate';
-                        ToolTip = 'Specifies whether to show the Academic Qualification column';
-                        Trigger OnValidate()
-                        var
-                        begin
-                            InitalizeFieldIds(Appl.FieldNo("Area of Specialization 10"));
-                            initalizeFieldIds(Appl.FieldNo("Institution/Company 10"));
-                            initalizeFieldIds(Appl.FieldNo("Grade/Class 10"));
-                            InitalizeFieldIds(Appl.FieldNo("From Date 10"));
-                            InitalizeFieldIds(Appl.FieldNo("To Date 10"));
-
-                        end;
-                    }
-
-                }
                 group(Professional)
                 {
                     field(ShowProfessional; ShowProfessional)
@@ -1187,6 +1245,7 @@ report 52970 "Applicant job Submitted"
         ShowMobile: Boolean;
         ShowEMail: Boolean;
         ShowACademic: Boolean;
+        ShowACademic1: Boolean;
         ShowACademic2: Boolean;
         ShowACademic3: Boolean;
         ShowACademic4: Boolean;

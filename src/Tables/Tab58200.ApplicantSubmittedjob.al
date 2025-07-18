@@ -267,6 +267,51 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
+        //***************************************************************************************Academ 1
+        field(28; "Qualification Code 1"; Code[2000])
+        {
+            Caption = 'ACademic Code';
+            DataClassification = ToBeClassified;
+            NotBlank = true;
+
+            trigger OnValidate()
+            begin
+            end;
+        }
+        field(20; "From Date 1"; Date)
+        {
+            Caption = 'From Date';
+            DataClassification = ToBeClassified;
+
+            trigger OnValidate()
+            begin
+            end;
+        }
+        field(21; "To Date 1"; Date)
+        {
+            Caption = 'To Date';
+            DataClassification = ToBeClassified;
+            trigger OnValidate()
+            var
+                Error001: Label 'Kindly note To Date %1 cannot be previous From Date %2';
+            begin
+            end;
+        }
+        field(922; "Area of Specialization 1"; Text[1000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
+        field(923; "Institution/Company 1"; Text[1000])
+        {
+            Caption = 'Institution/Company';
+            DataClassification = ToBeClassified;
+        }
+        field(924; "Grade/Class 1"; Text[1000])
+        {
+            Caption = 'Grade/Class';
+            DataClassification = ToBeClassified;
+        }
 
 
         //***************************************************************************************Academ 2
@@ -856,8 +901,8 @@ table 58200 "Applicant Submitted Job"
 
         field(305; "Sector Of Employement"; Option)
         {
-            OptionCaption = ',Public,Private,Academia,Corporate,Others (Specify),';
-            OptionMembers = ,Public,Private,Academia,Corporate,Others;
+            OptionCaption = 'Public,Private,Academia,Corporate,Others;';
+            OptionMembers = Public,Private,Academia,Corporate,Others;
         }
         field(307; "Substantive Post"; Text[2048])
         {

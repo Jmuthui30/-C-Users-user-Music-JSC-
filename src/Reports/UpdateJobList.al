@@ -104,9 +104,8 @@ report 53072 "update Job Appl."
                             1:
                                 begin
                                     if ApplicantEmpl."Currently Employment" = true then begin
-                                        applicantSubmittedJob."Current Employer" := ApplicantEmpl."Currently Employment";
+                                        applicantSubmittedJob."Current Employer" := true;
                                         ApplicantSubmittedJob."Sector Of Employement" := ApplicantEmpl.Sector;
-                                        ApplicantSubmittedJob."Designation Employer" := ApplicantEmpl."Sector Specification";
                                         ApplicantSubmittedJob."From Date Employer" := ApplicantEmpl."From Date";
                                         ApplicantSubmittedJob."To Date Employer" := ApplicantEmpl."To Date";
                                         applicantSubmittedJob."Substantive Post" := ApplicantEmpl."Substantive Post";
@@ -222,7 +221,7 @@ report 53072 "update Job Appl."
 
                                         ApplicantSubmittedJob."Qualification Code" := ApplicantsQual."Qualification Code";
                                         qualificationApp.Get(ApplicantSubmittedJob."Qualification Code");
-                                        if QualificationApp.Level = 0 then
+                                        if ((QualificationApp.Code = 'KACE') or (QualificationApp.Code = 'KCE')) then
                                             applicantSubmittedJob."Area of Specialization" := QualificationApp.Description;
                                         ApplicantSubmittedJob."Institution/Company" := ApplicantsQual."Institution/Company";
                                         ApplicantSubmittedJob."From Date" := ApplicantsQual."From Date";
@@ -232,14 +231,15 @@ report 53072 "update Job Appl."
                                     end;
                                 2:
                                     begin
-                                        ApplicantSubmittedJob."Qualification Code 2" := ApplicantsQual."Qualification Code";
-                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 2");
-                                        if QualificationApp.Level = 1 then
-                                            applicantSubmittedJob."Area of Specialization 2" := QualificationApp.Description;
-                                        ApplicantSubmittedJob."Institution/Company 2" := ApplicantsQual."Institution/Company";
-                                        ApplicantSubmittedJob."From Date 2" := ApplicantsQual."From Date";
-                                        ApplicantSubmittedJob."To Date 2" := ApplicantsQual."To Date";
-                                        ApplicantSubmittedJob."Grade/Class 2" := ApplicantsQual."Grade/Class";
+                                        ApplicantSubmittedJob."Qualification Code 1" := ApplicantsQual."Qualification Code";
+                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 1");
+                                        if QualificationApp.Code = 'KCSE' then
+                                            applicantSubmittedJob."Area of Specialization 1" := QualificationApp.Description;
+                                        ApplicantSubmittedJob."Institution/Company 1" := ApplicantsQual."Institution/Company";
+                                        ApplicantSubmittedJob."From Date 1" := ApplicantsQual."From Date";
+                                        ApplicantSubmittedJob."To Date 1" := ApplicantsQual."To Date";
+                                        ApplicantSubmittedJob."Grade/Class 1" := ApplicantsQual."Grade/Class";
+
                                     end;
                                 3:
                                     begin
@@ -289,14 +289,14 @@ report 53072 "update Job Appl."
                                     end;
                                 7:
                                     begin
-                                        ApplicantSubmittedJob."Qualification Code 7" := ApplicantsQual."Qualification Code";
-                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 7");
-                                        if QualificationApp.Level = 7 then
-                                            applicantSubmittedJob."Area of Specialization 7" := QualificationApp.Description;
-                                        ApplicantSubmittedJob."Institution/Company 7" := ApplicantsQual."Institution/Company";
-                                        ApplicantSubmittedJob."From Date 7" := ApplicantsQual."From Date";
-                                        ApplicantSubmittedJob."To Date 7" := ApplicantsQual."To Date";
-                                        ApplicantSubmittedJob."Grade/Class 7" := ApplicantsQual."Grade/Class";
+                                        ApplicantSubmittedJob."Qualification Code 2" := ApplicantsQual."Qualification Code";
+                                        qualificationApp.Get(ApplicantSubmittedJob."Qualification Code 2");
+                                        if QualificationApp.Level = 1 then
+                                            applicantSubmittedJob."Area of Specialization 2" := QualificationApp.Description;
+                                        ApplicantSubmittedJob."Institution/Company 2" := ApplicantsQual."Institution/Company";
+                                        ApplicantSubmittedJob."From Date 2" := ApplicantsQual."From Date";
+                                        ApplicantSubmittedJob."To Date 2" := ApplicantsQual."To Date";
+                                        ApplicantSubmittedJob."Grade/Class 2" := ApplicantsQual."Grade/Class";
                                     end;
                                 8:
                                     begin
@@ -346,8 +346,6 @@ report 53072 "update Job Appl."
 
                 ApplicantsQual.Reset();
                 ApplicantsQual.SetRange("Employee No.", applicantSubmittedJob."Applicant No.");
-                ApplicantsQual.SetCurrentKey("From Date"); // Ensure records are sorted (e.g.,
-                // newest first)
                 if ApplicantsQual.FindSet() then begin
                     ProfessionalRecordCount := 0;
                     if ApplicantsQual."Qualification Type" = ApplicantsQual."Qualification Type"::Professional then begin
@@ -487,6 +485,7 @@ report 53072 "update Job Appl."
                     if courseRecordCount > 0 then
                         ApplicantSubmittedJob.Modify();
                 end;
+                //*************************************************************************************** Sample Code for Commit
 
 
                 //     Commit();
