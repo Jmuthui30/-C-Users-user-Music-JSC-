@@ -749,6 +749,40 @@ table 58200 "Applicant Submitted Job"
             Caption = 'Description';
             DataClassification = ToBeClassified;
         }
+        FIELD(2986; "From Date 12"; Date)
+        {
+            Caption = 'From Date';
+            DataClassification = ToBeClassified;
+
+            trigger OnValidate()
+            begin
+            end;
+        }
+        FIELD(2987; "To Date 12"; Date)
+        {
+            Caption = 'To Date';
+            DataClassification = ToBeClassified;
+            trigger OnValidate()
+            var
+                Error001: Label 'Kindly note To Date %1 cannot be previous From Date %2';
+            begin
+            end;
+        }
+        FIELD(2988; "Area of Specialization 12"; Text[1000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
+        FIELD(1989; "Institution/Company 12"; Text[1000])
+        {
+            Caption = 'Institution/Company';
+            DataClassification = ToBeClassified;
+        }
+        FIELD(1990; "Grade/Class 12"; Text[1000])
+        {
+            Caption = 'Grade/Class';
+            DataClassification = ToBeClassified;
+        }
 
         //*******************************************************************************************academic END
         field(60; "Professional Qualification"; text[1000]) { DataClassification = ToBeClassified; }
@@ -906,10 +940,10 @@ table 58200 "Applicant Submitted Job"
         field(154; "Duration course 3"; text[1000]) { DataClassification = ToBeClassified; }
         //*******************************************************************************************employee
 
-        field(305; "Sector Of Employement"; Option)
+        field(305; "Sector Of Employement"; enum "Sector Of Employement")
         {
-            OptionCaption = ',Public,Private,Academia,Corporate,Others;';
-            OptionMembers = ,Public,Private,Academia,Corporate,Others;
+            // OptionCaption = ',,Public,Private,Academia,Corporate,Others;';
+            // OptionMembers = ,,Public,Private,Academia,Corporate,Others;
         }
         field(307; "Substantive Post"; Text[2048])
         {
@@ -942,10 +976,10 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(375; "Sector Of Employement 2"; Option)
+        field(375; "Sector Of Employement 2"; enum "Sector Of Employement")
         {
-            OptionCaption = 'Public,Private,Academia,Corporate,Others;';
-            OptionMembers = Public,Private,Academia,Corporate,Others;
+            // OptionCaption = 'Public,Private,Academia,Corporate,Others;';
+            // OptionMembers = Public,Private,Academia,Corporate,Others;
         }
 
         //*******************************************************************************************employee
@@ -962,10 +996,10 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(385; "Sector Of Employement 3"; Option)
+        field(385; "Sector Of Employement 3"; enum "Sector Of Employement")
         {
-            OptionCaption = 'Public,Private,Academia,Corporate,Others;';
-            OptionMembers = Public,Private,Academia,Corporate,Others;
+            // OptionCaption = 'Public,Private,Academia,Corporate,Others;';
+            // OptionMembers = Public,Private,Academia,Corporate,Others;
         }
 
         //*******************************************************************************************employee
@@ -982,10 +1016,10 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(395; "Sector Of Employement 4"; Option)
+        field(395; "Sector Of Employement 4"; enum "Sector Of Employement")
         {
-            OptionCaption = 'Public,Private,Academia,Corporate,Others;';
-            OptionMembers = Public,Private,Academia,Corporate,Others;
+            // OptionCaption = 'Public,Private,Academia,Corporate,Others;';
+            // OptionMembers = Public,Private,Academia,Corporate,Others;
         }
         //*************************************************************************************************************5
         field(186; "Employer 5"; code[1000]) { DataClassification = ToBeClassified; }
@@ -1001,10 +1035,10 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(398; "Sector Of Employement 5"; Option)
+        field(398; "Sector Of Employement 5"; enum "Sector Of Employement")
         {
-            OptionCaption = 'Public,Private,Academia,Corporate,Others;';
-            OptionMembers = Public,Private,Academia,Corporate,Others;
+            // OptionCaption = 'Public,Private,Academia,Corporate,Others;';
+            // OptionMembers = Public,Private,Academia,Corporate,Others;
         }
         //*******************************************************************************************employee 6
         field(190; "Employer 6"; code[1000]) { DataClassification = ToBeClassified; }
@@ -1020,10 +1054,10 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(400; "Sector Of Employement 6"; Option)
+        field(400; "Sector Of Employement 6"; enum "Sector Of Employement")
         {
-            OptionCaption = 'Public,Private,Academia,Corporate,Others;';
-            OptionMembers = Public,Private,Academia,Corporate,Others;
+            // OptionCaption = 'Public,Private,Academia,Corporate,Others;';
+            // OptionMembers = Public,Private,Academia,Corporate,Others;
         }
         //*******************************************************************************************employee 7
         field(194; "Employer 7"; code[1000]) { DataClassification = ToBeClassified; }
@@ -1039,10 +1073,10 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(402; "Sector Of Employement 7"; Option)
+        field(402; "Sector Of Employement 7"; enum "Sector Of Employement")
         {
-            OptionCaption = 'Public,Private,Academia,Corporate,Others;';
-            OptionMembers = Public,Private,Academia,Corporate,Others;
+            // OptionCaption = 'Public,Private,Academia,Corporate,Others;';
+            // OptionMembers = Public,Private,Academia,Corporate,Others;
         }
         //*******************************************************************************************employee 8
         field(198; "Employer 8"; code[1000]) { DataClassification = ToBeClassified; }
@@ -1058,10 +1092,10 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(404; "Sector Of Employement 8"; Option)
+        field(404; "Sector Of Employement 8"; enum "Sector Of Employement")
         {
-            OptionCaption = 'Public,Private,Academia,Corporate,Others;';
-            OptionMembers = Public,Private,Academia,Corporate,Others;
+            // OptionCaption = 'Public,Private,Academia,Corporate,Others;';
+            // OptionMembers = Public,Private,Academia,Corporate,Others;
         }
         //*******************************************************************************************employee 9
         field(202; "Employer 9"; code[1000]) { DataClassification = ToBeClassified; }
@@ -1077,10 +1111,10 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(406; "Sector Of Employement 9"; Option)
+        field(406; "Sector Of Employement 9"; enum "Sector Of Employement")
         {
-            OptionCaption = 'Public,Private,Academia,Corporate,Others;';
-            OptionMembers = Public,Private,Academia,Corporate,Others;
+            // OptionCaption = 'Public,Private,Academia,Corporate,Others;';
+            // OptionMembers = Public,Private,Academia,Corporate,Others;
         }
         //*******************************************************************************************employee 10
         field(206; "Employer 10"; code[1000]) { DataClassification = ToBeClassified; }
@@ -1096,10 +1130,10 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(408; "Sector Of Employement 10"; Option)
+        field(408; "Sector Of Employement 10"; enum "Sector Of Employement")
         {
-            OptionCaption = 'Public,Private,Academia,Corporate,Others;';
-            OptionMembers = Public,Private,Academia,Corporate,Others;
+            // OptionCaption = 'Public,Private,Academia,Corporate,Others;';
+            // OptionMembers = Public,Private,Academia,Corporate,Others;
         }
 
         //*******************************************************************************************employee END    

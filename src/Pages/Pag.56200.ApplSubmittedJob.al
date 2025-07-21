@@ -168,6 +168,7 @@ page 56200 "Applicant Submitted Job"
                 //******************************************************************* ACADEMIC QUALIFICATIONS 1
                 field(KCSElevel; secondarylevel)
                 {
+                    caption = 'KCSE_Level';
                     ApplicationArea = All;
                 }
                 field("Area of Specialization 1"; "Area of Specialization 1")
@@ -968,11 +969,11 @@ page 56200 "Applicant Submitted Job"
         primarylevel: Label 'Primary Level', MaxLength = 1000;
         OLEVELSchool: label 'O Level School', MaxLength = 1000;
         Alevelschool: Label 'A Level School', MaxLength = 1000;
-        KCE: label 'KCE', MaxLength = 1000;
-        KACE: label 'KACE', MaxLength = 1000;
+        KCE: label 'KCE Level', MaxLength = 1000;
+        KACE: label 'KACE Level', MaxLength = 1000;
 
         primarylevelEnd: Label 'Primary Level End', MaxLength = 1000;
-        secondarylevel: Label 'Secondary Level', MaxLength = 1000;
+        secondarylevel: Label 'KCSE Level', MaxLength = 1000;
         secondarylevelEnd: Label 'Secondary Level End', MaxLength = 1000;
         tertiarylevel: Label 'Tertiary Level', MaxLength = 1000;
         tertiarylevelEnd: Label 'Tertiary Level End', MaxLength = 1000;
