@@ -464,9 +464,8 @@ codeunit 55056 HRPortal
         StatementOutstream: OutStream;
         StatementInstream: InStream;
     begin
-        TempBlob_lRec.CreateOutStream(OutStr, TEXTENCODING::UTF8);
         Employee.Reset;
-        Employee.SetFilter("Company Code", COMPANYNAME);
+        Employee.SetFilter("No.", employeeNumber);
         if Employee.FindSet then begin
             ClientP9AReport.SetPeriod(DT2DATE(startDate), DT2DATE(endDate));
             ClientP9AReport.SetTableView(Employee);
@@ -476,6 +475,8 @@ codeunit 55056 HRPortal
                 BaseImage := Base64Convert.ToBase64(StatementInstream);
                 exit(BaseImage);
             end;
+        end else begin
+            BaseImage := 'Report not found.';
         end;
     end;
 
