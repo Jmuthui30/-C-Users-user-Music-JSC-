@@ -18,10 +18,13 @@ report 52970 "Applicant job Submitted"
             column(Birth_Date; "Birth Date") { }
             column(Age; Age) { }
             column(Disability; Disability) { }
+            column(Disability_T; "Disability T")
+            { }
             column(Disability_Description; "Disability Description") { }
             column(NCPWD_Certificate_No_; "NCPWD Certificate No.") { }
             column(Home_County; "Home County") { }
             column(Ethnic_Group; "Ethnic Group") { }
+
             column(Sub_Ethnic_Group; "Sub Ethnic Group") { }
             column(Mobile_Phone_No_; "Mobile Phone No.") { }
             column(Alternative_Phone_No_; "Alternative Phone No.") { }
@@ -32,6 +35,7 @@ report 52970 "Applicant job Submitted"
             column(City; City) { }
 
             column(Dismissal_Declaration; "Dismissal Declaration") { }
+
             column(Dismissal_Decl__Specification; "Dismissal Decl. Specification") { }
             column(Physical_Address; "Physical Address") { }
 
@@ -506,7 +510,8 @@ report 52970 "Applicant job Submitted"
                         var
                         begin
 
-                            InitalizeFieldIds(Appl.FieldNo(Disability));
+                            // InitalizeFieldIds(Appl.FieldNo(Disability));
+                            InitalizeFieldIds(Appl.FieldNo("Disability T"));
                             InitalizeFieldIds(Appl.FieldNo("Disability Description"));
                             InitalizeFieldIds(Appl.FieldNo("NCPWD Certificate No."));
 
@@ -1277,9 +1282,9 @@ report 52970 "Applicant job Submitted"
         compinfo: Record "Company Information";
         arrlength: Integer;
 
-        arrFieldIds: array[20] of Integer;
-        arrFieldCaptions: array[20] of Text;
-        arrFieldValues: array[20] of Text;
+        arrFieldIds: array[1000] of Integer;
+        arrFieldCaptions: array[1000] of Text;
+        arrFieldValues: array[1000] of Text;
         Appl: Record "Applicant Submitted Job";
         ApplSubmittedJob: record "Applicant Submitted Job";
 

@@ -669,6 +669,10 @@ report 53072 "update Job Appl."
 
         // Disability Information
         ApplicantSubmittedJob.Disability := ApplicantApp.Disability;
+        if ApplicantApp.Disability then
+            applicantSubmittedJob."Disability T" := 'Yes'
+        else
+            applicantSubmittedJob."Disability T" := 'No';
         ApplicantSubmittedJob."Disability Description" := ApplicantApp."Disability Description";
         ApplicantSubmittedJob."NCPWD Certificate No." := ApplicantApp."NCPWD Certificate No.";
         ApplicantSubmittedJob."Dismissal Declaration" := ApplicantApp."Dismissal Declaration";
@@ -728,8 +732,8 @@ report 53072 "update Job Appl."
     begin
         ApplicantEmpl.Reset();
         ApplicantEmpl.SetRange("Applicant No.", ApplicantSubmittedJob."Applicant No.");
-        ApplicantEmpl.SetCurrentKey("To Date");
-
+        ApplicantEmpl.SetCurrentKey(ApplicantEmpl."To Date");
+        ApplicantEmpl.SetAscending("To Date", false);
         if ApplicantEmpl.FindSet() then begin
             repeat
                 RecordCount += 1;
@@ -746,16 +750,6 @@ report 53072 "update Job Appl."
         case RecordNumber of
             1:
                 SetEmployerFields(ApplicantSubmittedJob, ApplicantEmpl);
-            // begin
-            //     if ApplicantEmpl."Currently Employment" = true then begin
-            //         ApplicantSubmittedJob."Sector Of Employement" := ApplicantEmpl.Sector;
-            //         ApplicantSubmittedJob."From Date Employer" := ApplicantEmpl."From Date";
-            //         ApplicantSubmittedJob."To Date Employer" := ApplicantEmpl."To Date";
-            //         ApplicantSubmittedJob."Substantive Post" := ApplicantEmpl."Substantive Post";
-            //         ApplicantSubmittedJob."Employment Period" := ApplicantEmpl."Employment Period";
-            //         ApplicantSubmittedJob.Employer := ApplicantEmpl."Employer/Institution Name";
-            //     end;
-            // end;
             2:
                 SetEmployer2Fields(ApplicantSubmittedJob, ApplicantEmpl);
             3:
@@ -779,12 +773,16 @@ report 53072 "update Job Appl."
 
     local procedure SetEmployerFields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
     begin
-        ApplicantSubmittedJob."Sector Of Employement" := ApplicantEmpl.Sector;
+
         ApplicantSubmittedJob."From Date Employer" := ApplicantEmpl."From Date";
         ApplicantSubmittedJob."To Date Employer" := ApplicantEmpl."To Date";
         ApplicantSubmittedJob."Substantive Post" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period" := ApplicantEmpl."Employment Period";
         ApplicantSubmittedJob.Employer := ApplicantEmpl."Employer/Institution Name";
+        if ApplicantEmpl."Applicant No." = '' then
+            ApplicantSubmittedJob."Sector Of Employement" := ' '
+        else
+            ApplicantSubmittedJob."Sector Of Employement" := ApplicantEmpl.Sector;
     END;
 
     local procedure SetEmployer2Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -795,7 +793,10 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 2" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 2" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 2" := ApplicantEmpl."Employment Period";
-        ApplicantSubmittedJob."Sector Of Employement 2" := ApplicantEmpl.Sector;
+        if ApplicantEmpl."Applicant No." = '' then
+            ApplicantSubmittedJob."Sector Of Employement 2" := ' '
+        else
+            ApplicantSubmittedJob."Sector Of Employement 2" := ApplicantEmpl.Sector;
 
     end;
 
@@ -807,7 +808,10 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 3" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 3" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 3" := ApplicantEmpl."Employment Period";
-        ApplicantSubmittedJob."Sector Of Employement 3" := ApplicantEmpl.Sector;
+        if ApplicantEmpl."Applicant No." = '' then
+            ApplicantSubmittedJob."Sector Of Employement 3" := ' '
+        else
+            ApplicantSubmittedJob."Sector Of Employement 3" := ApplicantEmpl.Sector;
     end;
 
     local procedure SetEmployer4Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -818,7 +822,10 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 4" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 4" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 4" := ApplicantEmpl."Employment Period";
-        ApplicantSubmittedJob."Sector Of Employement 4" := ApplicantEmpl.Sector;
+        if ApplicantEmpl."Applicant No." = '' then
+            ApplicantSubmittedJob."Sector Of Employement 4" := ' '
+        else
+            ApplicantSubmittedJob."Sector Of Employement 4" := ApplicantEmpl.Sector;
     end;
 
     local procedure SetEmployer5Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -829,7 +836,10 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 5" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 5" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 5" := ApplicantEmpl."Employment Period";
-        ApplicantSubmittedJob."Sector Of Employement 5" := ApplicantEmpl.Sector;
+        if ApplicantEmpl."Applicant No." = '' then
+            ApplicantSubmittedJob."Sector Of Employement 5" := ' '
+        else
+            ApplicantSubmittedJob."Sector Of Employement 5" := ApplicantEmpl.Sector;
     end;
 
     local procedure SetEmployer6Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -840,7 +850,10 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 6" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 6" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 6" := ApplicantEmpl."Employment Period";
-        ApplicantSubmittedJob."Sector Of Employement 6" := ApplicantEmpl.Sector;
+        if ApplicantEmpl."Applicant No." = '' then
+            ApplicantSubmittedJob."Sector Of Employement 6" := ' '
+        else
+            ApplicantSubmittedJob."Sector Of Employement 6" := ApplicantEmpl.Sector;
     end;
 
     local procedure SetEmployer7Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -851,7 +864,11 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 7" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 7" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 7" := ApplicantEmpl."Employment Period";
-        ApplicantSubmittedJob."Sector Of Employement 7" := ApplicantEmpl.Sector;
+        if ApplicantEmpl."Applicant No." = '' then
+            ApplicantSubmittedJob."Sector Of Employement 7" := ' '
+        else
+            ApplicantSubmittedJob."Sector Of Employement 7" := ApplicantEmpl.Sector;
+
 
     end;
 
@@ -863,7 +880,10 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 8" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 8" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 8" := ApplicantEmpl."Employment Period";
-        ApplicantSubmittedJob."Sector Of Employement 8" := ApplicantEmpl.Sector;
+        if ApplicantEmpl."Applicant No." = '' then
+            ApplicantSubmittedJob."Sector Of Employement 8" := ' '
+        else
+            ApplicantSubmittedJob."Sector Of Employement 8" := ApplicantEmpl.Sector;
     end;
 
     local procedure SetEmployer9Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -874,7 +894,10 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 9" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 9" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 9" := ApplicantEmpl."Employment Period";
-        ApplicantSubmittedJob."Sector Of Employement 9" := ApplicantEmpl.Sector;
+        if ApplicantEmpl."Applicant No." = '' then
+            ApplicantSubmittedJob."Sector Of Employement 9" := ' '
+        else
+            ApplicantSubmittedJob."Sector Of Employement 9" := ApplicantEmpl.Sector;
     end;
 
     local procedure SetEmployer10Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -885,7 +908,10 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 10" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 10" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 10" := ApplicantEmpl."Employment Period";
-        ApplicantSubmittedJob."Sector Of Employement 10" := ApplicantEmpl.Sector;
+        if ApplicantEmpl."Applicant No." = '' then
+            ApplicantSubmittedJob."Sector Of Employement 10" := ' '
+        else
+            ApplicantSubmittedJob."Sector Of Employement 10" := ApplicantEmpl.Sector;
     end;
 
     local procedure ProcessEducationHistory(var ApplicantSubmittedJob: Record "Applicant Submitted Job")
@@ -900,12 +926,21 @@ report 53072 "update Job Appl."
             repeat
 
                 // Handle KACE or KCE qualifications
-                if ((ApplicantsQual."Qualification Code" = 'KACE') or (ApplicantsQual."Qualification Code" = 'KCE')) then begin
+                if (ApplicantsQual."Qualification Code" = 'KACE') then begin
                     ApplicantSubmittedJob."Area of Specialization" := ApplicantsQual.Description;
                     ApplicantSubmittedJob."Institution/Company" := ApplicantsQual."Institution/Company";
                     ApplicantSubmittedJob."From Date" := ApplicantsQual."From Date";
                     ApplicantSubmittedJob."To Date" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Grade/Class" := ApplicantsQual."Grade/Class";
+                end;
+                //KCE qualifications
+                if (ApplicantsQual."Qualification Code" = 'KCE') then begin
+                    ApplicantSubmittedJob."Area of Specialization 11" := ApplicantsQual.Description;
+                    applicantSubmittedJob."Institution/Company 11" := ApplicantsQual."Institution/Company";
+                    ApplicantSubmittedJob."From Date 11" := ApplicantsQual."From Date";
+                    ApplicantSubmittedJob."To Date 11" := ApplicantsQual."To Date";
+                    ApplicantSubmittedJob."Grade/Class 11" := ApplicantsQual."Grade/Class";
+
                 end;
 
                 // Handle KCSE qualifications

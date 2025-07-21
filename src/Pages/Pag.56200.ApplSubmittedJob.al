@@ -49,6 +49,12 @@ page 56200 "Applicant Submitted Job"
                 field(Disability; Disability)
                 {
                     ApplicationArea = All;
+                    visible = false;
+                }
+                field("Disability T"; "Disability T")
+                {
+                    ApplicationArea = All;
+                    caption = 'Disability';
                 }
                 field("Disability Description"; "Disability Description")
                 {
@@ -106,7 +112,7 @@ page 56200 "Applicant Submitted Job"
                 Field("Years Of Experience"; "Years Of Experience")
                 { }
                 //*************************************************************************************academic qualifications
-                field(primarylevel; primarylevel)
+                field(KACElevel; KACE)
                 {
                     ApplicationArea = All;
                 }
@@ -129,9 +135,38 @@ page 56200 "Applicant Submitted Job"
                 field("From Date"; "From Date")
                 {
                     ApplicationArea = All;
+
                 }
+                //*****************************************
+                field(KCElevel; KCE)
+                {
+                    ApplicationArea = All;
+                }
+                field("Area of Specialization 11"; "Area of Specialization 11")
+                {
+                    ApplicationArea = All;
+                }
+                field("Institution/Company 11"; "Institution/Company 11")
+                {
+                    ApplicationArea = All;
+                }
+                field("Grade/Class 11"; "Grade/Class 11")
+                {
+                    ApplicationArea = All;
+                }
+                field("To Date 11"; "To Date 11")
+                {
+                    ApplicationArea = All;
+                }
+                field("From Date 11"; "From Date 11")
+                {
+                    ApplicationArea = All;
+                }
+
+
+
                 //******************************************************************* ACADEMIC QUALIFICATIONS 1
-                field(secondarylevel; secondarylevel)
+                field(KCSElevel; secondarylevel)
                 {
                     ApplicationArea = All;
                 }
@@ -897,6 +932,32 @@ page 56200 "Applicant Submitted Job"
                 ApplicationArea = All;
 
             }
+            action("Sharepoint Attachments")
+            {
+                ApplicationArea = all;
+                Ellipsis = true;
+                Image = Attachments;
+                Visible = true;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+                RunObject = page "Portal Uploads";
+                RunPageLink = "Document No" = field("Applicant No.");
+            }
+            action("View Applicant Information")
+            {
+                Promoted = true;
+                Image = View;
+                PromotedCategory = Category4;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+                //Applicant Submit-All 
+                RunObject = page "Applicant Submit-All";
+                RunPageLink = "No." = field("Applicant No.");
+                RunPageMode = View;
+                Caption = 'View Applicant Information';
+            }
 
         }
     }
@@ -905,6 +966,11 @@ page 56200 "Applicant Submitted Job"
         CurrentEmployer: Label 'Current Employer', MaxLength = 1000;
         CurrentEmployerEnd: Label 'Current Employer End', MaxLength = 1000;
         primarylevel: Label 'Primary Level', MaxLength = 1000;
+        OLEVELSchool: label 'O Level School', MaxLength = 1000;
+        Alevelschool: Label 'A Level School', MaxLength = 1000;
+        KCE: label 'KCE', MaxLength = 1000;
+        KACE: label 'KACE', MaxLength = 1000;
+
         primarylevelEnd: Label 'Primary Level End', MaxLength = 1000;
         secondarylevel: Label 'Secondary Level', MaxLength = 1000;
         secondarylevelEnd: Label 'Secondary Level End', MaxLength = 1000;

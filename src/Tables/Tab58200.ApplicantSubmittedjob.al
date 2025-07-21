@@ -32,7 +32,7 @@ table 58200 "Applicant Submitted Job"
             Caption = 'Address';
         }
 
-        field(10; "Physical Address"; Text[250])
+        field(10; "Physical Address"; Text[1050])
         {
             Caption = 'Address 2';
         }
@@ -121,7 +121,7 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(111; "Criminal Decl. Specification"; Text[250])
+        field(111; "Criminal Decl. Specification"; Text[1950])
         {
             Caption = 'Please Give Details of the case and any penalty for each offence';
         }
@@ -133,7 +133,7 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(113; "Dismissal Decl. Specification"; Text[250])
+        field(113; "Dismissal Decl. Specification"; Text[1950])
         {
             Caption = 'Please Give Details';
         }
@@ -743,6 +743,13 @@ table 58200 "Applicant Submitted Job"
             Caption = 'Grade/Class';
             DataClassification = ToBeClassified;
         }
+        //*****************************************************************************
+        FIELD(991; "Qualification Code 12"; Text[2000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
+
         //*******************************************************************************************academic END
         field(60; "Professional Qualification"; text[1000]) { DataClassification = ToBeClassified; }
         field(61; "Professional Institution"; text[1000]) { DataClassification = ToBeClassified; }
@@ -901,8 +908,8 @@ table 58200 "Applicant Submitted Job"
 
         field(305; "Sector Of Employement"; Option)
         {
-            OptionCaption = 'Public,Private,Academia,Corporate,Others;';
-            OptionMembers = Public,Private,Academia,Corporate,Others;
+            OptionCaption = ',Public,Private,Academia,Corporate,Others;';
+            OptionMembers = ,Public,Private,Academia,Corporate,Others;
         }
         field(307; "Substantive Post"; Text[2048])
         {
@@ -1185,7 +1192,9 @@ table 58200 "Applicant Submitted Job"
         }
 
 
-
+        field(299; "Disability T"; text[1000])
+        {
+        }
 
 
 

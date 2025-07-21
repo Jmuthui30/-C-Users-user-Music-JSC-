@@ -655,6 +655,9 @@ xT+zh468Lu5OkNqMC8+bYHzQfw6/pXnl3o+oafI0dzZXFs6nDLNEykfmK/UTy19Kr3Wm2t8my5top1/u
         <Field Name="Disability">
           <DataField>Disability</DataField>
         </Field>
+        <Field Name="Disability_T">
+          <DataField>Disability_T</DataField>
+        </Field>
         <Field Name="Disability_Description">
           <DataField>Disability_Description</DataField>
         </Field>
