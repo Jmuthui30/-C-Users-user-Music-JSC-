@@ -95,7 +95,16 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
-
+                FIELD("Current Salary"; "Current Salary")
+                {
+                    visible = false;
+                }
+                FIELD("Expected Salary"; "Expected Salary")
+                {
+                    visible = false;
+                }
+                Field("Years Of Experience"; "Years Of Experience")
+                { }
                 //*************************************************************************************academic qualifications
                 field(primarylevel; primarylevel)
                 {
@@ -772,22 +781,27 @@ page 56200 "Applicant Submitted Job"
                 FIELD(AUDITEDY1; AUDITEDY1)
                 {
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field(AUDITEDY2; AUDITEDY2)
                 {
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field(AUDITEDY3; AUDITEDY3)
                 {
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field(AUDITEDY4; AUDITEDY4)
                 {
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field(AUDITEDY5; AUDITEDY5)
                 {
                     ApplicationArea = All;
+                    Visible = false;
                 }
 
 
@@ -837,6 +851,7 @@ page 56200 "Applicant Submitted Job"
                 RunPageMode = View;
                 Caption = 'UpDate submit Submitted.';
                 ApplicationArea = All;
+                visible = false;
 
             }
 
