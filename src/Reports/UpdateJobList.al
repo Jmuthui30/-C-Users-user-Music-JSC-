@@ -609,6 +609,7 @@ report 53072 "update Job Appl."
         MaxProfessionalBodiesRecords: Integer;
         MaxCourseRecords: Integer;
         HRDatesExt: Codeunit "HR Dates Mgt";
+        Dates: Codeunit "HR Dates Mgt";
 
     local procedure ProcessJobApplication(JobApp: Record "Job Application")
     var
@@ -698,7 +699,7 @@ report 53072 "update Job Appl."
         // Salary and Experience
         ApplicantSubmittedJob."Current Salary" := ApplicantApp."Current Salary";
         ApplicantSubmittedJob."Expected Salary" := ApplicantApp."Expected Salary";
-        ApplicantSubmittedJob."Years Of Experience" := ApplicantApp."Years of Experience";
+        //ApplicantSubmittedJob."Years Of Experience" := ApplicantApp."Years of Experience";
 
         // Languages
         PopulateLanguageInformation(ApplicantSubmittedJob, ApplicantApp);
@@ -779,7 +780,8 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Substantive Post" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period" := ApplicantEmpl."Employment Period";
         ApplicantSubmittedJob.Employer := ApplicantEmpl."Employer/Institution Name";
-        if ApplicantEmpl."Applicant No." <> '' then
+        ApplicantSubmittedJob."Years Of Experience" += ApplicantEmpl."Employment Period";
+        if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
             ApplicantSubmittedJob."Sector Of Employement" := ApplicantEmpl.Sector;
@@ -793,6 +795,7 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 2" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 2" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 2" := ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 2" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -808,6 +811,7 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 3" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 3" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 3" := ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 3" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -822,6 +826,7 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 4" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 4" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 4" := ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 4" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -836,6 +841,7 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 5" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 5" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 5" := ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 5" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -850,6 +856,7 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 6" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 6" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 6" := ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 6" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -864,6 +871,7 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 7" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 7" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 7" := ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 7" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -880,6 +888,7 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 8" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 8" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 8" := ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 8" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -894,6 +903,7 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 9" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 9" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 9" := ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 9" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -908,6 +918,7 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 10" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 10" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 10" := ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 10" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -927,7 +938,8 @@ report 53072 "update Job Appl."
 
                 // Handle KACE or KCE qualifications
                 if (ApplicantsQual."Qualification Code" = 'KACE') then begin
-                    ApplicantSubmittedJob."Area of Specialization" := ApplicantsQual.Description;
+                    ApplicantSubmittedJob.Description := ApplicantsQual.Description;
+                    ApplicantSubmittedJob."Area of Specialization" := ApplicantsQual."Area of Specialization";
                     ApplicantSubmittedJob."Institution/Company" := ApplicantsQual."Institution/Company";
                     ApplicantSubmittedJob."From Date" := ApplicantsQual."From Date";
                     ApplicantSubmittedJob."To Date" := ApplicantsQual."To Date";
@@ -935,7 +947,8 @@ report 53072 "update Job Appl."
                 end;
                 //KCE qualifications
                 if (ApplicantsQual."Qualification Code" = 'KCE') then begin
-                    ApplicantSubmittedJob."Area of Specialization 11" := ApplicantsQual.Description;
+                    ApplicantSubmittedJob."Description 11" := ApplicantsQual.Description;
+                    ApplicantSubmittedJob."Area of Specialization 11" := ApplicantsQual."Area of Specialization";
                     applicantSubmittedJob."Institution/Company 11" := ApplicantsQual."Institution/Company";
                     ApplicantSubmittedJob."From Date 11" := ApplicantsQual."From Date";
                     ApplicantSubmittedJob."To Date 11" := ApplicantsQual."To Date";
@@ -945,7 +958,8 @@ report 53072 "update Job Appl."
 
                 // Handle KCSE qualifications
                 if (ApplicantsQual."Qualification Code" = 'KCSE') then begin
-                    ApplicantSubmittedJob."Area of Specialization 1" := ApplicantsQual.Description;
+                    ApplicantSubmittedJob."Description 1" := ApplicantsQual.Description;
+                    ApplicantSubmittedJob."Area of Specialization 1" := ApplicantsQual."Area of Specialization";
                     ApplicantSubmittedJob."Institution/Company 1" := ApplicantsQual."Institution/Company";
                     ApplicantSubmittedJob."From Date 1" := ApplicantsQual."From Date";
                     ApplicantSubmittedJob."To Date 1" := ApplicantsQual."To Date";
@@ -954,7 +968,8 @@ report 53072 "update Job Appl."
 
                 // Handle qualifications in 30000-39999 range (corrected logic)
                 if (ApplicantsQual."Qualification Code" >= '30000') and (ApplicantsQual."Qualification Code" <= '39999') then begin
-                    ApplicantSubmittedJob."Area of Specialization 6" := ApplicantsQual.Description;
+                    ApplicantSubmittedJob."Description 6" := ApplicantsQual.Description;
+                    ApplicantSubmittedJob."Area of Specialization 6" := ApplicantsQual."Area of Specialization";
                     ApplicantSubmittedJob."Qualification Code 6" := ApplicantsQual."Qualification Code";
                     ApplicantSubmittedJob."Institution/Company 6" := ApplicantsQual."Institution/Company";
                     ApplicantSubmittedJob."From Date 6" := ApplicantsQual."From Date";
@@ -962,7 +977,8 @@ report 53072 "update Job Appl."
                     ApplicantSubmittedJob."Grade/Class 6" := ApplicantsQual."Grade/Class";
                 end;
                 if (ApplicantsQual."Qualification Code" >= '70000') and (ApplicantsQual."Qualification Code" <= '79999') then begin
-                    ApplicantSubmittedJob."Area of Specialization 3" := ApplicantsQual.Description;
+                    ApplicantSubmittedJob."Description 3" := ApplicantsQual.Description;
+                    ApplicantSubmittedJob."Area of Specialization 3" := ApplicantsQual."Area of Specialization";
                     ApplicantSubmittedJob."Institution/Company 3" := ApplicantsQual."Institution/Company";
                     ApplicantSubmittedJob."From Date 3" := ApplicantsQual."From Date";
                     ApplicantSubmittedJob."To Date 3" := ApplicantsQual."To Date";
@@ -973,14 +989,16 @@ report 53072 "update Job Appl."
                     ApplicantSubmittedJob."From Date 4" := ApplicantsQual."From Date";
                     ApplicantSubmittedJob."To Date 4" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Grade/Class 4" := ApplicantsQual."Grade/Class";
-                    ApplicantSubmittedJob."Area of Specialization 4" := ApplicantsQual.Description;
+                    ApplicantSubmittedJob."Area of Specialization 4" := ApplicantsQual."Area of Specialization";
+                    ApplicantSubmittedJob."Description 4" := ApplicantsQual.Description;
                 end;
                 if (ApplicantsQual."Qualification Code" >= '40000') and (ApplicantsQual."Qualification Code" <= '49999') then begin
-                    applicantSubmittedJob."Area of Specialization 5" := ApplicantsQual.Description;
+                    applicantSubmittedJob."Area of Specialization 5" := ApplicantsQual."Area of Specialization";
                     ApplicantSubmittedJob."Institution/Company 5" := ApplicantsQual."Institution/Company";
                     ApplicantSubmittedJob."From Date 5" := ApplicantsQual."From Date";
                     ApplicantSubmittedJob."To Date 5" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Grade/Class 5" := ApplicantsQual."Grade/Class";
+                    ApplicantSubmittedJob."Description 5" := ApplicantsQual.Description;
                 end;
                 if (ApplicantsQual."Qualification Code" >= '60000') and (ApplicantsQual."Qualification Code" <= '60009') then begin
                     applicantSubmittedJob."Area of Specialization 2" := ApplicantsQual.Description;
@@ -990,25 +1008,28 @@ report 53072 "update Job Appl."
                     ApplicantSubmittedJob."Grade/Class 2" := ApplicantsQual."Grade/Class";
                 end;
                 if (ApplicantsQual."Qualification Code" >= '20000') and (ApplicantsQual."Qualification Code" <= '29999') then begin
-                    applicantSubmittedJob."Area of Specialization 8" := ApplicantsQual.Description;
+                    applicantSubmittedJob."Area of Specialization 8" := ApplicantsQual."Area of Specialization";
                     ApplicantSubmittedJob."Institution/Company 8" := ApplicantsQual."Institution/Company";
                     ApplicantSubmittedJob."From Date 8" := ApplicantsQual."From Date";
                     ApplicantSubmittedJob."To Date 8" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Grade/Class 8" := ApplicantsQual."Grade/Class";
+                    ApplicantSubmittedJob."Description 8" := ApplicantsQual.Description;
                 end;
                 if (ApplicantsQual."Qualification Code" >= '10000') and (ApplicantsQual."Qualification Code" <= '19999') then begin
-                    applicantSubmittedJob."Area of Specialization 9" := ApplicantsQual.Description;
+                    applicantSubmittedJob."Area of Specialization 9" := ApplicantsQual."Area of Specialization";
                     ApplicantSubmittedJob."Institution/Company 9" := ApplicantsQual."Institution/Company";
                     ApplicantSubmittedJob."From Date 9" := ApplicantsQual."From Date";
                     ApplicantSubmittedJob."To Date 9" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Grade/Class 9" := ApplicantsQual."Grade/Class";
+                    ApplicantSubmittedJob."Description 9" := ApplicantsQual.Description;
                 end;
                 if (ApplicantsQual."Qualification Code" >= '80000') and (ApplicantsQual."Qualification Code" <= '89999') then begin
-                    applicantSubmittedJob."Area of Specialization 10" := ApplicantsQual.Description;
+                    applicantSubmittedJob."Area of Specialization 10" := ApplicantsQual."Area of Specialization";
                     ApplicantSubmittedJob."Institution/Company 10" := ApplicantsQual."Institution/Company";
                     ApplicantSubmittedJob."From Date 10" := ApplicantsQual."From Date";
                     ApplicantSubmittedJob."To Date 10" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Grade/Class 10" := ApplicantsQual."Grade/Class";
+                    ApplicantSubmittedJob."Description 10" := ApplicantsQual.Description;
                 end;
 
             until ApplicantsQual.Next() = 0;
@@ -1016,93 +1037,93 @@ report 53072 "update Job Appl."
         end;
     end;
 
-    local procedure SetEducationFields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantsQual: Record "Applicants Qualification"; FieldIndex: Integer)
-    begin
-        case FieldIndex of
+    // local procedure SetEducationFields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantsQual: Record "Applicants Qualification"; FieldIndex: Integer)
+    // begin
+    //     case FieldIndex of
 
-            0:
-                begin
-                    ApplicantSubmittedJob."Area of Specialization" := ApplicantsQual.Description;
-                    ApplicantSubmittedJob."Institution/Company" := ApplicantsQual."Institution/Company";
-                    ApplicantSubmittedJob."From Date" := ApplicantsQual."From Date";
-                    ApplicantSubmittedJob."To Date" := ApplicantsQual."To Date";
-                    ApplicantSubmittedJob."Grade/Class" := ApplicantsQual."Grade/Class";
-                end;
-            1:
-                begin
-                    ApplicantSubmittedJob."Area of Specialization 1" := ApplicantsQual.Description;
-                    ApplicantSubmittedJob."Institution/Company 1" := ApplicantsQual."Institution/Company";
-                    ApplicantSubmittedJob."From Date 1" := ApplicantsQual."From Date";
-                    ApplicantSubmittedJob."To Date 1" := ApplicantsQual."To Date";
-                    ApplicantSubmittedJob."Grade/Class 1" := ApplicantsQual."Grade/Class";
-                end;
-            2:
-                begin
-                    ApplicantSubmittedJob."Area of Specialization 2" := ApplicantsQual.Description;
-                    ApplicantSubmittedJob."Institution/Company 2" := ApplicantsQual."Institution/Company";
-                    ApplicantSubmittedJob."From Date 2" := ApplicantsQual."From Date";
-                    ApplicantSubmittedJob."To Date 2" := ApplicantsQual."To Date";
-                    ApplicantSubmittedJob."Grade/Class 2" := ApplicantsQual."Grade/Class";
-                end;
-            3:
-                begin
-                    ApplicantSubmittedJob."Area of Specialization 3" := ApplicantsQual.Description;
-                    ApplicantSubmittedJob."Institution/Company 3" := ApplicantsQual."Institution/Company";
-                    ApplicantSubmittedJob."From Date 3" := ApplicantsQual."From Date";
-                    ApplicantSubmittedJob."To Date 3" := ApplicantsQual."To Date";
-                    ApplicantSubmittedJob."Grade/Class 3" := ApplicantsQual."Grade/Class";
-                end;
-            4:
-                begin
-                    ApplicantSubmittedJob."Institution/Company 4" := ApplicantsQual."Institution/Company";
-                    ApplicantSubmittedJob."From Date 4" := ApplicantsQual."From Date";
-                    ApplicantSubmittedJob."To Date 4" := ApplicantsQual."To Date";
-                    ApplicantSubmittedJob."Grade/Class 4" := ApplicantsQual."Grade/Class";
-                    ApplicantSubmittedJob."Area of Specialization 4" := ApplicantsQual.Description;
-                end;
-            5:
-                begin
-                    ApplicantSubmittedJob."Area of Specialization 5" := ApplicantsQual.Description;
-                    ApplicantSubmittedJob."Institution/Company 5" := ApplicantsQual."Institution/Company";
-                    ApplicantSubmittedJob."From Date 5" := ApplicantsQual."From Date";
-                    ApplicantSubmittedJob."To Date 5" := ApplicantsQual."To Date";
-                    ApplicantSubmittedJob."Grade/Class 5" := ApplicantsQual."Grade/Class";
-                end;
-            6:
-                begin
-                    ApplicantSubmittedJob."Area of Specialization 6" := ApplicantsQual.Description;
-                    ApplicantSubmittedJob."Qualification Code 6" := ApplicantsQual."Qualification Code";
-                    ApplicantSubmittedJob."Institution/Company 6" := ApplicantsQual."Institution/Company";
-                    ApplicantSubmittedJob."From Date 6" := ApplicantsQual."From Date";
-                    ApplicantSubmittedJob."To Date 6" := ApplicantsQual."To Date";
-                    ApplicantSubmittedJob."Grade/Class 6" := ApplicantsQual."Grade/Class";
-                end;
-            8:
-                begin
-                    ApplicantSubmittedJob."Area of Specialization 8" := ApplicantsQual.Description;
-                    ApplicantSubmittedJob."Institution/Company 8" := ApplicantsQual."Institution/Company";
-                    ApplicantSubmittedJob."From Date 8" := ApplicantsQual."From Date";
-                    ApplicantSubmittedJob."To Date 8" := ApplicantsQual."To Date";
-                    ApplicantSubmittedJob."Grade/Class 8" := ApplicantsQual."Grade/Class";
-                end;
-            9:
-                begin
-                    ApplicantSubmittedJob."Area of Specialization 9" := ApplicantsQual.Description;
-                    ApplicantSubmittedJob."Institution/Company 9" := ApplicantsQual."Institution/Company";
-                    ApplicantSubmittedJob."From Date 9" := ApplicantsQual."From Date";
-                    ApplicantSubmittedJob."To Date 9" := ApplicantsQual."To Date";
-                    ApplicantSubmittedJob."Grade/Class 9" := ApplicantsQual."Grade/Class";
-                end;
-            10:
-                begin
-                    ApplicantSubmittedJob."Area of Specialization 10" := ApplicantsQual.Description;
-                    ApplicantSubmittedJob."Institution/Company 10" := ApplicantsQual."Institution/Company";
-                    ApplicantSubmittedJob."From Date 10" := ApplicantsQual."From Date";
-                    ApplicantSubmittedJob."To Date 10" := ApplicantsQual."To Date";
-                    ApplicantSubmittedJob."Grade/Class 10" := ApplicantsQual."Grade/Class";
-                end;
-        end;
-    end;
+    //         0:
+    //             begin
+    //                 ApplicantSubmittedJob."Area of Specialization" := ApplicantsQual.Description;
+    //                 ApplicantSubmittedJob."Institution/Company" := ApplicantsQual."Institution/Company";
+    //                 ApplicantSubmittedJob."From Date" := ApplicantsQual."From Date";
+    //                 ApplicantSubmittedJob."To Date" := ApplicantsQual."To Date";
+    //                 ApplicantSubmittedJob."Grade/Class" := ApplicantsQual."Grade/Class";
+    //             end;
+    //         1:
+    //             begin
+    //                 ApplicantSubmittedJob."Area of Specialization 1" := ApplicantsQual.Description;
+    //                 ApplicantSubmittedJob."Institution/Company 1" := ApplicantsQual."Institution/Company";
+    //                 ApplicantSubmittedJob."From Date 1" := ApplicantsQual."From Date";
+    //                 ApplicantSubmittedJob."To Date 1" := ApplicantsQual."To Date";
+    //                 ApplicantSubmittedJob."Grade/Class 1" := ApplicantsQual."Grade/Class";
+    //             end;
+    //         2:
+    //             begin
+    //                 ApplicantSubmittedJob."Area of Specialization 2" := ApplicantsQual.Description;
+    //                 ApplicantSubmittedJob."Institution/Company 2" := ApplicantsQual."Institution/Company";
+    //                 ApplicantSubmittedJob."From Date 2" := ApplicantsQual."From Date";
+    //                 ApplicantSubmittedJob."To Date 2" := ApplicantsQual."To Date";
+    //                 ApplicantSubmittedJob."Grade/Class 2" := ApplicantsQual."Grade/Class";
+    //             end;
+    //         3:
+    //             begin
+    //                 ApplicantSubmittedJob."Area of Specialization 3" := ApplicantsQual.Description;
+    //                 ApplicantSubmittedJob."Institution/Company 3" := ApplicantsQual."Institution/Company";
+    //                 ApplicantSubmittedJob."From Date 3" := ApplicantsQual."From Date";
+    //                 ApplicantSubmittedJob."To Date 3" := ApplicantsQual."To Date";
+    //                 ApplicantSubmittedJob."Grade/Class 3" := ApplicantsQual."Grade/Class";
+    //             end;
+    //         4:
+    //             begin
+    //                 ApplicantSubmittedJob."Institution/Company 4" := ApplicantsQual."Institution/Company";
+    //                 ApplicantSubmittedJob."From Date 4" := ApplicantsQual."From Date";
+    //                 ApplicantSubmittedJob."To Date 4" := ApplicantsQual."To Date";
+    //                 ApplicantSubmittedJob."Grade/Class 4" := ApplicantsQual."Grade/Class";
+    //                 ApplicantSubmittedJob."Area of Specialization 4" := ApplicantsQual.Description;
+    //             end;
+    //         5:
+    //             begin
+    //                 ApplicantSubmittedJob."Area of Specialization 5" := ApplicantsQual.Description;
+    //                 ApplicantSubmittedJob."Institution/Company 5" := ApplicantsQual."Institution/Company";
+    //                 ApplicantSubmittedJob."From Date 5" := ApplicantsQual."From Date";
+    //                 ApplicantSubmittedJob."To Date 5" := ApplicantsQual."To Date";
+    //                 ApplicantSubmittedJob."Grade/Class 5" := ApplicantsQual."Grade/Class";
+    //             end;
+    //         6:
+    //             begin
+    //                 ApplicantSubmittedJob."Area of Specialization 6" := ApplicantsQual.Description;
+    //                 ApplicantSubmittedJob."Qualification Code 6" := ApplicantsQual."Qualification Code";
+    //                 ApplicantSubmittedJob."Institution/Company 6" := ApplicantsQual."Institution/Company";
+    //                 ApplicantSubmittedJob."From Date 6" := ApplicantsQual."From Date";
+    //                 ApplicantSubmittedJob."To Date 6" := ApplicantsQual."To Date";
+    //                 ApplicantSubmittedJob."Grade/Class 6" := ApplicantsQual."Grade/Class";
+    //             end;
+    //         8:
+    //             begin
+    //                 ApplicantSubmittedJob."Area of Specialization 8" := ApplicantsQual.Description;
+    //                 ApplicantSubmittedJob."Institution/Company 8" := ApplicantsQual."Institution/Company";
+    //                 ApplicantSubmittedJob."From Date 8" := ApplicantsQual."From Date";
+    //                 ApplicantSubmittedJob."To Date 8" := ApplicantsQual."To Date";
+    //                 ApplicantSubmittedJob."Grade/Class 8" := ApplicantsQual."Grade/Class";
+    //             end;
+    //         9:
+    //             begin
+    //                 ApplicantSubmittedJob."Area of Specialization 9" := ApplicantsQual.Description;
+    //                 ApplicantSubmittedJob."Institution/Company 9" := ApplicantsQual."Institution/Company";
+    //                 ApplicantSubmittedJob."From Date 9" := ApplicantsQual."From Date";
+    //                 ApplicantSubmittedJob."To Date 9" := ApplicantsQual."To Date";
+    //                 ApplicantSubmittedJob."Grade/Class 9" := ApplicantsQual."Grade/Class";
+    //             end;
+    //         10:
+    //             begin
+    //                 ApplicantSubmittedJob."Area of Specialization 10" := ApplicantsQual.Description;
+    //                 ApplicantSubmittedJob."Institution/Company 10" := ApplicantsQual."Institution/Company";
+    //                 ApplicantSubmittedJob."From Date 10" := ApplicantsQual."From Date";
+    //                 ApplicantSubmittedJob."To Date 10" := ApplicantsQual."To Date";
+    //                 ApplicantSubmittedJob."Grade/Class 10" := ApplicantsQual."Grade/Class";
+    //             end;
+    //     end;
+    // end;
 
     local procedure ProcessProfessionalQualifications(var ApplicantSubmittedJob: Record "Applicant Submitted Job")
     var
@@ -1137,6 +1158,7 @@ report 53072 "update Job Appl."
                     ApplicantSubmittedJob."Professional From Date" := ApplicantsQual."From Date";
                     ApplicantSubmittedJob."Professional Date of Admission" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Area of Specialization PROF" := ApplicantsQual."Area of Specialization";
+                    // ApplicantSubmittedJob."Duration course" := ApplicantsQual.Duration;
                 end;
             2:
                 begin
@@ -1147,6 +1169,7 @@ report 53072 "update Job Appl."
                     ApplicantSubmittedJob."Professional From Date 2" := ApplicantsQual."From Date";
                     ApplicantSubmittedJob."Professional Date of Admn 2" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Area of Specialization PROF 2" := ApplicantsQual."Area of Specialization";
+                    // ApplicantSubmittedJob."Duration course 2" := ApplicantsQual.Duration;
                 end;
             3:
                 begin
@@ -1157,6 +1180,8 @@ report 53072 "update Job Appl."
                     ApplicantSubmittedJob."Professional From Date 3" := ApplicantsQual."From Date";
                     ApplicantSubmittedJob."Professional Date of Admn 3" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Area of Specialization PROF 3" := ApplicantsQual."Area of Specialization";
+                    // ApplicantSubmittedJob."Duration course 3" := ApplicantsQual.Duration;
+
                 end;
         end;
     end;
@@ -1283,7 +1308,7 @@ report 53072 "update Job Appl."
                             ApplicantSubmittedJob."Course Int" := RelevantCourse."University/College/Institution";
                             ApplicantSubmittedJob."From Date course" := RelevantCourse."From Date";
                             ApplicantSubmittedJob."To Date course" := RelevantCourse."To Date";
-                            ApplicantSubmittedJob."Duration course" := RelevantCourse.Duration;
+                            ApplicantSubmittedJob."Duration course" := Dates.DetermineDatesDiffrence(RelevantCourse."From Date", RelevantCourse."To Date");
                         end;
                     2:
                         begin
@@ -1292,7 +1317,7 @@ report 53072 "update Job Appl."
                             ApplicantSubmittedJob."Course Int 2" := RelevantCourse."University/College/Institution";
                             ApplicantSubmittedJob."From Date course 2" := RelevantCourse."From Date";
                             ApplicantSubmittedJob."To Date course 2" := RelevantCourse."To Date";
-                            ApplicantSubmittedJob."Duration course 2" := RelevantCourse.Duration;
+                            ApplicantSubmittedJob."Duration course 2" := Dates.DetermineDatesDiffrence(RelevantCourse."From Date", RelevantCourse."To Date");
                         end;
                     3:
                         begin
@@ -1301,7 +1326,7 @@ report 53072 "update Job Appl."
                             ApplicantSubmittedJob."Course Int 3" := RelevantCourse."University/College/Institution";
                             ApplicantSubmittedJob."From Date course 3" := RelevantCourse."From Date";
                             ApplicantSubmittedJob."To Date course 3" := RelevantCourse."To Date";
-                            applicantSubmittedJob."Duration course 3" := RelevantCourse.Duration;
+                            applicantSubmittedJob."Duration course 3" := Dates.DetermineDatesDiffrence(RelevantCourse."From Date", RelevantCourse."To Date");
 
                         end;
 

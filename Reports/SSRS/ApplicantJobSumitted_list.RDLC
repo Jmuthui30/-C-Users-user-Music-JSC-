@@ -643,6 +643,15 @@ xT+zh468Lu5OkNqMC8+bYHzQfw6/pXnl3o+oafI0dzZXFs6nDLNEykfmK/UTy19Kr3Wm2t8my5top1/u
         <Field Name="IDNO">
           <DataField>IDNO</DataField>
         </Field>
+        <Field Name="Passport_No_">
+          <DataField>Passport_No_</DataField>
+        </Field>
+        <Field Name="Passport_Issue_Date">
+          <DataField>Passport_Issue_Date</DataField>
+        </Field>
+        <Field Name="Passport_Expiry_Date">
+          <DataField>Passport_Expiry_Date</DataField>
+        </Field>
         <Field Name="Gender">
           <DataField>Gender</DataField>
         </Field>

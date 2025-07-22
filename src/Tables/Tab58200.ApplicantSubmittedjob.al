@@ -234,7 +234,7 @@ table 58200 "Applicant Submitted Job"
         }
         field(25; "Area of Specialization"; Text[1000])
         {
-            Caption = 'Name';
+            Caption = 'Description';
             DataClassification = ToBeClassified;
         }
         field(26; "Institution/Company"; Text[1000])
@@ -266,6 +266,11 @@ table 58200 "Applicant Submitted Job"
                 Error001: Label 'Kindly note To Date %1 cannot be previous From Date %2';
             begin
             end;
+        }
+        field(2777; Description; Text[1000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
         }
         //***************************************************************************************Academ 1
         field(28; "Qualification Code 1"; Code[2000])
@@ -313,7 +318,11 @@ table 58200 "Applicant Submitted Job"
             DataClassification = ToBeClassified;
         }
 
-
+        field(2778; "Description 1"; Text[1000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
         //***************************************************************************************Academ 2
         field(29; "Qualification Code 2"; Code[2000])
         {
@@ -360,7 +369,11 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-
+        field(2779; "Description 2"; Text[1000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
 
         //******************************************************************************************Academ 3
         field(35; "Qualification Code 3"; Code[2000])
@@ -409,6 +422,11 @@ table 58200 "Applicant Submitted Job"
             Caption = 'Grade/Class';
             DataClassification = ToBeClassified;
         }
+        field(2780; "Description 3"; Text[1000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
         //*********************************************************************** acadec 4
         field(41; "Qualification Code 4"; Code[2000])
         {
@@ -454,6 +472,11 @@ table 58200 "Applicant Submitted Job"
         field(46; "Grade/Class 4"; Text[1000])
         {
             Caption = 'Grade/Class';
+            DataClassification = ToBeClassified;
+        }
+        field(2781; "Description 4"; Text[1000])
+        {
+            Caption = 'Description';
             DataClassification = ToBeClassified;
         }
         //****************************************************************************
@@ -504,6 +527,11 @@ table 58200 "Applicant Submitted Job"
             Caption = 'Grade/Class';
             DataClassification = ToBeClassified;
         }
+        field(2782; "Description 5"; Text[1000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
         //****************************************************************************
         field(47; "Qualification Code 6"; Text[2000])
         {
@@ -541,6 +569,11 @@ table 58200 "Applicant Submitted Job"
         field(52; "Grade/Class 6"; Text[1000])
         {
             Caption = 'Grade/Class';
+            DataClassification = ToBeClassified;
+        }
+        field(2783; "Description 6"; Text[1000])
+        {
+            Caption = 'Description';
             DataClassification = ToBeClassified;
         }
         //*******************************************************************************************academic 7
@@ -583,6 +616,11 @@ table 58200 "Applicant Submitted Job"
             Caption = 'Grade/Class';
             DataClassification = ToBeClassified;
         }
+        field(2784; "Description 7"; Text[1000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
         //*******************************************************************************************academic 8
         field(59; "Qualification Code 8"; Text[2000])
         {
@@ -621,6 +659,11 @@ table 58200 "Applicant Submitted Job"
         field(964; "Grade/Class 8"; Text[1000])
         {
             Caption = 'Grade/Class';
+            DataClassification = ToBeClassified;
+        }
+        field(2785; "Description 8"; Text[1000])
+        {
+            Caption = 'Description';
             DataClassification = ToBeClassified;
         }
         //*******************************************************************************************academic 9
@@ -663,6 +706,11 @@ table 58200 "Applicant Submitted Job"
             Caption = 'Grade/Class';
             DataClassification = ToBeClassified;
         }
+        field(2786; "Description 9"; Text[1000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
         //*******************************************************************************************academic 10
         field(971; "Qualification Code 10"; Text[2000])
         {
@@ -701,6 +749,11 @@ table 58200 "Applicant Submitted Job"
         FIELD(984; "Grade/Class 10"; Text[1000])
         {
             Caption = 'Grade/Class';
+            DataClassification = ToBeClassified;
+        }
+        field(2787; "Description 10"; Text[1000])
+        {
+            Caption = 'Description';
             DataClassification = ToBeClassified;
         }
         //*******************************************************************************************academic 11
@@ -743,6 +796,11 @@ table 58200 "Applicant Submitted Job"
             Caption = 'Grade/Class';
             DataClassification = ToBeClassified;
         }
+        field(2788; "Description 11"; Text[1000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
         //*****************************************************************************
         FIELD(991; "Qualification Code 12"; Text[2000])
         {
@@ -783,7 +841,11 @@ table 58200 "Applicant Submitted Job"
             Caption = 'Grade/Class';
             DataClassification = ToBeClassified;
         }
-
+        field(2789; "Description 12"; Text[1000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
         //*******************************************************************************************academic END
         field(60; "Professional Qualification"; text[1000]) { DataClassification = ToBeClassified; }
         field(61; "Professional Institution"; text[1000]) { DataClassification = ToBeClassified; }
@@ -1171,7 +1233,7 @@ table 58200 "Applicant Submitted Job"
         field(89; "Passport No."; Code[10])
         {
         }
-        field(254; "Years Of Experience"; Decimal)
+        field(254; "Years Of Experience"; text[1000])
         {
         }
         FIELD(255; "SAMPLE1"; Text[1000])

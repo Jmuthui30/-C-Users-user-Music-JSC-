@@ -34,6 +34,10 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
+                field("Passport No."; "Passport No.")
+                {
+                    ApplicationArea = All;
+                }
                 field(Gender; Gender)
                 {
                     ApplicationArea = All;
@@ -116,6 +120,12 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
+                field(Description; Description)
+                {
+                    ApplicationArea = All;
+                    caption = 'KACE';
+
+                }
                 field("Area of Specialization"; "Area of Specialization")
                 {
                     ApplicationArea = All;
@@ -123,6 +133,7 @@ page 56200 "Applicant Submitted Job"
                 field("Institution/Company"; "Institution/Company")
                 {
                     ApplicationArea = All;
+                    caption = 'Institution';
                 }
                 field("Grade/Class"; "Grade/Class")
                 {
@@ -142,6 +153,11 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
+                field("Description 11"; "Description 11")
+                {
+                    ApplicationArea = All;
+                    caption = 'KCE';
+                }
                 field("Area of Specialization 11"; "Area of Specialization 11")
                 {
                     ApplicationArea = All;
@@ -149,6 +165,7 @@ page 56200 "Applicant Submitted Job"
                 field("Institution/Company 11"; "Institution/Company 11")
                 {
                     ApplicationArea = All;
+                    caption = 'Institution';
                 }
                 field("Grade/Class 11"; "Grade/Class 11")
                 {
@@ -171,6 +188,11 @@ page 56200 "Applicant Submitted Job"
                     caption = 'KCSE_Level';
                     ApplicationArea = All;
                 }
+                field("Description 1"; "Description 1")
+                {
+                    caption = 'KCSE';
+                    ApplicationArea = All;
+                }
                 field("Area of Specialization 1"; "Area of Specialization 1")
                 {
                     ApplicationArea = All;
@@ -178,6 +200,7 @@ page 56200 "Applicant Submitted Job"
                 field("Institution/Company 1"; "Institution/Company 1")
                 {
                     ApplicationArea = All;
+                    caption = 'Institution';
                 }
                 field("Grade/Class 1"; "Grade/Class 1")
                 {
@@ -198,6 +221,11 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
+                field("Description 10"; "Description 10")
+                {
+                    caption = 'Artisan';
+                    ApplicationArea = All;
+                }
                 field("Area of Specialization 10"; "Area of Specialization 10")
                 {
                     ApplicationArea = All;
@@ -205,6 +233,7 @@ page 56200 "Applicant Submitted Job"
                 field("Institution/Company 10"; "Institution/Company 10")
                 {
                     ApplicationArea = All;
+                    caption = 'Institution';
                 }
                 field("Grade/Class 10"; "Grade/Class 10")
                 {
@@ -222,7 +251,10 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
-
+                field("Description 3"; "Description 3")
+                {
+                    caption = 'Certificatelevel';
+                }
                 field("Area of Specialization 3"; "Area of Specialization 3")
                 {
                     ApplicationArea = All;
@@ -230,6 +262,7 @@ page 56200 "Applicant Submitted Job"
                 field("Institution/Company 3"; "Institution/Company 3")
                 {
                     ApplicationArea = All;
+                    caption = 'Institution';
                 }
                 field("Grade/Class 3"; "Grade/Class 3")
                 {
@@ -247,6 +280,11 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
+                field("Description 4"; "Description 4")
+                {
+                    caption = 'Diploma';
+                    ApplicationArea = All;
+                }
 
                 field("Area of Specialization 4"; "Area of Specialization 4")
                 {
@@ -255,6 +293,7 @@ page 56200 "Applicant Submitted Job"
                 field("Institution/Company 4"; "Institution/Company 4")
                 {
                     ApplicationArea = All;
+                    caption = 'Institution';
                 }
 
                 field("Grade/Class 4"; "Grade/Class 4")
@@ -275,6 +314,11 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
+                field("Description 5"; "Description 5")
+                {
+                    caption = 'Higher Diploma';
+                    ApplicationArea = All;
+                }
                 field("Area of Specialization 5"; "Area of Specialization 5")
                 {
                     ApplicationArea = All;
@@ -282,6 +326,7 @@ page 56200 "Applicant Submitted Job"
                 field("Institution/Company 5"; "Institution/Company 5")
                 {
                     ApplicationArea = All;
+                    caption = 'Institution';
                 }
                 field("Grade/Class 5"; "Grade/Class 5")
                 {
@@ -301,6 +346,11 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
+                field("Description 6"; "Description 6")
+                {
+                    caption = 'Degree';
+                    ApplicationArea = All;
+                }
                 field("Area of Specialization 6"; "Area of Specialization 6")
                 {
                     ApplicationArea = All;
@@ -308,6 +358,7 @@ page 56200 "Applicant Submitted Job"
                 field("Institution/Company 6"; "Institution/Company 6")
                 {
                     ApplicationArea = All;
+                    caption = 'Institution';
                 }
                 field("Grade/Class 6"; "Grade/Class 6")
                 {
@@ -325,6 +376,11 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
+                field("Description 2"; "Description 2")
+                {
+                    caption = 'Postgraduate Degree';
+                    ApplicationArea = All;
+                }
                 field("Area of Specialization 2"; "Area of Specialization 2")
                 {
                     ApplicationArea = All;
@@ -332,6 +388,7 @@ page 56200 "Applicant Submitted Job"
                 field("Institution/Company 2"; "Institution/Company 2")
                 {
                     ApplicationArea = All;
+                    caption = 'Institution';
                 }
                 field("Grade/Class 2"; "Grade/Class 2")
                 {
@@ -350,6 +407,11 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
+                field("Description 8"; "Description 8")
+                {
+                    caption = 'Masters Degree';
+                    ApplicationArea = All;
+                }
                 field("Area of Specialization 8"; "Area of Specialization 8")
                 {
                     ApplicationArea = All;
@@ -357,6 +419,7 @@ page 56200 "Applicant Submitted Job"
                 field("Institution/Company 8"; "Institution/Company 8")
                 {
                     ApplicationArea = All;
+                    caption = 'Institution';
                 }
                 field("Grade/Class 8"; "Grade/Class 8")
                 {
@@ -375,6 +438,10 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
+                field("Description 9"; "Description 9")
+                {
+                    caption = 'PhD';
+                }
                 field("Area of Specialization 9"; "Area of Specialization 9")
                 {
                     ApplicationArea = All;
@@ -382,6 +449,7 @@ page 56200 "Applicant Submitted Job"
                 field("Institution/Company 9"; "Institution/Company 9")
                 {
                     ApplicationArea = All;
+                    caption = 'Institution';
                 }
                 field("Grade/Class 9"; "Grade/Class 9")
                 {
@@ -950,7 +1018,7 @@ page 56200 "Applicant Submitted Job"
             {
                 Promoted = true;
                 Image = View;
-                PromotedCategory = Category4;
+                PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
                 //Applicant Submit-All 
