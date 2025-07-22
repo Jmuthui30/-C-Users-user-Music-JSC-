@@ -780,7 +780,7 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Substantive Post" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period" := ApplicantEmpl."Employment Period";
         ApplicantSubmittedJob.Employer := ApplicantEmpl."Employer/Institution Name";
-        ApplicantSubmittedJob."Years Of Experience" += ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -795,7 +795,7 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 2" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 2" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 2" := ApplicantEmpl."Employment Period";
-        ApplicantSubmittedJob."Years Of Experience" += ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 2" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -811,7 +811,7 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 3" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 3" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 3" := ApplicantEmpl."Employment Period";
-        ApplicantSubmittedJob."Years Of Experience" += ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 3" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -826,7 +826,7 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 4" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 4" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 4" := ApplicantEmpl."Employment Period";
-        ApplicantSubmittedJob."Years Of Experience" += ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 4" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -841,7 +841,7 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 5" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 5" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 5" := ApplicantEmpl."Employment Period";
-        ApplicantSubmittedJob."Years Of Experience" += ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 5" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -856,7 +856,7 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 6" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 6" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 6" := ApplicantEmpl."Employment Period";
-        ApplicantSubmittedJob."Years Of Experience" += ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 6" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -871,7 +871,7 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 7" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 7" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 7" := ApplicantEmpl."Employment Period";
-        ApplicantSubmittedJob."Years Of Experience" += ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 7" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -888,7 +888,7 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 8" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 8" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 8" := ApplicantEmpl."Employment Period";
-        ApplicantSubmittedJob."Years Of Experience" += ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 8" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -903,7 +903,7 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 9" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 9" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 9" := ApplicantEmpl."Employment Period";
-        ApplicantSubmittedJob."Years Of Experience" += ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 9" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -918,7 +918,7 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 10" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 10" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 10" := ApplicantEmpl."Employment Period";
-        ApplicantSubmittedJob."Years Of Experience" += ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 10" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else

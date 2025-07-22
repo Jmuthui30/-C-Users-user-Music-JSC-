@@ -1233,7 +1233,10 @@ table 58200 "Applicant Submitted Job"
         field(89; "Passport No."; Code[10])
         {
         }
-        field(254; "Years Of Experience"; text[1000])
+        field(254; "Years Of Experience"; Decimal)
+        {
+        }
+        field(250; "Years Of Experience 1"; text[1000])
         {
         }
         FIELD(255; "SAMPLE1"; Text[1000])
