@@ -864,6 +864,9 @@ table 51630 "Applicant"
         field(321; "Submitted Time"; Time)
         {
         }
+        field(3220; "closed Date"; Date)
+        {
+        }
         field(322; "Recruitment Needs NO"; Code[100])
         {
         }

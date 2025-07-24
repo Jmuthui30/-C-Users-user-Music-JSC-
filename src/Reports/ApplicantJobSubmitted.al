@@ -10,18 +10,25 @@ report 52970 "Applicant job Submitted"
         {
             RequestFilterFields = "Job code", Gender;
             column(Job_code; "Job code") { }
-            column(Job_Title; "Job Title") { }
+
             column(Applicant_No_; "Applicant No.") { }
             column(Applicant_Name; "Applicant Name") { }
+            column(Job_Title; "Job Title") { }
             column(IDNO; IDNO) { }
+            column(Passport_No_; "Passport No.") { }
+            column(Passport_Issue_Date; "Passport Issue Date") { }
+            column(Passport_Expiry_Date; "Passport Expiry Date") { }
             column(Gender; Gender) { }
             column(Birth_Date; "Birth Date") { }
             column(Age; Age) { }
             column(Disability; Disability) { }
+            column(Disability_T; "Disability T")
+            { }
             column(Disability_Description; "Disability Description") { }
             column(NCPWD_Certificate_No_; "NCPWD Certificate No.") { }
             column(Home_County; "Home County") { }
             column(Ethnic_Group; "Ethnic Group") { }
+
             column(Sub_Ethnic_Group; "Sub Ethnic Group") { }
             column(Mobile_Phone_No_; "Mobile Phone No.") { }
             column(Alternative_Phone_No_; "Alternative Phone No.") { }
@@ -32,6 +39,7 @@ report 52970 "Applicant job Submitted"
             column(City; City) { }
 
             column(Dismissal_Declaration; "Dismissal Declaration") { }
+
             column(Dismissal_Decl__Specification; "Dismissal Decl. Specification") { }
             column(Physical_Address; "Physical Address") { }
 
@@ -342,6 +350,22 @@ report 52970 "Applicant job Submitted"
                 {
                     grid(OptionsGrid)
                     {
+                        //jmk
+                        field(ShowJobTitle; ShowJobTitle)
+                        {
+                            ApplicationArea = All;
+                            Caption = 'Show Job Title';
+
+                            ToolTip = 'Specifies whether to show the ID No. column';
+                            Trigger OnValidate()
+                            var
+                            begin
+
+                                InitalizeFieldIds(Appl.FieldNo("Job Title"));
+
+                            end;
+
+                        }
                         field(ShowIDNO; ShowIDNO)
                         {
                             ApplicationArea = All;
@@ -355,21 +379,37 @@ report 52970 "Applicant job Submitted"
 
                             end;
                         }
-                        field(ShowGender; ShowGender)
+                        field(Showpassport; Showpassport)
                         {
                             ApplicationArea = All;
-                            caption = 'Gender';
-                            ToolTip = 'Specifies whether to show the';
+                            Caption = 'Show Passport No.';
+                            ToolTip = 'Specifies whether to show the Passport No. column';
                             Trigger OnValidate()
                             var
                             begin
+                                InitalizeFieldIds(Appl.FieldNo("Passport No."));
+                                InitalizeFieldIds(Appl.FieldNo("Passport Issue Date"));
+                                InitalizeFieldIds(Appl.FieldNo("Passport Expiry Date"));
 
-                                InitalizeFieldIds(Appl.FieldNo(Gender));
+                                //  InitalizeFieldIds(Appl.FieldNo(IDNO));
                             end;
                         }
 
 
 
+
+                    }
+                    field(ShowGender; ShowGender)
+                    {
+                        ApplicationArea = All;
+                        caption = 'Gender';
+                        ToolTip = 'Specifies whether to show the';
+                        Trigger OnValidate()
+                        var
+                        begin
+
+                            InitalizeFieldIds(Appl.FieldNo(Gender));
+                        end;
                     }
                     grid(OptionsGrid1)
                     {
@@ -506,7 +546,8 @@ report 52970 "Applicant job Submitted"
                         var
                         begin
 
-                            InitalizeFieldIds(Appl.FieldNo(Disability));
+                            // InitalizeFieldIds(Appl.FieldNo(Disability));
+                            InitalizeFieldIds(Appl.FieldNo("Disability T"));
                             InitalizeFieldIds(Appl.FieldNo("Disability Description"));
                             InitalizeFieldIds(Appl.FieldNo("NCPWD Certificate No."));
 
@@ -1237,7 +1278,9 @@ report 52970 "Applicant job Submitted"
         ShowGender: Boolean;
         ShowAge: Boolean;
         ShowDateOfBirth: Boolean;
+        ShowJobTitle: boolean;
         ShowIDNO: Boolean;
+        Showpassport: boolean;
         ShowHomeCounty: Boolean;
         ShowEthnicGroup: Boolean;
         ShowDisability: Boolean;
@@ -1277,9 +1320,9 @@ report 52970 "Applicant job Submitted"
         compinfo: Record "Company Information";
         arrlength: Integer;
 
-        arrFieldIds: array[20] of Integer;
-        arrFieldCaptions: array[20] of Text;
-        arrFieldValues: array[20] of Text;
+        arrFieldIds: array[1000] of Integer;
+        arrFieldCaptions: array[1000] of Text;
+        arrFieldValues: array[1000] of Text;
         Appl: Record "Applicant Submitted Job";
         ApplSubmittedJob: record "Applicant Submitted Job";
 

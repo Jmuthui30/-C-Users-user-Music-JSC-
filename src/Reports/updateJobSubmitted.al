@@ -223,7 +223,7 @@ report 53077 "Update Submit Appl."
         // Salary and experience
         ApplicantSubmittedJob."Current Salary" := ApplicantApp."Current Salary";
         ApplicantSubmittedJob."Expected Salary" := ApplicantApp."Expected Salary";
-        ApplicantSubmittedJob."Years Of Experience" := ApplicantApp."Years of Experience";
+        // ApplicantSubmittedJob."Years Of Experience" := ApplicantApp."Years of Experience";
 
         // Language skills
         PopulateLanguageSkills();
