@@ -16,10 +16,16 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
+
                 field("Job Title"; "Job Title")
                 {
                     ApplicationArea = All;
                 }
+                field("Applicant No."; "Applicant No.")
+                {
+                    ApplicationArea = All;
+                }
+
                 field("Applicant Name"; "Applicant Name")
                 {
                     ApplicationArea = All;
@@ -28,12 +34,57 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
+                field("Passport No."; "Passport No.")
+                {
+                    ApplicationArea = All;
+                }
                 field(Gender; Gender)
                 {
                     ApplicationArea = All;
                 }
-
+                field("Birth Date"; "Birth Date")
+                {
+                    ApplicationArea = All;
+                }
+                field(Age; Age)
+                {
+                    ApplicationArea = All;
+                }
+                field(Disability; Disability)
+                {
+                    ApplicationArea = All;
+                    visible = false;
+                }
+                field("Disability T"; "Disability T")
+                {
+                    ApplicationArea = All;
+                    caption = 'Disability';
+                }
+                field("Disability Description"; "Disability Description")
+                {
+                    ApplicationArea = All;
+                }
+                field("NCPWD Certificate No."; "NCPWD Certificate No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Home County"; "Home County")
+                {
+                    ApplicationArea = All;
+                }
+                field("Ethnic Group"; "Ethnic Group")
+                {
+                    ApplicationArea = All;
+                }
+                field("Sub Ethnic Group"; "Sub Ethnic Group")
+                {
+                    ApplicationArea = All;
+                }
                 field("Mobile Phone No."; "Mobile Phone No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Alternative Phone No."; "Alternative Phone No.")
                 {
                     ApplicationArea = All;
                 }
@@ -42,20 +93,7 @@ page 56200 "Applicant Submitted Job"
                     ApplicationArea = All;
                 }
 
-
-                field("Applicant No."; "Applicant No.")
-                {
-                    ApplicationArea = All;
-                }
-                field("Sub Ethnic Group"; "Sub Ethnic Group")
-                {
-                    ApplicationArea = All;
-                }
-                field(City; City)
-                {
-                    ApplicationArea = All;
-                }
-                field("Home County"; "Home County")
+                field("Postal Address"; "Postal Address")
                 {
                     ApplicationArea = All;
                 }
@@ -63,16 +101,354 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
-                field("Date-Time Created"; "Date-Time Created")
+                field(City; City)
                 {
                     ApplicationArea = All;
                 }
-                //************************************************
-                field(CurrentEmployer; CurrentEmployer)
+                FIELD("Current Salary"; "Current Salary")
+                {
+                    visible = false;
+                }
+                FIELD("Expected Salary"; "Expected Salary")
+                {
+                    visible = false;
+                }
+                Field("Years Of Experience"; "Years Of Experience")
+                { }
+                //*************************************************************************************academic qualifications
+                field("Description 11"; "Description 11")
+                {
+                    ApplicationArea = All;
+                    caption = 'KCE';
+                }
+                field("Area of Specialization 11"; "Area of Specialization 11")
+                {
+                    ApplicationArea = All;
+                }
+                field("Institution/Company 11"; "Institution/Company 11")
+                {
+                    ApplicationArea = All;
+                    caption = 'Institution';
+                }
+                field("Grade/Class 11"; "Grade/Class 11")
+                {
+                    ApplicationArea = All;
+                }
+                field("From Date 11"; "From Date 11")
+                {
+                    ApplicationArea = All;
+                }
+                field("To Date 11"; "To Date 11")
+                {
+                    ApplicationArea = All;
+                }
+
+                field(Description; Description)
+                {
+                    ApplicationArea = All;
+                    caption = 'KACE';
+
+                }
+                field("Area of Specialization"; "Area of Specialization")
+                {
+                    ApplicationArea = All;
+                }
+                field("Institution/Company"; "Institution/Company")
+                {
+                    ApplicationArea = All;
+                    caption = 'Institution';
+                }
+                field("Grade/Class"; "Grade/Class")
+                {
+                    ApplicationArea = All;
+                }
+                field("To Date"; "To Date")
+                {
+                    ApplicationArea = All;
+                }
+                field("From Date"; "From Date")
                 {
                     ApplicationArea = All;
 
                 }
+                //*****************************************
+
+
+
+
+
+                //******************************************************************* ACADEMIC QUALIFICATIONS 1
+
+                field("Description 1"; "Description 1")
+                {
+                    caption = 'KCSE';
+                    ApplicationArea = All;
+                }
+                field("Area of Specialization 1"; "Area of Specialization 1")
+                {
+                    ApplicationArea = All;
+                }
+                field("Institution/Company 1"; "Institution/Company 1")
+                {
+                    ApplicationArea = All;
+                    caption = 'Institution';
+                }
+                field("Grade/Class 1"; "Grade/Class 1")
+                {
+                    ApplicationArea = All;
+                }
+                field("From Date 1"; "From Date 1")
+                {
+                    ApplicationArea = All;
+                }
+                field("To Date 1"; "To Date 1")
+                {
+                    ApplicationArea = All;
+                }
+
+
+                field("Description 10"; "Description 10")
+                {
+                    caption = 'Artisan';
+                    ApplicationArea = All;
+                }
+                field("Area of Specialization 10"; "Area of Specialization 10")
+                {
+                    ApplicationArea = All;
+                }
+                field("Institution/Company 10"; "Institution/Company 10")
+                {
+                    ApplicationArea = All;
+                    caption = 'Institution';
+                }
+                field("Grade/Class 10"; "Grade/Class 10")
+                {
+                    ApplicationArea = All;
+                }
+                field("From Date 10"; "From Date 10")
+                {
+                    ApplicationArea = All;
+                }
+                field("To Date 10"; "To Date 10")
+                {
+                    ApplicationArea = All;
+                }
+
+                field("Area of Specialization 3"; "Area of Specialization 3")
+                {
+                    ApplicationArea = All;
+                }
+                field("Institution/Company 3"; "Institution/Company 3")
+                {
+                    ApplicationArea = All;
+                    caption = 'Institution';
+                }
+                field("Grade/Class 3"; "Grade/Class 3")
+                {
+                    ApplicationArea = All;
+                }
+                field("From Date 3"; "From Date 3")
+                {
+                    ApplicationArea = All;
+                }
+                field("To Date 3"; "To Date 3")
+                {
+                    ApplicationArea = All;
+                }
+
+                field(Diplomalevel; Diplomalevel)
+                {
+                    ApplicationArea = All;
+                }
+                field("Description 4"; "Description 4")
+                {
+                    caption = 'Diploma';
+                    ApplicationArea = All;
+                }
+
+                field("Area of Specialization 4"; "Area of Specialization 4")
+                {
+                    ApplicationArea = All;
+                }
+                field("Institution/Company 4"; "Institution/Company 4")
+                {
+                    ApplicationArea = All;
+                    caption = 'Institution';
+                }
+
+                field("Grade/Class 4"; "Grade/Class 4")
+                {
+                    ApplicationArea = All;
+                }
+
+
+                field("From Date 4"; "From Date 4")
+                {
+                    ApplicationArea = All;
+                }
+                field("To Date 4"; "To Date 4")
+                {
+                    ApplicationArea = All;
+                }
+
+                field(HIGHERDIPLOMA; HIGHERDIPLOMA)
+                {
+                    ApplicationArea = All;
+                }
+                field("Description 5"; "Description 5")
+                {
+                    caption = 'Higher Diploma';
+                    ApplicationArea = All;
+                }
+                field("Area of Specialization 5"; "Area of Specialization 5")
+                {
+                    ApplicationArea = All;
+                }
+                field("Institution/Company 5"; "Institution/Company 5")
+                {
+                    ApplicationArea = All;
+                    caption = 'Institution';
+                }
+                field("Grade/Class 5"; "Grade/Class 5")
+                {
+                    ApplicationArea = All;
+                }
+                field("From Date 5"; "From Date 5")
+                {
+                    ApplicationArea = All;
+                }
+                field("To Date 5"; "To Date 5")
+                {
+                    ApplicationArea = All;
+                }
+
+
+                //******************************************************************* ACADEMIC QUALIFICATIONS 6
+
+                field("Description 6"; "Description 6")
+                {
+                    caption = 'Degree';
+                    ApplicationArea = All;
+                }
+                field("Area of Specialization 6"; "Area of Specialization 6")
+                {
+                    ApplicationArea = All;
+                }
+                field("Institution/Company 6"; "Institution/Company 6")
+                {
+                    ApplicationArea = All;
+                    caption = 'Institution';
+                }
+                field("Grade/Class 6"; "Grade/Class 6")
+                {
+                    ApplicationArea = All;
+                }
+                field("From Date 6"; "From Date 6")
+                {
+                    ApplicationArea = All;
+                }
+                field("To Date 6"; "To Date 6")
+                {
+                    ApplicationArea = All;
+                }
+
+                //******************************************************************* ACADEMIC QUALIFICATIONS 8
+
+
+                field("Description 2"; "Description 2")
+                {
+                    caption = 'Postgraduate Degree';
+                    ApplicationArea = All;
+                }
+                field("Area of Specialization 2"; "Area of Specialization 2")
+                {
+                    ApplicationArea = All;
+                }
+                field("Institution/Company 2"; "Institution/Company 2")
+                {
+                    ApplicationArea = All;
+                    caption = 'Institution';
+                }
+                field("Grade/Class 2"; "Grade/Class 2")
+                {
+                    ApplicationArea = All;
+                }
+                Field("From Date 2"; "From Date 2")
+                {
+                    ApplicationArea = All;
+                }
+                field("To Date 2"; "To Date 2")
+                {
+                    ApplicationArea = All;
+                }
+                field("Description 8"; "Description 8")
+                {
+                    caption = 'Masters Degree';
+                    ApplicationArea = All;
+                }
+                field("Area of Specialization 8"; "Area of Specialization 8")
+                {
+                    ApplicationArea = All;
+                }
+                field("Institution/Company 8"; "Institution/Company 8")
+                {
+                    ApplicationArea = All;
+                    caption = 'Institution';
+                }
+                field("Grade/Class 8"; "Grade/Class 8")
+                {
+                    ApplicationArea = All;
+                }
+                field("From Date 8"; "From Date 8")
+                {
+                    ApplicationArea = All;
+                }
+                field("To Date 8"; "To Date 8")
+                {
+                    ApplicationArea = All;
+                }
+
+
+                //******************************************************************* ACADEMIC QUALIFICATIONS 9
+
+                field("Description 9"; "Description 9")
+                {
+                    caption = 'PhD';
+                }
+                field("Area of Specialization 9"; "Area of Specialization 9")
+                {
+                    ApplicationArea = All;
+                }
+                field("Institution/Company 9"; "Institution/Company 9")
+                {
+                    ApplicationArea = All;
+                    caption = 'Institution';
+                }
+                field("Grade/Class 9"; "Grade/Class 9")
+                {
+                    ApplicationArea = All;
+                }
+                field("From Date 9"; "From Date 9")
+                {
+                    ApplicationArea = All;
+                }
+                field("To Date 9"; "To Date 9")
+                {
+                    ApplicationArea = All;
+                }
+
+
+                //******************************************************************* ACADEMIC QUALIFICATIONS 10
+
+
+
+
+
+
+                //******************************************************************* ACADEMIC QUALIFICATIONS 11
+
+                //************************************************
+
                 field(Employer; Employer)
                 {
                     ApplicationArea = All;
@@ -99,10 +475,10 @@ page 56200 "Applicant Submitted Job"
                 field("Employment Period"; "Employment Period")
                 {
                     ApplicationArea = All;
+                    visible = false;
                 }
-                FIELD("Designation Employer"; "Designation Employer")
+                field("Employment Period Year"; "Employment Period Year")
                 {
-                    Visible = false;
                     ApplicationArea = All;
                 }
 
@@ -119,22 +495,20 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
-                Field("To Date Employer 2"; "To Date Employer 2")
-                {
-                    ApplicationArea = All;
-                }
                 Field("From Date Employer 2"; "From Date Employer 2")
                 {
                     ApplicationArea = All;
                 }
-                field("Employment Period 2"; "Employment Period 2")
+                Field("To Date Employer 2"; "To Date Employer 2")
                 {
                     ApplicationArea = All;
                 }
-                FIELD("Designation Employer 2"; "Designation Employer 2")
+
+                field("Employment Period Year 2"; "Employment Period Year 2")
                 {
                     ApplicationArea = All;
                 }
+
                 //********************************************************************
                 Field("Employer 3"; "Employer 3")
                 {
@@ -149,23 +523,21 @@ page 56200 "Applicant Submitted Job"
                     ApplicationArea = All;
                 }
 
-                Field("To Date Employer 3"; "To Date Employer 3")
-                {
-                    ApplicationArea = All;
-                }
                 Field("From Date Employer 3"; "From Date Employer 3")
                 {
                     ApplicationArea = All;
                 }
-                field("Employment Period 3"; "Employment Period 3")
+                Field("To Date Employer 3"; "To Date Employer 3")
                 {
                     ApplicationArea = All;
                 }
 
-                FIELD("Designation Employer 3"; "Designation Employer 3")
+                field("Employment Period Year 3"; "Employment Period Year 3")
                 {
                     ApplicationArea = All;
                 }
+
+
                 //********************************************************************
                 Field("Employer 4"; "Employer 4")
                 {
@@ -179,22 +551,20 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
-                Field("To Date Employer 4"; "To Date Employer 4")
-                {
-                    ApplicationArea = All;
-                }
                 Field("From Date Employer 4"; "From Date Employer 4")
                 {
                     ApplicationArea = All;
                 }
-                field("Employment Period 4"; "Employment Period 4")
+                Field("To Date Employer 4"; "To Date Employer 4")
                 {
                     ApplicationArea = All;
                 }
-                FIELD("Designation Employer 4"; "Designation Employer 4")
+
+                field("Employment Period Year 4"; "Employment Period Year 4")
                 {
                     ApplicationArea = All;
                 }
+
                 //********************************************************************end Employer 4
                 Field("Employer 5"; "Employer 5")
                 {
@@ -208,22 +578,20 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
-                Field("To Date Employer 5"; "To Date Employer 5")
-                {
-                    ApplicationArea = All;
-                }
                 Field("From Date Employer 5"; "From Date Employer 5")
                 {
                     ApplicationArea = All;
                 }
-                field("Employment Period 5"; "Employment Period 5")
+                Field("To Date Employer 5"; "To Date Employer 5")
                 {
                     ApplicationArea = All;
                 }
-                FIELD("Designation Employer 5"; "Designation Employer 5")
+
+                field("Employment Period Year 5"; "Employment Period Year 5")
                 {
                     ApplicationArea = All;
                 }
+
                 //********************************************************************end Employer 5
                 FIELD("Employer 6"; "Employer 6")
                 {
@@ -237,222 +605,127 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
-                FIELD("To Date Employer 6"; "To Date Employer 6")
-                {
-                    ApplicationArea = All;
-                }
                 FIELD("From Date Employer 6"; "From Date Employer 6")
                 {
                     ApplicationArea = All;
                 }
-                field("Employment Period 6"; "Employment Period 6")
+                FIELD("To Date Employer 6"; "To Date Employer 6")
                 {
                     ApplicationArea = All;
                 }
-                FIELD("Designation Employer 6"; "Designation Employer 6")
+
+                field("Employment Period Year 6"; "Employment Period Year 6")
                 {
                     ApplicationArea = All;
                 }
+
                 //********************************************************************end Employer 6
-
-                //*************************************************************************************academic qualifications
-
-                field("Area of Specialization"; "Area of Specialization")
+                field("Employer 7"; "Employer 7")
                 {
                     ApplicationArea = All;
                 }
-                field("Institution/Company"; "Institution/Company")
+                field("Sector Of Employement 7"; "Sector Of Employement 7")
                 {
                     ApplicationArea = All;
                 }
-                field("Grade/Class"; "Grade/Class")
+                field("Substantive Post 7"; "Substantive Post 7")
                 {
                     ApplicationArea = All;
                 }
-                field("To Date"; "To Date")
+                field("From Date Employer 7"; "From Date Employer 7")
                 {
                     ApplicationArea = All;
                 }
-                field("From Date"; "From Date")
-                {
-                    ApplicationArea = All;
-                }
-
-
-                field("Area of Specialization 2"; "Area of Specialization 2")
-                {
-                    ApplicationArea = All;
-                }
-                field("Institution/Company 2"; "Institution/Company 2")
-                {
-                    ApplicationArea = All;
-                }
-                field("Grade/Class 2"; "Grade/Class 2")
-                {
-                    ApplicationArea = All;
-                }
-                Field("From Date 2"; "From Date 2")
-                {
-                    ApplicationArea = All;
-                }
-                field("To Date 2"; "To Date 2")
+                field("To Date Employer 7"; "To Date Employer 7")
                 {
                     ApplicationArea = All;
                 }
 
-
-
-                field("Area of Specialization 3"; "Area of Specialization 3")
+                field("Employment Period Year 7"; "Employment Period Year 7")
                 {
                     ApplicationArea = All;
                 }
-                field("Institution/Company 3"; "Institution/Company 3")
+                //********************************************************************end Employer 7
+                field("Employer 8"; "Employer 8")
                 {
                     ApplicationArea = All;
                 }
-                field("Grade/Class 3"; "Grade/Class 3")
+                field("Sector Of Employement 8"; "Sector Of Employement 8")
                 {
                     ApplicationArea = All;
                 }
-                field("To Date 3"; "To Date 3")
+                field("Substantive Post 8"; "Substantive Post 8")
                 {
                     ApplicationArea = All;
                 }
-                field("From Date 3"; "From Date 3")
+                field("From Date Employer 8"; "From Date Employer 8")
                 {
                     ApplicationArea = All;
                 }
-
-                field("Area of Specialization 4"; "Area of Specialization 4")
-                {
-                    ApplicationArea = All;
-                }
-                field("Institution/Company 4"; "Institution/Company 4")
+                field("To Date Employer 8"; "To Date Employer 8")
                 {
                     ApplicationArea = All;
                 }
 
-                field("Grade/Class 4"; "Grade/Class 4")
+                field("Employment Period Year 8"; "Employment Period Year 8")
+                {
+                    ApplicationArea = All;
+                }
+                //********************************************************************end Employer 8
+                field("Employer 9"; "Employer 9")
+                {
+                    ApplicationArea = All;
+                }
+                field("Sector Of Employement 9"; "Sector Of Employement 9")
+                {
+                    ApplicationArea = All;
+                }
+                field("Substantive Post 9"; "Substantive Post 9")
+                {
+                    ApplicationArea = All;
+                }
+                field("From Date Employer 9"; "From Date Employer 9")
+                {
+                    ApplicationArea = All;
+                }
+                field("To Date Employer 9"; "To Date Employer 9")
                 {
                     ApplicationArea = All;
                 }
 
-
-                field("To Date 4"; "To Date 4")
+                field("Employment Period Year 9"; "Employment Period Year 9")
                 {
                     ApplicationArea = All;
                 }
-                field("From Date 4"; "From Date 4")
+                //********************************************************************end Employer 9
+                field("Employer 10"; "Employer 10")
                 {
                     ApplicationArea = All;
                 }
-
-                field("Area of Specialization 5"; "Area of Specialization 5")
+                field("Sector Of Employement 10"; "Sector Of Employement 10")
                 {
                     ApplicationArea = All;
                 }
-                field("Institution/Company 5"; "Institution/Company 5")
+                field("Substantive Post 10"; "Substantive Post 10")
                 {
                     ApplicationArea = All;
                 }
-                field("Grade/Class 5"; "Grade/Class 5")
+                field("From Date Employer 10"; "From Date Employer 10")
                 {
                     ApplicationArea = All;
                 }
-                field("To Date 5"; "To Date 5")
-                {
-                    ApplicationArea = All;
-                }
-                field("From Date 5"; "From Date 5")
+                field("To Date Employer 10"; "To Date Employer 10")
                 {
                     ApplicationArea = All;
                 }
 
-                //******************************************************************* ACADEMIC QUALIFICATIONS 6
-                field("Area of Specialization 6"; "Area of Specialization 6")
+                field("Employment Period Year  10"; "Employment Period Year  10")
                 {
                     ApplicationArea = All;
                 }
-                field("Institution/Company 6"; "Institution/Company 6")
-                {
-                    ApplicationArea = All;
-                }
-                field("Grade/Class 6"; "Grade/Class 6")
-                {
-                    ApplicationArea = All;
-                }
-                field("To Date 6"; "To Date 6")
-                {
-                    ApplicationArea = All;
-                }
-                field("From Date 6"; "From Date 6")
-                {
-                    ApplicationArea = All;
-                }
-                //******************************************************************* ACADEMIC QUALIFICATIONS 8
-                field("Area of Specialization 8"; "Area of Specialization 8")
-                {
-                    ApplicationArea = All;
-                }
-                field("Institution/Company 8"; "Institution/Company 8")
-                {
-                    ApplicationArea = All;
-                }
-                field("Grade/Class 8"; "Grade/Class 8")
-                {
-                    ApplicationArea = All;
-                }
-                field("To Date 8"; "To Date 8")
-                {
-                    ApplicationArea = All;
-                }
-                field("From Date 8"; "From Date 8")
-                {
-                    ApplicationArea = All;
-                }
-                //******************************************************************* ACADEMIC QUALIFICATIONS 9
-                field("Area of Specialization 9"; "Area of Specialization 9")
-                {
-                    ApplicationArea = All;
-                }
-                field("Institution/Company 9"; "Institution/Company 9")
-                {
-                    ApplicationArea = All;
-                }
-                field("Grade/Class 9"; "Grade/Class 9")
-                {
-                    ApplicationArea = All;
-                }
-                field("To Date 9"; "To Date 9")
-                {
-                    ApplicationArea = All;
-                }
-                field("From Date 9"; "From Date 9")
-                {
-                    ApplicationArea = All;
-                }
-                //******************************************************************* ACADEMIC QUALIFICATIONS 10
-                field("Area of Specialization 10"; "Area of Specialization 10")
-                {
-                    ApplicationArea = All;
-                }
-                field("Institution/Company 10"; "Institution/Company 10")
-                {
-                    ApplicationArea = All;
-                }
-                field("Grade/Class 10"; "Grade/Class 10")
-                {
-                    ApplicationArea = All;
-                }
-                field("To Date 10"; "To Date 10")
-                {
-                    ApplicationArea = All;
-                }
-                field("From Date 10"; "From Date 10")
-                {
-                    ApplicationArea = All;
-                }
-                //******************************************************************* ACADEMIC QUALIFICATIONS 11
+                //********************************************************************end Employer 10
+
+
 
                 Field("Professional Qualification"; "Professional Qualification")
                 {
@@ -466,10 +739,7 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
-                field("Professional Date of Admission"; "Professional Date of Admission")
-                {
-                    ApplicationArea = All;
-                }
+
                 Field("Professional Institution"; "Professional Institution")
                 {
                     ApplicationArea = All;
@@ -492,10 +762,7 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
-                field("Professional Date of Admn 2"; "Professional Date of Admn 2")
-                {
-                    ApplicationArea = All;
-                }
+
                 field("Professional Institution 2"; "Professional Institution 2")
                 {
                     ApplicationArea = All;
@@ -517,10 +784,6 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
-                field("Professional Date of Admn 3"; "Professional Date of Admn 3")
-                {
-                    ApplicationArea = All;
-                }
                 field("Professional Institution 3"; "Professional Institution 3")
                 {
                     ApplicationArea = All;
@@ -533,6 +796,15 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
+                //close date
+                field("Closed Date"; "Closed Date")
+                {
+                    ApplicationArea = All;
+                }
+                field("Post Admission Period"; "Post Admission Period") { }
+
+                //p0st 
+
                 //********************************************************************
 
 
@@ -602,27 +874,35 @@ page 56200 "Applicant Submitted Job"
                 FIELD(AUDITEDY1; AUDITEDY1)
                 {
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field(AUDITEDY2; AUDITEDY2)
                 {
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field(AUDITEDY3; AUDITEDY3)
                 {
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field(AUDITEDY4; AUDITEDY4)
                 {
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field(AUDITEDY5; AUDITEDY5)
                 {
                     ApplicationArea = All;
+                    Visible = false;
                 }
 
 
 
-
+                field("Date-Time Created"; "Date-Time Created")
+                {
+                    ApplicationArea = All;
+                }
 
 
             }
@@ -647,11 +927,34 @@ page 56200 "Applicant Submitted Job"
                 PromotedIsBig = true;
                 PromotedOnly = true;
                 RunObject = report "update Job Appl.";
+
                 RunPageMode = View;
                 Caption = 'UpDate Job Submitted.';
                 ApplicationArea = All;
+                trigger OnAction()
+                begin
+
+                end;
 
             }
+            action(update1)
+
+            {
+                Promoted = true;
+                Image = View;
+                PromotedCategory = process;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+                RunObject = report "Update Submit Appl.";
+                RunPageMode = View;
+                Caption = 'UpDate submit Submitted.';
+                ApplicationArea = All;
+                visible = false;
+
+            }
+
+
+
             action(Clear)
 
             {
@@ -692,11 +995,59 @@ page 56200 "Applicant Submitted Job"
                 ApplicationArea = All;
 
             }
+            action("Sharepoint Attachments")
+            {
+                ApplicationArea = all;
+                Ellipsis = true;
+                Image = Attachments;
+                Visible = true;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+                RunObject = page "Portal Uploads";
+                RunPageLink = "Document No" = field("Applicant No.");
+            }
+            action("View Applicant Information")
+            {
+                Promoted = true;
+                Image = View;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+                //Applicant Submit-All 
+                RunObject = page "Applicant Submit-All";
+                RunPageLink = "No." = field("Applicant No.");
+                RunPageMode = View;
+                Caption = 'View Applicant Information';
+            }
 
         }
     }
     var
-        GroupName: Label 'Applicant Submitted Job', MaxLength = 100;
-        CurrentEmployer: Label 'Current Employer', MaxLength = 100;
-        CurrentEmployerEnd: Label 'Current Employer End', MaxLength = 100;
+        GroupName: Label 'Applicant Submitted Job', MaxLength = 1000;
+        CurrentEmployer: Label 'Current Employer', MaxLength = 1000;
+        CurrentEmployerEnd: Label 'Current Employer End', MaxLength = 1000;
+        primarylevel: Label 'Primary Level', MaxLength = 1000;
+        OLEVELSchool: label 'O Level School', MaxLength = 1000;
+        Alevelschool: Label 'A Level School', MaxLength = 1000;
+        KCE: label 'KCE Level', MaxLength = 1000;
+        KACE: label 'KACE Level', MaxLength = 1000;
+
+        primarylevelEnd: Label 'Primary Level End', MaxLength = 1000;
+        secondarylevel: Label 'KCSE Level', MaxLength = 1000;
+        secondarylevelEnd: Label 'Secondary Level End', MaxLength = 1000;
+        tertiarylevel: Label 'Tertiary Level', MaxLength = 1000;
+        tertiarylevelEnd: Label 'Tertiary Level End', MaxLength = 1000;
+        certificatelevel: Label 'Certificate Level', MaxLength = 1000;
+        Diplomalevel: Label 'Diploma Level', MaxLength = 1000;
+        HIGHERDIPLOMA: Label 'Higher Diploma', MaxLength = 1000;
+        Degreelevel: Label 'Degree Level', MaxLength = 1000;
+        Postgraduate: Label 'Postgraduate', MaxLength = 1000;
+        Masterslevel: Label 'Masters Level', MaxLength = 1000;
+        PhDlevel: Label 'PhD Level', MaxLength = 1000;
+        Artisanlevel: Label 'Artisan Level', MaxLength = 1000;
+        Professionallevel: Label 'Professional Level', MaxLength = 1000;
+
+
 }

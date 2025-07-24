@@ -176,6 +176,9 @@ table 52003 "Job Application"
         field(27; Disability; Boolean) { }
         field(28; Ethnic; Text[1000]) { }
         field(29; "Disability Description"; Text[1000]) { }
+        field
+        (30; "Closed Date"; Date)
+        { }
 
     }
     keys

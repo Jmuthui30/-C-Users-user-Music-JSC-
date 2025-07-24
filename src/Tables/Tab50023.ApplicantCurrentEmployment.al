@@ -132,6 +132,7 @@ table 50023 "Applicant Current Employment"
                 "Employment Period" := Dates.DetermineDatesDiffrence("From Date", "To Date")
             end;
         }
+
         field(26; "Testimonial Link"; Text[1250])
         {
         }
@@ -140,6 +141,7 @@ table 50023 "Applicant Current Employment"
 
         }
         field(28; Number; Integer) { }
+
     }
     keys
     {

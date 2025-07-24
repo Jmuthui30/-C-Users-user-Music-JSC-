@@ -6,9 +6,10 @@ report 53070 "update quo code"
 
     dataset
     {
-        dataitem(Applicant; Applicant)
+        //"Applicant Professional Bodies"
+        dataitem("Recruitment Needs"; "Recruitment Needs")
         {
-            RequestFilterFields = "No.";
+            // RequestFilterFields = "Qualification Type", Code;
             column(No_; "No.")
             {
 
@@ -16,14 +17,20 @@ report 53070 "update quo code"
             trigger OnAfterGetRecord()
             begin
                 AppQ.Reset();
-                AppQ.SetRange(AppQ."Applicant No.", "No.");
+                AppQ.SetRange(AppQ."Recruitment Needs No.", "No.");
                 if AppQ.Find('-') then begin
+
                     repeat
-                        AppQ."Applicant Types" := "Applicant Type";
+                        AppQ."Closed Date" := "End Date";
                         AppQ.Modify()
-                    until AppQ.Next() = 0;
+                                         until AppQ.Next() = 0;
+
+
+
                 end;
                 //*******************************************************************************
+
+
             end;
 
         }

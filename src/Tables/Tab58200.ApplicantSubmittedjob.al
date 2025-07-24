@@ -15,7 +15,11 @@ table 58200 "Applicant Submitted Job"
 
         }
         field(2; "Job Title"; Text[1000]) { DataClassification = ToBeClassified; }
-        field(3; "Applicant Name"; text[1000]) { DataClassification = ToBeClassified; }
+        field(3; "Applicant Name"; text[1000])
+        {
+            DataClassification = ToBeClassified;
+
+        }
         field(4; IDNO; code[20]) { DataClassification = ToBeClassified; }
         field(5; "Birth Date"; Date) { DataClassification = ToBeClassified; }
         field(6; Age; text[50]) { DataClassification = ToBeClassified; }
@@ -32,7 +36,7 @@ table 58200 "Applicant Submitted Job"
             Caption = 'Address';
         }
 
-        field(10; "Physical Address"; Text[250])
+        field(10; "Physical Address"; Text[1050])
         {
             Caption = 'Address 2';
         }
@@ -74,7 +78,7 @@ table 58200 "Applicant Submitted Job"
         field(100; "Created Date"; DateTime)
         {
         }
-        field(101; "Vacancy No."; Code[20])
+        field(101; "Vacancy No."; Code[2000])
         {
         }
 
@@ -83,11 +87,11 @@ table 58200 "Applicant Submitted Job"
             // OptionMembers = Kenyan,Others;
             TableRelation = "Country/Region".Code;
         }
-        field(376; "Ethnic Group"; Code[20])
+        field(376; "Ethnic Group"; Code[200])
         {
             DataClassification = ToBeClassified;
         }
-        field(386; "Sub Ethnic Group"; Code[20])
+        field(386; "Sub Ethnic Group"; Code[200])
         {
             DataClassification = ToBeClassified;
         }
@@ -97,7 +101,7 @@ table 58200 "Applicant Submitted Job"
         field(104; "Passport Expiry Date"; Date)
         {
         }
-        field(105; "Permit No."; Code[20])
+        field(105; "Permit No."; Code[200])
         {
         }
         field(106; "Permit Issue Date"; Date)
@@ -121,7 +125,7 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(111; "Criminal Decl. Specification"; Text[250])
+        field(111; "Criminal Decl. Specification"; Text[1950])
         {
             Caption = 'Please Give Details of the case and any penalty for each offence';
         }
@@ -133,7 +137,7 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(113; "Dismissal Decl. Specification"; Text[250])
+        field(113; "Dismissal Decl. Specification"; Text[1950])
         {
             Caption = 'Please Give Details';
         }
@@ -151,7 +155,7 @@ table 58200 "Applicant Submitted Job"
         {
             Caption = 'Description';
         }
-        field(125; "Nationality Specification"; Text[50])
+        field(125; "Nationality Specification"; Text[500])
         {
         }
         field(126; "Current Salary"; Decimal)
@@ -167,7 +171,7 @@ table 58200 "Applicant Submitted Job"
             OptionCaption = ',Mr,Mrs,Ms,Dr,Prof,Other';
             OptionMembers = ,Mr,Mrs,Ms,Dr,Prof,Other;
         }
-        field(302; "First Language (R/W/S)"; Code[100])
+        field(302; "First Language (R/W/S)"; Code[1000])
         {
             DataClassification = CustomerContent;
             TableRelation = Language.Code;
@@ -181,7 +185,7 @@ table 58200 "Applicant Submitted Job"
         field(289; "First Language Speak"; Boolean)
         {
         }
-        field(303; "Second Language (R/W/S)"; Code[100])
+        field(303; "Second Language (R/W/S)"; Code[1000])
         {
             DataClassification = CustomerContent;
             TableRelation = Language.Code;
@@ -234,7 +238,7 @@ table 58200 "Applicant Submitted Job"
         }
         field(25; "Area of Specialization"; Text[1000])
         {
-            Caption = 'Name';
+            Caption = 'Description';
             DataClassification = ToBeClassified;
         }
         field(26; "Institution/Company"; Text[1000])
@@ -267,8 +271,62 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
+        field(2777; Description; Text[1000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
+        //***************************************************************************************Academ 1
+        field(28; "Qualification Code 1"; Code[2000])
+        {
+            Caption = 'ACademic Code';
+            DataClassification = ToBeClassified;
+            NotBlank = true;
 
+            trigger OnValidate()
+            begin
+            end;
+        }
+        field(20; "From Date 1"; Date)
+        {
+            Caption = 'From Date';
+            DataClassification = ToBeClassified;
 
+            trigger OnValidate()
+            begin
+            end;
+        }
+        field(21; "To Date 1"; Date)
+        {
+            Caption = 'To Date';
+            DataClassification = ToBeClassified;
+            trigger OnValidate()
+            var
+                Error001: Label 'Kindly note To Date %1 cannot be previous From Date %2';
+            begin
+            end;
+        }
+        field(922; "Area of Specialization 1"; Text[1000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
+        field(923; "Institution/Company 1"; Text[1000])
+        {
+            Caption = 'Institution/Company';
+            DataClassification = ToBeClassified;
+        }
+        field(924; "Grade/Class 1"; Text[1000])
+        {
+            Caption = 'Grade/Class';
+            DataClassification = ToBeClassified;
+        }
+
+        field(2778; "Description 1"; Text[1000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
         //***************************************************************************************Academ 2
         field(29; "Qualification Code 2"; Code[2000])
         {
@@ -315,7 +373,11 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-
+        field(2779; "Description 2"; Text[1000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
 
         //******************************************************************************************Academ 3
         field(35; "Qualification Code 3"; Code[2000])
@@ -364,6 +426,11 @@ table 58200 "Applicant Submitted Job"
             Caption = 'Grade/Class';
             DataClassification = ToBeClassified;
         }
+        field(2780; "Description 3"; Text[1000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
         //*********************************************************************** acadec 4
         field(41; "Qualification Code 4"; Code[2000])
         {
@@ -409,6 +476,11 @@ table 58200 "Applicant Submitted Job"
         field(46; "Grade/Class 4"; Text[1000])
         {
             Caption = 'Grade/Class';
+            DataClassification = ToBeClassified;
+        }
+        field(2781; "Description 4"; Text[1000])
+        {
+            Caption = 'Description';
             DataClassification = ToBeClassified;
         }
         //****************************************************************************
@@ -459,6 +531,11 @@ table 58200 "Applicant Submitted Job"
             Caption = 'Grade/Class';
             DataClassification = ToBeClassified;
         }
+        field(2782; "Description 5"; Text[1000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
         //****************************************************************************
         field(47; "Qualification Code 6"; Text[2000])
         {
@@ -496,6 +573,11 @@ table 58200 "Applicant Submitted Job"
         field(52; "Grade/Class 6"; Text[1000])
         {
             Caption = 'Grade/Class';
+            DataClassification = ToBeClassified;
+        }
+        field(2783; "Description 6"; Text[1000])
+        {
+            Caption = 'Description';
             DataClassification = ToBeClassified;
         }
         //*******************************************************************************************academic 7
@@ -538,6 +620,11 @@ table 58200 "Applicant Submitted Job"
             Caption = 'Grade/Class';
             DataClassification = ToBeClassified;
         }
+        field(2784; "Description 7"; Text[1000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
         //*******************************************************************************************academic 8
         field(59; "Qualification Code 8"; Text[2000])
         {
@@ -576,6 +663,11 @@ table 58200 "Applicant Submitted Job"
         field(964; "Grade/Class 8"; Text[1000])
         {
             Caption = 'Grade/Class';
+            DataClassification = ToBeClassified;
+        }
+        field(2785; "Description 8"; Text[1000])
+        {
+            Caption = 'Description';
             DataClassification = ToBeClassified;
         }
         //*******************************************************************************************academic 9
@@ -618,6 +710,11 @@ table 58200 "Applicant Submitted Job"
             Caption = 'Grade/Class';
             DataClassification = ToBeClassified;
         }
+        field(2786; "Description 9"; Text[1000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
         //*******************************************************************************************academic 10
         field(971; "Qualification Code 10"; Text[2000])
         {
@@ -658,6 +755,11 @@ table 58200 "Applicant Submitted Job"
             Caption = 'Grade/Class';
             DataClassification = ToBeClassified;
         }
+        field(2787; "Description 10"; Text[1000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
         //*******************************************************************************************academic 11
         field(985; "Qualification Code 11"; Text[2000])
         {
@@ -696,6 +798,56 @@ table 58200 "Applicant Submitted Job"
         FIELD(990; "Grade/Class 11"; Text[1000])
         {
             Caption = 'Grade/Class';
+            DataClassification = ToBeClassified;
+        }
+        field(2788; "Description 11"; Text[1000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
+        //*****************************************************************************
+        FIELD(991; "Qualification Code 12"; Text[2000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
+        FIELD(2986; "From Date 12"; Date)
+        {
+            Caption = 'From Date';
+            DataClassification = ToBeClassified;
+
+            trigger OnValidate()
+            begin
+            end;
+        }
+        FIELD(2987; "To Date 12"; Date)
+        {
+            Caption = 'To Date';
+            DataClassification = ToBeClassified;
+            trigger OnValidate()
+            var
+                Error001: Label 'Kindly note To Date %1 cannot be previous From Date %2';
+            begin
+            end;
+        }
+        FIELD(2988; "Area of Specialization 12"; Text[1000])
+        {
+            Caption = 'Description';
+            DataClassification = ToBeClassified;
+        }
+        FIELD(1989; "Institution/Company 12"; Text[1000])
+        {
+            Caption = 'Institution/Company';
+            DataClassification = ToBeClassified;
+        }
+        FIELD(1990; "Grade/Class 12"; Text[1000])
+        {
+            Caption = 'Grade/Class';
+            DataClassification = ToBeClassified;
+        }
+        field(2789; "Description 12"; Text[1000])
+        {
+            Caption = 'Description';
             DataClassification = ToBeClassified;
         }
         //*******************************************************************************************academic END
@@ -791,26 +943,26 @@ table 58200 "Applicant Submitted Job"
         }
 
         //******************************************************************************Professional Bodies 3
-        field(782; "Professional Code 2"; code[100])
+        field(782; "Professional Code 2"; code[1000])
         {
             DataClassification = ToBeClassified;
         }
         field(83; "Professional Bodies 2"; text[1000]) { DataClassification = ToBeClassified; }
 
-        field(84; "Membership No. 2"; code[100]) { DataClassification = ToBeClassified; }
+        field(84; "Membership No. 2"; code[1000]) { DataClassification = ToBeClassified; }
         field(85; "Admission Date 2"; Date) { DataClassification = ToBeClassified; }
-        field(99; "Professional Membership Type 2"; Code[20])
+        field(99; "Professional Membership Type 2"; Code[200])
         {
             DataClassification = ToBeClassified;
         }
         //******************************************************************************Professional Bodies4
-        field(783; "Professional Code 3"; code[100])
+        field(783; "Professional Code 3"; code[1000])
         {
             DataClassification = ToBeClassified;
         }
         field(86; "Professional Bodies 3"; text[1000]) { DataClassification = ToBeClassified; }
 
-        field(87; "Membership No. 3"; code[100]) { DataClassification = ToBeClassified; }
+        field(87; "Membership No. 3"; code[1000]) { DataClassification = ToBeClassified; }
         field(88; "Admission Date 3"; Date) { DataClassification = ToBeClassified; }
         field(93; "Professional Membership Type 3"; Code[20])
         {
@@ -818,46 +970,46 @@ table 58200 "Applicant Submitted Job"
         }
 
         //******************************************************************************Relevant  Course
-        field(132; "Name of the Course"; Text[100])
+        field(132; "Name of the Course"; Text[1000])
         {
             DataClassification = ToBeClassified;
             NotBlank = true;
         }
-        field(140; "Name Course"; code[100]) { DataClassification = ToBeClassified; }
+        field(140; "Name Course"; code[1000]) { DataClassification = ToBeClassified; }
         field(141; "Course Int"; text[1000]) { DataClassification = ToBeClassified; }
         field(142; "From Date course"; Date) { DataClassification = ToBeClassified; }
         field(143; "To Date course"; Date) { DataClassification = ToBeClassified; }
         field(144; "Duration course"; text[1000]) { DataClassification = ToBeClassified; }
         //******************************************************************************Relevant  Course2
 
-        field(131; "Name of the Course 2"; Text[100])
+        field(131; "Name of the Course 2"; Text[1000])
         {
             DataClassification = ToBeClassified;
             NotBlank = true;
         }
-        field(145; "Name Course 2"; code[100]) { DataClassification = ToBeClassified; }
+        field(145; "Name Course 2"; code[1000]) { DataClassification = ToBeClassified; }
         field(146; "Course Int 2"; text[1000]) { DataClassification = ToBeClassified; }
         field(147; "From Date course 2"; Date) { DataClassification = ToBeClassified; }
         field(148; "To Date course 2"; Date) { DataClassification = ToBeClassified; }
         field(149; "Duration course 2"; text[1000]) { DataClassification = ToBeClassified; }
         //******************************************************************************Relevant  Course 3
 
-        field(133; "Name of the Course 3"; Text[100])
+        field(133; "Name of the Course 3"; Text[1000])
         {
             DataClassification = ToBeClassified;
             NotBlank = true;
         }
-        field(150; "Name Course 3"; code[100]) { DataClassification = ToBeClassified; }
+        field(150; "Name Course 3"; code[1000]) { DataClassification = ToBeClassified; }
         field(151; "Course Int 3"; text[1000]) { DataClassification = ToBeClassified; }
         field(152; "From Date course 3"; Date) { DataClassification = ToBeClassified; }
         field(153; "To Date course 3"; Date) { DataClassification = ToBeClassified; }
         field(154; "Duration course 3"; text[1000]) { DataClassification = ToBeClassified; }
         //*******************************************************************************************employee
 
-        field(305; "Sector Of Employement"; Option)
+        field(305; "Sector Of Employement"; enum "Sector Of Employement")
         {
-            OptionCaption = ',Public,Private,Academia,Corporate,Others (Specify),';
-            OptionMembers = ,Public,Private,Academia,Corporate,Others;
+            // OptionCaption = ',,Public,Private,Academia,Corporate,Others;';
+            // OptionMembers = ,,Public,Private,Academia,Corporate,Others;
         }
         field(307; "Substantive Post"; Text[2048])
         {
@@ -868,8 +1020,15 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(170; "Employer"; code[100]) { DataClassification = ToBeClassified; }
-        field(171; "Designation Employer"; code[100]) { DataClassification = ToBeClassified; }
+        field(3228; "Employment Period Year"; Decimal)
+        {
+            caption = 'Employment Period';
+            trigger OnValidate()
+            begin
+            end;
+        }
+        field(170; "Employer"; code[1000]) { DataClassification = ToBeClassified; }
+        field(171; "Designation Employer"; code[1000]) { DataClassification = ToBeClassified; }
         field(172; "From Date Employer"; Date) { DataClassification = ToBeClassified; }
         field(173; "To Date Employer"; Date) { DataClassification = ToBeClassified; }
         field(308; "Current Employer"; boolean)
@@ -877,8 +1036,8 @@ table 58200 "Applicant Submitted Job"
             DataClassification = ToBeClassified;
         }
         //*******************************************************************************************employee
-        field(174; "Employer 2"; code[100]) { DataClassification = ToBeClassified; }
-        field(175; "Designation Employer 2"; code[100]) { DataClassification = ToBeClassified; }
+        field(174; "Employer 2"; code[1000]) { DataClassification = ToBeClassified; }
+        field(175; "Designation Employer 2"; code[1000]) { DataClassification = ToBeClassified; }
         field(176; "From Date Employer 2"; Date) { DataClassification = ToBeClassified; }
         field(177; "To Date Employer 2"; Date) { DataClassification = ToBeClassified; }
         field(337; "Substantive Post 2"; Text[2048])
@@ -890,15 +1049,22 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(375; "Sector Of Employement 2"; Option)
+        field(3229; "Employment Period Year 2"; Decimal)
         {
-            OptionCaption = ',Public,Private,Academia,Corporate,Others (Specify),';
-            OptionMembers = ,Public,Private,Academia,Corporate,Others;
+            caption = 'Employment Period 2';
+            trigger OnValidate()
+            begin
+            end;
+        }
+        field(375; "Sector Of Employement 2"; enum "Sector Of Employement")
+        {
+            // OptionCaption = 'Public,Private,Academia,Corporate,Others;';
+            // OptionMembers = Public,Private,Academia,Corporate,Others;
         }
 
         //*******************************************************************************************employee
-        field(178; "Employer 3"; code[100]) { DataClassification = ToBeClassified; }
-        field(179; "Designation Employer 3"; code[100]) { DataClassification = ToBeClassified; }
+        field(178; "Employer 3"; code[1000]) { DataClassification = ToBeClassified; }
+        field(179; "Designation Employer 3"; code[1000]) { DataClassification = ToBeClassified; }
         field(182; "From Date Employer 3"; Date) { DataClassification = ToBeClassified; }
         field(183; "To Date Employer 3"; Date) { DataClassification = ToBeClassified; }
         field(347; "Substantive Post 3"; Text[2048])
@@ -910,15 +1076,22 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(385; "Sector Of Employement 3"; Option)
+        field(3238; "Employment Period Year 3"; Decimal)
         {
-            OptionCaption = ',Public,Private,Academia,Corporate,Others (Specify),';
-            OptionMembers = ,Public,Private,Academia,Corporate,Others;
+            caption = 'Employment Period 3';
+            trigger OnValidate()
+            begin
+            end;
+        }
+        field(385; "Sector Of Employement 3"; enum "Sector Of Employement")
+        {
+            // OptionCaption = 'Public,Private,Academia,Corporate,Others;';
+            // OptionMembers = Public,Private,Academia,Corporate,Others;
         }
 
         //*******************************************************************************************employee
-        field(180; "Employer 4"; code[100]) { DataClassification = ToBeClassified; }
-        field(181; "Designation Employer 4"; code[100]) { DataClassification = ToBeClassified; }
+        field(180; "Employer 4"; code[1000]) { DataClassification = ToBeClassified; }
+        field(181; "Designation Employer 4"; code[1000]) { DataClassification = ToBeClassified; }
         field(184; "From Date Employer 4"; Date) { DataClassification = ToBeClassified; }
         field(185; "To Date Employer 4"; Date) { DataClassification = ToBeClassified; }
         field(377; "Substantive Post 4"; Text[2048])
@@ -930,14 +1103,21 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(395; "Sector Of Employement 4"; Option)
+        field(3230; "Employment Period Year 4"; Decimal)
         {
-            OptionCaption = ',Public,Private,Academia,Corporate,Others (Specify),';
-            OptionMembers = ,Public,Private,Academia,Corporate,Others;
+            caption = 'Employment Period 4';
+            trigger OnValidate()
+            begin
+            end;
+        }
+        field(395; "Sector Of Employement 4"; enum "Sector Of Employement")
+        {
+            // OptionCaption = 'Public,Private,Academia,Corporate,Others;';
+            // OptionMembers = Public,Private,Academia,Corporate,Others;
         }
         //*************************************************************************************************************5
-        field(186; "Employer 5"; code[100]) { DataClassification = ToBeClassified; }
-        field(187; "Designation Employer 5"; code[100]) { DataClassification = ToBeClassified; }
+        field(186; "Employer 5"; code[1000]) { DataClassification = ToBeClassified; }
+        field(187; "Designation Employer 5"; code[1000]) { DataClassification = ToBeClassified; }
         field(188; "From Date Employer 5"; Date) { DataClassification = ToBeClassified; }
         field(189; "To Date Employer 5"; Date) { DataClassification = ToBeClassified; }
         field(397; "Substantive Post 5"; Text[2048])
@@ -949,14 +1129,21 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(398; "Sector Of Employement 5"; Option)
+        field(3231; "Employment Period Year 5"; Decimal)
         {
-            OptionCaption = ',Public,Private,Academia,Corporate,Others (Specify),';
-            OptionMembers = ,Public,Private,Academia,Corporate,Others;
+            caption = 'Employment Period 5';
+            trigger OnValidate()
+            begin
+            end;
+        }
+        field(398; "Sector Of Employement 5"; enum "Sector Of Employement")
+        {
+            // OptionCaption = 'Public,Private,Academia,Corporate,Others;';
+            // OptionMembers = Public,Private,Academia,Corporate,Others;
         }
         //*******************************************************************************************employee 6
-        field(190; "Employer 6"; code[100]) { DataClassification = ToBeClassified; }
-        field(191; "Designation Employer 6"; code[100]) { DataClassification = ToBeClassified; }
+        field(190; "Employer 6"; code[1000]) { DataClassification = ToBeClassified; }
+        field(191; "Designation Employer 6"; code[1000]) { DataClassification = ToBeClassified; }
         field(192; "From Date Employer 6"; Date) { DataClassification = ToBeClassified; }
         field(193; "To Date Employer 6"; Date) { DataClassification = ToBeClassified; }
         field(399; "Substantive Post 6"; Text[2048])
@@ -968,14 +1155,21 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(400; "Sector Of Employement 6"; Option)
+        field(3233; "Employment Period Year 6"; Decimal)
         {
-            OptionCaption = ',Public,Private,Academia,Corporate,Others (Specify),';
-            OptionMembers = ,Public,Private,Academia,Corporate,Others;
+            caption = 'Employment Period 6';
+            trigger OnValidate()
+            begin
+            end;
+        }
+        field(400; "Sector Of Employement 6"; enum "Sector Of Employement")
+        {
+            // OptionCaption = 'Public,Private,Academia,Corporate,Others;';
+            // OptionMembers = Public,Private,Academia,Corporate,Others;
         }
         //*******************************************************************************************employee 7
-        field(194; "Employer 7"; code[100]) { DataClassification = ToBeClassified; }
-        field(195; "Designation Employer 7"; code[100]) { DataClassification = ToBeClassified; }
+        field(194; "Employer 7"; code[1000]) { DataClassification = ToBeClassified; }
+        field(195; "Designation Employer 7"; code[1000]) { DataClassification = ToBeClassified; }
         field(196; "From Date Employer 7"; Date) { DataClassification = ToBeClassified; }
         field(197; "To Date Employer 7"; Date) { DataClassification = ToBeClassified; }
         field(401; "Substantive Post 7"; Text[2048])
@@ -987,14 +1181,21 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(402; "Sector Of Employement 7"; Option)
+        field(3235; "Employment Period Year 7"; Decimal)
         {
-            OptionCaption = ',Public,Private,Academia,Corporate,Others (Specify),';
-            OptionMembers = ,Public,Private,Academia,Corporate,Others;
+            caption = 'Employment Period 7';
+            trigger OnValidate()
+            begin
+            end;
+        }
+        field(402; "Sector Of Employement 7"; enum "Sector Of Employement")
+        {
+            // OptionCaption = 'Public,Private,Academia,Corporate,Others;';
+            // OptionMembers = Public,Private,Academia,Corporate,Others;
         }
         //*******************************************************************************************employee 8
-        field(198; "Employer 8"; code[100]) { DataClassification = ToBeClassified; }
-        field(199; "Designation Employer 8"; code[100]) { DataClassification = ToBeClassified; }
+        field(198; "Employer 8"; code[1000]) { DataClassification = ToBeClassified; }
+        field(199; "Designation Employer 8"; code[1000]) { DataClassification = ToBeClassified; }
         field(200; "From Date Employer 8"; Date) { DataClassification = ToBeClassified; }
         field(201; "To Date Employer 8"; Date) { DataClassification = ToBeClassified; }
         field(403; "Substantive Post 8"; Text[2048])
@@ -1006,14 +1207,21 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(404; "Sector Of Employement 8"; Option)
+        field(3237; "Employment Period Year 8"; Decimal)
         {
-            OptionCaption = ',Public,Private,Academia,Corporate,Others (Specify),';
-            OptionMembers = ,Public,Private,Academia,Corporate,Others;
+            caption = 'Employment Period 8';
+            trigger OnValidate()
+            begin
+            end;
+        }
+        field(404; "Sector Of Employement 8"; enum "Sector Of Employement")
+        {
+            // OptionCaption = 'Public,Private,Academia,Corporate,Others;';
+            // OptionMembers = Public,Private,Academia,Corporate,Others;
         }
         //*******************************************************************************************employee 9
-        field(202; "Employer 9"; code[100]) { DataClassification = ToBeClassified; }
-        field(203; "Designation Employer 9"; code[100]) { DataClassification = ToBeClassified; }
+        field(202; "Employer 9"; code[1000]) { DataClassification = ToBeClassified; }
+        field(203; "Designation Employer 9"; code[1000]) { DataClassification = ToBeClassified; }
         field(204; "From Date Employer 9"; Date) { DataClassification = ToBeClassified; }
         field(205; "To Date Employer 9"; Date) { DataClassification = ToBeClassified; }
         field(405; "Substantive Post 9"; Text[2048])
@@ -1025,14 +1233,21 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(406; "Sector Of Employement 9"; Option)
+        field(3239; "Employment Period Year 9"; Decimal)
         {
-            OptionCaption = ',Public,Private,Academia,Corporate,Others (Specify),';
-            OptionMembers = ,Public,Private,Academia,Corporate,Others;
+            caption = 'Employment Period 9';
+            trigger OnValidate()
+            begin
+            end;
+        }
+        field(406; "Sector Of Employement 9"; enum "Sector Of Employement")
+        {
+            // OptionCaption = 'Public,Private,Academia,Corporate,Others;';
+            // OptionMembers = Public,Private,Academia,Corporate,Others;
         }
         //*******************************************************************************************employee 10
-        field(206; "Employer 10"; code[100]) { DataClassification = ToBeClassified; }
-        field(207; "Designation Employer 10"; code[100]) { DataClassification = ToBeClassified; }
+        field(206; "Employer 10"; code[1000]) { DataClassification = ToBeClassified; }
+        field(207; "Designation Employer 10"; code[1000]) { DataClassification = ToBeClassified; }
         field(208; "From Date Employer 10"; Date) { DataClassification = ToBeClassified; }
         field(209; "To Date Employer 10"; Date) { DataClassification = ToBeClassified; }
         field(407; "Substantive Post 10"; Text[2048])
@@ -1044,10 +1259,17 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
-        field(408; "Sector Of Employement 10"; Option)
+        field(3248; "Employment Period Year  10"; Decimal)
         {
-            OptionCaption = ',Public,Private,Academia,Corporate,Others (Specify),';
-            OptionMembers = ,Public,Private,Academia,Corporate,Others;
+            caption = 'Employment Period 10';
+            trigger OnValidate()
+            begin
+            end;
+        }
+        field(408; "Sector Of Employement 10"; enum "Sector Of Employement")
+        {
+            // OptionCaption = 'Public,Private,Academia,Corporate,Others;';
+            // OptionMembers = Public,Private,Academia,Corporate,Others;
         }
 
         //*******************************************************************************************employee END    
@@ -1058,7 +1280,7 @@ table 58200 "Applicant Submitted Job"
         field(321; "Submitted Time"; Time)
         {
         }
-        field(322; "Recruitment Needs NO"; Code[100])
+        field(322; "Recruitment Needs NO"; Code[1000])
         {
         }
         field(224; "Date-Time Created"; DateTime)
@@ -1070,7 +1292,7 @@ table 58200 "Applicant Submitted Job"
         {
             Caption = 'Submitted';
         }
-        field(226; "Job Applied Code"; Code[50])
+        field(226; "Job Applied Code"; Code[500])
         {
             Caption = 'Job Applied Code';
             trigger OnValidate()
@@ -1086,6 +1308,9 @@ table 58200 "Applicant Submitted Job"
         {
         }
         field(254; "Years Of Experience"; Decimal)
+        {
+        }
+        field(250; "Years Of Experience 1"; text[1000])
         {
         }
         FIELD(255; "SAMPLE1"; Text[1000])
@@ -1140,9 +1365,17 @@ table 58200 "Applicant Submitted Job"
         }
 
 
+        field(299; "Disability T"; text[1000])
+        {
+        }
+        field(3222; "post Adminision Date"; Decimal)
+        { }
 
 
-
+        field(3223; "Closed Date"; Date)
+        { }
+        field(32223; "Post Admission Period"; text[100])
+        { }
 
 
 
