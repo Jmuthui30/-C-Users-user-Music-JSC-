@@ -10,9 +10,10 @@ report 52970 "Applicant job Submitted"
         {
             RequestFilterFields = "Job code", Gender;
             column(Job_code; "Job code") { }
-            column(Job_Title; "Job Title") { }
+
             column(Applicant_No_; "Applicant No.") { }
             column(Applicant_Name; "Applicant Name") { }
+            column(Job_Title; "Job Title") { }
             column(IDNO; IDNO) { }
             column(Passport_No_; "Passport No.") { }
             column(Passport_Issue_Date; "Passport Issue Date") { }
@@ -349,6 +350,22 @@ report 52970 "Applicant job Submitted"
                 {
                     grid(OptionsGrid)
                     {
+                        //jmk
+                        field(ShowJobTitle; ShowJobTitle)
+                        {
+                            ApplicationArea = All;
+                            Caption = 'Show Job Title';
+
+                            ToolTip = 'Specifies whether to show the ID No. column';
+                            Trigger OnValidate()
+                            var
+                            begin
+
+                                InitalizeFieldIds(Appl.FieldNo("Job Title"));
+
+                            end;
+
+                        }
                         field(ShowIDNO; ShowIDNO)
                         {
                             ApplicationArea = All;
@@ -1261,6 +1278,7 @@ report 52970 "Applicant job Submitted"
         ShowGender: Boolean;
         ShowAge: Boolean;
         ShowDateOfBirth: Boolean;
+        ShowJobTitle: boolean;
         ShowIDNO: Boolean;
         Showpassport: boolean;
         ShowHomeCounty: Boolean;

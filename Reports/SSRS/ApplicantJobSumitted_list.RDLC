@@ -631,14 +631,14 @@ xT+zh468Lu5OkNqMC8+bYHzQfw6/pXnl3o+oafI0dzZXFs6nDLNEykfmK/UTy19Kr3Wm2t8my5top1/u
         <Field Name="Job_code">
           <DataField>Job_code</DataField>
         </Field>
-        <Field Name="Job_Title">
-          <DataField>Job_Title</DataField>
-        </Field>
         <Field Name="Applicant_No_">
           <DataField>Applicant_No_</DataField>
         </Field>
         <Field Name="Applicant_Name">
           <DataField>Applicant_Name</DataField>
+        </Field>
+        <Field Name="Job_Title">
+          <DataField>Job_Title</DataField>
         </Field>
         <Field Name="IDNO">
           <DataField>IDNO</DataField>

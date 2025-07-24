@@ -15,7 +15,11 @@ table 58200 "Applicant Submitted Job"
 
         }
         field(2; "Job Title"; Text[1000]) { DataClassification = ToBeClassified; }
-        field(3; "Applicant Name"; text[1000]) { DataClassification = ToBeClassified; }
+        field(3; "Applicant Name"; text[1000])
+        {
+            DataClassification = ToBeClassified;
+
+        }
         field(4; IDNO; code[20]) { DataClassification = ToBeClassified; }
         field(5; "Birth Date"; Date) { DataClassification = ToBeClassified; }
         field(6; Age; text[50]) { DataClassification = ToBeClassified; }
@@ -1016,6 +1020,13 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
+        field(3228; "Employment Period Year"; Decimal)
+        {
+            caption = 'Employment Period';
+            trigger OnValidate()
+            begin
+            end;
+        }
         field(170; "Employer"; code[1000]) { DataClassification = ToBeClassified; }
         field(171; "Designation Employer"; code[1000]) { DataClassification = ToBeClassified; }
         field(172; "From Date Employer"; Date) { DataClassification = ToBeClassified; }
@@ -1034,6 +1045,13 @@ table 58200 "Applicant Submitted Job"
         }
         field(338; "Employment Period 2"; Text[500])
         {
+            trigger OnValidate()
+            begin
+            end;
+        }
+        field(3229; "Employment Period Year 2"; Decimal)
+        {
+            caption = 'Employment Period 2';
             trigger OnValidate()
             begin
             end;
@@ -1058,6 +1076,13 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
+        field(3238; "Employment Period Year 3"; Decimal)
+        {
+            caption = 'Employment Period 3';
+            trigger OnValidate()
+            begin
+            end;
+        }
         field(385; "Sector Of Employement 3"; enum "Sector Of Employement")
         {
             // OptionCaption = 'Public,Private,Academia,Corporate,Others;';
@@ -1074,6 +1099,13 @@ table 58200 "Applicant Submitted Job"
         }
         field(349; "Employment Period 4"; Text[500])
         {
+            trigger OnValidate()
+            begin
+            end;
+        }
+        field(3230; "Employment Period Year 4"; Decimal)
+        {
+            caption = 'Employment Period 4';
             trigger OnValidate()
             begin
             end;
@@ -1097,6 +1129,13 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
+        field(3231; "Employment Period Year 5"; Decimal)
+        {
+            caption = 'Employment Period 5';
+            trigger OnValidate()
+            begin
+            end;
+        }
         field(398; "Sector Of Employement 5"; enum "Sector Of Employement")
         {
             // OptionCaption = 'Public,Private,Academia,Corporate,Others;';
@@ -1112,6 +1151,13 @@ table 58200 "Applicant Submitted Job"
         }
         field(351; "Employment Period 6"; Text[500])
         {
+            trigger OnValidate()
+            begin
+            end;
+        }
+        field(3233; "Employment Period Year 6"; Decimal)
+        {
+            caption = 'Employment Period 6';
             trigger OnValidate()
             begin
             end;
@@ -1135,6 +1181,13 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
+        field(3235; "Employment Period Year 7"; Decimal)
+        {
+            caption = 'Employment Period 7';
+            trigger OnValidate()
+            begin
+            end;
+        }
         field(402; "Sector Of Employement 7"; enum "Sector Of Employement")
         {
             // OptionCaption = 'Public,Private,Academia,Corporate,Others;';
@@ -1150,6 +1203,13 @@ table 58200 "Applicant Submitted Job"
         }
         field(353; "Employment Period 8"; Text[500])
         {
+            trigger OnValidate()
+            begin
+            end;
+        }
+        field(3237; "Employment Period Year 8"; Decimal)
+        {
+            caption = 'Employment Period 8';
             trigger OnValidate()
             begin
             end;
@@ -1173,6 +1233,13 @@ table 58200 "Applicant Submitted Job"
             begin
             end;
         }
+        field(3239; "Employment Period Year 9"; Decimal)
+        {
+            caption = 'Employment Period 9';
+            trigger OnValidate()
+            begin
+            end;
+        }
         field(406; "Sector Of Employement 9"; enum "Sector Of Employement")
         {
             // OptionCaption = 'Public,Private,Academia,Corporate,Others;';
@@ -1188,6 +1255,13 @@ table 58200 "Applicant Submitted Job"
         }
         field(355; "Employment Period 10"; Text[500])
         {
+            trigger OnValidate()
+            begin
+            end;
+        }
+        field(3248; "Employment Period Year  10"; Decimal)
+        {
+            caption = 'Employment Period 10';
             trigger OnValidate()
             begin
             end;
@@ -1294,8 +1368,14 @@ table 58200 "Applicant Submitted Job"
         field(299; "Disability T"; text[1000])
         {
         }
+        field(3222; "post Adminision Date"; Decimal)
+        { }
 
 
+        field(3223; "Closed Date"; Date)
+        { }
+        field(32223; "Post Admission Period"; text[100])
+        { }
 
 
 

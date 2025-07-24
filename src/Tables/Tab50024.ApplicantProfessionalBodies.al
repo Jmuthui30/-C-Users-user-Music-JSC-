@@ -63,6 +63,8 @@ table 50024 "Applicant Professional Bodies"
         {
 
         }
+        field(3223; "Closed Date"; Date)
+        { }
     }
     keys
     {
