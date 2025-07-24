@@ -82,8 +82,8 @@ codeunit 55057 HRPortalQueries
         Employee.SetRange("No.", empNumber);
         if Employee.FindSet() then begin
             repeat
-                leaveBalave := CheckLeaveDaysAvailable(empNumber, 'ANNUAL');
-                data += Employee."Company E-Mail" + '*' + Employee."Phone No." + '*' + Employee."Social Security No." + '*' + Format(Employee.Gender) + '*' + Format(Employee."Imprest Account") + '*' + Format(leaveBalave) + '::::';
+                leaveBalave := CheckLeaveDaysAvailable(empNumber, 'ANNUAL LEAVE');
+                data += Employee."Company E-Mail" + '*' + Employee."Phone No." + '*' + Employee."Social Security No." + '*' + Format(Employee.Gender) + '*' + Format(Employee."Imprest Account") + '*' + Format(leaveBalave) + '*' + Format(Employee."Global Dimension 1 Code") + '::::';
             until Employee.Next() = 0;
         end;
         Exit(data);
@@ -93,7 +93,7 @@ codeunit 55057 HRPortalQueries
     begin
         Employee.Reset();
         repeat
-            data += Employee."No." + '*' + Format(Employee."Employee Posting Group") + '*' + Format(Employee."First Name") + '*' + Format(Employee."Last Name") + '*' + Format(Employee."Job Title") + '::::';
+            data += Employee."No." + '*' + Format(Employee."Employee Posting Group") + '*' + Format(Employee."First Name") + '*' + Format(Employee."Last Name") + '*' + Format(Employee."Job Title") + '*' + Format(Employee."Global Dimension 1 Code") + '::::';
         until Employee.Next = 0;
         exit(data);
     end;
@@ -102,7 +102,7 @@ codeunit 55057 HRPortalQueries
     begin
         tbl_leaveTypes.Reset();
         repeat
-            data += Format(tbl_leaveTypes.Gender) + '*' + Format(tbl_leaveTypes.Code) + '*' + Format(tbl_leaveTypes.Description) + '*' + Format(tbl_leaveTypes.Days) + '::::';
+            data += Format(tbl_leaveTypes.Gender) + '*' + Format(tbl_leaveTypes.Code) + '*' + Format(tbl_leaveTypes.Description) + '*' + Format(tbl_leaveTypes.Days) + '*' + Format(tbl_leaveTypes.Status) + '::::';
         until tbl_leaveTypes.Next = 0;
         exit(data);
 
@@ -227,30 +227,17 @@ codeunit 55057 HRPortalQueries
     var
         EmployeeLeaves: Record "HR Leave Ledger Entries";
         TotalLeaveDays: Decimal;
+        LeaveTypes: Record "Leave Type";
     begin
-        // Filter to the same dimensions used in the FlowField.
+        EmployeeLeaves.Reset();
         EmployeeLeaves.SetRange("Staff No.", EmpNo);
-        //EmployeeLeaves.SetRange("Leave Type", LeaveCode);
+        EmployeeLeaves.SetRange("Leave Type", LeaveCode);
         EmployeeLeaves.SetRange(Closed, false);
 
-        // Ask the DB‑server to sum the field, just like the FlowField does.
         EmployeeLeaves.CalcSums("No. of days");
         LeaveBalance := EmployeeLeaves."No. of days";
-        // if HrEmployees.Get(EmpNo) then begin
-        //     EmployeeLeaves.Reset;
-        //     EmployeeLeaves.SetRange("Staff No.", EmpNo);
-        //     EmployeeLeaves.SetRange("Leave Type", LeaveCode);
-        //     EmployeeLeaves.SetRange(Closed, false);
 
-        //     if EmployeeLeaves.FindSet() then begin
-        //         repeat
-        //             TotalLeaveDays += EmployeeLeaves."No. of days";
-        //         until EmployeeLeaves.Next() = 0;
-        //     end;
-
-        //     LeaveBalance := TotalLeaveDays;
-        //     exit(LeaveBalance);
-        // end;
+        exit(LeaveBalance);
     end;
 
     procedure EmployeePhoto(StaffNo: Code[20]; VAR PictureText: text)
