@@ -778,47 +778,49 @@ report 53072 "update Job Appl."
         ApplicantProfessionalBodies.SetRange("Applicant No.", applicantSubmittedJob."Applicant No.");
         // newest first)
         if ApplicantProfessionalBodies.FindSet() then begin
-            if ApplicantProfessionalBodies.Code = 'LSK' then begin
-                ApplicantSubmittedJob."Professional Bodies" := ApplicantProfessionalBodies.Name;
-                applicantSubmittedJob."Professional Code" := ApplicantProfessionalBodies.Code;
-                ApplicantSubmittedJob."Admission Date" := ApplicantProfessionalBodies."Date of Admission";
-                ApplicantSubmittedJob."Membership No." := ApplicantProfessionalBodies."Membership/Registration No.";
-                ApplicantSubmittedJob."Professional Membership Type" := ApplicantProfessionalBodies."Membership Type";
-                ApplicantSubmittedJob."Post Admission Period" := HRDatesExt.DetermineDatesDiffrence(ApplicantProfessionalBodies."Date of Admission", ApplicantSubmittedJob."Closed Date");
-                ;
-            end else
-                ProfessionalBodiesRecordCount := 0;
+            ProfessionalBodiesRecordCount := 0;
+
             repeat
-                ProfessionalBodiesRecordCount += 1; // Increment the count for each professional bodies record
-                case ProfessionalBodiesRecordCount of
-                    1:
-                        Begin
+                // Handle LSK specifically first
+                if ApplicantProfessionalBodies.Code = 'LSK' then begin
+                    ApplicantSubmittedJob."Professional Bodies" := ApplicantProfessionalBodies.Name;
+                    ApplicantSubmittedJob."Professional Code" := ApplicantProfessionalBodies.Code;
+                    ApplicantSubmittedJob."Admission Date" := ApplicantProfessionalBodies."Date of Admission";
+                    ApplicantSubmittedJob."Membership No." := ApplicantProfessionalBodies."Membership/Registration No.";
+                    ApplicantSubmittedJob."Professional Membership Type" := ApplicantProfessionalBodies."Membership Type";
+                    ApplicantSubmittedJob."Post Admission Period" := HRDatesExt.DetermineDatesDiffrence(ApplicantProfessionalBodies."Date of Admission", ApplicantSubmittedJob."Closed Date");
+                end else if ApplicantProfessionalBodies.Code <> 'LSK' then begin
+                    // Handle non-LSK professional bodies
+                    ProfessionalBodiesRecordCount += 1;
 
-                            ApplicantSubmittedJob."Professional Bodies 2" := ApplicantProfessionalBodies.Name;
-                            ApplicantSubmittedJob."Professional Code" := ApplicantProfessionalBodies.Code;
-                            ApplicantSubmittedJob."Admission Date 2" := ApplicantProfessionalBodies."Date of Admission";
-                            ApplicantSubmittedJob."Membership No. 2" := ApplicantProfessionalBodies."Membership/Registration No.";
-                            ApplicantSubmittedJob."Professional Membership Type 2" := ApplicantProfessionalBodies."Membership/Registration No.";
-                        End;
-                    2:
-                        begin
+                    case ProfessionalBodiesRecordCount of
+                        1:
+                            begin
+                                ApplicantSubmittedJob."Professional Bodies 2" := ApplicantProfessionalBodies.Name;
+                                ApplicantSubmittedJob."Professional Code 2" := ApplicantProfessionalBodies.Code; // Fixed field name
+                                ApplicantSubmittedJob."Admission Date 2" := ApplicantProfessionalBodies."Date of Admission";
+                                ApplicantSubmittedJob."Membership No. 2" := ApplicantProfessionalBodies."Membership/Registration No.";
+                                ApplicantSubmittedJob."Professional Membership Type 2" := ApplicantProfessionalBodies."Membership Type"; // Fixed assignment
+                            end;
+                        2:
+                            begin
+                                ApplicantSubmittedJob."Professional Bodies 3" := ApplicantProfessionalBodies.Name;
+                                ApplicantSubmittedJob."Professional Code 3" := ApplicantProfessionalBodies.Code;
+                                ApplicantSubmittedJob."Admission Date 3" := ApplicantProfessionalBodies."Date of Admission";
+                                ApplicantSubmittedJob."Membership No. 3" := ApplicantProfessionalBodies."Membership/Registration No.";
+                                ApplicantSubmittedJob."Professional Membership Type 3" := ApplicantProfessionalBodies."Membership Type";
+                            end;
+                    end;
 
-                            ApplicantSubmittedJob."Professional Bodies 3" := ApplicantProfessionalBodies.Name;
-                            ApplicantSubmittedJob."Professional Code 3" := ApplicantProfessionalBodies.Code;
-                            ApplicantSubmittedJob."Admission Date 3" := ApplicantProfessionalBodies."Date of Admission";
-                            ApplicantSubmittedJob."Membership No. 3" := ApplicantProfessionalBodies."Membership/Registration No.";
-                            ApplicantSubmittedJob."Professional Membership Type 3" := ApplicantProfessionalBodies."Membership Type";
-                        End;
-
+                    // Break after processing 2 non-LSK records
+                    if ProfessionalBodiesRecordCount = 2 then
+                        break;
                 end;
 
-                if ProfessionalBodiesRecordCount = 2 then
-                    break;
             until ApplicantProfessionalBodies.Next() = 0;
-            /// Only modify once after all updates
 
-            if ProfessionalBodiesRecordCount > 0 then
-                ApplicantSubmittedJob.Modify();
+            // Modify the record once after all updates
+            ApplicantSubmittedJob.Modify();
         end;
 
     end;

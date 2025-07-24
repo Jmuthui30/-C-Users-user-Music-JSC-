@@ -927,9 +927,14 @@ page 56200 "Applicant Submitted Job"
                 PromotedIsBig = true;
                 PromotedOnly = true;
                 RunObject = report "update Job Appl.";
+
                 RunPageMode = View;
                 Caption = 'UpDate Job Submitted.';
                 ApplicationArea = All;
+                trigger OnAction()
+                begin
+
+                end;
 
             }
             action(update1)
