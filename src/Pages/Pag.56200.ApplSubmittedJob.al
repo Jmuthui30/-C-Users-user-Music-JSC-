@@ -113,7 +113,7 @@ page 56200 "Applicant Submitted Job"
                 {
                     visible = false;
                 }
-                Field("Years Of Experience"; "Years Of Experience 1")
+                Field("Years Of Experience"; "Years Of Experience")
                 { }
                 //*************************************************************************************academic qualifications
                 field("Description 11"; "Description 11")
