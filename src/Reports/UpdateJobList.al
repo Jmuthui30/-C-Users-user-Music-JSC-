@@ -154,9 +154,9 @@ report 53072 "update Job Appl."
 
         ApplicantSubmittedJob."Ethnic Group" := FORMAT(UpperCase(COPYSTR(EthnicGroup, 1, 1))) + LowerCase(COPYSTR(EthnicGroup, 2));
         ApplicantSubmittedJob."Marital Status" := ApplicantApp."Marital Status";
-        SubEthnicGroup := LowerCase(ApplicantApp."Sub Ethnic Group");
+        SubEthnicGroup := ApplicantApp."Sub Ethnic Group";
         ApplicantSubmittedJob."Sub Ethnic Group" := FORMAT(UpperCase(COPYSTR(SubEthnicGroup, 1, 1))) + LowerCase(COPYSTR(SubEthnicGroup, 2));
-        ApplicantSubmittedJob."Sub Ethnic Group" := ApplicantApp."Sub Ethnic Group";
+        // ApplicantSubmittedJob."Sub Ethnic Group" := ApplicantApp."Sub Ethnic Group";
 
         // Disability Information
         ApplicantSubmittedJob.Disability := ApplicantApp.Disability;

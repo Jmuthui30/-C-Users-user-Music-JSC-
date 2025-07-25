@@ -196,7 +196,7 @@ page 51060 "Cash Management Role Center"
                                 ToolTip = 'Executes the Supplier Evaluation action';
                                 Caption = 'Supplier Evaluation-Preliminary';
                             }
-                            action("Supplier Evaluation-Failed PreliminarySelf")
+                            action("Supplier Evaluation-FaileLeave Applicatd PreliminarySelf")
                             {
                                 Image = List;
                                 RunObject = page "Supplier Evaluation List";
@@ -268,7 +268,7 @@ page 51060 "Cash Management Role Center"
                     Caption = 'Human Resource Management';
                     action("Leave Applications List")
                     {
-                        RunObject = page "Leave Application List-General";
+                        RunObject = page "ion List-General";
                         ApplicationArea = All;
                         ToolTip = 'Executes the Leave Applications List action';
                         Caption = 'Leave Application';
