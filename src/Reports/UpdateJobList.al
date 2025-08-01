@@ -109,11 +109,14 @@ report 53072 "update Job Appl."
     end;
 
     local procedure InitializeSubmittedJobRecord(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; JobApp: Record "Job Application")
+    var
+        ApplicantName: text[1000];
     begin
         Clear(ApplicantSubmittedJob);
         ApplicantSubmittedJob.Init();
         ApplicantSubmittedJob."Job code" := JobApp."No.";
-        ApplicantSubmittedJob."Applicant Name" := JobApp."Applicant Name";
+        ApplicantName := JobApp."Applicant Name";
+        ApplicantSubmittedJob."Applicant Name" := FORMAT(UpperCase(COPYSTR(ApplicantName, 1, 1))) + LowerCase(COPYSTR(ApplicantName, 2));
         ApplicantSubmittedJob."Applicant No." := JobApp."Applicant No.";
         ApplicantSubmittedJob.Gender := JobApp.Gender;
         ApplicantSubmittedJob."Job Title" := JobApp."Job Title";
@@ -126,16 +129,33 @@ report 53072 "update Job Appl."
     local procedure PopulateApplicantDetails(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantApp: Record Applicant)
     var
         HomeCounty: text[1000];
+        EthnicGroup: text[1000];
+        SubEthnicGroup: text[1000];
+        VarAge: Decimal;
+        AgeYears: integer;
+        AgeText: text;
     begin
 
         ApplicantSubmittedJob.Age := (HRDatesExt.DetermineDatesDiffrence(ApplicantApp."Birth Date", Today));
+        AgeYears := StrPos(ApplicantSubmittedJob.Age, 'Y');
+        if AgeYears > 1 then begin
+            AgeText := CopyStr(ApplicantSubmittedJob.Age, 1, AgeYears - 1);
+            ApplicantSubmittedJob.Age := DelChr(AgeText, '=', ',') + ' Y';
+            Evaluate(ApplicantSubmittedJob.Age, AgeText)
+        end else
+            ApplicantSubmittedJob.Age := '0';
+
         ApplicantSubmittedJob."Birth Date" := ApplicantApp."Birth Date";
         ApplicantSubmittedJob."Nationality New" := ApplicantApp."Nationality New";
         ApplicantSubmittedJob.IDNO := ApplicantApp."National ID";
         HomeCounty := ApplicantApp."Home County";
         ApplicantSubmittedJob."Home County" := FORMAT(UpperCase(COPYSTR(HomeCounty, 1, 1))) + LowerCase(COPYSTR(HomeCounty, 2));
-        ApplicantSubmittedJob."Ethnic Group" := ApplicantApp."Ethnic Group";
+        EthnicGroup := ApplicantApp."Ethnic Group";
+
+        ApplicantSubmittedJob."Ethnic Group" := FORMAT(UpperCase(COPYSTR(EthnicGroup, 1, 1))) + LowerCase(COPYSTR(EthnicGroup, 2));
         ApplicantSubmittedJob."Marital Status" := ApplicantApp."Marital Status";
+        SubEthnicGroup := LowerCase(ApplicantApp."Sub Ethnic Group");
+        ApplicantSubmittedJob."Sub Ethnic Group" := FORMAT(UpperCase(COPYSTR(SubEthnicGroup, 1, 1))) + LowerCase(COPYSTR(SubEthnicGroup, 2));
         ApplicantSubmittedJob."Sub Ethnic Group" := ApplicantApp."Sub Ethnic Group";
 
         // Disability Information
@@ -272,6 +292,8 @@ report 53072 "update Job Appl."
             Evaluate(ApplicantSubmittedJob."Employment Period Year", YearText);// Extract the year from the employment period text
         end else
             ApplicantSubmittedJob."Employment Period Year" := 0;
+
+        ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year";
     END;
 
     local procedure SetEmployer2Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -300,6 +322,8 @@ report 53072 "update Job Appl."
             Evaluate(ApplicantSubmittedJob."Employment Period Year 2", YearText2)
         end else
             ApplicantSubmittedJob."Employment Period Year 2" := 0;
+        //*******************************
+        ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 2";
 
     end;
 
@@ -332,6 +356,7 @@ report 53072 "update Job Appl."
             Evaluate(ApplicantSubmittedJob."Employment Period Year 3", YearText3);
         end else
             ApplicantSubmittedJob."Employment Period year 3" := 0;
+        ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 3";
     end;
 
     local procedure SetEmployer4Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -362,6 +387,7 @@ report 53072 "update Job Appl."
             Evaluate(ApplicantSubmittedJob."Employment Period Year 4", YearText4);
         end else
             ApplicantSubmittedJob."Employment Period year 4" := 0;
+        ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 4";
     end;
 
     local procedure SetEmployer5Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -390,6 +416,9 @@ report 53072 "update Job Appl."
             Evaluate(ApplicantSubmittedJob."Employment Period Year 5", YearText5);
         end else
             ApplicantSubmittedJob."Employment Period year 5" := 0;
+        ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 5";
+
+
     end;
 
     local procedure SetEmployer6Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -418,6 +447,8 @@ report 53072 "update Job Appl."
             Evaluate(ApplicantSubmittedJob."Employment Period Year 6", YearText6)
         end else
             ApplicantSubmittedJob."Employment Period year 6" := 0;
+        ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 6";
+
 
     end;
 
@@ -450,6 +481,7 @@ report 53072 "update Job Appl."
         end else
             ApplicantSubmittedJob."Employment Period Year 7" := 0;
 
+        ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 7";
 
 
 
@@ -484,6 +516,8 @@ report 53072 "update Job Appl."
             Evaluate(ApplicantSubmittedJob."Employment Period Year 8", YearText8);
         end else
             ApplicantSubmittedJob."Employment Period Year 8" := 0;
+        ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 8";
+
     end;
 
     local procedure SetEmployer9Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -513,6 +547,8 @@ report 53072 "update Job Appl."
             Evaluate(ApplicantSubmittedJob."Employment Period Year 9", YearText9);
         end else
             ApplicantSubmittedJob."Employment Period Year 9" := 0;
+        ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 9";
+
     end;
 
     local procedure SetEmployer10Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -542,6 +578,7 @@ report 53072 "update Job Appl."
             Evaluate(ApplicantSubmittedJob."Employment Period Year  10", YearText10);
         end else
             ApplicantSubmittedJob."Employment Period Year  10" := 0;
+        ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year  10";
 
 
     end;
@@ -692,6 +729,7 @@ report 53072 "update Job Appl."
                     ApplicantSubmittedJob."Professional Institution" := ApplicantsQual."Institution/Company";
                     ApplicantSubmittedJob."Professional From Date" := ApplicantsQual."From Date";
                     ApplicantSubmittedJob."Professional Date of Admission" := ApplicantsQual."To Date";
+                    applicantSubmittedJob."Professional To Date" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Area of Specialization PROF" := ApplicantsQual."Area of Specialization";
                     // ApplicantSubmittedJob."Duration course" := ApplicantsQual.Duration;
                 end;
@@ -703,6 +741,7 @@ report 53072 "update Job Appl."
                     ApplicantSubmittedJob."Professional Institution 2" := ApplicantsQual."Institution/Company";
                     ApplicantSubmittedJob."Professional From Date 2" := ApplicantsQual."From Date";
                     ApplicantSubmittedJob."Professional Date of Admn 2" := ApplicantsQual."To Date";
+                    ApplicantSubmittedJob."Professional To Date 2" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Area of Specialization PROF 2" := ApplicantsQual."Area of Specialization";
                     // ApplicantSubmittedJob."Duration course 2" := ApplicantsQual.Duration;
                 end;
@@ -714,6 +753,7 @@ report 53072 "update Job Appl."
                     ApplicantSubmittedJob."Professional Institution 3" := ApplicantsQual."Institution/Company";
                     ApplicantSubmittedJob."Professional From Date 3" := ApplicantsQual."From Date";
                     ApplicantSubmittedJob."Professional Date of Admn 3" := ApplicantsQual."To Date";
+                    ApplicantSubmittedJob."Professional To Date 3" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Area of Specialization PROF 3" := ApplicantsQual."Area of Specialization";
                     // ApplicantSubmittedJob."Duration course 3" := ApplicantsQual.Duration;
 
