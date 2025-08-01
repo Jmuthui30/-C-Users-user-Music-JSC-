@@ -557,7 +557,7 @@ codeunit 55056 HRPortal
             exit(HrEmployees."No.");
     end;
 
-    procedure CreateImprestRequisition(No: Code[30]; AccountNo: Code[30]; Donor: Code[100]; Program: code[100]; TravelType: Integer;
+    procedure CreateImprestRequisition(No: Code[30]; AccountNo: Code[30]; activity: Code[100]; department: code[100]; TravelType: Integer;
    Currency: Code[30]; Purpose: Text[2048]; Destination: Code[250]; TravelDate: DateTime; ReturnDate: DateTime; Cashier: Code[30]) status: Text
     var
     begin
@@ -573,8 +573,8 @@ codeunit 55056 HRPortal
             ImprestHeader."Account No." := CopyStr(AccountNo, 1, MaxStrLen(ImprestHeader."Account No."));
             ImprestHeader.Validate("Account No.");
             ImprestHeader.Payee := ImprestHeader."Account Name";
-            ImprestHeader."Shortcut Dimension 1 Code" := CopyStr(Donor, 1, MaxStrLen(ImprestHeader."Shortcut Dimension 1 Code"));
-            ImprestHeader."Shortcut Dimension 2 Code" := CopyStr(Program, 1, MaxStrLen(ImprestHeader."Shortcut Dimension 2 Code"));
+            ImprestHeader."Shortcut Dimension 1 Code" := CopyStr(activity, 1, MaxStrLen(ImprestHeader."Shortcut Dimension 1 Code"));
+            ImprestHeader."Shortcut Dimension 2 Code" := CopyStr(department, 1, MaxStrLen(ImprestHeader."Shortcut Dimension 2 Code"));
             ImprestHeader."Travel Type" := TravelType;
             ImprestHeader.Currency := CopyStr(Currency, 1, MaxStrLen(ImprestHeader.Currency));
             ImprestHeader."Payment Narration" := CopyStr(Purpose, 1, MaxStrLen(ImprestHeader."Payment Narration"));
@@ -602,8 +602,8 @@ codeunit 55056 HRPortal
             ImprestHeader."Account No." := CopyStr(AccountNo, 1, MaxStrLen(ImprestHeader."Account No."));
             ImprestHeader.Validate("Account No.");
             ImprestHeader.Payee := ImprestHeader."Account Name";
-            ImprestHeader."Shortcut Dimension 1 Code" := CopyStr(Donor, 1, MaxStrLen(ImprestHeader."Shortcut Dimension 1 Code"));
-            ImprestHeader."Shortcut Dimension 2 Code" := CopyStr(Program, 1, MaxStrLen(ImprestHeader."Shortcut Dimension 2 Code"));
+            ImprestHeader."Shortcut Dimension 1 Code" := CopyStr(activity, 1, MaxStrLen(ImprestHeader."Shortcut Dimension 1 Code"));
+            ImprestHeader."Shortcut Dimension 2 Code" := CopyStr(department, 1, MaxStrLen(ImprestHeader."Shortcut Dimension 2 Code"));
             ImprestHeader."Travel Type" := TravelType;
             ImprestHeader.Currency := CopyStr(Currency, 1, MaxStrLen(ImprestHeader.Currency));
             ImprestHeader."Payment Narration" := CopyStr(Purpose, 1, MaxStrLen(ImprestHeader."Payment Narration"));
@@ -621,8 +621,8 @@ codeunit 55056 HRPortal
         end;
     end;
 
-    procedure CreateImprestRequisitionLines(imprestno: Code[30]; ImprestType: Code[50]; DailyRate: Decimal; Dim1: Code[50];
-    Dim2: Code[50]; Dim3: Code[50]; Dim4: Code[50]; Dim5: Code[50]; Dim6: Code[50]; Dim7: Code[50]) status: Text
+    procedure CreateImprestRequisitionLines(imprestno: Code[30]; ImprestType: Code[50]; noOfDays: Integer; DailyRate: Decimal; Dim1: Code[50];
+    Dim2: Code[50]) status: Text
     var
         ImprestLines1: Record "Payment Lines";
         prevLineNo: Integer;
@@ -640,6 +640,8 @@ codeunit 55056 HRPortal
             ImprestLines."Line No" := prevLineNo;
             ImprestLines."Expenditure Type" := ImprestType;
             ImprestLines.Validate("Expenditure Type");
+            ImprestLines."No of Days" := noOfDays;
+            ImprestLines.Validate("No of Days");
             ImprestLines."Daily Rate" := DailyRate;
             ImprestLines.Validate("Daily Rate");
             ImprestLines."No of Days" := ImprestHeader."No of Days";
@@ -647,12 +649,17 @@ codeunit 55056 HRPortal
             ImprestLines.Destination := ImprestHeader.Destination;
             ImprestLines."Shortcut Dimension 1 Code" := Dim1;
             ImprestLines."Shortcut Dimension 2 Code" := Dim2;
-            ImprestLines.ValidateShortcutDimCode(3, Dim3);
-            ImprestLines.ValidateShortcutDimCode(4, Dim4);
-            ImprestLines.ValidateShortcutDimCode(5, Dim5);
-            ImprestLines.ValidateShortcutDimCode(6, Dim6);
-            ImprestLines.ValidateShortcutDimCode(7, Dim7);
+            // ImprestLines.ValidateShortcutDimCode(3, Dim3);
+            // ImprestLines.ValidateShortcutDimCode(4, Dim4);
+            // ImprestLines.ValidateShortcutDimCode(5, Dim5);
+            // ImprestLines.ValidateShortcutDimCode(6, Dim6);
+            // ImprestLines.ValidateShortcutDimCode(7, Dim7);
             if ImprestLines.Insert(true) then begin
+                ImprestLines."No of Days" := noOfDays;
+                ImprestLines.Validate("No of Days");
+                ImprestLines."Daily Rate" := DailyRate;
+                ImprestLines.Validate("Daily Rate");
+                ImprestLines.Modify();
                 status := 'success*Imprest Line has been added succesfully';
             end else begin
                 status := 'danger*An error occured while submitting your Imprest Line';
