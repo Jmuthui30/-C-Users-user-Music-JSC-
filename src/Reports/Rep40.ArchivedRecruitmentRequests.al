@@ -9,6 +9,7 @@ report 50040 "Archived Recruitment Request"
     {
         dataitem(RecruitmentNeeds; "Recruitment Needs")
         {
+            DataItemTableView = where (Status = filter(Archived|Closed));
             column(Description; Description)
             {
 

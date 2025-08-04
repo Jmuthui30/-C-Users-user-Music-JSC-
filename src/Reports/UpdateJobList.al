@@ -284,16 +284,17 @@ report 53072 "update Job Appl."
             ApplicantSubmittedJob."Sector Of Employement" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
             ApplicantSubmittedJob."Sector Of Employement" := ApplicantEmpl.Sector;
-        YearPos := StrPos(ApplicantEmpl."Employment Period", 'Y');
-        if YearPos > 1 then begin
-            YearPos := StrPos(ApplicantEmpl."Employment Period", 'Y');
-            YearText := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos - 1);
-            Years := DelChr(YearText, '=', ',') + 'Y';
-            Evaluate(ApplicantSubmittedJob."Employment Period Year", YearText);// Extract the year from the employment period text
-        end else
-            ApplicantSubmittedJob."Employment Period Year" := 0;
-
-        ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year";
+        // YearPos := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        // if YearPos > 1 then begin
+        //     YearPos := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        //     YearText := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos - 1);
+        //     Years := DelChr(YearText, '=', ',') + 'Y';
+        //     Evaluate(ApplicantSubmittedJob."Employment Period Year", YearText);// Extract the year from the employment period text
+        // end else
+        //     ApplicantSubmittedJob."Employment Period Year" := 0;
+        //     ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year";
+        ApplicantSubmittedJob."Employment Period" := ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
     END;
 
     local procedure SetEmployer2Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -313,17 +314,19 @@ report 53072 "update Job Appl."
             ApplicantSubmittedJob."Sector Of Employement 2" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
             ApplicantSubmittedJob."Sector Of Employement 2" := ApplicantEmpl.Sector;
-        //**************************
-        YearPos2 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-        if YearPos2 > 1 then begin
-            YearPos2 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-            YearText2 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos2 - 1);
-            Years2 := DelChr(YearText2, '=', ',') + 'Y';
-            Evaluate(ApplicantSubmittedJob."Employment Period Year 2", YearText2)
-        end else
-            ApplicantSubmittedJob."Employment Period Year 2" := 0;
-        //*******************************
-        ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 2";
+        ApplicantSubmittedJob."Employment Period 2" := ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
+        // //**************************
+        // YearPos2 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        // if YearPos2 > 1 then begin
+        //     YearPos2 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        //     YearText2 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos2 - 1);
+        //     Years2 := DelChr(YearText2, '=', ',') + 'Y';
+        //     Evaluate(ApplicantSubmittedJob."Employment Period Year 2", YearText2)
+        // end else
+        //     ApplicantSubmittedJob."Employment Period Year 2" := 0;
+        // //*******************************
+        // ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 2";
 
     end;
 
@@ -340,23 +343,26 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."To Date Employer 3" := ApplicantEmpl."To Date";
         ApplicantSubmittedJob."Designation Employer 3" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 3" := ApplicantEmpl."Substantive Post";
-        // Convert text to date first, then extract year
+
 
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 3" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
             ApplicantSubmittedJob."Sector Of Employement 3" := ApplicantEmpl.Sector;
         //************************************
-        YearPos3 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-        if YearPos3 > 1 then begin
-            ApplicantSubmittedJob."Employment Period 3" := ApplicantEmpl."Employment Period";
-            YearPos3 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-            YearText3 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos3 - 1);
-            Years3 := DelChr(YearText3, '=', ',') + 'Y';
-            Evaluate(ApplicantSubmittedJob."Employment Period Year 3", YearText3);
-        end else
-            ApplicantSubmittedJob."Employment Period year 3" := 0;
-        ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 3";
+        // Convert text to date first, then extract year
+        // YearPos3 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        // if YearPos3 > 1 then begin
+        //     ApplicantSubmittedJob."Employment Period 3" := ApplicantEmpl."Employment Period";
+        //     YearPos3 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        //     YearText3 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos3 - 1);
+        //     Years3 := DelChr(YearText3, '=', ',') + 'Y';
+        //     Evaluate(ApplicantSubmittedJob."Employment Period Year 3", YearText3);
+        // end else
+        //     ApplicantSubmittedJob."Employment Period year 3" := 0;
+        // ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 3";
+        ApplicantSubmittedJob."Employment Period 3" := ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
     end;
 
     local procedure SetEmployer4Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -373,21 +379,21 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Substantive Post 4" := ApplicantEmpl."Substantive Post";
 
         ApplicantSubmittedJob."Employment Period 4" := ApplicantEmpl."Employment Period";
-        ;//ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 4" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
             ApplicantSubmittedJob."Sector Of Employement 4" := ApplicantEmpl.Sector;
         //*****88888
-        YearPos4 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-        if YearPos4 > 1 then begin
-            YearPos4 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-            YearText4 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos4 - 1);
-            Years4 := DelChr(YearText4, '=', ',') + 'Y';
-            Evaluate(ApplicantSubmittedJob."Employment Period Year 4", YearText4);
-        end else
-            ApplicantSubmittedJob."Employment Period year 4" := 0;
-        ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 4";
+        // YearPos4 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        // if YearPos4 > 1 then begin
+        //     YearPos4 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        //     YearText4 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos4 - 1);
+        //     Years4 := DelChr(YearText4, '=', ',') + 'Y';
+        //     Evaluate(ApplicantSubmittedJob."Employment Period Year 4", YearText4);
+        // end else
+        //     ApplicantSubmittedJob."Employment Period year 4" := 0;
+        // ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 4";
     end;
 
     local procedure SetEmployer5Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -403,20 +409,22 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 5" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 5" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 5" := ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
+
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 5" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
             ApplicantSubmittedJob."Sector Of Employement 5" := ApplicantEmpl.Sector;
         //*****88888
-        YearPos5 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-        if YearPos5 > 1 then begin
-            YearPos5 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-            YearText5 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos5 - 1);
-            Years5 := DelChr(YearText5, '=', ',') + 'Y';
-            Evaluate(ApplicantSubmittedJob."Employment Period Year 5", YearText5);
-        end else
-            ApplicantSubmittedJob."Employment Period year 5" := 0;
-        ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 5";
+        // YearPos5 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        // if YearPos5 > 1 then begin
+        //     YearPos5 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        //     YearText5 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos5 - 1);
+        //     Years5 := DelChr(YearText5, '=', ',') + 'Y';
+        //     Evaluate(ApplicantSubmittedJob."Employment Period Year 5", YearText5);
+        // end else
+        //     ApplicantSubmittedJob."Employment Period year 5" := 0;
+        // ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 5";
 
 
     end;
@@ -434,20 +442,21 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 6" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 6" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 6" := ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 6" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
             ApplicantSubmittedJob."Sector Of Employement 6" := ApplicantEmpl.Sector;
         //*****88888
-        YearPos6 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-        if YearPos6 > 1 then begin
-            YearPos6 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-            YearText6 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos6 - 1);
-            Years6 := DelChr(YearText6, '=', ',') + 'Y';
-            Evaluate(ApplicantSubmittedJob."Employment Period Year 6", YearText6)
-        end else
-            ApplicantSubmittedJob."Employment Period year 6" := 0;
-        ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 6";
+        // YearPos6 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        // if YearPos6 > 1 then begin
+        //     YearPos6 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        //     YearText6 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos6 - 1);
+        //     Years6 := DelChr(YearText6, '=', ',') + 'Y';
+        //     Evaluate(ApplicantSubmittedJob."Employment Period Year 6", YearText6)
+        // end else
+        //     ApplicantSubmittedJob."Employment Period year 6" := 0;
+        // ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 6";
 
 
     end;
@@ -464,24 +473,23 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."To Date Employer 7" := ApplicantEmpl."To Date";
         ApplicantSubmittedJob."Designation Employer 7" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 7" := ApplicantEmpl."Substantive Post";
-
         ApplicantSubmittedJob."Employment Period 7" := ApplicantEmpl."Employment Period";
-
+        ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 7" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
             ApplicantSubmittedJob."Sector Of Employement 7" := ApplicantEmpl.Sector;
         //*****88888
-        YearPos7 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-        if YearPos7 > 1 then begin
-            YearPos7 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-            YearText7 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos7 - 1);
-            Years7 := DelChr(YearText7, '=', ',') + 'Y';
-            Evaluate(ApplicantSubmittedJob."Employment Period Year 7", YearText7)
-        end else
-            ApplicantSubmittedJob."Employment Period Year 7" := 0;
+        // YearPos7 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        // if YearPos7 > 1 then begin
+        //     YearPos7 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        //     YearText7 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos7 - 1);
+        //     Years7 := DelChr(YearText7, '=', ',') + 'Y';
+        //     Evaluate(ApplicantSubmittedJob."Employment Period Year 7", YearText7)
+        // end else
+        //     ApplicantSubmittedJob."Employment Period Year 7" := 0;
 
-        ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 7";
+        // ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 7";
 
 
 
@@ -500,23 +508,22 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."To Date Employer 8" := ApplicantEmpl."To Date";
         ApplicantSubmittedJob."Designation Employer 8" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 8" := ApplicantEmpl."Substantive Post";
-
         ApplicantSubmittedJob."Employment Period 8" := ApplicantEmpl."Employment Period";
-
+        ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 8" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
             ApplicantSubmittedJob."Sector Of Employement 8" := ApplicantEmpl.Sector;
         //*****88888
-        YearPos8 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-        if YearPos8 > 1 then begin
-            YearPos8 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-            YearText8 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos8 - 1);
-            Years8 := DelChr(YearText8, '=', ',') + 'Y';
-            Evaluate(ApplicantSubmittedJob."Employment Period Year 8", YearText8);
-        end else
-            ApplicantSubmittedJob."Employment Period Year 8" := 0;
-        ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 8";
+        // YearPos8 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        // if YearPos8 > 1 then begin
+        //     YearPos8 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        //     YearText8 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos8 - 1);
+        //     Years8 := DelChr(YearText8, '=', ',') + 'Y';
+        //     Evaluate(ApplicantSubmittedJob."Employment Period Year 8", YearText8);
+        // end else
+        //     ApplicantSubmittedJob."Employment Period Year 8" := 0;
+        // ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 8";
 
     end;
 
@@ -532,22 +539,22 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."To Date Employer 9" := ApplicantEmpl."To Date";
         ApplicantSubmittedJob."Designation Employer 9" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 9" := ApplicantEmpl."Substantive Post";
-
         ApplicantSubmittedJob."Employment Period 9" := ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 9" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
             ApplicantSubmittedJob."Sector Of Employement 9" := ApplicantEmpl.Sector;
         //*****88888
-        YearPos9 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-        if YearPos9 > 1 then begin
-            YearPos9 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-            YearText9 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos9 - 1);
-            Years9 := DelChr(YearText9, '=', ',') + 'Y';
-            Evaluate(ApplicantSubmittedJob."Employment Period Year 9", YearText9);
-        end else
-            ApplicantSubmittedJob."Employment Period Year 9" := 0;
-        ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 9";
+        // YearPos9 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        // if YearPos9 > 1 then begin
+        //     YearPos9 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        //     YearText9 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos9 - 1);
+        //     Years9 := DelChr(YearText9, '=', ',') + 'Y';
+        //     Evaluate(ApplicantSubmittedJob."Employment Period Year 9", YearText9);
+        // end else
+        //     ApplicantSubmittedJob."Employment Period Year 9" := 0;
+        // ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 9";
 
     end;
 
@@ -563,22 +570,22 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."To Date Employer 10" := ApplicantEmpl."To Date";
         ApplicantSubmittedJob."Designation Employer 10" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 10" := ApplicantEmpl."Substantive Post";
-
         ApplicantSubmittedJob."Employment Period 10" := ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 10" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
             ApplicantSubmittedJob."Sector Of Employement 10" := ApplicantEmpl.Sector;
         //*****88888
-        YearPos10 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-        if YearPos10 > 1 then begin
-            YearPos10 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-            YearText10 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos10 - 1);
-            Years10 := DelChr(YearText10, '=', ',') + 'Y';
-            Evaluate(ApplicantSubmittedJob."Employment Period Year  10", YearText10);
-        end else
-            ApplicantSubmittedJob."Employment Period Year  10" := 0;
-        ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year  10";
+        // YearPos10 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        // if YearPos10 > 1 then begin
+        //     YearPos10 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        //     YearText10 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos10 - 1);
+        //     Years10 := DelChr(YearText10, '=', ',') + 'Y';
+        //     Evaluate(ApplicantSubmittedJob."Employment Period Year  10", YearText10);
+        // end else
+        //     ApplicantSubmittedJob."Employment Period Year  10" := 0;
+        // ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year  10";
 
 
     end;

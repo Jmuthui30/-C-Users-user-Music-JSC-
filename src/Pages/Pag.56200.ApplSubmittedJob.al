@@ -883,9 +883,14 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
-                Field("Years Of Experience"; "Years Of Experience")
+                // Field("Years Of Experience"; "Years Of Experience")
+                // {
+                //     Caption = 'Cumulative Years Of Experience';
+                // }
+                field("Years Of Experience 1";"Years Of Experience 1")
                 {
                     Caption = 'Cumulative Years Of Experience';
+                    ApplicationArea = All;
                 }
                 //********************************************************************end Employer 10
 

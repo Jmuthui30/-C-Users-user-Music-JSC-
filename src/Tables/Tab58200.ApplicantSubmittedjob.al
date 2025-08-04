@@ -243,7 +243,7 @@ table 58200 "Applicant Submitted Job"
         }
         field(26; "Institution/Company"; Text[1000])
         {
-            Caption = 'Institution';
+            // Caption = 'Institution';
             DataClassification = ToBeClassified;
         }
 
@@ -273,7 +273,7 @@ table 58200 "Applicant Submitted Job"
         }
         field(2777; Description; Text[1000])
         {
-            Caption = 'Description';
+            // Caption = 'Description';
             DataClassification = ToBeClassified;
         }
         //***************************************************************************************Academ 1
@@ -313,7 +313,7 @@ table 58200 "Applicant Submitted Job"
         }
         field(923; "Institution/Company 1"; Text[1000])
         {
-            Caption = 'Institution/Company';
+            // Caption = 'Institution/Company';
             DataClassification = ToBeClassified;
         }
         field(924; "Grade/Class 1"; Text[1000])
@@ -324,7 +324,7 @@ table 58200 "Applicant Submitted Job"
 
         field(2778; "Description 1"; Text[1000])
         {
-            Caption = 'Description';
+            // Caption = 'Description';
             DataClassification = ToBeClassified;
         }
         //***************************************************************************************Academ 2
@@ -345,7 +345,7 @@ table 58200 "Applicant Submitted Job"
         }
         field(33; "Institution/Company 2"; Text[1000])
         {
-            Caption = 'Institution/Company';
+            // Caption = 'Institution/Company';
             DataClassification = ToBeClassified;
         }
 
@@ -375,7 +375,7 @@ table 58200 "Applicant Submitted Job"
         }
         field(2779; "Description 2"; Text[1000])
         {
-            Caption = 'Description';
+            // Caption = 'Description';
             DataClassification = ToBeClassified;
         }
 
@@ -417,7 +417,7 @@ table 58200 "Applicant Submitted Job"
         }
         field(39; "Institution/Company 3"; Text[1000])
         {
-            Caption = 'Institution/Company';
+            // Caption = 'Institution/Company';
             DataClassification = ToBeClassified;
         }
 
@@ -428,7 +428,7 @@ table 58200 "Applicant Submitted Job"
         }
         field(2780; "Description 3"; Text[1000])
         {
-            Caption = 'Description';
+            // Caption = 'Description';
             DataClassification = ToBeClassified;
         }
         //*********************************************************************** acadec 4
@@ -469,7 +469,7 @@ table 58200 "Applicant Submitted Job"
         }
         field(45; "Institution/Company 4"; Text[1000])
         {
-            Caption = 'Institution/Company';
+            // Caption = 'Institution/Company';
             DataClassification = ToBeClassified;
         }
 
@@ -480,7 +480,7 @@ table 58200 "Applicant Submitted Job"
         }
         field(2781; "Description 4"; Text[1000])
         {
-            Caption = 'Description';
+            // Caption = 'Description';
             DataClassification = ToBeClassified;
         }
         //****************************************************************************
@@ -522,7 +522,7 @@ table 58200 "Applicant Submitted Job"
         }
         field(545; "Institution/Company 5"; Text[1000])
         {
-            Caption = 'Institution/Company';
+            // Caption = 'Institution/Company';
             DataClassification = ToBeClassified;
         }
 
@@ -533,7 +533,7 @@ table 58200 "Applicant Submitted Job"
         }
         field(2782; "Description 5"; Text[1000])
         {
-            Caption = 'Description';
+            // Caption = 'Description';
             DataClassification = ToBeClassified;
         }
         //****************************************************************************
@@ -567,7 +567,7 @@ table 58200 "Applicant Submitted Job"
         }
         field(51; "Institution/Company 6"; Text[1000])
         {
-            Caption = 'Institution/Company';
+            // Caption = 'Institution/Company';
             DataClassification = ToBeClassified;
         }
         field(52; "Grade/Class 6"; Text[1000])
@@ -577,7 +577,7 @@ table 58200 "Applicant Submitted Job"
         }
         field(2783; "Description 6"; Text[1000])
         {
-            Caption = 'Description';
+            // Caption = 'Description';
             DataClassification = ToBeClassified;
         }
         //*******************************************************************************************academic 7
@@ -657,7 +657,7 @@ table 58200 "Applicant Submitted Job"
         }
         field(963; "Institution/Company 8"; Text[1000])
         {
-            Caption = 'Institution/Company';
+            // Caption = 'Institution/Company';
             DataClassification = ToBeClassified;
         }
         field(964; "Grade/Class 8"; Text[1000])
@@ -667,7 +667,7 @@ table 58200 "Applicant Submitted Job"
         }
         field(2785; "Description 8"; Text[1000])
         {
-            Caption = 'Description';
+            // Caption = 'Description';
             DataClassification = ToBeClassified;
         }
         //*******************************************************************************************academic 9
@@ -702,7 +702,7 @@ table 58200 "Applicant Submitted Job"
         }
         FIELD(969; "Institution/Company 9"; Text[1000])
         {
-            Caption = 'Institution/Company';
+            // Caption = 'Institution/Company';
             DataClassification = ToBeClassified;
         }
         FIELD(970; "Grade/Class 9"; Text[1000])
@@ -712,7 +712,7 @@ table 58200 "Applicant Submitted Job"
         }
         field(2786; "Description 9"; Text[1000])
         {
-            Caption = 'Description';
+            // Caption = 'Description';
             DataClassification = ToBeClassified;
         }
         //*******************************************************************************************academic 10
@@ -747,7 +747,7 @@ table 58200 "Applicant Submitted Job"
         }
         FIELD(983; "Institution/Company 10"; Text[1000])
         {
-            Caption = 'Institution/Company';
+            // Caption = 'Institution/Company';
             DataClassification = ToBeClassified;
         }
         FIELD(984; "Grade/Class 10"; Text[1000])
@@ -757,7 +757,7 @@ table 58200 "Applicant Submitted Job"
         }
         field(2787; "Description 10"; Text[1000])
         {
-            Caption = 'Description';
+            // Caption = 'Description';
             DataClassification = ToBeClassified;
         }
         //*******************************************************************************************academic 11
@@ -792,7 +792,7 @@ table 58200 "Applicant Submitted Job"
         }
         FIELD(989; "Institution/Company 11"; Text[1000])
         {
-            Caption = 'Institution/Company';
+            // Caption = 'Institution/Company';
             DataClassification = ToBeClassified;
         }
         FIELD(990; "Grade/Class 11"; Text[1000])
@@ -802,7 +802,7 @@ table 58200 "Applicant Submitted Job"
         }
         field(2788; "Description 11"; Text[1000])
         {
-            Caption = 'Description';
+            // Caption = 'Description';
             DataClassification = ToBeClassified;
         }
         //*****************************************************************************
