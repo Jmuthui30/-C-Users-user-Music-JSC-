@@ -30,6 +30,7 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
+                
                 field(IDNO; IDNO)
                 {
                     ApplicationArea = All;
@@ -113,8 +114,7 @@ page 56200 "Applicant Submitted Job"
                 {
                     visible = false;
                 }
-                Field("Years Of Experience"; "Years Of Experience")
-                { }
+
                 //*************************************************************************************academic qualifications
                 field("Description 11"; "Description 11")
                 {
@@ -162,14 +162,15 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
-                field("To Date"; "To Date")
-                {
-                    ApplicationArea = All;
-                }
+
                 field("From Date"; "From Date")
                 {
                     ApplicationArea = All;
 
+                }
+                field("To Date"; "To Date")
+                {
+                    ApplicationArea = All;
                 }
                 //*****************************************
 
@@ -233,7 +234,11 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
-
+                field("Description 3"; "Description 3")
+                {
+                    caption = 'Certificate';
+                    ApplicationArea = All;
+                }
                 field("Area of Specialization 3"; "Area of Specialization 3")
                 {
                     ApplicationArea = All;
@@ -256,10 +261,7 @@ page 56200 "Applicant Submitted Job"
                     ApplicationArea = All;
                 }
 
-                field(Diplomalevel; Diplomalevel)
-                {
-                    ApplicationArea = All;
-                }
+
                 field("Description 4"; "Description 4")
                 {
                     caption = 'Diploma';
@@ -291,10 +293,7 @@ page 56200 "Applicant Submitted Job"
                     ApplicationArea = All;
                 }
 
-                field(HIGHERDIPLOMA; HIGHERDIPLOMA)
-                {
-                    ApplicationArea = All;
-                }
+
                 field("Description 5"; "Description 5")
                 {
                     caption = 'Higher Diploma';
@@ -447,286 +446,7 @@ page 56200 "Applicant Submitted Job"
 
                 //******************************************************************* ACADEMIC QUALIFICATIONS 11
 
-                //************************************************
-
-                field(Employer; Employer)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Current Employer';
-                }
-                field("Sector Of Employement"; "Sector Of Employement")
-                {
-                    ApplicationArea = All;
-                }
-                field("Substantive Post"; "Substantive Post")
-                {
-                    ApplicationArea = All;
-                }
-
-                Field("From Date Employer"; "From Date Employer")
-                {
-                    ApplicationArea = All;
-                }
-                Field("To Date Employer"; "To Date Employer")
-                {
-                    ApplicationArea = All;
-                }
-
-                field("Employment Period"; "Employment Period")
-                {
-                    ApplicationArea = All;
-                    visible = false;
-                }
-                field("Employment Period Year"; "Employment Period Year")
-                {
-                    ApplicationArea = All;
-                }
-
-                //********************************************************************
-                Field("Employer 2"; "Employer 2")
-                {
-                    ApplicationArea = All;
-                }
-                Field("Sector Of Employement 2"; "Sector Of Employement 2")
-                {
-                    ApplicationArea = All;
-                }
-                field("Substantive Post 2"; "Substantive Post 2")
-                {
-                    ApplicationArea = All;
-                }
-                Field("From Date Employer 2"; "From Date Employer 2")
-                {
-                    ApplicationArea = All;
-                }
-                Field("To Date Employer 2"; "To Date Employer 2")
-                {
-                    ApplicationArea = All;
-                }
-
-                field("Employment Period Year 2"; "Employment Period Year 2")
-                {
-                    ApplicationArea = All;
-                }
-
-                //********************************************************************
-                Field("Employer 3"; "Employer 3")
-                {
-                    ApplicationArea = All;
-                }
-                Field("Sector Of Employement 3"; "Sector Of Employement 3")
-                {
-                    ApplicationArea = All;
-                }
-                field("Substantive Post 3"; "Substantive Post 3")
-                {
-                    ApplicationArea = All;
-                }
-
-                Field("From Date Employer 3"; "From Date Employer 3")
-                {
-                    ApplicationArea = All;
-                }
-                Field("To Date Employer 3"; "To Date Employer 3")
-                {
-                    ApplicationArea = All;
-                }
-
-                field("Employment Period Year 3"; "Employment Period Year 3")
-                {
-                    ApplicationArea = All;
-                }
-
-
-                //********************************************************************
-                Field("Employer 4"; "Employer 4")
-                {
-                    ApplicationArea = All;
-                }
-                Field("Sector Of Employement 4"; "Sector Of Employement 4")
-                {
-                    ApplicationArea = All;
-                }
-                field("Substantive Post 4"; "Substantive Post 4")
-                {
-                    ApplicationArea = All;
-                }
-                Field("From Date Employer 4"; "From Date Employer 4")
-                {
-                    ApplicationArea = All;
-                }
-                Field("To Date Employer 4"; "To Date Employer 4")
-                {
-                    ApplicationArea = All;
-                }
-
-                field("Employment Period Year 4"; "Employment Period Year 4")
-                {
-                    ApplicationArea = All;
-                }
-
-                //********************************************************************end Employer 4
-                Field("Employer 5"; "Employer 5")
-                {
-                    ApplicationArea = All;
-                }
-                Field("Sector Of Employement 5"; "Sector Of Employement 5")
-                {
-                    ApplicationArea = All;
-                }
-                field("Substantive Post 5"; "Substantive Post 5")
-                {
-                    ApplicationArea = All;
-                }
-                Field("From Date Employer 5"; "From Date Employer 5")
-                {
-                    ApplicationArea = All;
-                }
-                Field("To Date Employer 5"; "To Date Employer 5")
-                {
-                    ApplicationArea = All;
-                }
-
-                field("Employment Period Year 5"; "Employment Period Year 5")
-                {
-                    ApplicationArea = All;
-                }
-
-                //********************************************************************end Employer 5
-                FIELD("Employer 6"; "Employer 6")
-                {
-                    ApplicationArea = All;
-                }
-                FIELD("Sector Of Employement 6"; "Sector Of Employement 6")
-                {
-                    ApplicationArea = All;
-                }
-                field("Substantive Post 6"; "Substantive Post 6")
-                {
-                    ApplicationArea = All;
-                }
-                FIELD("From Date Employer 6"; "From Date Employer 6")
-                {
-                    ApplicationArea = All;
-                }
-                FIELD("To Date Employer 6"; "To Date Employer 6")
-                {
-                    ApplicationArea = All;
-                }
-
-                field("Employment Period Year 6"; "Employment Period Year 6")
-                {
-                    ApplicationArea = All;
-                }
-
-                //********************************************************************end Employer 6
-                field("Employer 7"; "Employer 7")
-                {
-                    ApplicationArea = All;
-                }
-                field("Sector Of Employement 7"; "Sector Of Employement 7")
-                {
-                    ApplicationArea = All;
-                }
-                field("Substantive Post 7"; "Substantive Post 7")
-                {
-                    ApplicationArea = All;
-                }
-                field("From Date Employer 7"; "From Date Employer 7")
-                {
-                    ApplicationArea = All;
-                }
-                field("To Date Employer 7"; "To Date Employer 7")
-                {
-                    ApplicationArea = All;
-                }
-
-                field("Employment Period Year 7"; "Employment Period Year 7")
-                {
-                    ApplicationArea = All;
-                }
-                //********************************************************************end Employer 7
-                field("Employer 8"; "Employer 8")
-                {
-                    ApplicationArea = All;
-                }
-                field("Sector Of Employement 8"; "Sector Of Employement 8")
-                {
-                    ApplicationArea = All;
-                }
-                field("Substantive Post 8"; "Substantive Post 8")
-                {
-                    ApplicationArea = All;
-                }
-                field("From Date Employer 8"; "From Date Employer 8")
-                {
-                    ApplicationArea = All;
-                }
-                field("To Date Employer 8"; "To Date Employer 8")
-                {
-                    ApplicationArea = All;
-                }
-
-                field("Employment Period Year 8"; "Employment Period Year 8")
-                {
-                    ApplicationArea = All;
-                }
-                //********************************************************************end Employer 8
-                field("Employer 9"; "Employer 9")
-                {
-                    ApplicationArea = All;
-                }
-                field("Sector Of Employement 9"; "Sector Of Employement 9")
-                {
-                    ApplicationArea = All;
-                }
-                field("Substantive Post 9"; "Substantive Post 9")
-                {
-                    ApplicationArea = All;
-                }
-                field("From Date Employer 9"; "From Date Employer 9")
-                {
-                    ApplicationArea = All;
-                }
-                field("To Date Employer 9"; "To Date Employer 9")
-                {
-                    ApplicationArea = All;
-                }
-
-                field("Employment Period Year 9"; "Employment Period Year 9")
-                {
-                    ApplicationArea = All;
-                }
-                //********************************************************************end Employer 9
-                field("Employer 10"; "Employer 10")
-                {
-                    ApplicationArea = All;
-                }
-                field("Sector Of Employement 10"; "Sector Of Employement 10")
-                {
-                    ApplicationArea = All;
-                }
-                field("Substantive Post 10"; "Substantive Post 10")
-                {
-                    ApplicationArea = All;
-                }
-                field("From Date Employer 10"; "From Date Employer 10")
-                {
-                    ApplicationArea = All;
-                }
-                field("To Date Employer 10"; "To Date Employer 10")
-                {
-                    ApplicationArea = All;
-                }
-
-                field("Employment Period Year  10"; "Employment Period Year  10")
-                {
-                    ApplicationArea = All;
-                }
-                //********************************************************************end Employer 10
-
-
-
+                //************************************************PROF COURSES*************************
                 Field("Professional Qualification"; "Professional Qualification")
                 {
                     ApplicationArea = All;
@@ -797,11 +517,7 @@ page 56200 "Applicant Submitted Job"
                     ApplicationArea = All;
                 }
                 //close date
-                field("Closed Date"; "Closed Date")
-                {
-                    ApplicationArea = All;
-                }
-                field("Post Admission Period"; "Post Admission Period") { }
+
 
                 //p0st 
 
@@ -809,21 +525,34 @@ page 56200 "Applicant Submitted Job"
 
 
                 Field("Professional Bodies"; "Professional Bodies") { ApplicationArea = All; }
-                Field("Admission Date"; "Admission Date") { ApplicationArea = All; }
                 Field("Membership No."; "Membership No.") { ApplicationArea = All; }
                 Field("Professional Membership Type"; "Professional Membership Type") { ApplicationArea = All; }
+                Field("Admission Date"; "Admission Date") { ApplicationArea = All; }
+
+                field("Closed Date"; "Closed Date")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Advert Closure Date';
+                }
+                field("Post Admission Period"; "Post Admission Period")
+                {
+                    caption = 'Post Admission Experience';
+                }
                 //*************************************************************************
 
                 Field("Professional Bodies 2"; "Professional Bodies 2") { ApplicationArea = All; }
-                Field("Admission Date 2"; "Admission Date 2") { ApplicationArea = All; }
                 Field("Membership No. 2"; "Membership No. 2") { ApplicationArea = All; }
                 Field("Professional Membership Type 2"; "Professional Membership Type 2") { ApplicationArea = All; }
+                Field("Admission Date 2"; "Admission Date 2") { ApplicationArea = All; }
+
                 //********************************************************************************
 
                 Field("Professional Bodies 3"; "Professional Bodies 3") { ApplicationArea = All; }
-                Field("Admission Date 3"; "Admission Date 3") { ApplicationArea = All; }
                 Field("Membership No. 3"; "Membership No. 3") { ApplicationArea = All; }
                 Field("Professional Membership Type 3"; "Professional Membership Type 3") { ApplicationArea = All; }
+                Field("Admission Date 3"; "Admission Date 3") { ApplicationArea = All; }
+
+
                 //***********************************************************************************course
 
                 field("Name of the Course"; "Name of the Course") { ApplicationArea = All; }
@@ -833,24 +562,339 @@ page 56200 "Applicant Submitted Job"
                 field("Duration course"; "Duration course")
                 {
                     ApplicationArea = All;
-
+                    visible = false;
                 }
                 //************************************
-
                 field("Name of the Course 2"; "Name of the Course 2") { ApplicationArea = All; }
                 field("Course Int 2"; "Course Int 2") { ApplicationArea = All; }
                 field("From Date course 2"; "From Date course 2") { ApplicationArea = All; }
                 field("To Date course 2"; "To Date course 2") { ApplicationArea = All; }
-                field("Duration course 2"; "Duration course 2") { ApplicationArea = All; }
+                // field("Duration course 2"; "Duration course 2") { ApplicationArea = All; }
                 //******************************************************
 
                 field("Name of the Course 3"; "Name of the Course 3") { ApplicationArea = all; }
                 field("Course Int 3"; "Course Int 3") { ApplicationArea = All; }
                 field("From Date course 3"; "From Date course 3") { ApplicationArea = All; }
                 field("To Date course 3"; "To Date course 3") { ApplicationArea = All; }
-                field("Duration course 3"; "Duration course 3") { ApplicationArea = All; }
+                // field("Duration course 3"; "Duration course 3") { ApplicationArea = All; }
 
                 //*********************************************************
+                //************************************************
+
+                field("Substantive Post"; "Substantive Post")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Current Designation Post';
+                }
+                field(Employer; Employer)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Current Employer';
+                }
+                Field("From Date Employer"; "From Date Employer")
+                {
+                    ApplicationArea = All;
+                }
+                Field("To Date Employer"; "To Date Employer")
+                {
+                    ApplicationArea = All;
+                }
+
+                field("Employment Period"; "Employment Period")
+                {
+                    ApplicationArea = All;
+                    visible = false;
+                }
+                field("Employment Period Year"; "Employment Period Year")
+                {
+                    ApplicationArea = All;
+                }
+                field("Sector Of Employement"; "Sector Of Employement")
+                {
+                    ApplicationArea = All;
+                }
+
+
+                //********************************************************************
+                field("Substantive Post 2"; "Substantive Post 2")
+                {
+                    ApplicationArea = All;
+                    // Caption = 'Current Designation Post';
+
+                }
+                Field("Employer 2"; "Employer 2")
+                {
+                    ApplicationArea = All;
+                }
+                Field("Sector Of Employement 2"; "Sector Of Employement 2")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
+                }
+
+                Field("From Date Employer 2"; "From Date Employer 2")
+                {
+                    ApplicationArea = All;
+                }
+                Field("To Date Employer 2"; "To Date Employer 2")
+                {
+                    ApplicationArea = All;
+                }
+
+                field("Employment Period Year 2"; "Employment Period Year 2")
+                {
+                    ApplicationArea = All;
+                }
+
+                //********************************************************************
+                field("Substantive Post 3"; "Substantive Post 3")
+                {
+                    ApplicationArea = All;
+                    // Caption = 'Current Designation Post';
+                }
+                Field("Employer 3"; "Employer 3")
+                {
+                    ApplicationArea = All;
+                }
+                Field("Sector Of Employement 3"; "Sector Of Employement 3")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
+                }
+
+                Field("From Date Employer 3"; "From Date Employer 3")
+                {
+                    ApplicationArea = All;
+                }
+                Field("To Date Employer 3"; "To Date Employer 3")
+                {
+                    ApplicationArea = All;
+                }
+
+                field("Employment Period Year 3"; "Employment Period Year 3")
+                {
+                    ApplicationArea = All;
+                }
+
+
+                //********************************************************************
+                field("Substantive Post 4"; "Substantive Post 4")
+                {
+                    ApplicationArea = All;
+                    // Caption = 'Current Designation Post';
+                }
+                Field("Employer 4"; "Employer 4")
+                {
+                    ApplicationArea = All;
+                }
+                Field("Sector Of Employement 4"; "Sector Of Employement 4")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
+                }
+
+                Field("From Date Employer 4"; "From Date Employer 4")
+                {
+                    ApplicationArea = All;
+                }
+                Field("To Date Employer 4"; "To Date Employer 4")
+                {
+                    ApplicationArea = All;
+                }
+
+                field("Employment Period Year 4"; "Employment Period Year 4")
+                {
+                    ApplicationArea = All;
+                }
+
+                //********************************************************************end Employer 4
+                field("Substantive Post 5"; "Substantive Post 5")
+                {
+                    ApplicationArea = All;
+                    // Caption = 'Current Designation Post';
+                }
+                Field("Employer 5"; "Employer 5")
+                {
+                    ApplicationArea = All;
+                }
+                Field("Sector Of Employement 5"; "Sector Of Employement 5")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
+                }
+
+                Field("From Date Employer 5"; "From Date Employer 5")
+                {
+                    ApplicationArea = All;
+                }
+                Field("To Date Employer 5"; "To Date Employer 5")
+                {
+                    ApplicationArea = All;
+                }
+
+                field("Employment Period Year 5"; "Employment Period Year 5")
+                {
+                    ApplicationArea = All;
+                }
+
+                //********************************************************************end Employer 5
+                field("Substantive Post 6"; "Substantive Post 6")
+                {
+                    ApplicationArea = All;
+                    // Caption = 'Current Designation Post';
+                }
+                FIELD("Employer 6"; "Employer 6")
+                {
+                    ApplicationArea = All;
+                }
+                FIELD("Sector Of Employement 6"; "Sector Of Employement 6")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
+                }
+
+                FIELD("From Date Employer 6"; "From Date Employer 6")
+                {
+                    ApplicationArea = All;
+                }
+                FIELD("To Date Employer 6"; "To Date Employer 6")
+                {
+                    ApplicationArea = All;
+                }
+
+                field("Employment Period Year 6"; "Employment Period Year 6")
+                {
+                    ApplicationArea = All;
+                }
+
+                //********************************************************************end Employer 6
+                field("Substantive Post 7"; "Substantive Post 7")
+                {
+                    ApplicationArea = All;
+                    // Caption = 'Current Designation Post';
+                }
+                field("Employer 7"; "Employer 7")
+                {
+                    ApplicationArea = All;
+                }
+                field("Sector Of Employement 7"; "Sector Of Employement 7")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
+                }
+
+                field("From Date Employer 7"; "From Date Employer 7")
+                {
+                    ApplicationArea = All;
+                }
+                field("To Date Employer 7"; "To Date Employer 7")
+                {
+                    ApplicationArea = All;
+                }
+
+                field("Employment Period Year 7"; "Employment Period Year 7")
+                {
+                    ApplicationArea = All;
+                }
+                //********************************************************************end Employer 7
+                field("Substantive Post 8"; "Substantive Post 8")
+                {
+                    ApplicationArea = All;
+                    // Caption = 'Current Designation Post';
+                }
+                field("Employer 8"; "Employer 8")
+                {
+                    ApplicationArea = All;
+                }
+                field("Sector Of Employement 8"; "Sector Of Employement 8")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
+                }
+
+                field("From Date Employer 8"; "From Date Employer 8")
+                {
+                    ApplicationArea = All;
+                }
+                field("To Date Employer 8"; "To Date Employer 8")
+                {
+                    ApplicationArea = All;
+                }
+
+                field("Employment Period Year 8"; "Employment Period Year 8")
+                {
+                    ApplicationArea = All;
+                }
+                //********************************************************************end Employer 8
+                field("Substantive Post 9"; "Substantive Post 9")
+                {
+                    ApplicationArea = All;
+                    // Caption = 'Current Designation Post';
+                }
+                field("Employer 9"; "Employer 9")
+                {
+                    ApplicationArea = All;
+                }
+                field("Sector Of Employement 9"; "Sector Of Employement 9")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
+                }
+
+                field("From Date Employer 9"; "From Date Employer 9")
+                {
+                    ApplicationArea = All;
+                }
+                field("To Date Employer 9"; "To Date Employer 9")
+                {
+                    ApplicationArea = All;
+                }
+
+                field("Employment Period Year 9"; "Employment Period Year 9")
+                {
+                    ApplicationArea = All;
+                }
+                //********************************************************************end Employer 9
+                field("Substantive Post 10"; "Substantive Post 10")
+                {
+                    ApplicationArea = All;
+                    // Caption = 'Current Designation Post';
+                }
+                field("Employer 10"; "Employer 10")
+                {
+                    ApplicationArea = All;
+                }
+                field("Sector Of Employement 10"; "Sector Of Employement 10")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
+                }
+
+                field("From Date Employer 10"; "From Date Employer 10")
+                {
+                    ApplicationArea = All;
+                }
+                field("To Date Employer 10"; "To Date Employer 10")
+                {
+                    ApplicationArea = All;
+                }
+
+                field("Employment Period Year  10"; "Employment Period Year  10")
+                {
+                    ApplicationArea = All;
+                }
+                // Field("Years Of Experience"; "Years Of Experience")
+                // {
+                //     Caption = 'Cumulative Years Of Experience';
+                // }
+                field("Years Of Experience 1";"Years Of Experience 1")
+                {
+                    Caption = 'Cumulative Years Of Experience';
+                    ApplicationArea = All;
+                }
+                //********************************************************************end Employer 10
+
+
                 FIELD(SAMPLE1; SAMPLE1)
                 {
                     ApplicationArea = All;
@@ -1025,6 +1069,7 @@ page 56200 "Applicant Submitted Job"
         }
     }
     var
+        Applicant: Record Applicant;
         GroupName: Label 'Applicant Submitted Job', MaxLength = 1000;
         CurrentEmployer: Label 'Current Employer', MaxLength = 1000;
         CurrentEmployerEnd: Label 'Current Employer End', MaxLength = 1000;
@@ -1049,5 +1094,8 @@ page 56200 "Applicant Submitted Job"
         Artisanlevel: Label 'Artisan Level', MaxLength = 1000;
         Professionallevel: Label 'Professional Level', MaxLength = 1000;
 
+    trigger OnOpenPage()
+    begin
 
+    end;
 }
