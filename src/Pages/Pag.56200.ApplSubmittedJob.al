@@ -30,7 +30,7 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
-                
+
                 field(IDNO; IDNO)
                 {
                     ApplicationArea = All;
@@ -603,12 +603,13 @@ page 56200 "Applicant Submitted Job"
                 field("Employment Period"; "Employment Period")
                 {
                     ApplicationArea = All;
-                    visible = false;
+                    visible = true;
                 }
                 field("Employment Period Year"; "Employment Period Year")
                 {
                     ApplicationArea = All;
                 }
+
                 field("Sector Of Employement"; "Sector Of Employement")
                 {
                     ApplicationArea = All;
@@ -641,9 +642,14 @@ page 56200 "Applicant Submitted Job"
                     ApplicationArea = All;
                 }
 
-                field("Employment Period Year 2"; "Employment Period Year 2")
+                // field("Employment Period Year 2"; "Employment Period Year 2")
+                // {
+                //     ApplicationArea = All;
+                // }
+                field("Employment Period 2"; "Employment Period 2")
                 {
                     ApplicationArea = All;
+                    visible = true;
                 }
 
                 //********************************************************************
@@ -671,9 +677,14 @@ page 56200 "Applicant Submitted Job"
                     ApplicationArea = All;
                 }
 
-                field("Employment Period Year 3"; "Employment Period Year 3")
+                // field("Employment Period Year 3"; "Employment Period Year 3")
+                // {
+                //     ApplicationArea = All;
+                // }
+                field("Employment Period 3"; "Employment Period 3")
                 {
                     ApplicationArea = All;
+                    visible = true;
                 }
 
 
@@ -702,7 +713,11 @@ page 56200 "Applicant Submitted Job"
                     ApplicationArea = All;
                 }
 
-                field("Employment Period Year 4"; "Employment Period Year 4")
+                // field("Employment Period Year 4"; "Employment Period Year 4")
+                // {
+                //     ApplicationArea = All;
+                // }
+                field("Employment Period 4"; "Employment Period 4")
                 {
                     ApplicationArea = All;
                 }
@@ -732,7 +747,11 @@ page 56200 "Applicant Submitted Job"
                     ApplicationArea = All;
                 }
 
-                field("Employment Period Year 5"; "Employment Period Year 5")
+                // field("Employment Period Year 5"; "Employment Period Year 5")
+                // {
+                //     ApplicationArea = All;
+                // }
+                field("Employment Period 5"; "Employment Period 5")
                 {
                     ApplicationArea = All;
                 }
@@ -762,7 +781,11 @@ page 56200 "Applicant Submitted Job"
                     ApplicationArea = All;
                 }
 
-                field("Employment Period Year 6"; "Employment Period Year 6")
+                // field("Employment Period Year 6"; "Employment Period Year 6")
+                // {
+                //     ApplicationArea = All;
+                // }
+                field("Employment Period 6"; "Employment Period 6")
                 {
                     ApplicationArea = All;
                 }
@@ -792,7 +815,11 @@ page 56200 "Applicant Submitted Job"
                     ApplicationArea = All;
                 }
 
-                field("Employment Period Year 7"; "Employment Period Year 7")
+                // field("Employment Period Year 7"; "Employment Period Year 7")
+                // {
+                //     ApplicationArea = All;
+                // }
+                field("Employment Period 7"; "Employment Period 7")
                 {
                     ApplicationArea = All;
                 }
@@ -821,7 +848,11 @@ page 56200 "Applicant Submitted Job"
                     ApplicationArea = All;
                 }
 
-                field("Employment Period Year 8"; "Employment Period Year 8")
+                // field("Employment Period Year 8"; "Employment Period Year 8")
+                // {
+                //     ApplicationArea = All;
+                // }
+                field("Employment Period 8"; "Employment Period 8")
                 {
                     ApplicationArea = All;
                 }
@@ -850,7 +881,11 @@ page 56200 "Applicant Submitted Job"
                     ApplicationArea = All;
                 }
 
-                field("Employment Period Year 9"; "Employment Period Year 9")
+                // field("Employment Period Year 9"; "Employment Period Year 9")
+                // {
+                //     ApplicationArea = All;
+                // }
+                field("Employment Period 9"; "Employment Period 9")
                 {
                     ApplicationArea = All;
                 }
@@ -879,19 +914,23 @@ page 56200 "Applicant Submitted Job"
                     ApplicationArea = All;
                 }
 
-                field("Employment Period Year  10"; "Employment Period Year  10")
+                // field("Employment Period Year  10"; "Employment Period Year  10")
+                // {
+                //     ApplicationArea = All;
+                // }
+                field("Employment Period 10"; "Employment Period 10")
                 {
                     ApplicationArea = All;
                 }
-                // Field("Years Of Experience"; "Years Of Experience")
-                // {
-                //     Caption = 'Cumulative Years Of Experience';
-                // }
-                field("Years Of Experience 1";"Years Of Experience 1")
+                Field("Years Of Experience"; "Years Of Experience")
                 {
                     Caption = 'Cumulative Years Of Experience';
-                    ApplicationArea = All;
                 }
+                // field("Years Of Experience 1";"Years Of Experience 1")
+                // {
+                //     Caption = 'Cumulative Years Of Experience';
+                //     ApplicationArea = All;
+                // }
                 //********************************************************************end Employer 10
 
 
