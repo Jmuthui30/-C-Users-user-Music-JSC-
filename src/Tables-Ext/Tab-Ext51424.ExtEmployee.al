@@ -1214,6 +1214,19 @@ tableextension 51424 "ExtEmployee" extends "Employee"
         {
             DataClassification = CustomerContent;
         }
+        field(52370; "responsibility center"; Code[50])
+        {
+            DataClassification = CustomerContent;
+            TableRelation = "Responsibility Center";
+            Caption = 'Responsibility Center';
+
+            trigger OnValidate()
+            var
+                UserIDExistsErr: Label 'Employee with User ID %1 already exists';
+            begin
+
+            end;
+        }
 
 
     }

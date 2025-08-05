@@ -150,13 +150,13 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob.IDNO := ApplicantApp."National ID";
         HomeCounty := ApplicantApp."Home County";
         ApplicantSubmittedJob."Home County" := FORMAT(UpperCase(COPYSTR(HomeCounty, 1, 1))) + LowerCase(COPYSTR(HomeCounty, 2));
-        EthnicGroup := ApplicantApp."Ethnic Group";
+        EthnicGroup := LowerCase(ApplicantApp."Ethnic Group"); // Force all lowercase first
+        ApplicantSubmittedJob."Ethnic Group" := FORMAT(UpperCase(COPYSTR(EthnicGroup, 1, 1))) + COPYSTR(EthnicGroup, 2);
 
-        ApplicantSubmittedJob."Ethnic Group" := FORMAT(UpperCase(COPYSTR(EthnicGroup, 1, 1))) + LowerCase(COPYSTR(EthnicGroup, 2));
         ApplicantSubmittedJob."Marital Status" := ApplicantApp."Marital Status";
         SubEthnicGroup := LowerCase(ApplicantApp."Sub Ethnic Group");
         ApplicantSubmittedJob."Sub Ethnic Group" := FORMAT(UpperCase(COPYSTR(SubEthnicGroup, 1, 1))) + LowerCase(COPYSTR(SubEthnicGroup, 2));
-        ApplicantSubmittedJob."Sub Ethnic Group" := ApplicantApp."Sub Ethnic Group";
+        // ApplicantSubmittedJob."Sub Ethnic Group" := ApplicantApp."Sub Ethnic Group";
 
         // Disability Information
         ApplicantSubmittedJob.Disability := ApplicantApp.Disability;
@@ -292,8 +292,9 @@ report 53072 "update Job Appl."
             Evaluate(ApplicantSubmittedJob."Employment Period Year", YearText);// Extract the year from the employment period text
         end else
             ApplicantSubmittedJob."Employment Period Year" := 0;
-
         ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year";
+        // ApplicantSubmittedJob."Employment Period" := ApplicantEmpl."Employment Period";
+        // ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
     END;
 
     local procedure SetEmployer2Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -313,6 +314,8 @@ report 53072 "update Job Appl."
             ApplicantSubmittedJob."Sector Of Employement 2" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
             ApplicantSubmittedJob."Sector Of Employement 2" := ApplicantEmpl.Sector;
+        ApplicantSubmittedJob."Employment Period 2" := ApplicantEmpl."Employment Period";
+        // ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         //**************************
         YearPos2 := StrPos(ApplicantEmpl."Employment Period", 'Y');
         if YearPos2 > 1 then begin
@@ -340,13 +343,14 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."To Date Employer 3" := ApplicantEmpl."To Date";
         ApplicantSubmittedJob."Designation Employer 3" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 3" := ApplicantEmpl."Substantive Post";
-        // Convert text to date first, then extract year
+
 
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 3" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
             ApplicantSubmittedJob."Sector Of Employement 3" := ApplicantEmpl.Sector;
         //************************************
+        // Convert text to date first, then extract year
         YearPos3 := StrPos(ApplicantEmpl."Employment Period", 'Y');
         if YearPos3 > 1 then begin
             ApplicantSubmittedJob."Employment Period 3" := ApplicantEmpl."Employment Period";
@@ -357,6 +361,8 @@ report 53072 "update Job Appl."
         end else
             ApplicantSubmittedJob."Employment Period year 3" := 0;
         ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 3";
+        ApplicantSubmittedJob."Employment Period 3" := ApplicantEmpl."Employment Period";
+        // ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
     end;
 
     local procedure SetEmployer4Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -373,7 +379,7 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Substantive Post 4" := ApplicantEmpl."Substantive Post";
 
         ApplicantSubmittedJob."Employment Period 4" := ApplicantEmpl."Employment Period";
-        ;//ApplicantEmpl."Employment Period";
+        // ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 4" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -403,6 +409,8 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 5" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 5" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 5" := ApplicantEmpl."Employment Period";
+        // ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
+
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 5" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -434,6 +442,7 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Designation Employer 6" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 6" := ApplicantEmpl."Substantive Post";
         ApplicantSubmittedJob."Employment Period 6" := ApplicantEmpl."Employment Period";
+        // ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 6" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -464,9 +473,8 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."To Date Employer 7" := ApplicantEmpl."To Date";
         ApplicantSubmittedJob."Designation Employer 7" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 7" := ApplicantEmpl."Substantive Post";
-
         ApplicantSubmittedJob."Employment Period 7" := ApplicantEmpl."Employment Period";
-
+        // ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 7" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -500,9 +508,8 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."To Date Employer 8" := ApplicantEmpl."To Date";
         ApplicantSubmittedJob."Designation Employer 8" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 8" := ApplicantEmpl."Substantive Post";
-
         ApplicantSubmittedJob."Employment Period 8" := ApplicantEmpl."Employment Period";
-
+        // ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 8" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -532,8 +539,8 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."To Date Employer 9" := ApplicantEmpl."To Date";
         ApplicantSubmittedJob."Designation Employer 9" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 9" := ApplicantEmpl."Substantive Post";
-
         ApplicantSubmittedJob."Employment Period 9" := ApplicantEmpl."Employment Period";
+        // ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 9" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
@@ -563,8 +570,8 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."To Date Employer 10" := ApplicantEmpl."To Date";
         ApplicantSubmittedJob."Designation Employer 10" := ApplicantEmpl."Sector Specification";
         ApplicantSubmittedJob."Substantive Post 10" := ApplicantEmpl."Substantive Post";
-
         ApplicantSubmittedJob."Employment Period 10" := ApplicantEmpl."Employment Period";
+        // ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         if ApplicantEmpl."Applicant No." = '' then
             ApplicantSubmittedJob."Sector Of Employement 10" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else

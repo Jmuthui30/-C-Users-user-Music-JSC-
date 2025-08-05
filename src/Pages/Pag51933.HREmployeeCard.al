@@ -116,7 +116,10 @@ page 51933 "HR Employee Card"
                 {
                     ApplicationArea = All;
                 }
-
+                field("responsibility center"; "responsibility center")
+                {
+                    ApplicationArea = All;
+                }
                 field("User ID"; "User ID")
                 {
                     ApplicationArea = all;
