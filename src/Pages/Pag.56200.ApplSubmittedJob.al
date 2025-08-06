@@ -447,6 +447,29 @@ page 56200 "Applicant Submitted Job"
                 //******************************************************************* ACADEMIC QUALIFICATIONS 11
 
                 //************************************************PROF COURSES*************************
+                 field("Name of the Course"; "Name of the Course") { ApplicationArea = All; }
+                field("Course Int"; "Course Int") { ApplicationArea = All; }
+                field("From Date course"; "From Date course") { ApplicationArea = All; }
+                field("To Date course"; "To Date course") { ApplicationArea = All; }
+                field("Duration course"; "Duration course")
+                {
+                    ApplicationArea = All;
+                    visible = false;
+                }
+                //************************************
+                field("Name of the Course 2"; "Name of the Course 2") { ApplicationArea = All; }
+                field("Course Int 2"; "Course Int 2") { ApplicationArea = All; }
+                field("From Date course 2"; "From Date course 2") { ApplicationArea = All; }
+                field("To Date course 2"; "To Date course 2") { ApplicationArea = All; }
+                // field("Duration course 2"; "Duration course 2") { ApplicationArea = All; }
+                //******************************************************
+
+                field("Name of the Course 3"; "Name of the Course 3") { ApplicationArea = all; }
+                field("Course Int 3"; "Course Int 3") { ApplicationArea = All; }
+                field("From Date course 3"; "From Date course 3") { ApplicationArea = All; }
+                field("To Date course 3"; "To Date course 3") { ApplicationArea = All; }
+                // field("Duration course 3"; "Duration course 3") { ApplicationArea = All; }
+                // ***********************Proffessional Qualifications********************************
                 Field("Professional Qualification"; "Professional Qualification")
                 {
                     ApplicationArea = All;
@@ -521,7 +544,7 @@ page 56200 "Applicant Submitted Job"
 
                 //p0st 
 
-                //********************************************************************
+                //*********************************Professional Bodies***********************************
 
 
                 Field("Professional Bodies"; "Professional Bodies") { ApplicationArea = All; }
@@ -555,28 +578,7 @@ page 56200 "Applicant Submitted Job"
 
                 //***********************************************************************************course
 
-                field("Name of the Course"; "Name of the Course") { ApplicationArea = All; }
-                field("Course Int"; "Course Int") { ApplicationArea = All; }
-                field("From Date course"; "From Date course") { ApplicationArea = All; }
-                field("To Date course"; "To Date course") { ApplicationArea = All; }
-                field("Duration course"; "Duration course")
-                {
-                    ApplicationArea = All;
-                    visible = false;
-                }
-                //************************************
-                field("Name of the Course 2"; "Name of the Course 2") { ApplicationArea = All; }
-                field("Course Int 2"; "Course Int 2") { ApplicationArea = All; }
-                field("From Date course 2"; "From Date course 2") { ApplicationArea = All; }
-                field("To Date course 2"; "To Date course 2") { ApplicationArea = All; }
-                // field("Duration course 2"; "Duration course 2") { ApplicationArea = All; }
-                //******************************************************
-
-                field("Name of the Course 3"; "Name of the Course 3") { ApplicationArea = all; }
-                field("Course Int 3"; "Course Int 3") { ApplicationArea = All; }
-                field("From Date course 3"; "From Date course 3") { ApplicationArea = All; }
-                field("To Date course 3"; "To Date course 3") { ApplicationArea = All; }
-                // field("Duration course 3"; "Duration course 3") { ApplicationArea = All; }
+               
 
                 //*********************************************************
                 //************************************************

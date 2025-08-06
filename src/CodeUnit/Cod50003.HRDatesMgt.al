@@ -289,4 +289,57 @@ codeunit 50003 "HR Dates Mgt"
         else
             LY := false;
     end;
+    procedure GetDecimalFromDiffString(DiffString: Text): Decimal
+var
+    Y, M, D: Integer;
+    YearPos: Integer;
+    MonthPos: Integer;
+    DayPos: Integer;
+    Comma1Pos: Integer;
+    AmpersandPos: Integer;
+    TempText: Text[10];
+    DecimalAge: Decimal;
+begin
+    // Clean the text
+    DiffString := DelChr(DiffString, '=', ' ');
+
+    // Get positions of markers
+    YearPos := StrPos(DiffString, 'Y');
+    MonthPos := StrPos(DiffString, 'M');
+    DayPos := StrPos(DiffString, 'D');
+    Comma1Pos := StrPos(DiffString, ',');     // between Y and M
+    AmpersandPos := StrPos(DiffString, '&');  // between M and D
+
+    // Extract Year
+    if YearPos > 1 then begin
+        TempText := CopyStr(DiffString, 1, YearPos - 1); // gets value before 'Y'
+        Evaluate(Y, TempText);
+    end;
+
+    // Extract Month (between comma and 'M')
+    if (Comma1Pos > 0) and (MonthPos > 0) then begin
+        TempText := CopyStr(DiffString, Comma1Pos + 2, MonthPos - (Comma1Pos + 2)); // gets value before 'M'
+        Evaluate(M, TempText);
+    end;
+
+    // Extract Day (between '&' and 'D')
+    if (AmpersandPos > 0) and (DayPos > 0) then begin
+        TempText := CopyStr(DiffString, AmpersandPos + 2, DayPos - (AmpersandPos + 2));
+        Evaluate(D, TempText);
+    end;
+
+    // Round the months if D > 15
+    if D > 15 then
+        M += 1;
+
+    // Convert 12 months into a year
+    if M = 12 then begin
+        Y += 1;
+        M := 0;
+    end;
+
+    DecimalAge := Y + (M / 12);
+    exit(DecimalAge);
+end;
+
 }

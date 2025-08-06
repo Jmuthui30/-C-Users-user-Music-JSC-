@@ -361,7 +361,7 @@ report 53072 "update Job Appl."
         end else
             ApplicantSubmittedJob."Employment Period year 3" := 0;
         ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 3";
-        ApplicantSubmittedJob."Employment Period 3" := ApplicantEmpl."Employment Period";
+        // ApplicantSubmittedJob."Employment Period 3" := ApplicantEmpl."Employment Period";
         // ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
     end;
 
