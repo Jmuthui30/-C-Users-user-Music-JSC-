@@ -16,7 +16,6 @@ report 53072 "update Job Appl."
             trigger OnAfterGetRecord()
             begin
                 ProcessJobApplication("Job Application");
-
             end;
         }
     }
@@ -70,6 +69,9 @@ report 53072 "update Job Appl."
         Dates: Codeunit "HR Dates Mgt";
         AGEFORMT: Date;
         Recruitment: record "Recruitment Needs";
+        BachelorsDegreeDescription: Label '%1 in %2 from %3(%4)';
+        MastersDegreeDesc: Label '%1 in %2 from %3(%4)';
+        PHDDegreeDesc: Label '%1 in %2 from %3(%4)';
 
     local procedure ProcessJobApplication(JobApp: Record "Job Application")
     var
@@ -98,10 +100,6 @@ report 53072 "update Job Appl."
             UpdateApplicantSamplesFromSharePoint(ApplicantSubmittedJob);
             ProcessRelevantCourses(ApplicantSubmittedJob);
             ProcessProfessionalBodies(ApplicantSubmittedJob);
-            // ProcessDateCalc(ApplicantSubmittedJob);
-
-            //ProcessPostADmin(ApplicantSubmittedJob);
-
             Commit();
         end;
 
@@ -137,13 +135,13 @@ report 53072 "update Job Appl."
     begin
 
         ApplicantSubmittedJob.Age := (HRDatesExt.DetermineDatesDiffrence(ApplicantApp."Birth Date", Today));
-        AgeYears := StrPos(ApplicantSubmittedJob.Age, 'Y');
-        if AgeYears > 1 then begin
-            AgeText := CopyStr(ApplicantSubmittedJob.Age, 1, AgeYears - 1);
-            ApplicantSubmittedJob.Age := DelChr(AgeText, '=', ',') + ' Y';
-            Evaluate(ApplicantSubmittedJob.Age, AgeText)
-        end else
-            ApplicantSubmittedJob.Age := '0';
+        // AgeYears := StrPos(ApplicantSubmittedJob.Age, 'Y');
+        // if AgeYears > 1 then begin
+        //     AgeText := CopyStr(ApplicantSubmittedJob.Age, 1, AgeYears - 1);
+        //     ApplicantSubmittedJob.Age := DelChr(AgeText, '=', ',') + 'Y';
+        //     Evaluate(ApplicantSubmittedJob.Age, AgeText)
+        // end else
+        //     ApplicantSubmittedJob.Age := '0';
 
         ApplicantSubmittedJob."Birth Date" := ApplicantApp."Birth Date";
         ApplicantSubmittedJob."Nationality New" := ApplicantApp."Nationality New";
@@ -284,17 +282,18 @@ report 53072 "update Job Appl."
             ApplicantSubmittedJob."Sector Of Employement" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
             ApplicantSubmittedJob."Sector Of Employement" := ApplicantEmpl.Sector;
-        YearPos := StrPos(ApplicantEmpl."Employment Period", 'Y');
-        if YearPos > 1 then begin
-            YearPos := StrPos(ApplicantEmpl."Employment Period", 'Y');
-            YearText := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos - 1);
-            Years := DelChr(YearText, '=', ',') + 'Y';
-            Evaluate(ApplicantSubmittedJob."Employment Period Year", YearText);// Extract the year from the employment period text
-        end else
-            ApplicantSubmittedJob."Employment Period Year" := 0;
+        // YearPos := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        // if YearPos > 1 then begin
+        //     YearPos := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        //     YearText := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos - 1);
+        //     Years := DelChr(YearText, '=', ',') + 'Y';
+        //     Evaluate(ApplicantSubmittedJob."Employment Period Year", YearText);// Extract the year from the employment period text
+        // end else
+        // ApplicantSubmittedJob."Employment Period Year" := 0;
+        ApplicantSubmittedJob."Employment Period Year" := HRDatesExt.GetDecimalFromDiffString(ApplicantSubmittedJob."Employment Period");
         ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year";
+        ApplicantSubmittedJob."Years Of Experience 1" := ConvertDecimalToYMD(ApplicantSubmittedJob."Years Of Experience");
         // ApplicantSubmittedJob."Employment Period" := ApplicantEmpl."Employment Period";
-        // ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
     END;
 
     local procedure SetEmployer2Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -317,17 +316,18 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob."Employment Period 2" := ApplicantEmpl."Employment Period";
         // ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
         //**************************
-        YearPos2 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-        if YearPos2 > 1 then begin
-            YearPos2 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-            YearText2 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos2 - 1);
-            Years2 := DelChr(YearText2, '=', ',') + 'Y';
-            Evaluate(ApplicantSubmittedJob."Employment Period Year 2", YearText2)
-        end else
-            ApplicantSubmittedJob."Employment Period Year 2" := 0;
+        // YearPos2 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        // if YearPos2 > 1 then begin
+        //     YearPos2 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        //     YearText2 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos2 - 1);
+        //     Years2 := DelChr(YearText2, '=', ',') + 'Y';
+        //     Evaluate(ApplicantSubmittedJob."Employment Period Year 2", YearText2)
+        // end else
+        //     ApplicantSubmittedJob."Employment Period Year 2" := 0;
+        ApplicantSubmittedJob."Employment Period Year 2" := HRDatesExt.GetDecimalFromDiffString(ApplicantSubmittedJob."Employment Period 2");
         //*******************************
         ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 2";
-
+        ApplicantSubmittedJob."Years Of Experience 1" := ConvertDecimalToYMD(ApplicantSubmittedJob."Years Of Experience");
     end;
 
     local procedure SetEmployer3Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -349,20 +349,21 @@ report 53072 "update Job Appl."
             ApplicantSubmittedJob."Sector Of Employement 3" := ApplicantSubmittedJob."Sector Of Employement"::" "
         else
             ApplicantSubmittedJob."Sector Of Employement 3" := ApplicantEmpl.Sector;
+        ApplicantSubmittedJob."Employment Period 3" := ApplicantEmpl."Employment Period";
         //************************************
         // Convert text to date first, then extract year
-        YearPos3 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-        if YearPos3 > 1 then begin
-            ApplicantSubmittedJob."Employment Period 3" := ApplicantEmpl."Employment Period";
-            YearPos3 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-            YearText3 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos3 - 1);
-            Years3 := DelChr(YearText3, '=', ',') + 'Y';
-            Evaluate(ApplicantSubmittedJob."Employment Period Year 3", YearText3);
-        end else
-            ApplicantSubmittedJob."Employment Period year 3" := 0;
+        // YearPos3 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        // if YearPos3 > 1 then begin
+        //     ApplicantSubmittedJob."Employment Period 3" := ApplicantEmpl."Employment Period";
+        //     YearPos3 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        //     YearText3 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos3 - 1);
+        //     Years3 := DelChr(YearText3, '=', ',') + 'Y';
+        //     Evaluate(ApplicantSubmittedJob."Employment Period Year 3", YearText3);
+        // end else
+        //     ApplicantSubmittedJob."Employment Period year 3" := 0;
+        ApplicantSubmittedJob."Employment Period Year 3" := HRDatesExt.GetDecimalFromDiffString(ApplicantSubmittedJob."Employment Period 3");
         ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 3";
-        // ApplicantSubmittedJob."Employment Period 3" := ApplicantEmpl."Employment Period";
-        // ApplicantSubmittedJob."Years Of Experience 1" += ApplicantEmpl."Employment Period";
+        ApplicantSubmittedJob."Years Of Experience 1" := ConvertDecimalToYMD(ApplicantSubmittedJob."Years Of Experience");
     end;
 
     local procedure SetEmployer4Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -385,15 +386,17 @@ report 53072 "update Job Appl."
         else
             ApplicantSubmittedJob."Sector Of Employement 4" := ApplicantEmpl.Sector;
         //*****88888
-        YearPos4 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-        if YearPos4 > 1 then begin
-            YearPos4 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-            YearText4 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos4 - 1);
-            Years4 := DelChr(YearText4, '=', ',') + 'Y';
-            Evaluate(ApplicantSubmittedJob."Employment Period Year 4", YearText4);
-        end else
-            ApplicantSubmittedJob."Employment Period year 4" := 0;
+        // YearPos4 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        // if YearPos4 > 1 then begin
+        //     YearPos4 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        //     YearText4 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos4 - 1);
+        //     Years4 := DelChr(YearText4, '=', ',') + 'Y';
+        //     Evaluate(ApplicantSubmittedJob."Employment Period Year 4", YearText4);
+        // end else
+        //     ApplicantSubmittedJob."Employment Period year 4" := 0;
+        ApplicantSubmittedJob."Employment Period Year 4" := HRDatesExt.GetDecimalFromDiffString(ApplicantSubmittedJob."Employment Period 4");
         ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 4";
+        ApplicantSubmittedJob."Years Of Experience 1" := ConvertDecimalToYMD(ApplicantSubmittedJob."Years Of Experience");
     end;
 
     local procedure SetEmployer5Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -416,17 +419,17 @@ report 53072 "update Job Appl."
         else
             ApplicantSubmittedJob."Sector Of Employement 5" := ApplicantEmpl.Sector;
         //*****88888
-        YearPos5 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-        if YearPos5 > 1 then begin
-            YearPos5 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-            YearText5 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos5 - 1);
-            Years5 := DelChr(YearText5, '=', ',') + 'Y';
-            Evaluate(ApplicantSubmittedJob."Employment Period Year 5", YearText5);
-        end else
-            ApplicantSubmittedJob."Employment Period year 5" := 0;
+        // YearPos5 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        // if YearPos5 > 1 then begin
+        //     YearPos5 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        //     YearText5 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos5 - 1);
+        //     Years5 := DelChr(YearText5, '=', ',') + 'Y';
+        //     Evaluate(ApplicantSubmittedJob."Employment Period Year 5", YearText5);
+        // end else
+        //     ApplicantSubmittedJob."Employment Period year 5" := 0;
+        ApplicantSubmittedJob."Employment Period Year 5" := HRDatesExt.GetDecimalFromDiffString(ApplicantSubmittedJob."Employment Period 5");
         ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 5";
-
-
+        ApplicantSubmittedJob."Years Of Experience 1" := ConvertDecimalToYMD(ApplicantSubmittedJob."Years Of Experience");
     end;
 
     local procedure SetEmployer6Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -448,17 +451,17 @@ report 53072 "update Job Appl."
         else
             ApplicantSubmittedJob."Sector Of Employement 6" := ApplicantEmpl.Sector;
         //*****88888
-        YearPos6 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-        if YearPos6 > 1 then begin
-            YearPos6 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-            YearText6 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos6 - 1);
-            Years6 := DelChr(YearText6, '=', ',') + 'Y';
-            Evaluate(ApplicantSubmittedJob."Employment Period Year 6", YearText6)
-        end else
-            ApplicantSubmittedJob."Employment Period year 6" := 0;
+        // YearPos6 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        // if YearPos6 > 1 then begin
+        //     YearPos6 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        //     YearText6 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos6 - 1);
+        //     Years6 := DelChr(YearText6, '=', ',') + 'Y';
+        //     Evaluate(ApplicantSubmittedJob."Employment Period Year 6", YearText6)
+        // end else
+        //     ApplicantSubmittedJob."Employment Period year 6" := 0;
+        ApplicantSubmittedJob."Employment Period Year 6" := HRDatesExt.GetDecimalFromDiffString(ApplicantSubmittedJob."Employment Period 6");
         ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 6";
-
-
+        ApplicantSubmittedJob."Years Of Experience 1" := ConvertDecimalToYMD(ApplicantSubmittedJob."Years Of Experience");
     end;
 
     local procedure SetEmployer7Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -480,20 +483,17 @@ report 53072 "update Job Appl."
         else
             ApplicantSubmittedJob."Sector Of Employement 7" := ApplicantEmpl.Sector;
         //*****88888
-        YearPos7 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-        if YearPos7 > 1 then begin
-            YearPos7 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-            YearText7 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos7 - 1);
-            Years7 := DelChr(YearText7, '=', ',') + 'Y';
-            Evaluate(ApplicantSubmittedJob."Employment Period Year 7", YearText7)
-        end else
-            ApplicantSubmittedJob."Employment Period Year 7" := 0;
-
+        // YearPos7 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        // if YearPos7 > 1 then begin
+        //     YearPos7 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        //     YearText7 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos7 - 1);
+        //     Years7 := DelChr(YearText7, '=', ',') + 'Y';
+        //     Evaluate(ApplicantSubmittedJob."Employment Period Year 7", YearText7)
+        // end else
+        //     ApplicantSubmittedJob."Employment Period Year 7" := 0;
+        ApplicantSubmittedJob."Employment Period Year 7" := HRDatesExt.GetDecimalFromDiffString(ApplicantSubmittedJob."Employment Period 7");
         ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 7";
-
-
-
-
+        ApplicantSubmittedJob."Years Of Experience 1" := ConvertDecimalToYMD(ApplicantSubmittedJob."Years Of Experience");
     end;
 
     local procedure SetEmployer8Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -515,16 +515,17 @@ report 53072 "update Job Appl."
         else
             ApplicantSubmittedJob."Sector Of Employement 8" := ApplicantEmpl.Sector;
         //*****88888
-        YearPos8 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-        if YearPos8 > 1 then begin
-            YearPos8 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-            YearText8 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos8 - 1);
-            Years8 := DelChr(YearText8, '=', ',') + 'Y';
-            Evaluate(ApplicantSubmittedJob."Employment Period Year 8", YearText8);
-        end else
-            ApplicantSubmittedJob."Employment Period Year 8" := 0;
+        // YearPos8 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        // if YearPos8 > 1 then begin
+        //     YearPos8 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        //     YearText8 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos8 - 1);
+        //     Years8 := DelChr(YearText8, '=', ',') + 'Y';
+        //     Evaluate(ApplicantSubmittedJob."Employment Period Year 8", YearText8);
+        // end else
+        //     ApplicantSubmittedJob."Employment Period Year 8" := 0;
+        ApplicantSubmittedJob."Employment Period Year 8" := HRDatesExt.GetDecimalFromDiffString(ApplicantSubmittedJob."Employment Period 8");
         ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 8";
-
+        ApplicantSubmittedJob."Years Of Experience 1" := ConvertDecimalToYMD(ApplicantSubmittedJob."Years Of Experience");
     end;
 
     local procedure SetEmployer9Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -546,16 +547,17 @@ report 53072 "update Job Appl."
         else
             ApplicantSubmittedJob."Sector Of Employement 9" := ApplicantEmpl.Sector;
         //*****88888
-        YearPos9 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-        if YearPos9 > 1 then begin
-            YearPos9 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-            YearText9 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos9 - 1);
-            Years9 := DelChr(YearText9, '=', ',') + 'Y';
-            Evaluate(ApplicantSubmittedJob."Employment Period Year 9", YearText9);
-        end else
-            ApplicantSubmittedJob."Employment Period Year 9" := 0;
+        // YearPos9 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        // if YearPos9 > 1 then begin
+        //     YearPos9 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        //     YearText9 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos9 - 1);
+        //     Years9 := DelChr(YearText9, '=', ',') + 'Y';
+        //     Evaluate(ApplicantSubmittedJob."Employment Period Year 9", YearText9);
+        // end else
+        //     ApplicantSubmittedJob."Employment Period Year 9" := 0;
+        ApplicantSubmittedJob."Employment Period Year 9" := HRDatesExt.GetDecimalFromDiffString(ApplicantSubmittedJob."Employment Period 9");
         ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year 9";
-
+        ApplicantSubmittedJob."Years Of Experience 1" := ConvertDecimalToYMD(ApplicantSubmittedJob."Years Of Experience");
     end;
 
     local procedure SetEmployer10Fields(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; ApplicantEmpl: Record "Applicant Current Employment")
@@ -577,17 +579,17 @@ report 53072 "update Job Appl."
         else
             ApplicantSubmittedJob."Sector Of Employement 10" := ApplicantEmpl.Sector;
         //*****88888
-        YearPos10 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-        if YearPos10 > 1 then begin
-            YearPos10 := StrPos(ApplicantEmpl."Employment Period", 'Y');
-            YearText10 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos10 - 1);
-            Years10 := DelChr(YearText10, '=', ',') + 'Y';
-            Evaluate(ApplicantSubmittedJob."Employment Period Year  10", YearText10);
-        end else
-            ApplicantSubmittedJob."Employment Period Year  10" := 0;
+        // YearPos10 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        // if YearPos10 > 1 then begin
+        //     YearPos10 := StrPos(ApplicantEmpl."Employment Period", 'Y');
+        //     YearText10 := CopyStr(ApplicantEmpl."Employment Period", 1, YearPos10 - 1);
+        //     Years10 := DelChr(YearText10, '=', ',') + 'Y';
+        //     Evaluate(ApplicantSubmittedJob."Employment Period Year  10", YearText10);
+        // end else
+        //     ApplicantSubmittedJob."Employment Period Year  10" := 0;
+        ApplicantSubmittedJob."Employment Period Year  10" := HRDatesExt.GetDecimalFromDiffString(ApplicantSubmittedJob."Employment Period 10");
         ApplicantSubmittedJob."Years Of Experience" := ApplicantSubmittedJob."Years Of Experience" + ApplicantSubmittedJob."Employment Period Year  10";
-
-
+        ApplicantSubmittedJob."Years Of Experience 1" := ConvertDecimalToYMD(ApplicantSubmittedJob."Years Of Experience");
     end;
 
     local procedure ProcessEducationHistory(var ApplicantSubmittedJob: Record "Applicant Submitted Job")
@@ -634,12 +636,15 @@ report 53072 "update Job Appl."
                 // Handle qualifications in 30000-39999 range (corrected logic)
                 if (ApplicantsQual."Qualification Code" >= '30000') and (ApplicantsQual."Qualification Code" <= '39999') then begin
                     ApplicantSubmittedJob."Description 6" := ApplicantsQual.Description;
+                    if ApplicantSubmittedJob."Description 6" = ' ' then
+                        ApplicantSubmittedJob."Description 6" := 'Bachelors';
                     ApplicantSubmittedJob."Area of Specialization 6" := ApplicantsQual."Area of Specialization";
                     ApplicantSubmittedJob."Qualification Code 6" := ApplicantsQual."Qualification Code";
                     ApplicantSubmittedJob."Institution/Company 6" := ApplicantsQual."Institution/Company";
                     ApplicantSubmittedJob."From Date 6" := ApplicantsQual."From Date";
                     ApplicantSubmittedJob."To Date 6" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Grade/Class 6" := ApplicantsQual."Grade/Class";
+                    ApplicantSubmittedJob."Bachelors Degree Desc" := StrSubstNo(BachelorsDegreeDescription, ApplicantSubmittedJob."Description 6", ApplicantSubmittedJob."Area of Specialization 6", ApplicantSubmittedJob."Institution/Company 6", Date2DMY(ApplicantSubmittedJob."To Date 6", 3));
                 end;
                 if (ApplicantsQual."Qualification Code" >= '70000') and (ApplicantsQual."Qualification Code" <= '79999') then begin
                     ApplicantSubmittedJob."Description 3" := ApplicantsQual.Description;
@@ -679,6 +684,7 @@ report 53072 "update Job Appl."
                     ApplicantSubmittedJob."To Date 8" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Grade/Class 8" := ApplicantsQual."Grade/Class";
                     ApplicantSubmittedJob."Description 8" := ApplicantsQual.Description;
+                    ApplicantSubmittedJob."Masters Degree Desc" := StrSubstNo(MastersDegreeDesc, ApplicantSubmittedJob."Description 8", ApplicantSubmittedJob."Area of Specialization 8", ApplicantSubmittedJob."Institution/Company 8", Date2DMY(ApplicantSubmittedJob."To Date 8", 3))
                 end;
                 if (ApplicantsQual."Qualification Code" >= '10000') and (ApplicantsQual."Qualification Code" <= '19999') then begin
                     applicantSubmittedJob."Area of Specialization 9" := ApplicantsQual."Area of Specialization";
@@ -687,6 +693,8 @@ report 53072 "update Job Appl."
                     ApplicantSubmittedJob."To Date 9" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Grade/Class 9" := ApplicantsQual."Grade/Class";
                     ApplicantSubmittedJob."Description 9" := ApplicantsQual.Description;
+                    ApplicantSubmittedJob."PHD Degree Desc" := StrSubstNo(PHDDegreeDesc, ApplicantSubmittedJob."Description 9", ApplicantSubmittedJob."Area of Specialization 9", ApplicantSubmittedJob."Institution/Company 9", Date2DMY(ApplicantSubmittedJob."To Date 9", 3))
+
                 end;
                 if (ApplicantsQual."Qualification Code" >= '80000') and (ApplicantsQual."Qualification Code" <= '89999') then begin
                     applicantSubmittedJob."Area of Specialization 10" := ApplicantsQual."Area of Specialization";
@@ -832,10 +840,15 @@ report 53072 "update Job Appl."
                 if ApplicantProfessionalBodies.Code = 'LSK' then begin
                     ApplicantSubmittedJob."Professional Bodies" := ApplicantProfessionalBodies.Name;
                     ApplicantSubmittedJob."Professional Code" := ApplicantProfessionalBodies.Code;
-                    ApplicantSubmittedJob."Admission Date" := ApplicantProfessionalBodies."Date of Admission";
+                    if ApplicantProfessionalBodies."Date of Admission" <> 0D then begin
+                        ApplicantSubmittedJob."Admission Date" := ApplicantProfessionalBodies."Date of Admission";
+                    end;
                     ApplicantSubmittedJob."Membership No." := ApplicantProfessionalBodies."Membership/Registration No.";
                     ApplicantSubmittedJob."Professional Membership Type" := ApplicantProfessionalBodies."Membership Type";
-                    ApplicantSubmittedJob."Post Admission Period" := HRDatesExt.DetermineDatesDiffrence(ApplicantProfessionalBodies."Date of Admission", ApplicantSubmittedJob."Closed Date");
+                    if ApplicantSubmittedJob."Admission Date" <> 0D then begin
+                        ApplicantSubmittedJob."Post Admission Period" := HRDatesExt.DetermineDatesDiffrence(ApplicantSubmittedJob."Admission Date", ApplicantSubmittedJob."Closed Date");
+                    end else
+                        ApplicantSubmittedJob."Post Admission Period" := ' ';
                 end else if ApplicantProfessionalBodies.Code <> 'LSK' then begin
                     // Handle non-LSK professional bodies
                     ProfessionalBodiesRecordCount += 1;
@@ -925,64 +938,25 @@ report 53072 "update Job Appl."
         end;
     end;
 
-    local procedure ProcessDateCalc(var ApplicantSubmittedJob: Record "Applicant Submitted Job")
+    procedure ConvertDecimalToYMD(DecimalYears: Decimal): Text
     var
-        FromDate: Date;
-        dateDecemal: Decimal;
-        ApplicantEmpl: Record "Applicant Current Employment";
+        Y, M, D : Integer;
+        Fraction: Decimal;
     begin
-        FromDate := 0D;
+        // Get full years (floor)
+        Y := Round(DecimalYears, 1, '<'); // Round down to get whole years
 
+        // Get fractional part
+        Fraction := DecimalYears - Y;
 
-        ApplicantEmpl.Reset();
-        ApplicantEmpl.SetRange("Applicant No.", ApplicantSubmittedJob."Applicant No.");
-        ApplicantEmpl.SetCurrentKey(ApplicantEmpl."To Date");
-        ApplicantEmpl.SetAscending("To Date", false);
-        if ApplicantEmpl.FindLast() then begin
-            repeat
-                dateDecemal += Round(((ApplicantEmpl."To Date" - ApplicantEmpl."From Date") / 365), 0.01, '=');
-            until (ApplicantEmpl.Next() = 0)
+        // Convert fractional years to months
+        M := Round(Fraction * 12, 1, '<'); // Get full months
+        Fraction := (Fraction * 12) - M;
 
-         ;
-        end;
-        ApplicantSubmittedJob."Years Of Experience 1" := Format(dateDecemal);
-        ApplicantSubmittedJob.Modify();
+        // Convert remaining fraction of month to days
+        D := Round(Fraction * 30, 1); // Approximate days
 
+        exit(StrSubstNo('%1 Years, %2 Months & %3 Days', Y, M, D));
     end;
 
-    // local procedure ProcessClosedDate(var JobApplication: Record "Job Application"; Recruitment: record "Recruitment Needs")
-    // var
-    // ApplicantSubmittedJob: record "Applicant Submitted Job";
-    // begin
-    //     Recruitment.Reset();
-    //     Recruitment.SetRange(Recruitment."No.", JobApplication."Recruitment Needs No.");
-    //     if Recruitment.Find() then begin
-    //         if ApplicantSubmittedJob.Get()
-    //    // ApplicantSubmittedJob."Closed Date" := Recruitment."End Date";
-    //    // ApplicantSubmittedJob.Modify();
-    //     end;
-
-    // end;
-
-    // local procedure ProcessPostADmin(var ApplicantSubmittedJob: Record "Applicant Submitted Job")
-    // var
-    //     ApplicantsQual: Record "Applicant Professional Bodies";
-    //     QualificationApp: Record Qualification;
-    //     RecordCount: Integer;
-    // begin
-    //     ApplicantsQual.Reset();
-    //     ApplicantsQual.SetRange("Applicant No.", ApplicantSubmittedJob."Applicant No.");
-    //     ApplicantsQual.SetRange(Code, 'LSK');
-    //     if ApplicantsQual.Find('-') then begin
-    //         // repeat
-    //         //  Message('date Admin is +', ApplicantsQual."Date of Admission");
-    //         ApplicantSubmittedJob."Admission Date" := ApplicantsQual."Date of Admission";
-    //         IF ApplicantsQual.Get(ApplicantSubmittedJob."Recruitment Needs NO") then
-    //             ApplicantSubmittedJob."Post Admission Period" := HRDatesExt.DetermineDatesDiffrence(ApplicantsQual."Date of Admission", ApplicantSubmittedJob."Closed Date"); //Round(((ApplicantSubmittedJob."Closed Date" - ApplicantsQual."Date of Admission") / 365), 0.01, '=');
-    //         ApplicantSubmittedJob.Modify();
-    //         // until (ApplicantsQual.Next() = 0)
-
-
-    //     end;
-    // end;
 }

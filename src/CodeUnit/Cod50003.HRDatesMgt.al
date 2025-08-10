@@ -46,7 +46,7 @@ codeunit 50003 "HR Dates Mgt"
                             Day := (DetermineDaysInMonth(monthJ, yearJ) + dayJ) - dayB;
                             Month := Month - 1;
                         end;
-                        DiffString := '%1Y, %2M & %3D';
+                        DiffString := '%1 Years, %2 Months & %3 Days';
                         DiffString := StrSubstNo(DiffString, Year, Month, Day);
                     end;
                 2, 3, 7:
@@ -65,13 +65,13 @@ codeunit 50003 "HR Dates Mgt"
                                 Month := Month - 1;
                             end;
                         end;
-                        DiffString := '%1M & %2D';
+                        DiffString := '%1 Months & %2 Days';
                         DiffString := StrSubstNo(DiffString, Month, Day);
                     end;
                 4:
                     begin
                         Year := yearJ - yearB;
-                        DiffString := '%1Y';
+                        DiffString := '%1 Years';
                         DiffString := StrSubstNo(DiffString, Year);
                     end;
                 5:
@@ -85,7 +85,7 @@ codeunit 50003 "HR Dates Mgt"
                             yearJ := yearJ - 1;
                         end;
                         Year := yearJ - yearB;
-                        DiffString := '%1Y, %2M & %3D';
+                        DiffString := '%1 Years, %2 Months & %3 Days';
                         DiffString := StrSubstNo(DiffString, Year, Month, Day);
                     end;
                 6:
@@ -97,7 +97,7 @@ codeunit 50003 "HR Dates Mgt"
                             yearJ := yearJ - 1;
                         end;
                         Year := yearJ - yearB;
-                        DiffString := '%1Y & %2M';
+                        DiffString := '%1 Years & %2 Months';
                         DiffString := StrSubstNo(DiffString, Year, Month);
                     end;
                 else
@@ -151,7 +151,7 @@ codeunit 50003 "HR Dates Mgt"
                             Day := (DetermineDaysInMonth(monthJ, yearJ) + dayJ) - dayB;
                             Month := Month - 1;
                         end;
-                        DiffString := '%1Y';
+                        DiffString := '%1 Years';
                         DiffString := StrSubstNo(DiffString, Year);
                     end;
                 2, 3, 7:
@@ -176,7 +176,7 @@ codeunit 50003 "HR Dates Mgt"
                 4:
                     begin
                         Year := yearJ - yearB;
-                        DiffString := '%1Y';
+                        DiffString := '%1 Years';
                         DiffString := StrSubstNo(DiffString, Year);
                     end;
                 5:
@@ -190,7 +190,7 @@ codeunit 50003 "HR Dates Mgt"
                             yearJ := yearJ - 1;
                         end;
                         Year := yearJ - yearB;
-                        DiffString := '%1Y';
+                        DiffString := '%1 Years';
                         DiffString := StrSubstNo(DiffString, Year);
                     end;
                 6:
@@ -202,7 +202,7 @@ codeunit 50003 "HR Dates Mgt"
                             yearJ := yearJ - 1;
                         end;
                         Year := yearJ - yearB;
-                        DiffString := '%1Y';
+                        DiffString := '%1 Years';
                         DiffString := StrSubstNo(DiffString, Year);
                     end;
                 else
@@ -289,57 +289,61 @@ codeunit 50003 "HR Dates Mgt"
         else
             LY := false;
     end;
+
     procedure GetDecimalFromDiffString(DiffString: Text): Decimal
-var
-    Y, M, D: Integer;
-    YearPos: Integer;
-    MonthPos: Integer;
-    DayPos: Integer;
-    Comma1Pos: Integer;
-    AmpersandPos: Integer;
-    TempText: Text[10];
-    DecimalAge: Decimal;
-begin
-    // Clean the text
-    DiffString := DelChr(DiffString, '=', ' ');
-
-    // Get positions of markers
-    YearPos := StrPos(DiffString, 'Y');
-    MonthPos := StrPos(DiffString, 'M');
-    DayPos := StrPos(DiffString, 'D');
-    Comma1Pos := StrPos(DiffString, ',');     // between Y and M
-    AmpersandPos := StrPos(DiffString, '&');  // between M and D
-
-    // Extract Year
-    if YearPos > 1 then begin
-        TempText := CopyStr(DiffString, 1, YearPos - 1); // gets value before 'Y'
-        Evaluate(Y, TempText);
-    end;
-
-    // Extract Month (between comma and 'M')
-    if (Comma1Pos > 0) and (MonthPos > 0) then begin
-        TempText := CopyStr(DiffString, Comma1Pos + 2, MonthPos - (Comma1Pos + 2)); // gets value before 'M'
-        Evaluate(M, TempText);
-    end;
-
-    // Extract Day (between '&' and 'D')
-    if (AmpersandPos > 0) and (DayPos > 0) then begin
-        TempText := CopyStr(DiffString, AmpersandPos + 2, DayPos - (AmpersandPos + 2));
-        Evaluate(D, TempText);
-    end;
-
-    // Round the months if D > 15
-    if D > 15 then
-        M += 1;
-
-    // Convert 12 months into a year
-    if M = 12 then begin
-        Y += 1;
+    var
+        Y, M, D : Integer;
+        DecimalAge: Decimal;
+        YearPos: Integer;
+        MonthPos: Integer;
+        DayPos: Integer;
+        AmpersandPos: Integer;
+        CommaPos: Integer;
+        TempText: Text[10];
+    begin
+        Y := 0;
         M := 0;
+        D := 0;
+
+        // Normalize format
+        DiffString := DelChr(DiffString, '=', ' '); // remove all spaces
+        DiffString := UpperCase(DiffString); // standardize casing
+
+        // Position markers
+        YearPos := StrPos(DiffString, 'Y');
+        MonthPos := StrPos(DiffString, 'M');
+        DayPos := StrPos(DiffString, 'D');
+        AmpersandPos := StrPos(DiffString, '&');
+        CommaPos := StrPos(DiffString, ',');
+
+        // Extract Year
+        if YearPos > 1 then begin
+            TempText := CopyStr(DiffString, 1, YearPos - 1);
+            Evaluate(Y, TempText);
+        end;
+
+        // Extract Month (between comma and 'M')
+        if (CommaPos > 0) and (MonthPos > CommaPos) then begin
+            TempText := CopyStr(DiffString, CommaPos + 1, MonthPos - (CommaPos + 1));
+            Evaluate(M, TempText);
+        end
+        else if (YearPos = 0) and (MonthPos > 1) then begin
+            // Format like "9M&30D" (no year)
+            TempText := CopyStr(DiffString, 1, MonthPos - 1);
+            Evaluate(M, TempText);
+        end;
+
+        // Extract Day (between '&' and 'D')
+        if (AmpersandPos > 0) and (DayPos > AmpersandPos) then begin
+            TempText := CopyStr(DiffString, AmpersandPos + 1, DayPos - (AmpersandPos + 1));
+            Evaluate(D, TempText);
+        end;
+
+        // Convert to decimal
+        DecimalAge := Round(Y + (M / 12) + (D / 365), 0.01);
+        exit(DecimalAge);
     end;
 
-    DecimalAge := Y + (M / 12);
-    exit(DecimalAge);
-end;
+
 
 }
