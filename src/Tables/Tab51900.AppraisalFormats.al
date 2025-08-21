@@ -16,7 +16,10 @@ table 51900 "Appraisal Formats"
         field(3; Type; Option)
         {
             DataClassification = ToBeClassified;
-            OptionMembers = Question, "Heading 2", Category, "Heading 1";
+            // OptionMembers = Question, "Heading 2", Category, "Heading 1";
+            OptionCaption = 'Values,Core Competences,Curriculum Delivery,Research,Initiative & Willingness,Managerial & Supervisory';
+            OptionMembers = Values,"Core Competences","Curriculum Delivery",Research,"Initiative & Willingness","Managerial & Supervisory";
+            Caption = 'Type';
         }
         field(4; "Code"; Code[20])
         {
@@ -66,6 +69,10 @@ table 51900 "Appraisal Formats"
         field(14; "Line No."; Integer)
         {
             DataClassification = ToBeClassified;
+        }
+        field(15; Indicator; Text[250])
+        {
+            Caption = 'Indicator';
         }
     }
     keys

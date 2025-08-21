@@ -1376,6 +1376,18 @@ table 58200 "Applicant Submitted Job"
         { }
         field(32223; "Post Admission Period"; text[100])
         { }
+        field(3224; "Bachelors Degree Desc"; Text[2048])
+        {
+
+        }
+        field(3225; "Masters Degree Desc"; Text[2048])
+        {
+
+        }
+        field(3226; "PHD Degree Desc"; Text[2048])
+        {
+
+        }
 
 
 

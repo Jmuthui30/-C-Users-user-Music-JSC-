@@ -19,6 +19,7 @@ codeunit 52005 "Approval Mgt HR Ext"
         RecruitmentRequest: Record "Recruitment Needs";
 
         Employee: Record Employee;
+        NewEmployeeAppraisal: Record "Employee Appraisal";
         StaffAppraisalApprovalLbl: Label 'Staff Appraisal-%1 for the Period between %2 - %3', Comment = '%1 = Employee Name, %2 = Period Start, %3 = Period End';
     begin
         case RecRef.Number of
@@ -62,7 +63,14 @@ codeunit 52005 "Approval Mgt HR Ext"
                     //  ApprovalEntryArgument.Description := 'Leave Adjustment';
                 end;
 
-
+            //New Emp Appraisal
+            Database::"Employee Appraisal":
+                begin
+                    RecRef.SetTable(NewEmployeeAppraisal);
+                    ApprovalEntryArgument."Document Type" := ApprovalEntryArgument."Document Type"::"Employee Appraisal";
+                    ApprovalEntryArgument."Document No." := NewEmployeeAppraisal."Appraisal No";
+                    ApprovalEntryArgument.Description := StrSubstNo(StaffAppraisalApprovalLbl, NewEmployeeAppraisal."Appraisee Name", NewEmployeeAppraisal."Period Start", NewEmployeeAppraisal."Period End");
+                end;
         end;
     end;
 
@@ -73,7 +81,7 @@ codeunit 52005 "Approval Mgt HR Ext"
         LeaveRecall: Record "Employee Off/Holiday";
         LeaveRequest: Record "Leave Application";
         LeaveAdj: Record "Leave Bal Adjustment Header";
-
+        NewEmployeeAppraisal: Record "Employee Appraisal";
         RecruitmentRequest: Record "Recruitment Needs";
         Employee: Record Employee;
     begin
@@ -118,7 +126,28 @@ codeunit 52005 "Approval Mgt HR Ext"
                     Variant := LeaveAdj;
                     IsHandled := true;
                 end;
-
+            //New Employee Appraisal
+            // Database::"Employee Appraisal":
+            //     begin
+            //         RecRef.SetTable(NewEmployeeAppraisal);
+            //          if NewEmployeeAppraisal.Status = NewEmployeeAppraisal.Status::Open then
+            //             NewEmployeeAppraisal.Validate(Status, NewEmployeeAppraisal.Status::"Pending Approval");
+            //         // if NewEmployeeAppraisal.Status = NewEmployeeAppraisal.Status::Open then
+            //         //     NewEmployeeAppraisal.Validate(Status, NewEmployeeAppraisal.Status::"Pending Approval")
+            //         // else
+            //         //     NewEmployeeAppraisal.Validate(Status, NewEmployeeAppraisal.Status::"Mid-Year Approved");
+            //         // NewEmployeeAppraisal.Validate("Appraisal Status", NewEmployeeAppraisal."Appraisal Status"::Set);
+            //         // NewEmployeeAppraisal.Modify(true);
+            //         Variant := NewEmployeeAppraisal;
+            //         IsHandled := true;
+            //     end;
+             Database::"Employee Appraisal":
+                begin
+                    RecRef.SetTable(NewEmployeeAppraisal);
+                    NewEmployeeAppraisal.Validate(Status, NewEmployeeAppraisal.Status::"Pending Approval");
+                    NewEmployeeAppraisal.Modify(true);
+                    IsHandled := true;
+                end;
 
         end;
     end;
@@ -217,6 +246,53 @@ codeunit 52005 "Approval Mgt HR Ext"
     begin
         exit(WorkflowManagement.CanExecuteWorkflow(LeaveAdj, WorkflowEventHandling.RunWorkflowOnSendLeaveAdjForApprovalCode()));
     end;
+    //NEW EMPLOYEE APPRAISAL WORKFLOW
+    procedure CheckNewEmpAppraisalWorkflowEnabled(var NewEmployeeAppraisal: Record "Employee Appraisal"): Boolean
+    begin
+        if not IsNewEmpAppraisalWorkflowEnabled(NewEmployeeAppraisal) then
+            Error(NoWorkflowEnabledErr);
+        exit(true);
+    end;
+
+    procedure IsNewEmpAppraisalWorkflowEnabled(var NewEmployeeAppraisal: Record "Employee Appraisal"): Boolean
+    begin
+        exit(WorkflowManagement.CanExecuteWorkflow(NewEmployeeAppraisal, WorkflowEventHandling.RunworkflowOnSendNewEmpAppraisalforApprovalCode()));
+    end;
+
+    [IntegrationEvent(false, false)]
+    procedure OnSendNewEmpAppraisalRequestforApproval(var NewEmployeeAppraisal: Record "Employee Appraisal")
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    procedure OnCancelNewEmpAppraisalRequestApproval(var NewEmployeeAppraisal: Record "Employee Appraisal")
+    begin
+    end;
+
+    procedure CheckEmployeeAppraisalWorkflowEnabled(var EmployeeAppraisal: Record "Employee Appraisal"): Boolean
+    begin
+        if not IsEmployeeAppraisalWorkflowEnabled(EmployeeAppraisal) then
+            Error(NoWorkflowEnabledErr);
+        exit(true);
+    end;
+
+    procedure IsEmployeeAppraisalWorkflowEnabled(var EmployeeAppraisal: Record "Employee Appraisal"): Boolean
+    begin
+        exit(WorkflowManagement.CanExecuteWorkflow(EmployeeAppraisal, WorkflowEventHandling.RunworkflowOnSendEmployeeAppraisalRequestforApprovalCode()));
+    end;
+
+    [IntegrationEvent(false, false)]
+    procedure OnSendEmployeeAppraisalRequestforApproval(var EmployeeAppraisal: Record "Employee Appraisal")
+    begin
+
+    end;
+
+    [IntegrationEvent(false, false)]
+    procedure OnCancelEmployeeAppraisalApprovalRequest(var EmployeeAppraisal: Record "Employee Appraisal")
+    begin
+
+    end;
+
 
 
     // New Employee Approval

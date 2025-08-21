@@ -217,7 +217,16 @@ codeunit 52006 "Wkfl Event Handle HR Ext"
         RecruitmentRequestSendforApprovalDescTxt, 0, false);
         WorkflowEvent.AddEventToLibrary(RunworkflowOnCancelRecruitmentRequestApprovalCode(), Database::"Recruitment Needs",
         RecruitmentRequestCancelApprovalRequestDescTxt, 0, false);
-
+        //Employee Appraisal
+        WorkflowEvent.AddEventToLibrary(RunworkflowOnSendEmployeeAppraisalRequestforApprovalCode(), Database::"Employee Appraisal",
+        EmployeeAppraisalRequestSendforApprovalDescTxt, 0, false);
+        WorkflowEvent.AddEventToLibrary(RunworkflowOnCancelEmployeeAppraisalRequestApprovalRequestCode(), Database::"Employee Appraisal",
+        EmployeeAppraisalCancelApprovalRequestDescTxt, 0, false);
+        //New Emp Appraisal
+        WorkflowEvent.AddEventToLibrary(RunworkflowOnSendNewEmpAppraisalforApprovalCode(), Database::"Employee Appraisal",
+        NewEmpAppraisalApprovalDescTxt, 0, false);
+        WorkflowEvent.AddEventToLibrary(RunworkflowOnCancelNewEmpAppraisalApprovalRequestCode(), Database::"Employee Appraisal",
+        NewEmpAppraisalCancelApprovalDescTxt, 0, false);
         //Leave Recall
         WorkflowEvent.AddEventToLibrary(RunworkflowOnSendLeaveRecallRequestforApprovalCode(), Database::"Employee Off/Holiday",
         LeaveRecallApprovalRequestDescTxt, 0, false);
@@ -285,7 +294,6 @@ codeunit 52006 "Wkfl Event Handle HR Ext"
             // New Employee
             RunWorkflowOnCancelNewEmployeeApprovalRequestCode():
                 WorkflowEvent.AddEventPredecessor(RunWorkflowOnCancelNewEmployeeApprovalRequestCode(), RunWorkflowOnSendNewEmployeeForApprovalCode());
-
 
             WorkflowEvent.RunWorkflowOnApproveApprovalRequestCode():
                 begin
@@ -459,6 +467,16 @@ codeunit 52006 "Wkfl Event Handle HR Ext"
     local procedure RunWorkflowOnCancelNewEmployeeApprovalRequest(var Emp: Record "Employee")
     begin
         WorkflowManagement.HandleEvent(RunWorkflowOnCancelNewEmployeeApprovalRequestCode(), Emp);
+    end;
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approval Mgt HR Ext",'OnSendNewEmpAppraisalRequestforApproval','', false, false)]
+    local procedure RunworkflowOnSendNewEmpAppraisalforApproval(var NewEmployeeAppraisal:Record "Employee Appraisal")
+    begin
+        WorkflowManagement.HandleEvent(RunworkflowOnSendNewEmpAppraisalforApprovalCode(),NewEmployeeAppraisal);
+    end;
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approval Mgt HR Ext",'OnCancelNewEmpAppraisalRequestApproval','', false, false)]
+    local procedure RunworkflowOnCancelNewEmpAppraisalApprovalRequest(var NewEmployeeAppraisal: Record "Employee Appraisal")
+    begin
+        WorkflowManagement.HandleEvent(RunworkflowOnCancelNewEmpAppraisalApprovalRequestCode(), NewEmployeeAppraisal);
     end;
 }
 

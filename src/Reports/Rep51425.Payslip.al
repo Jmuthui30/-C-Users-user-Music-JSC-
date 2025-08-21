@@ -1394,9 +1394,9 @@ report 51425 "Payslip"
                 */
                 //Get Working Hours
                 // Get Basic Salary
-                Earn.Reset;
-                Earn.SetRange(Earn."Salary Recovery", true);
-                if Earn.Find('-')then begin
+                // Earn.Reset;
+                // Earn.SetRange(Earn."Salary Recovery", true);
+                // if Earn.Find('-')then begin
                     PayrollMatrix.Reset;
                     PayrollMatrix.SetRange(PayrollMatrix."Payroll Period", DateSpecified);
                     PayrollMatrix.SetRange(Type, PayrollMatrix.Type::Payment);
@@ -1409,7 +1409,7 @@ report 51425 "Payslip"
                         ArrEarnings[1, i]:='Worked Hours';
                         ArrEarningsAmt[1, i]:=Format(PayrollMatrix."Worked Hrs");
                     end;
-                end;
+                // end;
                 //
                 i:=i + 1;
                 PayrollSetup.Get;

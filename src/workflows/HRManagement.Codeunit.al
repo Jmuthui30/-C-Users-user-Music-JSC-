@@ -112,15 +112,205 @@ codeunit 52001 "HR Management"
          HttpResponseMessage.EnsureSuccessStatusCode(); // Throws an error when no success
      end;
  */
+ procedure IndentAppraisalGoals(DocNo: Code[20])
+    var
+        AppraisalLines: Record "Appraisal Lines";
+        i: Integer;
+        EndTotalMissingBeginErr: Label 'End-Total %1 is missing a matching Begin-Total.', Comment = '%1 = Line No';
+    begin
+        //Window.OPEN(Text004);
+        AppraisalLines.SetRange("Appraisal No", DocNo);
+        if AppraisalLines.Find('-') then
+            repeat
+                //Window.UPDATE(1,"Line No");
+
+                case AppraisalLines."Appraisal Line Type" of
+                    AppraisalLines."Appraisal Line Type"::"Objective Heading",
+                  AppraisalLines."Appraisal Line Type"::"Objective Heading End":
+                        i := 0;
+                    AppraisalLines."Appraisal Line Type"::"Sub-Heading",
+                  AppraisalLines."Appraisal Line Type"::"Sub-Heading End":
+                        i := 1;
+                    AppraisalLines."Appraisal Line Type"::Objective:
+                        i := 2;
+                end;
+
+                if AppraisalLines."Appraisal Line Type" = AppraisalLines."Appraisal Line Type"::"Sub-Heading End" then
+                    if i < 1 then
+                        Error(
+                          EndTotalMissingBeginErr,
+                          AppraisalLines."Line No");
+                //i := i - 1;
+
+                AppraisalLines.Indentation := i;
+                AppraisalLines.Modify();
+
+            /*IF "Appraisal Line Type" = "Appraisal Line Type"::"Sub-Heading" THEN BEGIN
+              i := i + 1;
+              AccNo[i] := FORMAT("Line No");
+            END;*/
+            until AppraisalLines.Next() = 0;
+
+        //Window.CLOSE;
+
+    end;
+     procedure UpdateAppraisalScores(AppraisalNo: Code[20]; EmployeeNo: Code[10])
+    var
+        Competences: Record "Appraisal Competences";
+        Appraisal: Record "Employee Appraisal";
+    begin
+        Appraisal.Reset();
+        Appraisal.SetRange("Appraisal No", AppraisalNo);
+        Appraisal.SetRange("Employee No", EmployeeNo);
+        if Appraisal.FindFirst() then begin
+            //Values
+            Competences.Reset();
+            Competences.SetRange("Appraisal No.", AppraisalNo);
+            Competences.SetRange("Value/Core Competence", Competences."Value/Core Competence"::Values);
+            if Competences.FindFirst() then begin
+                Appraisal.CalcFields("Values Total");
+                Appraisal."Values Mean" := Appraisal."Values Total" / Competences.Count;
+            end;
+            //Core Competences
+            Competences.Reset();
+            Competences.SetRange("Appraisal No.", AppraisalNo);
+            Competences.SetRange("Value/Core Competence", Competences."Value/Core Competence"::"Core Competences");
+            if Competences.FindFirst() then begin
+                Appraisal.CalcFields("Competences Total");
+                Appraisal."Competences Mean" := Appraisal."Competences Total" / Competences.Count;
+            end;
+            //Curriculum Delivery
+            Competences.Reset();
+            Competences.SetRange("Appraisal No.", AppraisalNo);
+            Competences.SetRange("Value/Core Competence", Competences."Value/Core Competence"::"Curriculum Delivery");
+            if Competences.FindFirst() then begin
+                Appraisal.CalcFields("Curriculum Total");
+                Appraisal."Curriculum Mean" := Appraisal."Curriculum Total" / Competences.Count;
+            end;
+            //Initiative & Willingness
+            Competences.Reset();
+            Competences.SetRange("Appraisal No.", AppraisalNo);
+            Competences.SetRange("Value/Core Competence", Competences."Value/Core Competence"::"Initiative & Willingness");
+            if Competences.FindFirst() then begin
+                Appraisal.CalcFields("Initiative Total");
+                Appraisal."Initiative Mean" := Appraisal."Initiative Total" / Competences.Count;
+            end;
+            //Managerial & Supervisory
+            Competences.Reset();
+            Competences.SetRange("Appraisal No.", AppraisalNo);
+            Competences.SetRange("Value/Core Competence", Competences."Value/Core Competence"::"Managerial & Supervisory");
+            if Competences.FindFirst() then begin
+                Appraisal.CalcFields("Managerial Total");
+                Appraisal."Managerial  Mean" := Appraisal."Managerial Total" / Competences.Count;
+            end;
+            //Research
+            Competences.Reset();
+            Competences.SetRange("Appraisal No.", AppraisalNo);
+            Competences.SetRange("Value/Core Competence", Competences."Value/Core Competence"::Research);
+            if Competences.FindFirst() then begin
+                Appraisal.CalcFields("Research Total");
+                Appraisal."Research Mean" := Appraisal."Research Total" / Competences.Count;
+            end;
+            Appraisal.Modify();
+        end;
+    end;
+    
+    procedure SendToFinalYear(EmpAppraisal: Record "Employee Appraisal")
+    var
+        ApprGoals: Record "Appraisal Lines";
+        prevGoals: Record "Appraisal Lines";
+        AppPeriod: Record "Appraisal Periods";
+        Appr: Record "Employee Appraisal";
+    begin
+        Message('This appraisal shall be send to final year');
+        Appr.Init();
+        Appr."Appraisal No" := '';
+        Appr.AppraisalType := Appr.AppraisalType::"Final Year";
+        Appr."Appraisee ID" := EmpAppraisal."Appraisee ID";
+        Appr."Appraisal Period" := CopyStr(GetOpenAppraisalPeriod(AppPeriod."Appraisal Type"::"Final Year"), 1, MaxStrLen(Appr."Appraisal Period"));
+        Appr."Appraisee ID" := EmpAppraisal."Appraisee ID";
+        Appr."Employee No" := EmpAppraisal."Employee No";
+        Appr."Total Mid-Year" := EmpAppraisal."Total Mid-Year";
+        Appr.Validate("Employee No");
+        Appr.Validate("Appraisee ID");
+        Appr.Validate("Appraisal Period");
+        Appr."Appraisal Status" := Appr."Appraisal Status"::Review;
+        Appr.Status := Appr.Status::Released;
+        Appr.Insert(true);
+        prevGoals.Reset();
+        prevGoals.SetRange("Appraisal No", EmpAppraisal."Appraisal No");
+        if prevGoals.Find('-') then
+            repeat
+                ApprGoals.Init();
+                ApprGoals."Appraisal No" := Appr."Appraisal No";
+                ApprGoals."Objective Code" := prevGoals."Objective Code";
+                ApprGoals.Validate("Objective Code");
+                ApprGoals."Initiative code" := prevGoals."Initiative code";
+                ApprGoals.Validate("Initiative code");
+                ApprGoals."Line No" := prevGoals."Line No";
+                ApprGoals."Activity code" := prevGoals."Activity code";
+                ApprGoals.Validate("Activity code");
+                ApprGoals."Agreed perfomance targets" := prevGoals."Agreed perfomance targets";
+                ApprGoals.Weighting := prevGoals.Weighting;
+                ApprGoals."FY Target" := prevGoals."FY Target";
+                ApprGoals.Insert(true);
+            until prevGoals.Next() = 0;
+        Message('appraisal send to final year');
+    end;
 
 
+    procedure SendToFinalYearAppraisal(EmpAppraisal: Record "Employee Appraisal")
+    var
+        AppPeriod: Record "Appraisal Periods";
+    begin
+        Message('This appraisal shall be moved to pending final year appraisal');
 
+        //EmpAppraisal.Type := EmpAppraisal.Type::"Final Year";
+        EmpAppraisal."Appraisal Period" := CopyStr(GetOpenAppraisalPeriod(AppPeriod."Appraisal Type"::"Final Year"), 1, MaxStrLen(EmpAppraisal."Appraisal Period"));
+        EmpAppraisal.Validate("Appraisal Period");
+        EmpAppraisal.Status := EmpAppraisal.Status::Released;
+        EmpAppraisal."Appraisal Status" := EmpAppraisal."Appraisal Status"::Review;
+        EmpAppraisal.Modify();
+    end;
+    procedure GetTotalRating(Appraisal: Record "Employee Appraisal")
+    var
+        Matrix: Record "Perfomance rating matrix";
+    begin
+        Appraisal.CalcFields("Total FY Attributes", "Expected TR -attributes");
+        if (Appraisal."Total FY Attributes" <> 0) and (Appraisal."Expected TR -attributes" <> 0) then
+            Appraisal."Total Percentage-Attributes" := (Appraisal."Total FY Attributes" / Appraisal."Expected TR -attributes") * 30;
 
+        Matrix.Reset();
+        Matrix.SetFilter(Start, '<=%1', Appraisal."Total Percentage-Attributes");
+        Matrix.SetFilter("End", '>=%1', Appraisal."Total Percentage-Attributes");
+        if Matrix.FindFirst() then
+            Appraisal."Grade-Attributes" := Matrix.Grade;
 
+        Appraisal.CalcFields("Total FY Rating", "Total Weighting");
+        if (Appraisal."Total FY Rating" <> 0) and (Appraisal."Total Weighting" <> 0) then
+            Appraisal."Total Percentage FY Rating" := (Appraisal."Total FY Rating" / Appraisal."Total Weighting") * 70;
+        if (Appraisal."Total Percentage FY Rating" <> 0) and (Appraisal."Total Percentage-Attributes" <> 0) then
+            Appraisal."Total score" := (Appraisal."Total Percentage FY Rating" + Appraisal."Total Percentage-Attributes");
 
+        Matrix.Reset();
+        Matrix.SetFilter(Start, '<=%1', Appraisal."Total Percentage FY Rating");
+        Matrix.SetFilter("End", '>=%1', Appraisal."Total Percentage FY Rating");
+        if Matrix.FindFirst() then
+            Appraisal."Grade final year rating" := Matrix.Grade;
 
-
-
+        Appraisal.Modify();
+    end;
+procedure GetOpenAppraisalPeriod(AppType: Option): Code[30]
+    var
+        AppPeriod: Record "Appraisal Periods";
+    begin
+        AppPeriod.Reset();
+        AppPeriod.SetRange("Appraisal Type", AppType);
+        if AppPeriod.FindFirst() then
+            exit(AppPeriod.Period)
+        else
+            Error('Please define an the next period');
+    end;
     procedure GetCurrentLeavePeriodCode(): Code[20]
     var
         LeavePeriods: Record "Leave Period";

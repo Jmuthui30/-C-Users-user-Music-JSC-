@@ -1,4 +1,4 @@
-page 52185 "Budget Holder Draft Budget Vie"
+page 52366 "Budget Holder Draft Budget Vie"
 {
     // version BUDGET
     Caption = 'Draft Budget';

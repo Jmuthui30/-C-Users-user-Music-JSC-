@@ -187,6 +187,7 @@ codeunit 52007 "Wkflw Event Response HR Ext"
         LAdj: Record "Leave Bal Adjustment Header";
 
         RNeeds: Record "Recruitment Needs";
+        NewEmployeeAppraisal: Record "Employee Appraisal";
 
         WorkflowResponses: Codeunit "Workflow Responses HR";
         Emp: Record "Employee";
@@ -232,6 +233,13 @@ codeunit 52007 "Wkflw Event Response HR Ext"
                     Handled := true;
                     WorkflowResponses.ReleaseNewEmployeeApplication(VarVariant);
                 end;
+            //New EmployeeAppraisal
+            Database::"Employee Appraisal":
+                begin
+                    NewEmployeeAppraisal.SetView(RecRef.GetView());
+                    Handled := true;
+                    WorkflowResponses.ReleaseEmployeeAppraisalRequest(VarVariant);
+                end;
         end;
     end;
 
@@ -242,10 +250,9 @@ codeunit 52007 "Wkflw Event Response HR Ext"
         LRecall: Record "Employee Off/Holiday";
         LeaveApp: Record "Leave Application";
         LAdj: Record "Leave Bal Adjustment Header";
-
         RNeeds: Record "Recruitment Needs";
-
         Emp: Record "Employee";
+        NewEmployeeAppraisal: Record "Employee Appraisal";
         WorkflowResponses: Codeunit "Workflow Responses HR";
         VarVariant: Variant;
     begin
@@ -289,6 +296,14 @@ codeunit 52007 "Wkflw Event Response HR Ext"
                     Emp.SetView(RecRef.GetView());
                     Handled := true;
                     WorkflowResponses.ReopenNewEmployeeApplication(VarVariant);
+                end;
+
+            //New Emp Appraisal
+            Database::"Employee Appraisal":
+                begin
+                    NewEmployeeAppraisal.SetView(RecRef.GetView());
+                    Handled := true;
+                    WorkflowResponses.ReopenEmployeeAppraisalRequest(VarVariant);
                 end;
         end;
     end;

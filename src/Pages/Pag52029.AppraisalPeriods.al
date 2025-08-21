@@ -1,4 +1,4 @@
-page 52029 "Appraisal Periods"
+page 52029 "Appraisal Periods-Old"
 {
     PageType = List;
     UsageCategory = Administration;

@@ -103,9 +103,6 @@ End Function
         <Field Name="EarningsX1_Code">
           <DataField>EarningsX1_Code</DataField>
         </Field>
-        <Field Name="EarningsX1_Posting_Group_Filter">
-          <DataField>EarningsX1_Posting_Group_Filter</DataField>
-        </Field>
         <Field Name="EarningsX1_Pay_Period_Filter">
           <DataField>EarningsX1_Pay_Period_Filter</DataField>
         </Field>
