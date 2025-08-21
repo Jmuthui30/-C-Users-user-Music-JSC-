@@ -4,6 +4,7 @@ page 51441 "Payroll Manager Role Center"
     // CurrPage."Help And Setup List".ShowFeatured;
     Caption = 'Payroll Manager Role Center';
     PageType = RoleCenter;
+    ApplicationArea = All;
 
     layout
     {

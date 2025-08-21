@@ -1,10 +1,10 @@
-page 52028 "Grade Matrix"
+page 52368 "Grade Matrix"
 {
     PageType = List;
     ApplicationArea = All;
     UsageCategory = Administration;
     SourceTable = "Appraisal Grades";
-    SourceTableView = SORTING(Points)ORDER(Descending);
+    // SourceTableView = SORTING(Points)ORDER(Descending);
 
     layout
     {

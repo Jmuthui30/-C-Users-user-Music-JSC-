@@ -1,4 +1,4 @@
-table 52110 "Contract Commitment Lines"
+table 52193 "Contract Commitment Lines"
 {
     fields
     {

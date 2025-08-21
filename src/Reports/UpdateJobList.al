@@ -148,12 +148,12 @@ report 53072 "update Job Appl."
         ApplicantSubmittedJob.IDNO := ApplicantApp."National ID";
         HomeCounty := ApplicantApp."Home County";
         ApplicantSubmittedJob."Home County" := FORMAT(UpperCase(COPYSTR(HomeCounty, 1, 1))) + LowerCase(COPYSTR(HomeCounty, 2));
-        EthnicGroup := LowerCase(ApplicantApp."Ethnic Group"); // Force all lowercase first
-        ApplicantSubmittedJob."Ethnic Group" := FORMAT(UpperCase(COPYSTR(EthnicGroup, 1, 1))) + COPYSTR(EthnicGroup, 2);
+        // EthnicGroup := LowerCase(ApplicantApp."Ethnic Group"); // Force all lowercase first
+        ApplicantSubmittedJob."Ethnic Group" := FORMAT(UpperCase(COPYSTR(ApplicantApp."Ethnic Group", 1, 1))) + COPYSTR(ApplicantApp."Ethnic Group", 2);
 
         ApplicantSubmittedJob."Marital Status" := ApplicantApp."Marital Status";
-        SubEthnicGroup := LowerCase(ApplicantApp."Sub Ethnic Group");
-        ApplicantSubmittedJob."Sub Ethnic Group" := FORMAT(UpperCase(COPYSTR(SubEthnicGroup, 1, 1))) + LowerCase(COPYSTR(SubEthnicGroup, 2));
+        // SubEthnicGroup := LowerCase(ApplicantApp."Sub Ethnic Group");
+        ApplicantSubmittedJob."Sub Ethnic Group" := FORMAT(UpperCase(COPYSTR(ApplicantApp."Sub Ethnic Group", 1, 1))) + LowerCase(COPYSTR(SubEthnicGroup, 2));
         // ApplicantSubmittedJob."Sub Ethnic Group" := ApplicantApp."Sub Ethnic Group";
 
         // Disability Information
