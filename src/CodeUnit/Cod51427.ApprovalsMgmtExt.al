@@ -518,7 +518,8 @@ codeunit 51427 "Approvals Mgmt. Ext"
         ServiceLine: Record "Service Line";
         LeavePlan: Record "Employee Leave Plan Header";
         EmpObjectives: Record "Employee Appraisal Objectives";
-        EmpAppraisal: Record "Employee Appraisals";
+        EmpAppraisals: Record "Employee Appraisals";
+        EmpAppraisal: Record "Employee Appraisal";
         RecruitmentPlan: Record "Recruitment Plan";
         ConsolidatedRecruitmentPlan: Record "Consolidated Recruitment Plan";
         CompanyEstablishment: Record "Company Jobs";
@@ -758,9 +759,9 @@ codeunit 51427 "Approvals Mgmt. Ext"
             //11. Govt. Employee Appraisal
             DATABASE::"Employee Appraisals":
                 begin
-                    RecRef.SetTable(EmpAppraisal);
-                    EmpAppraisal.Validate(Status, EmpAppraisal.Status::"Pending Approval");
-                    EmpAppraisal.Modify(true);
+                    RecRef.SetTable(EmpAppraisals);
+                    EmpAppraisals.Validate(Status, EmpAppraisals.Status::"Pending Approval");
+                    EmpAppraisals.Modify(true);
                     IsHandled := true;
                 end;
             //12. Leave Adjustment
@@ -804,6 +805,14 @@ codeunit 51427 "Approvals Mgmt. Ext"
                     IsHandled := true;
                 end;
             //
+            //17. EmpAppraisal
+            Database::"Employee Appraisal":
+                begin
+                    RecRef.SetTable(EmpAppraisal);
+                    EmpAppraisal.Validate(Status, EmpAppraisal.Status::"Pending Approval");
+                    EmpAppraisal.Modify(true);
+                    IsHandled := true;
+                end;
             //***********************THL - SERVICE MANAGEMENT MODULE CUSTOMIZATIONS***************************
             //1. Job Worksheet
             DATABASE::"Worksheet Requisitions Lines":

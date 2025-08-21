@@ -21,9 +21,9 @@ report 51424 "Payroll Calculator"
                 Employee.CalcFields("Resource Hours");
                 if NoOfHoursPerMonth <> Employee."Resource Hours" then begin
                     if NoOfHoursPerMonth > Employee."Resource Hours" then begin //Hours Per Month > Resource Hours
-                        Earnings.Reset;
-                        Earnings.SetRange(Earnings."Salary Recovery", true);
-                        if Earnings.Find('-')then begin
+                        // Earnings.Reset;
+                        // Earnings.SetRange(Earnings."Salary Recovery", true);
+                        // if Earnings.Find('-')then begin
                             PayrollMatrix.Reset;
                             PayrollMatrix.SetRange("Employee No", "No.");
                             PayrollMatrix.SetRange(PayrollMatrix.Type, PayrollMatrix.Type::Payment);
@@ -70,13 +70,13 @@ report 51424 "Payroll Calculator"
                                 // End Added Giovanni
                                 if not PayrollMatrix.Get(PayrollMatrix."Employee No", PayrollMatrix.Type, PayrollMatrix.Code, PayrollMatrix."Payroll Period") and (Employee."Use Timesheets")then PayrollMatrix.Insert;
                             end;
-                        end; // ELSE
+                        // end; // ELSE
                     end
                     else
                     begin //***End Hours Per Month > Resource Hours***Hours Per Month < Resource Hours
-                        Earnings.Reset;
-                        Earnings.SetRange(Earnings."Salary Recovery", true);
-                        if Earnings.Find('-')then begin
+                        // Earnings.Reset;
+                        // Earnings.SetRange(Earnings."Salary Recovery", true);
+                        // if Earnings.Find('-')then begin
                             PayrollMatrix.Reset;
                             PayrollMatrix.SetRange("Employee No", "No.");
                             PayrollMatrix.SetRange(PayrollMatrix.Type, PayrollMatrix.Type::Payment);
@@ -99,13 +99,13 @@ report 51424 "Payroll Calculator"
                                     // End Added Giovanni
                                     PayrollMatrix.Modify;
                             end end;
-                    end;
+                    // end;
                 end
                 else
                 begin
-                    Earnings.Reset;
-                    Earnings.SetRange(Earnings."Salary Recovery", true);
-                    if Earnings.Find('-')then begin
+                    // Earnings.Reset;
+                    // Earnings.SetRange(Earnings."Salary Recovery", true);
+                    // if Earnings.Find('-')then begin
                         PayrollMatrix.Reset;
                         PayrollMatrix.SetRange("Employee No", "No.");
                         PayrollMatrix.SetRange(PayrollMatrix.Type, PayrollMatrix.Type::Payment);
@@ -128,7 +128,7 @@ report 51424 "Payroll Calculator"
                                 // End Added Giovanni
                                 PayrollMatrix.Modify;
                         end end;
-                end;
+                // end;
                 ClosingBal:=0;
                 Deductions.Reset;
                 Deductions.SetRange(Deductions.Loan, true);

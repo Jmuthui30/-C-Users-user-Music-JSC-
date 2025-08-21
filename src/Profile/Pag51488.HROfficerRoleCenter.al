@@ -846,90 +846,210 @@ page 51488 "HR Officer Role Center"
                     }
                 }
             }
-            group("Performance Management")
+            // group("Performance Management")
+            // {
+            //     Caption = 'Performance Management';
+
+            //     action("Appraisal Objectives")
+            //     {
+            //         ApplicationArea = All;
+            //         Caption = 'Create Employee Appraisal Objectives';
+            //         ToolTip = 'Open Create Employee Appraisal Objectives';
+            //         RunObject = Page "Create Appraisal Objectives";
+            //     }
+            //     action("Approved Appraisal Objectives")
+            //     {
+            //         ApplicationArea = All;
+            //         Caption = 'Approved Appraisal Objectives';
+            //         ToolTip = 'Open Approved Appraisal Objectives';
+            //         RunObject = Page "Approved Appraisal Objectives";
+            //     }
+            //     action("Employee Appraisal")
+            //     {
+            //         ApplicationArea = All;
+            //         Caption = 'Create Employee Appraisal';
+            //         ToolTip = 'Open Create Employee Appraisal';
+            //         RunObject = Page "Create Employee Appraisal";
+            //     }
+            //     action("Approved Appraisal")
+            //     {
+            //         ApplicationArea = All;
+            //         Caption = 'Approved Employee Appraisal';
+            //         ToolTip = 'Open Approved Employee Appraisal';
+            //         RunObject = Page "Employee Appraisals";
+            //     }
+            //     group("Performance Management Reports")
+            //     {
+            //         Caption = 'Reports & Analysis';
+            //         ToolTip = 'Performance Management Reports & Analysis';
+
+            //         action("Rtp. Employee Appraisal")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Employee Appraisal';
+            //             ToolTip = 'Run Employee Appraisal';
+            //             RunObject = Report "Employee Appraisals";
+            //         }
+            //         action("Rtp. Performance Appraisal")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Performance Appraisal';
+            //             ToolTip = 'Run Performance Appraisal';
+            //             RunObject = Report "Performance Appraisal";
+            //         }
+            //     }
+            //     group("Performance Management Administration")
+            //     {
+            //         Caption = 'Administration';
+            //         ToolTip = 'Performance Management Setups';
+
+            //         action("Adm. Appraisal Category")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Appraisal Category';
+            //             ToolTip = 'Open Appraisal Category';
+            //             RunObject = Page "Appraisal Category";
+            //         }
+            //         action("Adm. Appraisal Types")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Appraisal Types';
+            //             ToolTip = 'Open Appraisal Types';
+            //             RunObject = Page "Appraisal Types";
+            //         }
+            //         action("Adm. Appraisal Periods")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Appraisal Periods';
+            //             ToolTip = 'Open Appraisal Periods';
+            //             RunObject = Page "Appraisal Periods";
+            //         }
+            //         action("Adm. Appraisal Ranking")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Appraisal Ranking';
+            //             ToolTip = 'Open Appraisal Ranking';
+            //             RunObject = Page "Grade Matrix";
+            //         }
+            //     }
+            // }
+            group("Performance Appraisal Management")
             {
                 Caption = 'Performance Management';
+                action("Appraisal List")
+                {
+                    RunObject = page "Appraisal List";
+                    ToolTip = 'Executes the Appraisal List - Objectives action';
+                    Caption = 'Appraisal List';
+                }
 
-                action("Appraisal Objectives")
+                action("Appraisal List - Pending Approval")
                 {
-                    ApplicationArea = All;
-                    Caption = 'Create Employee Appraisal Objectives';
-                    ToolTip = 'Open Create Employee Appraisal Objectives';
-                    RunObject = Page "Create Appraisal Objectives";
+                    RunObject = page "Appraisal List - Pending";
+                    RunPageLink = Status = const("Pending Approval");
+                    ToolTip = 'Executes the Appraisal List - Objectives Pending Approval action';
+                    Caption = 'Appraisal List - Pending Approval';
                 }
-                action("Approved Appraisal Objectives")
+                action("Appraisal List - Further review")
                 {
-                    ApplicationArea = All;
-                    Caption = 'Approved Appraisal Objectives';
-                    ToolTip = 'Open Approved Appraisal Objectives';
-                    RunObject = Page "Approved Appraisal Objectives";
+                    RunObject = page "Appraisal List - Pending";
+                    RunPageLink = "Appraisal Status" = filter("Further review");
+                    ToolTip = 'Executes the Appraisal List - Further review action';
+                    Caption = 'Appraisal List - Further review';
+                    visible = false;
                 }
-                action("Employee Appraisal")
+                group("Appraisals List Under Review")
                 {
-                    ApplicationArea = All;
-                    Caption = 'Create Employee Appraisal';
-                    ToolTip = 'Open Create Employee Appraisal';
-                    RunObject = Page "Create Employee Appraisal";
-                }
-                action("Approved Appraisal")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Approved Employee Appraisal';
-                    ToolTip = 'Open Approved Employee Appraisal';
-                    RunObject = Page "Employee Appraisals";
-                }
-                group("Performance Management Reports")
-                {
-                    Caption = 'Reports & Analysis';
-                    ToolTip = 'Performance Management Reports & Analysis';
+                    Caption = 'Appraisals List Under Review';
+                    action("Appraisal List Under Review - MidYear")
+                    {
+                        RunObject = page "Appraisals UnderReview MidYear";
+                        ToolTip = 'Executes the Appraisal List Under Review - MidYear action';
+                        Caption = 'Appraisal List Under Review - MidYear';
+                        visible = false;
+                    }
+                    action("Appraisal List Under Review - FinalYear")
+                    {
+                        RunObject = page "Appraisals UnderReview FY";
+                        ToolTip = 'Executes the Appraisal List Under Review - FinalYear action';
+                        Caption = 'Appraisal List Under Review - FinalYear';
+                        visible = false;
+                    }
 
-                    action("Rtp. Employee Appraisal")
+                }
+                action("Appraisal List - Completed")
+                {
+                    RunObject = page "Appraisal List - Completed";
+                    ToolTip = 'Executes the Appraisal List - Completed action';
+                    Caption = 'Appraisal List - Completed';
+                }
+                group("Appriasal Reports")
+                {
+                    Caption = 'Appriasal Reports';
+                    action("Employee Appraisals")
                     {
-                        ApplicationArea = All;
-                        Caption = 'Employee Appraisal';
-                        ToolTip = 'Run Employee Appraisal';
-                        RunObject = Report "Employee Appraisals";
-                    }
-                    action("Rtp. Performance Appraisal")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Performance Appraisal';
-                        ToolTip = 'Run Performance Appraisal';
-                        RunObject = Report "Performance Appraisal";
+                        RunObject = report "Employee Appraisals";
+                        Caption = 'Employee Appraisals';
                     }
                 }
-                group("Performance Management Administration")
+                group("Appraisal Setup")
                 {
-                    Caption = 'Administration';
-                    ToolTip = 'Performance Management Setups';
-
-                    action("Adm. Appraisal Category")
+                    Caption = 'Appraisal Setup';
+                    action("Appraisal Periods")
                     {
-                        ApplicationArea = All;
-                        Caption = 'Appraisal Category';
-                        ToolTip = 'Open Appraisal Category';
-                        RunObject = Page "Appraisal Category";
-                    }
-                    action("Adm. Appraisal Types")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Appraisal Types';
-                        ToolTip = 'Open Appraisal Types';
-                        RunObject = Page "Appraisal Types";
-                    }
-                    action("Adm. Appraisal Periods")
-                    {
-                        ApplicationArea = All;
+                        RunObject = page "Appraisal Periods";
+                        ToolTip = 'Executes the Appraisal Periods action';
                         Caption = 'Appraisal Periods';
-                        ToolTip = 'Open Appraisal Periods';
-                        RunObject = Page "Appraisal Periods";
                     }
-                    action("Adm. Appraisal Ranking")
+                    action("Workplan Codes")
                     {
-                        ApplicationArea = All;
-                        Caption = 'Appraisal Ranking';
-                        ToolTip = 'Open Appraisal Ranking';
-                        RunObject = Page "Grade Matrix";
+                        RunObject = page "Appraisal Workplan Codes";
+                        Caption = 'Workplan Codes';
+                    }
+                    action("Strategic Implementation Frequency")
+                    {
+                        RunObject = page "Strategic Impl Frequency";
+                        ToolTip = 'Executes the Strategic Implementation Frequency action';
+                        Visible = false;
+                        Caption = 'Strategic Implementation Frequency';
+                    }
+                    action("Strategic Implementation Objectives")
+                    {
+                        RunObject = page "Strategic Impl Objectives";
+                        ToolTip = 'Executes the Strategic Implementation Objectives action';
+                        Visible = false;
+                        Caption = 'Strategic Implementation Objectives';
+                    }
+                    action("Perfomance rating matrix")
+                    {
+                        RunObject = page "Perfomance rating matrix";
+                        ToolTip = 'Executes the Perfomance rating matrix action';
+                        Visible = false;
+                        Caption = 'Perfomance rating matrix';
+                    }
+                    action("Work related attributes")
+                    {
+                        RunObject = page "Work related attributes";
+                        ToolTip = 'Executes the Work related attributes action';
+                        Caption = 'Work related attributes';
+                    }
+                    action("Training Area")
+                    {
+                        RunObject = page "Training Areas";
+                        ToolTip = 'Executes the Training Area action';
+                        Caption = 'Training Area';
+                    }
+                    action("Skill Codes")
+                    {
+                        RunObject = page "Skill Codes";
+                        ToolTip = 'Executes the Skill Codes action';
+                        Caption = 'Skill Codes';
+                    }
+                    action("Developmental Actions Setup")
+                    {
+                        RunObject = page "Appraisal Dev Needs Setup";
+                        ToolTip = 'Executes the Developmental Actions Setup action';
+                        Caption = 'Developmental Actions Setup';
                     }
                 }
             }
@@ -1128,12 +1248,12 @@ page 51488 "HR Officer Role Center"
                     Caption = 'Bal Scoring Setup';
                     RunObject = Page "Bal Scoring Setup";
                 }
-                action("Appraisal Setup")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Appraisal Setup';
-                    RunObject = Page "Appraisal Setup";
-                }
+                // action("Appraisal Setup")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Appraisal Setup';
+                //     RunObject = Page "Appraisal Setup";
+                // }
                 action("Appraisal Questions")
                 {
                     ApplicationArea = All;

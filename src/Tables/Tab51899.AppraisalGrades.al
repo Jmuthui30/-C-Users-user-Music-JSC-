@@ -1,4 +1,4 @@
-table 51899 "Appraisal Grades"
+table 51899 "Appraisal Grades-Old"
 {
     DrillDownPageID = "Grade Matrix";
     LookupPageID = "Grade Matrix";

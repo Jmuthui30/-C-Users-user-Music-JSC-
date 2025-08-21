@@ -110,6 +110,17 @@ page 56136 "Archived Recruitment Requests"
 
             }
         }
+        area(Reporting)
+        {
+            action(ArchivedRecruitmentRequests)
+            {
+                ApplicationArea = All;
+                Caption = 'Archived Recruitment Requests';
+                Image = Report;
+                RunObject = Report "Archived Recruitment Request";
+                // RunPageLink = "No."= field("No.");
+            }
+        }
 
     }
 }

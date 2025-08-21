@@ -383,6 +383,45 @@ codeunit 51426 "Payroll Calculator"
               Erase('C:\Program Files\Microsoft Dynamics 365 Business Central\' + Employee."No." + Format(Date2DMY(Period, 2)) + Format(Date2DMY(Period, 3)) + '.pdf');
 */
     end;
+     procedure ValidateFormulaAmounts(AssignRec: Record "Client Payroll Matrix")
+    var
+        AssignmentMatrixX: Record "Client Payroll Matrix";
+        Deductions: Record Deductions;
+        Earnings: Record Earnings;
+        ValidateAmountTxt: Label 'You have earnings or deductions that depend on changing this amount.\Do you wish to update them?';
+    begin
+        if AssignRec.Amount > 0 then
+            if AssignRec."Basic Salary Code" then begin            //  or AssignRec."House Allowance Code" or AssignRec."Commuter Allowance Code" or AssignRec."Salary Arrears Code" or AssignRec."Insurance Code" then begin
+                AssignmentMatrixX.Reset();
+                AssignmentMatrixX.SetRange(AssignmentMatrixX."Employee No", AssignRec."Employee No");
+                AssignmentMatrixX.SetRange(AssignmentMatrixX."Payroll Period", AssignRec."Payroll Period");
+                if AssignmentMatrixX.Find('-') then
+                    repeat
+                        //Deductions
+                        Deductions.Reset();
+                        Deductions.SetRange(Code, AssignmentMatrixX.Code);
+                        Deductions.SetFilter("Calculation Method", '%1|%2|%3', Deductions."Calculation Method"::"% of Basic Pay",
+                                              Deductions."Calculation Method"::"% of Basic Pay+Hse Allowance");
+                                            //   Deductions."Calculation Method"::"% of Basic Pay+Hse Allowance + Comm Allowance + Sal Arrears");
+                        if not Deductions.IsEmpty() then
+                            if Confirm(ValidateAmountTxt, false) then begin
+                                AssignmentMatrixX.Validate(Code);
+                                AssignmentMatrixX.Modify();
+                            end;
+
+                        //Earnings
+                        Earnings.Reset();
+                        Earnings.SetRange(Code, AssignmentMatrixX.Code);
+                        Earnings.SetFilter("Calculation Method", '%1|%2', Earnings."Calculation Method"::"% of Basic pay",
+                                              Earnings."Calculation Method"::"% of Insurance Amount");
+                        if not Earnings.IsEmpty() then begin
+                            AssignmentMatrixX.Validate(Code);
+                            AssignmentMatrixX.Modify();
+                        end;
+                    until AssignmentMatrixX.Next() = 0;
+            end;
+    end;
+
     procedure InsertDeductionPayrollEntrySpecificPeriod(var EmployeeNo: Code[20]; var "Code": Code[10]; var Amount: Decimal; var Period: Date)
     var
         PayrollMatrix: Record "Payroll Matrix";

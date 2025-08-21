@@ -161,4 +161,40 @@ codeunit 52004 "Workflow Responses HR"
             Employee.Modify(true);
         end;
     end;
+     procedure ReleaseEmployeeAppraisalRequest(var Appraisal: Record "Employee Appraisal")
+    var
+        EmployeeApp: Record "Employee Appraisal";
+    begin
+        EmployeeApp.Reset();
+        EmployeeApp.SetRange("Appraisal No", Appraisal."Appraisal No");
+        if EmployeeApp.FindFirst() then begin
+            /*if (EmployeeApp.Type = EmployeeApp.Type::"Mid-Year") and (EmployeeApp.Status <> EmployeeApp.Status::"Mid-Year Approved") then
+                EmployeeApp.Status := EmployeeApp.Status::"Mid-Year Approved";
+
+            if (EmployeeApp.Type = EmployeeApp.Type::"Mid-Year") and (EmployeeApp.Status = EmployeeApp.Status::"Mid-Year Approved") then
+                HRMgnt.SendToFinalYearAppraisal(EmployeeApp);
+            Commit();
+
+            if (EmployeeApp.Type <> EmployeeApp.Type::"Mid-Year") and (EmployeeApp.Status <> EmployeeApp.Status::"Mid-Year Approved") then
+                EmployeeApp.Status := EmployeeApp.Status::Released;*/
+
+            EmployeeApp.Status := EmployeeApp.Status::Released;
+            // EmployeeApp."Appraisal Status" := EmployeeApp."Appraisal Status"::Review;
+            EmployeeApp.Modify(true);
+        end;
+    end;
+
+    procedure ReopenEmployeeAppraisalRequest(var Appraisal: Record "Employee Appraisal")
+    var
+        EmployeeApp: Record "Employee Appraisal";
+    begin
+        EmployeeApp.Reset();
+        EmployeeApp.SetRange("Appraisal No", Appraisal."Appraisal No");
+        if EmployeeApp.FindFirst() then begin
+            EmployeeApp.Status := EmployeeApp.Status::Open;
+            EmployeeApp."Appraisal Status" := EmployeeApp."Appraisal Status"::Setting;
+            EmployeeApp.Modify(true);
+        end;
+    end;
+
 }

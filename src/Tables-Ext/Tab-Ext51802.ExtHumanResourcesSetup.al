@@ -463,5 +463,23 @@ tableextension 51802 "ExtHuman Resources Setup" extends "Human Resources Setup"
         field(50112; "Minimum Employee Age"; Code[50])
         { }
         field(50113; "Retirement Age"; Code[30]) { }
+        field(50114; "Training Needs Request Nos."; Code[10])
+        {
+            DataClassification = SystemMetadata;
+            TableRelation = "No. Series";
+            Caption = 'Training Needs Request Nos.';
+        }
+        field(50115; "Training Needs Nos"; Code[10])
+        {
+            DataClassification = SystemMetadata;
+            TableRelation = "No. Series";
+            Caption = 'Training Needs Nos';
+        }
+         field(50116; "Training Budget Item Nos"; Code[10])
+        {
+            DataClassification = SystemMetadata;
+            TableRelation = "No. Series";
+            Caption = 'Training Budget Item Nos';
+        }
     }
 }
