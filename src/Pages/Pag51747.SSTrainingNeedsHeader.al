@@ -184,8 +184,8 @@ page 51747 "SS Training Needs Header"
                 trigger OnAction()
                 begin
 
-                    if ApprovalsMgmt.CheckTrainingRequestWorkflowEnabled(Rec) then
-                        ApprovalsMgmt.OnSendTrainingRequestforApproval(Rec);
+                    // if ApprovalsMgmt.CheckTrainingRequestWorkflowEnabled(Rec) then
+                    //     ApprovalsMgmt.OnSendTrainingRequestforApproval(Rec);
                         Commit();
                 end;
             }
