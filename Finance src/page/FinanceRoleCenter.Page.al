@@ -1991,6 +1991,12 @@ page 51061 "Finance Role Center"
                         RunObject = page Receipts;
                         ToolTip = 'Executes the Receipts action';
                     }
+                    action(ImprestMemo)
+                    {
+                        Caption = 'Imprest Memo ';
+                        RunObject = page "Imprest Memo List";
+                        ToolTip = 'Executes the Imprests action';
+                    }
                     action(Imprests1)
                     {
                         Caption = 'Imprests';
@@ -2299,6 +2305,20 @@ page 51061 "Finance Role Center"
                         Caption = 'Imprest Types';
                         RunObject = page "Imprest Types";
                         ToolTip = 'Executes the Imprest Types action';
+                    }
+                    // TDY Locations
+                    action("TDY Locations Codes")
+                    {
+                        Caption = 'TDY Locations';
+                        RunObject = page "TDY Locations";
+                        ToolTip = 'Executes the Expense Codes action';
+                    }
+                    //"Client Salary Scales"
+                    action("Client Salary Scales")
+                    {
+                        Caption = 'Client Salary Scales';
+                        RunObject = page "Client Salary Scales";
+                        ToolTip = 'Executes the Client Salary Scales action';
                     }
                     action("Payment Types")
                     {
