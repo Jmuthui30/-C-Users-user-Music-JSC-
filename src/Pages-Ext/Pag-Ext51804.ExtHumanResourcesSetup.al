@@ -83,7 +83,7 @@ pageextension 51804 "ExtHuman Resources Setup" extends "Human Resources Setup"
             {
                 ApplicationArea = All;
             }
-            field("Training Need Nos"; Rec."Training Need Nos")
+            field("Training Needs Request Nos.";"Training Needs Request Nos.")
             {
                 ApplicationArea = All;
             }

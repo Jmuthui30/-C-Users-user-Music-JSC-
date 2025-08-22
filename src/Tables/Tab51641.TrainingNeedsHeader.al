@@ -147,10 +147,20 @@ table 51641 "Training Needs Header"
         {
             Caption = 'Comments by HR Manager';
         }
+        field(35; "Need Source"; Option)
+        {
+            OptionCaption = 'Calendar,Appraisal,CPD, Adhoc,Disciplinary';
+            OptionMembers = Calendar,Appraisal,CPD,Adhoc,Disciplinary;
+            Caption = 'Need Source';
+        }
+         field(36; "Source Document No"; Code[20])
+        {
+            Caption = 'Source Document No';
+        }
     }
     keys
     {
-        key(Key1; "No.")
+        key(Key1; "No.","Source Document No", "Need Source", "Employee No")
         {
         }
     }

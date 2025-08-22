@@ -231,6 +231,18 @@ table 51903 "Appraisal Lines"
         {
             Caption = 'Workplan Code';
             TableRelation = "Appraisal Workplan Code".Code;
+            trigger OnValidate()
+            var
+                AppraisalWorkplanCode: Record "Appraisal Workplan Code";
+            begin
+                if "Workplan Code" <> '' then begin
+                    if AppraisalWorkplanCode.Get("Workplan Code") then
+                        "Workplan Description" := AppraisalWorkplanCode.Description
+                    else
+                        "Workplan Description" := '';
+                end else
+                    "Workplan Description" := '';
+            end;
         }
         field(38; "Performance Measure"; Code[50])
         {
@@ -250,7 +262,7 @@ table 51903 "Appraisal Lines"
         {
             Caption = 'Weighted Rating';
         }
-         field(41; "Appraisal Category"; Code[20])
+        field(41; "Appraisal Category"; Code[20])
         {
             DataClassification = ToBeClassified;
         }
