@@ -109,12 +109,21 @@ report 53072 "update Job Appl."
     local procedure InitializeSubmittedJobRecord(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; JobApp: Record "Job Application")
     var
         ApplicantName: text[1000];
+        StringList:List of [Text];
+        // InputString:Text[1024];
+        OutputString:Text[1024];
+        i:Integer;
     begin
         Clear(ApplicantSubmittedJob);
         ApplicantSubmittedJob.Init();
         ApplicantSubmittedJob."Job code" := JobApp."No.";
         ApplicantName := JobApp."Applicant Name";
-        ApplicantSubmittedJob."Applicant Name" := FORMAT(UpperCase(COPYSTR(ApplicantName, 1, 1))) + LowerCase(COPYSTR(ApplicantName, 2));
+        StringList:=ApplicantName.Split(' ');
+        for i := 1 to StringList.Count() do begin
+            OutputString:= OutputString + ' ' + UpperCase(CopyStr(StringList.Get(i),1,1)) + LowerCase(CopyStr(StringList.Get(i),2));
+        end;
+        ApplicantSubmittedJob."Applicant Name":=OutputString;
+        // ApplicantSubmittedJob."Applicant Name" := FORMAT(UpperCase(COPYSTR(ApplicantName, 1, 1))) + LowerCase(COPYSTR(ApplicantName, 2));
         ApplicantSubmittedJob."Applicant No." := JobApp."Applicant No.";
         ApplicantSubmittedJob.Gender := JobApp.Gender;
         ApplicantSubmittedJob."Job Title" := JobApp."Job Title";

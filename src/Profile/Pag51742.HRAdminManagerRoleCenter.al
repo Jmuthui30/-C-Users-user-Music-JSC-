@@ -1438,6 +1438,7 @@ page 51742 "HR & Admin Manager Role Center"
                     RunPageLink = Status = const("Pending Approval");
                     ToolTip = 'Executes the Appraisal List - Objectives Pending Approval action';
                     Caption = 'Appraisal List - Pending Approval';
+                    // Visible = false;
                 }
                 action("Appraisal List - Further review")
                 {
@@ -1445,6 +1446,7 @@ page 51742 "HR & Admin Manager Role Center"
                     RunPageLink = "Appraisal Status" = filter("Further review");
                     ToolTip = 'Executes the Appraisal List - Further review action';
                     Caption = 'Appraisal List - Further review';
+                    Visible = false;
                 }
                 group("Appraisals List Under Review")
                 {
@@ -1454,12 +1456,14 @@ page 51742 "HR & Admin Manager Role Center"
                         RunObject = page "Appraisals UnderReview MidYear";
                         ToolTip = 'Executes the Appraisal List Under Review - MidYear action';
                         Caption = 'Appraisal List Under Review - MidYear';
+                        Visible = false;
                     }
                     action("Appraisal List Under Review - FinalYear")
                     {
                         RunObject = page "Appraisals UnderReview FY";
                         ToolTip = 'Executes the Appraisal List Under Review - FinalYear action';
                         Caption = 'Appraisal List Under Review - FinalYear';
+                        Visible = false;
                     }
 
                 }

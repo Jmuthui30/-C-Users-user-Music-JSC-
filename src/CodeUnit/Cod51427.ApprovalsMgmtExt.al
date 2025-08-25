@@ -6,6 +6,9 @@ codeunit 51427 "Approvals Mgmt. Ext"
 
     var
         ApprovalMgnt: Codeunit "Approvals Mgmt.";
+        WorkFlowManagement: Codeunit "Workflow Management";
+        NoWorkflowEnabledErr: Label 'No workflow is enabled for this document type. Please contact your system administrator.', Comment = 'Error message shown when there is no workflow enabled for the document type.';
+        WorkflowEventHandling: Codeunit "Workflow Event Handling";
     //#region Approval Methods
     local procedure "*****************THL - BASIC FINANCE MODULE CUSTOMIZATIONS*********************"()
     begin
@@ -342,6 +345,19 @@ codeunit 51427 "Approvals Mgmt. Ext"
     procedure OnCancelTraininigNeedsApprovalRequest(var TrainingNeeds: Record "Training Needs Header")
     begin
     end;
+
+    // procedure IsTrainingNeedsWorkflowEnabled(var TrainingNeeds: Record "Training Needs Header"): Boolean
+    // begin
+    //     exit(WorkFlowManagement.CanExecuteWorkflow(TrainingNeeds, WorkflowEventHandling.runsendtrai()));
+    // end;
+
+    //Tender evaluation
+    // procedure CheckTrainingNeedsWorkflowEnabled(var TrainingNeeds: Record "Training Needs Header"): Boolean
+    // begin
+    //     if not IsTrainingNeedsWorkflowEnabled(TrainingNeeds) then
+    //         Error(NoWorkflowEnabledErr);
+    //     exit(true);
+    // end;
 
     local procedure "***********************Recruitment Request******************************************"()
     begin

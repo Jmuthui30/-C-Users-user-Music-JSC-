@@ -2,6 +2,8 @@ page 51488 "HR Officer Role Center"
 {
     Caption = 'HR Officer Role Center';
     PageType = RoleCenter;
+    ApplicationArea = All;
+    
 
     //SourceTable = "";
     layout

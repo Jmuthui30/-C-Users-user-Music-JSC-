@@ -392,15 +392,15 @@ page 52358 "Appraisal Card-Review"
                 ToolTip = 'Executes the Create a Training need action';
                 trigger OnAction()
                 var
-                    TrainingNeedRequest: Record "Training Needs Request";
+                    TrainingNeedRequest: Record "Training Needs Header";
                 begin
                     TrainingNeedRequest.SetRange("Source Document No", Rec."Appraisal No");
                     if TrainingNeedRequest.FindFirst() then
-                        PAGE.RUN(page::"Training Needs Request card", TrainingNeedRequest)
+                        PAGE.RUN(page::"SS Training Needs Header", TrainingNeedRequest)
                     else begin
                         TrainingNeedRequest.Reset();
                         TrainingNeedRequest.Init();
-                        TrainingNeedRequest.No := '';
+                        TrainingNeedRequest."No." := '';
                         TrainingNeedRequest."Employee No" := Rec."Employee No";
                         TrainingNeedRequest.Validate("Employee No");
                         TrainingNeedRequest."Source Document No" := Rec."Appraisal No";
@@ -408,7 +408,7 @@ page 52358 "Appraisal Card-Review"
                         TrainingNeedRequest.Insert(true);
                         TrainingNeedRequest.SetRange("Source Document No", Rec."Appraisal No");
                         if Rec.FindFirst() then
-                            PAGE.RUN(page::"Training Needs Request card", TrainingNeedRequest);
+                            PAGE.RUN(page::"SS Training Needs Header", TrainingNeedRequest);
                     end;
                 end;
 
