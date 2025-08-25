@@ -4,6 +4,7 @@ page 51747 "SS Training Needs Header"
     Caption = 'New Training Needs Assesment';
     PageType = Card;
     SourceTable = "Training Needs Header";
+    ApplicationArea = all;
 
     layout
     {
@@ -180,12 +181,13 @@ page 51747 "SS Training Needs Header"
                 PromotedIsBig = true;
                 PromotedOnly = true;
                 ToolTip = 'Executes the Send For Approval action';
+                ApplicationArea = All;
 
                 trigger OnAction()
                 begin
 
-                    // if ApprovalsMgmt.CheckTrainingRequestWorkflowEnabled(Rec) then
-                    //     ApprovalsMgmt.OnSendTrainingRequestforApproval(Rec);
+                    // if ApprovalsMgmt.checktr(Rec) then
+                        ApprovalsMgmt.OnSendTrainingNeedsForApproval(Rec);
                         Commit();
                 end;
             }
@@ -227,5 +229,5 @@ page 51747 "SS Training Needs Header"
         }
     }
     var
-    ApprovalsMgmt:Codeunit "Approval Mgt HR Ext";
+    ApprovalsMgmt:Codeunit "Approvals Mgmt. Ext";
 }
