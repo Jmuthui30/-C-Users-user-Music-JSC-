@@ -69,9 +69,17 @@ report 53072 "update Job Appl."
         Dates: Codeunit "HR Dates Mgt";
         AGEFORMT: Date;
         Recruitment: record "Recruitment Needs";
+        ArtisanCourseDescription: Label 'Artisan course';
         BachelorsDegreeDescription: Label '%1 in %2 from %3(%4)';
         MastersDegreeDesc: Label '%1 in %2 from %3(%4)';
         PHDDegreeDesc: Label '%1 in %2 from %3(%4)';
+        KCEDesc: Label '%1 from %2 (%3 - %4)';
+        KACEDesc: Label '%1 from %2 (%3 - %4)';
+        KCSEDesc: Label '%1 from %2 (%3 - %4)';
+        ArtisanDesc: Label '%1 in %2 from %3 (%4)';
+        CertificateDesc: Label '%1 in %2 from %3 (%4)';
+        DiplomaDesc: Label '%1 in %2 from %3 (%4)';
+        HigherDiplomaDesc: Label '%1 in %2 from %3 (%4)';
 
     local procedure ProcessJobApplication(JobApp: Record "Job Application")
     var
@@ -109,20 +117,20 @@ report 53072 "update Job Appl."
     local procedure InitializeSubmittedJobRecord(var ApplicantSubmittedJob: Record "Applicant Submitted Job"; JobApp: Record "Job Application")
     var
         ApplicantName: text[1000];
-        StringList:List of [Text];
+        StringList: List of [Text];
         // InputString:Text[1024];
-        OutputString:Text[1024];
-        i:Integer;
+        OutputString: Text[1024];
+        i: Integer;
     begin
         Clear(ApplicantSubmittedJob);
         ApplicantSubmittedJob.Init();
         ApplicantSubmittedJob."Job code" := JobApp."No.";
         ApplicantName := JobApp."Applicant Name";
-        StringList:=ApplicantName.Split(' ');
+        StringList := ApplicantName.Split(' ');
         for i := 1 to StringList.Count() do begin
-            OutputString:= OutputString + ' ' + UpperCase(CopyStr(StringList.Get(i),1,1)) + LowerCase(CopyStr(StringList.Get(i),2));
+            OutputString := OutputString + ' ' + UpperCase(CopyStr(StringList.Get(i), 1, 1)) + LowerCase(CopyStr(StringList.Get(i), 2));
         end;
-        ApplicantSubmittedJob."Applicant Name":=OutputString;
+        ApplicantSubmittedJob."Applicant Name" := OutputString;
         // ApplicantSubmittedJob."Applicant Name" := FORMAT(UpperCase(COPYSTR(ApplicantName, 1, 1))) + LowerCase(COPYSTR(ApplicantName, 2));
         ApplicantSubmittedJob."Applicant No." := JobApp."Applicant No.";
         ApplicantSubmittedJob.Gender := JobApp.Gender;
@@ -620,6 +628,7 @@ report 53072 "update Job Appl."
                     ApplicantSubmittedJob."From Date" := ApplicantsQual."From Date";
                     ApplicantSubmittedJob."To Date" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Grade/Class" := ApplicantsQual."Grade/Class";
+                    ApplicantSubmittedJob."KACE Desc" := StrSubstNo(KACEDesc, ApplicantSubmittedJob.Description, ApplicantSubmittedJob."Institution/Company", Date2DMY(ApplicantSubmittedJob."From Date", 3), Date2DMY(ApplicantSubmittedJob."To Date", 3));
                 end;
                 //KCE qualifications
                 if (ApplicantsQual."Qualification Code" = 'KCE') then begin
@@ -629,6 +638,7 @@ report 53072 "update Job Appl."
                     ApplicantSubmittedJob."From Date 11" := ApplicantsQual."From Date";
                     ApplicantSubmittedJob."To Date 11" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Grade/Class 11" := ApplicantsQual."Grade/Class";
+                    ApplicantSubmittedJob."KCE Desc" := StrSubstNo(KCEDesc, ApplicantSubmittedJob."Description 11", ApplicantSubmittedJob."Institution/Company 11", Date2DMY(ApplicantSubmittedJob."From Date 11", 3), Date2DMY(ApplicantSubmittedJob."To Date 11", 3));
 
                 end;
 
@@ -640,6 +650,7 @@ report 53072 "update Job Appl."
                     ApplicantSubmittedJob."From Date 1" := ApplicantsQual."From Date";
                     ApplicantSubmittedJob."To Date 1" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Grade/Class 1" := ApplicantsQual."Grade/Class";
+                    ApplicantSubmittedJob."KCSE Desc" := StrSubstNo(KCSEDesc, ApplicantSubmittedJob."Description 1", ApplicantSubmittedJob."Institution/Company 1", Date2DMY(ApplicantSubmittedJob."From Date 1", 3), Date2DMY(ApplicantSubmittedJob."To Date 1", 3));
                 end;
 
                 // Handle qualifications in 30000-39999 range (corrected logic)
@@ -662,6 +673,7 @@ report 53072 "update Job Appl."
                     ApplicantSubmittedJob."From Date 3" := ApplicantsQual."From Date";
                     ApplicantSubmittedJob."To Date 3" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Grade/Class 3" := ApplicantsQual."Grade/Class";
+                    ApplicantSubmittedJob."Certificate Desc" := StrSubstNo(CertificateDesc, ApplicantSubmittedJob."Description 3", ApplicantSubmittedJob."Area of Specialization 3", ApplicantSubmittedJob."Institution/Company 3", Date2DMY(ApplicantSubmittedJob."To Date 3", 3));
                 end;
                 if (ApplicantsQual."Qualification Code" >= '50000') and (ApplicantsQual."Qualification Code" <= '59999') then begin
                     ApplicantSubmittedJob."Institution/Company 4" := ApplicantsQual."Institution/Company";
@@ -670,6 +682,7 @@ report 53072 "update Job Appl."
                     ApplicantSubmittedJob."Grade/Class 4" := ApplicantsQual."Grade/Class";
                     ApplicantSubmittedJob."Area of Specialization 4" := ApplicantsQual."Area of Specialization";
                     ApplicantSubmittedJob."Description 4" := ApplicantsQual.Description;
+                    ApplicantSubmittedJob."Diploma Desc" := StrSubstNo(DiplomaDesc, ApplicantSubmittedJob."Description 4", ApplicantSubmittedJob."Area of Specialization 4", ApplicantSubmittedJob."Institution/Company 4", Date2DMY(ApplicantSubmittedJob."To Date 4", 3));
                 end;
                 if (ApplicantsQual."Qualification Code" >= '40000') and (ApplicantsQual."Qualification Code" <= '49999') then begin
                     applicantSubmittedJob."Area of Specialization 5" := ApplicantsQual."Area of Specialization";
@@ -678,6 +691,7 @@ report 53072 "update Job Appl."
                     ApplicantSubmittedJob."To Date 5" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Grade/Class 5" := ApplicantsQual."Grade/Class";
                     ApplicantSubmittedJob."Description 5" := ApplicantsQual.Description;
+                    ApplicantSubmittedJob."Higher Diploma Desc" := StrSubstNo(HigherDiplomaDesc, ApplicantSubmittedJob."Description 5", ApplicantSubmittedJob."Area of Specialization 5", ApplicantSubmittedJob."Institution/Company 5", Date2DMY(ApplicantSubmittedJob."To Date 5", 3));
                 end;
                 if (ApplicantsQual."Qualification Code" >= '60000') and (ApplicantsQual."Qualification Code" <= '60009') then begin
                     applicantSubmittedJob."Area of Specialization 2" := ApplicantsQual.Description;
@@ -712,6 +726,7 @@ report 53072 "update Job Appl."
                     ApplicantSubmittedJob."To Date 10" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Grade/Class 10" := ApplicantsQual."Grade/Class";
                     ApplicantSubmittedJob."Description 10" := ApplicantsQual.Description;
+                    ApplicantSubmittedJob."Artisan Desc" := StrSubstNo(ArtisanDesc,ArtisanCourseDescription,ApplicantSubmittedJob."Area of Specialization 10", ApplicantSubmittedJob."Institution/Company 10", Date2DMY(ApplicantSubmittedJob."To Date 10", 3));
                 end;
 
             until ApplicantsQual.Next() = 0;
