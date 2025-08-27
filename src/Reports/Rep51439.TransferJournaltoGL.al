@@ -100,9 +100,9 @@ report 51439 "Transfer Journal to GL"
                 column(EarningsX1_Code; Code)
                 {
                 }
-                column(EarningsX1_Posting_Group_Filter; Earnings."Global Dimension 1 Filter")
-                {
-                }
+                // column(EarningsX1_Posting_Group_Filter; Earnings."Global Dimension 1 Filter")
+                // {
+                // }
                 column(EarningsX1_Pay_Period_Filter; "Pay Period Filter")
                 {
                 }

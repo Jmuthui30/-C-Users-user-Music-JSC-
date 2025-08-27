@@ -1,4 +1,4 @@
-page 52063 "Blocked Reasons"
+page 52367 "Blocked Reasons"
 {
     PageType = List;
     ApplicationArea = All;

@@ -1,4 +1,4 @@
-page 52026 "Appraisal Types"
+page 52026 "Appraisal Types-Old"
 {
     SourceTable = "Appraisal Types";
     PageType = List;

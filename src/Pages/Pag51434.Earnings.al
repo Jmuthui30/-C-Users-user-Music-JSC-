@@ -40,10 +40,10 @@ page 51434 "Earnings"
                 {
                     ApplicationArea = All;
                 }
-                field("G/L Account"; Rec."G/L Account")
-                {
-                    ApplicationArea = All;
-                }
+                // field("G/L Account"; Rec."G/L Account")
+                // {
+                //     ApplicationArea = All;
+                // }
                 field("Total Amount"; Rec."Total Amount")
                 {
                     ApplicationArea = All;
@@ -56,10 +56,10 @@ page 51434 "Earnings"
                 {
                     ApplicationArea = All;
                 }
-                field("Overtime Factor"; Rec."Overtime Factor")
-                {
-                    ApplicationArea = All;
-                }
+                // field("Overtime Factor"; Rec."Overtime Factor")
+                // {
+                //     ApplicationArea = All;
+                // }
                 field("Low Interest Benefit"; Rec."Low Interest Benefit")
                 {
                     ApplicationArea = All;

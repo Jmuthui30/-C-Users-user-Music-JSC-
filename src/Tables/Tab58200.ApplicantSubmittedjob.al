@@ -1376,6 +1376,47 @@ table 58200 "Applicant Submitted Job"
         { }
         field(32223; "Post Admission Period"; text[100])
         { }
+        field(3224; "Bachelors Degree Desc"; Text[2048])
+        {
+
+        }
+        field(3225; "Masters Degree Desc"; Text[2048])
+        {
+
+        }
+        field(3226; "PHD Degree Desc"; Text[2048])
+        {
+
+        }
+        field(3227; "KCE Desc"; Text[2048])
+        {
+
+        }
+        field(3232; "KACE Desc"; Text[2048])
+        {
+
+        }
+        field(3234; "KCSE Desc"; Text[2048])
+        {
+
+        }
+        field(3236; "Artisan Desc"; Text[2048])
+        {
+
+        }
+        field(3240;"Certificate Desc"; Text[2048])
+        {
+
+        }
+        field(3241;"Diploma Desc"; Text[2048])
+        {
+
+        }
+        field(3242;"Higher Diploma Desc"; Text[2048])
+        {
+
+        }
+
 
 
 

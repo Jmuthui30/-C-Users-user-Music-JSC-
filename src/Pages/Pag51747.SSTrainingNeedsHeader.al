@@ -4,6 +4,7 @@ page 51747 "SS Training Needs Header"
     Caption = 'New Training Needs Assesment';
     PageType = Card;
     SourceTable = "Training Needs Header";
+    ApplicationArea = all;
 
     layout
     {
@@ -71,7 +72,7 @@ page 51747 "SS Training Needs Header"
                 {
                     ApplicationArea = All;
                 }
-                field("Brief Description of Job Function:";'')
+                field("Brief Description of Job Function:"; '')
                 {
                     ApplicationArea = All;
                     Caption = 'Brief Description of Job Function:';
@@ -82,7 +83,7 @@ page 51747 "SS Training Needs Header"
                     MultiLine = true;
                     ShowCaption = false;
                 }
-                field("Current Employee Skills (Strength):";'')
+                field("Current Employee Skills (Strength):"; '')
                 {
                     ApplicationArea = All;
                     Caption = 'Current Employee Skills (Strength):';
@@ -93,7 +94,7 @@ page 51747 "SS Training Needs Header"
                     MultiLine = true;
                     ShowCaption = false;
                 }
-                field("Missing/Deficient Competencies (Weakness):";'')
+                field("Missing/Deficient Competencies (Weakness):"; '')
                 {
                     ApplicationArea = All;
                     Caption = 'Missing/Deficient Competencies (Weakness):';
@@ -104,7 +105,7 @@ page 51747 "SS Training Needs Header"
                     MultiLine = true;
                     ShowCaption = false;
                 }
-                field("Required Skills to Address the Missing Competencies (Weakness):";'')
+                field("Required Skills to Address the Missing Competencies (Weakness):"; '')
                 {
                     ApplicationArea = All;
                     Caption = 'Required Skills to Address the Missing Competencies (Weakness):';
@@ -115,7 +116,7 @@ page 51747 "SS Training Needs Header"
                     MultiLine = true;
                     ShowCaption = false;
                 }
-                field("Comments by Departmental Head";'')
+                field("Comments by Departmental Head"; '')
                 {
                     ApplicationArea = All;
                     Caption = 'Comments by Departmental Head';
@@ -130,9 +131,9 @@ page 51747 "SS Training Needs Header"
             part(Control25; "Training Needs Lines")
             {
                 ApplicationArea = All;
-                SubPageLink = "Employee No."=FIELD("Employee No");
+                SubPageLink = "Employee No." = FIELD("Employee No");
             }
-            field("Comments by HR Manager:";'')
+            field("Comments by HR Manager:"; '')
             {
                 ApplicationArea = All;
                 Caption = 'Comments by HR Manager:';
@@ -170,6 +171,63 @@ page 51747 "SS Training Needs Header"
                     REPORT.Run(51608, true, false, Rec);
                 end;
             }
+
+            action("Send For Approval")
+            {
+                // Enabled = not OpenApprovalEntriesExist;
+                Image = SendApprovalRequest;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+                ToolTip = 'Executes the Send For Approval action';
+                ApplicationArea = All;
+
+                trigger OnAction()
+                begin
+
+                    // if ApprovalsMgmt.checktr(Rec) then
+                        ApprovalsMgmt.OnSendTrainingNeedsForApproval(Rec);
+                        Commit();
+                end;
+            }
+            action("Cancel Approval Request")
+            {
+                // Enabled = CanCancelApprovalForRecord;
+                Image = CancelApprovalRequest;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+                ToolTip = 'Executes the Cancel Approval Request action';
+
+                trigger OnAction()
+                begin
+                    // ApprovalsMgmt.OnCancelTrainingRequestApproval(Rec);
+                end;
+            }
+            // action("View Approvals")
+            // {
+            //     Image = Approvals;
+            //     Promoted = true;
+            //     PromotedCategory = Process;
+            //     PromotedIsBig = true;
+            //     ToolTip = 'Executes the View Approvals action';
+
+            //     trigger OnAction()
+            //     var
+            //         ApprovalEntries: Page "Approval Entries";
+            //         DocumentType: Enum "Approval Document Type";
+            //     begin
+
+            //         DocumentType := DocumentType::TrainingRequest;
+            //         ApprovalEntries.SetRecordFilters(Database::"Training Request", DocumentType, Rec."Request No.");
+            //         ApprovalEntries.Run();
+            //     end;
+            // }
+
         }
     }
+    var
+    ApprovalsMgmt:Codeunit "Approvals Mgmt. Ext";
 }

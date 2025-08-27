@@ -6,6 +6,9 @@ codeunit 51427 "Approvals Mgmt. Ext"
 
     var
         ApprovalMgnt: Codeunit "Approvals Mgmt.";
+        WorkFlowManagement: Codeunit "Workflow Management";
+        NoWorkflowEnabledErr: Label 'No workflow is enabled for this document type. Please contact your system administrator.', Comment = 'Error message shown when there is no workflow enabled for the document type.';
+        WorkflowEventHandling: Codeunit "Workflow Event Handling";
     //#region Approval Methods
     local procedure "*****************THL - BASIC FINANCE MODULE CUSTOMIZATIONS*********************"()
     begin
@@ -343,6 +346,19 @@ codeunit 51427 "Approvals Mgmt. Ext"
     begin
     end;
 
+    // procedure IsTrainingNeedsWorkflowEnabled(var TrainingNeeds: Record "Training Needs Header"): Boolean
+    // begin
+    //     exit(WorkFlowManagement.CanExecuteWorkflow(TrainingNeeds, WorkflowEventHandling.runsendtrai()));
+    // end;
+
+    //Tender evaluation
+    // procedure CheckTrainingNeedsWorkflowEnabled(var TrainingNeeds: Record "Training Needs Header"): Boolean
+    // begin
+    //     if not IsTrainingNeedsWorkflowEnabled(TrainingNeeds) then
+    //         Error(NoWorkflowEnabledErr);
+    //     exit(true);
+    // end;
+
     local procedure "***********************Recruitment Request******************************************"()
     begin
     end;
@@ -518,7 +534,8 @@ codeunit 51427 "Approvals Mgmt. Ext"
         ServiceLine: Record "Service Line";
         LeavePlan: Record "Employee Leave Plan Header";
         EmpObjectives: Record "Employee Appraisal Objectives";
-        EmpAppraisal: Record "Employee Appraisals";
+        EmpAppraisals: Record "Employee Appraisals";
+        EmpAppraisal: Record "Employee Appraisal";
         RecruitmentPlan: Record "Recruitment Plan";
         ConsolidatedRecruitmentPlan: Record "Consolidated Recruitment Plan";
         CompanyEstablishment: Record "Company Jobs";
@@ -758,9 +775,9 @@ codeunit 51427 "Approvals Mgmt. Ext"
             //11. Govt. Employee Appraisal
             DATABASE::"Employee Appraisals":
                 begin
-                    RecRef.SetTable(EmpAppraisal);
-                    EmpAppraisal.Validate(Status, EmpAppraisal.Status::"Pending Approval");
-                    EmpAppraisal.Modify(true);
+                    RecRef.SetTable(EmpAppraisals);
+                    EmpAppraisals.Validate(Status, EmpAppraisals.Status::"Pending Approval");
+                    EmpAppraisals.Modify(true);
                     IsHandled := true;
                 end;
             //12. Leave Adjustment
@@ -804,6 +821,14 @@ codeunit 51427 "Approvals Mgmt. Ext"
                     IsHandled := true;
                 end;
             //
+            //17. EmpAppraisal
+            Database::"Employee Appraisal":
+                begin
+                    RecRef.SetTable(EmpAppraisal);
+                    EmpAppraisal.Validate(Status, EmpAppraisal.Status::"Pending Approval");
+                    EmpAppraisal.Modify(true);
+                    IsHandled := true;
+                end;
             //***********************THL - SERVICE MANAGEMENT MODULE CUSTOMIZATIONS***************************
             //1. Job Worksheet
             DATABASE::"Worksheet Requisitions Lines":

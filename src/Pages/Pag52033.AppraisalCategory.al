@@ -1,8 +1,8 @@
 page 52033 "Appraisal Category"
 {
-    DeleteAllowed = false;
-    InsertAllowed = false;
-    ModifyAllowed = false;
+    DeleteAllowed = true;
+    InsertAllowed = true;
+    ModifyAllowed = true;
     PageType = List;
     ApplicationArea = All;
     UsageCategory = Lists;
