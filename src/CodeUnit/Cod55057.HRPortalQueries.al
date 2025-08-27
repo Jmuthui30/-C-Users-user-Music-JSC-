@@ -390,7 +390,7 @@ codeunit 55057 HRPortalQueries
                     DaysEarnedPerMonth := LeaveEntitlementRec."Days Earned per Month";
                 end;
             end;
-            leaveBalave := CheckLeaveDaysAvailable(EmployeeRec."No.", 'ANNUAL');
+            leaveBalave := CheckLeaveDaysAvailable(EmployeeRec."No.", 'ANNUAL LEAVE');
 
             status := Format(EndDate) + '*' + Format(ResumptionDate) + '*' + Format(LeaveEntitlement)
 + '*' + Format(leaveBalave)
