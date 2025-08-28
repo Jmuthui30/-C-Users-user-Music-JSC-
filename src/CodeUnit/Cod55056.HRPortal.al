@@ -690,6 +690,9 @@ codeunit 55056 HRPortal
     end;
 
     procedure SendPaymentsApproval(DocNo: Code[50]) rtn: Text
+    var
+        ApprovalsMgmt1: Codeunit "Approval Mgt Finance Ext";
+        Committment1: Codeunit "Commitments Mgt Finance";
     begin
         CashManagementSetup.Get;
         GeneralLedgerSetup.Get;
@@ -763,6 +766,37 @@ codeunit 55056 HRPortal
                                 ApprovalsMgmtFin.OnSendPaymentsForApproval(PaymentsRec);
                             UpdateApprovalEntries(DocNo, PaymentsRec."User Id");
                             rtn := 'success*Document has been successfully sent for approval';
+                        end;
+
+                    "Payment Type"::"Staff Claim":
+                        begin
+                            GeneralLedgerSetup.Get();
+                            CashManagementSetup.Get();
+                            if PaymentsRec."Claim Type" = PaymentsRec."Claim Type"::" " then
+                                Error('Please define a claim type');
+
+                            if PaymentsRec."Payment Narration" = '' then
+                                Error('Please define the Purpose for this claim');
+                            ImprestLines.Reset();
+                            ImprestLines.SetRange(ImprestLines.No, PaymentsRec."No.");
+                            if ImprestLines.Find('-') then
+                                repeat
+                                    ImprestLines.TestField("Expenditure Date");
+                                    //ClaimLines.TESTFIELD("Claim Receipt No.");
+                                    ImprestLines.TestField("Expenditure Description");
+                                    if ImprestLines.Amount <= 0 then
+                                        Error('One of your lines has an amount less than or equal to 0');
+                                until ImprestLines.Next() = 0;
+                            Committment.CheckStaffClaimCommittment(PaymentsRec);
+                            Committment.StaffClaimCommittment(PaymentsRec, ErrorMsg);
+                            if ErrorMsg <> '' then
+                                Error(ErrorMsg);
+                            PaymentsRec.CalcFields("Petty Cash Amount");
+                            if PaymentsRec."Petty Cash Amount" <= 0 then
+                                Error('Petty Cash Amount can not be less than or equal to 0');
+                            if ApprovalsMgmt1.CheckPaymentsApprovalsWorkflowEnabled(PaymentsRec) then
+                                ApprovalsMgmt1.OnSendPaymentsForApproval(PaymentsRec);
+                            rtn := 'success*Doccument has been successfully sent for approval';
                         end;
 
 
@@ -1051,9 +1085,9 @@ codeunit 55056 HRPortal
             ImprestLines.ValidateShortcutDimCode(6, Dim6);
             ImprestLines.ValidateShortcutDimCode(7, Dim7);
             if ImprestLines.Insert(true) then begin
-                status := 'success*Imprest Line has been created succesfully';
+                status := 'success*Petty Cash Line has been created succesfully';
             end else begin
-                status := 'danger*An error occured while created your Imprest Line';
+                status := 'danger*An error occured while created your Petty Cash';
             end;
 
         end;
@@ -1245,7 +1279,7 @@ codeunit 55056 HRPortal
             end;
         end else begin
             ImprestHeader.Init();
-            ImprestHeader."No." := NoSeriesMgt.DoGetNextNo(CashMgt."Petty Cash Nos", Today, true, true);
+            ImprestHeader."No." := NoSeriesMgt.DoGetNextNo(CashMgt."Staff Claim Nos", Today, true, true);
             ImprestHeader.Date := Today;
             ImprestHeader."Time Inserted" := Time;
             ImprestHeader.Cashier := Cashier;
@@ -1273,7 +1307,7 @@ codeunit 55056 HRPortal
         end;
     end;
 
-    procedure CreateStaffClaimLines(No: Code[30]; claimType: Integer; DailyRate: Decimal; Narration: Text; Dim1: Code[50];
+    procedure CreateStaffClaimLines(No: Code[30]; claimType: Code[50]; DailyRate: Decimal; Narration: Text; expendituredate: DateTime; Dim1: Code[50];
     Dim2: Code[50]; Dim3: Code[50]; Dim4: Code[50]; Dim5: Code[50]; Dim6: Code[50]; Dim7: Code[50]) status: Text
     var
         ImprestLines1: Record "Payment Lines";
@@ -1282,17 +1316,19 @@ codeunit 55056 HRPortal
         if ImprestHeader.Get(No) then begin
             ImprestLines.Init();
             ImprestLines."Payment Type" := ImprestLines."Payment Type"::"Staff Claim";
-            ImprestLines1.Reset();
-            ImprestLines1.setrange(No, No);
-            If ImprestLines1.FindLast() then
-                prevLineNo := ImprestLines1."Line No" + 1000
-            else
-                prevLineNo := 1000;
-            ImprestLines."Line No" := prevLineNo;
+            // ImprestLines1.Reset();
+            // ImprestLines1.setrange(No, No);
+            // If ImprestLines1.FindLast() then
+            //     prevLineNo := ImprestLines1."Line No" + 1000
+            // else
+            //     prevLineNo := 1000;
+            // ImprestLines."Line No" := prevLineNo;
             ImprestLines.No := No;
             ImprestLines.Description := Narration;
-            ImprestLines."Claim Type" := claimType;
+            ImprestLines."Expenditure Type" := claimType;
             ImprestLines.Validate("Expenditure Type");
+            ImprestLines."Expenditure Date" := DT2Date(expendituredate);
+            ImprestLines."Expenditure Description" := Narration;
             ImprestLines.Amount := DailyRate;
             ImprestLines.Validate(Amount);
             ImprestLines."Shortcut Dimension 1 Code" := Dim1;

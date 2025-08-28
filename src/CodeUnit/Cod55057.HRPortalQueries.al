@@ -223,6 +223,21 @@ codeunit 55057 HRPortalQueries
 
     end;
 
+    procedure FAWEfnGetImprestSurrenderDocNos(empNo: Code[20]) data: Text
+    begin
+        tbl_payments.Reset();
+        tbl_payments.SetRange("Account No.", empNo);
+        tbl_payments.SetRange("Payment Type", tbl_payments."Payment Type"::"Imprest Surrender");
+        tbl_payments.SetRange(Posted, false);
+        if tbl_payments.FindSet() then begin
+            repeat
+                data += tbl_payments."No." + '*' + tbl_payments."Payment Narration" + '::::';
+            until tbl_payments.Next = 0;
+
+        end;
+
+    end;
+
     procedure CheckLeaveDaysAvailable(EmpNo: Code[30]; LeaveCode: Code[30]) LeaveBalance: Decimal
     var
         EmployeeLeaves: Record "HR Leave Ledger Entries";
