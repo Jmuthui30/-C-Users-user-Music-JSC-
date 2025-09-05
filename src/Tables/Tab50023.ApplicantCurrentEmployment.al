@@ -89,6 +89,7 @@ table 50023 "Applicant Current Employment"
             //             WorkExperience.Modify(true);
             //         end;
             //     end;
+            //jmk
             // end;
         }
         field(18; Sector; Option)
