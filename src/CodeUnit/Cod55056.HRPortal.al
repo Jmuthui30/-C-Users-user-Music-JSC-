@@ -301,32 +301,40 @@ codeunit 55056 HRPortal
                 Leave.Modify(true);
                 status := 'success*Leave Application has been modified succesfully*' + Leave."Application No" + '*' + FORMAT(Leave."End Date");
             end else begin
-                Leave.Init();
-                HRSetup.Get();
-                Leave."Application No" := NoSeriesMgt.GetNextNo(HRSetup."Leave Application Nos.", Today, true);
-                Leave.Insert();
-                Leave."Apply on behalf" := onBehalf;
-                Leave."Employee No" := HrEmployees."No.";
-                Leave.Validate("Employee No");
-                Leave."Employee Name" := HrEmployees."First Name" + ' ' + HrEmployees."Middle Name" + ' ' + HrEmployees."Last Name";
-                Leave."Mobile No" := HrEmployees."Mobile Phone No.";
-                Leave."Email Adress" := HrEmployees."Company E-Mail";
-                Leave."Leave Period" := HRmgt.GetCurrentLeavePeriodCode();
-                //Leave."Responsibility Center" := HrEmployees."Responsibility Center";
-                Leave."Application Date" := today;
-                Leave."Leave Code" := CopyStr(LeaveType, 1, MaxStrLen(Leave."Leave Code"));
-                Leave.Validate("Leave Code");
-                Leave."User ID" := 'ADMINCLOUD';
-                Leave."Start Date" := DT2Date(StartDate);
-                Leave."Days Applied" := Days;
-                Leave.Validate("Start Date");
-                //Leave."Duties Taken Over By" := CopyStr(Reliever, 1, MaxStrLen(Leave."Duties Taken Over By"));
-                Leave.Validate("Duties Taken Over By");
-                Leave.Comments := CopyStr(Remarks, 1, MaxStrLen(Leave.Comments));
-                Leave.Status := Leave.Status::Open;
-                Leave.Modify(true);
+                Leave.Reset();
+                Leave.SetRange("Employee No", EmpNo);
+                Leave.SetRange(Status, Leave.Status::Open);
+                If Leave.FindFirst() THEN begin
+                    status := 'danger*You have an open leave application ' + Leave."Application No" + ' kindly proceed to utilize it before creating a new one.';
+                end else begin
+                    Leave.Init();
+                    HRSetup.Get();
+                    Leave."Application No" := NoSeriesMgt.GetNextNo(HRSetup."Leave Application Nos.", Today, true);
+                    Leave.Insert();
+                    Leave."Apply on behalf" := onBehalf;
+                    Leave."Employee No" := HrEmployees."No.";
+                    Leave.Validate("Employee No");
+                    Leave."Employee Name" := HrEmployees."First Name" + ' ' + HrEmployees."Middle Name" + ' ' + HrEmployees."Last Name";
+                    Leave."Mobile No" := HrEmployees."Mobile Phone No.";
+                    Leave."Email Adress" := HrEmployees."Company E-Mail";
+                    Leave."Leave Period" := HRmgt.GetCurrentLeavePeriodCode();
+                    //Leave."Responsibility Center" := HrEmployees."Responsibility Center";
+                    Leave."Application Date" := today;
+                    Leave."Leave Code" := CopyStr(LeaveType, 1, MaxStrLen(Leave."Leave Code"));
+                    Leave.Validate("Leave Code");
+                    Leave."User ID" := 'ADMINCLOUD';
+                    Leave."Start Date" := DT2Date(StartDate);
+                    Leave."Days Applied" := Days;
+                    Leave.Validate("Start Date");
+                    //Leave."Duties Taken Over By" := CopyStr(Reliever, 1, MaxStrLen(Leave."Duties Taken Over By"));
+                    Leave.Validate("Duties Taken Over By");
+                    Leave.Comments := CopyStr(Remarks, 1, MaxStrLen(Leave.Comments));
+                    Leave.Status := Leave.Status::Open;
+                    Leave.Modify(true);
 
-                status := 'success*Leave Application has been created succesfully*' + Leave."Application No" + '*' + FORMAT(Leave."End Date");
+                    status := 'success*Leave Application has been created succesfully*' + Leave."Application No" + '*' + FORMAT(Leave."End Date");
+                end;
+
             end;
         end;
     end;
@@ -557,8 +565,7 @@ codeunit 55056 HRPortal
             exit(HrEmployees."No.");
     end;
 
-    procedure CreateImprestRequisition(No: Code[30]; AccountNo: Code[30]; activity: Code[100]; department: code[100]; TravelType: Integer;
-   Currency: Code[30]; Purpose: Text[2048]; Destination: Code[250]; TravelDate: DateTime; ReturnDate: DateTime; Cashier: Code[30]) status: Text
+    procedure CreateImprestRequisition(No: Code[30]; AccountNo: Code[30]; activity: Code[100]; department: code[100]; TravelType: Integer; Purpose: Text[2048]; Destination: Code[250]; TravelDate: DateTime; ReturnDate: DateTime; Cashier: Code[30]) status: Text
     var
     begin
         CashMgt.Get();
@@ -576,7 +583,7 @@ codeunit 55056 HRPortal
             ImprestHeader."Shortcut Dimension 1 Code" := CopyStr(activity, 1, MaxStrLen(ImprestHeader."Shortcut Dimension 1 Code"));
             ImprestHeader."Shortcut Dimension 2 Code" := CopyStr(department, 1, MaxStrLen(ImprestHeader."Shortcut Dimension 2 Code"));
             ImprestHeader."Travel Type" := TravelType;
-            ImprestHeader.Currency := CopyStr(Currency, 1, MaxStrLen(ImprestHeader.Currency));
+            // ImprestHeader.Currency := CopyStr(Currency, 1, MaxStrLen(ImprestHeader.Currency));
             ImprestHeader."Payment Narration" := CopyStr(Purpose, 1, MaxStrLen(ImprestHeader."Payment Narration"));
             ImprestHeader.Destination := CopyStr(Destination, 1, MaxStrLen(ImprestHeader.Destination));
             ImprestHeader."Date of Project" := DT2Date(TravelDate);
@@ -605,7 +612,7 @@ codeunit 55056 HRPortal
             ImprestHeader."Shortcut Dimension 1 Code" := CopyStr(activity, 1, MaxStrLen(ImprestHeader."Shortcut Dimension 1 Code"));
             ImprestHeader."Shortcut Dimension 2 Code" := CopyStr(department, 1, MaxStrLen(ImprestHeader."Shortcut Dimension 2 Code"));
             ImprestHeader."Travel Type" := TravelType;
-            ImprestHeader.Currency := CopyStr(Currency, 1, MaxStrLen(ImprestHeader.Currency));
+            // ImprestHeader.Currency := CopyStr(Currency, 1, MaxStrLen(ImprestHeader.Currency));
             ImprestHeader."Payment Narration" := CopyStr(Purpose, 1, MaxStrLen(ImprestHeader."Payment Narration"));
             ImprestHeader.Destination := CopyStr(Destination, 1, MaxStrLen(ImprestHeader.Destination));
             ImprestHeader."Date of Project" := DT2Date(TravelDate);
@@ -621,8 +628,7 @@ codeunit 55056 HRPortal
         end;
     end;
 
-    procedure CreateImprestRequisitionLines(imprestno: Code[30]; ImprestType: Code[50]; noOfDays: Integer; DailyRate: Decimal; Dim1: Code[50];
-    Dim2: Code[50]) status: Text
+    procedure CreateImprestRequisitionLines(imprestno: Code[30]; ImprestType: Code[50]; noOfDays: Integer; DailyRate: Decimal) status: Text
     var
         ImprestLines1: Record "Payment Lines";
         prevLineNo: Integer;
@@ -647,8 +653,8 @@ codeunit 55056 HRPortal
             ImprestLines."No of Days" := ImprestHeader."No of Days";
             ImprestLines.Validate("No of Days");
             ImprestLines.Destination := ImprestHeader.Destination;
-            ImprestLines."Shortcut Dimension 1 Code" := Dim1;
-            ImprestLines."Shortcut Dimension 2 Code" := Dim2;
+            // ImprestLines."Shortcut Dimension 1 Code" := Dim1;
+            // ImprestLines."Shortcut Dimension 2 Code" := Dim2;
             // ImprestLines.ValidateShortcutDimCode(3, Dim3);
             // ImprestLines.ValidateShortcutDimCode(4, Dim4);
             // ImprestLines.ValidateShortcutDimCode(5, Dim5);
@@ -684,6 +690,9 @@ codeunit 55056 HRPortal
     end;
 
     procedure SendPaymentsApproval(DocNo: Code[50]) rtn: Text
+    var
+        ApprovalsMgmt1: Codeunit "Approval Mgt Finance Ext";
+        Committment1: Codeunit "Commitments Mgt Finance";
     begin
         CashManagementSetup.Get;
         GeneralLedgerSetup.Get;
@@ -757,6 +766,37 @@ codeunit 55056 HRPortal
                                 ApprovalsMgmtFin.OnSendPaymentsForApproval(PaymentsRec);
                             UpdateApprovalEntries(DocNo, PaymentsRec."User Id");
                             rtn := 'success*Document has been successfully sent for approval';
+                        end;
+
+                    "Payment Type"::"Staff Claim":
+                        begin
+                            GeneralLedgerSetup.Get();
+                            CashManagementSetup.Get();
+                            if PaymentsRec."Claim Type" = PaymentsRec."Claim Type"::" " then
+                                Error('Please define a claim type');
+
+                            if PaymentsRec."Payment Narration" = '' then
+                                Error('Please define the Purpose for this claim');
+                            ImprestLines.Reset();
+                            ImprestLines.SetRange(ImprestLines.No, PaymentsRec."No.");
+                            if ImprestLines.Find('-') then
+                                repeat
+                                    ImprestLines.TestField("Expenditure Date");
+                                    //ClaimLines.TESTFIELD("Claim Receipt No.");
+                                    ImprestLines.TestField("Expenditure Description");
+                                    if ImprestLines.Amount <= 0 then
+                                        Error('One of your lines has an amount less than or equal to 0');
+                                until ImprestLines.Next() = 0;
+                            Committment.CheckStaffClaimCommittment(PaymentsRec);
+                            Committment.StaffClaimCommittment(PaymentsRec, ErrorMsg);
+                            if ErrorMsg <> '' then
+                                Error(ErrorMsg);
+                            PaymentsRec.CalcFields("Petty Cash Amount");
+                            if PaymentsRec."Petty Cash Amount" <= 0 then
+                                Error('Petty Cash Amount can not be less than or equal to 0');
+                            if ApprovalsMgmt1.CheckPaymentsApprovalsWorkflowEnabled(PaymentsRec) then
+                                ApprovalsMgmt1.OnSendPaymentsForApproval(PaymentsRec);
+                            rtn := 'success*Doccument has been successfully sent for approval';
                         end;
 
 
@@ -1045,9 +1085,9 @@ codeunit 55056 HRPortal
             ImprestLines.ValidateShortcutDimCode(6, Dim6);
             ImprestLines.ValidateShortcutDimCode(7, Dim7);
             if ImprestLines.Insert(true) then begin
-                status := 'success*Imprest Line has been created succesfully';
+                status := 'success*Petty Cash Line has been created succesfully';
             end else begin
-                status := 'danger*An error occured while created your Imprest Line';
+                status := 'danger*An error occured while created your Petty Cash';
             end;
 
         end;
@@ -1239,7 +1279,7 @@ codeunit 55056 HRPortal
             end;
         end else begin
             ImprestHeader.Init();
-            ImprestHeader."No." := NoSeriesMgt.DoGetNextNo(CashMgt."Petty Cash Nos", Today, true, true);
+            ImprestHeader."No." := NoSeriesMgt.DoGetNextNo(CashMgt."Staff Claim Nos", Today, true, true);
             ImprestHeader.Date := Today;
             ImprestHeader."Time Inserted" := Time;
             ImprestHeader.Cashier := Cashier;
@@ -1267,7 +1307,7 @@ codeunit 55056 HRPortal
         end;
     end;
 
-    procedure CreateStaffClaimLines(No: Code[30]; claimType: Integer; DailyRate: Decimal; Narration: Text; Dim1: Code[50];
+    procedure CreateStaffClaimLines(No: Code[30]; claimType: Code[50]; DailyRate: Decimal; Narration: Text; expendituredate: DateTime; Dim1: Code[50];
     Dim2: Code[50]; Dim3: Code[50]; Dim4: Code[50]; Dim5: Code[50]; Dim6: Code[50]; Dim7: Code[50]) status: Text
     var
         ImprestLines1: Record "Payment Lines";
@@ -1276,17 +1316,19 @@ codeunit 55056 HRPortal
         if ImprestHeader.Get(No) then begin
             ImprestLines.Init();
             ImprestLines."Payment Type" := ImprestLines."Payment Type"::"Staff Claim";
-            ImprestLines1.Reset();
-            ImprestLines1.setrange(No, No);
-            If ImprestLines1.FindLast() then
-                prevLineNo := ImprestLines1."Line No" + 1000
-            else
-                prevLineNo := 1000;
-            ImprestLines."Line No" := prevLineNo;
+            // ImprestLines1.Reset();
+            // ImprestLines1.setrange(No, No);
+            // If ImprestLines1.FindLast() then
+            //     prevLineNo := ImprestLines1."Line No" + 1000
+            // else
+            //     prevLineNo := 1000;
+            // ImprestLines."Line No" := prevLineNo;
             ImprestLines.No := No;
             ImprestLines.Description := Narration;
-            ImprestLines."Claim Type" := claimType;
+            ImprestLines."Expenditure Type" := claimType;
             ImprestLines.Validate("Expenditure Type");
+            ImprestLines."Expenditure Date" := DT2Date(expendituredate);
+            ImprestLines."Expenditure Description" := Narration;
             ImprestLines.Amount := DailyRate;
             ImprestLines.Validate(Amount);
             ImprestLines."Shortcut Dimension 1 Code" := Dim1;

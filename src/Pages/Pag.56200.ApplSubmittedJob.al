@@ -116,6 +116,11 @@ page 56200 "Applicant Submitted Job"
                 }
 
                 //*************************************************************************************academic qualifications
+                field("KCE Desc"; "KCE Desc")
+                {
+                    Caption = 'KCE Description';
+                    ApplicationArea = All;
+                }
                 field("Description 11"; "Description 11")
                 {
                     ApplicationArea = All;
@@ -142,7 +147,11 @@ page 56200 "Applicant Submitted Job"
                 {
                     ApplicationArea = All;
                 }
-
+                field("KACE Desc"; "KACE Desc")
+                {
+                    Caption = 'KACE Description';
+                    ApplicationArea = All;
+                }
                 field(Description; Description)
                 {
                     ApplicationArea = All;
@@ -179,7 +188,11 @@ page 56200 "Applicant Submitted Job"
 
 
                 //******************************************************************* ACADEMIC QUALIFICATIONS 1
-
+                field("KCSE Desc"; "KCSE Desc")
+                {
+                    Caption = 'KCSE Description';
+                    ApplicationArea = All;
+                }
                 field("Description 1"; "Description 1")
                 {
                     caption = 'KCSE';
@@ -208,6 +221,12 @@ page 56200 "Applicant Submitted Job"
                 }
 
 
+                field("Artisan Desc"; "Artisan Desc")
+                {
+                    Caption = 'Artisan Description';
+                    ApplicationArea = All;
+                    Visible = false;
+                }
                 field("Description 10"; "Description 10")
                 {
                     caption = 'Artisan';
@@ -232,6 +251,11 @@ page 56200 "Applicant Submitted Job"
                 }
                 field("To Date 10"; "To Date 10")
                 {
+                    ApplicationArea = All;
+                }
+                field("Certificate Desc"; "Certificate Desc")
+                {
+                    Caption = 'Certificate Description';
                     ApplicationArea = All;
                 }
                 field("Description 3"; "Description 3")
@@ -261,7 +285,11 @@ page 56200 "Applicant Submitted Job"
                     ApplicationArea = All;
                 }
 
-
+                field("Diploma Desc"; "Diploma Desc")
+                {
+                    Caption = 'Diploma Description';
+                    ApplicationArea = All;
+                }
                 field("Description 4"; "Description 4")
                 {
                     caption = 'Diploma';
@@ -293,7 +321,11 @@ page 56200 "Applicant Submitted Job"
                     ApplicationArea = All;
                 }
 
-
+                field("Higher Diploma Desc"; "Higher Diploma Desc")
+                {
+                    Caption = 'Higher Diploma Description';
+                    ApplicationArea = All;
+                }
                 field("Description 5"; "Description 5")
                 {
                     caption = 'Higher Diploma';
@@ -461,7 +493,7 @@ page 56200 "Applicant Submitted Job"
                 //******************************************************************* ACADEMIC QUALIFICATIONS 11
 
                 //************************************************PROF COURSES*************************
-              
+
 
 
                 //*********************************************************
