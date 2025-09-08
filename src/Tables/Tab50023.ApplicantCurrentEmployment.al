@@ -81,7 +81,7 @@ table 50023 "Applicant Current Employment"
             //     WorkExperience: Record "Applicant Work Experience";
             // begin
             //     if "Currently Employment" then begin
-            //         WorkExperience.Reset();
+            //         WorkExperience.Reset();git
             //         WorkExperience.SetRange("Applicant No.", "Applicant No.");
             //         WorkExperience.SetRange("Currently Employment", true);
             //         if WorkExperience.FindFirst() then begin
