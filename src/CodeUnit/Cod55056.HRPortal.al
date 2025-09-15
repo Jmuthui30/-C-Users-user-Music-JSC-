@@ -424,7 +424,7 @@ codeunit 55056 HRPortal
         end;
     end;
 
-    procedure AddAppraisalLines(ApplicationNo: Code[50]; workplanID: Code[30]; indicators: Text; description: Text; complettionDate: datetime; completionlevel: Integer) status: Text
+    procedure AddAppraisalLines(ApplicationNo: Code[50]; workplanID: Code[30]; indicators: Text; description: Text) status: Text
     var
         prevLineNo: Integer;
 
@@ -2061,6 +2061,34 @@ codeunit 55056 HRPortal
             BaseImage := Base64Convert.ToBase64(InStr);
         end;
 
+    end;
+
+    procedure FAWEaddAppraisalSharepointLinks(imprestno: Code[50]; filename: Text; sharepointlink: Text) status: Text
+    var
+        ImprestMemo: Record Payments;
+        RecordLink: Record "Record Link";
+        RecordIDNumber: RecordID;
+    begin
+        RecordLink.Reset;
+        if RecordLink."Link ID" = 0 then begin
+            RecordLink.URL1 := sharepointlink;
+            RecordLink.Description := filename;
+            RecordLink.Type := RecordLink.Type::Link;
+            RecordLink.Company := COMPANYNAME;
+            // RecordLink."User ID" := UserId;
+            RecordLink.Created := CreateDatetime(Today, Time);
+            employeeAppraisal.Reset;
+            employeeAppraisal.setrange("Appraisal No", imprestno);
+            if employeeAppraisal.Find('=') then
+                RecordIDNumber := employeeAppraisal.RecordId;
+            RecordLink."Record ID" := RecordIDNumber;
+            if RecordLink.Insert(true) then begin
+                fnInsertPortalAttachments(imprestno, filename, sharepointlink, 'Employee Appraisal');
+                status := 'success*Link successfully created';
+            end else begin
+                status := 'error*An error occured during the process of creating link';
+            end
+        end;
     end;
 
     procedure FAWEgenerateStaffClaim(docNo: Text) BaseImage: Text
