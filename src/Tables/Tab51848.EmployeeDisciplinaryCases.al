@@ -64,6 +64,40 @@ table 51848 "Employee Disciplinary Cases"
         field(17; Status;Enum "Disciplinary Status")
         {
         }
+         field(18; "Hearing"; Text[100])
+        {
+            Caption = 'Hearing';
+        }
+        field(19; "Capability"; Text[60])
+        {
+            Caption = 'Capability';
+        }
+        field(20; "Witness Type"; Option)
+        {
+            OptionCaption = ' ,Staff,Others';
+            OptionMembers = " ",Staff,Others;
+            Caption = 'Witness Type';
+        }
+        field(21; "Witness Name"; Text[60])
+        {
+            Caption = 'Witness Name';
+        }
+         field(22; "Action Description"; Text[30])
+        {
+            Caption = 'Action Description';
+        }
+        field(23; Attachment; Boolean)
+        {
+            Caption = 'Attachment';
+        }
+        field(24; Description; Text[100])
+        {
+            Caption = 'Description';
+        }
+        field(25; "RecAction Description"; Text[100])
+        {
+            Caption = 'RecAction Description';
+        }
     }
     keys
     {

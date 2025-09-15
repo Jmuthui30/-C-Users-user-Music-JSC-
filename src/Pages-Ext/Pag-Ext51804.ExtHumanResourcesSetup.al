@@ -83,13 +83,33 @@ pageextension 51804 "ExtHuman Resources Setup" extends "Human Resources Setup"
             {
                 ApplicationArea = All;
             }
-            field("Training Needs Request Nos.";"Training Needs Request Nos.")
+            field("Loan App No"; "Loan App No")
+            {
+                ApplicationArea = All;
+            }
+            field("Secondary PAYE %"; "Secondary PAYE %")
+            {
+                ApplicationArea = All;
+            }
+            field("Training Needs Request Nos."; "Training Needs Request Nos.")
             {
                 ApplicationArea = All;
             }
             field("Training Application Nos"; Rec."Training Application Nos")
             {
                 ApplicationArea = All;
+            }
+            field("Payroll Approval Nos"; "Payroll Approval Nos")
+            {
+                ApplicationArea = All;
+            }
+            field("Payroll Rounding Precision"; "Payroll Rounding Precision")
+            {
+
+            }
+            field("Payroll Rounding Type"; "Payroll Rounding Type")
+            {
+
             }
             field("Exit Nos"; Rec."Exit Nos")
             {

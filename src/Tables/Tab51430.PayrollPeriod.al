@@ -63,6 +63,22 @@ table 51430 "Payroll Period"
         field(11; "Closed on Date"; DateTime)
         {
         }
+        field(12; "Leave Payment Period"; Boolean)
+        {
+            Caption = 'Leave Payment Period';
+        }
+        field(50009; "Pay Period Filter"; Date)
+        {
+            FieldClass = FlowFilter;
+            TableRelation = "Payroll Period";
+            Caption = 'Pay Period Filter';
+        }
+        field(50008; "Deductions Code Filter"; Code[20])
+        {
+            FieldClass = FlowFilter;
+            TableRelation = Deductions;
+            Caption = 'Deductions Code Filter';
+        }
     }
     keys
     {

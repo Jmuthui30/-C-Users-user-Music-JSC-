@@ -4,7 +4,7 @@ page 51434 "Earnings"
     PageType = List;
     ApplicationArea = All;
     UsageCategory = Administration;
-    SourceTable = Earnings;
+    SourceTable = Earning;
 
     layout
     {
