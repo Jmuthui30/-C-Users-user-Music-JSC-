@@ -437,16 +437,17 @@ table 50464 "Imprest Memo Header"
         end;
         Rec."Created By" := UserId;
         Rec.Date := Today;
-        if UserSetup.Get(UserId) then begin
-            UserSetup.TestField("Employee No.");
-            Staff.Get(UserSetup."Employee No.");
-            Rec.From := Staff."Job Id";
-            Rec."Sender Name" := Staff."Job Title";
-            Rec."Sender Email" := Staff."Company E-Mail";
-            if Rec."Sender Email" = '' then Error(Text001);
-        end
-        else
-            Error(Text001);
+        if (UserId <> 'ADMINCLOUD') then
+            if UserSetup.Get(UserId) then begin
+                UserSetup.TestField("Employee No.");
+                Staff.Get(UserSetup."Employee No.");
+                Rec.From := Staff."Job Id";
+                Rec."Sender Name" := Staff."Job Title";
+                Rec."Sender Email" := Staff."Company E-Mail";
+                if Rec."Sender Email" = '' then Error(Text001);
+            end
+            else
+                Error(Text001);
         //Automatic Fields
         Rec.DSA := true;
         Rec."Cordination Allowance" := true;
