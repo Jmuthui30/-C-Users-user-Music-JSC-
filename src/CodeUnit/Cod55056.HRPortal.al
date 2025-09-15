@@ -1285,7 +1285,7 @@ codeunit 55056 HRPortal
         exit(status);
     end;
 
-    procedure CreatePettyCash(No: Code[30]; AccountNo: Code[30]; Donor: Code[100]; Program: code[100]; PettyCashType: Integer; paymode: code[50]; Purpose: Text; Cashier: Code[30]; Currency: Code[30]; EmpNo: Code[30]) status: Text
+    procedure CreatePettyCash(No: Code[30]; AccountNo: Code[30]; Donor: Code[100]; Program: code[100]; PettyCashType: Integer; Purpose: Text; Cashier: Code[30]; Currency: Code[30]; EmpNo: Code[30]) status: Text
     var
     begin
         CashMgt.Get();
@@ -1296,7 +1296,7 @@ codeunit 55056 HRPortal
             ImprestHeader.Cashier := Cashier;
             ImprestHeader."Created By" := Cashier;
             ImprestHeader."User Id" := 'ADMINCLOUD';
-            ImprestHeader."Pay Mode" := paymode;
+            // ImprestHeader."Pay Mode" := paymode;
             ImprestHeader."Payment Type" := ImprestHeader."Payment Type"::"Petty Cash";
             ImprestHeader."Account Type" := ImprestHeader."Account Type"::Customer;
             ImprestHeader."Account No." := CopyStr(AccountNo, 1, MaxStrLen(ImprestHeader."Account No."));
@@ -1322,7 +1322,7 @@ codeunit 55056 HRPortal
             ImprestHeader.Cashier := Cashier;
             ImprestHeader."Created By" := Cashier;
             ImprestHeader."User Id" := 'ADMINCLOUD';
-            ImprestHeader."Pay Mode" := paymode;
+            // ImprestHeader."Pay Mode" := paymode;
             ImprestHeader."Payment Type" := ImprestHeader."Payment Type"::"Petty Cash";
             ImprestHeader."Account Type" := ImprestHeader."Account Type"::Customer;
             ImprestHeader."Account No." := CopyStr(AccountNo, 1, MaxStrLen(ImprestHeader."Account No."));
@@ -1535,7 +1535,7 @@ codeunit 55056 HRPortal
 
     end;
 
-    procedure CreateStaffClaim(No: Code[30]; AccountNo: Code[30]; Donor: Code[100]; Program: code[100]; claimType: Integer; paymode: code[50]; Purpose: Text; Cashier: Code[30]; Currency: Code[30]; ImprestSurrenderDocNo: Code[30]; EmpNo: Code[30]) status: Text
+    procedure CreateStaffClaim(No: Code[30]; AccountNo: Code[30]; Donor: Code[100]; Program: code[100]; claimType: Integer; Purpose: Text; Cashier: Code[30]; Currency: Code[30]; ImprestSurrenderDocNo: Code[30]; EmpNo: Code[30]) status: Text
     var
     begin
         CashMgt.Get();
@@ -1546,7 +1546,7 @@ codeunit 55056 HRPortal
             ImprestHeader.Cashier := Cashier;
             ImprestHeader."Created By" := Cashier;
             ImprestHeader."User Id" := 'ADMINCLOUD';
-            ImprestHeader."Pay Mode" := paymode;
+            // ImprestHeader."Pay Mode" := paymode;
             ImprestHeader."Payment Type" := ImprestHeader."Payment Type"::"Staff Claim";
             ImprestHeader."Account Type" := ImprestHeader."Account Type"::Customer;
             ImprestHeader."Account No." := CopyStr(AccountNo, 1, MaxStrLen(ImprestHeader."Account No."));
@@ -1573,7 +1573,7 @@ codeunit 55056 HRPortal
             ImprestHeader.Cashier := Cashier;
             ImprestHeader."Created By" := Cashier;
             ImprestHeader."User Id" := 'ADMINCLOUD';
-            ImprestHeader."Pay Mode" := paymode;
+            // ImprestHeader."Pay Mode" := paymode;
             ImprestHeader."Payment Type" := ImprestHeader."Payment Type"::"Staff Claim";
             ImprestHeader."Account Type" := ImprestHeader."Account Type"::Customer;
             ImprestHeader."Account No." := CopyStr(AccountNo, 1, MaxStrLen(ImprestHeader."Account No."));
