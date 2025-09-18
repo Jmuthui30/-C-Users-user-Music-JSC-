@@ -249,14 +249,21 @@ codeunit 55056 HRPortal
         SMTP: Codeunit "Email Message";
         emailhdr: Text;
         emailBody: Text;
+        EnvInfo: Codeunit "Environment Information";
+        PortalLink: Text;
     begin
+        if EnvInfo.IsSandbox() then
+            PortalLink := ''
+        else
+            PortalLink := 'https://selfservice.jsc.go.ke:8090/';
+
         HRPortalUsers.Reset;
         HRPortalUsers.SetRange("Authentication Email", emailaddress);
-        if HRPortalUsers.FindSet then begin
+        if HRPortalUsers.FindFirst() then begin
 
             emailBody := 'Dear ' + HRPortalUsers.employeeName + ',<BR><BR>' +
                'Your Password for the account <b>' + ' ' + Format(HRPortalUsers."Authentication Email") + ' ' + '</b> has been Reset Successfully.Kindly Change your Password on Login<BR>' +
-               'Use the following link to acess the employee self service Portal.' + ' ' + '<b><a href="#">Employee Portal</a></b><BR>Your New Credentials are:'
+               'Use the following link to acess the employee self service Portal.' + ' ' + '<b><a href="' + PortalLink + '" target="_blank">Employee Portal</a></b><BR>Your New Credentials are:'
                + '<BR>'
                + 'Username:' + ' <b>' + HRPortalUsers."Authentication Email" + '</b><BR>Password:' + ' <b>' + HRPortalUsers.password + '</b>';
 
