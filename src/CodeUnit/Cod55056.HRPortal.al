@@ -20,8 +20,9 @@ codeunit 55056 HRPortal
         ErrorMsg: Text[250];
         ApprovalMgt: Codeunit "Approval Mgt Finance Ext";
         ApprovalMgtHR: Codeunit "Approval Mgt HR Ext";
-        TrainingRequest: Record "Training Request";
-        TrainingRequestLines: Record "Training Request Lines";
+        TrainingRequest: Record "Training Needs Header";
+        TrainingRequestLines: Record "Employee Training Needs";
+        TrainingRequestLines1: Record "Employee Training Needs";
         LeaveApplication: Record "Leave Application";
         WorkflowWebhookMgt: Codeunit "Workflow Webhook Management";
         MaturityDate: Date;
@@ -249,14 +250,21 @@ codeunit 55056 HRPortal
         SMTP: Codeunit "Email Message";
         emailhdr: Text;
         emailBody: Text;
+        EnvInfo: Codeunit "Environment Information";
+        PortalLink: Text;
     begin
+        if EnvInfo.IsSandbox() then
+            PortalLink := ''
+        else
+            PortalLink := 'https://selfservice.jsc.go.ke:8090/';
+
         HRPortalUsers.Reset;
         HRPortalUsers.SetRange("Authentication Email", emailaddress);
-        if HRPortalUsers.FindSet then begin
+        if HRPortalUsers.FindFirst() then begin
 
             emailBody := 'Dear ' + HRPortalUsers.employeeName + ',<BR><BR>' +
                'Your Password for the account <b>' + ' ' + Format(HRPortalUsers."Authentication Email") + ' ' + '</b> has been Reset Successfully.Kindly Change your Password on Login<BR>' +
-               'Use the following link to acess the employee self service Portal.' + ' ' + '<b><a href="#">Employee Portal</a></b><BR>Your New Credentials are:'
+               'Use the following link to acess the employee self service Portal.' + ' ' + '<b><a href="' + PortalLink + '" target="_blank">Employee Portal</a></b><BR>Your New Credentials are:'
                + '<BR>'
                + 'Username:' + ' <b>' + HRPortalUsers."Authentication Email" + '</b><BR>Password:' + ' <b>' + HRPortalUsers.password + '</b>';
 
@@ -378,7 +386,7 @@ codeunit 55056 HRPortal
 
     end;
 
-    procedure CreateEmployeeAppraisalApplication(EmpNo: Code[50]; AppraisorNo: Code[50]; appraisalPeriod: Code[30]; ApplicationNo: Code[50]) status: Text
+    procedure CreateEmployeeAppraisalApplication(EmpNo: Code[50]; AppraisorNo: Code[50]; appraisalPeriod: Code[30]; appraisalType: Code[30]; ApplicationNo: Code[50]) status: Text
     var
         HRSetup: Record "Human Resources Setup";
         LeaveReliever: Record "Leave Relievers";
@@ -396,6 +404,8 @@ codeunit 55056 HRPortal
                 employeeAppraisal.Validate("Appraiser No");
                 employeeAppraisal."Appraisal Period" := appraisalPeriod;
                 employeeAppraisal.Validate("Appraisal Period");
+                employeeAppraisal."Appraisal Type" := appraisalType;
+                employeeAppraisal.Validate("Appraisal Type");
                 employeeAppraisal.Date := today;
                 //employeeAppraisal.ID:= 'ADMINCLOUD';
                 employeeAppraisal.Modify(true);
@@ -418,13 +428,15 @@ codeunit 55056 HRPortal
                 employeeAppraisal."Employee No" := HrEmployees."No.";
                 employeeAppraisal.Validate("Employee No");
                 employeeAppraisal."Appraisee Name" := HrEmployees."First Name" + ' ' + HrEmployees."Middle Name" + ' ' + HrEmployees."Last Name";
+                employeeAppraisal."Appraisal Type" := appraisalType;
+                employeeAppraisal.Validate("Appraisal Type");
                 employeeAppraisal.Modify(true);
                 status := 'success*Appraisal Application has been created succesfully*' + employeeAppraisal."Appraisal No";
             end;
         end;
     end;
 
-    procedure AddAppraisalLines(ApplicationNo: Code[50]; workplanID: Code[30]; indicators: Text; description: Text) status: Text
+    procedure AddAppraisalLines(ApplicationNo: Code[50]; workplanID: Code[30]; indicators: Code[30]; initiave: Code[30]) status: Text
     var
         prevLineNo: Integer;
 
@@ -442,7 +454,9 @@ codeunit 55056 HRPortal
         employeeAppraisalLines."Workplan Code" := workplanID;
         employeeAppraisalLines.Validate("Workplan Code");
         employeeAppraisalLines."Performance Measure" := indicators;
-        employeeAppraisalLines.Description := description;
+        employeeAppraisalLines.Validate("Performance Measure");
+        employeeAppraisalLines."Initiative code" := initiave;
+        employeeAppraisalLines.Validate("Initiative code");
         if employeeAppraisalLines.Insert(true) then begin
             status := 'success*Appraisal Line has been created succesfully';
         end else begin
@@ -479,6 +493,33 @@ codeunit 55056 HRPortal
             if ApprovalsMgmt.CheckNewEmpAppraisalWorkflowEnabled(employeeAppraisal) then
                 ApprovalsMgmt.OnSendNewEmpAppraisalRequestforApproval(employeeAppraisal);
             status := 'success*Doccument has been successfully sent for approval';
+        end else begin
+            status := 'danger*Document not found';
+        end;
+
+    end;
+
+    procedure SendAppraisalReview(DocNo: Code[50]) status: Text
+    var
+        ApprovalsMgmt: Codeunit "Approval Mgt HR Ext";
+    begin
+        employeeAppraisal.Reset();
+        employeeAppraisal.SetRange("Appraisal No", DocNo);
+        if employeeAppraisal.Find('-') then begin
+            employeeAppraisal.TestField("Appraisal Period");
+            employeeAppraisal.TestField("Employee No");
+            employeeAppraisal.TestField("Appraiser No");
+
+            if ApprovalsMgmt.CheckNewEmpAppraisalWorkflowEnabled(employeeAppraisal) then
+                ApprovalsMgmt.OnSendNewEmpAppraisalRequestforApproval(employeeAppraisal);
+            employeeAppraisal."Appraisal Status" := employeeAppraisal."Appraisal Status"::Review;
+            if employeeAppraisal.Status = employeeAppraisal.Status::Released then
+                employeeAppraisal."Appraisal Status" := employeeAppraisal."Appraisal Status"::Completed;
+
+            employeeAppraisal.Modify(true);
+            Commit();
+
+            status := 'success*Doccument has been successfully sent for review';
         end else begin
             status := 'danger*Document not found';
         end;
@@ -850,7 +891,7 @@ codeunit 55056 HRPortal
         memo.Get(DocNo);
 
         ApprovalsMngt.OnCancelImprestMemoApprovalRequest(memo);
-        status := 'success*Training Request approval request has been successfully cancelled.';
+        status := 'success*Imprest Memo Request approval request has been successfully cancelled.';
     end;
 
     procedure CreateImprestRequisition(No: Code[30]; AccountNo: Code[30]; activity: Code[100]; department: code[100]; TravelType: Integer; Purpose: Text[2048]; Destination: Code[250]; TravelDate: DateTime; ReturnDate: DateTime; Cashier: Code[30]) status: Text
@@ -1649,66 +1690,149 @@ codeunit 55056 HRPortal
         end;
     end;
 
-    procedure CreateTrainingRequest(No: Code[30]; EmpNo: Code[30]; trainingNeed: Code[100]; trainingDescription: Text; fromDt: DateTime; toDt: DateTime; destination: Text; Currency: Code[30]; costOfTraining: decimal) status: Text
+    procedure CreateTrainingRequest(No: Code[30]; EmpNo: Code[30]; sourceDocumentNo: Text; needSource: integer; jobFunction: Text[1000]; currentEmployeeSkills: Text[1000]; missingCompetencies: Text[1000]; requiredSkills: Text[1000]; commentsByDepartment: Text[1000]) status: Text
     var
+        EmpRec: Record "Employee Master";
+        TrainingSetup: Record "QuantumJumps HR Setup";
     begin
         CashMgt.Get();
         HrEmployees.Get(EmpNo);
-        if TrainingRequest.Get(No) then begin
-            TrainingRequest."Request Date" := Today;
-            TrainingRequest."Employee No" := EmpNo;
-            TrainingRequest.Validate("Employee No");
-            TrainingRequest."Planned Start Date" := DT2Date(fromDt);
-            TrainingRequest.Validate("Planned Start Date");
-            TrainingRequest."Planned End Date" := DT2Date(toDt);
-            TrainingRequest.Validate("Planned End Date");
-            // TrainingRequest.Currency := CopyStr(Currency, 1, MaxStrLen(TrainingRequest.Currency));
-            TrainingRequest.Description := trainingDescription;
-            TrainingRequest."Cost of Training" := costOfTraining;
-            TrainingRequest.Destination := destination;
-            TrainingRequest."Training Need" := trainingNeed;
-            if TrainingRequest.Modify(true) then begin
-                status := 'success*Training request has been modified succesfully*' + TrainingRequest."Request No.";
+        if No <> '' then begin
+            TrainingRequest.Reset();
+            TrainingRequest.SetRange("No.", No);
+            if TrainingRequest.FindFirst() then begin
+                TrainingRequest.Date := Today;
+                TrainingRequest."Source Document No" := sourceDocumentNo;
+                TrainingRequest."Need Source" := needSource;
+                TrainingRequest."Employee No" := EmpNo;
+                TrainingRequest.Validate("Employee No");
+                TrainingRequest."Job Function" := jobFunction;
+                TrainingRequest."Current Employee Skills" := currentEmployeeSkills;
+                TrainingRequest."Missing Competencies" := missingCompetencies;
+                TrainingRequest."Required Skills" := requiredSkills;
+                TrainingRequest.Comments1 := commentsByDepartment;
+                TrainingRequest.Status := TrainingRequest.Status::Open;
+                if EmpRec.Get(EmpNo) then begin
+                    TrainingRequest."Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                    TrainingRequest."Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                    TrainingRequest."Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
+                end;
+                TrainingRequest."Job Title" := HrEmployees."Job Title";
+                TrainingRequest."Employee Name" := HrEmployees."First Name" + ' ' + HrEmployees."Last Name";
+                if TrainingRequest.Modify(true) then begin
+                    status := 'success*Training request has been modified succesfully*' + TrainingRequest."No.";
+                end else begin
+                    status := 'danger*An error occured while submitting your Training request';
+                end;
             end else begin
-                status := 'danger*An error occured while submitting your Training request';
+                status := 'danger*Document could not be found';
             end;
         end else begin
             TrainingRequest.Init();
-            TrainingRequest."Request Date" := Today;
+            TrainingSetup.Get;
+            TrainingSetup.TestField("Training Nos.");
+            NoSeriesMgt.InitSeries(TrainingSetup."Training Nos.", TrainingRequest."No. Series", 0D, TrainingRequest."No.", TrainingRequest."No. Series");
+            TrainingRequest."Required Hours" := TrainingSetup."Training Hours per Year";
+            TrainingRequest.Date := Today;
             TrainingRequest."Employee No" := EmpNo;
+            TrainingRequest."Source Document No" := sourceDocumentNo;
+            TrainingRequest."Need Source" := needSource;
             TrainingRequest.Validate("Employee No");
-            TrainingRequest."Planned Start Date" := DT2Date(fromDt);
-            TrainingRequest.Validate("Planned Start Date");
-            TrainingRequest."Planned End Date" := DT2Date(toDt);
-            TrainingRequest.Validate("Planned End Date");
-            // TrainingRequest.Currency := CopyStr(Currency, 1, MaxStrLen(TrainingRequest.Currency));
-            TrainingRequest.Description := trainingDescription;
-            TrainingRequest."Cost of Training" := costOfTraining;
-            TrainingRequest.Destination := destination;
-            TrainingRequest."Training Need" := trainingNeed;
-            if TrainingRequest.Insert(true) then begin
-                status := 'success*Training request has been modified succesfully*' + TrainingRequest."Request No.";
+            TrainingRequest."Job Function" := jobFunction;
+            TrainingRequest."Current Employee Skills" := currentEmployeeSkills;
+            TrainingRequest."Missing Competencies" := missingCompetencies;
+            TrainingRequest."Required Skills" := requiredSkills;
+            TrainingRequest.Comments1 := commentsByDepartment;
+            if EmpRec.Get(EmpNo) then begin
+                TrainingRequest."Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                TrainingRequest."Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                TrainingRequest."Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
+            end;
+            TrainingRequest."Job Title" := HrEmployees."Job Title";
+            TrainingRequest."Employee Name" := HrEmployees."First Name" + ' ' + HrEmployees."Last Name";
+            TrainingRequest.Status := TrainingRequest.Status::Open;
+            if TrainingRequest.Insert() then begin
+                TrainingRequest."Employee No" := EmpNo;
+                TrainingRequest.Validate("Employee No");
+                if EmpRec.Get(EmpNo) then begin
+                    TrainingRequest."Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                    TrainingRequest."Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                    TrainingRequest."Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
+                end;
+                TrainingRequest."Job Title" := HrEmployees."Job Title";
+                TrainingRequest."Employee Name" := HrEmployees."First Name" + ' ' + HrEmployees."Last Name";
+                TrainingRequest.Modify(true);
+                status := 'success*Training request has been modified succesfully*' + TrainingRequest."No.";
             end else begin
                 status := 'danger*An error occured while submitting your Training request';
             end;
         end;
     end;
 
-    procedure SendTrainingRequestApproval(DocNo: Code[50]) Status: Text
+    procedure CreateTrainingRequestLines(No: Code[30]; EmpNo: Code[30]; needCode: Code[30]) status: Text
+    var
+        lineNo: Integer;
     begin
-        // TrainingRequest.Get(DocNo);
+        TrainingRequestLines.Reset();
+        TrainingRequestLines."Employee No." := EmpNo;
+        TrainingRequestLines1.Reset();
+        TrainingRequestLines1.SetRange("Employee No.", EmpNo);
+        if TrainingRequestLines1.FindLast() then
+            lineNo := TrainingRequestLines1."Line No." + 1
+        else
+            lineNo := 1;
+        TrainingRequestLines."Line No." := lineNo;
+        TrainingRequestLines."Document No." := No;
+        TrainingRequestLines.Code := needCode;
+        TrainingRequestLines.Validate(Code);
+        if TrainingRequestLines.Insert(true) then begin
+            status := 'success*Training request line added succesfully.';
+        end else begin
+            status := 'danger*An error occured while submitting your Training request line';
+        end;
+    end;
 
-        // if ApprovalMgtHR.CheckTrainingRequestWorkflowEnabled(TrainingRequest) then
-        //     ApprovalMgtHR.OnSendTrainingRequestforApproval(TrainingRequest);
-        // UpdateApprovalEntries(DocNo, TrainingRequest."User ID");
-        status := 'success*Training Request has been has been succesfully sent for approval.';
+    procedure DeleteTrainingRequestLine(empNo: Code[30]; lineNo: Integer) status: Text
+    var
+
+    begin
+        TrainingRequestLines.SetRange("Employee No.", EmpNo);
+        TrainingRequestLines.SetRange("Line No.", lineNo);
+        if TrainingRequestLines1.FindLast() then
+            if TrainingRequestLines.Delete() then begin
+                status := 'success*Training request line deleted succesfully.';
+            end else begin
+                status := 'danger*An error occured while submitting your Training request line';
+            end;
+    end;
+
+    procedure SendTrainingRequestApproval(DocNo: Code[50]) Status: Text
+    var
+        ApprovalsMgmt: Codeunit "Approvals Mgmt. Ext";
+
+    begin
+        TrainingRequest.Reset();
+        TrainingRequest.SetRange("No.", DocNo);
+        if TrainingRequest.FindFirst() then begin
+            ApprovalsMgmt.OnSendTrainingNeedsForApproval(TrainingRequest);
+            status := 'success*Training Request has been has been succesfully sent for approval.';
+        end;
+
+
     end;
 
     procedure CancelTrainingRequestApproval(DocNo: Code[50]) Status: Text
+    var
+        ApprovalsMgmt: Codeunit "Approvals Mgmt. Ext";
     begin
-        // TrainingRequest.Get(DocNo);
-        // ApprovalMgtHR.OnCancelTrainingRequestApproval(TrainingRequest);
-        status := 'success*Training Request approval request has been successfully cancelled.';
+        TrainingRequest.Get(DocNo);
+        TrainingRequest.Reset();
+        TrainingRequest.SetRange("No.", DocNo);
+        if TrainingRequest.FindFirst() then begin
+            // ApprovalsMgmt.OnCancelTrainingRequestApproval(TrainingRequest);
+            status := 'success*Training Request approval request has been successfully cancelled.';
+        end;
+
     end;
 
     procedure fnInsertPortalAttachments(DocumentNo: Code[100]; Description: Text; Url: Text; Type: Text) status: Text
