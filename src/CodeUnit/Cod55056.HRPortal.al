@@ -28,7 +28,7 @@ codeunit 55056 HRPortal
         MaturityDate: Date;
         NonWorkingDay: Boolean;
         NoOfWorkingDays: Decimal;
-        PayrollPeriod: Record "Payroll Period";
+        PayrollPeriod: Record "Payroll Period II";
 
         RequestorID: Record "User Setup";
 
