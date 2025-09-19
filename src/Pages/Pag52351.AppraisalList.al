@@ -34,6 +34,22 @@ page 52351 "Appraisal List"
                 {
                     ToolTip = 'Specifies the value of the Appraiser No field';
                 }
+                field("Appraisal Type"; Rec."Appraisal Type")
+                {
+                    ToolTip = 'Specifies the value of the Appraisal Type field';
+                }
+                field("Appraisal Period"; Rec."Appraisal Period")
+                {
+                    ToolTip = 'Specifies the value of the Appraisal Period field';
+                }
+                field("Appraisal Status"; Rec."Appraisal Status")
+                {
+                    ToolTip = 'Specifies the value of the Appraisal Status field';
+                }
+                field("Appraisers Name"; Rec."Appraisers Name")
+                {
+                    ToolTip = 'Specifies the value of the Appraisers Name field';
+                }
             }
         }
     }

@@ -127,6 +127,10 @@ page 51747 "SS Training Needs Header"
                     MultiLine = true;
                     ShowCaption = false;
                 }
+                field(Status; Rec.Status)
+                {
+                    ToolTip = 'Specifies the value of the Status field.', Comment = '%';
+                }
             }
             part(Control25; "Training Needs Lines")
             {
@@ -187,8 +191,8 @@ page 51747 "SS Training Needs Header"
                 begin
 
                     // if ApprovalsMgmt.checktr(Rec) then
-                        ApprovalsMgmt.OnSendTrainingNeedsForApproval(Rec);
-                        Commit();
+                    ApprovalsMgmt.OnSendTrainingNeedsForApproval(Rec);
+                    Commit();
                 end;
             }
             action("Cancel Approval Request")
@@ -229,5 +233,5 @@ page 51747 "SS Training Needs Header"
         }
     }
     var
-    ApprovalsMgmt:Codeunit "Approvals Mgmt. Ext";
+        ApprovalsMgmt: Codeunit "Approvals Mgmt. Ext";
 }
