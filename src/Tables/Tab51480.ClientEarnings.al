@@ -13,7 +13,7 @@ table 51480 "Client Earnings"
 
             trigger OnValidate()
             begin
-                if EarningsMaster.Get(Code)then begin
+                if EarningsMaster.Get(Code) then begin
                     Init;
                     TransferFields(EarningsMaster);
                     Insert;
@@ -23,7 +23,7 @@ table 51480 "Client Earnings"
         field(2; Description; Text[50])
         {
         }
-        field(3; "Pay Type";Enum ClientEarningsPayType)
+        field(3; "Pay Type"; Enum ClientEarningsPayType)
         {
         }
         field(4; Taxable; Boolean)
@@ -31,14 +31,14 @@ table 51480 "Client Earnings"
         }
         field(5; "Calculation Method"; Option)
         {
-            OptionMembers = "Flat amount", "% of Basic pay", "% of Gross pay", "% of Insurance Amount", "% of Taxable income", "% of Basic after tax", "Based on Hourly Rate", "Based on Daily Rate", "% of Salary Recovery", "% of Loan Amount", "% of SHIF";
+            OptionMembers = "Flat amount","% of Basic pay","% of Gross pay","% of Insurance Amount","% of Taxable income","% of Basic after tax","Based on Hourly Rate","Based on Daily Rate","% of Salary Recovery","% of Loan Amount","% of SHIF","% of Mortgage";
         }
         field(6; "Flat Amount"; Decimal)
         {
         }
         field(7; Percentage; Decimal)
         {
-            DecimalPlaces = 2: 4;
+            DecimalPlaces = 2 : 4;
         }
         field(8; "G/L Account"; Code[10])
         {
@@ -46,7 +46,7 @@ table 51480 "Client Earnings"
         }
         field(9; "Total Amount"; Decimal)
         {
-            CalcFormula = Sum("Client Payroll Matrix".Amount WHERE(Type=CONST(Payment), Code=FIELD(Code), "Payroll Group"=FIELD("Posting Group Filter"), "Payroll Period"=FIELD("Pay Period Filter"), "Employee No"=FIELD("Employee Filter")));
+            CalcFormula = Sum("Client Payroll Matrix".Amount WHERE(Type = CONST(Payment), Code = FIELD(Code), "Payroll Group" = FIELD("Posting Group Filter"), "Payroll Period" = FIELD("Pay Period Filter"), "Employee No" = FIELD("Employee Filter")));
             Editable = false;
             FieldClass = FlowField;
         }
@@ -102,7 +102,7 @@ table 51480 "Client Earnings"
         field(24; "Global Dimension 1 Filter"; Code[10])
         {
             FieldClass = FlowFilter;
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
         }
         field(25; "Show on Report"; Boolean)
         {
@@ -125,7 +125,7 @@ table 51480 "Client Earnings"
         field(31; "Basic Salary Code"; Boolean)
         {
         }
-        field(32; "Earning Type";Enum ClientEarningType)
+        field(32; "Earning Type"; Enum ClientEarningType)
         {
         }
         field(33; "Applies to All"; Boolean)
@@ -151,11 +151,11 @@ table 51480 "Client Earnings"
         }
         field(40; "Market Rate"; Decimal)
         {
-            DecimalPlaces = 2: 5;
+            DecimalPlaces = 2 : 5;
         }
         field(41; "Company Rate"; Decimal)
         {
-            DecimalPlaces = 2: 5;
+            DecimalPlaces = 2 : 5;
         }
         field(42; Fringe; Boolean)
         {
@@ -169,7 +169,7 @@ table 51480 "Client Earnings"
         }
         field(45; "Global Dimension 2 Filter"; Code[20])
         {
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
         field(46; Company; Code[10])
         {
@@ -188,5 +188,6 @@ table 51480 "Client Earnings"
     fieldgroups
     {
     }
-    var EarningsMaster: Record "Earnings Master";
+    var
+        EarningsMaster: Record "Earnings Master";
 }

@@ -65,15 +65,15 @@ table 52015 "Employee Appraisal"
                 EmpAppraisal.SetRange("Employee No", "Employee No");
                 EmpAppraisal.SetRange("Appraisal Period", "Appraisal Period");
                 if EmpAppraisal.Find('-') then
-                    Error(Error001, "Appraisal Period");
+                    // Error(Error001, "Appraisal Period");
 
                 if AppraisalPeriods.Get("Appraisal Period") then begin
-                    AppraisalPeriods.TestField("Start Date");
-                    AppraisalPeriods.TestField("End Date");
-                    "Period Start" := AppraisalPeriods."Start Date";
-                    "Period End" := AppraisalPeriods."End Date";
-                    AppraisalType := AppraisalPeriods."Appraisal Type";
-                end;
+                        AppraisalPeriods.TestField("Start Date");
+                        AppraisalPeriods.TestField("End Date");
+                        "Period Start" := AppraisalPeriods."Start Date";
+                        "Period End" := AppraisalPeriods."End Date";
+                        AppraisalType := AppraisalPeriods."Appraisal Type";
+                    end;
             end;
         }
         field(5; "No. Supervised (Directly)"; Integer)
@@ -404,7 +404,7 @@ table 52015 "Employee Appraisal"
         }
         field(66; Closed; Boolean)
         {
-            DataClassification=ToBeClassified;
+            DataClassification = ToBeClassified;
         }
 
     }

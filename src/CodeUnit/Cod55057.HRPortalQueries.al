@@ -202,6 +202,20 @@ codeunit 55057 HRPortalQueries
             until tbl_payments.Next = 0;
 
         end;
+    end;
+
+    procedure fnGetAllAppraisalApplications(empNo: Code[20]) data: Text
+    var
+        employeeAppraisal: Record "Employee Appraisal";
+    begin
+        employeeAppraisal.Reset();
+        employeeAppraisal.SetRange("Employee No", empNo);
+        if employeeAppraisal.FindSet() then begin
+            repeat
+                data += employeeAppraisal."Appraisal No" + '*' + employeeAppraisal."Appraisers Name" + '*' + Format(employeeAppraisal."Appraisal Status") + '::::';
+            until employeeAppraisal.Next = 0;
+
+        end;
 
     end;
 

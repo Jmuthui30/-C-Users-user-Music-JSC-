@@ -1,10 +1,10 @@
 page 52359 "Appraisal Card-New"
 {
-     ApplicationArea = All;
+    ApplicationArea = All;
     Caption = 'Appraisal Card New II';
     PageType = Card;
     SourceTable = "Employee Appraisal";
-      layout
+    layout
     {
         area(content)
         {
@@ -271,7 +271,6 @@ page 52359 "Appraisal Card-New"
                     /*IF (("Total Final Self" <= 0) OR ("Total Mid-Year" <= 0) OR ("Total Weighting" <= 0)) THEN
                       ERROR('Kindly define appraisal goals');*/
 
-
                     Rec.TestField("Appraisal Period");
                     Rec.TestField("Employee No");
                     Rec.TestField("Appraiser No");
@@ -285,7 +284,7 @@ page 52359 "Appraisal Card-New"
                         Rec."Appraisal Status" := Rec."Appraisal Status"::Completed;
 
                     Commit();
-                    CurrPage.Close();
+                    //CurrPage.Close();
 
                 end;
             }
