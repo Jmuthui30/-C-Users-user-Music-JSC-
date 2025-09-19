@@ -1690,36 +1690,78 @@ codeunit 55056 HRPortal
         end;
     end;
 
-    procedure CreateTrainingRequest(No: Code[30]; EmpNo: Code[30]; jobFunction: Text[1000]; currentEmployeeSkills: Text[1000]; missingCompetencies: Text[1000]; requiredSkills: Text[1000]; commentsByDepartment: Text[1000]) status: Text
+    procedure CreateTrainingRequest(No: Code[30]; EmpNo: Code[30]; sourceDocumentNo: Text; needSource: integer; jobFunction: Text[1000]; currentEmployeeSkills: Text[1000]; missingCompetencies: Text[1000]; requiredSkills: Text[1000]; commentsByDepartment: Text[1000]) status: Text
     var
+        EmpRec: Record "Employee Master";
+        TrainingSetup: Record "QuantumJumps HR Setup";
     begin
         CashMgt.Get();
         HrEmployees.Get(EmpNo);
-        if TrainingRequest.Get(No) then begin
-            TrainingRequest.Date := Today;
-            TrainingRequest."Employee No" := EmpNo;
-            TrainingRequest.Validate("Employee No");
-            TrainingRequest."Job Function" := jobFunction;
-            TrainingRequest."Current Employee Skills" := currentEmployeeSkills;
-            TrainingRequest."Missing Competencies" := missingCompetencies;
-            TrainingRequest."Required Skills" := requiredSkills;
-            TrainingRequest.Comments1 := commentsByDepartment;
-            if TrainingRequest.Modify(true) then begin
-                status := 'success*Training request has been modified succesfully*' + TrainingRequest."No.";
+        if No <> '' then begin
+            TrainingRequest.Reset();
+            TrainingRequest.SetRange("No.", No);
+            if TrainingRequest.FindFirst() then begin
+                TrainingRequest.Date := Today;
+                TrainingRequest."Source Document No" := sourceDocumentNo;
+                TrainingRequest."Need Source" := needSource;
+                TrainingRequest."Employee No" := EmpNo;
+                TrainingRequest.Validate("Employee No");
+                TrainingRequest."Job Function" := jobFunction;
+                TrainingRequest."Current Employee Skills" := currentEmployeeSkills;
+                TrainingRequest."Missing Competencies" := missingCompetencies;
+                TrainingRequest."Required Skills" := requiredSkills;
+                TrainingRequest.Comments1 := commentsByDepartment;
+                TrainingRequest.Status := TrainingRequest.Status::Open;
+                if EmpRec.Get(EmpNo) then begin
+                    TrainingRequest."Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                    TrainingRequest."Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                    TrainingRequest."Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
+                end;
+                TrainingRequest."Job Title" := HrEmployees."Job Title";
+                TrainingRequest."Employee Name" := HrEmployees."First Name" + ' ' + HrEmployees."Last Name";
+                if TrainingRequest.Modify(true) then begin
+                    status := 'success*Training request has been modified succesfully*' + TrainingRequest."No.";
+                end else begin
+                    status := 'danger*An error occured while submitting your Training request';
+                end;
             end else begin
-                status := 'danger*An error occured while submitting your Training request';
+                status := 'danger*Document could not be found';
             end;
         end else begin
             TrainingRequest.Init();
+            TrainingSetup.Get;
+            TrainingSetup.TestField("Training Nos.");
+            NoSeriesMgt.InitSeries(TrainingSetup."Training Nos.", TrainingRequest."No. Series", 0D, TrainingRequest."No.", TrainingRequest."No. Series");
+            TrainingRequest."Required Hours" := TrainingSetup."Training Hours per Year";
             TrainingRequest.Date := Today;
             TrainingRequest."Employee No" := EmpNo;
+            TrainingRequest."Source Document No" := sourceDocumentNo;
+            TrainingRequest."Need Source" := needSource;
             TrainingRequest.Validate("Employee No");
             TrainingRequest."Job Function" := jobFunction;
             TrainingRequest."Current Employee Skills" := currentEmployeeSkills;
             TrainingRequest."Missing Competencies" := missingCompetencies;
             TrainingRequest."Required Skills" := requiredSkills;
             TrainingRequest.Comments1 := commentsByDepartment;
-            if TrainingRequest.Insert(true) then begin
+            if EmpRec.Get(EmpNo) then begin
+                TrainingRequest."Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                TrainingRequest."Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                TrainingRequest."Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
+            end;
+            TrainingRequest."Job Title" := HrEmployees."Job Title";
+            TrainingRequest."Employee Name" := HrEmployees."First Name" + ' ' + HrEmployees."Last Name";
+            TrainingRequest.Status := TrainingRequest.Status::Open;
+            if TrainingRequest.Insert() then begin
+                TrainingRequest."Employee No" := EmpNo;
+                TrainingRequest.Validate("Employee No");
+                if EmpRec.Get(EmpNo) then begin
+                    TrainingRequest."Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                    TrainingRequest."Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                    TrainingRequest."Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
+                end;
+                TrainingRequest."Job Title" := HrEmployees."Job Title";
+                TrainingRequest."Employee Name" := HrEmployees."First Name" + ' ' + HrEmployees."Last Name";
+                TrainingRequest.Modify(true);
                 status := 'success*Training request has been modified succesfully*' + TrainingRequest."No.";
             end else begin
                 status := 'danger*An error occured while submitting your Training request';
@@ -1738,9 +1780,11 @@ codeunit 55056 HRPortal
         if TrainingRequestLines1.FindLast() then
             lineNo := TrainingRequestLines1."Line No." + 1
         else
-            lineNo := TrainingRequestLines1."Line No.";
+            lineNo := 1;
         TrainingRequestLines."Line No." := lineNo;
+        TrainingRequestLines."Document No." := No;
         TrainingRequestLines.Code := needCode;
+        TrainingRequestLines.Validate(Code);
         if TrainingRequestLines.Insert(true) then begin
             status := 'success*Training request line added succesfully.';
         end else begin
@@ -1767,10 +1811,14 @@ codeunit 55056 HRPortal
         ApprovalsMgmt: Codeunit "Approvals Mgmt. Ext";
 
     begin
-        TrainingRequest.Get(DocNo);
+        TrainingRequest.Reset();
+        TrainingRequest.SetRange("No.", DocNo);
+        if TrainingRequest.FindFirst() then begin
+            ApprovalsMgmt.OnSendTrainingNeedsForApproval(TrainingRequest);
+            status := 'success*Training Request has been has been succesfully sent for approval.';
+        end;
 
-        ApprovalsMgmt.OnSendTrainingNeedsForApproval(TrainingRequest);
-        status := 'success*Training Request has been has been succesfully sent for approval.';
+
     end;
 
     procedure CancelTrainingRequestApproval(DocNo: Code[50]) Status: Text
@@ -1778,9 +1826,13 @@ codeunit 55056 HRPortal
         ApprovalsMgmt: Codeunit "Approvals Mgmt. Ext";
     begin
         TrainingRequest.Get(DocNo);
+        TrainingRequest.Reset();
+        TrainingRequest.SetRange("No.", DocNo);
+        if TrainingRequest.FindFirst() then begin
+            // ApprovalsMgmt.OnCancelTrainingRequestApproval(TrainingRequest);
+            status := 'success*Training Request approval request has been successfully cancelled.';
+        end;
 
-        // ApprovalsMgmt.OnCancelTrainingRequestApproval(TrainingRequest);
-        status := 'success*Training Request approval request has been successfully cancelled.';
     end;
 
     procedure fnInsertPortalAttachments(DocumentNo: Code[100]; Description: Text; Url: Text; Type: Text) status: Text

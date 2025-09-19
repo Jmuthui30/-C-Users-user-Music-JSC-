@@ -14,7 +14,7 @@ table 51642 "Employee Training Needs"
 
             trigger OnValidate()
             begin
-                if Needs.Get(Code)then Description:=Needs.Description;
+                if Needs.Get(Code) then Description := Needs.Description;
             end;
         }
         field(4; Description; Text[100])
@@ -23,9 +23,13 @@ table 51642 "Employee Training Needs"
         field(5; Status; Option)
         {
             OptionCaption = 'Pending,On-going,Complete';
-            OptionMembers = Pending, "On-going", Complete;
+            OptionMembers = Pending,"On-going",Complete;
         }
         field(6; "Reference No."; Code[20])
+        {
+            Editable = false;
+        }
+        field(7; "Document No."; Code[20])
         {
             Editable = false;
         }
@@ -39,5 +43,6 @@ table 51642 "Employee Training Needs"
     fieldgroups
     {
     }
-    var Needs: Record "Training Needs";
+    var
+        Needs: Record "Training Needs";
 }
