@@ -99,6 +99,10 @@ page 51470 "Client Payroll Matrix"
                 {
                     ApplicationArea = All;
                 }
+                field(Type; Type)
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }
