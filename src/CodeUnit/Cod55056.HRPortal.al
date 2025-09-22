@@ -750,7 +750,7 @@ codeunit 55056 HRPortal
             memo.Subject := subject;
             memo."Message body" := memoDescription;
             memo.Memo := memoDescription;
-            // memo."Employee No." := employeeNumber;
+            memo."Employee No." := employeeNumber;
             memo.Purpose := memoDescription;
             memo."Activity Location" := location;
             memo."Created By" := 'ADMINCLOUD';
@@ -797,7 +797,7 @@ codeunit 55056 HRPortal
             //memo.To := From;
             memo.Subject := subject;
             memo."Message body" := memoDescription;
-            // memo."Employee No." := employeeNumber;
+            memo."Employee No." := employeeNumber;
             memo.Purpose := memoDescription;
             memo."Activity Location" := location;
             memo."Created By" := 'ADMINCLOUD';

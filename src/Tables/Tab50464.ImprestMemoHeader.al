@@ -418,6 +418,11 @@ table 50464 "Imprest Memo Header"
         {
             DataClassification = ToBeClassified;
         }
+        field(119; "Employee No."; Text[2048]
+        )
+        {
+            DataClassification = ToBeClassified;
+        }
     }
     keys
     {
