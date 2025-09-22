@@ -141,11 +141,13 @@ codeunit 52005 "Approval Mgt HR Ext"
             //         Variant := NewEmployeeAppraisal;
             //         IsHandled := true;
             //     end;
-             Database::"Employee Appraisal":
+            Database::"Employee Appraisal":
                 begin
                     RecRef.SetTable(NewEmployeeAppraisal);
-                    NewEmployeeAppraisal.Validate(Status, NewEmployeeAppraisal.Status::"Pending Approval");
-                    NewEmployeeAppraisal.Modify(true);
+                    if NewEmployeeAppraisal.Get(NewEmployeeAppraisal."Appraisal No") then begin
+                        NewEmployeeAppraisal.Validate(Status, NewEmployeeAppraisal.Status::"Pending Approval");
+                        NewEmployeeAppraisal.Modify(true);
+                    end;
                     IsHandled := true;
                 end;
 
