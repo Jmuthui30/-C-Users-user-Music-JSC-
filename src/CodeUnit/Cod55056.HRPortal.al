@@ -62,6 +62,7 @@ codeunit 55056 HRPortal
         memo: Record "Imprest Memo Header";
         memoLines: Record "Imprest Memo Lines";
         employeeAppraisal: Record "Employee Appraisal";
+        employeeAppraisal1: Record "Employee Appraisal";
         employeeAppraisalLines: Record "Appraisal Lines";
 
     procedure SendEmailNotification(recepient: Text; emailSubject: Text; emailBody: Text)
@@ -436,7 +437,7 @@ codeunit 55056 HRPortal
         end;
     end;
 
-    procedure AddAppraisalLines(ApplicationNo: Code[50]; workplanID: Code[30]; indicators: Code[30]; initiave: Code[30]) status: Text
+    procedure AddAppraisalLines(ApplicationNo: Code[50]; workplanID: Code[30]; indicators: Code[30]; initiave: Code[30]; target: Decimal; actual: Decimal) status: Text
     var
         prevLineNo: Integer;
 
@@ -457,6 +458,8 @@ codeunit 55056 HRPortal
         employeeAppraisalLines.Validate("Performance Measure");
         employeeAppraisalLines."Initiative code" := initiave;
         employeeAppraisalLines.Validate("Initiative code");
+        employeeAppraisalLines."FY Target" := target;
+        employeeAppraisalLines.Actual := actual;
         if employeeAppraisalLines.Insert(true) then begin
             status := 'success*Appraisal Line has been created succesfully';
         end else begin
@@ -466,7 +469,7 @@ codeunit 55056 HRPortal
 
     end;
 
-    procedure DeleteAppraisalLines(ApplicationNo: Code[50]; lineNo: Integer) status: Text
+    procedure DeleteAppraisalLines(ApplicationNo: Code[50]; employeeNo: Code[50]; lineNo: Integer) status: Text
     var
         HRSetup: Record "Human Resources Setup";
         LeaveReliever: Record "Leave Relievers";
@@ -474,6 +477,7 @@ codeunit 55056 HRPortal
         employeeAppraisalLines.Reset();
         employeeAppraisalLines.SetRange("Appraisal No", ApplicationNo);
         employeeAppraisalLines.setrange("Line No", lineNo);
+        //employeeAppraisalLines.setrange("Employee No", employeeNo);
         if employeeAppraisalLines.FindFirst() THEN begin
             if employeeAppraisalLines.Delete(true) then begin
                 status := 'success*Appraisal Line has been deleted succesfully';
@@ -506,19 +510,25 @@ codeunit 55056 HRPortal
         employeeAppraisal.Reset();
         employeeAppraisal.SetRange("Appraisal No", DocNo);
         if employeeAppraisal.Find('-') then begin
-            employeeAppraisal.TestField("Appraisal Period");
-            employeeAppraisal.TestField("Employee No");
-            employeeAppraisal.TestField("Appraiser No");
-
             if ApprovalsMgmt.CheckNewEmpAppraisalWorkflowEnabled(employeeAppraisal) then
                 ApprovalsMgmt.OnSendNewEmpAppraisalRequestforApproval(employeeAppraisal);
-            employeeAppraisal."Appraisal Status" := employeeAppraisal."Appraisal Status"::Review;
-            if employeeAppraisal.Status = employeeAppraisal.Status::Released then
-                employeeAppraisal."Appraisal Status" := employeeAppraisal."Appraisal Status"::Completed;
+            // employeeAppraisal.TestField("Appraisal Period");
+            // employeeAppraisal.TestField("Employee No");
+            // employeeAppraisal.TestField("Appraiser No");
+            // Commit();
+            // if ApprovalsMgmt.CheckNewEmpAppraisalWorkflowEnabled(employeeAppraisal) then
+            //     ApprovalsMgmt.OnSendNewEmpAppraisalRequestforApproval(employeeAppraisal);
+            // employeeAppraisal1.Reset();
+            // employeeAppraisal1.SetRange("Appraisal No", DocNo);
+            // if employeeAppraisal1.Find('-') then begin
+            //     employeeAppraisal1."Appraisal Status" := employeeAppraisal1."Appraisal Status"::Review;
+            //     if employeeAppraisal1.Status = employeeAppraisal1.Status::Released then
+            //         employeeAppraisal1."Appraisal Status" := employeeAppraisal1."Appraisal Status"::Completed;
+            //     employeeAppraisal1.Modify();
+            // end;
 
-            employeeAppraisal.Modify(true);
-            Commit();
-
+            // Commit();
+            // CurrPage.Update();
             status := 'success*Doccument has been successfully sent for review';
         end else begin
             status := 'danger*Document not found';
@@ -1792,13 +1802,14 @@ codeunit 55056 HRPortal
         end;
     end;
 
-    procedure DeleteTrainingRequestLine(empNo: Code[30]; lineNo: Integer) status: Text
+    procedure DeleteTrainingRequestLine(empNo: Code[30]; applicationNo: Code[50]; lineNo: Integer) status: Text
     var
 
     begin
         TrainingRequestLines.SetRange("Employee No.", EmpNo);
         TrainingRequestLines.SetRange("Line No.", lineNo);
-        if TrainingRequestLines1.FindLast() then
+        TrainingRequestLines.SetRange("Document No.", applicationNo);
+        if TrainingRequestLines.FindFirst() then
             if TrainingRequestLines.Delete() then begin
                 status := 'success*Training request line deleted succesfully.';
             end else begin
@@ -1815,7 +1826,7 @@ codeunit 55056 HRPortal
         TrainingRequest.SetRange("No.", DocNo);
         if TrainingRequest.FindFirst() then begin
             ApprovalsMgmt.OnSendTrainingNeedsForApproval(TrainingRequest);
-            status := 'success*Training Request has been has been succesfully sent for approval.';
+            status := 'success*Training Request has been succesfully sent for approval.';
         end;
 
 

@@ -161,7 +161,8 @@ codeunit 52004 "Workflow Responses HR"
             Employee.Modify(true);
         end;
     end;
-     procedure ReleaseEmployeeAppraisalRequest(var Appraisal: Record "Employee Appraisal")
+
+    procedure ReleaseEmployeeAppraisalRequest(var Appraisal: Record "Employee Appraisal")
     var
         EmployeeApp: Record "Employee Appraisal";
     begin
@@ -179,7 +180,7 @@ codeunit 52004 "Workflow Responses HR"
                 EmployeeApp.Status := EmployeeApp.Status::Released;*/
 
             EmployeeApp.Status := EmployeeApp.Status::Released;
-            // EmployeeApp."Appraisal Status" := EmployeeApp."Appraisal Status"::Review;
+            EmployeeApp."Appraisal Status" := EmployeeApp."Appraisal Status"::Review;
             EmployeeApp.Modify(true);
         end;
     end;

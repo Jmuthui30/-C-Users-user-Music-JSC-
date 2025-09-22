@@ -202,7 +202,6 @@ codeunit 55057 HRPortalQueries
             until tbl_payments.Next = 0;
 
         end;
-
     end;
 
     procedure fnGetAllAppraisalApplications(empNo: Code[20]) data: Text
