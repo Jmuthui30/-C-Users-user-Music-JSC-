@@ -107,13 +107,19 @@ page 50060 "Imprest Memo List"
                 field(Status; Rec.Status)
                 {
                 }
+                field("Employee No."; Rec."Employee No.")
+                {
+                    ToolTip = 'Specifies the value of the Employee No. field.', Comment = '%';
+                }
             }
         }
     }
     trigger OnAfterGetRecord()
     begin
-    // if GeneralSettings.IsSelfService() then
-    //     Rec.SetRange("Created By", UserId);
+        // if GeneralSettings.IsSelfService() then
+        //     Rec.SetRange("Created By", UserId);
     end;
-    var GeneralSettings: Codeunit GeneralSettings;
+
+    var
+        GeneralSettings: Codeunit GeneralSettings;
 }
