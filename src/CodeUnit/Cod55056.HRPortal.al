@@ -510,22 +510,24 @@ codeunit 55056 HRPortal
         employeeAppraisal.Reset();
         employeeAppraisal.SetRange("Appraisal No", DocNo);
         if employeeAppraisal.Find('-') then begin
-            employeeAppraisal.TestField("Appraisal Period");
-            employeeAppraisal.TestField("Employee No");
-            employeeAppraisal.TestField("Appraiser No");
-            Commit();
             if ApprovalsMgmt.CheckNewEmpAppraisalWorkflowEnabled(employeeAppraisal) then
                 ApprovalsMgmt.OnSendNewEmpAppraisalRequestforApproval(employeeAppraisal);
-            employeeAppraisal1.Reset();
-            employeeAppraisal1.SetRange("Appraisal No", DocNo);
-            if employeeAppraisal1.Find('-') then begin
-                employeeAppraisal1."Appraisal Status" := employeeAppraisal1."Appraisal Status"::Review;
-                if employeeAppraisal1.Status = employeeAppraisal1.Status::Released then
-                    employeeAppraisal1."Appraisal Status" := employeeAppraisal1."Appraisal Status"::Completed;
-                employeeAppraisal1.Modify();
-            end;
+            // employeeAppraisal.TestField("Appraisal Period");
+            // employeeAppraisal.TestField("Employee No");
+            // employeeAppraisal.TestField("Appraiser No");
+            // Commit();
+            // if ApprovalsMgmt.CheckNewEmpAppraisalWorkflowEnabled(employeeAppraisal) then
+            //     ApprovalsMgmt.OnSendNewEmpAppraisalRequestforApproval(employeeAppraisal);
+            // employeeAppraisal1.Reset();
+            // employeeAppraisal1.SetRange("Appraisal No", DocNo);
+            // if employeeAppraisal1.Find('-') then begin
+            //     employeeAppraisal1."Appraisal Status" := employeeAppraisal1."Appraisal Status"::Review;
+            //     if employeeAppraisal1.Status = employeeAppraisal1.Status::Released then
+            //         employeeAppraisal1."Appraisal Status" := employeeAppraisal1."Appraisal Status"::Completed;
+            //     employeeAppraisal1.Modify();
+            // end;
 
-            Commit();
+            // Commit();
             // CurrPage.Update();
             status := 'success*Doccument has been successfully sent for review';
         end else begin
