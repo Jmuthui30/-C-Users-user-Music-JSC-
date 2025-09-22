@@ -190,7 +190,20 @@ codeunit 51456 "Client Payroll Calculator"
                     //   Message('RetirementCont 1 is%1', RetirementCont);
                     until Ded.Next = 0;
                 end;
-
+                EarnRec.Reset;
+                EarnRec.SetCurrentKey(EarnRec."Earning Type");
+                EarnRec.SetRange(EarnRec."Calculation Method", EarnRec."Calculation Method"::"% of Mortgage");
+                if EarnRec.Find('-') then begin
+                    repeat
+                        PayrollMatrix.Reset;
+                        PayrollMatrix.SetRange(PayrollMatrix."Payroll Period", DateSpecified);
+                        PayrollMatrix.SetRange(Type, PayrollMatrix.Type::Payment);
+                        PayrollMatrix.SetRange(PayrollMatrix.Code, EarnRec.Code);
+                        PayrollMatrix.SetRange(PayrollMatrix."Employee No", EmployeeNo);
+                        if PayrollMatrix.Find('-') then TaxableAmount := TaxableAmount - PayrollMatrix.Amount;
+                    until EarnRec.Next = 0;
+                    // Message('');
+                end;
 
                 if EmpRec."Home Ownership Status" = EmpRec."Home Ownership Status"::"Owner Occupier" then begin
                     // Get owner Occuper From Earning Table
@@ -429,7 +442,7 @@ codeunit 51456 "Client Payroll Calculator"
         CurrentUser: Code[50];
         IStream: InStream;
         Content: File;
-          EmailMessage: Codeunit "Email Message";
+        EmailMessage: Codeunit "Email Message";
         PasswordHandler: Codeunit "Password Handler";
         SMSMsg: Label 'Hi.Use password %1 for opening Tender-%2.';
         Receipient: List of [Text];
@@ -493,7 +506,7 @@ codeunit 51456 "Client Payroll Calculator"
                 Mail.AddAttachment(Format(Period, 0, '<Month Text>-<Year4>') + ' Payslip ' + Employee."No." + '.pdf', 'PDF', inStreamReport);
                 Email.Send(Mail);
 
-               //  SMSBody := StrSubstNo(SMSMsg, CommitteeMember."Opening Password", TenderRec.Title);
+                //  SMSBody := StrSubstNo(SMSMsg, CommitteeMember."Opening Password", TenderRec.Title);
             end;
         end;
     end;

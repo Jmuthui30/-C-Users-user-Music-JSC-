@@ -156,8 +156,8 @@ table 51467 "Client Payroll Matrix"
                                     Assignmatrix.SETRANGE(Type, Assignmatrix.Type::Deduction);
                                     Assignmatrix.SETRANGE(Code, 'ED034');
                                     IF Assignmatrix.FINDSET THEN
-                                        Assignmatrix.CALCFIELDS(Assignmatrix.Amount);
-                                    Amount := Abs((Payments.Percentage / 100) * (Assignmatrix.Amount * -1));
+                                        // Assignmatrix.CALCFIELDS(Assignmatrix.Amount);
+                                        Amount := Abs((Payments.Percentage / 100) * (Assignmatrix.Amount * -1));
                                     Amount := PayrollRounding(Amount);
                                 end;
 
