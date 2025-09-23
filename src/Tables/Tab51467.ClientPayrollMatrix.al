@@ -158,7 +158,11 @@ table 51467 "Client Payroll Matrix"
                                     IF Assignmatrix.FINDSET THEN
                                         // Assignmatrix.CALCFIELDS(Assignmatrix.Amount);
                                         Amount := Abs((Payments.Percentage / 100) * (Assignmatrix.Amount * -1));
-                                    Amount := PayrollRounding(Amount);
+                                    IF Payments."Maximum Limit" <> 0 THEN
+                                        IF Amount > Payments."Maximum Limit" THEN
+                                            Amount := Payments."Maximum Limit"
+                                        ELSE
+                                            Amount := PayrollRounding(Amount);
                                 end;
 
 
