@@ -127,11 +127,13 @@ page 51984 "Applicant Card-All"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the employee''s initials.';
+                    ShowMandatory = true;
                 }
                 field("Last Name"; Rec."Last Name")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the employee''s initials.';
+                    ShowMandatory = true;
                 }
                 field("Middle Name"; Rec."Middle Name")
                 {
@@ -149,15 +151,18 @@ page 51984 "Applicant Card-All"
                     ApplicationArea = All;
                     Enabled = false;
                     ToolTip = 'Specifies the employee''s initials.';
+                    ShowMandatory = true;
                 }
                 field(Gender; Rec.Gender)
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the employee''s initials.';
+                    ShowMandatory = true;
                 }
                 field("Marital Status"; Rec."Marital Status")
                 {
                     ApplicationArea = All;
+                    ShowMandatory = true;
                 }
                 // field(Nationality; Rec.Nationality)
                 // {
@@ -169,6 +174,7 @@ page 51984 "Applicant Card-All"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the employee''s initials.';
                     Caption = 'Nationality';
+                    ShowMandatory = true;
                 }
                 field("Nationality Specification"; Rec."Nationality Specification")
                 {
@@ -190,12 +196,14 @@ page 51984 "Applicant Card-All"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the employee''s initials.';
                     Caption = 'National ID No.';
+                    ShowMandatory = true;
                     // Visible = Rec.Nationality = Rec.Nationality::Kenyan;
                     // Enabled = Rec.Nationality = Rec.Nationality::Kenyan;
                 }
                 field("Home County"; Rec."Home County")
                 {
                     ApplicationArea = All;
+                    ShowMandatory = true;
                     // Visible = Rec.Nationality = Rec.Nationality::Kenyan;
                     // Enabled = Rec.Nationality = Rec.Nationality::Kenyan;
                 }
@@ -203,23 +211,26 @@ page 51984 "Applicant Card-All"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the employee''s initials.';
+                    ShowMandatory = true;
                     // Visible = Rec.Nationality = Rec.Nationality::Kenyan;
                     // Enabled = Rec.Nationality = Rec.Nationality::Kenyan;
                 }
-                field("Sub Ethnic Group";"Sub Ethnic Group")
+                field("Sub Ethnic Group"; "Sub Ethnic Group")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the Sub Ethnic Group.';                 
+                    ToolTip = 'Specifies the Sub Ethnic Group.';
                 }
                 field(Initials; Rec.Initials)
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the employee''s initials.';
+                    ShowMandatory = true;
                 }
                 field(Disability; Rec.Disability)
                 {
                     ApplicationArea = All;
                     Caption = 'Abled Differently';
+                    ShowMandatory = true;
                 }
                 group("Persons Abled Differently")
                 {
