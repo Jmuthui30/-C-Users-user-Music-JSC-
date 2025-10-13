@@ -145,13 +145,14 @@ page 51984 "Applicant Card-All"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the employee''s initials.';
+                    // ShowMandatory = true;
                 }
                 field(Age; Rec.Age)
                 {
                     ApplicationArea = All;
                     Enabled = false;
                     ToolTip = 'Specifies the employee''s initials.';
-                    ShowMandatory = true;
+
                 }
                 field(Gender; Rec.Gender)
                 {
