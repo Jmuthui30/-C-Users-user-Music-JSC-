@@ -194,7 +194,7 @@ table 52003 "Job Application"
     var
         HRSetup: Record "Human Resources Setup";
         JobApplications: Record "Job Application";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
 
 
     trigger OnInsert()
@@ -203,7 +203,12 @@ table 52003 "Job Application"
             HRSetup.Get();
             HRSetup.TestField("Job Application Nos");
 
-            NoSeriesMgt.InitSeries(HRSetup."Job Application Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(HRSetup."Job Application Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(HRSetup."Job Application Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HRSetup."Job Application Nos";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
 
         "Date-Time Created" := CurrentDateTime();

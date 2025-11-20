@@ -265,27 +265,6 @@ page 52359 "Appraisal Card-New"
                 ToolTip = 'Executes the Send For Review action';
 
                 trigger OnAction()
-                // begin
-                //     //CalcFields("Total Final Self", "Total Mid-Year", "Total Weighting");
-                //     /*IF (("Total Final Self" <= 0) OR ("Total Mid-Year" <= 0) OR ("Total Weighting" <= 0)) THEN
-                //       ERROR('Kindly define appraisal goals');*/
-
-                //     Rec.TestField("Appraisal Period");
-                //     Rec.TestField("Employee No");
-                //     Rec.TestField("Appraiser No");
-
-                //     if ApprovalsMgmt.CheckNewEmpAppraisalWorkflowEnabled(Rec) then
-                //         ApprovalsMgmt.OnSendNewEmpAppraisalRequestforApproval(Rec);
-                //     Rec."Appraisal Status" := Rec."Appraisal Status"::Review;
-                //     // WorkflowResponses.ReleaseEmployeeAppraisalRequest(Rec);
-                //     // Message('Approved Successfully');
-                //     if Rec.Status = Rec.Status::Released then
-                //         Rec."Appraisal Status" := Rec."Appraisal Status"::Completed;
-
-                //     Commit();
-                //     //CurrPage.Close();
-
-                // end;
                 begin
                     // Ensure required fields are set
                     Rec.TestField("Appraisal Period");
@@ -296,14 +275,16 @@ page 52359 "Appraisal Card-New"
                     if ApprovalsMgmt.CheckNewEmpAppraisalWorkflowEnabled(Rec) then
                         ApprovalsMgmt.OnSendNewEmpAppraisalRequestforApproval(Rec);
 
-                    // Re-fetch the latest version of the record
-                    // if not Rec.Get(Rec."Appraisal No") then
-                    //     Error('The appraisal record %1 no longer exists.', Rec."Appraisal No");
+                    // 🔑 Refresh Rec from the DB to avoid stale record error
+                    if not Rec.Get(Rec."Appraisal No") then
+                        Error('The appraisal record %1 no longer exists.', Rec."Appraisal No");
 
-                    // Update the status and modify
-                    // Rec."Appraisal Status" := Rec."Appraisal Status"::Set;
-                    // Rec.Modify();
+                    // now Rec is fresh, you can safely update fields or modify
+                    Rec."Appraisal Status" := Rec."Appraisal Status"::Set;
+                    Commit();
+                    Rec.Modify();
                 end;
+
             }
 
             // action("Send For Approval")

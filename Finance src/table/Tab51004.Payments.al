@@ -1603,7 +1603,7 @@ table 51004 Payments
         Vendor: Record Vendor;
         Apportionment: Codeunit Apportionment;
         DimMgt: Codeunit DimensionManagement;
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         ImpBalance: Decimal;
         MultiDocErrorErr: Label 'Kindly utilize your open documents before creating a new one';
         NoUserAccErr: Label 'You do not have a user account. Please contact the system administrator.';
@@ -1626,7 +1626,12 @@ table 51004 Payments
                     CheckPendingDocs("Payment Type", CashMgt."Max Open Documents");
                     CashMgt.TestField("PV Nos");
                     if "No." = '' then
-                        NoSeriesMgt.InitSeries(CashMgt."PV Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        // NoSeriesMgt.InitSeries(CashMgt."PV Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        if NoSeriesMgt.AreRelated(CashMgt."PV Nos", xRec."No. Series") then
+                            "No. Series" := xRec."No. Series"
+                        else
+                            "No. Series" := CashMgt."PV Nos";
+                    "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
                 end;
 
             "Payment Type"::Imprest:
@@ -1635,7 +1640,12 @@ table 51004 Payments
                     CheckPendingDocs("Payment Type", CashMgt."Max Open Documents");
                     CashMgt.TestField("Imprest Nos");
                     if "No." = '' then
-                        NoSeriesMgt.InitSeries(CashMgt."Imprest Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        // NoSeriesMgt.InitSeries(CashMgt."Imprest Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        if NoSeriesMgt.AreRelated(CashMgt."Imprest Nos", xRec."No. Series") then
+                            "No. Series" := xRec."No. Series"
+                        else
+                            "No. Series" := CashMgt."Imprest Nos";
+                    "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
                     InsertUserAccount();
                     CheckUnsurrenderedDoc("Payment Type");
                 end;
@@ -1645,7 +1655,12 @@ table 51004 Payments
                     CheckPendingDocs("Payment Type", CashMgt."Max Open Documents");
                     CashMgt.TestField("Petty Cash Nos");
                     if "No." = '' then
-                        NoSeriesMgt.InitSeries(CashMgt."Petty Cash Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        // NoSeriesMgt.InitSeries(CashMgt."Petty Cash Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        if NoSeriesMgt.AreRelated(CashMgt."Petty Cash Nos", xRec."No. Series") then
+                            "No. Series" := xRec."No. Series"
+                        else
+                            "No. Series" := CashMgt."Petty Cash Nos";
+                    "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
                     //Currency:=GeneralLedgerSetup."LCY Code";
                     InsertUserAccount();
                     CheckUnsurrenderedDoc("Payment Type");
@@ -1656,7 +1671,12 @@ table 51004 Payments
                     CheckPendingDocs("Payment Type", CashMgt."Max Open Documents");
                     CashMgt.TestField("Petty Cash Surrender Nos");
                     if "No." = '' then
-                        NoSeriesMgt.InitSeries(CashMgt."Petty Cash Surrender Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        // NoSeriesMgt.InitSeries(CashMgt."Petty Cash Surrender Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        if NoSeriesMgt.AreRelated(CashMgt."Petty Cash Surrender Nos", xRec."No. Series") then
+                            "No. Series" := xRec."No. Series"
+                        else
+                            "No. Series" := CashMgt."Petty Cash Surrender Nos";
+                    "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
                     InsertUserAccount();
                 end;
 
@@ -1665,7 +1685,12 @@ table 51004 Payments
                     CheckPendingDocs("Payment Type", CashMgt."Max Open Documents");
                     CashMgt.TestField(CashMgt."Imprest Surrender Nos");
                     if "No." = '' then
-                        NoSeriesMgt.InitSeries(CashMgt."Imprest Surrender Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        // NoSeriesMgt.InitSeries(CashMgt."Imprest Surrender Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        if NoSeriesMgt.AreRelated(CashMgt."Imprest Surrender Nos", xRec."No. Series") then
+                            "No. Series" := xRec."No. Series"
+                        else
+                            "No. Series" := CashMgt."Imprest Surrender Nos";
+                    "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
                     InsertUserAccount();
                     "Surrender Date" := Today;
                 end;
@@ -1674,14 +1699,24 @@ table 51004 Payments
                 begin
                     CashMgt.TestField(CashMgt."Bank Transfer Nos");
                     if "No." = '' then
-                        NoSeriesMgt.InitSeries(CashMgt."Bank Transfer Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        // NoSeriesMgt.InitSeries(CashMgt."Bank Transfer Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        if NoSeriesMgt.AreRelated(CashMgt."Bank Transfer Nos", xRec."No. Series") then
+                            "No. Series" := xRec."No. Series"
+                        else
+                            "No. Series" := CashMgt."Bank Transfer Nos";
+                    "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
                 end;
 
             "Payment Type"::Receipt:
                 begin
                     CashMgt.TestField(CashMgt."Receipt Nos");
                     if "No." = '' then
-                        NoSeriesMgt.InitSeries(CashMgt."Receipt Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        // NoSeriesMgt.InitSeries(CashMgt."Receipt Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        if NoSeriesMgt.AreRelated(CashMgt."Receipt Nos", xRec."No. Series") then
+                            "No. Series" := xRec."No. Series"
+                        else
+                            "No. Series" := CashMgt."Receipt Nos";
+                    "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
                 end;
 
             "Payment Type"::"Staff Claim":
@@ -1689,7 +1724,12 @@ table 51004 Payments
                     CheckPendingDocs("Payment Type", CashMgt."Max Open Documents");
                     CashMgt.TestField(CashMgt."Staff Claim Nos");
                     if "No." = '' then
-                        NoSeriesMgt.InitSeries(CashMgt."Staff Claim Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        // NoSeriesMgt.InitSeries(CashMgt."Staff Claim Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        if NoSeriesMgt.AreRelated(CashMgt."Staff Claim Nos", xRec."No. Series") then
+                            "No. Series" := xRec."No. Series"
+                        else
+                            "No. Series" := CashMgt."Staff Claim Nos";
+                    "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
                     InsertUserAccount();
                 end;
 
@@ -1697,14 +1737,24 @@ table 51004 Payments
                 begin
                     CashMgt.TestField(CashMgt."Input Tax Nos");
                     if "No." = '' then
-                        NoSeriesMgt.InitSeries(CashMgt."Input Tax Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        // NoSeriesMgt.InitSeries(CashMgt."Input Tax Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        if NoSeriesMgt.AreRelated(CashMgt."Input Tax Nos", xRec."No. Series") then
+                            "No. Series" := xRec."No. Series"
+                        else
+                            "No. Series" := CashMgt."Input Tax Nos";
+                    "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
                 end;
 
             "Payment Type"::"Property Expense":
                 begin
                     CashMgt.TestField("Property Expense Nos");
                     if "No." = '' then
-                        NoSeriesMgt.InitSeries(CashMgt."Property Expense Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        // NoSeriesMgt.InitSeries(CashMgt."Property Expense Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        if NoSeriesMgt.AreRelated(CashMgt."Property Expense Nos", xRec."No. Series") then
+                            "No. Series" := xRec."No. Series"
+                        else
+                            "No. Series" := CashMgt."Property Expense Nos";
+                    "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
                     InsertUserAccount();
                 end;
 
@@ -1712,7 +1762,12 @@ table 51004 Payments
                 begin
                     CashMgt.TestField("Property Expense Surrender Nos");
                     if "No." = '' then
-                        NoSeriesMgt.InitSeries(CashMgt."Property Expense Surrender Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        // NoSeriesMgt.InitSeries(CashMgt."Property Expense Surrender Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        if NoSeriesMgt.AreRelated(CashMgt."Property Expense Surrender Nos", xRec."No. Series") then
+                            "No. Series" := xRec."No. Series"
+                        else
+                            "No. Series" := CashMgt."Property Expense Surrender Nos";
+                    "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
                     InsertUserAccount();
                     "Surrender Date" := Today;
                 end;
@@ -1721,7 +1776,12 @@ table 51004 Payments
                 begin
                     CashMgt.TestField("Property Expense Claim Nos");
                     if "No." = '' then
-                        NoSeriesMgt.InitSeries(CashMgt."Property Expense Claim Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        // NoSeriesMgt.InitSeries(CashMgt."Property Expense Claim Nos", xRec."No. Series", 0D, "No.", "No. Series");
+                        if NoSeriesMgt.AreRelated(CashMgt."Property Expense Claim Nos", xRec."No. Series") then
+                            "No. Series" := xRec."No. Series"
+                        else
+                            "No. Series" := CashMgt."Property Expense Claim Nos";
+                    "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
                     InsertUserAccount();
                     "Surrender Date" := Today;
                 end;
@@ -1934,34 +1994,33 @@ table 51004 Payments
     var
         UserSetupRec: Record "User Setup";
     begin
-         if GuiAllowed then begin
-        if not UserSetupRec.Get(UserId) then
-            Error(NoUserAccErr)
-        else
-           
+        if GuiAllowed then begin
+            if not UserSetupRec.Get(UserId) then
+                Error(NoUserAccErr)
+            else
                 UserSetupRec.TestField("Customer No.");
-                UserSetupRec.TestField("Responsibility Centre");
-                UserSetupRec.TestField("Global Dimension 1 Code");
-                UserSetupRec.TestField("Global Dimension 2 Code");
+            UserSetupRec.TestField("Responsibility Centre");
+            UserSetupRec.TestField("Global Dimension 1 Code");
+            UserSetupRec.TestField("Global Dimension 2 Code");
 
-                "Shortcut Dimension 1 Code" := UserSetupRec."Global Dimension 1 Code";
-                "Shortcut Dimension 2 Code" := UserSetupRec."Global Dimension 2 Code";
-                // Validate("Shortcut Dimension 1 Code");
-                //  Validate("Shortcut Dimension 2 Code");
+            "Shortcut Dimension 1 Code" := UserSetupRec."Global Dimension 1 Code";
+            "Shortcut Dimension 2 Code" := UserSetupRec."Global Dimension 2 Code";
+            // Validate("Shortcut Dimension 1 Code");
+            //  Validate("Shortcut Dimension 2 Code");
 
-                if Customer.Get(UserSetupRec."Customer No.") then begin
-                    Customer.CalcFields("Balance (LCY)");
-                    if "Payment Type" = "Payment Type"::Imprest then
-                        if Customer."Balance (LCY)" > 0 then
-                            Error('You cannot apply for a new imprest because you have an outstanding balance of KES %1', Customer."Balance (LCY)");
-                end;
-                "Account No." := UserSetupRec."Customer No.";
-                Validate("Account No.");
-                UserSetupRec.TestField("Employee No.");
-                "Staff No." := UserSetupRec."Employee No.";
-                // "Salary Scale" := GetSalaryScale("Staff No.");
-                "Responsibility Center" := UserSetupRec."Responsibility Centre";
+            if Customer.Get(UserSetupRec."Customer No.") then begin
+                Customer.CalcFields("Balance (LCY)");
+                if "Payment Type" = "Payment Type"::Imprest then
+                    if Customer."Balance (LCY)" > 0 then
+                        Error('You cannot apply for a new imprest because you have an outstanding balance of KES %1', Customer."Balance (LCY)");
             end;
+            "Account No." := UserSetupRec."Customer No.";
+            Validate("Account No.");
+            UserSetupRec.TestField("Employee No.");
+            "Staff No." := UserSetupRec."Employee No.";
+            // "Salary Scale" := GetSalaryScale("Staff No.");
+            "Responsibility Center" := UserSetupRec."Responsibility Centre";
+        end;
     end;
 
     local procedure UpdateAllLineDim(NewParentDimSetID: Integer; OldParentDimSetID: Integer)
@@ -2007,10 +2066,14 @@ table 51004 Payments
     procedure AssistEdit(OldPaymentRec: Record Payments): Boolean
     var
         PRec: Record Payments;
+        NoSeries: Codeunit "No. Series";
     begin
         PRec := Rec;
-        if NoSeriesMgt.SelectSeries(GetNoSeries(), OldPaymentRec."No. Series", PRec."No. Series") then begin
-            NoSeriesMgt.SetSeries(PRec."No.");
+
+        // show the selection UI
+        if NoSeries.LookupRelatedNoSeries(GetNoSeries(), OldPaymentRec."No. Series", PRec."No. Series") then begin
+            // assign the next number from the selected series
+            PRec."No." := NoSeries.GetNextNo(PRec."No. Series");
             Rec := PRec;
             exit(true);
         end;

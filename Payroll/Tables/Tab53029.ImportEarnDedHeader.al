@@ -40,7 +40,7 @@ table 53029 "Import Earn & Ded Header"
         }
         field(5; "Pay Period"; Date)
         {
-            TableRelation = "Payroll Period";
+            TableRelation = "Payroll Period II";
             Caption = 'Pay Period';
 
             trigger OnValidate()
@@ -107,7 +107,12 @@ table 53029 "Import Earn & Ded Header"
     begin
 
         HRSetup.Get();
-        NoSeriesMgt.InitSeries(HRSetup."Payroll Import Nos", xRec.No, 0D, No, "No. Series");
+        // NoSeriesMgt.InitSeries(HRSetup."Payroll Import Nos", xRec.No, 0D, No, "No. Series");
+        if NoSeriesMgt.AreRelated(HRSetup."Payroll Import Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HRSetup."Payroll Import Nos";
+            "No":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         Date := Today;
         "User ID" := UserId;
     end;
@@ -117,8 +122,8 @@ table 53029 "Import Earn & Ded Header"
         Earnings: Record Earning;
         HRSetup: Record "Human Resources Setup";
         LoanProd: Record "Loan Product Type-Payroll";
-        PayPeriod: Record "Payroll Period";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        PayPeriod: Record "Payroll Period II";
+        NoSeriesMgt: Codeunit "No. Series";
         PayPeriodText: Text;
 }
 

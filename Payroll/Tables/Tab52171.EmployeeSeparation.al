@@ -154,16 +154,21 @@ table 52171 "Employee Separation"
         HRSetup: Record "Human Resources Setup";
         LeavePeriod: Record "Leave Period";
         LeaveTypes: Record "Leave Type";
-        PayPeriod: Record "Payroll Period";
+        PayPeriod: Record "Payroll Period II";
         HRMgt: Codeunit "HR Management";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
 
     trigger OnInsert()
     begin
         if "No." = '' then begin
             HRSetup.Get();
             HRSetup.TestField("Employee Separation Nos");
-            NoSeriesMgt.InitSeries(HRSetup."Employee Separation Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(HRSetup."Employee Separation Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(HRSetup."Employee Separation Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HRSetup."Employee Separation Nos";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
 
         "Document Date" := Today;

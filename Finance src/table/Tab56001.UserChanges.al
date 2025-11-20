@@ -75,14 +75,19 @@ table 56001 "User Changes"
             ICTSetup.Get();
             ICTSetup.TestField("Password Reset Nos");
 
-            NoSeriesManagement.InitSeries(ICTSetup."Password Reset Nos", xRec."No. Series", 0D, "Document No.", "No. Series");
+            // NoSeriesManagement.InitSeries(ICTSetup."Password Reset Nos", xRec."No. Series", 0D, "Document No.", "No. Series");
+            if NoSeriesManagement.AreRelated(ICTSetup."Password Reset Nos", xRec."No. Series") then
+                "No. Series" := xRec."No. Series"
+            else
+                "No. Series" := ICTSetup."Password Reset Nos";
+            "Document No." := NoSeriesManagement.GetNextNo("No. Series", WorkDate());
         end;
 
         "Created By" := UserId();
     end;
 
     var
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series";
         ICTSetup: Record "ICT Setup";
 }
 

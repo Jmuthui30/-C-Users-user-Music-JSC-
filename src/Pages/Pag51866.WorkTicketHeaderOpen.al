@@ -51,7 +51,7 @@ page 51866 "Work Ticket Header-Open"
             part(Control14; "Work Ticket Lines")
             {
                 ApplicationArea = All;
-                SubPageLink = "No."=FIELD("No.");
+                SubPageLink = "No." = FIELD("No.");
             }
         }
         area(factboxes)
@@ -73,7 +73,7 @@ page 51866 "Work Ticket Header-Open"
                 Promoted = true;
                 PromotedIsBig = true;
                 RunObject = Page "Work Ticket Drivers";
-                RunPageLink = "No."=FIELD("No."), Vehicle=FIELD(Vehicle);
+                RunPageLink = "No." = FIELD("No."), Vehicle = FIELD(Vehicle);
             }
             action("Issue Ticket")
             {
@@ -87,7 +87,7 @@ page 51866 "Work Ticket Header-Open"
                 begin
                     if Confirm('You are about to issue this work ticket. Do you want to continue?', false) = true then begin
                         //Status := Status::Issued;
-                        Rec.Status:=Rec.Status::Committed;
+                        Rec.Status := Rec.Status::Committed;
                         Rec.Modify;
                         Message('Work Ticket Issued.');
                     end;
@@ -157,7 +157,7 @@ page 51866 "Work Ticket Header-Open"
                         WorkflowWebhookMgt: Codeunit "Workflow Webhook Management";
                     begin
                         Rec.TestField(Status, Rec.Status::"Pending Approval");
-                        IF CONFIRM('Are you sure you want to cancel the Work Ticket %1. Do you want to continue?', FALSE, Rec."No.")THEN ApprovalsMgt.OnCancelWorkTApprovalRequest(Rec);
+                        IF CONFIRM('Are you sure you want to cancel the Work Ticket %1. Do you want to continue?', FALSE, Rec."No.") THEN ApprovalsMgt.OnCancelWorkTApprovalRequest(Rec);
                         WorkflowWebhookMgt.FindAndCancel(Rec.RecordId);
                     end;
                 }
@@ -225,7 +225,7 @@ page 51866 "Work Ticket Header-Open"
                     var
                         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
                     begin
-                        IF CONFIRM('Are you sure you want to approve the Procurement Plan %1. Do you want to continue?', FALSE, Rec."No.")THEN ApprovalsMgmt.ApproveRecordApprovalRequest(Rec.RecordId);
+                        IF CONFIRM('Are you sure you want to approve the Procurement Plan %1. Do you want to continue?', FALSE, Rec."No.") THEN ApprovalsMgmt.ApproveRecordApprovalRequest(Rec.RecordId);
                     end;
                 }
                 action(Reject)
@@ -244,7 +244,7 @@ page 51866 "Work Ticket Header-Open"
                     var
                         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
                     begin
-                        IF CONFIRM('Are you sure you want to reject the Procurement Plan %1. Do you want to continue?', FALSE, Rec."No.")THEN ApprovalsMgmt.RejectRecordApprovalRequest(Rec.RecordId);
+                        IF CONFIRM('Are you sure you want to reject the Procurement Plan %1. Do you want to continue?', FALSE, Rec."No.") THEN ApprovalsMgmt.RejectRecordApprovalRequest(Rec.RecordId);
                     end;
                 }
                 action(Delegate)
@@ -288,28 +288,32 @@ page 51866 "Work Ticket Header-Open"
     }
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        Rec.Status:=Rec.Status::Open;
+        Rec.Status := Rec.Status::Open;
     end;
+
     trigger OnAfterGetRecord()
     begin
         SetControlAppearance;
     end;
+
     local procedure SetControlAppearance()
     var
         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
         WorkflowWebhookMgt: Codeunit "Workflow Webhook Management";
     begin
-        OpenApprovalEntriesExistForCurrUser:=ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(Rec.RecordId);
-        OpenApprovalEntriesExist:=ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
-        CanCancelApprovalForRecord:=ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
+        OpenApprovalEntriesExistForCurrUser := ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(Rec.RecordId);
+        OpenApprovalEntriesExist := ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
+        CanCancelApprovalForRecord := ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
         WorkflowWebhookMgt.GetCanRequestAndCanCancel(Rec.RecordId, CanRequestApprovalForFlow, CanCancelApprovalForFlow);
     end;
-    var NoSeriesMgt: Codeunit NoSeriesManagement;
-    ApprovalsMgt: Codeunit "Approvals Mgmt. Ext";
-    OpenApprovalEntriesExistForCurrUser: Boolean;
-    OpenApprovalEntriesExist: Boolean;
-    CanCancelApprovalForRecord: Boolean;
-    CanRequestApprovalForFlow: Boolean;
-    CanCancelApprovalForFlow: Boolean;
-    Lines: Record "Work Ticket Lines";
+
+    var
+        NoSeriesMgt: Codeunit "No. Series";
+        ApprovalsMgt: Codeunit "Approvals Mgmt. Ext";
+        OpenApprovalEntriesExistForCurrUser: Boolean;
+        OpenApprovalEntriesExist: Boolean;
+        CanCancelApprovalForRecord: Boolean;
+        CanRequestApprovalForFlow: Boolean;
+        CanCancelApprovalForFlow: Boolean;
+        Lines: Record "Work Ticket Lines";
 }

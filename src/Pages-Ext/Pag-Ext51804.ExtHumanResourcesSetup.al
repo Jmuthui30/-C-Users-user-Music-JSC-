@@ -75,6 +75,10 @@ pageextension 51804 "ExtHuman Resources Setup" extends "Human Resources Setup"
             {
                 ApplicationArea = All;
             }
+            field("Pension Limit Amount"; "Pension Limit Amount")
+            {
+                ApplicationArea = All;
+            }
             field("Appraisal Objective Nos"; Rec."Appraisal Objective Nos")
             {
                 ApplicationArea = All;
@@ -105,17 +109,21 @@ pageextension 51804 "ExtHuman Resources Setup" extends "Human Resources Setup"
             }
             field("Payroll Rounding Precision"; "Payroll Rounding Precision")
             {
-
+                ApplicationArea = all;
             }
             field("Payroll Rounding Type"; "Payroll Rounding Type")
             {
-
+                ApplicationArea = all;
             }
             field("Exit Nos"; Rec."Exit Nos")
             {
                 ApplicationArea = All;
             }
             field("Exit Form Nos."; Rec."Exit Form Nos.")
+            {
+                ApplicationArea = All;
+            }
+            field("Company NSSF No"; "Company NSSF No")
             {
                 ApplicationArea = All;
             }

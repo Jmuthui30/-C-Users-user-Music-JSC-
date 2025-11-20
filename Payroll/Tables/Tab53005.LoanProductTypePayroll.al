@@ -72,7 +72,7 @@ table 53005 "Loan Product Type-Payroll"
         field(34; "Pay Period Filter"; Date)
         {
             FieldClass = FlowFilter;
-            TableRelation = "Payroll Period";
+            TableRelation = "Payroll Period II";
             Caption = 'Pay Period Filter';
         }
         field(35; "Interest Receivable Account"; Code[50])
@@ -113,13 +113,18 @@ table 53005 "Loan Product Type-Payroll"
         if not TPS then begin
             HRsetup.Get();
             HRsetup.TestField("Loan Product Type Nos.");
-            NoSeriesMgt.InitSeries(HRsetup."Loan Product Type Nos.", xRec."No Series", 0D, Code, "No Series");
+            // NoSeriesMgt.InitSeries(HRsetup."Loan Product Type Nos.", xRec."No Series", 0D, Code, "No Series");
+            if NoSeriesMgt.AreRelated(HRSetup."Loan Product Type Nos.",xRec."No Series") then
+            "No Series":=xRec."No Series"
+            else
+            "No Series":=HRSetup."Loan Product Type Nos.";
+            Code:=NoSeriesMgt.GetNextNo("No Series",WorkDate());
         end;
     end;
 
     var
         HRsetup: Record "Human Resources Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
 }
 
 

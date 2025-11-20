@@ -12,7 +12,7 @@ table 53016 "Employee Account History"
         field(2; "Payroll Period"; Date)
         {
             NotBlank = true;
-            TableRelation = "Payroll Period";
+            TableRelation = "Payroll Period II";
             Caption = 'Payroll Period';
         }
         field(3; "Bank Code"; Code[50])

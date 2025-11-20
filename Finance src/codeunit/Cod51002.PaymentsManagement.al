@@ -16,7 +16,7 @@ codeunit 51002 "Payments Management"
         VendLedgEntry: Record "Vendor Ledger Entry";
         Apportionment: Codeunit Apportionment;
         Committment: Codeunit "Commitments Mgt Finance";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         PaymentToleranceMgt: Codeunit PaymentToleranceCUExtension;
         ApplyCustEntries: Page "Apply Customer Entries Custom";
         ApplyVendEntries: Page "Apply Vendor Entries Custom";

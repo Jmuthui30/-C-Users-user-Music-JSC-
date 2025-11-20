@@ -9,16 +9,16 @@ table 51634 "Staff CSR"
         {
             trigger OnValidate()
             begin
-                if EmpRec.Get("Employee No")then begin
-                    "Global Dimension 1 Code":=EmpRec."Global Dimension 1 Code";
-                    "Global Dimension 2 Code":=EmpRec."Global Dimension 2 Code";
-                    "Global Dimension 3 Code":=EmpRec."Global Dimension 3 Code";
+                if EmpRec.Get("Employee No") then begin
+                    "Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                    "Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                    "Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
                 end;
-                if NAVemp.Get("Employee No")then begin
-                    "Mobile No":=NAVemp."Mobile Phone No.";
-                    "Employment Date":=NAVemp."Employment Date";
-                    "Employee Name":=NAVemp."Last Name" + ' ' + NAVemp."First Name" + ' ' + NAVemp."Middle Name";
-                    "Job Title":=NAVemp."Job Title";
+                if NAVemp.Get("Employee No") then begin
+                    "Mobile No" := NAVemp."Mobile Phone No.";
+                    "Employment Date" := NAVemp."Employment Date";
+                    "Employee Name" := NAVemp."Last Name" + ' ' + NAVemp."First Name" + ' ' + NAVemp."Middle Name";
+                    "Job Title" := NAVemp."Job Title";
                     Validate(Manager, NAVemp."Manager No.");
                 end;
             end;
@@ -35,25 +35,25 @@ table 51634 "Staff CSR"
         field(6; "Global Dimension 1 Code"; Code[20])
         {
             CaptionClass = '1,1,1';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
         }
         field(7; "Global Dimension 2 Code"; Code[20])
         {
             CaptionClass = '1,1,2';
             Caption = 'Global Dimension 1 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
         field(8; "Global Dimension 3 Code"; Code[20])
         {
             CaptionClass = '1,2,3';
             Caption = 'Global Dimension 3 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(3));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(3));
         }
         field(9; Manager; Code[20])
         {
             trigger OnValidate()
             begin
-                if NAVemp.Get("Global Dimension 3 Code")then Manager:=NAVemp."First Name" + ' ' + NAVemp."Last Name";
+                if NAVemp.Get("Global Dimension 3 Code") then Manager := NAVemp."First Name" + ' ' + NAVemp."Last Name";
             end;
         }
         field(10; "Manager's Name"; Text[100])
@@ -71,7 +71,7 @@ table 51634 "Staff CSR"
         field(14; "Due Date"; Date)
         {
         }
-        field(15; Status;Enum "Document Status")
+        field(15; Status; Enum "Document Status")
         {
             Editable = false;
         }
@@ -79,8 +79,8 @@ table 51634 "Staff CSR"
         {
             trigger OnValidate()
             begin
-            /*"Closed By" := USERID;
-                "Closed Date" := TODAY;*/
+                /*"Closed By" := USERID;
+                    "Closed Date" := TODAY;*/
             end;
         }
         field(17; "Closed By"; Code[50])
@@ -96,9 +96,9 @@ table 51634 "Staff CSR"
         {
             trigger OnValidate()
             begin
-                "Year Start Date":=DMY2Date(1, 1, Date2DMY("Date of Visit", 3));
-                "Year End Date":=DMY2Date(31, 12, Date2DMY("Date of Visit", 3));
-                "Fiscal Year":=Date2DMY("Date of Visit", 3);
+                "Year Start Date" := DMY2Date(1, 1, Date2DMY("Date of Visit", 3));
+                "Year End Date" := DMY2Date(31, 12, Date2DMY("Date of Visit", 3));
+                "Fiscal Year" := Date2DMY("Date of Visit", 3);
             end;
         }
         field(21; Activity; Text[250])
@@ -121,7 +121,7 @@ table 51634 "Staff CSR"
         }
         field(27; "Hours Achieved"; Integer)
         {
-            CalcFormula = Sum("Staff CSR"."Hours Served" WHERE(Status=CONST(Released), "Date of Visit"=FIELD("Date Filter")));
+            CalcFormula = Sum("Staff CSR"."Hours Served" WHERE(Status = CONST(Released), "Date of Visit" = FIELD("Date Filter")));
             FieldClass = FlowField;
         }
         field(28; "Hours Served"; Integer)
@@ -159,30 +159,37 @@ table 51634 "Staff CSR"
         if "No." = '' then begin
             CSRSetup.Get;
             CSRSetup.TestField("CSR Nos.");
-            NoSeriesMgt.InitSeries(CSRSetup."CSR Nos.", xRec."No. Series", 0D, "No.", "No. Series");
-            "Required Hours":=CSRSetup."CSR Hours per Year";
+            // NoSeriesMgt.InitSeries(CSRSetup."CSR Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(CSRSetup."CSR Nos.", xRec."No. Series") then
+                "No. Series" := xRec."No. Series"
+            else
+                "No. Series" := CSRSetup."CSR Nos.";
+            "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
+            "Required Hours" := CSRSetup."CSR Hours per Year";
         end;
-        Date:=Today;
-        Status:=Status::Open;
-        if UserSetup.Get(UserId)then begin
-            "Employee No":=UserSetup."Employee No.";
+        Date := Today;
+        Status := Status::Open;
+        if UserSetup.Get(UserId) then begin
+            "Employee No" := UserSetup."Employee No.";
             Validate("Employee No");
         end;
-        "Created By":=UserId;
-        if EmpRec.Get("Employee No")then begin
-            "Global Dimension 1 Code":=EmpRec."Global Dimension 1 Code";
-            "Global Dimension 2 Code":=EmpRec."Global Dimension 2 Code";
-            "Global Dimension 3 Code":=EmpRec."Global Dimension 3 Code";
+        "Created By" := UserId;
+        if EmpRec.Get("Employee No") then begin
+            "Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+            "Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+            "Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
         end;
-        if NAVemp.Get("Employee No")then begin
-            "Job Title":=NAVemp."Job Title";
-            "Employee Name":=NAVemp."First Name" + ' ' + NAVemp."Last Name";
+        if NAVemp.Get("Employee No") then begin
+            "Job Title" := NAVemp."Job Title";
+            "Employee Name" := NAVemp."First Name" + ' ' + NAVemp."Last Name";
         end;
     end;
-    var UserSetup: Record "User Setup";
-    Text000: Label 'Your are not mapped to an employee account. Kindly contact the system administrator.';
-    NAVemp: Record Employee;
-    EmpRec: Record "Employee Master";
-    CSRSetup: Record "QuantumJumps HR Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
+
+    var
+        UserSetup: Record "User Setup";
+        Text000: Label 'Your are not mapped to an employee account. Kindly contact the system administrator.';
+        NAVemp: Record Employee;
+        EmpRec: Record "Employee Master";
+        CSRSetup: Record "QuantumJumps HR Setup";
+        NoSeriesMgt: Codeunit "No. Series";
 }

@@ -83,7 +83,7 @@ page 52274 "Employee List-Filtered"
                 {
                     ToolTip = 'Specifies the value of the Social Security No. field';
                 }
-                field("SHIF No.";"SHIF No.")
+                field("SHIF No."; "SHIF No.")
                 {
                     ToolTip = 'Specifies the value of the SHIF No field';
                 }
@@ -135,13 +135,15 @@ page 52274 "Employee List-Filtered"
                     trigger OnAction()
                     var
                         Employee: Record Employee;
+                        CuPayroll: Codeunit Payroll;
+
                     begin
                         if Confirm('Are you sure?', false) then begin
                             Employee.SetRange(Status, Employee.Status::Active);
                             Employee.SetFilter("Employee Type", '<>%1', Employee."Employee Type"::"Board Member");
                             if Employee.FindSet() then begin
                                 repeat
-                                    Payroll.DefaultEarningsDeductionsAssignment(Employee);
+                                    CuPayroll.DefaultEarningsDeductionsAssignment(Employee);
                                 until Employee.Next() = 0;
                                 Message('Updated Successfully');
                             end;
@@ -159,15 +161,17 @@ page 52274 "Employee List-Filtered"
 
                     trigger OnAction()
                     var
-                        PayPeriod: Record "Payroll Period";
+                        PayPeriod: Record "Payroll Period II";
                         CurrentMonth: Date;
+                                            CuPayroll: Codeunit Payroll;
+
                     begin
                         PayPeriod.Reset();
                         PayPeriod.SetRange(Closed, false);
                         if PayPeriod.FindLast() then begin
                             CurrentMonth := PayPeriod."Starting Date";
                             //Check to prevent calculation when under approval
-                            Payroll.CheckIfPayrollPeriodUnderApproval(CurrentMonth);
+                            CuPayroll.CheckIfPayrollPeriodUnderApproval(CurrentMonth);
                             Employee.SetRange("Date Filter", CurrentMonth); //Pay Period Filter
                             Report.Run(Report::"Payroll Run", true, false, Employee);
                         end else

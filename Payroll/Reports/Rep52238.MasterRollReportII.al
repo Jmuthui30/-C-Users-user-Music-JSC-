@@ -3,7 +3,7 @@ report 52238 "Master Roll Report II"
     ApplicationArea = All;
     DefaultLayout = RDLC;
     UsageCategory = ReportsAndAnalysis;
-    RDLCLayout = './src/report_layout/MasterRollReport.rdlc';
+    RDLCLayout = './Payroll/Report Layouts/MasterRollReport.rdlc';
     Caption = 'Master Roll Report';
     dataset
     {
@@ -279,6 +279,9 @@ report 52238 "Master Roll Report II"
             }
 
             trigger OnAfterGetRecord()
+            var
+                                CuPayroll: Codeunit Payroll;
+
             begin
                 GetDefaults(PayApprovalCode);
 
@@ -358,7 +361,7 @@ report 52238 "Master Roll Report II"
                 if PayApprovalCode <> '' then
                     ApprovalEntries.SetRange("Document No.", PayApprovalCode)
                 else
-                    ApprovalEntries.SetRange("Document No.", Payroll.GetPayrollApprovalCode(DateSpecified));
+                    ApprovalEntries.SetRange("Document No.", CuPayroll.GetPayrollApprovalCode(DateSpecified));
                 ApprovalEntries.SetRange(Status, ApprovalEntries.Status::Approved);
                 if ApprovalEntries.Find('-') then
                     repeat

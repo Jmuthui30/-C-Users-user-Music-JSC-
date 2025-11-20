@@ -272,7 +272,12 @@ table 52020 "Employee Off/Holiday"
         if "No." = '' then begin
             HRSetup.Get();
             HRSetup.TestField("Leave Recall Nos", HRSetup."Leave Recall Nos");
-            NoSeriesMgt.InitSeries(HRSetup."Leave Recall Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(HRSetup."Leave Recall Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(HRSetup."Leave Recall Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HRSetup."Leave Recall Nos";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
 
         Date := Today;
@@ -288,7 +293,7 @@ table 52020 "Employee Off/Holiday"
         LeaveApplication: Record "Leave Application";
         LeaveTypes: Record "Leave Type";
         // HRmgt: Codeunit "HR Management";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         d: Date;
         NonworkingDaysRecall: Decimal;
         Error000: Label 'You cannot Recall Someone earlier than Today';

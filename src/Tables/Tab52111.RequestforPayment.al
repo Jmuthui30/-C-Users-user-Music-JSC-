@@ -29,31 +29,34 @@ table 52111 "Request for Payment"
                     end;
                 end
                 else if "Source Document" = "Source Document"::"Travel Order" then begin
-                        Staff.Reset;
-                        Staff.SetRange("Customer Posting Group", 'TRAVEL');
-                        if PAGE.RunModal(PAGE::"Customer List", Staff) = ACTION::LookupOK then begin
-                            Validate("Creditor No.", Staff."No.");
-                        end;
-                    end
-                    else if "Source Document" = "Source Document"::"Supplier Invoice" then begin
-                            Supplier.Reset;
-                            if PAGE.RunModal(PAGE::"Vendor List", Supplier) = ACTION::LookupOK then begin
-                                Validate("Creditor No.", Supplier."No.");
-                            end;
-                        end;
+                    Staff.Reset;
+                    Staff.SetRange("Customer Posting Group", 'TRAVEL');
+                    if PAGE.RunModal(PAGE::"Customer List", Staff) = ACTION::LookupOK then begin
+                        Validate("Creditor No.", Staff."No.");
+                    end;
+                end
+                else if "Source Document" = "Source Document"::"Supplier Invoice" then begin
+                    Supplier.Reset;
+                    if PAGE.RunModal(PAGE::"Vendor List", Supplier) = ACTION::LookupOK then begin
+                        Validate("Creditor No.", Supplier."No.");
+                    end;
+                end;
             end;
+
             trigger OnValidate()
             begin
-                if("Source Document" = "Source Document"::"Purchase Order") or ("Source Document" = "Source Document"::"Supplier Invoice")then begin
-                    if Supplier.Get("Creditor No.")then "Name of Creditor":=Supplier.Name
+                if ("Source Document" = "Source Document"::"Purchase Order") or ("Source Document" = "Source Document"::"Supplier Invoice") then begin
+                    if Supplier.Get("Creditor No.") then
+                        "Name of Creditor" := Supplier.Name
                     else
                         Error('The creditor No. %1 does not exist in the Vendors list. Create it.', "Creditor No.");
                 end
                 else if "Source Document" = "Source Document"::"Travel Order" then begin
-                        if Staff.Get("Creditor No.")then "Name of Creditor":=Staff.Name
-                        else
-                            Error('The Staff No. %1 does not exist in the Staff Customer list. Create it.', "Creditor No.");
-                    end;
+                    if Staff.Get("Creditor No.") then
+                        "Name of Creditor" := Staff.Name
+                    else
+                        Error('The Staff No. %1 does not exist in the Staff Customer list. Create it.', "Creditor No.");
+                end;
             end;
         }
         field(6; "Name of Creditor"; Text[50])
@@ -63,15 +66,15 @@ table 52111 "Request for Payment"
         field(7; "Source Document"; Option)
         {
             OptionCaption = 'Purchase Order,Travel Order,Supplier Invoice';
-            OptionMembers = "Purchase Order", "Travel Order", "Supplier Invoice";
+            OptionMembers = "Purchase Order","Travel Order","Supplier Invoice";
         }
         field(8; Amount; Decimal)
         {
             Editable = false;
             FieldClass = FlowField;
-            CalcFormula = sum("Request for Payment Lines".Amount where("No."=field("No.")));
+            CalcFormula = sum("Request for Payment Lines".Amount where("No." = field("No.")));
         }
-        field(9; Status;Enum "Document Status")
+        field(9; Status; Enum "Document Status")
         {
             Editable = false;
         }
@@ -105,20 +108,20 @@ table 52111 "Request for Payment"
             begin
                 if "Incoming Document Entry No." = xRec."Incoming Document Entry No." then exit;
                 if "Incoming Document Entry No." = 0 then IncomingDocument.RemoveReferenceToWorkingDocument(xRec."Incoming Document Entry No.");
-            // else
-            // IncomingDocument.SetPaymentRequestDoc(Rec);
+                // else
+                // IncomingDocument.SetPaymentRequestDoc(Rec);
             end;
         }
         field(17; Approvers; Integer)
         {
-            CalcFormula = Count("Approval Entry" WHERE("Table ID"=CONST(52111), "Document No."=FIELD("No."), Status=FILTER(Approved)));
+            CalcFormula = Count("Approval Entry" WHERE("Table ID" = CONST(52111), "Document No." = FIELD("No."), Status = FILTER(Approved)));
             FieldClass = FlowField;
             Caption = 'Approvers';
             Editable = false;
         }
         field(18; "Pending Approvals Ext"; Integer)
         {
-            CalcFormula = Count("Approval Entry" WHERE("Table ID"=CONST(52111), "Document No."=FIELD("No."), Status=FILTER(Open|Created)));
+            CalcFormula = Count("Approval Entry" WHERE("Table ID" = CONST(52111), "Document No." = FIELD("No."), Status = FILTER(Open | Created)));
             Caption = 'Pending Approvals';
             FieldClass = FlowField;
             Editable = false;
@@ -143,23 +146,31 @@ table 52111 "Request for Payment"
     begin
         TestField(Status, Status::Open);
     end;
+
     trigger OnInsert()
     begin
         if "No." = '' then begin
             AdvancedFinanceSetup.Get;
             AdvancedFinanceSetup.TestField("Request for Payment Nos.");
-            NoSeriesMgt.InitSeries(AdvancedFinanceSetup."Request for Payment Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(AdvancedFinanceSetup."Request for Payment Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(AdvancedFinanceSetup."Request for Payment Nos.",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=AdvancedFinanceSetup."Request for Payment Nos.";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
-        Date:=Today;
-        Status:=Status::Open;
-        "Created Date":=Today;
-        "Created By":=UserId;
+        Date := Today;
+        Status := Status::Open;
+        "Created Date" := Today;
+        "Created By" := UserId;
     end;
-    var AdvancedFinanceSetup: Record "Advanced Finance Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    Supplier: Record Vendor;
-    LPO: Record "Purchase Header";
-    ITO: Record "Imprest Header";
-    Staff: Record Customer;
-    Invoice: Record "Purch. Inv. Header";
+
+    var
+        AdvancedFinanceSetup: Record "Advanced Finance Setup";
+        NoSeriesMgt: Codeunit "No. Series";
+        Supplier: Record Vendor;
+        LPO: Record "Purchase Header";
+        ITO: Record "Imprest Header";
+        Staff: Record Customer;
+        Invoice: Record "Purch. Inv. Header";
 }

@@ -116,7 +116,7 @@ table 53004 "Payroll Loan Application"
         field(7; "Issued Date"; Date)
         {
             TableRelation = if ("Employee Type" = filter(Parmanent | Partime | Locum),
-                                "Loan Customer Type" = const(Staff)) "Payroll Period"
+                                "Loan Customer Type" = const(Staff)) "Payroll Period II"
             else
             if ("Employee Type" = const(Casual),
                                          "Loan Customer Type" = const(Staff)) "Payroll Period Casuals"
@@ -612,7 +612,12 @@ table 53004 "Payroll Loan Application"
                 "Transaction Type"::"Loan Application":
                     begin
                         HRsetup.TestField("Loan App No");
-                        NoSeriesMgt.InitSeries(HRsetup."Loan App No", xRec."No Series", 0D, "Loan No", "No Series");
+                        // NoSeriesMgt.InitSeries(HRsetup."Loan App No", xRec."No Series", 0D, "Loan No", "No Series");
+                        if NoSeriesMgt.AreRelated(HRSetup."Loan App No", xRec."No Series") then
+                            "No Series" := xRec."No Series"
+                        else
+                            "No Series" := HRSetup."Loan App No";
+                       "Loan No" := NoSeriesMgt.GetNextNo("No Series", WorkDate());
                         InsertUserAccount();
                     end;
                 "Transaction Type"::"Loan Settlement":
@@ -633,7 +638,7 @@ table 53004 "Payroll Loan Application"
         LoanApp: Record "Payroll Loan Application";
         NewSchedule: Record "Payroll Repayment Schedule";
         DimMgt: Codeunit DimensionManagement;
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         CalcInterest: Boolean;
         RunningDate: Date;
         FlatPeriodInterest: Decimal;

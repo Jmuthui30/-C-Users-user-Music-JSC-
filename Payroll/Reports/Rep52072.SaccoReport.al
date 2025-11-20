@@ -2,7 +2,7 @@ report 52072 "Sacco Report"
 {
     ApplicationArea = All;
     DefaultLayout = RDLC;
-    RDLCLayout = './src/report_layout/SaccoReport.rdlc';
+    RDLCLayout = './Payroll/Report Layouts/SaccoReport.rdlc';
     Caption = 'Sacco Report';
     dataset
     {

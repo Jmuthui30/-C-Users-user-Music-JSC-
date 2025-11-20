@@ -777,7 +777,7 @@ table 53036 "Employee Change Request"
         field(50014; "Pay Period Filter"; Date)
         {
             FieldClass = FlowFilter;
-            TableRelation = "Payroll Period";
+            TableRelation = "Payroll Period II";
             Caption = 'Pay Period Filter';
         }
         field(50015; "SSF Employer to Date"; Decimal)
@@ -1604,13 +1604,18 @@ table 53036 "Employee Change Request"
 
         if "Employee Bank Sort Code" = '' then begin
             HRSetup.Get();
-            NoSeriesMgt.InitSeries(HRSetup."Employee Change Nos", xRec."No. Series", 0D, "Employee Bank Sort Code", "No. Series");
+            // NoSeriesMgt.InitSeries(HRSetup."Employee Change Nos", xRec."No. Series", 0D, "Employee Bank Sort Code", "No. Series");
+            if NoSeriesMgt.AreRelated(HRSetup."Employee Change Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HRSetup."Employee Change Nos";
+            "Employee Bank Sort Code":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
     end;
 
     var
         HRSetup: Record "Human Resources Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
 }
 
 

@@ -120,14 +120,19 @@ table 53039 "Employee Discplinary"
         if "Disciplinary Nos" = '' then begin
             HRSetup.Get();
             HRSetup.TestField("Disciplinary Cases Nos.");
-            NoSeriesMgt.InitSeries(HRSetup."Disciplinary Cases Nos.", xRec."No.Series", 0D, "Disciplinary Nos", "No.Series");
+            // NoSeriesMgt.InitSeries(HRSetup."Disciplinary Cases Nos.", xRec."No.Series", 0D, "Disciplinary Nos", "No.Series");
+            if NoSeriesMgt.AreRelated(HRSetup."Disciplinary Cases Nos.",xRec."No.Series") then
+            "No.Series":=xRec."No.Series"
+            else
+            "No.Series":=HRSetup."Disciplinary Cases Nos.";
+            "Disciplinary Nos":=NoSeriesMgt.GetNextNo("No.Series",WorkDate());
         end;
     end;
 
     var
         Employee: Record Employee;
         HRSetup: Record "Human Resources Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
 }
 
 

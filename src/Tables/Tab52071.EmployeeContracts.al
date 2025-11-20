@@ -106,7 +106,7 @@ table 52071 "Employee Contracts"
         Employee: Record Employee;
         Contract: Record "Employment Contract";
         HRSetup: Record "Human Resources Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
 }
 
 

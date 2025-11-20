@@ -64,14 +64,19 @@ table 51014 "Apportion Header"
 
     var
         CashSetup: Record "Cash Management Setups";
-        NoSeries: Codeunit NoSeriesManagement;
+        NoSeries: Codeunit "No. Series";
 
     trigger OnInsert()
     begin
         if "No." = '' then begin
             CashSetup.Get();
             CashSetup.TestField("Apportionment Nos");
-            NoSeries.InitSeries(CashSetup."Apportionment Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeries.InitSeries(CashSetup."Apportionment Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeries.AreRelated(CashSetup."Apportionment Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=CashSetup."Apportionment Nos";
+            "No.":=NoSeries.GetNextNo("No. Series",WorkDate());
         end;
         "Created Date" := CurrentDateTime;
         "User ID" := UserId;

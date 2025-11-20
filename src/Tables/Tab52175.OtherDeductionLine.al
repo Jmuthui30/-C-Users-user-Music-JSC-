@@ -12,16 +12,16 @@ table 52175 "Other Deduction Line"
         field(2; "Deduction Code"; Code[10])
         {
             Caption = 'Deduction Code';
-            TableRelation = Deductions.Code;
+            TableRelation = Deduction.Code;
 
             trigger OnValidate()
             begin
                 if "Deduction Code" = "Main Code" then
                     Error('Can not be same');
 
-                // if DeductionsX.Get("Main Code") then
-                //     if DeductionsX."Calculation Method" <> DeductionsX."Calculation Method"::"% of Other Deductions" then
-                //         Error('Calculation method must be "% of Other Deductions" for %1 - %2', DeductionsX.Code, DeductionsX.Description);
+                if DeductionsX.Get("Main Code") then
+                    if DeductionsX."Calculation Method" <> DeductionsX."Calculation Method"::"% of Other Deductions" then
+                        Error('Calculation method must be "% of Other Deductions" for %1 - %2', DeductionsX.Code, DeductionsX.Description);
 
                 if "Deduction Code" <> '' then begin
                     DeductionsX.Reset();
@@ -50,5 +50,5 @@ table 52175 "Other Deduction Line"
     }
 
     var
-        DeductionsX: Record Deductions;
+        DeductionsX: Record Deduction;
 }

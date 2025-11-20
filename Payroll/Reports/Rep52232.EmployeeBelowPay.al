@@ -2,7 +2,7 @@ report 52232 "Employee Below Pay"
 {
     ApplicationArea = All;
     DefaultLayout = RDLC;
-    RDLCLayout = './src/report_layout/EmployeeBelowPay.rdlc';
+    RDLCLayout = './Payroll/Report Layouts/EmployeeBelowPay.rdlc';
     Caption = 'Employee Below Pay';
     dataset
     {

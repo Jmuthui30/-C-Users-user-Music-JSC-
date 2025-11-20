@@ -37,7 +37,7 @@ table 53032 "Loan Interest Lines"
         }
         field(6; "Period Reference"; Date)
         {
-            TableRelation = "Payroll Period"."Starting Date";
+            TableRelation = "Payroll Period II"."Starting Date";
             Caption = 'Period Reference';
 
             trigger OnValidate()

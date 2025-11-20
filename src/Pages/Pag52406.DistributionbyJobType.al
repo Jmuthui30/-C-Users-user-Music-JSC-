@@ -25,10 +25,11 @@ page 52406 "Distribution by Job Type"
                     Buffer.Initialize();
                     Buffer.AddMeasure('Employees', 0, Buffer."Data Type"::Integer, Buffer."Chart Type"::Column);
                     buffer.SetXAxis('Job Type', Buffer."Data Type"::String);
-                    if Employee.FindSet()then repeat begin
+                    if Employee.FindSet() then
+                        repeat begin
                         end;
                         until Employee.Next() = 0;
-                    Buffer.Update(CurrPage.Chart);
+                    // Buffer.Update(CurrPage.Chart);
                 end;
             }
         }
@@ -48,5 +49,6 @@ page 52406 "Distribution by Job Type"
             }
         }
     }
-    var myInt: Integer;
+    var
+        myInt: Integer;
 }

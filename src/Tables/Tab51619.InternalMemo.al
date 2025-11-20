@@ -20,10 +20,10 @@ table 51619 "Internal Memo"
 
             trigger OnValidate()
             begin
-                if DistributionList.Get("To")then begin
+                if DistributionList.Get("To") then begin
                     if DistributionList.Email = '' then Error(Text000);
-                    "Group Name":=DistributionList.Description;
-                    "Group Email":=DistributionList.Email;
+                    "Group Name" := DistributionList.Description;
+                    "Group Email" := DistributionList.Email;
                 end;
             end;
         }
@@ -70,15 +70,22 @@ table 51619 "Internal Memo"
         if "No." = '' then begin
             InternalMemoSetup.Get;
             InternalMemoSetup.TestField("Internal Memo Nos.");
-            NoSeriesMgt.InitSeries(InternalMemoSetup."Internal Memo Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(InternalMemoSetup."Internal Memo Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(InternalMemoSetup."Internal Memo Nos.",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=InternalMemoSetup."Internal Memo Nos.";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
-        "Created By":=UserId;
-        Date:=Today;
-        if UsersRec.Get(UserSecurityId)then From:=UsersRec."Full Name";
+        "Created By" := UserId;
+        Date := Today;
+        if UsersRec.Get(UserSecurityId) then From := UsersRec."Full Name";
     end;
-    var DistributionList: Record "Mail Distribution Lists";
-    Text000: Label 'The distribution group selected does not have an email address';
-    InternalMemoSetup: Record "Internal Memo Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    UsersRec: Record User;
+
+    var
+        DistributionList: Record "Mail Distribution Lists";
+        Text000: Label 'The distribution group selected does not have an email address';
+        InternalMemoSetup: Record "Internal Memo Setup";
+        NoSeriesMgt: Codeunit "No. Series";
+        UsersRec: Record User;
 }

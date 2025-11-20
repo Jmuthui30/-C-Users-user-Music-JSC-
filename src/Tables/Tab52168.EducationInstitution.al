@@ -58,13 +58,18 @@ table 52168 "Education Institution"
         if "Institution Code" = '' then begin
             HRSetup.Get();
             HRSetup.TestField("Education Institution Nos");
-            NoSeriesMgt.InitSeries(HRSetup."Education Institution Nos", xRec."No. Series", 0D, "Institution Code", "No. Series");
+            // NoSeriesMgt.InitSeries(HRSetup."Education Institution Nos", xRec."No. Series", 0D, "Institution Code", "No. Series");
+            if NoSeriesMgt.AreRelated(HRSetup."Education Institution Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HRSetup."Education Institution Nos";
+            "Institution Code":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
     end;
 
     var
         HRSetup: Record "Human Resources Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
 }
 
 

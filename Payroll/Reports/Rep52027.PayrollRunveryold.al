@@ -298,7 +298,7 @@ report 52027 "Payroll Run-veryold"
                         Deductions.Reset();
                         Deductions.SetRange("PAYE Code", true);
                         if Deductions.Find('-') then begin
-                            GetPaye.CalculateTaxableAmount(Employee."No.", Month, IncomeTax, TaxableAmount, RetireCont,PensionTax);
+                            GetPaye.CalculateTaxableAmount(Employee."No.", Month, IncomeTax, TaxableAmount, RetireCont);
 
                             //Create PAYE
 
@@ -346,7 +346,7 @@ report 52027 "Payroll Run-veryold"
                                 end;
 
                                 //Recompute Tax after Adding Tax Relief
-                                GetPaye.CalculateTaxableAmount(Employee."No.", Month, IncomeTax, TaxableAmount, RetireCont,PensionTax);
+                                GetPaye.CalculateTaxableAmount(Employee."No.", Month, IncomeTax, TaxableAmount, RetireCont);
                             end;
                             //Create PAYE
                             AssignMatrix.Init();

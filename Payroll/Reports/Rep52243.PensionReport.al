@@ -2,7 +2,7 @@ report 52243 "Pension Report"
 {
     ApplicationArea = All;
     DefaultLayout = RDLC;
-    RDLCLayout = './src/report_layout/PensionReport.rdl';
+    RDLCLayout = './Payroll/Report Layouts/PensionReport.rdl';
     Caption = 'Pension Report';
     dataset
     {
@@ -352,7 +352,7 @@ report 52243 "Pension Report"
         Payment: Record Earning;
         Emp: Record Employee;
         HRSetup: Record "Human Resources Setup";
-        PayPeriod: Record "Payroll Period";
+        PayPeriod: Record "Payroll Period II";
         UserSetup: Record "User Setup";
         UserSetup1: Record "User Setup";
         UserSetup2: Record "User Setup";

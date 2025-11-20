@@ -15,7 +15,7 @@ table 51844 "External Employees Leave"
                 if No <> xRec.No then begin
                     OutsourcingSetup.Get;
                     NoSeriesMgt.TestManual(OutsourcingSetup."Employee Leave Nos.");
-                    "No. Series":='';
+                    "No. Series" := '';
                 end;
             end;
         }
@@ -33,7 +33,7 @@ table 51844 "External Employees Leave"
 
             trigger OnValidate()
             begin
-                if ClientEmployeeMaster.Get("Employee No.")then "Employee Name":=ClientEmployeeMaster."First Name" + ' ' + ClientEmployeeMaster."Middle Name" + ' ' + ClientEmployeeMaster."Last Name";
+                if ClientEmployeeMaster.Get("Employee No.") then "Employee Name" := ClientEmployeeMaster."First Name" + ' ' + ClientEmployeeMaster."Middle Name" + ' ' + ClientEmployeeMaster."Last Name";
             end;
         }
         field(4; "Employee Name"; Text[50])
@@ -52,7 +52,7 @@ table 51844 "External Employees Leave"
         {
             DataClassification = ToBeClassified;
             OptionCaption = ' ,Sick Off,Sick Leave,Marternity,Parternity,Annual,Unpaid Leave';
-            OptionMembers = " ", "Sick Off", "Sick Leave", Marternity, Parternity, Annual, "Unpaid Leave";
+            OptionMembers = " ","Sick Off","Sick Leave",Marternity,Parternity,Annual,"Unpaid Leave";
         }
         field(8; "Posting Date"; Date)
         {
@@ -85,10 +85,17 @@ table 51844 "External Employees Leave"
         if No = '' then begin
             OutsourcingSetup.Get;
             OutsourcingSetup.TestField("Employee Leave Nos.");
-            NoSeriesMgt.InitSeries(OutsourcingSetup."Employee Leave Nos.", xRec."No. Series", 0D, No, "No. Series");
+            // NoSeriesMgt.InitSeries(OutsourcingSetup."Employee Leave Nos.", xRec."No. Series", 0D, No, "No. Series");
+            if NoSeriesMgt.AreRelated(OutsourcingSetup."Employee Leave Nos.",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=OutsourcingSetup."Employee Leave Nos.";
+            "No":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
     end;
-    var NoSeriesMgt: Codeunit NoSeriesManagement;
-    OutsourcingSetup: Record "Outsourcing Setup";
-    ClientEmployeeMaster: Record "Client Employee Master";
+
+    var
+        NoSeriesMgt: Codeunit "No. Series";
+        OutsourcingSetup: Record "Outsourcing Setup";
+        ClientEmployeeMaster: Record "Client Employee Master";
 }

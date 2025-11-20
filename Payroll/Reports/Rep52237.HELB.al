@@ -2,11 +2,11 @@ report 52237 "HELB"
 {
     ApplicationArea = All;
     DefaultLayout = RDLC;
-    RDLCLayout = './src/report_layout/EmployeeHELB.rdl';
+    RDLCLayout = './Payroll/Report Layouts/EmployeeHELB.rdl';
     Caption = 'HELB';
     dataset
     {
-         dataitem("Payroll PeriodX"; "Payroll Period")
+         dataitem("Payroll PeriodX"; "Payroll Period II")
         {
             //DataItemTableView = order(ascending) where("Deductions Code Filter" = filter('D0008'));
             RequestFilterFields = "Pay Period Filter", "Deductions Code Filter";

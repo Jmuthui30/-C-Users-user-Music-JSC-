@@ -81,7 +81,7 @@ report 52246 "Mail Bulk Payslips"
             {
                 field("Pay Period"; PayPeriod)
                 {
-                    TableRelation = "Payroll Period"."Starting Date";
+                    TableRelation = "Payroll Period II"."Starting Date";
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the PayPeriod field';
                 }

@@ -4,7 +4,7 @@ report 52230 "Employee Pay Modes"
     Caption = 'Employee Pay Modes';
     UsageCategory = ReportsAndAnalysis;
     DefaultLayout = RDLC;
-    RDLCLayout = './src/report_layout/EmployeePayModes.rdl';
+    RDLCLayout = './Payroll/Report Layouts/EmployeePayModes.rdl';
 
     dataset
     {

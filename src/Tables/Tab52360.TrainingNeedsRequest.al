@@ -152,14 +152,19 @@ table 52360 "Training Needs Request"
         if No = '' then begin
             HRSetup.Get();
             HRSetup.TestField("Training Needs Request Nos.");
-            NoSeriesManagement.InitSeries(HRSetup."Training Needs Request Nos.", xRec."No. Series", 0D, No, "No. Series");
+            // NoSeriesManagement.InitSeries(HRSetup."Training Needs Request Nos.", xRec."No. Series", 0D, No, "No. Series");
+            if NoSeriesManagement.AreRelated(HRSetup."Training Needs Request Nos.",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HRSetup."Training Needs Request Nos.";
+            "No":=NoSeriesManagement.GetNextNo("No. Series",WorkDate());
         end;
     end;
 
     var
         GenLedSetup: Record "General Ledger Setup";
         HRSetup: Record "Human Resources Setup";
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series";
         Text001: Label 'The %1 %2 cannot be earlier than the %3 %4.';
         Text002: Label 'The %1 %2 cannot be after the %3 %4.';
 }

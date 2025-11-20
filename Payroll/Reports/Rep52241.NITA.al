@@ -2,11 +2,11 @@ report 52241 "NITA"
 {
     ApplicationArea = All;
     DefaultLayout = RDLC;
-    RDLCLayout = './src/report_layout/EmployeeNITA.rdl';
+    RDLCLayout = './Payroll/Report Layouts/EmployeeNITA.rdl';
     Caption = 'NITA';
     dataset
     {
-        dataitem("Payroll PeriodX"; "Payroll Period")
+        dataitem("Payroll PeriodX"; "Payroll Period II")
         {
             RequestFilterFields = "Pay Period Filter", "Deductions Code Filter";
 

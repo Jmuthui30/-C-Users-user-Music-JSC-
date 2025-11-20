@@ -458,7 +458,7 @@ page 52260 "Posted Loan Card-Payroll"
     var
         AssMatrix: Record "Assignment Matrix";
         LoanProduct: Record "Loan Product Type-Payroll";
-        PayPeriod: Record "Payroll Period";
+        PayPeriod: Record "Payroll Period II";
         PreviewShedule: Record "Payroll Repayment Schedule";
         ApprovalsMngt: Codeunit "Approval Mgt HR Ext";
         Payroll: Codeunit Payroll;

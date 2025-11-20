@@ -2,7 +2,7 @@ report 52231 "Employee Bank Details"
 {
     ApplicationArea = All;
     DefaultLayout = RDLC;
-    RDLCLayout = './src/report_layout/EmployeeBankDetails.rdl';
+    RDLCLayout = './Payroll/Report Layouts/EmployeeBankDetails.rdl';
     Caption = 'Employee Bank Details';
     dataset
     {

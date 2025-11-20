@@ -102,7 +102,7 @@ report 52235 "Close Pay Period II"
         Emprec2: Record Employee;
         Loan: Record "Employee Earnings History";
         LoanApplicationForm: Record "Payroll Loan Application";
-        PayPeriod: Record "Payroll Period";
+        PayPeriod: Record "Payroll Period II";
         PayrollRun: Report "Payroll Run";
         CreateRec: Boolean;
         TaxCode: Code[10];
@@ -362,7 +362,7 @@ report 52235 "Close Pay Period II"
 
     procedure DeducePayPeriod()
     var
-        PayPeriodRec: Record "Payroll Period";
+        PayPeriodRec: Record "Payroll Period II";
     begin
         PayPeriodRec.Reset();
         PayPeriodRec.SetRange(PayPeriodRec."Close Pay", false);
@@ -375,7 +375,7 @@ report 52235 "Close Pay Period II"
     // StartingDate := CurrentPeriodEnd;
     // CurrentPeriodEnd := CalcDate('1M', CurrentPeriodEnd - 1);
     var
-        PayEmployee: Record "Payroll Period";
+        PayEmployee: Record "Payroll Period II";
     begin
         CurrentPeriodEnd := Payperiod."Starting Date";
         StartingDate := CurrentPeriodEnd;

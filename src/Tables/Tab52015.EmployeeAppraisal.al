@@ -427,7 +427,12 @@ table 52015 "Employee Appraisal"
         if "Appraisal No" = '' then begin
             HRSetup.Get();
             HRSetup.TestField("Appraisal Nos");
-            NoSeriesMgt.InitSeries(HRSetup."Appraisal Nos", xRec."No. series", 0D, "Appraisal No", "No. series");
+            // NoSeriesMgt.InitSeries(HRSetup."Appraisal Nos", xRec."No. series", 0D, "Appraisal No", "No. series");
+            if NoSeriesMgt.AreRelated(HRSetup."Appraisal Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HRSetup."Appraisal Nos";
+            "Appraisal No":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
 
         Date := Today;
@@ -501,7 +506,7 @@ table 52015 "Employee Appraisal"
         Matrix: Record "Perfomance rating matrix";
         UserSetup: Record "User Setup";
         //AppraisalType: Record "Appraisal Type";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         LineNo: Integer;
         Error001: Label 'You have already created an appraisal for %1';
 }

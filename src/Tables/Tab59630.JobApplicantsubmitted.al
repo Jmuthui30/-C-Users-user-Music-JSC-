@@ -854,7 +854,7 @@ table 59630 "Job Applicant submitted"
 
         PostCode: Record "Post Code";
         EmployeeQualification: Record "Employee Qualification";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         DimMgt: Codeunit DimensionManagement;
         Text000: Label 'Before you can use Online Map, you must fill in the Online Map Setup window.\See Setting Up Online Map in Help.';
         HRDatesExt: Codeunit "HR Dates Mgt";

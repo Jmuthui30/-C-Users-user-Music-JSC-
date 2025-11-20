@@ -144,6 +144,10 @@ page 52381 "Deduction"
                 {
                     ToolTip = 'Specifies the value of the Show on Payslip Information field';
                 }
+                field("Allowances PAYE";"Allowances PAYE")
+                {
+                    ToolTip = 'Specifies the value of the Allowances PAYE field';
+                }
                 field(Voluntary; Rec.Voluntary)
                 {
                     ToolTip = 'Specifies the value of the Voluntary field';

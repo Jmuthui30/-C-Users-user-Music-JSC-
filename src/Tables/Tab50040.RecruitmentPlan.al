@@ -96,7 +96,7 @@ table 50040 "Recruitment Plan"
     var
         GenLedSetup: Record "General Ledger Setup";
         HRSetup: Record "Human Resources Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         Usersetup: Record "User Setup";
         Employee: Record Employee;
         User: Record "User Setup";
@@ -127,7 +127,12 @@ table 50040 "Recruitment Plan"
         IF "No." = '' THEN BEGIN
             HRSetup.GET;
             HRSetup.TESTFIELD(HRSetup."Recruitment Plan Nos");
-            NoSeriesMgt.InitSeries(HRSetup."Recruitment Plan Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(HRSetup."Recruitment Plan Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(HRSetup."Recruitment Plan Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HRSetup."Recruitment Plan Nos";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         END;
         FindFiscalDate;
     end;

@@ -194,7 +194,7 @@ report 51467 "Close Client Pay period"
                 AssignMatrix."Insurance Relief":=PaymentDed."Insurance Relief";
                 AssignMatrix.AKI:=PaymentDed.AKI;
                 AssignMatrix."Cetificate Expiry date":=PaymentDed."Cetificate Expiry date";
-                AssignMatrix."Basic+Regular Allowances":=PaymentDed."Basic+Regular Allowances";
+                AssignMatrix."Basic+Regular Allowances":=PaymentDed."Basic+Regular Allowances"; 
                 AssignMatrix."Job Grade":=PaymentDed."Job Grade";
                 AssignMatrix."Salary Level":=PaymentDed."Salary Level";
                 if PaymentDed."Global Dimension 1 code" = '' then begin

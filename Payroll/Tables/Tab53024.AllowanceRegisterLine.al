@@ -73,7 +73,7 @@ table 53024 "Allowance Register Line"
         }
         field(6; "Payroll Period"; Date)
         {
-            TableRelation = "Payroll Period";
+            TableRelation = "Payroll Period II";
             Caption = 'Payroll Period';
         }
         field(7; "PAYE Amount"; Decimal)

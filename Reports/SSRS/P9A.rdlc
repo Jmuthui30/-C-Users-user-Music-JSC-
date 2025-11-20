@@ -3599,12 +3599,6 @@ End Function
         <Field Name="COMPANYNAME">
           <DataField>COMPANYNAME</DataField>
         </Field>
-        <Field Name="Company_Name">
-          <DataField>Company_Name</DataField>
-        </Field>
-        <Field Name="Company_Pin">
-          <DataField>Company_Pin</DataField>
-        </Field>
         <Field Name="V30__">
           <DataField>V30__</DataField>
         </Field>

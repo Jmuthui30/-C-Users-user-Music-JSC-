@@ -66,7 +66,7 @@ table 53007 "Employee HR Posting Group"
         field(11; "Pay Period Filter"; Date)
         {
             FieldClass = FlowFilter;
-            TableRelation = "Payroll Period";
+            TableRelation = "Payroll Period II";
             Caption = 'Pay Period Filter';
         }
         field(12; "Pension Employer Acc"; Code[20])

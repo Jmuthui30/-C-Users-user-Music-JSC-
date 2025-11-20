@@ -69,7 +69,7 @@ codeunit 51005 Apportionment
         AppTotals: Record "Apportionment Totals";
         CashSetupRec: Record "Cash Management Setups";
         PLines: Record "Payment Lines";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         ApportionCard: Page "Apportion Card";
         DocNo: Code[50];
         LineNo: Integer;
@@ -138,7 +138,7 @@ codeunit 51005 Apportionment
         AppAllocLinesCopy: Record "Apportionment Allocation";
         AppTotals: Record "Apportionment Totals";
         PurchInvLine: Record "Purch. Inv. Line";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         ApportionCard: Page "Apportion Card";
         DocNo: Code[50];
     begin

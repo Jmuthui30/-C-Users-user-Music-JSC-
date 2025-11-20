@@ -1,4 +1,4 @@
-codeunit 52000 "Payroll"
+codeunit 52002 "Payroll"
 {
     trigger OnRun()
     begin
@@ -18,7 +18,7 @@ codeunit 52000 "Payroll"
         end;
     end;
 
-    procedure CalculateTaxableAmount(EmployeeNo: Code[20]; DateSpecified: Date; var FinalTax: Decimal; var TaxableAmountNew: Decimal; var RetirementCont: Decimal; var PensionTax: Decimal)
+    procedure CalculateTaxableAmount(EmployeeNo: Code[20]; DateSpecified: Date; var FinalTax: Decimal; var TaxableAmountNew: Decimal; var RetirementCont: Decimal)
     var
         Assignmatrix: Record "Assignment Matrix";
         Ded: Record Deduction;
@@ -31,22 +31,25 @@ codeunit 52000 "Payroll"
         NHIFRelief: Decimal;
         OwnerOccupier: Decimal;
         PersonalRelief: Decimal;
-        TaxableNoPension: Decimal;
         TaxableAmount: Decimal;
         ExcessRetirement: Decimal;
         PensionAdd: Decimal;
         AddBack: Decimal;
         HousingLevyRelief: Decimal;
-        TaxWthPension: Decimal;
+        // HousingLevyRelief: Decimal;
         AHLAmount: Decimal;
         ArrEarnings: Text;
         //  ArrEarnings: array[3, 100] of Text[250];
         //ArrEarningsAmt: array[3, 100] of Text[250];
         SHIFAmount: Decimal;
         i: Integer;
-        VarNssf: Decimal;
 
+        Varnssf: Decimal;
+        VarPensionAmount: Decimal;
     begin
+        SHIFAmount := 0;
+        // AHLAmount := 0;
+        VarPensionAmount := 0;
         FinalTax := 0;
         TaxableAmount := 0;
         RetirementCont := 0;
@@ -54,12 +57,12 @@ codeunit 52000 "Payroll"
         PersonalRelief := 0;
         OwnerOccupier := 0;
         NHIFRelief := 0;
-        TaxWthPension := 0;
         HousingLevyRelief := 0;
         MortgageRelief := 0;
         ExcessRetirement := 0;
         PensionAdd := 0;
-        PensionTax := 0;
+
+        Varnssf := 0;
         //Get payroll period
         GetCurrentPayPeriodDate();
         if DateSpecified = 0D then
@@ -70,12 +73,16 @@ codeunit 52000 "Payroll"
         // Taxable Amount
         Employee.Reset();
         Employee.SetRange("No.", EmployeeNo);
-        Employee.SetRange("Date Filter", DateSpecified); //Pay Period Filter
+        Employee.SetRange("Pay Period Filter", DateSpecified);
         if Employee.FindFirst() then
             if Employee."Pays tax?" = true then begin
-                Employee.CalcFields("Taxable Allowance", "Tax Deductible Amount", "Relief Amount");
-
+                Employee.CalcFields("Taxable Allowance", "Tax Deductible Amount", "Relief Amount", "Basic Pay");
                 TaxableAmount := Employee."Taxable Allowance";
+                //message('Tax Pay is, %1', Employee."Taxable Allowance");
+                //**********************************************************************
+
+
+                //********************************************************************************************
                 Ded.Reset();
                 Ded.SetRange(Ded."Tax deductible", true);
                 Ded.SetRange(Ded."Owner Occupied Interest", false);
@@ -87,56 +94,107 @@ codeunit 52000 "Payroll"
                         Assignmatrix.SetRange(Assignmatrix.Code, Ded.Code);
                         Assignmatrix.SetRange(Assignmatrix."Employee No", EmployeeNo);
                         if Assignmatrix.Find('-') then
-                            // if Ded."Pension Limit Amount" > 0 then begin
-                            //     if Abs(Assignmatrix.Amount) > Ded."Pension Limit Amount" then
-                            //         RetirementCont := Abs(RetirementCont) + Ded."Pension Limit Amount"
-                            //     else
-                            //         RetirementCont := Abs(RetirementCont) + Abs(Assignmatrix.Amount);
-                            // end else
-                            //     RetirementCont := Abs(RetirementCont) + Abs(Assignmatrix.Amount);
-                        if Assignmatrix.Amount <> 0 then begin
-                                RetirementCont := Abs(RetirementCont) + Abs(Assignmatrix.Amount);
-                            end;
+                            if Ded.NSSF = true then
+                                Varnssf := Abs(Assignmatrix.Amount);
+                        if Ded."Employer Contibution Taxed" = true then
+                            //Message('axable amount is %1', TaxableAmount);
+                            //  Message('RetirementCont is %1', RetirementCont);
+                            if Ded."Employer Contibution Taxed" = true then
+                                ExcessRetirement := ExcessRetirement + Round((Employee."Basic Pay" * 0.1), 1, '=');
+                        RetirementCont := Varnssf + VarPensionAmount;
 
-                        //******************************************************************************************************88
-                        if Ded."Employer Contibution Taxed" then
-                            ExcessRetirement := ExcessRetirement + Abs(Assignmatrix."Employer Amount");
                     until Ded.Next() = 0;
-                //  Message('retirement is %1', RetirementCont);
-                HRSetup.Get();
-                // if RetirementCont > HRSetup."Pension Limit Amount" then begin
-                RetirementCont := HRSetup."Pension Limit Amount";
-                if RetirementCont <> 0 then
-                    TaxableAmount := TaxableAmount - RetirementCont;
 
-                if ExcessRetirement > 0 then
-                    TaxableAmount := TaxableAmount + ExcessRetirement;
-                // end;
-                if Ded.NSSF = true then
-                    VarNssf := Abs(Assignmatrix.Amount);
 
-                //  Message('ex is %1...#...ri count is %2', ExcessRetirement, RetirementCont);
+                //Message('ExcessRetirement is %1...#...RetirementCont is %2..#.. TaxableAmount IS %3...# V is %4', ExcessRetirement, RetirementCont, TaxableAmount, VarPensionAmount);
+
+
+                //******************************************************************************************************88
+                // if Ded."Employer Contibution Taxed" then
+                //     ExcessRetirement := ExcessRetirement + Abs(Assignmatrix."Employer Amount");
+                //     until Ded.Next() = 0;
+
+
                 PensionAdd := 0;
-                if RetirementCont < HRSetup."Pension Limit Amount" then begin
-                    PensionAdd := ExcessRetirement + RetirementCont;
-                    if PensionAdd > HRSetup."Pension Limit Amount" then begin
-                        //PensionAdd:=PensionAdd-HRSetup."Pension Limit Amount";
-                        AddBack := PensionAdd - HRSetup."Pension Limit Amount";
-                        TaxableAmount := TaxableAmount + AddBack - HRSetup."Pension Limit Amount";
-                    end;
-                    if PensionAdd <= HRSetup."Pension Limit Amount" then begin
-                        TaxableAmount := TaxableAmount - PensionAdd;
-                    end;
+
+                HRSetup.Get();
+                if RetirementCont > HRSetup."Pension Limit Amount" then begin
+                    RetirementCont := HRSetup."Pension Limit Amount";
+
+                    if RetirementCont <> 0 then
+                        // TaxableAmount := TaxableAmount - RetirementCont;
+                        if ExcessRetirement > 0 then
+                            if Ded.NSSF = true then //begin
+                                Varnssf := Abs(Assignmatrix.Amount);
+                    PensionAdd := ExcessRetirement + RetirementCont;///+ Varnssf;
+                    AddBack := PensionAdd - HRSetup."Pension Limit Amount";
+                    TaxableAmount := ((TaxableAmount + AddBack + Varnssf) - RetirementCont);
                 end;
 
 
-                // Message('tax is %1..#.....adback is %2...#....hrset is %3', TaxableAmount, PensionAdd, HRSetup."Pension Limit Amount");
+                if RetirementCont < HRSetup."Pension Limit Amount" then begin
+                    // PensionAdd := ExcessRetirement + RetirementCont;
+                    // Message('PensionAddIS %1', PensionAdd);
+                    // Message('VarNSSF is %1, Retirement cont is %2', Varnssf,RetirementCont);
+                    PensionAdd := ExcessRetirement + RetirementCont + Varnssf;
+                    // Message('PensionAddIS %1', PensionAdd);
+                    //end;
+                    /// Message('"Pension Limit Amount" is %1..#....pension add is %2...#..taxamont is %3..#..retire is %4', HRSetup."Pension Limit Amount", PensionAdd, TaxableAmount, RetirementCont);
+
+                    //Message('ns11sf ALLOW IS %1', Varnssf);
+                    if PensionAdd > HRSetup."Pension Limit Amount" then begin
+                        // Message('12');
+                        //PensionAdd:=PensionAdd-HRSetup."Pension Limit Amount";
+                        AddBack := PensionAdd - HRSetup."Pension Limit Amount";
+                        // TaxableAmount := TaxableAmount + AddBack - HRSetup."Pension Limit Amount";
+                        //TaxableAmount := (TaxableAmount + AddBack) P- RetirementCont;
+                        // TaxableAmount := ((TaxableAmount + Varnssf) - RetirementCont);
+                        TaxableAmount := ((TaxableAmount + AddBack) - RetirementCont);
+
+                    end;
+                    //else
+                    //Message('taxa123 is %1', TaxableAmount);
+                    if PensionAdd <= HRSetup."Pension Limit Amount" then begin
+                        //Message('1234');
+                        //TaxableAmount := (TaxableAmount + AddBack) - RetirementCont;
+                        AddBack := PensionAdd - HRSetup."Pension Limit Amount";
+                        TaxableAmount := ((TaxableAmount) - RetirementCont);
+                    end;
+                end;
+
+                //Message('tax is %1..#.....adback is %2...#....hrset is %3...#..Varnssf is %4', TaxableAmount, AddBack, HRSetup."Pension Limit Amount", Varnssf);
+                //  Message('taxa123 is %1', TaxableAmount);
 
                 if Employee.Disabled = Employee.Disabled::Yes then
                     TaxableAmount := TaxableAmount - HRSetup."Disabililty Tax Exp. Amt";
                 // end Taxable Amount
+                //********************88
                 //*******************************************************************
+                ///***********************************************************SHIF
 
+                SHIFAmount := 0;
+                Ded.Reset();
+                Ded.SetRange(Ded.NHIF, true);
+                if Ded.Find('-') then
+                    repeat
+                        Assignmatrix.Reset();
+                        Assignmatrix.SetRange(Assignmatrix."Payroll Period", DateSpecified);
+                        Assignmatrix.SetRange(Type, Assignmatrix.Type::Deduction);
+                        Assignmatrix.SetRange(Assignmatrix.Code, Ded.Code);
+                        Assignmatrix.SetRange(Assignmatrix."Employee No", EmployeeNo);
+                        if Assignmatrix.FindSet() then
+                            Assignmatrix.CalcSums(Amount);
+                        SHIFAmount := Abs(Assignmatrix.Amount);
+                        ArrEarnings := 'SHIF Contr. Less'
+                    until
+                    Ded.Next() = 0;
+
+                if SHIFAmount > 0 then begin
+
+                    TaxableAmount := TaxableAmount - SHIFAmount;
+                end;
+                ///Message('taxa123 is %1', TaxableAmount);
+                //*******************************AHL*****************************
                 Ded.Reset();
                 Ded.SetRange(Ded."Housing Levy", true);
                 if Ded.Find('-') then
@@ -161,76 +219,7 @@ codeunit 52000 "Payroll"
                 if AHLAmount > 0 then begin
                     TaxableAmount := TaxableAmount - AHLAmount;
                 end;
-                //***********************************
-                Ded.Reset();
-                Ded.SetRange(Ded.NHIF, true);
-                if Ded.Find('-') then
-                    repeat
-                        Assignmatrix.Reset();
-                        Assignmatrix.SetRange(Assignmatrix."Payroll Period", DateSpecified);
-                        Assignmatrix.SetRange(Type, Assignmatrix.Type::Deduction);
-                        Assignmatrix.SetRange(Assignmatrix.Code, Ded.Code);
-                        Assignmatrix.SetRange(Assignmatrix."Employee No", EmployeeNo);
-                        IF Assignmatrix.FIND('-') THEN BEGIN
-                            Assignmatrix.CALCSUMS(Amount);
-                            SHIFAmount := ABS(Assignmatrix.Amount);
-
-                            //MESSAGE('AHL= %1, Deduct Code=%2',SHIFAmount,DeductRecx.Code);
-                            ArrEarnings := 'Less SHIF Contribution';
-                            // EVALUATE(ArrEarningsAmt[1, i], FORMAT((SHIFAmount)));
-                            // ArrEarningsAmt[1, i] := ChckRound(ArrEarningsAmt[1, i]);
-                            // i := i + 1;
-
-                        END;
-                    until
-                    Ded.Next() = 0;
-                if AHLAmount > 0 then begin
-                    TaxableAmount := TaxableAmount - SHIFAmount;
-                end;
-
-                // Ded.Reset();
-                // Ded.SetRange(Ded."Tax deductible", true);
-                // Ded.SetRange(Ded."Owner Occupied Interest", false);
-                // IF Ded.FINDFIRST THEN BEGIN
-                //     REPEAT
-                //         Assignmatrix.RESET;
-                //         Assignmatrix.SETRANGE(AssignmentMRec."Employee No", Employee."No.");
-                //         Assignmatrix.SETRANGE(AssignmentMRec."Payroll Period", DateSpecified);
-                //         Assignmatrix.SETRANGE(Type, Assignmatrix.Type::Deduction);
-                //         Assignmatrix.SETRANGE(Code, Ded.Code);
-                //         IF Assignmatrix.FIND('-') THEN BEGIN
-                //             Assignmatrix.CALCSUMS(Amount);
-                //             AHLAmount := ABS(AssignmentMRec.Amount);
-                //             //MESSAGE('AHL= %1, Deduct Code=%2',AHLAmount,Ded.Code);
-                //             ArrEarnings[1, i] := 'Less Housing Levy Contribution';
-                //             EVALUATE(ArrEarningsAmt[1, i], FORMAT((AHLAmount)));
-                //             ArrEarningsAmt[1, i] := ChckRound(ArrEarningsAmt[1, i]);
-                //             i := i + 1;
-                //         END;
-                //     UNTIL Ded.NEXT = 0;
-                // END;
-                // //----SHIF deducted B4 Tax
-                // Ded.RESET;
-                // Ded.SETRANGE("SHIF Deduct", TRUE);
-                // IF Ded.FINDFIRST THEN BEGIN
-                //     REPEAT
-                //         Assignmatrix.RESET;
-                //         Assignmatrix.SETRANGE(AssignmentMRec."Employee No", Employee."No.");
-                //         Assignmatrix.SETRANGE(AssignmentMRec."Payroll Period", DateSpecified);
-                //         Assignmatrix.SETRANGE(Type, Assignmatrix.Type::Deduction);
-                //         Assignmatrix.SETRANGE(Code, Ded.Code);
-                //         IF Assignmatrix.FIND('-') THEN BEGIN
-                //             Assignmatrix.CALCSUMS(Amount);
-                //             SHIFAmount := ABS(AssignmentMRec.Amount);
-                //             //MESSAGE('AHL= %1, Deduct Code=%2',SHIFAmount,Ded.Code);
-                //             ArrEarnings[1, i] := 'Less SHIF Contribution';
-                //             EVALUATE(ArrEarningsAmt[1, i], FORMAT((SHIFAmount)));
-                //             ArrEarningsAmt[1, i] := ChckRound(ArrEarningsAmt[1, i]);
-                //             i := i + 1;
-                //         END;
-                //     UNTIL Ded.NEXT = 0;
-                // END;
-                //*************************************************************************
+                //***************************************************************
                 //Owner occupier occupied interest
                 Ded.Reset();
                 Ded.SetRange(Ded."Tax deductible", true);
@@ -252,25 +241,9 @@ codeunit 52000 "Payroll"
                     if HRSetup.Get() then
                         if HRSetup."Owner Occupied Interest Limit" < OwnerOccupier then
                             OwnerOccupier := HRSetup."Owner Occupied Interest Limit";
-                    TaxableAmount := TaxableAmount - OwnerOccupier;
+                    // TaxableAmount := TaxableAmount - OwnerOccupier;
                 end;
                 //End of owner occupied interest
-                //Get Taxable - Provi/Pension
-                Earnings.RESET;
-                Earnings.SETRANGE("Pensionable Pay", FALSE);
-                Earnings.SETRANGE(Taxable, TRUE);
-                IF Earnings.FIND('-') THEN
-                    REPEAT
-                        Assignmatrix.RESET;
-                        Assignmatrix.SETRANGE(Assignmatrix."Payroll Period", DateSpecified);
-                        Assignmatrix.SETRANGE(Type, Assignmatrix.Type::Earning);
-                        Assignmatrix.SETRANGE(Assignmatrix.Code, Earnings.Code);
-                        Assignmatrix.SETRANGE(Assignmatrix."Employee No", EmployeeNo);
-                        IF Assignmatrix.FIND('-') THEN
-                            TaxableNoPension := TaxableNoPension + Assignmatrix.Amount;
-                    UNTIL Earnings.NEXT = 0;
-                TaxableNoPension := TaxableNoPension - SHIFAmount - AHLAmount;
-
                 //Add Owner Occuppier
                 if OwnerOccupier > 0 then begin
                     Earnings.Reset();
@@ -311,6 +284,9 @@ codeunit 52000 "Payroll"
                         until Earnings.Next() = 0;
                 end;
 
+                ///************************************************shif
+
+
                 //if OwnerOccupier = 0 then begin//For cases with deductions elsewhere
                 OwnerOccupier := 0;                     // Mortgage Relief
                 Earnings.Reset();
@@ -333,28 +309,11 @@ codeunit 52000 "Payroll"
                     /* if HRSetup."Owner Occupied Interest Limit" < OwnerOccupier then
                         OwnerOccupier := HRSetup."Owner Occupied Interest Limit"; */
 
-                    TaxableAmount := TaxableAmount - OwnerOccupier;
+                    TaxableAmount := TaxableAmount - OwnerOccupier; 
                 end;
                 //end;
                 // End ofOwner occupier Specific
-                /*
-                // Low Interest Benefits
-                     EarnRec.Reset();
-                     EarnRec.SetCurrentKey(EarnRec."Earning Type");
-                     EarnRec.SetRange(EarnRec."Earning Type",EarnRec."Earning Type"::"Low Interest");
-                     if EarnRec.Find('-') then begin
-                      repeat
-                       Assignmatrix.Reset();
-                       Assignmatrix.SetRange(Assignmatrix."Payroll Period",DateSpecified);
-                       Assignmatrix.SetRange(Type,Assignmatrix.Type::Payment);
-                       Assignmatrix.SetRange(Assignmatrix.Code,EarnRec.Code);
-                       Assignmatrix.SetRange(Assignmatrix."Employee No",EmployeeNo);
-                       if Assignmatrix.Find('-') then
-                        TaxableAmount:=TaxableAmount+Assignmatrix.Amount;
-                      until EarnRec.Next()=0;
-                     end;
-                 //End of Low Interest benefits
-                */
+
                 //Per Diem
                 PPSetup.Get();
                 Earnings.Reset();
@@ -376,21 +335,12 @@ codeunit 52000 "Payroll"
                 //
                 TaxableAmount := Round(TaxableAmount, 0.01, '<');
                 TaxableAmountNew := TaxableAmount;
-
-                // END;
-
                 // Get PAYE
                 if Employee."Secondary Employee" then begin
                     HRSetup.TestField("Secondary PAYE %");
                     FinalTax := TaxableAmount * (HRSetup."Secondary PAYE %" / 100);
-                    if TaxableNoPension <> 0 then
-                        TaxWthPension := GetTaxBracket(TaxableNoPension, Employee);   //rudi hapa uanggalie if taxablenopension is same as assignment matrix.amount
                 end else
                     FinalTax := GetTaxBracket(TaxableAmount, Employee);
-                // FinalTax := FinalTax - (PersonalRelief + InsuranceRelief);
-
-                //*PPPPPPPPPPPPPPPPPPPPPPPPPPPP
-
 
                 if Employee.Get(EmployeeNo) then;
                 if Employee."Employee Job Type" <> Employee."Employee Job Type"::Director then begin
@@ -457,36 +407,21 @@ codeunit 52000 "Payroll"
                             if Assignmatrix.FindFirst() then
                                 PersonalRelief := PersonalRelief + Assignmatrix.Amount;
                         until Earnings.Next() = 0;
-
-                    // Mortg
-
-
-
                 end;
-
                 // Get PAYE
-                if not Employee."Secondary Employee" then begin
-                    // PensionTax := FinalTax - TaxWthPension;
-                    FinalTax := FinalTax - (PersonalRelief + InsuranceRelief + MortgageRelief + NHIFRelief + HousingLevyRelief);
-                    if TaxableNoPension <> 0 then
-                        TaxableNoPension := TaxableNoPension - OwnerOccupier;
-                    TaxWthPension := GetTaxBracket(TaxableNoPension, Employee);
-                    if TaxWthPension <> 0 then
-                        TaxWthPension := TaxWthPension - (PersonalRelief + InsuranceRelief + MortgageRelief);
-                    PensionTax := FinalTax - TaxWthPension;
-                end
+                // Get PAYE
+                //  Message('PersonalRelief is %1..#..InsuranceRelief is %2..# MortgageRelief is %3...# NHIFRelief is %4 ...#HousingLevyReliefis %5', PersonalRelief, InsuranceRelief, MortgageRelief, NHIFRelief, HousingLevyRelief);
+                // Get PAYE
+                if not Employee."Secondary Employee" then
+                    FinalTax := FinalTax - (PersonalRelief + InsuranceRelief + MortgageRelief + NHIFRelief + HousingLevyRelief)
                 else
                     FinalTax := FinalTax;
-                // if TaxWthPension <> 0 then
-                //     TaxWthPension := TaxWthPension - (PersonalRelief + InsuranceRelief + MortgageRelief + NHIFRelief + HousingLevyRelief);
-
-
-                //Provident Fund
 
                 if FinalTax < 0 then
                     FinalTax := 0;
             end else
                 FinalTax := 0;
+        //  Message('finaltax is %1', FinalTax);
 
     end;
 
@@ -611,21 +546,21 @@ codeunit 52000 "Payroll"
             AddToNoText(NoText, NoTextIndex, PrintExponent, CurrencyCode);
     end;
 
-    // procedure GetActingEmployees(var Acting: Record "Employee Acting Position")
-    // var
-    //     TodayDate: Date;
-    //     Counter: Integer;
-    // begin
-    //     TodayDate := Today;
+    procedure GetActingEmployees(var Acting: Record "Employee Acting Position")
+    var
+        TodayDate: Date;
+        Counter: Integer;
+    begin
+        TodayDate := Today;
 
-    //     Acting.Reset();
-    //     Acting.SetFilter("Start Date", '<=%1', TodayDate);
-    //     Acting.SetFilter("End Date", '>=%1', TodayDate);
-    //     if Acting.Find('-') then begin
-    //         Counter := Acting.Count;
-    //         Message(Format(Counter));
-    //     end;
-    // end;
+        Acting.Reset();
+        Acting.SetFilter("Start Date", '<=%1', TodayDate);
+        Acting.SetFilter("End Date", '>=%1', TodayDate);
+        if Acting.Find('-') then begin
+            Counter := Acting.Count;
+            Message(Format(Counter));
+        end;
+    end;
 
     procedure GetCurrentBasicPay(EmpNo: Code[20]; PayPeriod: Date): Decimal
     var
@@ -829,6 +764,7 @@ codeunit 52000 "Payroll"
         TaxCode := GetTaxCode();
         AmountRemaining := TaxableAmount;
         AmountRemaining := Round(AmountRemaining, 0.01);
+        //Message('Taxa amnt is %1..#...remant is %2', TaxableAmount, AmountRemaining);
         EndTax := false;
         TaxTable.Reset();
         TaxTable.SetRange("Table Code", TaxCode);
@@ -841,6 +777,7 @@ codeunit 52000 "Payroll"
                         //Tax:=ROUND((TaxTable."Taxable Amount"*TaxTable.Percentage/100),1);
                         Tax := (TaxTable."Taxable Amount" * TaxTable.Percentage / 100);
                         TotalTax := TotalTax + Tax;
+                        // Message('tax is %1..#TaxTable.Percentage  is %2..#..TaxTable."Taxable Amount" is 3', Tax, TaxTable.Percentage, TaxTable."Taxable Amount");
                     end
                     else
                         if (Employee."Min Tax Rate" <= TaxTable.Percentage) then begin
@@ -857,6 +794,8 @@ codeunit 52000 "Payroll"
                             TotalTax := TotalTax + Tax;
                         end;
             until (TaxTable.Next() = 0) or EndTax = true;
+        //Message(' TotalTax is %1', TotalTax);
+
         TotalTax := TotalTax;
         TotalTax := PayrollRounding(TotalTax);
         GetTaxBracket := TotalTax;
@@ -899,16 +838,16 @@ codeunit 52000 "Payroll"
         YearlyBonus: Decimal;
         NoofWarnings: Integer;
     begin
-        if EmployeeRec.Get(EmployeeNo) then begin
-            Cases.Reset();
-            Cases.SetRange("Employee No", EmployeeNo);
-            if Cases.Find('-') then
-                if Actions.Get(Cases."Action Taken") then
-                    // if Actions."Warning Letter" then
-                        //EXIT(Cases.COUNT);
-                        NoofWarnings := Cases.Count;
-            //MESSAGE(FORMAT(NoofWarnings));
-        end;
+        // if EmployeeRec.Get(EmployeeNo) then begin
+        //     Cases.Reset();
+        //     Cases.SetRange("Employee No", EmployeeNo);
+        //     if Cases.Find('-') then
+        //         if Actions.Get(Cases."Action Taken") then
+        //             if Actions."Warning Letter" then
+        //                 //EXIT(Cases.COUNT);
+        //                 NoofWarnings := Cases.Count;
+        //     //MESSAGE(FORMAT(NoofWarnings));
+        // end;
 
         AssMatrix.Reset();
         AssMatrix.SetRange("Employee No", EmployeeNo);
@@ -1172,8 +1111,7 @@ codeunit 52000 "Payroll"
                             PreviewShedule.SetRange("Repayment Date", LoanApp."Issued Date");
                             if PreviewShedule.FindFirst() then begin
                                 //AssMatrix.Amount:=PreviewShedule."Monthly Repayment";
-                                // AssMatrix.Amount := LoanApp.Repayment;
-                                AssMatrix.Amount := PreviewShedule."Principal Repayment";
+                                AssMatrix.Amount := LoanApp.Repayment;
                                 AssMatrix."Loan Interest" := PreviewShedule."Monthly Interest";
                             end;
                         end;
@@ -1341,103 +1279,100 @@ codeunit 52000 "Payroll"
                     AssMatrix.Modify();
                 end;
             end;
-        LoanApp."Loan Status" := LoanApp."Loan Status"::Issued;
-        LoanApp."Initial Instalments" := LoanApp.Instalment;
-        LoanApp.Modify();
         //Init Loan Ledger Entry
-        // InitLoanLedgerEntry(LoanApp);
+        InitLoanLedgerEntry(LoanApp);
 
-        // //Post Loan
-        // CashSetup.Get();
-        // //CashSetup.TestField("Loan Batch Template");
-        // //CashSetup.TestField("Loan Journal Template");
-        // LoanTemplate := 'GENERAL';//CashSetup."Loan Journal Template";
-        // LoanBatch := CopyStr(LoanApp."Loan No", 1, MaxStrLen(LoanBatch));   //CashSetup."Loan Batch Template";
+        //Post Loan
+        CashSetup.Get();
+        //CashSetup.TestField("Loan Batch Template");
+        //CashSetup.TestField("Loan Journal Template");
+        LoanTemplate := 'GENERAL';//CashSetup."Loan Journal Template";
+        LoanBatch := CopyStr(LoanApp."Loan No", 1, MaxStrLen(LoanBatch));   //CashSetup."Loan Batch Template";
 
-        // LoanApp.TestField("Payment Date");
+        LoanApp.TestField("Payment Date");
 
-        // //Delete existing records in batch
-        // GenJournalLine.Reset();
-        // GenJournalLine.SetRange("Journal Template Name", LoanTemplate);
-        // GenJournalLine.SetRange("Journal Batch Name", LoanBatch);
-        // GenJournalLine.DeleteAll();
+        //Delete existing records in batch
+        GenJournalLine.Reset();
+        GenJournalLine.SetRange("Journal Template Name", LoanTemplate);
+        GenJournalLine.SetRange("Journal Batch Name", LoanBatch);
+        GenJournalLine.DeleteAll();
 
-        // //Initialise Loan Batch
-        // GenJournalBatch.Init();
-        // if CashSetup.Get() then;
-        // GenJournalBatch."Journal Template Name" := CopyStr(LoanTemplate, 1, MaxStrLen(GenJournalBatch."Journal Template Name"));
-        // GenJournalBatch.Name := CopyStr(LoanBatch, 1, MaxStrLen(GenJournalBatch.Name));
-        // if not GenJournalBatch.Get(GenJournalBatch."Journal Template Name", GenJournalBatch.Name) then
-        //     GenJournalBatch.Insert();
+        //Initialise Loan Batch
+        GenJournalBatch.Init();
+        if CashSetup.Get() then;
+        GenJournalBatch."Journal Template Name" := CopyStr(LoanTemplate, 1, MaxStrLen(GenJournalBatch."Journal Template Name"));
+        GenJournalBatch.Name := CopyStr(LoanBatch, 1, MaxStrLen(GenJournalBatch.Name));
+        if not GenJournalBatch.Get(GenJournalBatch."Journal Template Name", GenJournalBatch.Name) then
+            GenJournalBatch.Insert();
 
-        // //Debit Customer Loan
-        // LineNo := LineNo + 1000;
-        // GenJournalLine."Line No." := LineNo;
-        // GenJournalLine."Journal Template Name" := LoanTemplate;
-        // GenJournalLine."Journal Batch Name" := LoanBatch;
-        // GenJournalLine."Document No." := LoanApp."Loan No";
-        // GenJournalLine."Account Type" := GenJournalLine."Account Type"::Customer;
-        // GenJournalLine.Validate("Account Type");
-        // if LoanApp."Loan Customer Type" = LoanApp."Loan Customer Type"::Staff then
-        //     GenJournalLine."Account No." := LoanApp."Debtors Code"
-        // else
-        //     GenJournalLine."Account No." := LoanApp."Employee No";
-        // GenJournalLine.Validate("Account No.");
-        // GenJournalLine."Posting Date" := LoanApp."Payment Date";
-        // GenJournalLine.Description := GetLoanProductName(LoanApp."Loan Product Type") + '-' + LoanApp."Employee No" + '(' + Format(LoanApp."Issued Date") + ')';
-        // GenJournalLine.Amount := LoanApp."Amount Requested";
-        // GenJournalLine.Validate(Amount);
-        // GenJournalLine."Payroll Loan No." := LoanApp."Loan No";
-        // GenJournalLine."Payroll Loan Transaction Type" := GenJournalLine."Payroll Loan Transaction Type"::"Principal Due";
-        // GenJournalLine."Shortcut Dimension 1 Code" := LoanApp."Shortcut Dimension 1 Code";
-        // GenJournalLine.Validate("Shortcut Dimension 1 Code");
-        // GenJournalLine."Shortcut Dimension 2 Code" := LoanApp."Shortcut Dimension 2 Code";
-        // GenJournalLine.Validate("Shortcut Dimension 2 Code");
-        // if GenJournalLine.Amount <> 0 then
-        //     // GenJournalLine.Insert();
+        //Debit Customer Loan
+        LineNo := LineNo + 1000;
+        GenJournalLine."Line No." := LineNo;
+        GenJournalLine."Journal Template Name" := LoanTemplate;
+        GenJournalLine."Journal Batch Name" := LoanBatch;
+        GenJournalLine."Document No." := LoanApp."Loan No";
+        GenJournalLine."Account Type" := GenJournalLine."Account Type"::Customer;
+        GenJournalLine.Validate("Account Type");
+        if LoanApp."Loan Customer Type" = LoanApp."Loan Customer Type"::Staff then
+            GenJournalLine."Account No." := LoanApp."Debtors Code"
+        else
+            GenJournalLine."Account No." := LoanApp."Employee No";
+        GenJournalLine.Validate("Account No.");
+        GenJournalLine."Posting Date" := LoanApp."Payment Date";
+        GenJournalLine.Description := GetLoanProductName(LoanApp."Loan Product Type") + '-' + LoanApp."Employee No" + '(' + Format(LoanApp."Issued Date") + ')';
+        GenJournalLine.Amount := LoanApp."Amount Requested";
+        GenJournalLine.Validate(Amount);
+        GenJournalLine."Payroll Loan No." := LoanApp."Loan No";
+        GenJournalLine."Payroll Loan Transaction Type" := GenJournalLine."Payroll Loan Transaction Type"::"Principal Due";
+        GenJournalLine."Shortcut Dimension 1 Code" := LoanApp."Shortcut Dimension 1 Code";
+        GenJournalLine.Validate("Shortcut Dimension 1 Code");
+        GenJournalLine."Shortcut Dimension 2 Code" := LoanApp."Shortcut Dimension 2 Code";
+        GenJournalLine.Validate("Shortcut Dimension 2 Code");
+        if GenJournalLine.Amount <> 0 then
+            GenJournalLine.Insert();
 
-        // //Credit Bank Account
-        // LineNo := LineNo + 1000;
-        // GenJournalLine."Line No." := LineNo;
-        // GenJournalLine."Journal Template Name" := LoanTemplate;
-        // GenJournalLine."Journal Batch Name" := LoanBatch;
-        // GenJournalLine."Document No." := LoanApp."Loan No";
-        // GenJournalLine."Account Type" := GenJournalLine."Account Type"::"Bank Account"; // GenJournalLine."Account Type"::"G/L Account";
-        // GenJournalLine.Validate("Account Type");
-        // GenJournalLine."Account No." := CopyStr(LoanApp."Paying Bank", 1, MaxStrLen(GenJournalLine."Account No."));
-        // GenJournalLine.Validate("Account No.");
-        // GenJournalLine."Posting Date" := LoanApp."Payment Date";
-        // GenJournalLine.Description := GetLoanProductName(LoanApp."Loan Product Type") + '-' + LoanApp."Employee No" + '(' + Format(LoanApp."Issued Date") + ')';
-        // GenJournalLine.Amount := -LoanApp."Amount Requested";
-        // GenJournalLine.Validate(Amount);
-        // GenJournalLine."Payroll Loan No." := LoanApp."Loan No";
-        // GenJournalLine."Payroll Loan Transaction Type" := GenJournalLine."Payroll Loan Transaction Type"::"Principal Due";
-        // GenJournalLine."Shortcut Dimension 1 Code" := LoanApp."Shortcut Dimension 1 Code";
-        // GenJournalLine.Validate("Shortcut Dimension 1 Code");
-        // GenJournalLine."Shortcut Dimension 2 Code" := LoanApp."Shortcut Dimension 2 Code";
-        // GenJournalLine.Validate("Shortcut Dimension 2 Code");
-        // if GenJournalLine.Amount <> 0 then
-        //     // GenJournalLine.Insert();
+        //Credit Bank Account
+        LineNo := LineNo + 1000;
+        GenJournalLine."Line No." := LineNo;
+        GenJournalLine."Journal Template Name" := LoanTemplate;
+        GenJournalLine."Journal Batch Name" := LoanBatch;
+        GenJournalLine."Document No." := LoanApp."Loan No";
+        GenJournalLine."Account Type" := GenJournalLine."Account Type"::"Bank Account"; // GenJournalLine."Account Type"::"G/L Account";
+        GenJournalLine.Validate("Account Type");
+        GenJournalLine."Account No." := CopyStr(LoanApp."Paying Bank", 1, MaxStrLen(GenJournalLine."Account No."));
+        GenJournalLine.Validate("Account No.");
+        GenJournalLine."Posting Date" := LoanApp."Payment Date";
+        GenJournalLine.Description := GetLoanProductName(LoanApp."Loan Product Type") + '-' + LoanApp."Employee No" + '(' + Format(LoanApp."Issued Date") + ')';
+        GenJournalLine.Amount := -LoanApp."Amount Requested";
+        GenJournalLine.Validate(Amount);
+        GenJournalLine."Payroll Loan No." := LoanApp."Loan No";
+        GenJournalLine."Payroll Loan Transaction Type" := GenJournalLine."Payroll Loan Transaction Type"::"Principal Due";
+        GenJournalLine."Shortcut Dimension 1 Code" := LoanApp."Shortcut Dimension 1 Code";
+        GenJournalLine.Validate("Shortcut Dimension 1 Code");
+        GenJournalLine."Shortcut Dimension 2 Code" := LoanApp."Shortcut Dimension 2 Code";
+        GenJournalLine.Validate("Shortcut Dimension 2 Code");
+        if GenJournalLine.Amount <> 0 then
+            GenJournalLine.Insert();
 
-        // //Post Entries
-        // GenJournalLine.Reset();
-        // GenJournalLine.SetRange("Journal Template Name", LoanTemplate);
-        // GenJournalLine.SetRange("Journal Batch Name", LoanBatch);
-        // Codeunit.Run(Codeunit::"Gen. Jnl.-Post", GenJournalLine);
+        //Post Entries
+        GenJournalLine.Reset();
+        GenJournalLine.SetRange("Journal Template Name", LoanTemplate);
+        GenJournalLine.SetRange("Journal Batch Name", LoanBatch);
+        Codeunit.Run(Codeunit::"Gen. Jnl.-Post", GenJournalLine);
 
-        // //Init Loan Repayment
-        // InitLoanRepayment(LoanApp);
+        //Init Loan Repayment
+        InitLoanRepayment(LoanApp);
 
-        // //Modify Loan as Issued
-        // GLEntry.Reset();
-        // GLEntry.SetRange("Document No.", LoanApp."Loan No");
-        // GLEntry.SetRange(Reversed, false);
-        // if not GLEntry.IsEmpty() then begin
-        //     LoanApp."Loan Status" := LoanApp."Loan Status"::Issued;
-        //     LoanApp."Initial Instalments" := LoanApp.Instalment;
-        //     LoanApp.Modify();
-        //     Message('Loan %1 issued and posted successfully', LoanApp."Loan No");
-        // end;
+        //Modify Loan as Issued
+        GLEntry.Reset();
+        GLEntry.SetRange("Document No.", LoanApp."Loan No");
+        GLEntry.SetRange(Reversed, false);
+        if not GLEntry.IsEmpty() then begin
+            LoanApp."Loan Status" := LoanApp."Loan Status"::Issued;
+            LoanApp."Initial Instalments" := LoanApp.Instalment;
+            LoanApp.Modify();
+            Message('Loan %1 issued and posted successfully', LoanApp."Loan No");
+        end;
 
     end;
 
@@ -1553,7 +1488,7 @@ codeunit 52000 "Payroll"
                         if AssignMatrix.FindFirst() then
                             repeat
                                 if Earnings.Get(AssignMatrix.Code) then begin
-                                    AssignMatrix.Amount := AssignMatrix.Amount * Earnings."Supension Earnings Percentage" / 100;
+                                    // AssignMatrix.Amount := AssignMatrix.Amount * Earnings."Supension Earnings Percentage" / 100;
                                     AssignMatrix."Reason For Chage" := PaymentReq.Remarks;
                                     AssignMatrix.Modify();
                                     if Employee.Get(PaymentReq."Employee No.") then
@@ -1975,7 +1910,7 @@ codeunit 52000 "Payroll"
     /* procedure SendImprestToPayroll(DocNo: Code[20])
     var
         AssignmentMatrixX: Record "Assignment Matrix";
-        Deductions: Record Deduction;
+        Deductions: Record Deductions;
         Deduction: Record "Imprest Deduction";
         DeductionLine: Record "Imprest Deduction Line";
         DeductionLineRec: Record "Imprest Deduction Line";
@@ -2195,8 +2130,8 @@ codeunit 52000 "Payroll"
                         Deductions.Reset();
                         Deductions.SetRange(Code, AssignmentMatrixX.Code);
                         Deductions.SetFilter("Calculation Method", '%1|%2|%3', Deductions."Calculation Method"::"% of Basic Pay",
-                                              Deductions."Calculation Method"::"% of Basic Pay+Hse Allowance",
-                                              Deductions."Calculation Method"::"% of Basic Pay+Hse Allowance + Comm Allowance + Sal Arrears");
+                                              Deductions."Calculation Method"::"% of Basic Pay+Hse Allowance"/*,
+                                              Deductions."Calculation Method"::"% of Basic Pay+Hse Allowance + Comm Allowance + Sal Arrears"*/);
                         if not Deductions.IsEmpty() then
                             if Confirm(ValidateAmountTxt, false) then begin
                                 AssignmentMatrixX.Validate(Code);
@@ -2645,54 +2580,54 @@ Amount:=PayrollRounding(Amount);
         exit(Amount);
     end;
 
-    // procedure GetActingAllowance(ActingRec: Record "Employee Acting Position"; var DiffAmt: Decimal; var StepsAmt: Decimal) Amount: Decimal
-    // var
-    //     Earnings: Record Earning;
-    //     Employee, RelievedEmployee : Record Employee;
-    //     SalaryPointer, SalaryPointerCopy : Record "Salary Pointer";
-    //     ScaleBenefits: Record "Scale Benefits";
-    //     ActingAmount: Array[2] of Decimal;
-    // begin
-    //     Clear(ActingAmount);
+    procedure GetActingAllowance(ActingRec: Record "Employee Acting Position"; var DiffAmt: Decimal; var StepsAmt: Decimal) Amount: Decimal
+    var
+        Earnings: Record Earning;
+        Employee, RelievedEmployee : Record Employee;
+        SalaryPointer, SalaryPointerCopy : Record "Salary Pointer";
+        ScaleBenefits: Record "Scale Benefits";
+        ActingAmount: Array[2] of Decimal;
+    begin
+        Clear(ActingAmount);
 
-    //     Employee.Get(ActingRec."Acting Employee No.");
-    //     RelievedEmployee.Get(ActingRec."Relieved Employee");
+        Employee.Get(ActingRec."Acting Employee No.");
+        RelievedEmployee.Get(ActingRec."Relieved Employee");
 
-    //     Earnings.SetRange("Basic Salary Code", true);
-    //     Earnings.FindFirst();
+        Earnings.SetRange("Basic Salary Code", true);
+        Earnings.FindFirst();
 
-    //     Employee.TestField("Salary Scale");
-    //     Employee.TestField("Present Pointer");
+        Employee.TestField("Salary Scale");
+        Employee.TestField("Present Pointer");
 
-    //     RelievedEmployee.TestField("Salary Scale");
-    //     RelievedEmployee.TestField("Present Pointer");
+        RelievedEmployee.TestField("Salary Scale");
+        RelievedEmployee.TestField("Present Pointer");
 
-    //     ActingRec.CalcFields("Current Benefits");
-    //     ActingRec.CalcFields("New Benefits");
+        ActingRec.CalcFields("Current Benefits");
+        ActingRec.CalcFields("New Benefits");
 
-    //     ActingAmount[1] := (ActingRec."New Benefits" - ActingRec."Current Benefits") / 2;
+        ActingAmount[1] := (ActingRec."New Benefits" - ActingRec."Current Benefits") / 2;
 
-    //     SalaryPointer.Reset();
-    //     SalaryPointer.SetRange("Salary Scale", Employee."Salary Scale");
-    //     SalaryPointer.SetRange("Salary Pointer", Employee."Present Pointer");
-    //     if SalaryPointer.FindFirst() then begin
-    //         SalaryPointerCopy.Copy(SalaryPointer);
-    //         SalaryPointerCopy.Next(2);
+        SalaryPointer.Reset();
+        SalaryPointer.SetRange("Salary Scale", Employee."Salary Scale");
+        SalaryPointer.SetRange("Salary Pointer", Employee."Present Pointer");
+        if SalaryPointer.FindFirst() then begin
+            SalaryPointerCopy.Copy(SalaryPointer);
+            SalaryPointerCopy.Next(2);
 
-    //         if ScaleBenefits.Get(SalaryPointerCopy."Salary Scale", SalaryPointerCopy."Salary Scale", Earnings.Code) then
-    //             ActingAmount[2] := ScaleBenefits.Amount;
-    //     end;
+            if ScaleBenefits.Get(SalaryPointerCopy."Salary Scale", SalaryPointerCopy."Salary Scale", Earnings.Code) then
+                ActingAmount[2] := ScaleBenefits.Amount;
+        end;
 
-    //     DiffAmt := ActingAmount[1];
-    //     StepsAmt := ActingAmount[2];
+        DiffAmt := ActingAmount[1];
+        StepsAmt := ActingAmount[2];
 
-    //     if ActingAmount[1] > ActingAmount[2] then
-    //         Amount := ActingAmount[1]
-    //     else
-    //         Amount := ActingAmount[2];
+        if ActingAmount[1] > ActingAmount[2] then
+            Amount := ActingAmount[1]
+        else
+            Amount := ActingAmount[2];
 
-    //     exit(Amount);
-    // end;
+        exit(Amount);
+    end;
 
     procedure InsertAllEmployeesOnAllowanceRegister(AllowanceRegister: Record "Allowance Register")
     var
@@ -2963,6 +2898,73 @@ Amount:=PayrollRounding(Amount);
         end;
     end;
 
+    procedure GeneratePayrollEFTCSV(PayPeriod: Date): Boolean
+    var
+        EmployeeRec: Record Employee;
+        TempBlob: Codeunit "Temp Blob";
+        OutStream: OutStream;
+        InStream: InStream;
+        DialogTitleTok: Label 'Generate EFT as CSV';
+        FileNameTok: Label 'Pay_%1_%2.csv', Comment = '%1 = Pay Period. %2 = Current Date', Locked = true;
+        CsvFilterTok: Label 'CSV Files (*.csv)|*.csv';
+        FileName: Text;
+    begin
+        // Create CSV stream
+        TempBlob.CreateOutStream(OutStream, TextEncoding::UTF8);
+
+        // 1. Write CSV Header
+        WriteEFTHeaderCSV(OutStream);
+
+        // 2. Process Employees (same logic as your XLSX version)
+        EmployeeRec.Reset();
+        EmployeeRec.SetFilter("Employee Type", '<>%1', EmployeeRec."Employee Type"::"Board Member");
+        EmployeeRec.SetRange(Status, EmployeeRec.Status::Active);
+
+        if EmployeeRec.FindSet() then
+            repeat
+                EmployeeRec.SetRange("Pay Period Filter", PayPeriod);
+                EmployeeRec.CalcFields("Net Pay");
+                if EmployeeRec."Net Pay" <> 0 then begin
+                    EmployeeRec.TestField("Employee's Bank");
+                    EmployeeRec.TestField("Bank Branch");
+                    EmployeeRec.TestField("Bank Account Number");
+
+                    // Add line to CSV
+                    WriteEFTLineCSV(EmployeeRec, PayPeriod, OutStream);
+                end;
+            until EmployeeRec.Next() = 0;
+
+        // 3. Download file
+        TempBlob.CreateInStream(InStream, TextEncoding::UTF8);
+        FileName := StrSubstNo(FileNameTok, Format(PayPeriod, 0, '<Month,2><Year4>'), CurrentDateTime());
+        exit(File.DownloadFromStream(InStream, DialogTitleTok, '', CsvFilterTok, FileName));
+    end;
+
+    local procedure WriteEFTLineCSV(Employee: Record Employee; PayPeriod: Date; var OutStream: OutStream)
+    begin
+        OutStream.WriteText(
+            StrSubstNo(
+                '"%1",%2,"%3","%4","%5","Y","%6","%7","%8"',
+                Employee.FullName(),
+                Employee."Net Pay", // Keeping same as your XLSX version
+                '',
+                Employee."Bank Account Number",
+                Format(Employee."Employee's Bank" + Employee."Bank Branch"),
+                Employee.Address,
+                Employee."Address 2",
+                Format(PayPeriod, 0, '<Month Text><Year4>') + ' Salary'
+            )
+        );
+    end;
+
+    local procedure WriteEFTHeaderCSV(var OutStream: OutStream)
+    begin
+        OutStream.WriteText(
+            'Name,Amount,Ref_No,Account_No,Bank_Code,RTGS(Y/N),' +
+            'Bene Address 1,Bene Address 2,Payment_Details 1,Payment_Details 2,Payment_Details 3,Payment_Details 4'
+        );
+    end;
+
     procedure UpdateSalaryIncrementDetails(Employee: Record Employee; PayPeriod: Date)
     var
         SalaryPointerIncrement: Record "Salary Pointer Increment";
@@ -3010,157 +3012,14 @@ Amount:=PayrollRounding(Amount);
     begin
         PayrollApproval.Reset();
         PayrollApproval.SetRange("Payroll Period", PayPeriod);
-        if PayrollApproval.FindLast() then begin
-            if PayrollApproval.Status = PayrollApproval.Status::Approved then
-                //if PayrollApproval.Status in [PayrollApproval.Status::Approved] then
-                // Message('no is %1', PayrollApproval.Code)
+        if PayrollApproval.FindFirst() then begin
+            if PayrollApproval.Status in [PayrollApproval.Status::Approved] then
                 exit(true)
             else
                 exit(false);
         end else
             exit(false);
     end;
-
-    // procedure ChckRound(var AmtText: Text[30]) ChckRound: Text[30]
-    // var
-    //     DecimalPos: Integer;
-    //     Decimalstrlen: Integer;
-    //     LenthOfText: Integer;
-    //     AmtWithoutDec: Text[30];
-    //     DecimalAmt: Text[30];
-    // begin
-    //     LenthOfText := StrLen(AmtText);
-    //     DecimalPos := StrPos(AmtText, '.');
-    //     if DecimalPos = 0 then begin
-    //         AmtWithoutDec := AmtText;
-    //         DecimalAmt := '.00';
-    //     end else begin
-    //         AmtWithoutDec := CopyStr(AmtText, 1, DecimalPos - 1);
-    //         DecimalAmt := CopyStr(AmtText, DecimalPos + 1, 2);
-    //         Decimalstrlen := StrLen(DecimalAmt);
-    //         if Decimalstrlen < 2 then
-    //             DecimalAmt := '.' + DecimalAmt + '0'
-    //         else
-    //             DecimalAmt := '.' + DecimalAmt
-    //     end;
-    //     ChckRound := AmtWithoutDec + DecimalAmt;
-    // end;
-
-    procedure GetActingAllowance(ActingRec: Record "Employee Acting Position"; var DiffAmt: Decimal; var StepsAmt: Decimal) Amount: Decimal
-    var
-        Earnings: Record Earnings;
-        Employee, RelievedEmployee : Record Employee;
-        SalaryPointer, SalaryPointerCopy : Record "Salary Pointer";
-        ScaleBenefits: Record "Scale Benefits";
-        ActingAmount: Array[2] of Decimal;
-    begin
-        Clear(ActingAmount);
-
-        Employee.Get(ActingRec."Acting Employee No.");
-        RelievedEmployee.Get(ActingRec."Relieved Employee");
-
-        Earnings.SetRange("Basic Salary Code", true);
-        Earnings.FindFirst();
-
-        Employee.TestField("Salary Scale");
-        Employee.TestField("Present Pointer");
-
-        RelievedEmployee.TestField("Salary Scale");
-        RelievedEmployee.TestField("Present Pointer");
-
-        ActingRec.CalcFields("Current Benefits");
-        ActingRec.CalcFields("New Benefits");
-
-        ActingAmount[1] := (ActingRec."New Benefits" - ActingRec."Current Benefits") / 2;
-
-        SalaryPointer.Reset();
-        SalaryPointer.SetRange("Salary Scale", Employee."Salary Scale");
-        SalaryPointer.SetRange("Salary Pointer", Employee."Present Pointer");
-        if SalaryPointer.FindFirst() then begin
-            SalaryPointerCopy.Copy(SalaryPointer);
-            SalaryPointerCopy.Next(2);
-
-            if ScaleBenefits.Get(SalaryPointerCopy."Salary Scale", SalaryPointerCopy."Salary Scale", Earnings.Code) then
-                ActingAmount[2] := ScaleBenefits.Amount;
-        end;
-
-        DiffAmt := ActingAmount[1];
-        StepsAmt := ActingAmount[2];
-
-        if ActingAmount[1] > ActingAmount[2] then
-            Amount := ActingAmount[1]
-        else
-            Amount := ActingAmount[2];
-
-        exit(Amount);
-    end;
-
-    procedure GeneratePayrollEFTCSV(PayPeriod: Date): Boolean
-var
-    EmployeeRec: Record Employee;
-    TempBlob: Codeunit "Temp Blob";
-    OutStream: OutStream;
-    InStream: InStream;
-    DialogTitleTok: Label 'Generate EFT as CSV';
-    FileNameTok: Label 'Pay_%1_%2.csv', Comment = '%1 = Pay Period. %2 = Current Date', Locked = true;
-    CsvFilterTok: Label 'CSV Files (*.csv)|*.csv';
-    FileName: Text;
-begin
-    // Create CSV stream
-    TempBlob.CreateOutStream(OutStream, TextEncoding::UTF8);
-
-    // 1. Write CSV Header
-    WriteEFTHeaderCSV(OutStream);
-
-    // 2. Process Employees (same logic as your XLSX version)
-    EmployeeRec.Reset();
-    EmployeeRec.SetFilter("Employee Type", '<>%1', EmployeeRec."Employee Type"::"Board Member");
-    EmployeeRec.SetRange(Status, EmployeeRec.Status::Active);
-
-    if EmployeeRec.FindSet() then
-        repeat
-            EmployeeRec.SetRange("Pay Period Filter", PayPeriod);
-            EmployeeRec.CalcFields("Net Pay");
-            if EmployeeRec."Net Pay" <> 0 then begin
-                EmployeeRec.TestField("Employee's Bank");
-                EmployeeRec.TestField("Bank Branch");
-                EmployeeRec.TestField("Bank Account Number");
-
-                // Add line to CSV
-                WriteEFTLineCSV(EmployeeRec, PayPeriod, OutStream);
-            end;
-        until EmployeeRec.Next() = 0;
-
-    // 3. Download file
-    TempBlob.CreateInStream(InStream, TextEncoding::UTF8);
-    FileName := StrSubstNo(FileNameTok, Format(PayPeriod, 0, '<Month,2><Year4>'), CurrentDateTime());
-    exit(File.DownloadFromStream(InStream, DialogTitleTok, '', CsvFilterTok, FileName));
-end;
-
-local procedure WriteEFTHeaderCSV(var OutStream: OutStream)
-begin
-    OutStream.WriteText(
-        'Name,Amount,Ref_No,Account_No,Bank_Code,RTGS(Y/N),' +
-        'Bene Address 1,Bene Address 2,Payment_Details 1,Payment_Details 2,Payment_Details 3,Payment_Details 4'
-    );
-end;
-local procedure WriteEFTLineCSV(Employee: Record Employee; PayPeriod: Date; var OutStream: OutStream)
-begin
-    OutStream.WriteText(
-        StrSubstNo(
-            '"%1",%2,"%3","%4","%5","Y","%6","%7","%8"',
-            Employee.FullName(),
-            Employee."Net Pay", // Keeping same as your XLSX version
-            '',
-            Employee."Bank Account Number",
-            Format(Employee."Employee's Bank" + Employee."Bank Branch"),
-            Employee.Address,
-            Employee."Address 2",
-            Format(PayPeriod, 0, '<Month Text><Year4>') + ' Salary'
-        )
-    );
-end;
-
 }
 
 

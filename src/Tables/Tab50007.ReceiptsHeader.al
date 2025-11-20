@@ -33,7 +33,7 @@ table 50007 "Receipts Header"
         }
         field(6; Amount; Decimal)
         {
-            CalcFormula = Sum("Receipt Lines".Amount WHERE("Receipt No."=FIELD("No.")));
+            CalcFormula = Sum("Receipt Lines".Amount WHERE("Receipt No." = FIELD("No.")));
             Editable = false;
             FieldClass = FlowField;
         }
@@ -82,24 +82,24 @@ table 50007 "Receipts Header"
         field(18; "Global Dimension 1 Code"; Code[20])
         {
             CaptionClass = '1,1,1';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
         }
         field(19; "Global Dimension 2 Code"; Code[20])
         {
             CaptionClass = '1,1,2';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
         field(20; Status; Option)
         {
             Editable = false;
             OptionCaption = 'Open,Pending Approval,Pending Prepayment,Released,,,Closed';
-            OptionMembers = Open, "Pending Approval", "Pending Prepayment", Released, , , Closed;
+            OptionMembers = Open,"Pending Approval","Pending Prepayment",Released,,,Closed;
         }
         field(21; "Receipt Type"; Option)
         {
             DataClassification = ToBeClassified;
             OptionCaption = 'Normal,Advance';
-            OptionMembers = Normal, Advance;
+            OptionMembers = Normal,Advance;
         }
         field(22; Description; Text[100])
         {
@@ -120,10 +120,17 @@ table 50007 "Receipts Header"
         GLSetup.Get;
         if "No." = '' then begin
             GLSetup.TestField("Receipt Nos");
-            NoSeriesMgt.InitSeries(GLSetup."Receipt Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(GLSetup."Receipt Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(GLSetup."Receipt Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=GLSetup."Receipt Nos";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
-        Cashier:=UserId;
+        Cashier := UserId;
     end;
-    var NoSeriesMgt: Codeunit NoSeriesManagement;
-    GLSetup: Record "Cash Management Setup";
+
+    var
+        NoSeriesMgt: Codeunit "No. Series";
+        GLSetup: Record "Cash Management Setup";
 }

@@ -141,7 +141,7 @@ table 53025 "Payroll Requests"
         }
         field(15; "Payroll Period"; Date)
         {
-            TableRelation = "Payroll Period" where(Closed = const(false));
+            TableRelation = "Payroll Period II" where(Closed = const(false));
             Caption = 'Payroll Period';
         }
         field(16; Locum; Boolean)
@@ -368,7 +368,7 @@ table 53025 "Payroll Requests"
     var
         HRSetup: Record "Human Resources Setup";
         PayrollRequests: Record "Payroll Requests";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         EmployeeNotExistErr: Label 'Employee with %1 ID has not been setup. Kindly contact HR';
         UtilizeOpenDocumentsErr: Label 'Kindly utilize all your open documents before creating a new request';
     begin
@@ -381,7 +381,12 @@ table 53025 "Payroll Requests"
         if "No." = '' then begin
             HRSetup.Get();
             HRSetup.TestField("Payroll Req Nos");
-            NoSeriesMgt.InitSeries(HRSetup."Payroll Req Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(HRSetup."Payroll Req Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(HRSetup."Payroll Req Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HRSetup."Payroll Req Nos";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
 
         "Payroll Period" := PayrollMgt.GetCurrentPayPeriodDate();

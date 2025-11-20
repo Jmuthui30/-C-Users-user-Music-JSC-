@@ -152,8 +152,8 @@ Page 52387 "Payroll Project Allocation"
     var
         HREmployees: Record Employee;
         PayrollProjectAllocation: Record "Payroll Project Allocation";
-        PayrollCalender_AU: Record "Payroll Period";
-        PayrollCalender_AU2: Record "Payroll Period";
+        PayrollCalender_AU: Record "Payroll Period II";
+        PayrollCalender_AU2: Record "Payroll Period II";
         PayrollProjectAllocation2: Record "Payroll Project Allocation";
         // ShortcutDimCode: array[8] of Code[20];
 }

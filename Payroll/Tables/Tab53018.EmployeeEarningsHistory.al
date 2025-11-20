@@ -38,7 +38,7 @@ table 53018 "Employee Earnings History"
         field(7; "Payroll Period"; Date)
         {
             NotBlank = false;
-            TableRelation = "Payroll Period"."Starting Date";
+            TableRelation = "Payroll Period II"."Starting Date";
             //This property is currently not supported
             //TestTableRelation = true;
             ValidateTableRelation = true;

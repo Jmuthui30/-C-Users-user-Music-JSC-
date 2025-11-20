@@ -85,7 +85,12 @@ table 52030 "Leave Bal Adjustment Header"
         if Code = '' then begin
             HRSetup.Get();
             HRSetup.TestField("Leave Adjustment Nos");
-            NoSeriesMgt.InitSeries(HRSetup."Leave Adjustment Nos", xRec."No. Series", 0D, Code, "No. Series");
+            // NoSeriesMgt.InitSeries(HRSetup."Leave Adjustment Nos", xRec."No. Series", 0D, Code, "No. Series");
+            if NoSeriesMgt.AreRelated(HRSetup."Leave Adjustment Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HRSetup."Leave Adjustment Nos";
+            Code:=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
 
         EnteredBy := UserId;
@@ -103,7 +108,7 @@ table 52030 "Leave Bal Adjustment Header"
         AccPeriod: Record "Accounting Period";
         //HRSetup: Record "Human Resources Setup";
         HRSetup: Record "QuantumJumps HR Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         MaturityDate: Date;
 }
 

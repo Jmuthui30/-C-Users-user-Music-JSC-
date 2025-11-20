@@ -2,7 +2,7 @@ report 52240 "NHIF"
 {
     ApplicationArea = All;
     DefaultLayout = RDLC;
-    RDLCLayout = './src/report_layout/NHIF.rdl';
+    RDLCLayout = './Payroll/Report Layouts/NHIF.rdl';
     Caption = 'NHIF';
     dataset
     {

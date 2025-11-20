@@ -24,7 +24,7 @@ table 53023 "Allowance Register"
         }
         field(3; "Payroll Period"; Date)
         {
-            TableRelation = "Payroll Period";
+            TableRelation = "Payroll Period II";
             Caption = 'Payroll Period';
 
             trigger OnValidate()
@@ -133,7 +133,12 @@ table 53023 "Allowance Register"
         if "No." = '' then begin
             HRSetup.Get();
             HRSetup.TestField("Imprest Deduction Nos");
-            NoSeriesMgt.InitSeries(HRSetup."Imprest Deduction Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(HRSetup."Imprest Deduction Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(HRSetup."Imprest Deduction Nos", xRec."No. Series") then
+                "No. Series" := xRec."No. Series"
+            else
+                "No. Series" := HRSetup."Imprest Deduction Nos";
+            "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
         end;
 
         PayrollPeriodX.SetRange("Close Pay", false);
@@ -155,8 +160,8 @@ table 53023 "Allowance Register"
         AllowanceRegisterLines: Record "Allowance Register Line";
         Earnings: Record Earning;
         HRSetup: Record "Human Resources Setup";
-        PayrollPeriodX: Record "Payroll Period";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        PayrollPeriodX: Record "Payroll Period II";
+        NoSeriesMgt: Codeunit "No. Series";
 }
 
 

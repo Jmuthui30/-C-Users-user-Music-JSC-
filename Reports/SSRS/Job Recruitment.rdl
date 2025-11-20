@@ -9,7 +9,7 @@
       <am:Name>MSRB</am:Name>
       <am:Version>15.0.20283.0</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-07-04T08:01:31.6601039Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2025-11-20T17:17:09.9970248Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -223,6 +223,7 @@
                                   <Value>=Fields!Description.Value</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -682,6 +683,15 @@
             <Height>1.2cm</Height>
             <Width>17.99633cm</Width>
             <ZIndex>3</ZIndex>
+            <Visibility>
+              <Hidden>=IIF(
+     (First(Fields!Job_Purpose.Value, "DataSet_Result") Is Nothing) 
+      OR 
+     (Trim(First(Fields!Job_Purpose.Value, "DataSet_Result")) = ""),
+     True,
+     False
+)</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -793,6 +803,15 @@
             <Height>1.2cm</Height>
             <Width>17.99633cm</Width>
             <ZIndex>4</ZIndex>
+            <Visibility>
+              <Hidden>=IIF(
+     (First(Fields!Reporting_Responsibilities.Value, "DataSet_Result") Is Nothing) 
+      OR 
+     (Trim(First(Fields!Reporting_Responsibilities.Value, "DataSet_Result")) = ""),
+     True,
+     False
+)</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -915,6 +934,15 @@
             <Height>1.2cm</Height>
             <Width>17.99633cm</Width>
             <ZIndex>5</ZIndex>
+            <Visibility>
+              <Hidden>=IIF(
+     (First(Fields!Area_Of_Deployment.Value, "DataSet_Result") Is Nothing) 
+      OR 
+     (Trim(First(Fields!Area_Of_Deployment.Value, "DataSet_Result")) = ""),
+     True,
+     False
+)</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1027,6 +1055,15 @@
             <Height>1.2cm</Height>
             <Width>17.99633cm</Width>
             <ZIndex>6</ZIndex>
+            <Visibility>
+              <Hidden>=IIF(
+     (First(Fields!Functions_of_the_Judge.Value, "DataSet_Result") Is Nothing) 
+      OR 
+     (Trim(First(Fields!Functions_of_the_Judge.Value, "DataSet_Result")) = ""),
+     True,
+     False
+)</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1342,6 +1379,19 @@
             <Height>2.4cm</Height>
             <Width>17.99633cm</Width>
             <ZIndex>8</ZIndex>
+            <Visibility>
+              <Hidden>=IIF(
+    (
+        (First(Fields!Terms_and_Conditions.Value, "DataSet_Result") Is Nothing OR Trim(First(Fields!Terms_and_Conditions.Value, "DataSet_Result")) = "")
+        AND
+        (First(Fields!Terms_and_Conditions_2.Value, "DataSet_Result") Is Nothing OR Trim(First(Fields!Terms_and_Conditions_2.Value, "DataSet_Result")) = "")
+        AND
+        (First(Fields!Terms_and_Conditions_3.Value, "DataSet_Result") Is Nothing OR Trim(First(Fields!Terms_and_Conditions_3.Value, "DataSet_Result")) = "")
+    ),
+    True,
+    False
+)</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1453,6 +1503,15 @@
             <Height>1.2cm</Height>
             <Width>17.99633cm</Width>
             <ZIndex>9</ZIndex>
+            <Visibility>
+              <Hidden>=IIF(
+     (First(Fields!Experience.Value, "DataSet_Result") Is Nothing) 
+      OR 
+     (Trim(First(Fields!Experience.Value, "DataSet_Result")) = ""),
+     True,
+     False
+)</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1565,6 +1624,15 @@
             <Height>1.2cm</Height>
             <Width>17.99633cm</Width>
             <ZIndex>10</ZIndex>
+            <Visibility>
+              <Hidden>=IIF(
+     (First(Fields!Key_Duties___Responsibilities_.Value, "DataSet_Result") Is Nothing) 
+      OR 
+     (Trim(First(Fields!Key_Duties___Responsibilities_.Value, "DataSet_Result")) = ""),
+     True,
+     False
+)</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>

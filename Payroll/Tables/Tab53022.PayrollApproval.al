@@ -20,7 +20,7 @@ table 53022 "Payroll Approval"
             Caption = 'Payroll Period';
             TableRelation = if ("Employee Type" = filter("Board Member")) "Payroll Period Trustees"
             else
-            "Payroll Period";
+            "Payroll Period II";
 
             trigger OnValidate()
             begin
@@ -91,7 +91,12 @@ table 53022 "Payroll Approval"
         if Code = '' then begin
             HRSetup.Get();
             HRSetup.TestField("Payroll Approval Nos");
-            NoSeriesMgt.InitSeries(HRSetup."Payroll Approval Nos", xRec."No. Series", 0D, Code, "No. Series");
+            // NoSeriesMgt.InitSeries(HRSetup."Payroll Approval Nos", xRec."No. Series", 0D, Code, "No. Series");
+            if NoSeriesMgt.AreRelated(HRSetup."Payroll Approval Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HRSetup."Payroll Approval Nos";
+            Code:=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
         "Prepared By" := UserId;
         "Date-Time Prepared" := CurrentDateTime;
@@ -107,9 +112,9 @@ table 53022 "Payroll Approval"
 
     var
         HRSetup: Record "Human Resources Setup";
-        PayPeriod: Record "Payroll Period";
+        PayPeriod: Record "Payroll Period II";
         PayPeriodBoard: Record "Payroll Period Trustees";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
 }
 
 

@@ -127,7 +127,7 @@ table 51009 "Budget Approval Header"
     var
         GeneralLedgerSetup: Record "General Ledger Setup";
         UserSetup: Record "User Setup";
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series";
 
     trigger OnInsert()
     begin

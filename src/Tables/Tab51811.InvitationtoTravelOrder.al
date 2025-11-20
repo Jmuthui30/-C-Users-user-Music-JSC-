@@ -13,9 +13,10 @@ table 51811 "Invitation to Travel Order"
             begin
                 Cust.Reset;
                 Cust.SetRange(Cust."No.", "Employee No.");
-                if Cust.Find('-')then begin
-                    Name:=Cust.Name;
-                    "Phone No.":=Cust."Phone No." end;
+                if Cust.Find('-') then begin
+                    Name := Cust.Name;
+                    "Phone No." := Cust."Phone No."
+                end;
             end;
         }
         field(3; Name; Text[50])
@@ -65,7 +66,7 @@ table 51811 "Invitation to Travel Order"
         }
         field(16; Project; Code[20])
         {
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(3), Blocked=FILTER(false));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(3), Blocked = FILTER(false));
         }
         field(17; "Requested By"; Code[50])
         {
@@ -106,9 +107,9 @@ table 51811 "Invitation to Travel Order"
             begin
                 LocalityRec.Reset;
                 LocalityRec.SetRange(LocalityRec.Location, Location);
-                if LocalityRec.Find('-')then begin
-                    maxAeA:=LocalityRec."Maximum Perdiem Rate";
-                    MIE:=LocalityRec."M&IE";
+                if LocalityRec.Find('-') then begin
+                    maxAeA := LocalityRec."Maximum Perdiem Rate";
+                    MIE := LocalityRec."M&IE";
                 end;
             end;
         }
@@ -122,7 +123,7 @@ table 51811 "Invitation to Travel Order"
         field(27; Status; Option)
         {
             OptionCaption = 'New,Approval Pending,Approved,Rejected';
-            OptionMembers = New, "Approval Pending", Confirmed, Rejected;
+            OptionMembers = New,"Approval Pending",Confirmed,Rejected;
         }
         field(28; Comments; Text[250])
         {
@@ -139,13 +140,13 @@ table 51811 "Invitation to Travel Order"
         {
             CaptionClass = '1,1,1';
             Caption = 'Site Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
         }
         field(32; "Approval Status"; Option)
         {
             Editable = true;
             OptionCaption = 'New,Supervisor Approval,Resource Mgt Approval,Chief Of Staff,USAMRU-K Command Approval,Approved,Rejected,Finance';
-            OptionMembers = New, "Supervisor Approval", "Resource Mgt Approval", "Chief Of Staff", "USAMRU-K Command Approval", Approved, Rejected, Finance;
+            OptionMembers = New,"Supervisor Approval","Resource Mgt Approval","Chief Of Staff","USAMRU-K Command Approval",Approved,Rejected,Finance;
         }
         field(33; "Return Date"; Date)
         {
@@ -199,7 +200,7 @@ table 51811 "Invitation to Travel Order"
         field(48; "Driver Required"; Option)
         {
             OptionCaption = ' ,Yes,No';
-            OptionMembers = " ", Yes, No;
+            OptionMembers = " ",Yes,No;
         }
         field(49; "# of passengers"; Integer)
         {
@@ -212,8 +213,8 @@ table 51811 "Invitation to Travel Order"
             begin
                 Cust.Reset;
                 Cust.SetRange(Cust."No.", "Requested for No.");
-                if Cust.Find('-')then begin
-                    "Requested for Name":=Cust.Name;
+                if Cust.Find('-') then begin
+                    "Requested for Name" := Cust.Name;
                 end;
             end;
         }
@@ -224,7 +225,7 @@ table 51811 "Invitation to Travel Order"
         {
             CaptionClass = '1,2,3';
             Caption = 'Project Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(3), Blocked=FILTER(false));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(3), Blocked = FILTER(false));
         }
         field(53; "Pick up location"; Text[100])
         {
@@ -258,18 +259,18 @@ table 51811 "Invitation to Travel Order"
         }
         field(63; "Reg No"; Code[20])
         {
-            TableRelation = "Fixed Asset" WHERE("FA Class Code"=FILTER('VEHICLES'));
+            TableRelation = "Fixed Asset" WHERE("FA Class Code" = FILTER('VEHICLES'));
         }
         field(64; "Driver No"; Code[20])
         {
-            TableRelation = Resource WHERE("Resource Group No."=FILTER('DRIVERS'));
+            TableRelation = Resource WHERE("Resource Group No." = FILTER('DRIVERS'));
 
             trigger OnValidate()
             begin
                 Resource.Reset;
                 Resource.SetRange(Resource."No.", "Driver No");
-                if Resource.Find('-')then begin
-                    "Driver Name":=Resource.Name;
+                if Resource.Find('-') then begin
+                    "Driver Name" := Resource.Name;
                 end;
             end;
         }
@@ -301,7 +302,7 @@ table 51811 "Invitation to Travel Order"
         field(74; Type; Option)
         {
             OptionCaption = ' ,Transport';
-            OptionMembers = " ", Transport;
+            OptionMembers = " ",Transport;
         }
         field(75; "Finance ID"; Code[50])
         {
@@ -315,7 +316,7 @@ table 51811 "Invitation to Travel Order"
         {
             CaptionClass = '1,1,1';
             Caption = 'Unit Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
         field(78; "Phone No."; Text[30])
         {
@@ -332,12 +333,13 @@ table 51811 "Invitation to Travel Order"
     fieldgroups
     {
     }
-    var Cust: Record Customer;
-    LocalityRec: Record "AEA Listing";
-    MIE: Decimal;
-    maxAeA: Decimal;
-    PurchSetup: Record "Purchases & Payables Setup";
-    Noseriesmgt: Codeunit NoSeriesManagement;
-    usersetup: Record "User Setup";
-    Resource: Record Resource;
+    var
+        Cust: Record Customer;
+        LocalityRec: Record "AEA Listing";
+        MIE: Decimal;
+        maxAeA: Decimal;
+        PurchSetup: Record "Purchases & Payables Setup";
+        Noseriesmgt: Codeunit "No. Series";
+        usersetup: Record "User Setup";
+        Resource: Record Resource;
 }

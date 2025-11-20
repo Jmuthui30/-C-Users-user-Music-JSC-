@@ -475,7 +475,7 @@ tableextension 51802 "ExtHuman Resources Setup" extends "Human Resources Setup"
             TableRelation = "No. Series";
             Caption = 'Training Needs Nos';
         }
-         field(50116; "Training Budget Item Nos"; Code[10])
+        field(50116; "Training Budget Item Nos"; Code[10])
         {
             DataClassification = SystemMetadata;
             TableRelation = "No. Series";
@@ -487,7 +487,7 @@ tableextension 51802 "ExtHuman Resources Setup" extends "Human Resources Setup"
             TableRelation = "No. Series";
             Caption = 'Loan App No';
         }
-         field(50118; "Secondary PAYE %"; Decimal)
+        field(50118; "Secondary PAYE %"; Decimal)
         {
             DataClassification = SystemMetadata;
             Caption = 'Secondary PAYE %';
@@ -497,18 +497,18 @@ tableextension 51802 "ExtHuman Resources Setup" extends "Human Resources Setup"
             Caption = 'Effect Anniversary Increment';
             DataClassification = SystemMetadata;
         }
-         field(52071; "Payroll Approval Nos"; Code[10])
+        field(52071; "Payroll Approval Nos"; Code[10])
         {
             DataClassification = SystemMetadata;
             TableRelation = "No. Series";
             Caption = 'Payroll Approval Nos';
         }
-         field(52036; "Company NHIF No"; Code[20])
+        field(52036; "Company NHIF No"; Code[20])
         {
             DataClassification = SystemMetadata;
             Caption = 'Company NHIF No';
         }
-         field(52037; "Company NSSF No"; Code[20])
+        field(52037; "Company NSSF No"; Code[20])
         {
             DataClassification = SystemMetadata;
             Caption = 'Company NSSF No';
@@ -525,7 +525,7 @@ tableextension 51802 "ExtHuman Resources Setup" extends "Human Resources Setup"
             TableRelation = "No. Series";
             Caption = 'Payroll Req Nos';
         }
-         field(52040; "Human Resource Emails"; Text[100])
+        field(52040; "Human Resource Emails"; Text[100])
         {
             DataClassification = SystemMetadata;
             Caption = 'Human Resource Emails';
@@ -536,7 +536,7 @@ tableextension 51802 "ExtHuman Resources Setup" extends "Human Resources Setup"
             TableRelation = "Gen. Journal Template";
             Caption = 'Payroll Journal Template';
         }
-          field(52042; "Payroll Journal Batch"; Code[20])
+        field(52042; "Payroll Journal Batch"; Code[20])
         {
             DataClassification = SystemMetadata;
             TableRelation = "Gen. Journal Batch".Name where("Journal Template Name" = field("Payroll Journal Template"));
@@ -553,19 +553,19 @@ tableextension 51802 "ExtHuman Resources Setup" extends "Human Resources Setup"
             DataClassification = SystemMetadata;
             Caption = 'Owner Occupied Interest Limit';
         }
-         field(52045; "Loan Interest Nos"; Code[10])
+        field(52045; "Loan Interest Nos"; Code[10])
         {
             DataClassification = SystemMetadata;
             TableRelation = "No. Series";
             Caption = 'Loan Interest Nos';
         }
-        
+
         field(52046; "Disabililty Tax Exp. Amt"; Decimal)
         {
             DataClassification = SystemMetadata;
             Caption = 'Disabililty Tax Exp. Amt';
         }
-         field(52047; "Enforce a third rule"; Boolean)
+        field(52047; "Enforce a third rule"; Boolean)
         {
             DataClassification = SystemMetadata;
             Caption = 'Enforce a third rule';
@@ -576,7 +576,7 @@ tableextension 51802 "ExtHuman Resources Setup" extends "Human Resources Setup"
             Description = 'Ratio that defines 1/3 rule for net pay';
             Caption = 'Net pay ratio to Earnings';
         }
-         field(52049; "Loan Interest Template"; Code[10])
+        field(52049; "Loan Interest Template"; Code[10])
         {
             DataClassification = SystemMetadata;
             TableRelation = "Gen. Journal Template";
@@ -587,19 +587,19 @@ tableextension 51802 "ExtHuman Resources Setup" extends "Human Resources Setup"
             Caption = 'Prevent Payroll Run on Approval';
             DataClassification = SystemMetadata;
         }
-         field(52051; "Employee Separation Nos"; Code[10])
+        field(52051; "Employee Separation Nos"; Code[10])
         {
             DataClassification = SystemMetadata;
             TableRelation = "No. Series";
             Caption = 'Employee Separation Nos';
         }
-         field(52052; "Acting Nos"; Code[30])
+        field(52052; "Acting Nos"; Code[30])
         {
             DataClassification = SystemMetadata;
             TableRelation = "No. Series";
             Caption = 'Acting Nos';
         }
-         field(52053; "Employee Change Nos"; Code[20])
+        field(52053; "Employee Change Nos"; Code[20])
         {
             DataClassification = SystemMetadata;
             TableRelation = "No. Series";

@@ -1146,7 +1146,7 @@ page 52467 "Employee Change Card"
     var
         Banks: Record Banks;
         Employee: Record Employee;
-        PayPeriod: Record "Payroll Period";
+        PayPeriod: Record "Payroll Period II";
         Payroll: Codeunit Payroll;
         EmployeeXML: XMLport "Employee Change";
         ProbationPeriod: DateFormula;

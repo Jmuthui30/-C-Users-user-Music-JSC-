@@ -37,8 +37,8 @@ table 51659 "Job Template"
 
             trigger OnValidate()
             begin
-                if CompJob.Get("Job No.")then begin
-                    CompJob."Job Template":=Rec."No.";
+                if CompJob.Get("Job No.") then begin
+                    CompJob."Job Template" := Rec."No.";
                     CompJob.Modify(true);
                 end;
             end;
@@ -50,10 +50,10 @@ table 51659 "Job Template"
 
             trigger OnValidate()
             begin
-                if CompJob.Get("Job No.")then begin
-                    "Job Title":=CompJob.Name;
-                    Description:=CompJob.Objective;
-                    CompJob."Job Template":=Rec."No.";
+                if CompJob.Get("Job No.") then begin
+                    "Job Title" := CompJob.Name;
+                    Description := CompJob.Objective;
+                    CompJob."Job Template" := Rec."No.";
                     CompJob.Modify(true);
                 end;
             end;
@@ -71,10 +71,17 @@ table 51659 "Job Template"
         if "No." = '' then begin
             QuantumJumpsHRSetup.Get;
             QuantumJumpsHRSetup.TestField("Job Templ Nos");
-            NoSeriesMgt.InitSeries(QuantumJumpsHRSetup."Job Templ Nos", '', 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(QuantumJumpsHRSetup."Job Templ Nos", '', 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(QuantumJumpsHRSetup."Job Templ Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=QuantumJumpsHRSetup."Job Templ Nos";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
     end;
-    var NoSeriesMgt: Codeunit NoSeriesManagement;
-    QuantumJumpsHRSetup: Record "QuantumJumps HR Setup";
-    CompJob: Record "Company Jobs";
+
+    var
+        NoSeriesMgt: Codeunit "No. Series";
+        QuantumJumpsHRSetup: Record "QuantumJumps HR Setup";
+        CompJob: Record "Company Jobs";
 }

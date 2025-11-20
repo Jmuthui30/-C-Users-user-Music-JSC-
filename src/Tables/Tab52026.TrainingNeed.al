@@ -297,7 +297,12 @@ table 52026 "Training Need"
         if Code = '' then begin
             HRSetup.Get();
             HRSetup.TestField("Training Needs Nos");
-            NoSeriesManagement.InitSeries(HRSetup."Training Needs Nos", xRec."No. Series", 0D, Code, "No. Series");
+            // NoSeriesManagement.InitSeries(HRSetup."Training Needs Nos", xRec."No. Series", 0D, Code, "No. Series");
+            if NoSeriesManagement.AreRelated(HRSetup."Training Needs Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HRSetup."Training Needs Nos";
+            Code:=NoSeriesManagement.GetNextNo("No. Series",WorkDate());
         end;
     end;
 
@@ -325,7 +330,7 @@ table 52026 "Training Need"
         TrainingNeedsLines: Record "Training Needs Lines";
         Vendor: Record Vendor;
         DimMgt: Codeunit DimensionManagement;
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series";
         Text001: Label 'The %1 %2 cannot be earlier than the %3 %4.';
         Text002: Label 'The %1 %2 cannot be after the %3 %4.';
 

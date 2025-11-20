@@ -44,9 +44,9 @@ table 53003 "Assignment Matrix"
         field(3; "Code"; Code[20])
         {
             NotBlank = true;
-            TableRelation = if (Type = const(Earning)) Earnings 
+            TableRelation = if (Type = const(Earning)) Earning
             else
-            if (Type = const(Deduction)) Deductions
+            if (Type = const(Deduction)) Deduction
             else
             if (Type = const(Loan)) "Payroll Loan Application"."Loan No" where("Employee No" = field("Employee No"));
             Caption = 'Code';
@@ -241,6 +241,9 @@ Amount:=PayrollRounding(Amount);
                                     Payments.TestField(Percentage);
                                     Amount := ((TotalDeductionLines / 100) * Payments.Percentage);
                                     Amount := PayrollRounding(Amount);
+                                    // if Payments."Maximum Limit" <> 0 then
+                                    //     if Amount > Payments."Maximum Limit" then
+                                    //         Amount := Payments."Maximum Limit";
                                 end;
                             end;
 
@@ -280,6 +283,10 @@ Amount:=PayrollRounding(Amount);
 
                     if Payments."Reduces Tax" then
                         Amount := PayrollRounding(Amount);
+
+                    IF Payments."Maximum Limit" <> 0 then
+                        IF Amount > Payments."Maximum Limit" then
+                            Amount := Payments."Maximum Limit";
 
                 end;
 
@@ -389,6 +396,8 @@ Amount:=PayrollRounding(Amount);
                             "Employer Amount" := PayrollRounding("Employer Amount");
                             CheckIfRatesInclusive("Employee No", "Payroll Period", Code, "Employer Amount");
                         end;
+
+
                     end;
 
                     //% of Other Deductions
@@ -442,7 +451,7 @@ Amount:=PayrollRounding(Amount);
                         Employee.CalcFields("Total Allowances", "Basic Pay", "Total Non-Recurring Allowances");
 
                         // Amount := -(GetBracket(Deduction, (Employee."Total Allowances" - Employee."Total Non-Recurring Allowances"), "Employee Tier I", "Employee Tier II"));
-                        Amount:= -(GetBracket(Deduction,(Employee."Total Allowances"-Employee."Total Non-Recurring Allowances"),"Employee Tier I","Employee Tier II"));
+                        Amount := -(GetBracket(Deduction, (Employee."Total Allowances" - Employee."Total Non-Recurring Allowances"), "Employee Tier I", "Employee Tier II"));
                         if Deduction."Pension Scheme" then
                             "Employer Amount" := (GetBracket(Deduction, (Employee."Total Allowances" - Employee."Total Non-Recurring Allowances"), "Employee Tier I", "Employee Tier II"));
                     end;
@@ -474,18 +483,18 @@ Amount:=PayrollRounding(Amount);
         }
         field(5; "Effective Start Date"; Date)
         {
-            TableRelation = "Payroll Period"."Starting Date";
+            TableRelation = "Payroll Period II"."Starting Date";
             Caption = 'Effective Start Date';
         }
         field(6; "Effective End Date"; Date)
         {
-            TableRelation = "Payroll Period"."Starting Date";
+            TableRelation = "Payroll Period II"."Starting Date";
             Caption = 'Effective End Date';
         }
         field(7; "Payroll Period"; Date)
         {
             NotBlank = false;
-            TableRelation = if ("Employee Type" = filter(Permanent | Partime | Locum)) "Payroll Period"."Starting Date"
+            TableRelation = if ("Employee Type" = filter(Permanent | Partime | Locum)) "Payroll Period II"."Starting Date"
             else
             if ("Employee Type" = const(Casual)) "Payroll Period Casuals"."Starting Date"
             else
@@ -1180,6 +1189,10 @@ Amount:=PayrollRounding(Amount);
         //             "Country Code" := Employee."Country Code";
         //     end;
         // }
+        field(108; "Allowances PAYE"; Boolean)
+        {
+            Caption = 'Allowances PAYE';
+        }
 
     }
 
@@ -1294,11 +1307,20 @@ Amount:=PayrollRounding(Amount);
         TestField(Closed, false);
     end;
 
+    trigger OnInsert()
+    begin
+        if AssgnMatrix.Type = AssgnMatrix.Type::Deduction then
+            Deduction.Get(Code);
+        if Deduction."Allowances PAYE" then
+            "Allowances PAYE" := true;
+    end;
+
     var
         AssgnMatrix: Record "Assignment Matrix";
         CurrencyRec: Record Currency;
         CurrencyExchangeRate: Record "Currency Exchange Rate";
         Deduction: Record Deduction;
+        Deduction2: Record Deduction;
         Payments: Record Earning;
         Employee: Record Employee;
         EmpContract: Record "Employment Contract";
@@ -1308,7 +1330,7 @@ Amount:=PayrollRounding(Amount);
         OtherEarnings: Record "Other Earnings";
         OtherDeductionLines: Record "Other Deduction Line";
         LoanApp: Record "Payroll Loan Application";
-        PayPeriod: Record "Payroll Period";
+        PayPeriod: Record "Payroll Period II";
         TrusteePayPeriod: Record "Payroll Period Trustees";
         SalaryScale: Record "Salary Scale";
         SalaryScaleAllowance: Record "Salary Scale Allowance";
@@ -1317,6 +1339,8 @@ Amount:=PayrollRounding(Amount);
         PayrollMgt: Codeunit Payroll;
         PayStartDate: Date;
         InterestDiff: Decimal;
+        PAYEAmt: Decimal;
+        PAYE35Amt: Decimal;
         TotalOtherDeductions: Decimal;
         TotalOtherEarnings: Decimal;
         TotalDeductionLines: Decimal;

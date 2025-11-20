@@ -2,7 +2,7 @@ report 52032 "P9A Report"
 {
     ApplicationArea = All;
     DefaultLayout = RDLC;
-    RDLCLayout = './src/report_layout/P9AReport.rdl';
+    RDLCLayout = './Payroll/Report Layouts/P9AReport.rdl';
     UseRequestPage = true;
     Caption = 'P9A Report';
     dataset
@@ -162,7 +162,7 @@ report 52032 "P9A Report"
             column(AllowancesPAYE; "Allowances PAYE")
             {
             }
-            dataitem("Payroll Period"; "Payroll Period")
+            dataitem("Payroll Period"; "Payroll Period II")
             {
                 DataItemTableView = sorting("Starting Date") order(ascending);
 

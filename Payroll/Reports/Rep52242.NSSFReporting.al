@@ -2,7 +2,7 @@ report 52242 "NSSF Reporting"
 {
     ApplicationArea = All;
     DefaultLayout = RDLC;
-    RDLCLayout = './src/report_layout/NSSFReporting.rdl';
+    RDLCLayout = './Payroll/Report Layouts/NSSFReporting.rdl';
     Caption = 'NSSF Reporting';
     dataset
     {
@@ -336,7 +336,7 @@ report 52242 "NSSF Reporting"
         Payment: Record Earning;
         Emp: Record Employee;
         HRSetup: Record "Human Resources Setup";
-        PayPeriod: Record "Payroll Period";
+        PayPeriod: Record "Payroll Period II";
         UserSetup: Record "User Setup";
         UserSetup1: Record "User Setup";
         UserSetup2: Record "User Setup";

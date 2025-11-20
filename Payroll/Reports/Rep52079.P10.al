@@ -2,11 +2,11 @@ report 52079 "P10"
 {
     ApplicationArea = All;
     DefaultLayout = RDLC;
-    RDLCLayout = './src/report_layout/P10.rdl';
+    RDLCLayout = './Payroll/Report Layouts/P10.rdl';
     Caption = 'P10';
     dataset
     {
-        dataitem("Payroll Period"; "Payroll Period")
+        dataitem("Payroll Period"; "Payroll Period II")
         {
             DataItemTableView = sorting("Starting Date");
             RequestFilterFields = "Starting Date";

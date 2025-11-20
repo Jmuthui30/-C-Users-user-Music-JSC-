@@ -640,7 +640,12 @@ table 52086 "Applicants"
         if "No." = '' then begin
             HRSetup.Get();
             HRSetup.TestField("Applicants Nos.");
-            NoSeriesMgt.InitSeries(HRSetup."Applicants Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(HRSetup."Applicants Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(HRSetup."Applicants Nos.",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HRSetup."Applicants Nos.";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
             "Application Date" := Today;
         end;
     end;
@@ -655,7 +660,7 @@ table 52086 "Applicants"
         // Dates: Codeunit DateComprMgt;
         Dates: Codeunit "Dates Management";
         Mail: Codeunit "Mail Management";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
 
 
     procedure GetFullName(): Text[100]

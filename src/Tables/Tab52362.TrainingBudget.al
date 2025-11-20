@@ -104,7 +104,12 @@ table 52362 "Training Budget"
                 HRSetup.Get();
                 HRSetup.TestField("Training Budget Item Nos");
                 if "Budget Item No" = '' then
-                    NoSeriesMgt.InitSeries(HRSetup."Training Budget Item Nos", xRec."No. Series", 0D, "Budget Item No", "No. Series");
+                    // NoSeriesMgt.InitSeries(HRSetup."Training Budget Item Nos", xRec."No. Series", 0D, "Budget Item No", "No. Series");
+                    if NoSeriesMgt.AreRelated(HRSetup."Training Budget Item Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HRSetup."Training Budget Item Nos";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
             end;
         }
         field(12; "Date Filter"; Date)
@@ -191,7 +196,7 @@ table 52362 "Training Budget"
         HRSetup: Record "Human Resources Setup";
         TrainingPlan: Record "Training budget";
         DimMgt: Codeunit DimensionManagement;
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         BudgetAmount: Decimal;
         TrainingPlanAmount: Decimal;
 

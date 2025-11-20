@@ -29,20 +29,22 @@ page 52409 "Exit by Department"
                     buffer.SetXAxis('Department', Buffer."Data Type"::String);
                     Dimensions.Reset();
                     Dimensions.SetRange("Dimension Code", 'DEPT');
-                    if Dimensions.FindSet()then repeat Employee.Reset();
+                    if Dimensions.FindSet() then
+                        repeat
+                            Employee.Reset();
                             Employee.SetRange("Global Dimension 1 Code", Dimensions.Code);
                             Employee.SetRange(Status, Employee.Status::Inactive);
-                            a:=Employee.Count;
+                            a := Employee.Count;
                             Employee.Reset();
                             Employee.SetRange("Global Dimension 1 Code", Dimensions.Code);
                             Employee.SetRange(Status, Employee.Status::Terminated);
-                            b:=Employee.Count;
+                            b := Employee.Count;
                             Buffer.AddColumn(Dimensions.Name);
                             if a <> 0 then Buffer.SetValueByIndex(0, i, a);
                             if b <> 0 then Buffer.SetValueByIndex(0, i, b);
-                            i+=1;
+                            i += 1;
                         until Dimensions.Next() = 0;
-                    Buffer.Update(CurrPage.Chart);
+                    // Buffer.Update(CurrPage.Chart);
                 end;
             }
         }
@@ -62,5 +64,6 @@ page 52409 "Exit by Department"
             }
         }
     }
-    var myInt: Integer;
+    var
+        myInt: Integer;
 }

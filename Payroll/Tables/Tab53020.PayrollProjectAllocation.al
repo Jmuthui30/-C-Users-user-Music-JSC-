@@ -6,7 +6,7 @@ Table 53020 "Payroll Project Allocation"
         field(1; Period; Date)
         {
             DataClassification = ToBeClassified;
-            TableRelation = "Payroll Period"."Starting Date";
+            TableRelation = "Payroll Period II"."Starting Date";
             //TableRelation = "Payroll Calender_AU"."Date Opened";
         }
         field(2; "Employee No"; Code[100])

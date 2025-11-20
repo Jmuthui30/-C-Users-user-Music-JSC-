@@ -128,6 +128,6 @@ table 50009 "Commitment Entries"
 
     var
         GenLedgerSetup: Record "General Ledger Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         AdvancedFinanceSetup: Record "Advanced Finance Setup";
 }

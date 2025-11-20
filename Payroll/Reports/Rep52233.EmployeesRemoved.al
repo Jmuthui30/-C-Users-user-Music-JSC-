@@ -6,7 +6,7 @@ report 52233 "Employees Removed"
     Caption = 'Employees Removed';
     dataset
     {
-        dataitem("Payroll Period"; "Payroll Period")
+        dataitem("Payroll Period"; "Payroll Period II")
         {
             RequestFilterFields = "Pay Period Filter";
 

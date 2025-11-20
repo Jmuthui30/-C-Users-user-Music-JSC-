@@ -95,7 +95,7 @@ table 53019 "Payroll Period II"
         field(50009; "Pay Period Filter"; Date)
         {
             FieldClass = FlowFilter;
-            TableRelation = "Payroll Period";
+            TableRelation = "Payroll Period II";
             Caption = 'Pay Period Filter';
         }
         field(50010; "Leave Payment Period"; Boolean)

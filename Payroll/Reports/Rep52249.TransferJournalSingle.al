@@ -603,8 +603,8 @@ report 52249 "Transfer Journal Single"
         GenJnline: Record "Gen. Journal Line";
         HRSetup: Record "Human Resources Setup";
         LoanProductType: Record "Loan Product Type-Payroll";
-        PayrollPeriod: Record "Payroll Period";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        PayrollPeriod: Record "Payroll Period II";
+        NoSeriesMgt: Codeunit "No. Series";
         EmpGroup: Code[10];
         TaxCode: Code[10];
         Noseries: Code[50];
@@ -632,14 +632,14 @@ report 52249 "Transfer Journal Single"
 
     procedure GetCurrentPeriod()
     var
-        PayPeriodRec: Record "Payroll Period";
+        PayPeriodRec: Record "Payroll Period II";
     begin
         PayPeriodRec.SetRange(PayPeriodRec.Closed, false);
         if PayPeriodRec.Find('-') then
             PeriodStartDate := PayPeriodRec."Starting Date";
     end;
 
-    procedure GetPayPeriod(var PayPeriods: Record "Payroll Period")
+    procedure GetPayPeriod(var PayPeriods: Record "Payroll Period II")
     begin
         PayrollPeriod := PayPeriods;
     end;

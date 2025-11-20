@@ -410,7 +410,7 @@ page 52269 "Loan Application Form-Payroll"
     var
         AppEntry: Record "Approval Entry";
         AssMatrix: Record "Assignment Matrix";
-        PayPeriod: Record "Payroll Period";
+        PayPeriod: Record "Payroll Period II";
         PreviewShedule: Record "Payroll Repayment Schedule";
         ApprovalsMngt: Codeunit "Approval Mgt HR Ext";
         Payroll: Codeunit Payroll;

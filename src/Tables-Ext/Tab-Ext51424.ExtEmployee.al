@@ -266,7 +266,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
         field(52029; "Employee's Bank"; Code[80])
         {
             DataClassification = CustomerContent;
-            TableRelation = "Bank Account";
+            TableRelation = Banks;
             Caption = 'Employee''s Bank';
 
             trigger OnValidate()
@@ -304,7 +304,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
         {
             DataClassification = CustomerContent;
             NotBlank = true;
-            // TableRelation = "Employee HR Posting Group";
+            TableRelation = "Employee HR Posting Group";
             Caption = 'Posting Group';
 
             trigger OnValidate()
@@ -1239,7 +1239,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
         field(52372; "Pay Period Filter"; Date)
         {
             FieldClass = FlowFilter;
-            TableRelation = if ("Employee Type" = filter(Permanent | Partime | Locum)) "Payroll Period"
+            TableRelation = if ("Employee Type" = filter(Permanent | Partime | Locum)) "Payroll Period II"
             else
             if ("Employee Type" = filter(Casual)) "Payroll Period Casuals"
             else
@@ -1531,6 +1531,10 @@ tableextension 51424 "ExtEmployee" extends "Employee"
                     "Job Position Title" := Jobs."Job Description";
             end;
         }
+        field(52236;"Home Ownership Status"; Option)
+        {
+            OptionMembers = "None", "Owner Occupier", "Home Savings";
+        }
     }
 
     trigger OnInsert()
@@ -1546,12 +1550,12 @@ tableextension 51424 "ExtEmployee" extends "Employee"
         RecruitmentNeed: Record "Recruitment Needs";
         HRDatesExt: Codeunit "HR Dates Mgt";
         Branches: Record "Bank Branches";
-        Banks: Record "Bank Account";
+        Banks: Record Banks;
         Jobs: Record "Company Job";
         EmpContract: Record "Employment Contract";
         // Ethnic: Record "Ethnic Communities";
         HumanResSetup: Record "Human Resources Setup";
-        PayPeriod: Record "Payroll Period";
+        PayPeriod: Record "Payroll Period II";
         Scale: Record "Salary Scale";
         //HRDates: Codeunit "Dates Management";
         // Payroll: Codeunit Payroll;

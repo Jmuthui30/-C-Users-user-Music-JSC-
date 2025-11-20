@@ -14,52 +14,52 @@ page 51742 "HR & Admin Manager Role Center"
             {
                 ApplicationArea = Basic, Suite;
             }
-            part(Control55; "Balance Score Card Chart")
-            {
-                ApplicationArea = All;
-                Caption = '';
-                ToolTip = 'Specifies the view of your business assistance';
-            }
-            part(Control47; "Distribution by Location")
-            {
-                ApplicationArea = All;
-            }
-            part(Control48; "Distribution by Department")
-            {
-                ApplicationArea = All;
-            }
-            part(Control54; "Distribution by cadre")
-            {
-                ApplicationArea = All;
-            }
-            part(Control49; "Head Count Distribution")
-            {
-                ApplicationArea = All;
-            }
-            part(Control50; "Distribution by Gender")
-            {
-                ApplicationArea = All;
-            }
-            part(Control51; "Distribution by Job Type")
-            {
-                ApplicationArea = All;
-            }
-            part(Control52; "Distribution by Age")
-            {
-                ApplicationArea = All;
-            }
-            part(Control53; "Distribution by Tenure")
-            {
-                ApplicationArea = All;
-            }
-            part(Control0055; "Exit by Department")
-            {
-                ApplicationArea = All;
-            }
-            part(Control56; "Exit Mode")
-            {
-                ApplicationArea = All;
-            }
+            // part(Control55; "Balance Score Card Chart")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = '';
+            //     ToolTip = 'Specifies the view of your business assistance';
+            // }
+            // part(Control47; "Distribution by Location")
+            // {
+            //     ApplicationArea = All;
+            // }
+            // part(Control48; "Distribution by Department")
+            // {
+            //     ApplicationArea = All;
+            // }
+            // part(Control54; "Distribution by cadre")
+            // {
+            //     ApplicationArea = All;
+            // }
+            // part(Control49; "Head Count Distribution")
+            // {
+            //     ApplicationArea = All;
+            // }
+            // part(Control50; "Distribution by Gender")
+            // {
+            //     ApplicationArea = All;
+            // }
+            // part(Control51; "Distribution by Job Type")
+            // {
+            //     ApplicationArea = All;
+            // }
+            // part(Control52; "Distribution by Age")
+            // {
+            //     ApplicationArea = All;
+            // }
+            // part(Control53; "Distribution by Tenure")
+            // {
+            //     ApplicationArea = All;
+            // }
+            // part(Control0055; "Exit by Department")
+            // {
+            //     ApplicationArea = All;
+            // }
+            // part(Control56; "Exit Mode")
+            // {
+            //     ApplicationArea = All;
+            // }
         }
     }
     actions

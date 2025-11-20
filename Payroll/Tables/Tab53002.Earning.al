@@ -1,7 +1,7 @@
 table 53002 "Earning"
 {
-    DrillDownPageID = "Earnings";
-    LookupPageID = "Earnings";
+    DrillDownPageID = "Earning";
+    LookupPageID = "Earning";
     DataClassification = CustomerContent;
     Caption = 'Earnings';
     fields
@@ -36,8 +36,8 @@ table 53002 "Earning"
         field(7; "Calculation Method"; Option)
         {
             Caption = 'Calculation Method';
-            OptionCaption = 'Flat amount,% of Basic pay,% of Gross pay,% of Insurance Amount,% of Taxable income,% of Basic after tax,Based on Hourly Rate,Based on Daily Rate,Formula,% of Annual Basic,% of Other Earnings,% of Mortgage Amount,Based on Salary Scale,Based on Travel Rates,% of NHIF Amount,% of Other Deductions';
-            OptionMembers = "Flat amount","% of Basic pay","% of Gross pay","% of Insurance Amount","% of Taxable income","% of Basic after tax","Based on Hourly Rate","Based on Daily Rate",Formula,"% of Annual Basic","% of Other Earnings","% of Mortgage Amount","Based on Salary Scale","Based on Travel Rates","% of NHIF Amount","% of Other Deductions";
+            OptionCaption = 'Flat amount,% of Basic pay,% of Gross pay,% of Insurance Amount,% of Taxable income,% of Basic after tax,Based on Hourly Rate,Based on Daily Rate,Formula,% of Annual Basic,% of Other Earnings,% of Mortgage Amount,Based on Salary Scale,Based on Travel Rates,% of NHIF Amount,% of Other Deductions,% of Salary Recovery';
+            OptionMembers = "Flat amount","% of Basic pay","% of Gross pay","% of Insurance Amount","% of Taxable income","% of Basic after tax","Based on Hourly Rate","Based on Daily Rate",Formula,"% of Annual Basic","% of Other Earnings","% of Mortgage Amount","Based on Salary Scale","Based on Travel Rates","% of NHIF Amount","% of Other Deductions","% of Salary Recovery";
         }
         field(8; "Flat Amount"; Decimal)
         {
@@ -92,7 +92,7 @@ table 53002 "Earning"
         {
             ClosingDates = false;
             FieldClass = FlowFilter;
-            TableRelation = "Payroll Period";
+            TableRelation = "Payroll Period II";
             Caption = 'Pay Period Filter';
         }
         field(15; Quarters; Boolean)
@@ -122,7 +122,7 @@ table 53002 "Earning"
         field(21; "Employee Filter"; Code[20])
         {
             FieldClass = FlowFilter;
-            TableRelation = "Payroll Period";
+            TableRelation = "Payroll Period II";
             Caption = 'Employee Filter';
         }
         field(22; Counter; Integer)
@@ -225,8 +225,8 @@ table 53002 "Earning"
         }
         field(42; "Earning Type"; Option)
         {
-            OptionCaption = 'Normal Earning,Owner Occupier,Home Savings,Low Interest,Tax Relief,Insurance Relief,NHIF Relief,Housing Levy Relief';
-            OptionMembers = "Normal Earning","Owner Occupier","Home Savings","Low Interest","Tax Relief","Insurance Relief","NHIF Relief","Housing Levy Relief";
+            OptionCaption = 'Normal Earning,Owner Occupier,Home Savings,Low Interest,Tax Relief,Insurance Relief,NHIF Relief,Housing Levy Relief, Other Allowances';
+            OptionMembers = "Normal Earning","Owner Occupier","Home Savings","Low Interest","Tax Relief","Insurance Relief","NHIF Relief","Housing Levy Relief","Other Allowances";
             Caption = 'Earning Type';
         }
         field(43; "Applies to All"; Boolean)

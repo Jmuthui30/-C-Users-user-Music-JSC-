@@ -5,7 +5,7 @@ page 52126 "Payment Request"
     PageType = Card;
     SourceTable = "PV Header";
     PromotedActionCategories = 'New,Process,Report,Approval,Release,Request Approval,Workflow,Attachments';
-    SourceTableView = WHERE("Payment Type"=CONST("Payment Voucher"));
+    SourceTableView = WHERE("Payment Type" = CONST("Payment Voucher"));
 
     layout
     {
@@ -21,7 +21,7 @@ page 52126 "Payment Request"
 
                     trigger OnAssistEdit()
                     begin
-                        if Rec.AssistEdit then CurrPage.Update;
+                        if Rec.AssistEdit(xRec) then CurrPage.Update;
                     end;
                 }
                 field(Date; Rec.Date)
@@ -32,18 +32,19 @@ page 52126 "Payment Request"
                 {
                     ApplicationArea = All;
 
-                    trigger OnLookup(var Text: Text): Boolean begin
+                    trigger OnLookup(var Text: Text): Boolean
+                    begin
                         BeneficiaryBanks.Reset;
                         if PAGE.RunModal(Page::"Beneficiary Bank Details", BeneficiaryBanks) = ACTION::LookupOK then begin
-                            Rec."Ben ID":=BeneficiaryBanks."BEN ID";
-                            Rec.Payee:=BeneficiaryBanks."BENEFICIARY NAME";
-                            Rec."Payee Account Name":=BeneficiaryBanks."FULL BEN NAME";
-                            Rec."Payee Account No.":=BeneficiaryBanks."BEN ACCT NO";
-                            Rec."Payee Bank Code":=BeneficiaryBanks."BANK CODE";
-                            Rec."Payee Bank":=BeneficiaryBanks.BANKNAME;
-                            Rec."Branch Code":=BeneficiaryBanks."BRANCH CODE";
-                            Rec."Branch Name":=BeneficiaryBanks."BRANCH NAME";
-                            Rec."Sort Code":=BeneficiaryBanks."BC.SORT.CODE";
+                            Rec."Ben ID" := BeneficiaryBanks."BEN ID";
+                            Rec.Payee := BeneficiaryBanks."BENEFICIARY NAME";
+                            Rec."Payee Account Name" := BeneficiaryBanks."FULL BEN NAME";
+                            Rec."Payee Account No." := BeneficiaryBanks."BEN ACCT NO";
+                            Rec."Payee Bank Code" := BeneficiaryBanks."BANK CODE";
+                            Rec."Payee Bank" := BeneficiaryBanks.BANKNAME;
+                            Rec."Branch Code" := BeneficiaryBanks."BRANCH CODE";
+                            Rec."Branch Name" := BeneficiaryBanks."BRANCH NAME";
+                            Rec."Sort Code" := BeneficiaryBanks."BC.SORT.CODE";
                         end;
                     end;
                 }
@@ -90,12 +91,12 @@ page 52126 "Payment Request"
                 field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code")
                 {
                     ApplicationArea = All;
-                // Visible = false;
+                    // Visible = false;
                 }
                 field("Global Dimension 2 Code"; Rec."Global Dimension 2 Code")
                 {
                     ApplicationArea = All;
-                // Visible = false;
+                    // Visible = false;
                 }
                 field("Purchase Invoice Amount"; Rec."Purchase Invoice Amount")
                 {
@@ -162,7 +163,7 @@ page 52126 "Payment Request"
                 Editable = (((Rec.Status = Rec.Status::Open) OR (Rec.Status = Rec.Status::Released)) AND Rec.Posted = false);
                 ApplicationArea = All;
                 UpdatePropagation = Both;
-                SubPageLink = No=FIELD("No.");
+                SubPageLink = No = FIELD("No.");
             }
         }
         area(factboxes)
@@ -170,7 +171,7 @@ page 52126 "Payment Request"
             part(Control2; "PV Document Subpage")
             {
                 ApplicationArea = All;
-                SubPageLink = "Document No."=FIELD("No."), "Table ID"=CONST(50000);
+                SubPageLink = "Document No." = FIELD("No."), "Table ID" = CONST(50000);
             }
             systempart(Control1; Notes)
             {
@@ -208,7 +209,7 @@ page 52126 "Payment Request"
                 PromotedIsBig = true;
                 PromotedCategory = Category8;
                 RunObject = Page "PV Documents";
-                RunPageLink = "Document No."=FIELD("No."), "Table ID"=CONST(50000);
+                RunPageLink = "Document No." = FIELD("No."), "Table ID" = CONST(50000);
             }
             action("Select Approvers")
             {
@@ -423,83 +424,88 @@ page 52126 "Payment Request"
     trigger OnAfterGetCurrRecord()
     begin
         if Rec."Pay Mode" = 'RTGS/EFT' then begin
-            ShowEFT:=true;
-            ShowMpesa:=false;
+            ShowEFT := true;
+            ShowMpesa := false;
         end
         else if Rec."Pay Mode" = 'M-PESA' then begin
-                ShowEFT:=false;
-                ShowMpesa:=true;
-            end
-            else
-            begin
-                ShowEFT:=true;
-                ShowMpesa:=true;
-            end;
-    // CurrPage.Update;
+            ShowEFT := false;
+            ShowMpesa := true;
+        end
+        else begin
+            ShowEFT := true;
+            ShowMpesa := true;
+        end;
+        // CurrPage.Update;
     end;
+
     trigger OnAfterGetRecord()
     begin
         SetControlAppearance;
         if Rec."Pay Mode" = 'RTGS/EFT' then begin
-            ShowEFT:=true;
-            ShowMpesa:=false;
+            ShowEFT := true;
+            ShowMpesa := false;
         end
         else if Rec."Pay Mode" = 'M-PESA' then begin
-                ShowEFT:=false;
-                ShowMpesa:=true;
-            end
-            else
-            begin
-                ShowEFT:=true;
-                ShowMpesa:=true;
-            end;
+            ShowEFT := false;
+            ShowMpesa := true;
+        end
+        else begin
+            ShowEFT := true;
+            ShowMpesa := true;
+        end;
     end;
+
     trigger OnInit()
     begin
-        SalaryAdvanced:=false;
-        ShowEFT:=false;
-        ShowMpesa:=false;
+        SalaryAdvanced := false;
+        ShowEFT := false;
+        ShowMpesa := false;
     end;
+
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        Rec."Payment Type":=Rec."Payment Type"::"Payment Voucher";
-        Rec.Cashier:=UserId;
-        Rec.Status:=Rec.Status::Open;
+        Rec."Payment Type" := Rec."Payment Type"::"Payment Voucher";
+        Rec.Cashier := UserId;
+        Rec.Status := Rec.Status::Open;
     end;
+
     trigger OnOpenPage()
     begin
         Rec.SetRange("Payment Type", Rec."Payment Type"::"Payment Voucher");
         Rec.SetRange(Cashier, UserId);
-        EditPayrollPeriod:=false;
+        EditPayrollPeriod := false;
     end;
+
     local procedure SetControlAppearance()
     var
         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
         WorkflowWebhookMgt: Codeunit "Workflow Webhook Management";
     begin
-        OpenApprovalEntriesExistForCurrUser:=ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(Rec.RecordId);
-        OpenApprovalEntriesExist:=ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
-        CanCancelApprovalForRecord:=ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
+        OpenApprovalEntriesExistForCurrUser := ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(Rec.RecordId);
+        OpenApprovalEntriesExist := ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
+        CanCancelApprovalForRecord := ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
         WorkflowWebhookMgt.GetCanRequestAndCanCancel(Rec.RecordId, CanRequestApprovalForFlow, CanCancelApprovalForFlow);
     end;
-    var PV: Record "PV Header";
-    GLSetup: Record "Cash Management Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    PVPost: Codeunit "Finance Management";
-    ApprovalsMgt: Codeunit "Approvals Mgmt. Ext";
-    OpenApprovalEntriesExistForCurrUser: Boolean;
-    OpenApprovalEntriesExist: Boolean;
-    CanCancelApprovalForRecord: Boolean;
-    CanRequestApprovalForFlow: Boolean;
-    CanCancelApprovalForFlow: Boolean;
-    [InDataSet]
-    SalaryAdvanced: Boolean;
-    ShowEFT: Boolean;
-    ShowMpesa: Boolean;
-    BeneficiaryBanks: Record "Payee Bank Details";
-    AdvancedFinanceSetup: Record "Advanced Finance Setup";
-    Approvers: Record "Workflow User Group Member";
-    EditPayrollPeriod: Boolean;
-    CashMgt: Codeunit "Cash Management";
-    Ref: Text;
+
+    var
+        PV: Record "PV Header";
+        GLSetup: Record "Cash Management Setup";
+        NoSeriesMgt: Codeunit "No. Series";
+        PVPost: Codeunit "Finance Management";
+        ApprovalsMgt: Codeunit "Approvals Mgmt. Ext";
+        OpenApprovalEntriesExistForCurrUser: Boolean;
+        OpenApprovalEntriesExist: Boolean;
+        CanCancelApprovalForRecord: Boolean;
+        CanRequestApprovalForFlow: Boolean;
+        CanCancelApprovalForFlow: Boolean;
+        [InDataSet]
+        SalaryAdvanced: Boolean;
+        ShowEFT: Boolean;
+        ShowMpesa: Boolean;
+        BeneficiaryBanks: Record "Payee Bank Details";
+        AdvancedFinanceSetup: Record "Advanced Finance Setup";
+        Approvers: Record "Workflow User Group Member";
+        EditPayrollPeriod: Boolean;
+        CashMgt: Codeunit "Cash Management";
+        Ref: Text;
 }

@@ -1076,10 +1076,11 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
 
                     trigger OnAction()
                     var
+                    CuPayroll: Codeunit Payroll;
                         AssignConfirmMsg: Label 'Are you sure you want to assign default earnings/deductions?';
                     begin
                         if confirm(AssignConfirmMsg, false) then begin
-                            Payroll.DefaultEarningsDeductionsAssignment(Rec);
+                            CuPayroll.DefaultEarningsDeductionsAssignment(Rec);
                             Message('Updated Successfully');
                         end;
                     end;
@@ -1118,6 +1119,9 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                     ApplicationArea = All;
 
                     trigger OnAction()
+                    var                    
+                    CuPayroll: Codeunit Payroll;
+
                     begin
                         PayPeriod.Reset();
                         PayPeriod.SetRange(Closed, false);
@@ -1126,7 +1130,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
 
                             //Check to prevent calculation when under approval
                             //Commented Temporarily-Carol23032023
-                            Payroll.CheckIfPayrollPeriodUnderApproval(CurrentMonth);
+                            CuPayroll.CheckIfPayrollPeriodUnderApproval(CurrentMonth);
                             Employee.SETRANGE("No.", Employee."No.");
                             Employee.SetRange("Pay Period Filter", CurrentMonth);
                             Report.Run(Report::"Payroll Run", true, false, Employee);
@@ -1293,7 +1297,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
     var
         Employee: Record Employee;
         // EmployeeChange: Record "Employee Change Request";
-        PayPeriod: Record "Payroll Period";
+        PayPeriod: Record "Payroll Period II";
         HRDates: Codeunit "Dates Management";
         COMPANY: Record "Company Information";
         FormatAddress: Codeunit "Format Address";

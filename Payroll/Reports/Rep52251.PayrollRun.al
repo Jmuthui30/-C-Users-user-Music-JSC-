@@ -477,7 +477,7 @@ report 52251 "Payroll Run"
                     Deductions.Reset();
                     Deductions.SetRange("PAYE Code", true);
                     if Deductions.Find('-') then begin
-                        GetPaye.CalculateTaxableAmount(Employee."No.", Month, IncomeTax, TaxableAmount, RetireCont, PensionTax);
+                        GetPaye.CalculateTaxableAmount(Employee."No.", Month, IncomeTax, TaxableAmount, RetireCont);
                         //Update Tax Relief
                         if (IncomeTax > 0) and (Employee."Employee Job Type" <> Employee."Employee Job Type"::Director)
                         and (not Employee."Secondary Employee") then begin
@@ -523,7 +523,7 @@ report 52251 "Payroll Run"
                             end;
                             // Message('taxa is %1', TaxableAmount);
                             //Recompute Tax after Adding Tax Relief
-                            GetPaye.CalculateTaxableAmount(Employee."No.", Month, IncomeTax, TaxableAmount, RetireCont, PensionTax);
+                            GetPaye.CalculateTaxableAmount(Employee."No.", Month, IncomeTax, TaxableAmount, RetireCont);
 
                             //  Message('text pension %1', RetireCont);
                         end;
@@ -670,8 +670,8 @@ report 52251 "Payroll Run"
         EmployeeEarnRec: Record "Employee Earnings History";
         HumanResourcesSetup: Record "Human Resources Setup";
         LoanApplication: Record "Payroll Loan Application";
-        PayPeriod: Record "Payroll Period";
-        PayPeriodCopy: Record "Payroll Period";
+        PayPeriod: Record "Payroll Period II";
+        PayPeriodCopy: Record "Payroll Period II";
         ScalePointer: Record "Salary Pointer";
         ScaleBenefits: Record "Scale Benefits";
         ClosePayPeriod: Report "Close Pay Period II";

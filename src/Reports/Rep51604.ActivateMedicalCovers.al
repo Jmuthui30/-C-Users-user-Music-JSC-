@@ -16,9 +16,10 @@ report 51604 "Activate Medical Covers"
                 {
                     ApplicationArea = All;
 
-                    trigger OnLookup(var Text: Text): Boolean begin
+                    trigger OnLookup(var Text: Text): Boolean
+                    begin
                         Schemes.Reset;
-                        if PAGE.RunModal(51665, Schemes) = ACTION::LookupOK then SchemeFilter:=Schemes.Code;
+                        if PAGE.RunModal(51665, Schemes) = ACTION::LookupOK then SchemeFilter := Schemes.Code;
                     end;
                 }
                 field("Policy Start Date"; StartDate)
@@ -33,9 +34,10 @@ report 51604 "Activate Medical Covers"
                 {
                     ApplicationArea = All;
 
-                    trigger OnLookup(var Text: Text): Boolean begin
+                    trigger OnLookup(var Text: Text): Boolean
+                    begin
                         NAVEmp.Reset;
-                        if PAGE.RunModal(51674, NAVEmp) = ACTION::LookupOK then EmployeeFilter:=NAVEmp."No.";
+                        if PAGE.RunModal(51674, NAVEmp) = ACTION::LookupOK then EmployeeFilter := NAVEmp."No.";
                     end;
                 }
             }
@@ -59,7 +61,7 @@ report 51604 "Activate Medical Covers"
             NAVEmp.Reset;
             NAVEmp.SetRange(Status, NAVEmp.Status::Active);
             if EmployeeFilter <> '' then NAVEmp.SetRange("No.", EmployeeFilter);
-            if NAVEmp.Find('-')then begin
+            if NAVEmp.Find('-') then begin
                 repeat //Deactivate Old Scheme
                     ExistingMedicalCovers2.Reset;
                     ExistingMedicalCovers2.SetCurrentKey("Employee No.", Cover, "Policy Start Date", "Policy End Date");
@@ -67,9 +69,10 @@ report 51604 "Activate Medical Covers"
                     ExistingMedicalCovers2.SetRange(ExistingMedicalCovers2.Cover, SchemeFilter);
                     ExistingMedicalCovers2.SetFilter("Policy Start Date", '<>%1', StartDate);
                     ExistingMedicalCovers2.SetFilter("Policy End Date", '<>%1', EndDate);
-                    if ExistingMedicalCovers2.Find('-')then begin
-                        repeat if ExistingMedicalCovers2."Cover Status" = ExistingMedicalCovers2."Cover Status"::Active then begin
-                                ExistingMedicalCovers2."Cover Status":=ExistingMedicalCovers2."Cover Status"::Inactive;
+                    if ExistingMedicalCovers2.Find('-') then begin
+                        repeat
+                            if ExistingMedicalCovers2."Cover Status" = ExistingMedicalCovers2."Cover Status"::Active then begin
+                                ExistingMedicalCovers2."Cover Status" := ExistingMedicalCovers2."Cover Status"::Inactive;
                                 ExistingMedicalCovers2.Modify;
                             end;
                         until ExistingMedicalCovers2.Next = 0;
@@ -78,13 +81,13 @@ report 51604 "Activate Medical Covers"
                     //Insert Cover
                     CoverSetup.Get;
                     MedicalCovers.Init;
-                    MedicalCovers."No.":=NoSeriesMgt.GetNextNo(CoverSetup."Cover Nos.", Today, true);
+                    MedicalCovers."No." := NoSeriesMgt.GetNextNo(CoverSetup."Cover Nos.", Today, true);
                     MedicalCovers.Validate("Employee No.", NAVEmp."No.");
-                    MedicalCovers."Cover Type":=Schemes.Type;
+                    MedicalCovers."Cover Type" := Schemes.Type;
                     MedicalCovers.Validate(Cover, Schemes.Code);
-                    MedicalCovers."Policy Start Date":=StartDate;
+                    MedicalCovers."Policy Start Date" := StartDate;
                     MedicalCovers.Validate("Policy End Date", EndDate);
-                    MedicalCovers."Settled By":=Schemes."Settled By";
+                    MedicalCovers."Settled By" := Schemes."Settled By";
                     ExistingMedicalCovers.Reset;
                     ExistingMedicalCovers.SetCurrentKey("Employee No.", Cover, "Policy Start Date", "Policy End Date");
                     ExistingMedicalCovers.SetRange("Employee No.", NAVEmp."No.");
@@ -92,11 +95,11 @@ report 51604 "Activate Medical Covers"
                     ExistingMedicalCovers.SetRange("Policy Start Date", StartDate);
                     ExistingMedicalCovers.SetRange("Policy End Date", EndDate);
                     ExistingMedicalCovers.SetRange("Cover Status", ExistingMedicalCovers."Cover Status"::Active);
-                    if not ExistingMedicalCovers.FindFirst then MedicalCovers.Insert
-                    else
-                    begin
-                        ExistingMedicalCovers."Cover Status":=ExistingMedicalCovers."Cover Status"::Active;
-                        ExistingMedicalCovers."Settled By":=Schemes."Settled By";
+                    if not ExistingMedicalCovers.FindFirst then
+                        MedicalCovers.Insert
+                    else begin
+                        ExistingMedicalCovers."Cover Status" := ExistingMedicalCovers."Cover Status"::Active;
+                        ExistingMedicalCovers."Settled By" := Schemes."Settled By";
                         ExistingMedicalCovers.Modify;
                     end;
                     Window.Update(1, Schemes.Description);
@@ -106,22 +109,24 @@ report 51604 "Activate Medical Covers"
             Window.Close;
         end;
     end;
-    var StartDate: Date;
-    EndDate: Date;
-    MedicalCovers: Record "Employee Medical Cover";
-    EmployeeFilter: Code[20];
-    NAVEmp: Record Employee;
-    ExistingMedicalCovers: Record "Employee Medical Cover";
-    Window: Dialog;
-    Policy: Text;
-    Names: Text;
-    ExistingMedicalCovers2: Record "Employee Medical Cover";
-    Text000: Label 'You must specify Policy Start Date';
-    Text001: Label 'You must specify Policy Expiry Date';
-    WindowText: Label 'Activating #####1 for #####2';
-    SchemeFilter: Code[10];
-    Schemes: Record "Medical Schemes";
-    Text002: Label 'You must specify Medical Scheme';
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    CoverSetup: Record "Medical Covers Setup";
+
+    var
+        StartDate: Date;
+        EndDate: Date;
+        MedicalCovers: Record "Employee Medical Cover";
+        EmployeeFilter: Code[20];
+        NAVEmp: Record Employee;
+        ExistingMedicalCovers: Record "Employee Medical Cover";
+        Window: Dialog;
+        Policy: Text;
+        Names: Text;
+        ExistingMedicalCovers2: Record "Employee Medical Cover";
+        Text000: Label 'You must specify Policy Start Date';
+        Text001: Label 'You must specify Policy Expiry Date';
+        WindowText: Label 'Activating #####1 for #####2';
+        SchemeFilter: Code[10];
+        Schemes: Record "Medical Schemes";
+        Text002: Label 'You must specify Medical Scheme';
+        NoSeriesMgt: Codeunit "No. Series";
+        CoverSetup: Record "Medical Covers Setup";
 }

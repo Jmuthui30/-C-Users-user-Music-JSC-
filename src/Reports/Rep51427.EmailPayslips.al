@@ -12,9 +12,11 @@ report 51427 "Email Payslips"
             RequestFilterFields = "No.";
 
             trigger OnAfterGetRecord()
+            var
+            CuPayroll: Codeunit "Payroll Calculator";
             begin
                 Employee.TestField("Company E-Mail");
-                Payroll.GeneratePayslip(Employee."No.", MonthBeginDate);
+                CuPayroll.GeneratePayslip(Employee."No.", MonthBeginDate);
             end;
         }
     }

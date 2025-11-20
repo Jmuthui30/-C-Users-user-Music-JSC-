@@ -2,7 +2,7 @@ report 52064 "Net Pay Bank Transfer"
 {
     ApplicationArea = All;
     DefaultLayout = RDLC;
-    RDLCLayout = './src/report_layout/NetPayBankTransfer.rdl';
+    RDLCLayout = './Payroll/Report Layouts/NetPayBankTransfer.rdl';
     Caption = 'Net Pay Bank Transfer';
     dataset
     {

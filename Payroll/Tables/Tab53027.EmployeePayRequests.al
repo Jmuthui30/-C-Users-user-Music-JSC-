@@ -123,7 +123,7 @@ table 53027 "Employee Pay Requests"
         }
         field(19; "Payroll Period"; Date)
         {
-            TableRelation = if ("Employee Type" = filter(Parmanent | Partime | Locum)) "Payroll Period" where(Closed = const(false))
+            TableRelation = if ("Employee Type" = filter(Parmanent | Partime | Locum)) "Payroll Period II" where(Closed = const(false))
             else
             if ("Employee Type" = filter(Casual)) "Payroll Period Casuals";
             Caption = 'Payroll Period';

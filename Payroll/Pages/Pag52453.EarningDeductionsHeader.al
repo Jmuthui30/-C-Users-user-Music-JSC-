@@ -132,7 +132,7 @@ page 52453 "Earning & Deductions Header"
     }
 
     var
-        PayPeriod: Record "Payroll Period";
+        PayPeriod: Record "Payroll Period II";
         PayrollMgt: Codeunit Payroll;
         "Earn&Ded": XMLport "Import Earnings & Deductions";
 }

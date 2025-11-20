@@ -17,7 +17,7 @@ table 51808 "Inspection Header"
 
             trigger OnValidate()
             begin
-                if Supplier.Get("Supplier No.")then "Supplier Name":=Supplier.Name;
+                if Supplier.Get("Supplier No.") then "Supplier Name" := Supplier.Name;
             end;
         }
         field(5; "Supplier Name"; Text[50])
@@ -37,7 +37,7 @@ table 51808 "Inspection Header"
         }
         field(10; "Total Value"; Decimal)
         {
-            CalcFormula = Sum("Inspection Lines"."Total Cost" WHERE("No."=FIELD(No)));
+            CalcFormula = Sum("Inspection Lines"."Total Cost" WHERE("No." = FIELD(No)));
             FieldClass = FlowField;
         }
         field(11; "Invoice No."; Code[20])
@@ -72,17 +72,24 @@ table 51808 "Inspection Header"
     }
     trigger OnInsert()
     begin
-        if(No = '')then begin
+        if (No = '') then begin
             PurchaseSetup.Get;
             PurchaseSetup.TestField("Inspection Nos.");
-            NoSeriesMgt.InitSeries(PurchaseSetup."Inspection Nos.", xRec.No, 0D, No, "No. Series");
+            // NoSeriesMgt.InitSeries(PurchaseSetup."Inspection Nos.", xRec.No, 0D, No, "No. Series");
+            if NoSeriesMgt.AreRelated(PurchaseSetup."Inspection Nos.",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=PurchaseSetup."Inspection Nos.";
+            "No":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
-        Date:=Today;
-        "Created By":=UserId;
-        "Completion/Delivery Date":=Today;
-        "Reviewed By":=PurchaseSetup."Inspection Reviewer";
+        Date := Today;
+        "Created By" := UserId;
+        "Completion/Delivery Date" := Today;
+        "Reviewed By" := PurchaseSetup."Inspection Reviewer";
     end;
-    var PurchaseSetup: Record "Procurement Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    Supplier: Record Vendor;
+
+    var
+        PurchaseSetup: Record "Procurement Setup";
+        NoSeriesMgt: Codeunit "No. Series";
+        Supplier: Record Vendor;
 }

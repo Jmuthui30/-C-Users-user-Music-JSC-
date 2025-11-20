@@ -159,14 +159,19 @@ table 51008 "Votebook Transfer"
 
     var
         CashManagementSetup: Record "Cash Management Setups";
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series";
 
     trigger OnInsert()
     begin
         if No = '' then begin
             CashManagementSetup.Get();
             CashManagementSetup.TestField("Proposed Budget Approval Nos");
-            NoSeriesManagement.InitSeries(CashManagementSetup."Proposed Budget Approval Nos", xRec."No. Series", 0D, No, "No. Series");
+            // NoSeriesManagement.InitSeries(CashManagementSetup."Proposed Budget Approval Nos", xRec."No. Series", 0D, No, "No. Series");
+            if NoSeriesManagement.AreRelated(CashManagementSetup."Proposed Budget Approval Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=CashManagementSetup."Proposed Budget Approval Nos";
+            "No":=NoSeriesManagement.GetNextNo("No. Series",WorkDate());
         end;
 
         "Raised By" := UserId;

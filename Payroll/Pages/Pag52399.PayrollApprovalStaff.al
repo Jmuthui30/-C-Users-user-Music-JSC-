@@ -317,7 +317,7 @@ page 52399 "Payroll Approval-Staff"
     var
         AssgnMatrix: Record "Assignment Matrix";
         EmpRec: Record Employee;
-        PayrollPeriodX: Record "Payroll Period";
+        PayrollPeriodX: Record "Payroll Period II";
         HELBReport: Report HELB;
         MasterRoll: Report "Master Roll Report II";
         MonthlyPAYE: Report "Monthly PAYE Reportx";

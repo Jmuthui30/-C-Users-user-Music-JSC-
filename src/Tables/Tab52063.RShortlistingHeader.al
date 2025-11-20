@@ -137,7 +137,12 @@ table 52063 "R.Shortlisting Header"
         if "No." = '' then begin
             HRSetup.Get();
             HRSetup.TestField("Shortlisting Criteria");
-            NoSeriesMgt.InitSeries(HRSetup."Shortlisting Criteria", xRec."No Series", 0D, "No.", "No Series");
+            // NoSeriesMgt.InitSeries(HRSetup."Shortlisting Criteria", xRec."No Series", 0D, "No.", "No Series");
+            if NoSeriesMgt.AreRelated(HRSetup."Shortlisting Criteria",xRec."No Series") then
+            "No Series":=xRec."No Series"
+            else
+            "No Series":=HRSetup."Shortlisting Criteria";
+            "No.":=NoSeriesMgt.GetNextNo("No Series",WorkDate());
         end;
     end;
 
@@ -145,7 +150,7 @@ table 52063 "R.Shortlisting Header"
         CompanyJob: Record "Company Job";
         HRSetup: Record "Human Resources Setup";
         RecruitNeed: Record "Recruitment Needs";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
 }
 
 

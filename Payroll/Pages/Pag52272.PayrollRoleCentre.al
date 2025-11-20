@@ -59,7 +59,7 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                 }
                 action(Earnings)
                 {
-                    RunObject = page "EarningS";
+                    RunObject = page Earning;
                     ApplicationArea = All;
                     ToolTip = 'Executes the Earnings action';
                     Caption = 'Earnings';
@@ -133,12 +133,12 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                 {
                     Caption = 'Banks';
                     ApplicationArea = All;
-                    RunObject = page "Banks List";
+                    RunObject = page Banks;
                     ToolTip = 'Executes the Banks action';
                 }
                 action("Bank Branches")
                 {
-                    RunObject = page "Bank Branches";
+                    RunObject = page "Bank Branches List";
                     ApplicationArea = All;
                     ToolTip = 'Executes the Bank Branches action';
                     Caption = 'Bank Branches';
@@ -351,19 +351,20 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                     action("Employee Bank Details")
                     {
                         Image = "Report";
-                        RunObject = report "Employee Bank Details";
+                        // RunObject = report "Employee Bank Details";
+                        RunObject = report "Client Bank Instruction";
                         ApplicationArea = All;
                         ToolTip = 'Executes the Employee Bank Details action';
                         Caption = 'Employee Bank Details';
                     }
 
                 }
-                group("Management Reports ")
+                group("Management Reports ") 
                 {
                     Caption = 'Management Reports';
                     action("Master Roll Reports")
                     {
-                        RunObject = report "Master Roll Report";
+                        RunObject = report "Master Roll Report II";
                         ApplicationArea = All;
                         ToolTip = 'Executes the Master Roll Report action';
                         Caption = 'Master Roll Report';
@@ -549,6 +550,374 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                     }
                 }
             }
+            // group(Reports)
+            // {
+            //     Caption = 'Reports';
+
+            //     group("Management Reports")
+            //     {
+            //         Caption = 'Management Reports';
+            //         Image = ReferenceData;
+
+            //         action(Payslips)
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Payslips';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Client Payslip";
+            //             ToolTip = 'View Employee Payslips';
+            //         }
+            //         action("Master Roll")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Master Roll';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             // RunObject = Report "Client Master Roll Report";
+            //             RunObject = Report "Client Master Roll Report2";
+            //             ToolTip = 'View Master Roll Report';
+            //         }
+            //         action("Monthly PAYE Report")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Monthly PAYE Report';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Client Monthly PAYE Report";
+            //             ToolTip = 'View the monthly PAYE Report';
+            //         }
+            //         action("Earnings Report")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Earnings Report';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Client Earnings";
+            //             ToolTip = 'View Earnings Report';
+            //         }
+            //         action("Deductions Report")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Deductions Report';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Client Deductions";
+            //         }
+            //         action("Third Parties Deductions Report")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Third Parties Deductions Report';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Client Deduction-Institution";
+            //         }
+            //         action("Total Deductions Only Per Employee")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Total Deductions Only Per Employee';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Total Deductions/Employee";
+            //         }
+            //         action("Total Earnings Only Per Employee")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Total Earnings Only Per Employee';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Total Earnings/Employee";
+            //         }
+            //         action("Bank List")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Bank List';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Bank List";
+            //             ToolTip = 'View Bank List Report';
+            //         }
+            //         action("Bank Instruction")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Bank Instruction';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Client Bank Instruction";
+            //             ToolTip = 'Generate Instruction to the Bank';
+            //         }
+            //         action("Client Wage Bill")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Client Wage Bill';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Client Wage Bill";
+            //             ToolTip = 'View the Company Totals Report';
+            //         }
+            //         action("Client Total Payroll Cost")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Client Wagebill Per Employee Group';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Client Total Payroll Cost";
+            //             ToolTip = 'Client Total Payroll Cost';
+            //         }
+            //         action("Client A Third Rule Report")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Client A Third Rule Report';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "A Third Rule Report";
+            //             ToolTip = 'View Client A Third Rule Report';
+            //         }
+            //         action("Company Totals")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Company Totals';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Client Company Totals";
+            //             ToolTip = 'View the Company Totals Report';
+            //         }
+            //         action("Variance(Net Pay)")
+            //         {
+            //             ApplicationArea = Basic, Suite;
+            //             Caption = 'Variance(Net Pay)';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Payroll Recon Combined";
+            //         }
+            //         action("Variance(Detail)")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Detailed Variance Report';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Payroll Reconciliation";
+            //         }
+            //         action("Earnings Variance Report")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Earnings Variance Report';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Client Earn.Variance Recon.";
+            //         }
+            //         action("12 Month Report")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = '12 Month Report';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Client Salary 12 Month Report";
+            //         }
+
+
+            //         //   Payroll Reconciliation new
+
+            //     }
+            //     group("Statutory Reports")
+            //     {
+            //         Caption = 'Statutory Reports';
+            //         Image = ReferenceData;
+
+            //         action(P9A)
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'P9A';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Client P9A";
+            //             ToolTip = 'View Employee P9A Report';
+            //         }
+            //         action("P10 B")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'KRA ITAX P10 Report';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "KRA ITAX P10 Report";
+            //             ToolTip = 'View Employee P10 B Report';
+            //         }
+            //         action("Housing Levy")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'Housing Levy';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Housing Levy";
+            //             ToolTip = 'View Employee Housing Levy Report';
+            //         }
+            //         action("P10 A")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'P10 A';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "P10 A";
+            //             ToolTip = 'View Employee P10 A Report';
+            //         }
+            //         action("SHIF Report")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'SHIF Report';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Client SHIF";
+            //             ToolTip = 'View SHIF Report';
+            //         }
+            //         action("PROVIDENT")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'PROVIDENT Fund Report';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Client Provident Fund";
+            //             ToolTip = 'View PROVIDENT Fund Report';
+            //         }
+            //         action("PROVIDENT Arrears")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'PROVIDENT Fund Arrears Report';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Client Provident Fund Arrears";
+            //             ToolTip = 'View PROVIDENT Fund Arrears Report';
+            //         }
+            //         action("NSSF Report")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'NSSF Report';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Client NSSF";
+            //             ToolTip = 'View NSSF Report';
+            //         }
+            //         action("NSSF Report New")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'NSSF Report new';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report NSSF;
+            //             ToolTip = 'View NSSF Report';
+            //         }
+            //         action("NSSF Report New1")
+            //         {
+            //             ApplicationArea = All;
+            //             Caption = 'NSSF Report new1';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "NSSF New";
+            //             ToolTip = 'View NSSF Report';
+            //         }
+            //     }
+            //     group("Employee Statistics")
+            //     {
+            //         action("Employee Details")
+            //         {
+            //             ApplicationArea = Basic, Suite;
+            //             Caption = 'Employee Details';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Employee Details";
+            //             ToolTip = 'View Employee Details';
+            //         }
+            //         action("Staff Changes")
+            //         {
+            //             ApplicationArea = Basic, Suite;
+            //             Caption = 'Staff Changes';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Staff Changes Report";
+            //             ToolTip = 'View Staff Changes Report';
+            //         }
+            //         action("Payroll Reconciliation new")
+            //         {
+            //             ApplicationArea = Basic, Suite;
+            //             Caption = 'Payroll Reconciliation new';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Payroll Reconciliation new";
+            //         }
+            //         action("Payroll Reconciliationtest")
+            //         {
+            //             ApplicationArea = Basic, Suite;
+            //             Caption = 'Payroll Reconciliation test';
+            //             Image = "Report";
+            //             Promoted = true;
+            //             PromotedCategory = "Report";
+            //             PromotedIsBig = true;
+            //             RunObject = Report "Payroll Reconciliation test";
+            //         }
+            //     }
+            // }
+    
             group("Loan ")
             {
                 Image = Calculator;

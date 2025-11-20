@@ -298,7 +298,12 @@ table 53037 "Employee Acting Position"
         if No = '' then begin
             HRSetup.Get();
             HRSetup.TestField("Acting Nos");
-            NoSeriesMgt.InitSeries(HRSetup."Acting Nos", xRec."No Series", 0D, No, "No Series");
+            // NoSeriesMgt.InitSeries(HRSetup."Acting Nos", xRec."No Series", 0D, No, "No Series");
+            if NoSeriesMgt.AreRelated(HRSetup."Acting Nos",xRec."No Series") then
+            "No Series":=xRec."No Series"
+            else
+            "No Series":=HRSetup."Acting Nos";
+            "No":=NoSeriesMgt.GetNextNo("No Series",WorkDate());
         end;
 
         "Request Date" := Today;
@@ -324,9 +329,9 @@ table 53037 "Employee Acting Position"
         Employee: Record Employee;
         Acting: Record "Employee Acting Position";
         HRSetup: Record "Human Resources Setup";
-        PayPeriod: Record "Payroll Period";
+        PayPeriod: Record "Payroll Period II";
         UserSetup: Record "User Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         PayrollManagement: Codeunit "Payroll";
 }
 

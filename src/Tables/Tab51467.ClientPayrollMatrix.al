@@ -393,7 +393,7 @@ table 51467 "Client Payroll Matrix"
                                     end;
                                 end;
                                 if Deductions."Calculation Method" = Deductions."Calculation Method"::"% of Basic + Regular Allowances" then begin
-                                    if Empl.Get("Employee No") then begin
+                                    if Empl.Get("Employee No") then begin 
                                         Empl.SetRange(Empl."No.", "Employee No");
                                         //Message('no%1', "Employee No");
                                         Empl.SetRange(Empl."Pay Period Filter", "Payroll Period");
@@ -408,7 +408,7 @@ table 51467 "Client Payroll Matrix"
                                 end;
                                 //End Calculate CMFIU PAYE2
                                 //Added by Jacob
-                                //Salary Recovery
+                                //Salary Recovery 
                                 SalaryRecoveryAmt := 0;
                                 if Deductions."Calculation Method" = Deductions."Calculation Method"::"% of Salary Recovery" then begin
                                     if Empl.Get("Employee No") then begin

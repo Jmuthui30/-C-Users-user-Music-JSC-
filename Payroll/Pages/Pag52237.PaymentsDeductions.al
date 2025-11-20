@@ -49,7 +49,8 @@ page 52237 "Payments & Deductions"
                 field("Amount (FCY)"; Rec."Amount (FCY)")
                 {
                     ToolTip = 'Specifies the value of the Amount (FCY) field.';
-                    Visible = Rec.Type = Rec.Type::Earning;
+                    // Visible = Rec.Type = Rec.Type::Earning;
+                    Visible = false;
                 }
                 field(Amount; Rec.Amount)
                 {

@@ -14,14 +14,14 @@ table 52194 "Contract Commitment Header"
         field(4; "Type of Commitment"; Option)
         {
             OptionCaption = 'Contracted Services,Salaries,,,,,,,,,,Other';
-            OptionMembers = "Contracted Services", Salaries, , , , , , , , , , Other;
+            OptionMembers = "Contracted Services",Salaries,,,,,,,,,,Other;
         }
         field(5; Commited; Boolean)
         {
         }
         field(6; "Total Amount"; Decimal)
         {
-            CalcFormula = Sum("Contract Commitment Lines".Amount WHERE("No."=FIELD("No.")));
+            CalcFormula = Sum("Contract Commitment Lines".Amount WHERE("No." = FIELD("No.")));
             FieldClass = FlowField;
         }
         field(7; Narration; Text[30])
@@ -46,11 +46,18 @@ table 52194 "Contract Commitment Header"
         if "No." = '' then begin
             AdvancedFinanceSetup.Get;
             AdvancedFinanceSetup.TestField("Contract Commitment Nos.");
-            NoSeriesMgt.InitSeries(AdvancedFinanceSetup."Contract Commitment Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(AdvancedFinanceSetup."Contract Commitment Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(AdvancedFinanceSetup."Contract Commitment Nos.",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=AdvancedFinanceSetup."Contract Commitment Nos.";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
-        Date:=Today;
-        "Created By":=UserId;
+        Date := Today;
+        "Created By" := UserId;
     end;
-    var AdvancedFinanceSetup: Record "Advanced Finance Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
+
+    var
+        AdvancedFinanceSetup: Record "Advanced Finance Setup";
+        NoSeriesMgt: Codeunit "No. Series";
 }

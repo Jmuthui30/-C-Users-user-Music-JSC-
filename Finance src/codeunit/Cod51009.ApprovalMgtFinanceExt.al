@@ -80,7 +80,7 @@ codeunit 51009 "Approval Mgt Finance Ext"
         ProposedBudget: Record "G/L Budget Name";
         Payments: Record Payments;
         UserChanges: Record "User Changes";
-        NoSeries: Codeunit NoSeriesManagement;
+        NoSeries: Codeunit "No. Series";
         ApprovalAmount: Decimal;
         ApprovalAmountLCY: Decimal;
     begin

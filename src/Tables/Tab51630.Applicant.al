@@ -914,7 +914,12 @@ table 51630 "Applicant"
         if "No." = '' then begin
             HumanResSetup.Get;
             HumanResSetup.TestField("Applicants Nos.");
-            NoSeriesMgt.InitSeries(HumanResSetup."Applicants Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(HumanResSetup."Applicants Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(HumanResSetup."Applicants Nos.", xRec."No. Series") then
+                "No. Series" := xRec."No. Series"
+            else
+                "No. Series" := HumanResSetup."Applicants Nos.";
+            "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
             "Probation Period" := HumanResSetup."Probation Period";
             "Probation Termination Notice" := HumanResSetup."Probation Termination Notice";
             "Annual Leave Days" := HumanResSetup."Annual Leave Days";
@@ -951,7 +956,7 @@ table 51630 "Applicant"
         Employee: Record Applicant;
         PostCode: Record "Post Code";
         EmployeeQualification: Record "Employee Qualification";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         DimMgt: Codeunit DimensionManagement;
         Text000: Label 'Before you can use Online Map, you must fill in the Online Map Setup window.\See Setting Up Online Map in Help.';
         HRDatesExt: Codeunit "HR Dates Mgt";
@@ -963,11 +968,15 @@ table 51630 "Applicant"
         Employee := Rec;
         HumanResSetup.Get;
         HumanResSetup.TestField("Applicants Nos.");
-        if NoSeriesMgt.SelectSeries(HumanResSetup."Applicants Nos.", OldEmployee."No. Series", Employee."No. Series") then begin
-            HumanResSetup.Get;
-            HumanResSetup.TestField("Applicants Nos.");
-            NoSeriesMgt.SetSeries(Employee."No.");
-            Rec := Employee;
+        // if NoSeriesMgt.SelectSeries(HumanResSetup."Applicants Nos.", OldEmployee."No. Series", Employee."No. Series") then begin
+        //     HumanResSetup.Get;
+        //     HumanResSetup.TestField("Applicants Nos.");
+        //     NoSeriesMgt.SetSeries(Employee."No.");
+        //     Rec := Employee;
+        if NoSeriesMgt.LookupRelatedNoSeries(HumanResSetup."Applicants Nos.", OldEmployee."No. Series", "No. Series") then begin
+            "No." := '';
+            HumanResSetup.Get();
+            "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate(), true);
             exit(true);
         end;
     end;

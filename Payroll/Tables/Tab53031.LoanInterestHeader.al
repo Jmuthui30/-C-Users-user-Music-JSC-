@@ -35,12 +35,12 @@ table 53031 "Loan Interest Header"
         }
         field(6; "Period Reference"; Date)
         {
-            TableRelation = "Payroll Period"."Starting Date" where(Closed = const(false));
+            TableRelation = "Payroll Period II"."Starting Date" where(Closed = const(false));
             Caption = 'Period Reference';
 
             trigger OnValidate()
             var
-                PeriodRec: Record "Payroll Period";
+                PeriodRec: Record "Payroll Period II";
             begin
                 if PeriodRec.Get("Period Reference") then begin
                     "Period Narration" := PeriodRec.Name + ' ' + Format(Date2DMY("Period Reference", 3));
@@ -136,7 +136,12 @@ table 53031 "Loan Interest Header"
         if "No." = '' then begin
             HRSetup.Get();
             HRSetup.TestField("Loan Interest Nos");
-            NoSeriesManagement.InitSeries(HRSetup."Loan Interest Nos", xRec."No Series", 0D, "No.", "No Series");
+            // NoSeriesManagement.InitSeries(HRSetup."Loan Interest Nos", xRec."No Series", 0D, "No.", "No Series");
+            if NoSeriesManagement.AreRelated(HRSetup."Loan Interest Nos",xRec."No Series") then
+            "No Series":=xRec."No Series"
+            else
+            "No Series":=HRSetup."Loan Interest Nos";
+            "No.":=NoSeriesManagement.GetNextNo("No Series",WorkDate());
         end;
 
         "Created By" := UserId;
@@ -146,7 +151,7 @@ table 53031 "Loan Interest Header"
     var
         HRSetup: Record "Human Resources Setup";
         DimMgt: Codeunit DimensionManagement;
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series";
 
     procedure ShowDocDim()
     begin

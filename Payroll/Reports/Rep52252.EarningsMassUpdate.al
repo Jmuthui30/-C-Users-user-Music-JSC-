@@ -10,8 +10,11 @@ report 52252 "Earnings Mass Update"
             RequestFilterFields = "No.", "Global Dimension 1 Code";
 
             trigger OnAfterGetRecord()
+            var
+                                CuPayroll: Codeunit Payroll;
+
             begin
-                Payroll.DefaultEarningsDeductionsAssignment(Employee);
+                CuPayroll.DefaultEarningsDeductionsAssignment(Employee);
             end;
         }
     }
@@ -32,7 +35,7 @@ report 52252 "Earnings Mass Update"
 
     var
         EarningRec: Record Earning;
-        PayPeriod: Record "Payroll Period";
+        PayPeriod: Record "Payroll Period II";
         Payroll: Codeunit Payroll;
         BeginDate: Date;
 

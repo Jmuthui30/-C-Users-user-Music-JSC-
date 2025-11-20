@@ -5,14 +5,14 @@ report 52247 "New Payslipx"
     // ArrEarnings[1,1]
     // ArrEarningsAmt[1,1]
     DefaultLayout = RDLC;
-    RDLCLayout = './src/report_layout/NewPayslipx.rdl';
+    RDLCLayout = './Payroll/Report Layouts/NewPayslipx.rdl'; 
 
     dataset
     {
         dataitem(Employee; Employee)
         {
             DataItemTableView = where("Employee type" = filter(<> "Board Member"));
-            RequestFilterFields = "Pay Period Filter","No.";
+            RequestFilterFields = "Pay Period Filter", "No.";
             column(Addr_1__1_; Addr[1] [1])
             {
             }
@@ -150,6 +150,7 @@ report 52247 "New Payslipx"
                 Clear(ArrHeadings);
                 Clear(BalanceArrayAmt);
                 GrossPay := 0;
+                NetGrossPay := 0;
                 TotalDeduction := 0;
                 Totalcoopshares := 0;
                 Totalnssf := 0;
@@ -231,6 +232,33 @@ report 52247 "New Payslipx"
                             until AssignMatrix.Next() = 0;
                     until Earn.Next() = 0;
 
+                // Get Other Allowances
+                Earn.Reset();
+                Earn.SetRange(Earn."Earning Type", Earn."Earning Type"::"Other Allowances");
+                if Earn.Find('-') then begin
+                    repeat
+                        AssignMatrix.Reset();
+                        AssignMatrix.SetRange(AssignMatrix."Payroll Period", DateSpecified);
+                        AssignMatrix.SetRange(Type, AssignMatrix.Type::Earning);
+                        AssignMatrix.SetRange(AssignMatrix."Employee No", Employee."No.");
+                        AssignMatrix.SetRange(Code, Earn.Code);
+                        if AssignMatrix.Find('-') then
+                            repeat
+                                ArrEarnings[1, i] := AssignMatrix.Description;
+                                Evaluate(ArrEarningsAmt[1, i], Format(AssignMatrix.Amount));
+                                ArrEarningsAmt[1, i] := ChckRound(ArrEarningsAmt[1, i]);
+
+                                // Only add Other Allowances here
+                                NetGrossPay := NetGrossPay + AssignMatrix.Amount;
+                                i := i + 1;
+                            until AssignMatrix.Next() = 0;
+                    until Earn.Next() = 0;
+
+                    // After summing all Other Allowances, add GrossPay once
+                    NetGrossPay := NetGrossPay + GrossPay;
+                end;
+
+
                 // Gross Pay
                 ArrEarnings[1, i] := 'GROSS PAY';
                 j := j + 1;
@@ -239,6 +267,13 @@ report 52247 "New Payslipx"
 
                 ArrEarnings[1, i] := 'Gross Pay';
                 Evaluate(ArrEarningsAmt[1, i], Format(GrossPay));
+                ArrEarningsAmt[1, i] := ChckRound(ArrEarningsAmt[1, i]);
+                j := j + 1;
+                ArrHeadings[i] := j;
+                i := i + 1;
+
+                ArrEarnings[1, i] := 'Net Gross Pay';
+                Evaluate(ArrEarningsAmt[1, i], Format(NetGrossPay));
                 ArrEarningsAmt[1, i] := ChckRound(ArrEarningsAmt[1, i]);
                 j := j + 1;
                 ArrHeadings[i] := j;
@@ -288,16 +323,16 @@ report 52247 "New Payslipx"
                 AssignMatrix.SetRange(AssignMatrix."Employee No", Employee."No.");
                 AssignMatrix.SetRange(AssignMatrix.Paye, true);
                 if AssignMatrix.Find('-') then begin
-                    ArrEarnings[1, i] := 'Pension contribution benefit';
-                    Evaluate(ArrEarningsAmt[1, i], Format(Abs(AssignMatrix."Less Pension Contribution")));
-                    ArrEarningsAmt[1, i] := ChckRound(ArrEarningsAmt[1, i]);
+                    // ArrEarnings[1, i] := 'Pension contribution benefit';
+                    // Evaluate(ArrEarningsAmt[1, i], Format(Abs(AssignMatrix."Less Pension Contribution")));
+                    // ArrEarningsAmt[1, i] := ChckRound(ArrEarningsAmt[1, i]);
                     TaxableAmt := 0;
                     PAYE := 0;
                     TaxableAmt := AssignMatrix."Taxable amount";
                     PAYE := AssignMatrix.Amount;
-
                 end;
                 i := i + 1;
+
 
                 //....................................HVs
 
@@ -559,7 +594,28 @@ report 52247 "New Payslipx"
                             until AssignMatrix.Next() = 0;
 
                     until DeductsRec.Next() = 0;
-
+                AssignMatrix.Reset();
+                AssignMatrix.SetRange(AssignMatrix."Payroll Period", DateSpecified);
+                AssignMatrix.SetRange(Type, AssignMatrix.Type::Deduction);
+                AssignMatrix.SetRange(AssignMatrix."Employee No", Employee."No.");
+                AssignMatrix.SetRange(AssignMatrix."Allowances PAYE", true);
+                if AssignMatrix.Find('-') then begin
+                    Deduct.Reset();
+                    Deduct.SetRange(Deduct."Allowances PAYE", true);
+                    Deduct.SetRange(Deduct."Pay Period Filter", DateSpecified);
+                    Deduct.SetRange(Deduct."Employee Filter", Employee."No.");
+                    if Deduct.Find('-') then begin
+                        ArrEarnings[1, i] := 'T. PAYE';
+                        Evaluate(ArrEarningsAmt[1, i], Format(AssignMatrix.Amount));
+                        ArrEarningsAmt[1, i] := ChckRound(ArrEarningsAmt[1, i]);
+                        AssignMatrix.CalcSums(Amount);
+                        PAYEAmount := AssignMatrix.Amount;
+                        ArrEarnings[1, i] := 'TOTAL PAYE';
+                        Evaluate(ArrEarningsAmt[1, i], Format(Abs(PAYEAmount + PAYE)));
+                        ArrEarningsAmt[1, i] := ChckRound(ArrEarningsAmt[1, i]);
+                        i := i + 1;
+                    end;
+                end;
 
                 ArrEarnings[1, i] := 'TOTAL DEDUCTIONS';
                 Evaluate(ArrEarningsAmt[1, i], Format(TotalDeduction));
@@ -756,6 +812,7 @@ report 52247 "New Payslipx"
         BalanceArrayAmt: array[3, 100] of Decimal;
         EmpArray: array[10, 15] of Decimal;
         GrossPay: Decimal;
+        NetGrossPay: Decimal;
         NetPay: Decimal;
         PAYE: Decimal;
         TaxableAmt: Decimal;
@@ -786,6 +843,7 @@ report 52247 "New Payslipx"
         Message1: Text[250];
         Message2: array[3, 1] of Text[250];
         SHIFAmount: Decimal;
+        PAYEAmount: Decimal;
         AHLAmount: Decimal;
         ExternalPeriodFilter: Text;
 

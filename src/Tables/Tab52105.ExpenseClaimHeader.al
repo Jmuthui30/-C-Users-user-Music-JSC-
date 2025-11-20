@@ -12,27 +12,27 @@ table 52105 "Expense Claim Header"
 
             trigger OnValidate()
             begin
-                if EmpRec.Get("Employee No.")then begin
+                if EmpRec.Get("Employee No.") then begin
                     EmpRec.TestField("Global Dimension 2 Code");
-                    "Global Dimension 1 Code":=EmpRec."Global Dimension 1 Code";
-                    "Global Dimension 2 Code":=EmpRec."Global Dimension 2 Code";
-                    "Global Dimension 3 Code":=EmpRec."Global Dimension 3 Code";
+                    "Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                    "Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                    "Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
                     BankAccount.Reset();
                     BankAccount.SetRange("Account type", BankAccount."Account type"::Cash);
                     //BankAccount.SetRange("Global Dimension 2 Code", EmpRec."Global Dimension 2 Code");
-                    if BankAccount.FindFirst()then begin
-                        "Pay Mode":='CASH';
+                    if BankAccount.FindFirst() then begin
+                        "Pay Mode" := 'CASH';
                         Validate("Paying Account Code", BankAccount."No.");
-                        "Payment Tx No.(Cheque No.)":="No.";
+                        "Payment Tx No.(Cheque No.)" := "No.";
                     end
                     else
                         Error(Text000);
                 end;
-                if NAVEmp.Get("Employee No.")then begin
-                    "Job Title":=NAVEmp."Job Title";
-                    "Employee Name":=NAVEmp."First Name" + ' ' + NAVEmp."Last Name";
-                    "Payment To":=NAVEmp."First Name" + ' ' + NAVEmp."Last Name";
-                    "On Behalf of":=NAVEmp.FullName();
+                if NAVEmp.Get("Employee No.") then begin
+                    "Job Title" := NAVEmp."Job Title";
+                    "Employee Name" := NAVEmp."First Name" + ' ' + NAVEmp."Last Name";
+                    "Payment To" := NAVEmp."First Name" + ' ' + NAVEmp."Last Name";
+                    "On Behalf of" := NAVEmp.FullName();
                 end;
             end;
         }
@@ -43,19 +43,19 @@ table 52105 "Expense Claim Header"
         {
             CaptionClass = '1,1,1';
             Caption = 'Department';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
         }
         field(5; "Global Dimension 2 Code"; Code[20])
         {
             CaptionClass = '1,1,2';
             Caption = 'Global Dimension 1 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
         field(6; "Global Dimension 3 Code"; Code[20])
         {
             CaptionClass = '1,2,3';
             Caption = 'Global Dimension 3 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(3));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(3));
         }
         field(7; Date; Date)
         {
@@ -65,7 +65,7 @@ table 52105 "Expense Claim Header"
         {
             Editable = false;
         }
-        field(9; Status;Enum "Document Status")
+        field(9; Status; Enum "Document Status")
         {
             Editable = false;
         }
@@ -80,7 +80,7 @@ table 52105 "Expense Claim Header"
 
             trigger OnValidate()
             begin
-                if BankAccount.Get("Paying Account Code")then "Account Name":=BankAccount.Name;
+                if BankAccount.Get("Paying Account Code") then "Account Name" := BankAccount.Name;
             end;
         }
         field(12; "Account Name"; Text[30])
@@ -105,7 +105,7 @@ table 52105 "Expense Claim Header"
         }
         field(17; "Total Amount"; Decimal)
         {
-            CalcFormula = Sum("Expense Claim Details".Amount WHERE(No=FIELD("No.")));
+            CalcFormula = Sum("Expense Claim Details".Amount WHERE(No = FIELD("No.")));
             FieldClass = FlowField;
         }
         field(18; Posted; Boolean)
@@ -152,14 +152,14 @@ table 52105 "Expense Claim Header"
         }
         field(28; Approvers; Integer)
         {
-            CalcFormula = Count("Approval Entry" WHERE("Table ID"=CONST(52105), "Document No."=FIELD("No."), Status=FILTER(Approved)));
+            CalcFormula = Count("Approval Entry" WHERE("Table ID" = CONST(52105), "Document No." = FIELD("No."), Status = FILTER(Approved)));
             FieldClass = FlowField;
             Caption = 'Approvers';
             Editable = false;
         }
         field(29; "Pending Approvals Ext"; Integer)
         {
-            CalcFormula = Count("Approval Entry" WHERE("Table ID"=CONST(52105), "Document No."=FIELD("No."), Status=FILTER(Open|Created)));
+            CalcFormula = Count("Approval Entry" WHERE("Table ID" = CONST(52105), "Document No." = FIELD("No."), Status = FILTER(Open | Created)));
             Caption = 'Pending Approvals';
             FieldClass = FlowField;
             Editable = false;
@@ -178,28 +178,36 @@ table 52105 "Expense Claim Header"
     begin
         TestField(Status, Status::Open);
     end;
+
     trigger OnInsert()
     begin
         if "No." = '' then begin
             AdvancedFinanceSetup.Get;
             AdvancedFinanceSetup.TestField("Petty Cash Nos");
-            NoSeriesMgt.InitSeries(AdvancedFinanceSetup."Petty Cash Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(AdvancedFinanceSetup."Petty Cash Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(AdvancedFinanceSetup."Petty Cash Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=AdvancedFinanceSetup."Petty Cash Nos";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
-        Date:=Today;
-        "Created By":=UserId;
+        Date := Today;
+        "Created By" := UserId;
         if not "Created for Staff" then begin
-            if UserSetup.Get(UserId)then begin
-                "Employee No.":=UserSetup."Employee No.";
+            if UserSetup.Get(UserId) then begin
+                "Employee No." := UserSetup."Employee No.";
                 Validate("Employee No.");
             end;
         end;
     end;
-    var EmpRec: Record "Employee Master";
-    NAVEmp: Record Employee;
-    AdvancedFinanceSetup: Record "Advanced Finance Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    UserSetup: Record "User Setup";
-    BankAccount: Record "Bank Account";
-    FinanceMgnt: Codeunit "Finance Management";
-    Text000: Label 'Please Contact Admin for Petty Cash Account to be Set';
+
+    var
+        EmpRec: Record "Employee Master";
+        NAVEmp: Record Employee;
+        AdvancedFinanceSetup: Record "Advanced Finance Setup";
+        NoSeriesMgt: Codeunit "No. Series";
+        UserSetup: Record "User Setup";
+        BankAccount: Record "Bank Account";
+        FinanceMgnt: Codeunit "Finance Management";
+        Text000: Label 'Please Contact Admin for Petty Cash Account to be Set';
 }

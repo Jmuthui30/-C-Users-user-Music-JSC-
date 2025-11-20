@@ -594,7 +594,7 @@ report 52248 "Transfer Journal to GL-New"
         HRSetup: Record "Human Resources Setup";
         Loanproduct: Record "Loan Product Type-Payroll";
         LoanApp: Record "Payroll Loan Application";
-        PayrollPeriod: Record "Payroll Period";
+        PayrollPeriod: Record "Payroll Period II";
         GenJnlManagement: Codeunit GenJnlManagement;
         PayrollMgt: Codeunit Payroll;
         TransferLoans: Boolean;
@@ -643,14 +643,14 @@ report 52248 "Transfer Journal to GL-New"
 
     procedure GetCurrentPeriod()
     var
-        PayPeriodRec: Record "Payroll Period";
+        PayPeriodRec: Record "Payroll Period II";
     begin
         PayPeriodRec.SetRange(PayPeriodRec.Closed, false);
         if PayPeriodRec.Find('-') then
             PeriodStartDate := PayPeriodRec."Starting Date";
     end;
 
-    procedure GetPayPeriod(var PayPeriods: Record "Payroll Period")
+    procedure GetPayPeriod(var PayPeriods: Record "Payroll Period II")
     begin
         PayrollPeriod := PayPeriods;
     end;

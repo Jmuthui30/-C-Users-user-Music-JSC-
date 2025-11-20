@@ -2,7 +2,7 @@ report 52040 "Payroll Reconciliation Summary"
 {
     ApplicationArea = All;
     DefaultLayout = RDLC;
-    RDLCLayout = './src/report_layout/PayrollReconciliationSummary.rdl';
+    RDLCLayout = './Payroll/Report Layouts/PayrollReconciliationSummary.rdl';
     Caption = 'Payroll Reconciliation Summary';
     dataset
     {
@@ -68,6 +68,9 @@ report 52040 "Payroll Reconciliation Summary"
             }
 
             trigger OnAfterGetRecord()
+            var
+                                CuPayroll: Codeunit Payroll;
+
             begin
                 if AssignmentMatrix.Type = AssignmentMatrix.Type::Earning then begin
                     if Earning.Get(AssignmentMatrix.Code) then
@@ -96,7 +99,7 @@ report 52040 "Payroll Reconciliation Summary"
                 end;
                 ApprovalEntries.Reset();
                 ApprovalEntries.SetRange("Table ID", Database::"Payroll Approval");
-                ApprovalEntries.SetRange("Document No.", PayrollMgt.GetPayrollApprovalCode(DateSpecified));
+                ApprovalEntries.SetRange("Document No.", CuPayroll.GetPayrollApprovalCode(DateSpecified));
                 ApprovalEntries.SetRange(Status, ApprovalEntries.Status::Approved);
                 if ApprovalEntries.Find('-') then
                     repeat

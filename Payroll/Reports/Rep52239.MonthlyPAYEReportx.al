@@ -2,7 +2,7 @@ report 52239 "Monthly PAYE Reportx"
 {
     ApplicationArea = All;
     DefaultLayout = RDLC;
-    RDLCLayout = './src/report_layout/MonthlyPAYEReportx.rdl';
+    RDLCLayout = './Payroll/Report Layouts/MonthlyPAYEReportx.rdl';
     Caption = 'Monthly PAYE Reportx';
     dataset
     {
@@ -47,9 +47,9 @@ report 52239 "Monthly PAYE Reportx"
             column(First_Name_________Middle_Name________Last_Name_; "First Name" + '  ' + "Middle Name" + '  ' + "Last Name")
             {
             }
-            // column(Employee__PIN_Number_; "PIN Number")
-            // {
-            // }
+            column(Employee__PIN_Number_; "PIN Number")
+            {
+            }
             column(Employee_Employee__Taxable_Income_; Employee."Taxable Income")
             {
             }
@@ -197,6 +197,9 @@ report 52239 "Monthly PAYE Reportx"
 
             //, , "No.", "Global Dimension 1 Code", "Global Dimension 2 Code"
             trigger OnAfterGetRecord()
+            var
+                                CuPayroll: Codeunit Payroll;
+
             begin
                 GetDefaults(PayApprovalCode);
 
@@ -220,7 +223,7 @@ report 52239 "Monthly PAYE Reportx"
                 if PayApprovalCode <> '' then
                     ApprovalEntries.SetRange("Document No.", PayApprovalCode)
                 else
-                    ApprovalEntries.SetRange("Document No.", Payroll.GetPayrollApprovalCode(DateSpecified));
+                    ApprovalEntries.SetRange("Document No.", CuPayroll.GetPayrollApprovalCode(DateSpecified));
                 ApprovalEntries.SetRange(Status, ApprovalEntries.Status::Approved);
                 if ApprovalEntries.Find('-') then
                     repeat
@@ -313,7 +316,7 @@ report 52239 "Monthly PAYE Reportx"
     var
         ApprovalEntries: Record "Approval Entry";
         CompanyRec: Record "Company Information";
-        PayPeriod: Record "Payroll Period";
+        PayPeriod: Record "Payroll Period II";
         UserSetup: Record "User Setup";
         UserSetup1: Record "User Setup";
         UserSetup2: Record "User Setup";

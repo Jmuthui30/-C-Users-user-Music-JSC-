@@ -42,7 +42,7 @@ table 53001 "Deduction"
         }
         field(11; "Calculation Method"; Option)
         {
-            OptionMembers = "Flat Amount","% of Basic Pay","Based on Table","Based on Hourly Rate","Based on Daily Rate ","% of Gross Pay","% of Basic Pay+Hse Allowance",Formula,"% of Basic Pay+Hse Allowance + Comm Allowance + Sal Arrears","% of Other Earnings","Based on Monthly Contributions","% of Other Deductions";
+            OptionMembers = "Flat Amount","% of Basic Pay","Based on Table","Based on Hourly Rate","Based on Daily Rate ","% of Gross Pay","% of Basic Pay+Hse Allowance",Formula,"% of Basic Pay+Hse Allowance + Comm Allowance + Sal Arrears","% of Other Earnings","Based on Monthly Contributions","% of Other Deductions","% of Salary Recovery";
             Caption = 'Calculation Method';
         }
         field(12; "Account No."; Code[20])
@@ -111,7 +111,7 @@ table 53001 "Deduction"
         field(21; "Pay Period Filter"; Date)
         {
             FieldClass = FlowFilter;
-            TableRelation = "Payroll Period";
+            TableRelation = "Payroll Period II";
             Caption = 'Pay Period Filter';
         }
         field(26; "Pension Scheme"; Boolean)
@@ -461,6 +461,10 @@ table 53001 "Deduction"
         {
             TableRelation = "Dimension Value".Code where ("Global Dimension No." = const(4));
             Caption = 'Country Code';
+        }
+        field(94; "Allowances PAYE"; Boolean)
+        {
+            Caption = 'Allowances PAYE';
         }
     }
 
