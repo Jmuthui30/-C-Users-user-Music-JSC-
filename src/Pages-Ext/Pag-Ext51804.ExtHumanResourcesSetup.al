@@ -115,6 +115,14 @@ pageextension 51804 "ExtHuman Resources Setup" extends "Human Resources Setup"
             {
                 ApplicationArea = all;
             }
+            field("General Payslip Message"; "General Payslip Message")
+            {
+                ApplicationArea = all;
+            }
+            field("Human Resource Emails"; "Human Resource Emails")
+            {
+                ApplicationArea = all;
+            }
             field("Exit Nos"; Rec."Exit Nos")
             {
                 ApplicationArea = All;

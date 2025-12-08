@@ -520,7 +520,7 @@ table 51467 "Client Payroll Matrix"
                 if (Type = Type::Payment) then
                     if Payments.Get(Company, Code) then
                         if Payments."Reduces Tax" then begin
-                            //Amount := Amount;
+                            // Amount := Amount;
                         end;
                 if (Type = Type::Payment) then if Amount < 0 then Error('Earning must not be negative');
                 if (Type = Type::Payment) then if Payments."Salary Recovery" then if (Amount > 0) then Amount := -Amount;

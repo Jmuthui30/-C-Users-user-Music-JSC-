@@ -68,7 +68,7 @@ tableextension 51802 "ExtHuman Resources Setup" extends "Human Resources Setup"
         {
             DataClassification = ToBeClassified;
         }
-        field(50016; "General Payslip Message"; Text[100])
+        field(50016; "General Payslip Message"; Text[2048])
         {
             DataClassification = ToBeClassified;
         }
