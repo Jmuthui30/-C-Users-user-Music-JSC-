@@ -13,7 +13,7 @@ table 51481 "Client Deductions"
 
             trigger OnValidate()
             begin
-                if DeductionsMaster.Get(Code)then begin
+                if DeductionsMaster.Get(Code) then begin
                     Init;
                     TransferFields(DeductionsMaster);
                     Insert;
@@ -25,7 +25,7 @@ table 51481 "Client Deductions"
         }
         field(3; Type; Option)
         {
-            OptionMembers = Recurring, "Non-recurring";
+            OptionMembers = Recurring,"Non-recurring";
         }
         field(6; "Reduces Taxable Amt"; Boolean)
         {
@@ -36,7 +36,7 @@ table 51481 "Client Deductions"
         field(10; Percentage; Decimal)
         {
         }
-        field(11; "Calculation Method";Enum DeductionCalculationType)
+        field(11; "Calculation Method"; Enum DeductionCalculationType)
         {
         }
         field(12; "G/L Account"; Code[10])
@@ -48,7 +48,7 @@ table 51481 "Client Deductions"
         }
         field(14; "Total Amount"; Decimal)
         {
-            CalcFormula = Sum("Client Payroll Matrix".Amount WHERE("Employee No"=FIELD("Employee Filter"), Type=FILTER(Deduction|"Saving Scheme"), "Payroll Period"=FIELD("Pay Period Filter"), "Payroll Group"=FIELD("Employee Group Filter"), "Global Dimension 2 Code"=FIELD("Global Dimension 2 Filter"), "Reference No"=FIELD("Reference Filter"), Code=FIELD(Code), Company=FIELD(Company)));
+            CalcFormula = Sum("Client Payroll Matrix".Amount WHERE("Employee No" = FIELD("Employee Filter"), Type = FILTER(Deduction | "Saving Scheme"), "Payroll Period" = FIELD("Pay Period Filter"), "Payroll Group" = FIELD("Employee Group Filter"), "Global Dimension 2 Code" = FIELD("Global Dimension 2 Filter"), "Reference No" = FIELD("Reference Filter"), Code = FIELD(Code), Company = FIELD(Company)));
             Editable = false;
             FieldClass = FlowField;
         }
@@ -93,12 +93,12 @@ table 51481 "Client Deductions"
         }
         field(32; "Total Amount Employer"; Decimal)
         {
-            CalcFormula = Sum("Client Payroll Matrix"."Employer Amount" WHERE(Type=CONST(Deduction), Code=FIELD(Code), "Payroll Period"=FIELD("Pay Period Filter"), "Payroll Group"=FIELD("Employee Group Filter"), "Employee No"=FIELD("Employee Filter"), Company=FIELD(Company)));
+            CalcFormula = Sum("Client Payroll Matrix"."Employer Amount" WHERE(Type = CONST(Deduction), Code = FIELD(Code), "Payroll Period" = FIELD("Pay Period Filter"), "Payroll Group" = FIELD("Employee Group Filter"), "Employee No" = FIELD("Employee Filter"), Company = FIELD(Company)));
             FieldClass = FlowField;
         }
         field(33; "Loan Type"; Option)
         {
-            OptionMembers = " ", "Low Interest Benefit", "Fringe Benefit";
+            OptionMembers = " ","Low Interest Benefit","Fringe Benefit";
         }
         field(34; "Show Balance"; Boolean)
         {
@@ -114,7 +114,7 @@ table 51481 "Client Deductions"
         field(38; "Global Dimension 2 Filter"; Code[10])
         {
             FieldClass = FlowFilter;
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
         field(40; "Main Loan Code"; Code[20])
         {
@@ -216,6 +216,9 @@ table 51481 "Client Deductions"
         field(73; "NSSF Code"; Boolean)
         {
         }
+        field(74; "Mortgage"; Boolean)
+        {
+        }
     }
     keys
     {
@@ -226,5 +229,6 @@ table 51481 "Client Deductions"
     fieldgroups
     {
     }
-    var DeductionsMaster: Record "Deductions Master";
+    var
+        DeductionsMaster: Record "Deductions Master";
 }
