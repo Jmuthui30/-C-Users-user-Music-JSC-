@@ -79,6 +79,7 @@ table 53003 "Assignment Matrix"
 
                         "Non-Cash Benefit" := Payments."Non-Cash Benefit";
                         Quarters := Payments.Quarters;
+                        "Basic+Regular Allowances" := Payments."Regular Cash Allowance";
 
                         //Paydeduct:=Payments."End Date";
                         Taxable := Payments.Taxable;
@@ -456,6 +457,22 @@ Amount:=PayrollRounding(Amount);
                             "Employer Amount" := (GetBracket(Deduction, (Employee."Total Allowances" - Employee."Total Non-Recurring Allowances"), "Employee Tier I", "Employee Tier II"));
                     end;
 
+
+                    if Deduction."Calculation Method" = Deduction."Calculation Method"::"% of Basic + Regular Allowances" then begin
+                        if Employee.Get("Employee No") then begin
+                            Employee.SetRange(Employee."No.", "Employee No");
+                            // Message('no%1', "Employee No");
+                            Employee.SetRange(Employee."Pay Period Filter", "Payroll Period");
+                            Employee.CalcFields(Employee."Basic + Regular Allowances");
+                            Amount := ((Deduction.Percentage / 100) * (Employee."Basic + Regular Allowances")); //Empl.Basic+
+                            Amount := PayrollRounding(Amount); //round
+                            "Employer Amount" := ((Deduction."Percentage Employer" / 100) * (Employee."Basic + Regular Allowances"));
+                            "Employer Amount" := PayrollRounding("Employer Amount"); //round
+                                                                                     // "Taxable amount" := Employee."Basic + Regular Allowances"; //Empl.Basic+//"Employer Amount":=(Deductions."Percentage Employer"/100)*(
+                                                                                     //  "Employer Amount":=PayrollRounding("Employer Amount");//round
+                        end;
+                    end;
+
                     /* if Deductions."Calculation Method"=Deductions."Calculation Method"::Formula then begin
                         Employee.SetRange("Pay Period Filter","Payroll Period");
                         Formula:=PayrollMgt.GetPureFormula("Employee No","Payroll Period",Deductions.);
@@ -555,8 +572,9 @@ Amount:=PayrollRounding(Amount);
                             if ((Employee."Total Allowances" + Employee."Total Deductions")) < 0 then
                                 Message(NegativePayErr, "Employee No", Employee."Total Allowances", Employee."Total Deductions", Description);
                         end;
+
                 end;
-                TestField(Closed, false);
+                // TestField(Closed, false);
                 //Added
                 /*
                 if "Loan Repay"=true then
@@ -589,7 +607,7 @@ Amount:=PayrollRounding(Amount);
 
             trigger OnValidate()
             begin
-                TestField(Closed, false);
+                // TestField(Closed, false);
             end;
         }
         field(10; Taxable; Boolean)
@@ -1192,6 +1210,21 @@ Amount:=PayrollRounding(Amount);
         field(108; "Allowances PAYE"; Boolean)
         {
             Caption = 'Allowances PAYE';
+        }
+        field(109; "Basic+Regular Allowances"; Boolean)
+        {
+        }
+        field(110; Balance; Decimal)
+        {
+            Caption = 'Balance';
+        }
+        field(111; NSSF; Boolean)
+        {
+            Caption = 'NSSF';
+        }
+        field(112; "Balance Updated"; Boolean)
+        {
+
         }
 
     }

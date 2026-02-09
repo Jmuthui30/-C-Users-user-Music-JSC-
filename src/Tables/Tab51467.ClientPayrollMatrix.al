@@ -67,7 +67,7 @@ table 51467 "Client Payroll Matrix"
                                 "Non-Cash Benefit" := Payments."Non-Cash Benefit";
                                 Taxable := Payments.Taxable;
                                 // MESSAGE('Taxable=%1',Taxable);
-                                "Reduces Taxable Amt" := Payments."Reduces Tax";
+                                "Reduces Taxable Amt" := Payments."Reduces Tax"; 
                                 if Payments."Pay Type" = Payments."Pay Type"::Recurring then
                                     "Next Period Entry" := true
                                 else

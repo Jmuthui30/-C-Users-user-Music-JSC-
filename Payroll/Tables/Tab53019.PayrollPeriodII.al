@@ -15,7 +15,7 @@ table 53019 "Payroll Period II"
                 Name := Format("Starting Date", 0, '<Month Text>');
             end;
         }
-        field(2; Name; Text[10])
+        field(2; Name; Text[100])
         {
             Caption = 'Name';
         }

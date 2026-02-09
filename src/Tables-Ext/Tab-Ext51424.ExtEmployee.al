@@ -1386,6 +1386,12 @@ tableextension 51424 "ExtEmployee" extends "Employee"
             TableRelation = "Employee Pay Modes";
             Caption = 'Pay Mode';
         }  
+        field(52388; "Basic + Regular Allowances"; Decimal)
+        {
+            CalcFormula = Sum("Assignment Matrix".Amount WHERE(Type = CONST(Earning), "Employee No" = FIELD("No."), "Payroll Period" = FIELD("Pay Period Filter"), "Basic+Regular Allowances" = CONST(true), "Normal Earnings" = CONST(true)));
+            Editable = false;
+            FieldClass = FlowField;
+        }
          field(52050; "Taxable Income"; Decimal)
         {
             CalcFormula = sum("Assignment Matrix".Amount where("Employee No" = field("No."),
@@ -1534,6 +1540,10 @@ tableextension 51424 "ExtEmployee" extends "Employee"
         field(52236;"Home Ownership Status"; Option)
         {
             OptionMembers = "None", "Owner Occupier", "Home Savings";
+        }
+         field(52237; "Employee Group"; Code[20])
+        {
+            TableRelation = "Employee Groups";
         }
     }
 

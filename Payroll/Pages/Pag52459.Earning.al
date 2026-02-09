@@ -162,6 +162,10 @@ page 52459 "Earning"
                 {
                     ToolTip = 'Specifies the value of the Pensionable Pay field';
                 }
+                field("Regular Cash Allowance";"Regular Cash Allowance")
+                {
+                    ToolTip = 'Specifies the value of the Regular Cash Allowance field';
+                }
                 field("Yearly Bonus"; Rec."Yearly Bonus")
                 {
                     ToolTip = 'Specifies the value of the Yearly Bonus field';

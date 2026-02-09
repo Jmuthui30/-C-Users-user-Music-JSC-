@@ -57,6 +57,27 @@ report 52032 "P9A Report"
             column(Employee_s_PIN_Caption; Employee_s_PIN_CaptionLbl)
             {
             }
+            column(SHIFNoCaptionLbl; SHIFNoCaptionLbl)
+            {
+
+            }
+            column(SHIFCaptionLbl; SHIFCaptionLbl)
+            {
+
+            }
+            column(AHLCaptionLbl; AHLCaptionLbl)
+            {
+
+            }
+            column(PRCaptionLbl; PRCaptionLbl)
+            {
+
+            }
+            column(P_A_Y_E_TAXCaptionLbl; P_A_Y_E_TAXCaptionLbl)
+            {
+
+            }
+
             column(MonthCaption; MonthCaptionLbl)
             {
             }
@@ -99,10 +120,17 @@ report 52032 "P9A Report"
             column(Owner_OccupiedCaption; Owner_OccupiedCaptionLbl)
             {
             }
+            column(SHIF_No_; "SHIF No.")
+            {
+
+            }
             column(Retr__Contribution__Caption; Retr__Contribution__CaptionLbl)
             {
             }
             column(ACaption; ACaptionLbl)
+            {
+            }
+            column(b_Attach; b_AttachLbl)
             {
             }
             column(BCaption; BCaptionLbl)
@@ -162,6 +190,28 @@ report 52032 "P9A Report"
             column(AllowancesPAYE; "Allowances PAYE")
             {
             }
+            column(CompletionByEmployerLbl; CompletionByEmployerLbl)
+            {
+
+            }
+            column(IMPORTANT; IMPORTANTLbl)
+            {
+
+            }
+            column(UseP9A_a; "UseP9A(a)Lbl")
+            { }
+            column(UseP9A_b; "UseP9A(b)Lbl")
+            { }
+            column("Two_a"; "2(a)Lbl")
+            { }
+            column("Two_b_1"; "2(b)(i)Lbl")
+            { }
+            column("Two_b_2"; "2(b)(ii)Lbl")
+            { }
+            column(L_R__NO__OF_OWNER_OCCUPIED_HOUSE_CapLbl; L_R__NO__OF_OWNER_OCCUPIED_HOUSE_CapLbl)
+            { }
+            column(DATE_OF_OCCUPATION_CapLbl; DATE_OF_OCCUPATION_CapLbl)
+            { }
             dataitem("Payroll Period"; "Payroll Period II")
             {
                 DataItemTableView = sorting("Starting Date") order(ascending);
@@ -169,7 +219,7 @@ report 52032 "P9A Report"
                 column(StartingDate_PayrollPeriodTrustees; "Starting Date")
                 {
                 }
-                column(Payroll_PeriodX_Name; Name)
+                column(Payroll_PeriodX1_Name; Name)
                 {
                 }
                 column(BenefitsVar; BenefitsVar)
@@ -203,6 +253,9 @@ report 52032 "P9A Report"
                 {
                 }
                 column(ABS_Employee__Cumm__PAYE___Relief_InsuranceRelief; Abs(Employee."Cumm. PAYE") + Relief + InsuranceRelief)
+                {
+                }
+                column(Use_P9A_1; "1_Use_P9A")
                 {
                 }
                 column(ABS_OccupierVar_; Abs(OccupierVar))
@@ -274,7 +327,7 @@ report 52032 "P9A Report"
                 column(ADDRESS; ADDRESS)
                 {
                 }
-                column(SIGNATURE; SIGNATURE)
+                column(SIGNATURE; SIGNATURELbl)
                 {
                 }
                 column(DATESTAMP; "DATESTAMP")
@@ -286,31 +339,31 @@ report 52032 "P9A Report"
                 column(EmptyStringCaption; EmptyStringCaptionLbl)
                 {
                 }
-                column(L_R__NO__OF_OWNER_OCCUPIED_HOUSE; L_R__NO__OF_OWNER_OCCUPIED_HOUSE)
-                {
-                }
-                column(DATE_OF_OCCUPATION; DATE_OF_OCCUPATION)
-                {
-                }
+                // column(L_R__NO__OF_OWNER_OCCUPIED_HOUSE; L_R__NO__OF_OWNER_OCCUPIED_HOUSE)
+                // {
+                // }
+                // column(DATE_OF_OCCUPATION; DATE_OF_OCCUPATION)
+                // {
+                // }
                 column(TOTALSCaption; TOTALSCaptionLbl)
                 {
                 }
-                column(V1; V1)
+                column(V1; V1Lbl)
                 {
                 }
-                column(Name_and_address_of_old_employer; Name_and_address_of_old_employer)
+                column(Name_and_address_of_old_employer; Name_and_address_of_old_employerLbl)
                 {
                 }
-                column(DataItem33; V2)
+                column(DataItem33; V2Lbl)
                 {
                 }
-                column(Name_and_address_of_new_employer; Name_and_address_of_new_employer)
+                column(Name_and_address_of_new_employer; Name_and_address_of_new_employerLbl)
                 {
                 }
-                column(V3; V3)
+                column(V3; V3Lbl)
                 {
                 }
-                column(DataItem37; V4)
+                column(DataItem37; V4Lbl)
                 {
                 }
                 column(YearCaption; YearCaptionLbl)
@@ -322,7 +375,7 @@ report 52032 "P9A Report"
                 column(Tax__Shs_Caption; Tax__Shs_CaptionLbl)
                 {
                 }
-                column(Reference_No; Reference_No)
+                column(Reference_No; Reference_NoLbl)
                 {
                 }
                 column(TOTAL_TAX__COL_M__KshsCaption; TOTAL_TAX__COL_M__KshsCaptionLbl)
@@ -337,17 +390,46 @@ report 52032 "P9A Report"
                 column(Payroll_PeriodX_P_A_Y_E; "P.A.Y.E")
                 {
                 }
+                column(DataItem137; NAME_Lbl)
+                {
+                }
+                column(DataItem138; ADDRESS_Lbl)
+                {
+                }
+                column(DataItem139; SIGNATURE_Lbl)
+                {
+                }
+                column(DataItem140; DATE___STAMP_Lbl)
+                {
+                }
+                column(DataItem146; L_R__NO__OF_OWNER_OCCUPIED_HOUSE_CapLbl)
+                {
+                }
+                column(DataItem147; DATE_OF_OCCUPATION_CapLbl)
+                {
+                }
+
+                column(SHIFAmount; SHIFAmount)
+                { }
+                column(AHLAmount; AHLAmount) { }
+                column(PRMFAmount; PRMFAmount) { }
+                column(TotalSHIFInsRelief; TotalSHIFInsRelief) { }
+                column(TOTALCummPAYE; TOTALCummPAYE) { }
 
                 trigger OnAfterGetRecord()
                 begin
                     TaxableAmount := 0;
                     "30PerPension" := 0;
+                    TotalV30PerPension := 0;
                     PensionLimit := 0;
                     RetirementVar := 0;
                     OccupierVar := 0;
                     TaxableAmount := 0;
                     InsuranceRelief := 0;
+                    IncomeTax := 0;
                     Relief := 0;
+                    TotalSHIFInsRelief := 0;
+                    TOTALCummPAYE := 0;
 
                     if Employee."Pays tax?" then begin
                         Employee.SetRange("Pay Period Filter", "Starting Date");
@@ -360,7 +442,10 @@ report 52032 "P9A Report"
                         Employee.CalcFields("Allowances PAYE");
                     end;
 
+                    TOTALCummPAYE := Employee."Cumm. PAYE" + Employee."Cumm. Secondary  PAYE";
+                    // TotalSHIFInsRelief := Employee."SHIF+InsuranceRelief";
                     "30PerPension" := 30 / 100 * Employee."Basic Pay";
+                    TotalV30PerPension := Employee."Retirement Contribution";
                     RetirementVar := Abs(Employee."Retirement Contribution");
                     if RetirementVar <> 0 then
                         PensionLimit := HRSetup."Pension Limit Amount";
@@ -432,6 +517,52 @@ report 52032 "P9A Report"
                         if AssMatrix.Find('-') then
                             InsuranceRelief := AssMatrix.Amount;
                     end;
+                    //*****************SHIF
+
+                    Ded.Reset();
+                    // Ded.SetCurrentKey(Ded.NHIF);
+                    // Ded.SetRange(Ded.Code, 'SHIF');
+                    Ded.SetRange(Ded.NHIF, true);
+                    if Ded.Find('-') then begin
+                        SHIFAmount := 0;
+                        AssMatrix.Reset;
+                        AssMatrix.SetRange(AssMatrix.Type, AssMatrix.Type::Deduction);
+                        AssMatrix.SetRange(AssMatrix."Employee No", Employee."No.");
+                        AssMatrix.SetRange(AssMatrix."Payroll Period", "Starting Date");
+                        AssMatrix.SetRange(Code, Ded.Code);
+                        if AssMatrix.Find('-') then
+                            SHIFAmount := -AssMatrix.Amount;
+                    end;
+                    //*********************************************AHLAmount
+                    Ded.Reset();
+                    // Ded.SetCurrentKey(Ded."Housing Levy");
+                    // Ded.SetRange(Ded.Code, 'AHL');
+                    Ded.SetRange(Ded."Housing Levy", true);
+                    if Ded.Find('-') then begin
+                        AHLAmount := 0;
+                        AssMatrix.Reset;
+                        AssMatrix.SetRange(AssMatrix.Type, AssMatrix.Type::Deduction);
+                        AssMatrix.SetRange(AssMatrix."Employee No", Employee."No.");
+                        AssMatrix.SetRange(AssMatrix."Payroll Period", "Starting Date");
+                        AssMatrix.SetRange(Code, Ded.Code);
+                        if AssMatrix.Find('-') then
+                            AHLAmount := -AssMatrix.Amount;
+                    end;
+                    //******************************************************prml
+                    Ded.Reset();
+                    Ded.SetCurrentKey(Ded.Code);
+                    Ded.SetRange(Ded.Code, 'PRMS');
+                    if Ded.Find('-') then begin
+                        PRMFAmount := 0;
+                        AssMatrix.Reset;
+                        AssMatrix.SetRange(AssMatrix.Type, AssMatrix.Type::Deduction);
+                        AssMatrix.SetRange(AssMatrix."Employee No", Employee."No.");
+                        AssMatrix.SetRange(AssMatrix."Payroll Period", "Starting Date");
+                        AssMatrix.SetRange(Code, Ded.Code);
+                        if AssMatrix.Find('-') then
+                            PRMFAmount := -AssMatrix.Amount;
+                    end;
+
 
                     /*****Calculate the totals*******************************/
                     TotBasic := TotBasic + Employee."Total Allowances";
@@ -554,6 +685,9 @@ report 52032 "P9A Report"
         "30PerPension": Decimal;
         AmountRemaining: Decimal;
         BenefitsVar: Decimal;
+        TotalSHIFInsRelief: Decimal;
+        TotalV30PerPension: Decimal;
+        TOTALCummPAYE: Decimal;
         DefinedContrMin: Decimal;
         grandPAYE: Decimal;
         IncomeTax: Decimal;
@@ -567,6 +701,7 @@ report 52032 "P9A Report"
         TaxableAmount: Decimal;
         TaxablePound: Decimal;
         TotActual: Decimal;
+        SHIFAmount: Decimal;
         TotalBenefits: Decimal;
         TotBasic: Decimal;
         TotFixed: Decimal;
@@ -579,6 +714,8 @@ report 52032 "P9A Report"
         TotQuarter: Decimal;
         TotRelief: Decimal;
         TotRet: Decimal;
+        PRMFAmount: Decimal;
+        AHLAmount: Decimal;
         TotTax: Decimal;
         TotTaxable: Decimal;
         NoOfMonths: Integer;
@@ -598,6 +735,7 @@ report 52032 "P9A Report"
         Employee_s_Main_Name_CaptionLbl: Label 'Employee''s Main Name:';
         Employee_s_Other_Names_CaptionLbl: Label 'Employee''s Other Names:';
         Employee_s_PIN_CaptionLbl: Label 'Employee''s PIN:';
+        SHIFNoCaptionLbl: Label 'SHIF No.';
         Employers_Name_CaptionLbl: Label 'Employers Name:';
         Employers_PIN_CaptionLbl: Label 'Employers PIN:';
         EmptyStringCaptionLbl: Label '...................................................................................................................................';
@@ -609,26 +747,46 @@ report 52032 "P9A Report"
         INCOME_TAX_DEPARTMENTCaptionLbl: Label 'INCOME TAX DEPARTMENT';
         Insurance_ReliefCaptionLbl: Label 'Insurance Relief';
         InterestCaptionLbl: Label ' Interest';
+        IMPORTANTLbl: Label 'IMPORTANT';
+        b_AttachLbl: Label '(b) Attach ';
+
+        "UseP9A(a)Lbl": Label '(a)  For all liable Employees and where director/ employees receives benefits in addition to cash emoluments.';
+        "UseP9A(b)Lbl": Label '(b)  Where an Employee is eligible to deduction on owner occupier interest and the total interest payable in the year is K.shs. 150,000/= and above.';
+        "2(a)Lbl": Label '2 (a) Deductible interest in respect of any month must be standard K.shs. 12,500.00/= except for December where the amount shall be K.shs. 12,500.00/=';
+        "2(b)(i)Lbl": Label '(i) Photostat copy of preceding year''s certificate or confirmation of current Year''s borrowing. If applicable form financial institution.';
+        "2(b)(ii)Lbl": Label '(ii) The DECLARATION duly signed by the Employees to form P9A';
         JCaptionLbl: Label 'J';
         KCaptionLbl: Label 'K';
+        L_R__NO__OF_OWNER_OCCUPIED_HOUSE_CapLbl: Label 'L.R. NO. OF OWNER OCCUPIED PROPERTY ............................................';
+        DATE_OF_OCCUPATION_CapLbl: Label 'DATE OF OCCUPATION OF HOUSE ...............................';
         KENYA_REVENUE_AUTHORITYCaptionLbl: Label 'KENYA REVENUE AUTHORITY';
-        L_R__NO__OF_OWNER_OCCUPIED_HOUSE: Label 'L.R. NO. OF OWNER OCCUPIED HOUSE ................................................................';
+        L_R__NO__OF_OWNER_OCCUPIED_HOUSELbl: Label 'L.R. NO. OF OWNER OCCUPIED HOUSE ................................................................';
         LCaptionLbl: Label 'L';
         MCaptionLbl: Label 'M';
         MonthCaptionLbl: Label 'Month';
-        Name_and_address_of_new_employer: Label '     Name and address of new employer.................................................................';
-        Name_and_address_of_old_employer: Label '      Name and address of old employer..................................................................';
+        NAME_Lbl: Label 'NAME            ....................................................................................................................................';
+        ADDRESS_Lbl: Label 'ADDRESS     .....................................................................................................................................';
+        SIGNATURE_Lbl: Label 'SIGNATURE   ....................................................................................................................................';
+        DATE___STAMP_Lbl: Label 'DATE & STAMP   ....................................................................................................................................';
+
+        Name_and_address_of_new_employerLbl: Label '     Name and address of new employer.................................................................';
+        Name_and_address_of_old_employerLbl: Label '      Name and address of old employer..................................................................';
         NAMES_OF_MORTGAGE_FINANCIAL_INSTITUTIONCaptionLbl: Label 'NAMES OF MORTGAGE FINANCIAL INSTITUTION';
         Non_CashCaptionLbl: Label 'Non-Cash';
         Occupied_InterestCaptionLbl: Label ' Occupied Interest';
         Owner_OccupiedCaptionLbl: Label 'Owner Occupied';
         P_A_Y_E_TAXCaptionLbl: Label 'P.A.Y.E TAX';
+        "1_Use_P9A": Label '1. Use P9A ';
+
         Personal_File_No_CaptionLbl: Label 'Personal File No.';
         Personal_ReliefCaptionLbl: Label 'Personal Relief';
         QuartersCaptionLbl: Label 'Quarters';
-        Reference_No: Label 'Reference No:  .....................................................';
+        SHIFCaptionLbl: Label 'S.H.I.F';
+        AHLCaptionLbl: Label 'A.H.L';
+        PRCaptionLbl: Label 'P.R.M.S';
+        Reference_NoLbl: Label 'Reference No:  .....................................................';
         Retr__Contribution__CaptionLbl: Label 'Retr. Contribution &';
-        SIGNATURE: Label 'SIGNATURE   ....................................................................................................................................';
+        SIGNATURELbl: Label 'SIGNATURE   ....................................................................................................................................';
         Tax__Shs_CaptionLbl: Label 'Tax (Shs)';
         Tax_ChargedCaptionLbl: Label 'Tax Charged';
         Taxable_AmountCaptionLbl: Label 'Taxable Amount';
@@ -636,12 +794,17 @@ report 52032 "P9A Report"
         TOTAL_CHARGEABLE_PAY__COL_H__KshsCaptionLbl: Label 'TOTAL CHARGEABLE PAY (COL H) Kshs';
         TOTAL_TAX__COL_M__KshsCaptionLbl: Label 'TOTAL TAX (COL M) Kshs';
         TOTALSCaptionLbl: Label 'TOTALS';
-        V1: Label '(1) Date employee commenced if during the year...............................................';
-        V2: Label '(2) Date left if during the year....................................................................................';
-        V3: Label '(3) Where housing is provided,State monthly rent..............................................';
-        V4: Label '(4) Where any of the pay relates to a period other than this year e.g gratuity, give details.......................';
+        CompletionByEmployerLbl: Label 'To be completed by Employer at end of year';
+
+        V1Lbl: Label '(1) Date employee commenced if during the year...............................................';
+        V2Lbl: Label '(2) Date left if during the year....................................................................................';
+        V3Lbl: Label '(3) Where housing is provided,State monthly rent..............................................';
+        V4Lbl: Label '(4) Where any of the pay relates to a period other than this year e.g gratuity, give details.......................';
         Value_OfCaptionLbl: Label 'Value Of';
         YearCaptionLbl: Label 'Year';
+        V4__Where_any_of_the_pay_relates_to_a_period_other_than_this_year_e_g_gratuity__give_details_Lbl: Label '(4) Where any of the pay relates to a period other than this year e.g gratuity, give details....................................................................';
+        V2__Date_left_if_during_the_year_CaptionLbl: Label '(2) Date left if during the year....................................................................................';
+
         CoPin: Text[30];
 
     procedure GetDefaults(var StartingDate: Date; var EndingDate: Date)
@@ -707,6 +870,9 @@ report 52032 "P9A Report"
             PayrollRounding := Round(Amount, HRsetup."Payroll Rounding Precision", '<');
     end;
 }
+
+
+
 
 
 

@@ -355,16 +355,17 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                         RunObject = report "Client Bank Instruction";
                         ApplicationArea = All;
                         ToolTip = 'Executes the Employee Bank Details action';
-                        Caption = 'Employee Bank Details';
+                        Caption = 'Bank Instruction';
                     }
 
                 }
-                group("Management Reports ") 
+                group("Management Reports ")
                 {
                     Caption = 'Management Reports';
                     action("Master Roll Reports")
                     {
-                        RunObject = report "Master Roll Report II";
+                        // RunObject = report "Master Roll Report II";
+                        RunObject = report "Client Master Roll Report2";
                         ApplicationArea = All;
                         ToolTip = 'Executes the Master Roll Report action';
                         Caption = 'Master Roll Report';
@@ -435,6 +436,40 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                         ToolTip = 'Executes the SACCO  Reports action';
                         Caption = 'SACCO  Reports';
                     }
+                    action("Client A Third Rule Report")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Client A Third Rule Report';
+                        Image = "Report";
+                        Promoted = true;
+                        PromotedCategory = "Report";
+                        PromotedIsBig = true;
+                        RunObject = Report "A Third Rule Report";
+                        ToolTip = 'View Client A Third Rule Report';
+                    }
+                    action("Client Wage Bill")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Client Wage Bill';
+                        Image = "Report";
+                        Promoted = true;
+                        PromotedCategory = "Report";
+                        PromotedIsBig = true;
+                        RunObject = Report "Client Wage Bill";
+                        ToolTip = 'View the Company Totals Report';
+                    }
+                    action("Wage Bill Report")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Wage Bill Report';
+                        Image = "Report";
+                        Promoted = true;
+                        PromotedCategory = "Report";
+                        PromotedIsBig = true;
+                        RunObject = Report "Wage Bill Report";
+                        ToolTip = 'View Wage Bill Report';
+                    }
+
                 }
                 group("Statutory Reports")
                 {
@@ -450,18 +485,19 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                     action("NSSF Reporting ")
                     {
                         Image = "Report";
-                        RunObject = report "NSSF Reporting";
+                        // RunObject = report "NSSF Reporting";
+                        RunObject = report "Client NSSF";
                         ApplicationArea = All;
                         ToolTip = 'Executes the NSSF Reporting  action';
                         Caption = 'NSSF Reporting ';
                     }
-                    action("NHIF ")
+                    action("SHIF ")
                     {
                         Image = Migration;
                         RunObject = report NHIF;
                         ApplicationArea = All;
-                        ToolTip = 'Executes the NHIF  action';
-                        Caption = 'NHIF ';
+                        ToolTip = 'Executes the SHIF  action';
+                        Caption = 'SHIF ';
                     }
                     action(HELBReport)
                     {
@@ -486,6 +522,39 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                         ApplicationArea = All;
                         ToolTip = 'Executes the Pension Report action';
                         Caption = 'Pension Report';
+                    }
+                    action("PROVIDENT")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'PROVIDENT Fund Report';
+                        Image = "Report";
+                        Promoted = true;
+                        PromotedCategory = "Report";
+                        PromotedIsBig = true;
+                        RunObject = Report "Provident Fund";
+                        ToolTip = 'View PROVIDENT Fund Report';
+                    }
+                    action(PRMS)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'PRMS Report';
+                        Image = "Report";
+                        Promoted = true;
+                        PromotedCategory = "Report";
+                        PromotedIsBig = true;
+                        RunObject = Report "PRMS Report";
+                        ToolTip = 'View PRMS Report';
+                    }
+                    action("AHL Report ")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'AHL Report';
+                        Image = "Report";
+                        Promoted = true;
+                        PromotedCategory = "Report";
+                        PromotedIsBig = true;
+                        RunObject = Report "AHL Report";
+                        ToolTip = 'View AHL Report';
                     }
                 }
                 group("Annual Statutory Reports")
@@ -516,7 +585,7 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                         RunObject = report "Payroll Reconciliation";
                         ApplicationArea = All;
                         ToolTip = 'Executes the Monthly Difference Report action';
-                        Caption = 'Monthly Difference Report';
+                        Caption = 'Variance Report';
                     }
                     action("Employees Removed ")
                     {
@@ -917,7 +986,7 @@ page 52272 "Payroll Role Centre" //Replaced 51441
             //         }
             //     }
             // }
-    
+
             group("Loan ")
             {
                 Image = Calculator;

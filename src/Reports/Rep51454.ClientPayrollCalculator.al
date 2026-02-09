@@ -268,7 +268,7 @@ report 51454 "Client Payroll Calculator"
                                     if (Deductions."Calculation Method" = Deductions."Calculation Method"::"% of Basic Pay") or (Deductions."Calculation Method" = Deductions."Calculation Method"::"Based on Hourly Rate") or (Deductions."Calculation Method" = Deductions."Calculation Method"::"% of Gross Pay") or (Deductions."Calculation Method" = Deductions."Calculation Method"::"% of Basic + Regular Allowances") or (Deductions."Calculation Method" = Deductions."Calculation Method"::"Based on Daily Rate ") then begin
                                         PayrollMatrix.Validate(Code);
                                         PayrollMatrix.Amount := (PayrollMatrix.Amount);
-                                        PayrollMatrix.Modify;
+                                        PayrollMatrix.Modify; 
                                     end;
                                 end;
                             end;

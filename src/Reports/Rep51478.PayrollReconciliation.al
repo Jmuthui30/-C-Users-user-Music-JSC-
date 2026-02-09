@@ -3,14 +3,14 @@ report 51478 "Payroll Reconciliation"
 {
     DefaultLayout = RDLC;
     RDLCLayout = './Reports/SSRS/Payroll Reconciliation.rdlc';
-    
+
     dataset
     {
-        dataitem("Assignment Matrix-X"; "Client Payroll Matrix")
+        dataitem("Assignment Matrix-X"; "Assignment Matrix")
         {
             DataItemTableView = SORTING(Type, Code) ORDER(Ascending);
-            RequestFilterFields = "Payroll Period", Company;
-            
+            RequestFilterFields = "Payroll Period";
+
             column(FORMAT_TODAY_0_4_; Format(Today, 0, 4)) { }
             column(COMPANYNAME; CompanyName) { }
             column(USERID; UserId) { }
@@ -23,47 +23,56 @@ report 51478 "Payroll Reconciliation"
             column(Current_PeriodCaption; Current_PeriodCaptionLbl) { }
             column(Last_PeriodCaption; Last_PeriodCaptionLbl) { }
             column(DifferenceCaption; DifferenceCaptionLbl) { }
-            column(Pay_Period_Filter; "Pay Period Filter") { }
+            column(Pay_Period_Filter; "Pay Period") { }
             column(EarningEmployeeNo; "Employee No") { }
             column(EarningAmount; CurrentMonthVal) { }  // Changed from Amount
             column(EarningEmpName; EmpName) { }
             column(EarningLastMonthVal; LastMonthVal) { }
             column(EarningDifference; Difference) { }
             column(Type; Type) { }
+            column(Payroll_Period; "Payroll Period") { }
             column(EanEarningCode; Code) { }
             column(EarningPayrollPeriod; "Payroll Period") { }
             column(EarningRefNo; "Reference No") { }
-            
+            column(Payroll_Period_; "Payroll Period")
+            {
+
+            }
+            column(CompanyInfo; CompanyInfo.Picture)
+            {
+
+            }
+
             trigger OnAfterGetRecord()
             begin
                 // Get employee name
                 if Emp.Get("Assignment Matrix-X"."Employee No") then begin
                     EmpName := Emp."First Name" + ' ' + Emp."Middle Name" + ' ' + Emp."Last Name";
                 end;
-                
+
                 CurrentMonthVal := 0;
                 LastMonthVal := 0;
                 Difference := 0;
                 Desc := '';
-                
+
                 // Get description based on type
-                if "Assignment Matrix-X".Type = "Assignment Matrix-X".Type::Payment then begin
-                    if ClientEarnings.Get("Assignment Matrix-X".Company, "Assignment Matrix-X".Code) then begin
+                if "Assignment Matrix-X".Type = "Assignment Matrix-X".Type::Earning then begin
+                    if ClientEarnings.Get("Assignment Matrix-X".Code) then begin
                         Desc := ClientEarnings.Description;
-                        if (ClientEarnings."Earning Type" = ClientEarnings."Earning Type"::"Tax Relief") or 
+                        if (ClientEarnings."Earning Type" = ClientEarnings."Earning Type"::"Tax Relief") or
                            (ClientEarnings."Earning Type" = ClientEarnings."Earning Type"::"Insurance Relief") then
                             CurrReport.Skip;
                     end;
                 end else if "Assignment Matrix-X".Type = "Assignment Matrix-X".Type::Deduction then begin
-                    if ClientDeductions.Get("Assignment Matrix-X".Company, "Assignment Matrix-X".Code) then
+                    if ClientDeductions.Get("Assignment Matrix-X".Code) then
                         Desc := ClientDeductions.Description;
                 end;
-                
+
                 // Check if this is current month or last month record
                 if "Assignment Matrix-X"."Payroll Period" = Thismonth then begin
                     // Current month record - get its value
                     CurrentMonthVal := "Assignment Matrix-X".Amount;
-                    
+
                     // Look for corresponding last month value
                     Assignmat.Reset;
                     Assignmat.SetRange(Assignmat."Employee No", "Assignment Matrix-X"."Employee No");
@@ -74,7 +83,7 @@ report 51478 "Payroll Reconciliation"
                         LastMonthVal := Assignmat.Amount
                     else
                         LastMonthVal := 0;
-                        
+
                 end else if "Assignment Matrix-X"."Payroll Period" = Lastmonth then begin
                     // Last month record - check if there's a current month record
                     Assignmat.Reset;
@@ -90,43 +99,47 @@ report 51478 "Payroll Reconciliation"
                         CurrentMonthVal := 0;
                     end;
                 end;
-                
+
                 Difference := CurrentMonthVal - LastMonthVal;
-                
+
                 // Only show records with differences
                 if Difference = 0 then
                     CurrReport.Skip;
-                    
+
                 if "Assignment Matrix-X".Code = '' then
                     CurrReport.Skip;
             end;
-            
+
             trigger OnPreDataItem()
             begin
                 // Set filter to include BOTH current and last month
                 SetRange("Payroll Period", Lastmonth, Thismonth);
             end;
+
         }
     }
-    
+
     requestpage
     {
         layout { }
         actions { }
     }
-    
+
     labels { }
-    
+
     trigger OnPreReport()
     begin
         Thismonth := "Assignment Matrix-X".GetRangeMin("Payroll Period");
         Lastmonth := CalcDate('-1M', Thismonth);
+        CompanyInfo.Get();
+        CompanyInfo.CalcFields(Picture);
     end;
-    
+
     var
         EmpName: Text[230];
-        Emp: Record "Client Employee Master";
-        Assignmat: Record "Client Payroll Matrix";
+        Emp: Record Employee;
+        Assignmat: Record "Assignment Matrix";
+        CompanyInfo: Record "Company Information";
         Thismonth: Date;
         Lastmonth: Date;
         CurrentMonthVal: Decimal;
@@ -138,9 +151,9 @@ report 51478 "Payroll Reconciliation"
         Current_PeriodCaptionLbl: Label 'Current Period';
         Last_PeriodCaptionLbl: Label 'Last Period';
         DifferenceCaptionLbl: Label 'Difference';
-        ClientEarnings: Record "Client Earnings";
+        ClientEarnings: Record Earning;
         Desc: Text;
-        ClientDeductions: Record "Client Deductions";
+        ClientDeductions: Record Deduction;
 }
 
 

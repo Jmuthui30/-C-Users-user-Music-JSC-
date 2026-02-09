@@ -1108,7 +1108,7 @@ permissionset 51000 FinancePermissions
         report "Client P9A"=X,
         report "Client Payroll Calculator"=X,
         report "Client Payslip"=X,
-        report "Client Provident Fund"=X,
+        report "Provident Fund"=X,
         report "Client Provident Fund Arrears"=X,
         report "Client Salary 12 Month Report"=X,
         report "Client SHIF"=X,

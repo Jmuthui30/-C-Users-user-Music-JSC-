@@ -42,7 +42,7 @@ table 53001 "Deduction"
         }
         field(11; "Calculation Method"; Option)
         {
-            OptionMembers = "Flat Amount","% of Basic Pay","Based on Table","Based on Hourly Rate","Based on Daily Rate ","% of Gross Pay","% of Basic Pay+Hse Allowance",Formula,"% of Basic Pay+Hse Allowance + Comm Allowance + Sal Arrears","% of Other Earnings","Based on Monthly Contributions","% of Other Deductions","% of Salary Recovery";
+            OptionMembers = "Flat Amount","% of Basic Pay","Based on Table","Based on Hourly Rate","Based on Daily Rate ","% of Gross Pay","% of Basic Pay+Hse Allowance",Formula,"% of Basic Pay+Hse Allowance + Comm Allowance + Sal Arrears","% of Other Earnings","Based on Monthly Contributions","% of Other Deductions","% of Salary Recovery","% of Basic + Regular Allowances";
             Caption = 'Calculation Method';
         }
         field(12; "Account No."; Code[20])
@@ -520,6 +520,7 @@ table 53001 "Deduction"
         if DeductionsRec.Find('-') then
             Error(Text000, DeductionsRec.Code, DeductionsRec.Description);
     end;
+    
 }
 
 

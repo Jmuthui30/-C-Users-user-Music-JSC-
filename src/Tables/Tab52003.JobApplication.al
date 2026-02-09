@@ -171,7 +171,7 @@ table 52003 "Job Application"
 
         }
         field(24; "Date of Birth"; Date) { }
-        field(25; Age; Text[20]) { }
+        field(25; Age; Text[50]) { }
         field(26; "Home County"; Text[2000]) { }
         field(27; Disability; Boolean) { }
         field(28; Ethnic; Text[1000]) { }

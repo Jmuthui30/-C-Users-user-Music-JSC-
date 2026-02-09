@@ -190,7 +190,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                 ToolTip = 'Specifies the value of the Ethnic Origin field';
                 ApplicationArea = All;
             }
-           
+
             field("Ethnic Name"; Rec."Ethnic Name")
             {
                 Caption = 'Ethnic Community';
@@ -267,6 +267,10 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                         SetContractView();
                         ContractFields();
                     end;
+                }
+                field("Employee Group"; "Employee Group")
+                {
+                    ApplicationArea = All;
                 }
                 group("Contract Information")
                 {
@@ -373,6 +377,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                     ToolTip = 'Specifies the value of the Reason for Acting field';
                     ApplicationArea = All;
                 }
+
             }
         }
         addlast(Payments)
@@ -509,7 +514,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                 ToolTip = 'Specifies the value of the Secondary Employee field';
                 ApplicationArea = All;
             }
-       
+
 
             field("Insurance Relief"; Rec."Insurance Relief")
             {
@@ -1076,7 +1081,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
 
                     trigger OnAction()
                     var
-                    CuPayroll: Codeunit Payroll;
+                        CuPayroll: Codeunit Payroll;
                         AssignConfirmMsg: Label 'Are you sure you want to assign default earnings/deductions?';
                     begin
                         if confirm(AssignConfirmMsg, false) then begin
@@ -1119,8 +1124,8 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                     ApplicationArea = All;
 
                     trigger OnAction()
-                    var                    
-                    CuPayroll: Codeunit Payroll;
+                    var
+                        CuPayroll: Codeunit Payroll;
 
                     begin
                         PayPeriod.Reset();

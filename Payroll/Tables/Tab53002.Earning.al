@@ -377,6 +377,9 @@ table 53002 "Earning"
         {
             Caption = 'Pension Allocation';
         }
+        field(76; "Regular Cash Allowance"; Boolean)
+        {
+        }
     }
 
     keys

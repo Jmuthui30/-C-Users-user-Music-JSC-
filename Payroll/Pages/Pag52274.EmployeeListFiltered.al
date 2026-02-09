@@ -2,7 +2,7 @@ page 52274 "Employee List-Filtered"
 {
     ApplicationArea = All;
     Caption = 'Employees-Active';
-    CardPageID = "Employee Card";
+    CardPageID = "Employee Card"; 
     Editable = false;
     DeleteAllowed = false;
     PageType = List;

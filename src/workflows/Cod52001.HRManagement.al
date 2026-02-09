@@ -1990,7 +1990,7 @@ codeunit 52001 "HR Management"
             Message('Notified Successfully');
     end;
 
-procedure ProcessEmployeeSeparation(EmpSeparation: Record "Employee Separation")
+    procedure ProcessEmployeeSeparation(EmpSeparation: Record "Employee Separation")
     var
         Employee: Record Employee;
         DefineSeparationTypeErr: Label 'Please specify a Separation Type';

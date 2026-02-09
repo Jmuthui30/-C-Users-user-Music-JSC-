@@ -8,7 +8,7 @@ report 52242 "NSSF Reporting"
     {
         dataitem("Assignment Matrix-X"; "Assignment Matrix")
         {
-            DataItemTableView = sorting("Employee No", Type, Code, "Payroll Period", "Reference No") order(ascending) where(Type = const(Deduction), "Employee type" = filter(<> trustee)/*, Code = filter('D0008')*/);
+            DataItemTableView = sorting("Employee No", Type, Code, "Payroll Period", "Reference No") order(ascending) where(Type = const(Deduction), "Employee type" = filter(<> trustee), Code = filter('NSSF*'));
             RequestFilterFields = "Payroll Period", Code;
             RequestFilterHeading = 'NSSF';
 
@@ -319,7 +319,7 @@ report 52242 "NSSF Reporting"
 
         CompRec.Get();
         HRSetup.Get();
-        HRSetup.TestField("Company NSSF No");
+        // HRSetup.TestField("Company NSSF No");
         CoNssf := HRSetup."Company NSSF No";
         CompName := CompRec.Name;
         GetPayPeriod();
@@ -344,7 +344,7 @@ report 52242 "NSSF Reporting"
         Payroll: Codeunit Payroll;
         IDNo: Code[20];
         NSSFNo: Code[20];
-        SSFNo: Code[30];
+        SSFNo: Code[50];
         Approver: array[10] of Code[50];
         KRAPinNo: Code[50];
         PayApprovalCode: Code[50];
@@ -385,9 +385,9 @@ report 52242 "NSSF Reporting"
         CompName: Text;
         OtherName: Text;
         Surname: Text;
-        CoNssf: Text[30];
-        GroupHeader: Text[30];
-        PayPeriodText: Text[30];
+        CoNssf: Text[50];
+        GroupHeader: Text[50];
+        PayPeriodText: Text[50];
         Name: Text[250];
 
     //local procedure CheckNSSF(DedCode: Code[20]): Boolean

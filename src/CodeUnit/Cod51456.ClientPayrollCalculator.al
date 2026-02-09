@@ -425,7 +425,7 @@ codeunit 51456 "Client Payroll Calculator"
     procedure GeneratePayslip(var EmpNo: Code[20]; var Period: Date)
     var
         Employee: Record "Client Employee Master";
-        EmpRec: Record "Client Employee Master";  // ← ADDED separate record variable
+        EmpRec: Record "Client Employee Master";
         PeriodName: Text;
         Comp: Code[20];
         ClientEmail: List of [Text];
@@ -435,10 +435,8 @@ codeunit 51456 "Client Payroll Calculator"
         CompInfo: Record "Client Company Information";
         Mail: Codeunit "Email Message";
         Email: Codeunit Email;
-        Base64Conv: Codeunit "Base64 Convert";
-        OutStr: OutStream;  // ← Changed name to match working code
-        InStr: InStream;    // ← Changed name to match working code
-        Base64Text: Text;
+        OutStr: OutStream;
+        InStr: InStream;
         FileName: Text[250];
         PayPeriodText: Text[50];
         Payslip: Report "Client Payslip";
@@ -446,20 +444,16 @@ codeunit 51456 "Client Payroll Calculator"
         if PayPeriod.Get(Period) then
             PeriodName := PayPeriod.Name + ' ';
 
-        Comp := '';
-        Employee.Reset;
+        Employee.Reset();
         Employee.SetRange("No.", EmpNo);
-        Employee.SetFilter("Pay Period Filter", '%1', Period);
-
-        if not Employee.FindFirst then
+        Employee.SetRange("Pay Period Filter", Period);
+        if not Employee.FindFirst() then
             exit;
 
         Comp := Employee."Company Code";
-
         if Comp = '' then
             exit;
 
-        // Sending
         ClientRec.Get(EmpNo);
         CompInfo.Get(Comp);
 
@@ -470,51 +464,36 @@ codeunit 51456 "Client Payroll Calculator"
         if ClientEmail.Count = 0 then
             exit;
 
-        // Format period text once
-        PayPeriodText := Format(Period, 0, '<Month text>-<Year4>');
-
-        // Build email subject
+        PayPeriodText := Format(Period, 0, '<Month Text> <Year4>');
         Subject := CopyStr('Payslip for Period - ' + PayPeriodText, 1, 250);
-
-        // Build email body
-        Body := 'Hello, ' + Employee."Full Name";
-        Body += '<br><br>';
-        Body += 'Kindly find the attached payslip for the month of ' + PayPeriodText;
-        Body += '<br><br>';
-        Body += 'Thank you.';
-        Body += '<br><br>';
-        Body += 'Kindly do not respond as this is a system generated email.';
-        Body += '<br><br>';
-        Body += 'Yours Sincerely,';
-        Body += '<br><br>';
-        Body += '<b>Payroll Department</b>';
-        Body += '<br>';
-        Body += CompInfo.Name;
+        FileName := CopyStr(PayPeriodText + '-' + Employee."No." + '.pdf', 1, 250);
+        Body :=
+            'Hello, ' + Employee."Full Name" + '<br><br>' +
+            'Kindly find the attached payslip for the month of ' + PayPeriodText + '<br><br>' +
+            'Thank you.<br><br>' +
+            'Kindly do not respond as this is a system generated email.<br><br>' +
+            'Yours Sincerely,<br><br>' +
+            '<b>Payroll Department</b><br>' +
+            CompInfo.Name;
 
         Mail.Create(ClientEmail, Subject, Body, true);
 
-        // ========== EXACT PATTERN FROM WORKING CODE ==========
+        //Save Pdf
         EmpRec.Reset();
         EmpRec.SetRange("No.", Employee."No.");
-        EmpRec.SetRange("Pay Period Filter", Period);  // ← Use SetRange instead of SetFilter
-
+        EmpRec.SetRange("Pay Period Filter", Period);
         if EmpRec.FindFirst() then begin
             Clear(Payslip);
             Payslip.SetTableView(EmpRec);
+            clear(TempBlob);
             TempBlob.CreateOutStream(OutStr);
-
             if Payslip.SaveAs('', ReportFormat::Pdf, OutStr) then begin
                 TempBlob.CreateInStream(InStr);
-                Base64Text := Base64Conv.ToBase64(InStr);
-
-                FileName := CopyStr(PayPeriodText + '-' + Employee."No." + '.pdf', 1, 250);
-
-                Mail.AddAttachment(FileName, 'application/pdf', Base64Text);
+                Mail.AddAttachment(FileName, 'PDF', InStr);
             end;
         end;
-        // ====================================================
 
-        Email.Send(Mail);
+        Email.Send(Mail, Enum::"Email Scenario"::Default);
     end;
 
     procedure GeneratePNine(var EmpNo: Code[20]; var StartPeriod: Date; var EndPeriod: Date; var Comp: Code[20]; var XmlParameters: Text)

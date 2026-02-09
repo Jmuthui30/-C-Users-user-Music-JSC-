@@ -31,7 +31,7 @@ page 52237 "Payments & Deductions"
                     Editable = false;
                     ToolTip = 'Specifies the value of the Employee No field';
                 }
-                
+
                 field("Code"; Rec.Code)
                 {
                     ToolTip = 'Specifies the value of the Code field';
@@ -140,6 +140,11 @@ page 52237 "Payments & Deductions"
                 field("Loan Repay"; Rec."Loan Repay")
                 {
                     ToolTip = 'Specifies the value of the Loan Repay field';
+                }
+                field(Balance; Balance)
+                {
+                    ToolTip = 'Specifies the value of the Balance field';
+                    // Visible = false;
                 }
                 field("Non-Cash Benefit"; Rec."Non-Cash Benefit")
                 {

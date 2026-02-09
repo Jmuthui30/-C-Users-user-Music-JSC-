@@ -79,7 +79,7 @@ report 52251 "Payroll Run"
                                     if ScalePointer.Get(NextScale, NextPointer) then begin
                                         UpdateEarnings(Employee);
                                         UpdatePointers(Employee, Month, Employee."Present Pointer", Employee.Previous);
-                                        Employee."Last Date Increment":= Today();
+                                        Employee."Last Date Increment" := Today();
                                         Employee."Next Date Increment" := DMY2Date(1, Date2DMY(Employee."Date Of Join", 2), (Date2DMY(Today(), 3) + 1));
                                         Employee.Modify();
                                     end;
@@ -204,21 +204,23 @@ report 52251 "Payroll Run"
                                         end;
                                 end;
 
-                            //if AssignMatrix.Retirement = false then begin
-                            if AssignMatrix.Type = AssignMatrix.Type::Deduction then
-                                if Deductions.Get(AssignMatrix.Code) then
-                                    if (Deductions."Calculation Method" = Deductions."Calculation Method"::"% of Basic Pay") or
-                                       (Deductions."Calculation Method" = Deductions."Calculation Method"::"Based on Hourly Rate") or
-                                       (Deductions."Calculation Method" = Deductions."Calculation Method"::"% of Gross Pay") or
-                                       (Deductions."Calculation Method" = Deductions."Calculation Method"::"Based on Daily Rate ") then begin
-                                        AssignMatrix.Validate(Code);
-                                        AssignMatrix.Validate("Employee Voluntary");
-                                        if (Deductions."Calculation Method" = Deductions."Calculation Method"::"% of Basic Pay") then
-                                            AssignMatrix.Amount := Round(AssignMatrix.Amount, 0.01)
-                                        else
-                                            AssignMatrix.Amount := Round(AssignMatrix.Amount, 1);
-                                        AssignMatrix.Modify();
-                                    end;
+                            if AssignMatrix.Retirement = false then begin
+                                if AssignMatrix.Type = AssignMatrix.Type::Deduction then
+                                    if Deductions.Get(AssignMatrix.Code) then
+                                        if (Deductions."Calculation Method" = Deductions."Calculation Method"::"% of Basic Pay") or
+                                           (Deductions."Calculation Method" = Deductions."Calculation Method"::"Based on Hourly Rate") or
+                                           (Deductions."Calculation Method" = Deductions."Calculation Method"::"% of Gross Pay") or
+                                           (Deductions."Calculation Method" = Deductions."Calculation Method"::"% of Basic + Regular Allowances") or
+                                           (Deductions."Calculation Method" = Deductions."Calculation Method"::"Based on Daily Rate ") then begin
+                                            AssignMatrix.Validate(Code);
+                                            AssignMatrix.Validate("Employee Voluntary");
+                                            if (Deductions."Calculation Method" = Deductions."Calculation Method"::"% of Basic Pay") then
+                                                AssignMatrix.Amount := Round(AssignMatrix.Amount, 0.01)
+                                            else
+                                                AssignMatrix.Amount := Round(AssignMatrix.Amount, 1);
+                                            AssignMatrix.Modify();
+                                        end;
+                            end;
 
                             //end;
                             if AssignMatrix.Type = AssignMatrix.Type::Deduction then
@@ -378,8 +380,8 @@ report 52251 "Payroll Run"
                                         AssignMatrix.SetRange("Payroll Period", DateSpecified);
                                         AssignMatrix.SetRange(Type, AssignMatrix.Type::Earning);
                                         AssignMatrix.SetRange(Code, Earnings.Code);
-                                        AssignMatrix.SetRange("Employee No", Employee."No."); 
-                                        if AssignMatrix.Find('-') then begin 
+                                        AssignMatrix.SetRange("Employee No", Employee."No.");
+                                        if AssignMatrix.Find('-') then begin
                                             AssignMatrix.Amount := Abs(InsuranceAmt * (Earnings.Percentage / 100));
                                             AssignMatrix.Validate(Amount);
                                             AssignMatrix.Modify();
@@ -558,23 +560,23 @@ report 52251 "Payroll Run"
 
                         Ded.RESET;
                         Ded.SETRANGE("Provident Fund", TRUE);
-                        IF Ded.FIND('-') THEN 
-                        repeat
-                            Assignmatrix.RESET;
-                            Assignmatrix.SETRANGE(Assignmatrix.Code, Ded.Code);
-                            Assignmatrix.SETRANGE(Assignmatrix.Type, Assignmatrix.Type::Deduction);
-                            Assignmatrix.SETRANGE(Assignmatrix."Employee No", Employee."No.");
-                            Assignmatrix.SETRANGE(Assignmatrix."Payroll Period", Month);
-                            IF Assignmatrix.FIND('-') THEN BEGIN
+                        IF Ded.FIND('-') THEN
+                            repeat
+                                Assignmatrix.RESET;
+                                Assignmatrix.SETRANGE(Assignmatrix.Code, Ded.Code);
+                                Assignmatrix.SETRANGE(Assignmatrix.Type, Assignmatrix.Type::Deduction);
+                                Assignmatrix.SETRANGE(Assignmatrix."Employee No", Employee."No.");
+                                Assignmatrix.SETRANGE(Assignmatrix."Payroll Period", Month);
+                                IF Assignmatrix.FIND('-') THEN BEGIN
 
-                        // Message('Amount is %1', Assignmatrix.Amount);
-                        // Message('Pension Tax is %1', PensionTax);
-                                Assignmatrix.Amount := Assignmatrix.Amount + ((PensionTax * (Ded.Percentage / 100)) / ((Ded.Percentage + Ded."Percentage Employer") / 100));
+                                    // Message('Amount is %1', Assignmatrix.Amount);
+                                    // Message('Pension Tax is %1', PensionTax);
+                                    Assignmatrix.Amount := Assignmatrix.Amount + ((PensionTax * (Ded.Percentage / 100)) / ((Ded.Percentage + Ded."Percentage Employer") / 100));
 
-                                Assignmatrix."Employer Amount" := Assignmatrix."Employer Amount" - ((PensionTax * (Ded."Percentage Employer" / 100)) / ((Ded.Percentage + Ded."Percentage Employer") / 100));
-                                Assignmatrix.Amount := Assignmatrix.Amount - Assignmatrix."Employer Amount";
-                                Assignmatrix.MODIFY;
-                            END;
+                                    Assignmatrix."Employer Amount" := Assignmatrix."Employer Amount" - ((PensionTax * (Ded."Percentage Employer" / 100)) / ((Ded.Percentage + Ded."Percentage Employer") / 100));
+                                    Assignmatrix.Amount := Assignmatrix.Amount - Assignmatrix."Employer Amount";
+                                    Assignmatrix.MODIFY;
+                                END;
                             until Ded.NEXT = 0;
                     END;
 
@@ -624,6 +626,33 @@ report 52251 "Payroll Run"
                             PayrollMgt.PayPertimers(Employee."No.", Earnings.Code);
                         until Earnings.Next() = 0;
                 end;
+
+                // Update Loan Balances - Only if not already updated
+                AssignMatrix.Reset();
+                AssignMatrix.SetRange("Employee No", Employee."No.");
+                AssignMatrix.SetRange("Payroll Period", Month);
+                AssignMatrix.SetRange(Type, AssignMatrix.Type::Deduction);
+                AssignMatrix.SetFilter(Balance, '<>0');
+                AssignMatrix.SetRange("Loan Repay", true);
+                AssignMatrix.SetRange("Balance Updated", false);  // Only process entries not yet updated
+                if AssignMatrix.FindSet() then
+                    repeat
+                        // Store opening balance
+                        if AssignMatrix."Opening Balance" = 0 then
+                            AssignMatrix."Opening Balance" := AssignMatrix.Balance;
+
+                        // Deduct the repayment from the balance
+                        AssignMatrix.Balance := AssignMatrix.Balance + AssignMatrix.Amount + AssignMatrix."Loan Interest";
+
+                        // Ensure balance doesn't go below zero
+                        if AssignMatrix.Balance < 0 then
+                            AssignMatrix.Balance := 0;
+
+                        // Mark as updated
+                        AssignMatrix."Balance Updated" := true;
+                        AssignMatrix.Modify();
+                    until AssignMatrix.Next() = 0;
+
 
                 Window.Update(1, Employee.FullName());
             end;

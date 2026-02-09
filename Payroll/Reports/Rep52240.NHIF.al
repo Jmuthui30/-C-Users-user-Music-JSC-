@@ -3,13 +3,13 @@ report 52240 "NHIF"
     ApplicationArea = All;
     DefaultLayout = RDLC;
     RDLCLayout = './Payroll/Report Layouts/NHIF.rdl';
-    Caption = 'NHIF';
+    Caption = 'SHIF';
     dataset
     {
         dataitem("Assignment Matrix-X"; "Assignment Matrix")
         {
             DataItemTableView = sorting("Employee No", Type, Code, "Payroll Period", "Reference No") where(Type = const(Deduction), "Employee type" = filter(<> trustee), NHIF = const(true));
-            RequestFilterFields = "Payroll Period", "Code";
+            RequestFilterFields = "Payroll Period";
 
             column(UPPERCASE_FORMAT_DateSpecified_0___Month_Text___year4____; UpperCase(Format(DateSpecified, 0, '<Month Text> <year4>')))
             {
@@ -56,6 +56,16 @@ report 52240 "NHIF"
             column(Emp__SHIF_No__; Emp."SHIF No.")
             {
             }
+            column(Emp__First_Name_; Emp."First Name")
+            {
+            }
+            column(Emp__Last_Name_; Emp."Last Name")
+            {
+            }
+            column(Emp__KRA_PIN_; Emp."PIN Number")
+            { }
+            column(Emp__Phone__No_; Emp."Phone No.")
+            { }
             column(FirstName_____Emp__Middle_Name______LastName; FirstName + ' ' + Emp."Middle Name" + ' ' + LastName)
             {
             }
@@ -278,8 +288,8 @@ report 52240 "NHIF"
         CompInfoSetup.Get();
         CompName := CompInfoSetup.Name;
 
-        HRSetup.Get();
-        HRSetup.TestField("Company NHIF No");
+        // HRSetup.Get();
+        // HRSetup.TestField("Company NHIF No");
 
         EmployerNHIFNo := HRSetup."Company NHIF No";
         //CompPINNo:=CompInfoSetup."Company PIN No.";
@@ -323,8 +333,8 @@ report 52240 "NHIF"
         Name_of_EmployeeCaption_Control1000000055Lbl: Label 'Name of Employee';
         Name_of_EmployeeCaptionLbl: Label 'Name of Employee';
         NATIONAL_HOSPITAL_INSURANCE_FUND_REPORTCaptionLbl: Label 'NATIONAL HOSPITAL INSURANCE FUND REPORT';
-        NHIF_No_Caption_Control1000000053Lbl: Label 'NHIF No.';
-        NHIF_No_CaptionLbl: Label 'NHIF No.';
+        NHIF_No_Caption_Control1000000053Lbl: Label 'SHIF No.';
+        NHIF_No_CaptionLbl: Label 'SHIF No.';
         PageCaption_Control44Lbl: Label 'Page';
         PageCaptionLbl: Label 'Page';
         Payroll_No_Caption_Control1000000056Lbl: Label 'Payroll No.';

@@ -7,7 +7,7 @@ report 51457 "Email Client Payslips"
     {
         dataitem(Employee; "Client Employee Master")
         {
-            DataItemTableView = WHERE(Status = CONST(Active), "Email Address" = FILTER(<> ''), "Total Allowances" = filter(<> 0));
+            DataItemTableView = WHERE(Status = CONST(Active), "Email Address" = FILTER(<> ''));
             RequestFilterFields = "Company Code", "No.";
 
             trigger OnAfterGetRecord()
@@ -41,6 +41,7 @@ report 51457 "Email Client Payslips"
                 field(Period; Period)
                 {
                     ApplicationArea = All;
+                    TableRelation = "Client Payroll Period"."Starting Date";
                     Caption = 'Month Begin Date';
                 }
             }

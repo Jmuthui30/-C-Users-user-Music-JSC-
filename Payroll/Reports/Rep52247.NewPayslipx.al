@@ -5,7 +5,7 @@ report 52247 "New Payslipx"
     // ArrEarnings[1,1]
     // ArrEarningsAmt[1,1]
     DefaultLayout = RDLC;
-    RDLCLayout = './Payroll/Report Layouts/NewPayslipx.rdl'; 
+    RDLCLayout = './Payroll/Report Layouts/NewPayslipx.rdl';
 
     dataset
     {
@@ -529,6 +529,7 @@ report 52247 "New Payslipx"
                                 end;
                                 TotalDeduction := TotalDeduction + Abs(AssignMatrix.Amount) + Abs(AssignMatrix."Loan Interest");
 
+
                                 if Deduct.Get(AssignMatrix.Code) then
                                     if Deduct."Show Balance" then begin
                                         LoanBalances.Reset();
@@ -590,6 +591,13 @@ report 52247 "New Payslipx"
                                             */
                                         end;
                                     end;
+                                if Deduct.Get(AssignMatrix.Code) then begin
+                                    if Deduct."Show Balance" then begin
+                                        // Use balance directly from Assignment Matrix if it exists
+                                        if AssignMatrix.Balance <> 0 then
+                                            BalanceArray[1, i] := AssignMatrix.Balance;
+                                    end;
+                                end;
                                 i := i + 1;
                             until AssignMatrix.Next() = 0;
 

@@ -7,10 +7,10 @@ report 51462 "Client NSSF"
 
     dataset
     {
-        dataitem("Client Payroll Matrix"; "Client Payroll Matrix")
+        dataitem("Client Payroll Matrix"; "Assignment Matrix")
         {
             DataItemTableView = WHERE(Type = CONST(deduction), NSSF = const(TRUE)/*, "Tax Relief" = const(false), "Normal Earnings" = const(true)*/);
-            RequestFilterFields = Company, "Type", "Pay Period Filter", "Payroll Group";
+            RequestFilterFields = "Payroll Period";
             RequestFilterHeading = 'NSSF';
 
             column(CompName; CompInfo.Name)
@@ -67,7 +67,7 @@ report 51462 "Client NSSF"
             column(ABS__Assignment_Matrix_X1__Amount_; Abs("Client Payroll Matrix".Amount))
             {
             }
-            column(Emp__NSSF_No__; OurEmp."NSSF No")
+            column(Emp__NSSF_No__; OurEmp."Social Security No.")
             {
             }
             column(FirstName_____Emp__Middle_Name______LastName; FirstName + ' ' + Emp."Middle Name" + ' ' + LastName)
@@ -79,13 +79,13 @@ report 51462 "Client NSSF"
             column(OtherNames; FirstName + ' ' + Emp."Middle Name")
             {
             }
-            column(Assignment_Matrix_X1__Assignment_Matrix_X1___Employee_No_; OurEmp."Payroll No.")
+            column(Assignment_Matrix_X1__Assignment_Matrix_X1___Employee_No_; OurEmp."No.")
             {
             }
             column(YEAR; YEAR)
             {
             }
-            column(Emp__ID_Number_; OurEmp."ID Number")
+            column(Emp__ID_Number_; OurEmp."ID No.")
             {
             }
             column(TotalAmount; TotalAmount)
@@ -199,7 +199,19 @@ report 51462 "Client NSSF"
             column(Pin; Pin)
             {
             }
-            column(Employer_Amount; EmployerTotal) { }
+            // THE MAIN COLUMNS YOU WANT
+            column(EmployeeNSSFTierI; EmployeeNSSFTierI)
+            {
+            }
+            column(EmployeeNSSFTierII; EmployeeNSSFTierII)
+            {
+            }
+            column(EmployerTotal; EmployerTotal)
+            {
+            }
+            column(GrandTotal; GrandTotal)
+            {
+            }
             // column(EmployeeTotal; EmployeeTotal)
             // {
             // }
@@ -211,13 +223,13 @@ report 51462 "Client NSSF"
             }
             trigger OnAfterGetRecord()
             begin
-                // Skip if we've already processed this employee in this period
+                // Skip if we've already processed this employee
                 TempNSSFSummary.SetRange("Employee No", "Client Payroll Matrix"."Employee No");
                 TempNSSFSummary.SetRange("Payroll Period", "Client Payroll Matrix"."Payroll Period");
                 if not TempNSSFSummary.IsEmpty then
                     CurrReport.Skip();
 
-                // Mark this employee as processed
+                // Mark as processed
                 TempNSSFSummary.Init();
                 TempNSSFSummary := "Client Payroll Matrix";
                 TempNSSFSummary.Insert();
@@ -229,31 +241,24 @@ report 51462 "Client NSSF"
                         exit;
                     end;
 
-                    Emp.SETRANGE(Emp."Pay Period Filter", "Client Payroll Matrix"."Payroll Period");
-                    begin
-                        if (Earnings."Earning Type" = Earnings."Earning Type"::"Tax Relief") or
-                           (Earnings."Earning Type" = Earnings."Earning Type"::"Insurance Relief") or
-                           (Earnings."Earning Type" = Earnings."Earning Type"::"Owner Occupier") then
-                            CurrReport.Skip();
-                    end;
-
                     FirstName := Emp."First Name";
                     LastName := Emp."Last Name";
-                    YEAR := Emp."Date of Birth";
+                    YEAR := Emp."Birth Date";
                     Pin := Emp."PIN Number";
                 end;
 
                 if OurEmp.Get("Client Payroll Matrix"."Employee No") then begin
-                    NSSFNo := OurEmp."NSSF No";
-                    Id := OurEmp."ID Number";
+                    NSSFNo := OurEmp."Social Security No.";
+                    Id := OurEmp."ID No.";
                 end;
 
-                // RESET per-employee totals - THIS IS CRITICAL!
+                // RESET ALL VARIABLES - THIS IS CRITICAL!
+                EmployeeNSSFTierI := 0;
+                EmployeeNSSFTierII := 0;
                 EmployerTotal := 0;
-                EmployeeTotal := 0;
-                SumTotal := 0;
+                GrandTotal := 0;
 
-                // Calculate TOTAL NSSF for this employee (Tier I + Tier II)
+                // ONE QUERY TO GET ALL NSSF DEDUCTIONS
                 Deductions.Reset();
                 Deductions.SetRange("Employee No", "Client Payroll Matrix"."Employee No");
                 Deductions.SetRange("Payroll Period", "Client Payroll Matrix"."Payroll Period");
@@ -262,38 +267,30 @@ report 51462 "Client NSSF"
 
                 if Deductions.FindSet() then
                     repeat
-                        EmployeeTotal := EmployeeTotal + Abs(Deductions.Amount);
+                        if (UpperCase(Deductions.Code) = 'NSSFTIERI') then begin
+                            EmployeeNSSFTierI := EmployeeNSSFTierI + Abs(Deductions.Amount);
+                        end
+                        else if (UpperCase(Deductions.Code) = 'NSSFTIERII') then begin
+                            EmployeeNSSFTierII := EmployeeNSSFTierII + Abs(Deductions.Amount);
+                        end;
+
+                        // Employer total (combined)
                         EmployerTotal := EmployerTotal + Abs(Deductions."Employer Amount");
                     until Deductions.Next() = 0;
 
-                SumTotal := EmployeeTotal + EmployerTotal;
-
-                // Add to grand total
-                TotalAmount := TotalAmount + SumTotal;
-
+                // Calculate grand total
+                GrandTotal := EmployeeNSSFTierI + EmployeeNSSFTierII + EmployerTotal;
+                TotalAmount := TotalAmount + GrandTotal;
                 Counter := Counter + 1;
-
-                if NSSFTemplate then begin
-                    LineNo := LineNo + 1;
-                    CSVBuffer.InsertEntry(LineNo, 1, "Employee No");
-                    CSVBuffer.InsertEntry(LineNo, 2, emp."Last Name");
-                    CSVBuffer.InsertEntry(LineNo, 3, Emp."First Name" + ' ' + Emp."Middle Name");
-                    CSVBuffer.InsertEntry(LineNo, 4, Emp."ID Number");
-                    CSVBuffer.InsertEntry(LineNo, 5, NSSFNo);
-                    CSVBuffer.InsertEntry(LineNo, 6, format(EmployeeTotal, 0, 2));
-                    CSVBuffer.InsertEntry(LineNo, 6, format(SumTotal, 0, 2));
-
-                    if SumTotal = 0 then CurrReport.Skip();
-                end;
             end;
 
             trigger OnPreDataItem()
             begin
-                StartDate := "Client Payroll Matrix".GetRangeMin("Pay Period Filter");
-                EndDate := "Client Payroll Matrix".GetRangeMax("Pay Period Filter");
+                StartDate := "Client Payroll Matrix".GetRangeMin("Payroll Period");
+                EndDate := "Client Payroll Matrix".GetRangeMax("Payroll Period");
                 "Client Payroll Matrix".SetRange("Payroll Period", StartDate, EndDate);
                 DateSpecified := EndDate;
-                if PayrollSetup.Get("Client Payroll Matrix".GetFilter(Company)) then EmployerNSSFNo := PayrollSetup."NSSF No.";
+                // if PayrollSetup.Get("Client Payroll Matrix".GetFilter(Company)) then EmployerNSSFNo := PayrollSetup."NSSF No.";
                 if NSSFTemplate then begin
                     CSVBuffer.InsertEntry(LineNo, 1, 'Payroll No.');
                     CSVBuffer.InsertEntry(LineNo, 2, 'Last Name');
@@ -337,9 +334,9 @@ report 51462 "Client NSSF"
         //"Client Payroll Matrix".SetFilter("Client Payroll Matrix".Code, 'NSSFev ');
         //if "Client Payroll Matrix".GetFilter(Code) = '' then
         // Error('Please select an earning code');
-        if "Client Payroll Matrix".GetFilter(Company) = '' then Error('Please select a company to report for.');
-        if "Client Payroll Matrix".GetFilter("Pay Period Filter") = '' then Error('Please select a payroll period to report for.');
-        CompInfo.Get("Client Payroll Matrix".GetFilter(Company));
+        // if "Client Payroll Matrix".GetFilter(Company) = '' then Error('Please select a company to report for.');
+        if "Client Payroll Matrix".GetFilter("Payroll Period") = '' then Error('Please select a payroll period to report for.');
+        // CompInfo.Get("Client Payroll Matrix".GetFilter(Company));
         if not NoLogo then begin
             CompInfo.CalcFields(Picture);
         end;
@@ -362,20 +359,20 @@ report 51462 "Client NSSF"
     var
         DateSpecified: Date;
         NSSFNo: Code[20];
-        Emp: Record "Client Employee Master";
+        Emp: Record Employee;
         Id: Code[20];
         FirstName: Text[30];
         LastName: Text[30];
         TotalAmount: Decimal;
         "Count": Integer;
-        Deductions: Record "Client Payroll Matrix";
+        Deductions: Record "Assignment Matrix";
         EmployerNSSFNo: Code[20];
         DOB: Date;
         CompInfoSetup: Record "Client Loan Transactions";
-        "HR Details": Record "Client Employee Master";
+        "HR Details": Record Employee;
         CompPINNo: Code[20];
         YEAR: Date;
-        Earnings: Record "Client Earnings";
+        Earnings: Record Earning;
         Address: Text[90];
         Tel: Text[30];
         Counter: Integer;
@@ -385,6 +382,9 @@ report 51462 "Client NSSF"
         NSSFCODE: Code[10];
         EmployerTotal: Decimal;
         EmployeeTotal: Decimal;
+        EmployeeNSSFTierI: Decimal;
+        EmployeeNSSFTierII: Decimal;
+        GrandTotal: Decimal;
         SumTotal: Decimal;
         AmountCaptionLbl: Label 'Amount';
         ID_PassportCaptionLbl: Label 'ID/Passport';
@@ -414,18 +414,18 @@ report 51462 "Client NSSF"
         Total_AmountCaptionLbl: Label 'Total Amount';
         StartDate: Date;
         EndDate: Date;
-        OurEmp: Record "Client Employee Master";
-        CompInfo: Record "Client Company Information";
+        OurEmp: Record Employee;
+        CompInfo: Record "Company Information";
         NoLogo: Boolean;
         NSSFTemplate: Boolean;
         LineNo: Integer;
-        PayrollSetup: Record "Client Payroll Setup";
+        PayrollSetup: Record "Payroll Setup";
         TempBlob: Codeunit "Temp Blob";
         FileMgt: Codeunit "File Management";
         InStr: InStream;
-        Deduction: Record "Client Deductions";
+        Deduction: Record Deduction;
         FileName: Text;
-        TempNSSFSummary: Record "Client Payroll Matrix" temporary;
+        TempNSSFSummary: Record "Assignment Matrix" temporary;
         EmployeeAmount: Decimal;
         EmployerAmount: Decimal;
         CSVBuffer: Record "CSV Buffer" temporary;

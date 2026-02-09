@@ -34,6 +34,7 @@ codeunit 52002 "Payroll"
         TaxableAmount: Decimal;
         ExcessRetirement: Decimal;
         PensionAdd: Decimal;
+        TotalTaxDeductible: Decimal;
         AddBack: Decimal;
         HousingLevyRelief: Decimal;
         // HousingLevyRelief: Decimal;
@@ -78,11 +79,16 @@ codeunit 52002 "Payroll"
             if Employee."Pays tax?" = true then begin
                 Employee.CalcFields("Taxable Allowance", "Tax Deductible Amount", "Relief Amount", "Basic Pay");
                 TaxableAmount := Employee."Taxable Allowance";
-                //message('Tax Pay is, %1', Employee."Taxable Allowance");
+                // message('Tax Pay is, %1', Employee."Taxable Allowance");
                 //**********************************************************************
 
 
                 //********************************************************************************************
+                // CALCULATE TAX DEDUCTIBLES
+                Varnssf := 0;
+                TotalTaxDeductible := 0;
+                ExcessRetirement := 0;
+
                 Ded.Reset();
                 Ded.SetRange(Ded."Tax deductible", true);
                 Ded.SetRange(Ded."Owner Occupied Interest", false);
@@ -93,77 +99,52 @@ codeunit 52002 "Payroll"
                         Assignmatrix.SetRange(Type, Assignmatrix.Type::Deduction);
                         Assignmatrix.SetRange(Assignmatrix.Code, Ded.Code);
                         Assignmatrix.SetRange(Assignmatrix."Employee No", EmployeeNo);
-                        if Assignmatrix.Find('-') then
-                            if Ded.NSSF = true then
-                                Varnssf := Abs(Assignmatrix.Amount);
-                        if Ded."Employer Contibution Taxed" = true then
-                            //Message('axable amount is %1', TaxableAmount);
-                            //  Message('RetirementCont is %1', RetirementCont);
-                            if Ded."Employer Contibution Taxed" = true then
-                                ExcessRetirement := ExcessRetirement + Round((Employee."Basic Pay" * 0.1), 1, '=');
-                        RetirementCont := Varnssf + VarPensionAmount;
+                        if Assignmatrix.FindSet() then begin
+                            Assignmatrix.CalcSums(Amount);
 
+                            // Track NSSF separately
+                            if Ded.NSSF = true then
+                                Varnssf := Varnssf + Abs(Assignmatrix.Amount)
+                            else
+                                // Add OTHER tax deductibles (NOT NSSF, NOT NHIF/SHIF)
+                                if not Ded.NHIF then
+                                    TotalTaxDeductible := TotalTaxDeductible + Abs(Assignmatrix.Amount);
+                        end;
                     until Ded.Next() = 0;
 
+                // Calculate ExcessRetirement ONCE
+                Ded.Reset();
+                Ded.SetRange(Ded."Tax deductible", true);
+                Ded.SetRange(Ded."Owner Occupied Interest", false);
+                Ded.SetRange(Ded."Employer Contibution Taxed", true);
+                if Ded.FindFirst() then
+                    ExcessRetirement := Round((Employee."Basic Pay" * 0.1), 1, '=');
 
-                //Message('ExcessRetirement is %1...#...RetirementCont is %2..#.. TaxableAmount IS %3...# V is %4', ExcessRetirement, RetirementCont, TaxableAmount, VarPensionAmount);
+                // Message('NSSF: %1, Other Tax Deductible: %2, ExcessRetirement: %3',
+                        // Varnssf, TotalTaxDeductible, ExcessRetirement);
 
+                // DEDUCT NSSF FIRST
+                TaxableAmount := TaxableAmount - Varnssf;
+                // Message('After NSSF deduction: %1', TaxableAmount);
 
-                //******************************************************************************************************88
-                // if Ded."Employer Contibution Taxed" then
-                //     ExcessRetirement := ExcessRetirement + Abs(Assignmatrix."Employer Amount");
-                //     until Ded.Next() = 0;
-
-
+                // APPLY PENSION LIMIT on OTHER deductions
+                HRSetup.Get();
                 PensionAdd := 0;
 
-                HRSetup.Get();
-                if RetirementCont > HRSetup."Pension Limit Amount" then begin
-                    RetirementCont := HRSetup."Pension Limit Amount";
-
-                    if RetirementCont <> 0 then
-                        // TaxableAmount := TaxableAmount - RetirementCont;
-                        if ExcessRetirement > 0 then
-                            if Ded.NSSF = true then //begin
-                                Varnssf := Abs(Assignmatrix.Amount);
-                    PensionAdd := ExcessRetirement + RetirementCont;///+ Varnssf;
+                if PensionAdd > HRSetup."Pension Limit Amount" then begin
+                    // Over limit
                     AddBack := PensionAdd - HRSetup."Pension Limit Amount";
-                    TaxableAmount := ((TaxableAmount + AddBack + Varnssf) - RetirementCont);
+                    RetirementCont := HRSetup."Pension Limit Amount";
+                    TaxableAmount := TaxableAmount + AddBack - RetirementCont;
+                    // Message('OVER LIMIT: TaxableAmount=%1', TaxableAmount);
+                end else begin
+                    // Under limit
+                    RetirementCont := TotalTaxDeductible;
+                    TaxableAmount := TaxableAmount - RetirementCont;
+                    // Message('UNDER LIMIT: After other deductions=%1', TaxableAmount);
                 end;
 
-
-                if RetirementCont < HRSetup."Pension Limit Amount" then begin
-                    // PensionAdd := ExcessRetirement + RetirementCont;
-                    // Message('PensionAddIS %1', PensionAdd);
-                    // Message('VarNSSF is %1, Retirement cont is %2', Varnssf,RetirementCont);
-                    PensionAdd := ExcessRetirement + RetirementCont + Varnssf;
-                    // Message('PensionAddIS %1', PensionAdd);
-                    //end;
-                    /// Message('"Pension Limit Amount" is %1..#....pension add is %2...#..taxamont is %3..#..retire is %4', HRSetup."Pension Limit Amount", PensionAdd, TaxableAmount, RetirementCont);
-
-                    //Message('ns11sf ALLOW IS %1', Varnssf);
-                    if PensionAdd > HRSetup."Pension Limit Amount" then begin
-                        // Message('12');
-                        //PensionAdd:=PensionAdd-HRSetup."Pension Limit Amount";
-                        AddBack := PensionAdd - HRSetup."Pension Limit Amount";
-                        // TaxableAmount := TaxableAmount + AddBack - HRSetup."Pension Limit Amount";
-                        //TaxableAmount := (TaxableAmount + AddBack) P- RetirementCont;
-                        // TaxableAmount := ((TaxableAmount + Varnssf) - RetirementCont);
-                        TaxableAmount := ((TaxableAmount + AddBack) - RetirementCont);
-
-                    end;
-                    //else
-                    //Message('taxa123 is %1', TaxableAmount);
-                    if PensionAdd <= HRSetup."Pension Limit Amount" then begin
-                        //Message('1234');
-                        //TaxableAmount := (TaxableAmount + AddBack) - RetirementCont;
-                        AddBack := PensionAdd - HRSetup."Pension Limit Amount";
-                        TaxableAmount := ((TaxableAmount) - RetirementCont);
-                    end;
-                end;
-
-                //Message('tax is %1..#.....adback is %2...#....hrset is %3...#..Varnssf is %4', TaxableAmount, AddBack, HRSetup."Pension Limit Amount", Varnssf);
-                //  Message('taxa123 is %1', TaxableAmount);
+                // Continue with SHIF, AHL, etc. as you already have
 
                 if Employee.Disabled = Employee.Disabled::Yes then
                     TaxableAmount := TaxableAmount - HRSetup."Disabililty Tax Exp. Amt";
@@ -190,8 +171,9 @@ codeunit 52002 "Payroll"
                     Ded.Next() = 0;
 
                 if SHIFAmount > 0 then begin
-
+                    // Message('taxa123 before SHIF is %1', TaxableAmount);
                     TaxableAmount := TaxableAmount - SHIFAmount;
+                    // Message('taxa123 after SHIF is %1', TaxableAmount);
                 end;
                 ///Message('taxa123 is %1', TaxableAmount);
                 //*******************************AHL*****************************
@@ -217,7 +199,9 @@ codeunit 52002 "Payroll"
                     until
                     Ded.Next() = 0;
                 if AHLAmount > 0 then begin
+                    // Message('taxa123 before AHL is %1', TaxableAmount);
                     TaxableAmount := TaxableAmount - AHLAmount;
+                    // Message('taxa123 after AHL is %1', TaxableAmount);
                 end;
                 //***************************************************************
                 //Owner occupier occupied interest
@@ -309,7 +293,7 @@ codeunit 52002 "Payroll"
                     /* if HRSetup."Owner Occupied Interest Limit" < OwnerOccupier then
                         OwnerOccupier := HRSetup."Owner Occupied Interest Limit"; */
 
-                    TaxableAmount := TaxableAmount - OwnerOccupier; 
+                    TaxableAmount := TaxableAmount - OwnerOccupier;
                 end;
                 //end;
                 // End ofOwner occupier Specific
@@ -340,7 +324,9 @@ codeunit 52002 "Payroll"
                     HRSetup.TestField("Secondary PAYE %");
                     FinalTax := TaxableAmount * (HRSetup."Secondary PAYE %" / 100);
                 end else
-                    FinalTax := GetTaxBracket(TaxableAmount, Employee);
+                    // Message('taxable amount before get tax bracket is %1', TaxableAmount);
+                FinalTax := GetTaxBracket(TaxableAmount, Employee);
+                // Message('taxable amount after get tax bracket is %1', TaxableAmount);
 
                 if Employee.Get(EmployeeNo) then;
                 if Employee."Employee Job Type" <> Employee."Employee Job Type"::Director then begin
@@ -421,7 +407,7 @@ codeunit 52002 "Payroll"
                     FinalTax := 0;
             end else
                 FinalTax := 0;
-        //  Message('finaltax is %1', FinalTax);
+        // Message('finaltax is %1', FinalTax);
 
     end;
 
