@@ -494,7 +494,7 @@ page 51441 "Payroll Manager Role Center"
                         Promoted = true;
                         PromotedCategory = "Report";
                         PromotedIsBig = true;
-                        RunObject = Report "Provident Fund";
+                        RunObject = Report "Client Provident Fund";
                         ToolTip = 'View PROVIDENT Fund Report';
                     }
                     action("PROVIDENT Arrears")
