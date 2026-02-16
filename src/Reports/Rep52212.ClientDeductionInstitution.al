@@ -8,7 +8,7 @@ report 52212 "Client Deduction-Institution"
 
     dataset
     {
-        dataitem("PR Transaction Codes"; "Client Deductions")
+        dataitem("PR Transaction Codes"; Deduction)
         {
             DataItemTableView = SORTING(Code)ORDER(Descending)WHERE("Institution Code"=FILTER(<>''));
             RequestFilterFields = "Institution Code", Code;
@@ -22,9 +22,9 @@ report 52212 "Client Deduction-Institution"
             column(CompInfoName; CompInfo.Name)
             {
             }
-            column(Company; Company)
-            {
-            }
+            // column(Company; Company)
+            // {
+            // }
             column(CompInfoAddress; CompInfo.Address)
             {
             }
@@ -52,11 +52,11 @@ report 52212 "Client Deduction-Institution"
             column(ReportTitle; ReportTitle)
             {
             }
-            dataitem("PR Period Transactions"; "Client Payroll Matrix")
+            dataitem("PR Period Transactions";"Assignment Matrix")
             {
                 DataItemLink = "Code"=FIELD(Code);
                 //DataItemTableView = SORTING()
-                RequestFilterFields = "Payroll Period", Company, "Payroll Group";
+                RequestFilterFields = "Payroll Period", "Payroll Group";
 
                 column(TransactionName_PRPeriodTransactions; "PR Period Transactions".Description)
                 {
@@ -91,20 +91,20 @@ report 52212 "Client Deduction-Institution"
                 column(ReferenceNo_PRPeriodTransactions; "PR Period Transactions"."Reference No")
                 {
                 }
-                dataitem(Employee; "Client Employee Master")
+                dataitem(Employee; Employee)
                 {
                     DataItemLink = "No."=field("Employee No");
-                    RequestFilterFields = "Company Code";
+                    // RequestFilterFields = "Company Code";
 
-                    column(ID_Number; "ID Number")
+                    column(ID_Number; "ID No.")
                     {
                     }
-                    column(Full_Name; "Full Name")
+                    column(Full_Name;FullName)
                     {
                     }
-                    column(Company_Code; "Company Code")
-                    {
-                    }
+                    // column(Company_Code; "Company Code")
+                    // {
+                    // }
                 }
                 trigger OnAfterGetRecord();
                 begin
@@ -112,7 +112,7 @@ report 52212 "Client Deduction-Institution"
                     IDNumber:='';
                     CLEAR(HREmp);
                     IF HREmp.GET("PR Period Transactions"."Employee No")THEN BEGIN
-                        EmpName:=UPPERCASE(Employee."Full Name");
+                        EmpName:=UPPERCASE(Employee.FullName());
                     //IDNumber := HREmp."ID Number";
                     END;
                     BLN_No:='';
@@ -120,7 +120,7 @@ report 52212 "Client Deduction-Institution"
                     PREmpTrans.RESET;
                     PREmpTrans.SETRANGE(PREmpTrans."Payroll Period", SelectedPeriod);
                     PREmpTrans.SETRANGE(PREmpTrans."Code", "PR Period Transactions"."Code");
-                    PREmpTrans.SetRange(PREmpTrans.Company, Employee."Company Code");
+                    // PREmpTrans.SetRange(PREmpTrans.Company, Employee."Company Code");
                     IF PREmpTrans.FIND('-')THEN BEGIN
                         BLN_No:=PREmpTrans."Reference No";
                     END;
@@ -129,7 +129,7 @@ report 52212 "Client Deduction-Institution"
                         PREmpTrans.SetRange(PREmpTrans."Employee No", "PR Period Transactions"."Employee No");
                         PREmpTrans.SetRange(PREmpTrans.Type, "PR Period Transactions".Type);
                         PREmpTrans.SetRange(PREmpTrans.Code, "PR Period Transactions".Code);
-                        PREmpTrans.SetRange(PREmpTrans.Company, "PR Period Transactions".Company);
+                        // PREmpTrans.SetRange(PREmpTrans.Company, "PR Period Transactions".Company);
                         PREmpTrans.SetRange(PREmpTrans.Amount, "PR Period Transactions".Amount);
                     end;
                 end;
@@ -205,12 +205,12 @@ report 52212 "Client Deduction-Institution"
     CompInfo: Record "Company Information";
     PeriodName: Text[30];
     AppliedFilters: Text;
-    PRPayrollPeriods: Record "Client Payroll Period";
+    PRPayrollPeriods: Record "Payroll Period";
     EmpName: Text;
-    Client: Record "Client Company Information";
+    Client: Record "Company Information";
     HREmp: Record "Employee";
     IDNumber: Text;
-    PREmpTrans: Record "Client Payroll Matrix";
+    PREmpTrans: Record "Assignment Matrix";
     BLN_No: Text;
     ReportTitle: Text;
     procedure fnCompanyInfo();

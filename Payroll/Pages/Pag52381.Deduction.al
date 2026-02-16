@@ -306,7 +306,7 @@ page 52381 "Deduction"
                 }
                 field("Institution Code"; Rec."Institution Code")
                 {
-                    Visible = false;
+                    Visible = true;
                     ToolTip = 'Specifies the value of the Institution Code field';
                 }
                 field("Owner Occupied Interest"; Rec."Owner Occupied Interest")

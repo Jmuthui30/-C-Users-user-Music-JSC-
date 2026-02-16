@@ -158,36 +158,57 @@ report 51466 "Client Bank Instruction"
         Counter := 0;  // Reset counter
     end;
 
+    local procedure CleanText(InputText: Text): Text
+    var
+        OutputText: Text;
+        i: Integer;
+        CurrentChar: Char;
+    begin
+        OutputText := '';
+        for i := 1 to StrLen(InputText) do begin
+            CurrentChar := InputText[i];
+            // Only allow letters, numbers, and spaces (ASCII 32-126)
+            if (CurrentChar >= 32) and (CurrentChar <= 126) then
+                OutputText := OutputText + Format(CurrentChar);
+        end;
+        exit(OutputText);
+    end;
+
     local procedure WriteLineToTXT()
     var
         LineText: Text;
-        EmployeeName: Text;
-        BankCode: Text;
+        EmployeeNo: Text;
         BranchCode: Text;
         AccountNo: Text;
         AmountText: Text;
+        EmployeeName: Text;
     begin
+        // Build and clean employee name
         EmployeeName := NAVEmp."First Name" + ' ' + NAVEmp."Last Name" + ' ' + NAVEmp."Middle Name";
+        EmployeeName := CleanText(EmployeeName);  // Remove special/non-printable characters
+        EmployeeName := DelChr(EmployeeName, '>', ' ');  // Remove trailing spaces
 
-        // Get bank and branch codes
-        BankCode := Employee."Employee's Bank";
-        BranchCode := Employee."Bank Branch";
-        AccountNo := Employee."Bank Account Number";
+        // Get employee number and bank details
+        EmployeeNo := NAVEmp."No.";
+        BranchCode := NAVEmp."Bank Branch";
+        AccountNo := NAVEmp."Bank Account Number";
 
-        // Format amount without decimal point (multiply by 100 for cents)
-        AmountText := Format(Amount * 100, 0, '<Integer>');
-        AmountText := PadStr('', 10 - StrLen(AmountText), '0') + AmountText;  // Pad to 10 digits
+        // Format amount
+        AmountText := Format(Round(Amount * 100, 1), 0, '<Integer>');
+        AmountText := PadStr('', 8 - StrLen(AmountText), '0') + AmountText;
 
-        // Build the line: BankCode(2) + BranchCode(6) + AccountNo(13) + Amount(10) + 'P' + Amount(10) + Name
-        LineText := PadStr(BankCode, 2, '0') +
-                    PadStr(BranchCode, 6, '0') +
-                    PadStr(AccountNo, 13, '0') +
-                    AmountText +
-                    'P' +
-                    AmountText +
-                    EmployeeName;
+        // Build the line
+        LineText :=
+            // '26100000' +
+            CopyStr(PadStr(EmployeeNo, 5, '0'), 1, 5) +
+            CopyStr(PadStr(BranchCode, 3, '0'), 1, 3) +
+            CopyStr(PadStr(AccountNo, 13, '0'), 1, 13) +
+            'P' +
+            AmountText +
+            '0' +
+            EmployeeName;
 
-        TxtFile.WriteText(LineText);
+        TxtFile.Write(LineText);
     end;
 
     local procedure WriteFooterToTXT()

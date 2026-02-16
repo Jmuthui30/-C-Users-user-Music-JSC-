@@ -1,5 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>MSRB</am:Name>
+      <am:Version>15.0.20283.0</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>MSRB</am:Name>
+      <am:Version>15.0.20283.0</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2026-02-12T12:26:15.2018953Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource">
@@ -7,6 +18,7 @@
         <DataProvider>SQL</DataProvider>
         <ConnectString />
       </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
       <rd:DataSourceID>54584eb0-8733-456b-a6e3-184dc1b2b1be</rd:DataSourceID>
     </DataSource>
   </DataSources>
@@ -829,6 +841,7 @@
                               <PaddingBottom>2pt</PaddingBottom>
                             </Style>
                           </Textbox>
+                          <rd:Selected>true</rd:Selected>
                         </CellContents>
                       </TablixHeader>
                       <TablixMembers>
@@ -1326,9 +1339,6 @@ xT+zh468Lu5OkNqMC8+bYHzQfw6/pXnl3o+oafI0dzZXFs6nDLNEykfmK/UTy19Kr3Wm2t8my5top1/u
         <Field Name="CompInfoName">
           <DataField>CompInfoName</DataField>
         </Field>
-        <Field Name="Company">
-          <DataField>Company</DataField>
-        </Field>
         <Field Name="CompInfoAddress">
           <DataField>CompInfoAddress</DataField>
         </Field>
@@ -1403,9 +1413,6 @@ xT+zh468Lu5OkNqMC8+bYHzQfw6/pXnl3o+oafI0dzZXFs6nDLNEykfmK/UTy19Kr3Wm2t8my5top1/u
         </Field>
         <Field Name="Full_Name">
           <DataField>Full_Name</DataField>
-        </Field>
-        <Field Name="Company_Code">
-          <DataField>Company_Code</DataField>
         </Field>
       </Fields>
       <Query>

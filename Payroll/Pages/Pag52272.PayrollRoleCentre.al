@@ -151,6 +151,13 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                     ToolTip = 'Executes the Destinations action';
                     Caption = 'Destinations';
                 }
+                action(Institutions)
+                {
+                    RunObject = page Institutions;
+                    ApplicationArea = All;
+                    ToolTip = 'Executes the Institution setup action';
+                    Caption = 'Institutions';
+                }
             }
             group("Payroll Approval")
             {
@@ -392,6 +399,14 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                         Caption = 'Deductions Report';
                         Image = "Report";
                         RunObject = report Deductions;
+                        ApplicationArea = All;
+                        ToolTip = 'Executes the Deductions Report action';
+                    }
+                    action("Client Deduction Report")
+                    {
+                        Caption = 'Instutution Deductions Report';
+                        Image = "Report";
+                        RunObject = report "Client Deduction-Institution";
                         ApplicationArea = All;
                         ToolTip = 'Executes the Deductions Report action';
                     }
