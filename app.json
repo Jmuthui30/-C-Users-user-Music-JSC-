@@ -3,7 +3,7 @@
   "name": "JSC 2.0_",
   "publisher": "ALTAIR RETRO LTD",
 
-  "version": "1.0.1.512",
+  "version": "1.0.1.634",
 
   
   "brief": "",
@@ -22,7 +22,7 @@
   
   "idRanges": [
     {
-      "from": 1,
+      "from": 40000,
       "to": 59999
     }
   ],

@@ -384,19 +384,39 @@ table 51800 "Requisition Header"
         if "No." = '' then begin
             if "Requisition Type" = "Requisition Type"::"Purchase Requisition" then begin
                 PurchSetup.TestField("Purchase Req No");
-                NoSeriesMgt.InitSeries(PurchSetup."Purchase Req No", xRec."No.", 0D, "No.", "Procurement Plan");
+                // NoSeriesMgt.InitSeries(PurchSetup."Purchase Req No", xRec."No.", 0D, "No.", "Procurement Plan");
+                if NoSeriesMgt.AreRelated(PurchSetup."Purchase Req No", xRec."No. Series") then
+                    "No. Series" := xRec."No. Series"
+                else
+                    "No. Series" := PurchSetup."Purchase Req No";
+                "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
             end;
             if "Requisition Type" = "Requisition Type"::"Store Requisition" then begin
                 PurchSetup.TestField(PurchSetup."Store Requisition Nos.");
-                NoSeriesMgt.InitSeries(PurchSetup."Store Requisition Nos.", xRec."No.", 0D, "No.", "Procurement Plan");
+                // NoSeriesMgt.InitSeries(PurchSetup."Store Requisition Nos.", xRec."No.", 0D, "No.", "Procurement Plan");
+                if NoSeriesMgt.AreRelated(PurchSetup."Store Requisition Nos.", xRec."No. Series") then
+                    "No. Series" := xRec."No. Series"
+                else
+                    "No. Series" := PurchSetup."Store Requisition Nos.";
+                "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
             end;
             if "Requisition Type" = "Requisition Type"::"S_Store Requisition" then begin
                 PurchSetup.TestField(PurchSetup."S_Store Requisition Nos.");
-                NoSeriesMgt.InitSeries(PurchSetup."S_Store Requisition Nos.", xRec."No.", 0D, "No.", "Procurement Plan");
+                // NoSeriesMgt.InitSeries(PurchSetup."S_Store Requisition Nos.", xRec."No.", 0D, "No.", "Procurement Plan");
+                if NoSeriesMgt.AreRelated(PurchSetup."Store Requisition Nos.",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=PurchSetup."Store Requisition Nos.";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
             end;
             if "Requisition Type" = "Requisition Type"::"J_Store Requisition" then begin
                 PurchSetup.TestField(PurchSetup."J_Store Requisition Nos.");
-                NoSeriesMgt.InitSeries(PurchSetup."J_Store Requisition Nos.", xRec."No.", 0D, "No.", "Procurement Plan");
+                // NoSeriesMgt.InitSeries(PurchSetup."J_Store Requisition Nos.", xRec."No.", 0D, "No.", "Procurement Plan");
+                if NoSeriesMgt.AreRelated(PurchSetup."J_Store Requisition Nos.",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=PurchSetup."J_Store Requisition Nos.";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
             end;
         end;
         "Raised by" := UserId;
@@ -420,19 +440,32 @@ table 51800 "Requisition Header"
 
     var
         PurchSetup: Record "Procurement Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         UsersRec: Record "User Setup";
         NAVemp: Record Employee;
         EmpRec: Record "Employee Master";
         Expenses: Record "Expense Codes";
         Lines: Record "Requisition Lines";
 
-    procedure AssitEdit(): Boolean
+    // procedure AssitEdit(): Boolean
+    // begin
+    //     PurchSetup.Get;
+    //     PurchSetup.TestField("Store Requisition Nos.");
+    //     if NoSeriesMgt.SelectSeries(PurchSetup."Store Requisition Nos.", xRec."No. Series", "No. Series") then begin
+    //         NoSeriesMgt.SetSeries("No.");
+    //         exit(true);
+    //     end;
+    // end;
+     procedure AssistEdit(): Boolean
+    var
+        NoSeries: Codeunit "No. Series";
     begin
-        PurchSetup.Get;
-        PurchSetup.TestField("Store Requisition Nos.");
-        if NoSeriesMgt.SelectSeries(PurchSetup."Store Requisition Nos.", xRec."No. Series", "No. Series") then begin
-            NoSeriesMgt.SetSeries("No.");
+        PurchSetup.Get();
+
+        if NoSeries.LookupRelatedNoSeries(PurchSetup."Store Requisition Nos.", xRec."No. Series", "No. Series") then begin
+            "No." := '';
+            PurchSetup.Get();
+            "No." := NoSeries.GetNextNo("No. Series", WorkDate(), true);
             exit(true);
         end;
     end;

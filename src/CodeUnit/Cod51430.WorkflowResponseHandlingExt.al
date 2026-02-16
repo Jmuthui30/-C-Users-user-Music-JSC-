@@ -83,6 +83,9 @@ codeunit 51430 "Workflow Response Handling Ext"
                     //7. Training Needs
                     WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.SetStatusToPendingApprovalCode, WorkflowEventHandling.RunWorkflowOnSendTrainingNeedsForApprovalCode);
                     //
+                    //Training Request
+                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.SetStatusToPendingApprovalCode(), WorkflowEventHandling.RunworkflowOnSendTrainingRequestforApprovalCode());
+
                     //8. Recruitment
                     WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.SetStatusToPendingApprovalCode, WorkflowEventHandling.RunWorkflowOnSendRecruitmentForApprovalCode);
                     //
@@ -187,6 +190,9 @@ codeunit 51430 "Workflow Response Handling Ext"
                     //7. Training Needs
                     WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CreateApprovalRequestsCode, WorkflowEventHandling.RunWorkflowOnSendTrainingNeedsForApprovalCode);
                     //
+                    //Training Request
+                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CreateApprovalRequestsCode(), WorkflowEventHandling.RunworkflowOnSendTrainingRequestforApprovalCode());
+
                     //8. Recruitment
                     WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CreateApprovalRequestsCode, WorkflowEventHandling.RunWorkflowOnSendRecruitmentForApprovalCode);
                     //
@@ -391,6 +397,9 @@ codeunit 51430 "Workflow Response Handling Ext"
                     //7. Training Needs
                     WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.OpenDocumentCode, WorkflowEventHandling.RunWorkflowOnCancelTrainingNeedsApprovalRequestCode);
                     //
+                    //Training Request
+                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.OpenDocumentCode(), WorkflowEventHandling.RunworkflowOnCancelTrainingRequestApprovalRequestCode());
+
                     //8. Recruitment
                     WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.OpenDocumentCode, WorkflowEventHandling.RunWorkflowOnCancelRecruitmentApprovalRequestCode);
                     //
@@ -493,6 +502,9 @@ codeunit 51430 "Workflow Response Handling Ext"
                     //7. Training Needs
                     WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CancelAllApprovalRequestsCode, WorkflowEventHandling.RunWorkflowOnCancelTrainingNeedsApprovalRequestCode);
                     //
+                    //Training Request
+                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CancelAllApprovalRequestsCode(), WorkflowEventHandling.RunworkflowOnCancelTrainingRequestApprovalRequestCode());
+
                     //8. Recruitment
                     WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CancelAllApprovalRequestsCode, WorkflowEventHandling.RunWorkflowOnCancelRecruitmentApprovalRequestCode);
                     //
@@ -565,6 +577,7 @@ codeunit 51430 "Workflow Response Handling Ext"
         ConsolidatedRecruitmentPlan: Record "Consolidated Recruitment Plan";
         CompanyEstablishment: Record "Company Jobs";
         RecruitmentNeed: Record "Recruitment Needs";
+        TRequest: Record "Training Request";
         ImprestMemo: Record "Imprest Memo Header";
         ImprestPayrollClaim: Record "Imprest Payroll Claims Header";
     begin
@@ -848,6 +861,14 @@ codeunit 51430 "Workflow Response Handling Ext"
                     Handled := true;
                 end;
             //
+            //Training Request
+            Database::"Training Request":
+                begin
+                    RecRef.SetTable(TRequest);
+                    TRequest.Validate(Status, TRequest.Status::Released);
+                    TRequest.Modify;
+                    Handled := true;
+                end;
             //**********************THL - SERVICE MANAGEMENT MODULE CUSTOMIZATIONS****************************
             //
             //1. Job Worksheets
@@ -910,6 +931,7 @@ codeunit 51430 "Workflow Response Handling Ext"
         CompanyEstablishment: Record "Company Jobs";
         RecruitmentNeed: Record "Recruitment Needs";
         ImprestMemo: Record "Imprest Memo Header";
+        TRequest: Record "Training Request";
         ImprestPayrollClaim: Record "Imprest Payroll Claims Header";
     begin
         case RecRef.Number of //***********THL - BASIC FINANCE MODULE CUSTOMIZATIONS*************
@@ -1188,6 +1210,14 @@ codeunit 51430 "Workflow Response Handling Ext"
                     Handled := true;
                 end;
             //
+            //Training Request
+            Database::"Training Request":
+                begin
+                    RecRef.SetTable(TRequest);
+                    TRequest.Validate(Status, TRequest.Status::Open);
+                    TRequest.Modify(true);
+                    Handled := true;
+                end;
             //**********************THL - SERVICE MANAGEMENT MODULE CUSTOMIZATIONS****************************
             //
             //1. Job Worksheet

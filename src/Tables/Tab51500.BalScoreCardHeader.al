@@ -13,9 +13,10 @@ table 51500 "Bal Score Card Header"
             begin
                 if "No." <> xRec."No." then begin
                     HumanResSetup.Get;
-                    if "Document Type" = "Document Type"::Planning then NoSeriesMgt.TestManual(HumanResSetup."Bal Planning Score Card Nos")
+                    if "Document Type" = "Document Type"::Planning then
+                        NoSeriesMgt.TestManual(HumanResSetup."Bal Planning Score Card Nos")
                     else if "Document Type" = "Document Type"::Appraisal then NoSeriesMgt.TestManual(HumanResSetup."Bal Appraisal Score Card Nos");
-                    "No. series":='';
+                    "No. series" := '';
                 end;
             end;
         }
@@ -39,12 +40,12 @@ table 51500 "Bal Score Card Header"
 
             trigger OnValidate()
             begin
-                if Emp.Get("Employee No.")then begin
-                    "Employee Name":=Emp.FullName();
-                    Position:=Emp."Job Title";
-                    "Employee's Department":=Emp."Global Dimension 1 Code";
-                    "Employee's Branch":=Emp."Global Dimension 2 Code";
-                    if NavEmp.Get(Emp."No.")then "Bal Score Emp Categories":=NavEmp."Bal Score Emp Categories";
+                if Emp.Get("Employee No.") then begin
+                    "Employee Name" := Emp.FullName();
+                    Position := Emp."Job Title";
+                    "Employee's Department" := Emp."Global Dimension 1 Code";
+                    "Employee's Branch" := Emp."Global Dimension 2 Code";
+                    if NavEmp.Get(Emp."No.") then "Bal Score Emp Categories" := NavEmp."Bal Score Emp Categories";
                 end;
             end;
         }
@@ -62,13 +63,13 @@ table 51500 "Bal Score Card Header"
         field(7; "Employee's Department"; Code[20])
         {
             CaptionClass = '1,1,1';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
             Editable = false;
         }
         field(8; "Employee's Branch"; Code[20])
         {
             CaptionClass = '1,1,2';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
             Editable = false;
         }
         field(9; Supervisor; Code[20])
@@ -79,11 +80,11 @@ table 51500 "Bal Score Card Header"
 
             trigger OnValidate()
             begin
-                if Emp.Get(Supervisor)then begin
-                    "Supervisor's Name":=Emp.FullName();
-                    "Supervisor's Position":=Emp."Job Title";
-                    "Supervisor's Department":=Emp."Global Dimension 1 Code";
-                    "Supervisor's Branch":=Emp."Global Dimension 2 Code";
+                if Emp.Get(Supervisor) then begin
+                    "Supervisor's Name" := Emp.FullName();
+                    "Supervisor's Position" := Emp."Job Title";
+                    "Supervisor's Department" := Emp."Global Dimension 1 Code";
+                    "Supervisor's Branch" := Emp."Global Dimension 2 Code";
                 end;
             end;
         }
@@ -100,14 +101,14 @@ table 51500 "Bal Score Card Header"
         field(12; "Supervisor's Department"; Code[20])
         {
             CaptionClass = '1,1,1';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
             Editable = false;
         }
         field(13; "Supervisor's Branch"; Code[20])
         {
             CaptionClass = '1,1,2';
             Caption = 'Global Dimension 1 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
             Editable = false;
         }
         field(14; "No. series"; Code[10])
@@ -115,7 +116,7 @@ table 51500 "Bal Score Card Header"
             TableRelation = "No. Series";
             Editable = false;
         }
-        field(15; Status;Enum "Document Status")
+        field(15; Status; Enum "Document Status")
         {
             Editable = false;
         }
@@ -126,17 +127,17 @@ table 51500 "Bal Score Card Header"
         field(17; "Plan / Review Period"; Text[50])
         {
             Editable = false;
-            CalcFormula = Lookup("Bal Score Plan Review Period".Name WHERE(Code=FIELD("Plan / Review Period Code")));
+            CalcFormula = Lookup("Bal Score Plan Review Period".Name WHERE(Code = FIELD("Plan / Review Period Code")));
             FieldClass = FlowField;
         }
         field(18; "Document Type"; Option)
         {
-            OptionMembers = Planning, Appraisal;
+            OptionMembers = Planning,Appraisal;
             Editable = false;
         }
         field(19; "Appraisal Doc No"; Code[20])
         {
-            TableRelation = "Bal Score Card Header" where("Document Type"=const(Appraisal));
+            TableRelation = "Bal Score Card Header" where("Document Type" = const(Appraisal));
             Editable = false;
         }
         field(20; "Progress Review Period"; Code[20])
@@ -147,13 +148,13 @@ table 51500 "Bal Score Card Header"
         }
         field(21; "Planning Doc No"; Code[20])
         {
-            TableRelation = "Bal Score Card Header" where("Document Type"=const(Planning));
+            TableRelation = "Bal Score Card Header" where("Document Type" = const(Planning));
             Editable = false;
         }
         field(22; Score; Decimal)
         {
             FieldClass = FlowField;
-            CalcFormula = sum("Bal Score Card Lines".Score where(DocNo=field("No."), Type=filter(<>Global)));
+            CalcFormula = sum("Bal Score Card Lines".Score where(DocNo = field("No."), Type = filter(<> Global)));
             Editable = false;
         }
         field(24; "Rating Score"; Decimal)
@@ -164,7 +165,7 @@ table 51500 "Bal Score Card Header"
         field(25; Rating; Text[50])
         {
             Editable = false;
-            CalcFormula = Lookup("Bal Score Card Rating".Name WHERE(Score=FIELD("Rating Score")));
+            CalcFormula = Lookup("Bal Score Card Rating".Name WHERE(Score = FIELD("Rating Score")));
             FieldClass = FlowField;
         }
         field(26; "Bal Score Emp Categories"; Code[20])
@@ -177,19 +178,19 @@ table 51500 "Bal Score Card Header"
         field(27; "Global Score"; Decimal)
         {
             FieldClass = FlowField;
-            CalcFormula = sum("Bal Score Card Lines".Score where(DocNo=field("No."), Type=const(Global)));
+            CalcFormula = sum("Bal Score Card Lines".Score where(DocNo = field("No."), Type = const(Global)));
             Editable = false;
         }
         field(28; "Expected Global Score"; Decimal)
         {
             FieldClass = FlowField;
-            CalcFormula = sum("Bal Score Card Lines"."Expected Max Score" where(DocNo=field("No."), Type=const(Global)));
+            CalcFormula = sum("Bal Score Card Lines"."Expected Max Score" where(DocNo = field("No."), Type = const(Global)));
             Editable = false;
         }
         field(29; "Expected Score"; Decimal)
         {
             FieldClass = FlowField;
-            CalcFormula = sum("Bal Score Card Lines"."Expected Max Score" where(DocNo=field("No."), Type=filter(<>Global)));
+            CalcFormula = sum("Bal Score Card Lines"."Expected Max Score" where(DocNo = field("No."), Type = filter(<> Global)));
             Editable = false;
         }
         field(30; "Appraisee Comment"; Text[250])
@@ -217,36 +218,49 @@ table 51500 "Bal Score Card Header"
             Clustered = true;
         }
     }
-    var Emp: Record Employee;
-    NavEmp: Record "Employee Master";
-    PlanReviewPeriod: Record "Bal Score Plan Review Period";
-    HumanResSetup: Record "QuantumJumps HR Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    PreviewPeriod: Record "Bal Score Preview Periods";
-    FiscalStart: Date;
-    MaturityDate: Date;
+    var
+        Emp: Record Employee;
+        NavEmp: Record "Employee Master";
+        PlanReviewPeriod: Record "Bal Score Plan Review Period";
+        HumanResSetup: Record "QuantumJumps HR Setup";
+        NoSeriesMgt: Codeunit "No. Series";
+        PreviewPeriod: Record "Bal Score Preview Periods";
+        FiscalStart: Date;
+        MaturityDate: Date;
+
     trigger OnInsert()
     begin
         if "No." = '' then begin
             HumanResSetup.Get;
             if "Document Type" = "Document Type"::Planning then begin
                 HumanResSetup.TestField("Bal Planning Score Card Nos");
-                NoSeriesMgt.InitSeries(HumanResSetup."Bal Planning Score Card Nos", xRec."No. series", 0D, "No.", "No. series");
+                // NoSeriesMgt.InitSeries(HumanResSetup."Bal Planning Score Card Nos", xRec."No. series", 0D, "No.", "No. series");
+                if NoSeriesMgt.AreRelated(HumanResSetup."Bal Planning Score Card Nos", xRec."No. Series") then
+                    "No. Series" := xRec."No. Series"
+                else
+                    "No. Series" := HumanResSetup."Bal Planning Score Card Nos";
+                "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
             end;
             if "Document Type" = "Document Type"::Appraisal then begin
                 HumanResSetup.TestField("Bal Appraisal Score Card Nos");
-                NoSeriesMgt.InitSeries(HumanResSetup."Bal Appraisal Score Card Nos", xRec."No. series", 0D, "No.", "No. series");
+                // NoSeriesMgt.InitSeries(HumanResSetup."Bal Appraisal Score Card Nos", xRec."No. series", 0D, "No.", "No. series");
+                if NoSeriesMgt.AreRelated(HumanResSetup."Bal Appraisal Score Card Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HumanResSetup."Bal Appraisal Score Card Nos";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
             end;
         end;
-        "Created By":=UserId;
-        Date:=Today;
+        "Created By" := UserId;
+        Date := Today;
         FindMaturityDate;
         PlanReviewPeriod.Reset();
         PlanReviewPeriod.SetRange(Active, true);
         PlanReviewPeriod.SetRange(FiscalStart, FiscalStart);
         PlanReviewPeriod.SetRange(MaturityDate, MaturityDate);
-        if PlanReviewPeriod.FindFirst()then "Plan / Review Period Code":=PlanReviewPeriod.Code;
+        if PlanReviewPeriod.FindFirst() then "Plan / Review Period Code" := PlanReviewPeriod.Code;
     end;
+
     procedure FindMaturityDate()
     var
         AccPeriod: Record "Accounting Period";
@@ -254,9 +268,9 @@ table 51500 "Bal Score Card Header"
         AccPeriod.Reset;
         AccPeriod.SetRange("Starting Date", 0D, Today);
         AccPeriod.SetRange("New Fiscal Year", true);
-        if AccPeriod.Find('+')then begin
-            FiscalStart:=AccPeriod."Starting Date";
-            MaturityDate:=CalcDate('1Y', FiscalStart) - 1;
+        if AccPeriod.Find('+') then begin
+            FiscalStart := AccPeriod."Starting Date";
+            MaturityDate := CalcDate('1Y', FiscalStart) - 1;
         end;
     end;
 }

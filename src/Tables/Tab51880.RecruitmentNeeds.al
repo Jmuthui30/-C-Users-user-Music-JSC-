@@ -535,7 +535,12 @@ table 51880 "Recruitment Needs"
         if "No." = '' then begin
             HumanResSetup.Get;
             HumanResSetup.TestField(HumanResSetup."Recruitment Needs Nos.");
-            NoSeriesMgt.InitSeries(HumanResSetup."Recruitment Needs Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(HumanResSetup."Recruitment Needs Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(HumanResSetup."Recruitment Needs Nos.",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HumanResSetup."Recruitment Needs Nos.";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
         Date := Today;
         "Requested By" := UserId;
@@ -549,7 +554,7 @@ table 51880 "Recruitment Needs"
         RShort: Record "Shortlisting Criteria";
         DimMgt: Codeunit DimensionManagement;
         HumanResSetup: Record "QuantumJumps HR Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         Committees: Record Committees;
 
     procedure ValidateShortcutDimCode(FieldNumber: Integer; var ShortcutDimCode: Code[20])

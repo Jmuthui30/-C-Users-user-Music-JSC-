@@ -40,7 +40,7 @@ table 51816 "Vehicle"
         field(11; "Part of Fleet"; Option)
         {
             OptionCaption = 'No,Yes';
-            OptionMembers = No, Yes;
+            OptionMembers = No,Yes;
         }
         field(12; "Chasis No."; Code[30])
         {
@@ -56,7 +56,7 @@ table 51816 "Vehicle"
         }
         field(16; "Fuel Type"; Option)
         {
-            OptionMembers = " ", Petrol, Diesel, Other;
+            OptionMembers = " ",Petrol,Diesel,Other;
         }
         field(17; "Due For Service"; Boolean)
         {
@@ -73,12 +73,12 @@ table 51816 "Vehicle"
         field(21; "Global Dimension 1 Code"; Code[20])
         {
             CaptionClass = '1,1,1';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
         }
         field(22; "Global Dimension 2 Code"; Code[20])
         {
             CaptionClass = '1,1,2';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
         field(23; "No. Series"; Code[10])
         {
@@ -92,17 +92,17 @@ table 51816 "Vehicle"
         {
             CaptionClass = '1,1,1';
             FieldClass = FlowFilter;
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
         }
         field(26; "Global Dimension 2 Filter"; Code[20])
         {
             CaptionClass = '1,1,2';
             FieldClass = FlowFilter;
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
         field(27; "Covered Mileage"; Decimal)
         {
-            CalcFormula = Sum("Work Ticket Lines"."Distance Covered (KM)" WHERE(Vehicle=FIELD("No."), Date=FIELD("Date Filter"), "Global Dimension 1 Code"=FIELD("Global Dimension 1 Filter"), "Global Dimension 2 Code"=FIELD("Global Dimension 2 Filter")));
+            CalcFormula = Sum("Work Ticket Lines"."Distance Covered (KM)" WHERE(Vehicle = FIELD("No."), Date = FIELD("Date Filter"), "Global Dimension 1 Code" = FIELD("Global Dimension 1 Filter"), "Global Dimension 2 Code" = FIELD("Global Dimension 2 Filter")));
             FieldClass = FlowField;
         }
         field(28; "Vehicle Filter"; Code[10])
@@ -126,20 +126,42 @@ table 51816 "Vehicle"
     }
     trigger OnInsert()
     begin
-        if("No." = '')then begin
+        if ("No." = '') then begin
             MotorSetup.Get;
             MotorSetup.TestField("Vehicle Nos.");
-            NoSeriesMgt.InitSeries(MotorSetup."Vehicle Nos.", xRec."No.", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(MotorSetup."Vehicle Nos.", xRec."No.", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(MotorSetup."Vehicle Nos.",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=MotorSetup."Vehicle Nos.";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
-        "Raised By":=UserId;
+        "Raised By" := UserId;
     end;
-    var MotorSetup: Record "Motorpool Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    procedure AssitEdit(): Boolean begin
-        MotorSetup.Get;
-        MotorSetup.TestField("Vehicle Nos.");
-        if NoSeriesMgt.SelectSeries(MotorSetup."Vehicle Nos.", xRec."No. Series", "No. Series")then begin
-            NoSeriesMgt.SetSeries("No.");
+
+    var
+        MotorSetup: Record "Motorpool Setup";
+        NoSeriesMgt: Codeunit "No. Series";
+
+    // procedure AssitEdit(): Boolean
+    // begin
+    //     MotorSetup.Get;
+    //     MotorSetup.TestField("Vehicle Nos.");
+    //     if NoSeriesMgt.SelectSeries(MotorSetup."Vehicle Nos.", xRec."No. Series", "No. Series") then begin
+    //         NoSeriesMgt.SetSeries("No.");
+    //         exit(true);
+    //     end;
+    // end;
+     procedure AssistEdit(): Boolean
+    var
+        NoSeries: Codeunit "No. Series";
+    begin
+        MotorSetup.Get();
+
+        if NoSeries.LookupRelatedNoSeries(MotorSetup."Vehicle Nos.", xRec."No. Series", "No. Series") then begin
+            "No." := '';
+            MotorSetup.Get();
+            "No." := NoSeries.GetNextNo("No. Series", WorkDate(), true);
             exit(true);
         end;
     end;

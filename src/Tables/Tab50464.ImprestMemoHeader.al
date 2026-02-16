@@ -438,7 +438,12 @@ table 50464 "Imprest Memo Header"
         if "No." = '' then begin
             ImprestMemoSetup.Get;
             ImprestMemoSetup.TestField("Imprest Memo Nos");
-            NoSeriesMgt.InitSeries(ImprestMemoSetup."Imprest Memo Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(ImprestMemoSetup."Imprest Memo Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(ImprestMemoSetup."Imprest Memo Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=ImprestMemoSetup."Imprest Memo Nos";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
         Rec."Created By" := UserId;
         Rec.Date := Today;
@@ -469,7 +474,7 @@ table 50464 "Imprest Memo Header"
         DistributionList: Record "Mail Distribution Lists";
         Text000: Label 'The person selected does not have an email address. Please contact the Administrator';
         ImprestMemoSetup: Record "Advanced Finance Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         UsersRec: Record User;
         Staff: Record Employee;
         UserSetup: Record "User Setup";

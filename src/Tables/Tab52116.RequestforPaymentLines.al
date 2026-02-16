@@ -21,31 +21,34 @@ table 52116 "Request for Payment Lines"
                     end;
                 end
                 else if "Source Document" = "Source Document"::"Travel Order" then begin
-                        Staff.Reset;
-                        Staff.SetFilter("Customer Posting Group", '%1|%2', 'TRAVEL', 'CREDIT');
-                        if PAGE.RunModal(PAGE::"Customer List", Staff) = ACTION::LookupOK then begin
-                            Validate("Creditor No.", Staff."No.");
-                        end;
-                    end
-                    else if "Source Document" = "Source Document"::"Supplier Invoice" then begin
-                            Supplier.Reset;
-                            if PAGE.RunModal(PAGE::"Vendor List", Supplier) = ACTION::LookupOK then begin
-                                Validate("Creditor No.", Supplier."No.");
-                            end;
-                        end;
+                    Staff.Reset;
+                    Staff.SetFilter("Customer Posting Group", '%1|%2', 'TRAVEL', 'CREDIT');
+                    if PAGE.RunModal(PAGE::"Customer List", Staff) = ACTION::LookupOK then begin
+                        Validate("Creditor No.", Staff."No.");
+                    end;
+                end
+                else if "Source Document" = "Source Document"::"Supplier Invoice" then begin
+                    Supplier.Reset;
+                    if PAGE.RunModal(PAGE::"Vendor List", Supplier) = ACTION::LookupOK then begin
+                        Validate("Creditor No.", Supplier."No.");
+                    end;
+                end;
             end;
+
             trigger OnValidate()
             begin
-                if("Source Document" = "Source Document"::"Purchase Order") or ("Source Document" = "Source Document"::"Supplier Invoice")then begin
-                    if Supplier.Get("Creditor No.")then "Name of Creditor":=Supplier.Name
+                if ("Source Document" = "Source Document"::"Purchase Order") or ("Source Document" = "Source Document"::"Supplier Invoice") then begin
+                    if Supplier.Get("Creditor No.") then
+                        "Name of Creditor" := Supplier.Name
                     else
                         Error('The creditor No. %1 does not exist in the Vendors list. Create it.', "Creditor No.");
                 end
                 else if "Source Document" = "Source Document"::"Travel Order" then begin
-                        if Staff.Get("Creditor No.")then "Name of Creditor":=Staff.Name
-                        else
-                            Error('The Staff No. %1 does not exist in the Staff Customer list. Create it.', "Creditor No.");
-                    end;
+                    if Staff.Get("Creditor No.") then
+                        "Name of Creditor" := Staff.Name
+                    else
+                        Error('The Staff No. %1 does not exist in the Staff Customer list. Create it.', "Creditor No.");
+                end;
             end;
         }
         field(4; "Name of Creditor"; Text[50])
@@ -66,55 +69,57 @@ table 52116 "Request for Payment Lines"
                     end;
                 end
                 else if "Source Document" = "Source Document"::"Travel Order" then begin
-                        ITO.Reset;
-                        ITO.SetRange(Type, ITO.Type::Request);
-                        ITO.SetRange(Status, ITO.Status::Released);
-                        if PAGE.RunModal(PAGE::"Imprests", ITO) = ACTION::LookupOK then begin
-                            Validate("Source Document No.", ITO."No.");
-                        end;
-                    end
-                    else if "Source Document" = "Source Document"::"Supplier Invoice" then begin
-                            Invoice.Reset;
-                            if "Creditor No." <> '' then Invoice.SetRange("Buy-from Vendor No.", "Creditor No.");
-                            if PAGE.RunModal(PAGE::"Posted Purchase Invoices", Invoice) = ACTION::LookupOK then begin
-                                Validate("Source Document No.", Invoice."No.");
-                                Validate("Creditor No.", Invoice."Buy-from Vendor No.");
-                                "Invoice No.":=Invoice."Vendor Invoice No.";
-                            end;
-                        end end;
+                    ITO.Reset;
+                    ITO.SetRange(Type, ITO.Type::Request);
+                    ITO.SetRange(Status, ITO.Status::Released);
+                    if PAGE.RunModal(PAGE::"Imprests", ITO) = ACTION::LookupOK then begin
+                        Validate("Source Document No.", ITO."No.");
+                    end;
+                end
+                else if "Source Document" = "Source Document"::"Supplier Invoice" then begin
+                    Invoice.Reset;
+                    if "Creditor No." <> '' then Invoice.SetRange("Buy-from Vendor No.", "Creditor No.");
+                    if PAGE.RunModal(PAGE::"Posted Purchase Invoices", Invoice) = ACTION::LookupOK then begin
+                        Validate("Source Document No.", Invoice."No.");
+                        Validate("Creditor No.", Invoice."Buy-from Vendor No.");
+                        "Invoice No." := Invoice."Vendor Invoice No.";
+                    end;
+                end
+            end;
+
             trigger OnValidate()
             begin
                 if "Source Document" = "Source Document"::"Purchase Order" then begin
                     // LPO.RESET;
-                    if LPO.Get(LPO."Document Type"::Order, "Source Document No.")then begin
+                    if LPO.Get(LPO."Document Type"::Order, "Source Document No.") then begin
                         LPO.CalcFields("Amt. Rcd. Not Invoiced (LCY)");
-                        Amount:=LPO."Amt. Rcd. Not Invoiced (LCY)";
-                        "Global Dimension 1 Code":=LPO."Shortcut Dimension 1 Code";
-                        "Global Dimension 2 Code":=LPO."Shortcut Dimension 2 Code";
-                        "Being Payment for":=LPO."Posting Description";
-                        "Currency Code":=LPO."Currency Code";
+                        Amount := LPO."Amt. Rcd. Not Invoiced (LCY)";
+                        "Global Dimension 1 Code" := LPO."Shortcut Dimension 1 Code";
+                        "Global Dimension 2 Code" := LPO."Shortcut Dimension 2 Code";
+                        "Being Payment for" := LPO."Posting Description";
+                        "Currency Code" := LPO."Currency Code";
                     end;
                 end
                 else if "Source Document" = "Source Document"::"Travel Order" then begin
-                        //ITO.RESET;
-                        if ITO.Get("Source Document No.")then begin
-                            ITO.CalcFields("Total Request Amount");
-                            Amount:=ITO."Total Request Amount";
-                            "Global Dimension 1 Code":=ITO."Global Dimension 1 Code";
-                            "Global Dimension 2 Code":=ITO."Global Dimension 2 Code";
-                            "Being Payment for":=ITO.Justification;
-                        end;
-                    end
-                    else if "Source Document" = "Source Document"::"Supplier Invoice" then begin
-                            if Invoice.Get("Source Document No.")then begin
-                                Invoice.CalcFields("Amount Including VAT");
-                                Amount:=Invoice."Amount Including VAT";
-                                "Global Dimension 1 Code":=Invoice."Shortcut Dimension 1 Code";
-                                "Global Dimension 2 Code":=Invoice."Shortcut Dimension 2 Code";
-                                "Currency Code":=Invoice."Currency Code";
-                                "Being Payment for":=Invoice."Posting Description";
-                            end;
-                        end;
+                    //ITO.RESET;
+                    if ITO.Get("Source Document No.") then begin
+                        ITO.CalcFields("Total Request Amount");
+                        Amount := ITO."Total Request Amount";
+                        "Global Dimension 1 Code" := ITO."Global Dimension 1 Code";
+                        "Global Dimension 2 Code" := ITO."Global Dimension 2 Code";
+                        "Being Payment for" := ITO.Justification;
+                    end;
+                end
+                else if "Source Document" = "Source Document"::"Supplier Invoice" then begin
+                    if Invoice.Get("Source Document No.") then begin
+                        Invoice.CalcFields("Amount Including VAT");
+                        Amount := Invoice."Amount Including VAT";
+                        "Global Dimension 1 Code" := Invoice."Shortcut Dimension 1 Code";
+                        "Global Dimension 2 Code" := Invoice."Shortcut Dimension 2 Code";
+                        "Currency Code" := Invoice."Currency Code";
+                        "Being Payment for" := Invoice."Posting Description";
+                    end;
+                end;
             end;
         }
         field(7; Amount; Decimal)
@@ -125,21 +130,21 @@ table 52116 "Request for Payment Lines"
             Editable = false;
             CaptionClass = '1,1,1';
             Caption = 'Department';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
         }
         field(9; "Global Dimension 2 Code"; Code[20])
         {
             Editable = false;
             CaptionClass = '1,1,2';
             Caption = 'Global Dimension 1 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
         field(10; "Global Dimension 3 Code"; Code[20])
         {
             Editable = false;
             CaptionClass = '1,2,3';
             Caption = 'Global Dimension 3 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(3));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(3));
         }
         field(11; "Being Payment for"; Text[250])
         {
@@ -148,7 +153,7 @@ table 52116 "Request for Payment Lines"
         field(12; "Source Document"; Option)
         {
             OptionCaption = 'Purchase Order,Travel Order,Supplier Invoice';
-            OptionMembers = "Purchase Order", "Travel Order", "Supplier Invoice";
+            OptionMembers = "Purchase Order","Travel Order","Supplier Invoice";
         }
         field(13; "Currency Code"; Code[10])
         {
@@ -175,20 +180,23 @@ table 52116 "Request for Payment Lines"
     trigger OnInsert()
     begin
         if "No." <> '' then begin
-            if Header.Get("No.")then begin
-                "Source Document":=Header."Source Document";
+            if Header.Get("No.") then begin
+                "Source Document" := Header."Source Document";
                 Validate("Creditor No.", Header."Creditor No.");
             end;
         end;
     end;
-    var AdvancedFinanceSetup: Record "Advanced Finance Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    Supplier: Record Vendor;
-    LPO: Record "Purchase Header";
-    ITO: Record "Imprest Header";
-    Staff: Record Customer;
-    Invoice: Record "Purch. Inv. Header";
-    Header: Record "Request for Payment";
+
+    var
+        AdvancedFinanceSetup: Record "Advanced Finance Setup";
+        NoSeriesMgt: Codeunit "No. Series";
+        Supplier: Record Vendor;
+        LPO: Record "Purchase Header";
+        ITO: Record "Imprest Header";
+        Staff: Record Customer;
+        Invoice: Record "Purch. Inv. Header";
+        Header: Record "Request for Payment";
+
     procedure ViewSourceDocument()
     begin
         if "Source Document" = "Source Document"::"Purchase Order" then begin
@@ -197,14 +205,14 @@ table 52116 "Request for Payment Lines"
             PAGE.Run(PAGE::"Purchase Order", LPO);
         end
         else if "Source Document" = "Source Document"::"Travel Order" then begin
-                ITO.Reset;
-                ITO.SetRange("No.", "Source Document No.");
-                PAGE.Run(PAGE::"Imprests", ITO);
-            end
-            else if "Source Document" = "Source Document"::"Supplier Invoice" then begin
-                    Invoice.Reset;
-                    Invoice.SetRange("No.", "Source Document No.");
-                    PAGE.RunModal(PAGE::"Posted Purchase Invoice", Invoice);
-                end;
+            ITO.Reset;
+            ITO.SetRange("No.", "Source Document No.");
+            PAGE.Run(PAGE::"Imprests", ITO);
+        end
+        else if "Source Document" = "Source Document"::"Supplier Invoice" then begin
+            Invoice.Reset;
+            Invoice.SetRange("No.", "Source Document No.");
+            PAGE.RunModal(PAGE::"Posted Purchase Invoice", Invoice);
+        end;
     end;
 }

@@ -11,7 +11,7 @@ table 51834 "Fuel Voucher Lines"
         field(3; "Type of Voucher"; Option)
         {
             OptionCaption = ' ,Bulk Fuel Voucher,Vehicle Fuel Voucher,Motor-cycle Fuel Voucher';
-            OptionMembers = " ", "Bulk Fuel Voucher", "Vehicle Fuel Voucher", "Motor-cycle Fuel Voucher";
+            OptionMembers = " ","Bulk Fuel Voucher","Vehicle Fuel Voucher","Motor-cycle Fuel Voucher";
         }
         field(4; Station; Code[20])
         {
@@ -19,12 +19,15 @@ table 51834 "Fuel Voucher Lines"
 
             trigger OnValidate()
             begin
-                if Stations.Get(Station)then begin
-                    "Station Name":=Stations.Name;
-                    if "Type of Voucher" = "Type of Voucher"::" " then Error('Please specify type of voucher.')
-                    else if "Type of Voucher" = "Type of Voucher"::"Bulk Fuel Voucher" then "Voucher No.":=NoseriesMgt.GetNextNo(Stations."Bulk Fuel Voucher Nos.", Today, true)
-                        else if "Type of Voucher" = "Type of Voucher"::"Motor-cycle Fuel Voucher" then "Voucher No.":=NoseriesMgt.GetNextNo(Stations."Motorcycle Fuel Voucher Nos.", Today, true)
-                            else if "Type of Voucher" = "Type of Voucher"::"Vehicle Fuel Voucher" then "Voucher No.":=NoseriesMgt.GetNextNo(Stations."Vehicle Fuel Voucher Nos.", Today, true);
+                if Stations.Get(Station) then begin
+                    "Station Name" := Stations.Name;
+                    if "Type of Voucher" = "Type of Voucher"::" " then
+                        Error('Please specify type of voucher.')
+                    else if "Type of Voucher" = "Type of Voucher"::"Bulk Fuel Voucher" then
+                        "Voucher No." := NoseriesMgt.GetNextNo(Stations."Bulk Fuel Voucher Nos.", Today, true)
+                    else if "Type of Voucher" = "Type of Voucher"::"Motor-cycle Fuel Voucher" then
+                        "Voucher No." := NoseriesMgt.GetNextNo(Stations."Motorcycle Fuel Voucher Nos.", Today, true)
+                    else if "Type of Voucher" = "Type of Voucher"::"Vehicle Fuel Voucher" then "Voucher No." := NoseriesMgt.GetNextNo(Stations."Vehicle Fuel Voucher Nos.", Today, true);
                 end;
             end;
         }
@@ -44,6 +47,7 @@ table 51834 "Fuel Voucher Lines"
     fieldgroups
     {
     }
-    var Stations: Record "Fuel Voucher Stations";
-    NoseriesMgt: Codeunit NoSeriesManagement;
+    var
+        Stations: Record "Fuel Voucher Stations";
+        NoseriesMgt: Codeunit "No. Series";
 }

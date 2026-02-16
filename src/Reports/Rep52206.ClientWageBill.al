@@ -7,10 +7,10 @@ report 52206 "Client Wage Bill"
 
     dataset
     {
-        dataitem("Client Payroll Matrix"; "Client Payroll Matrix")
+        dataitem("Client Payroll Matrix"; "Assignment Matrix")
         {
             DataItemTableView = SORTING("Payroll Period", Type, Code);
-            RequestFilterFields = Company, "Payroll Period";
+            RequestFilterFields = "Payroll Period";
             RequestFilterHeading = 'Payroll';
 
             column(COMPANYNAME; CompInfo.Name)
@@ -61,13 +61,13 @@ report 52206 "Client Wage Bill"
             column(Assignment_Matrix_X1_Amount_Control1000000031; Amount)
             {
             }
-            column(Net_Salary_;'Net Salary')
+            column(Net_Salary_; 'Net Salary')
             {
             }
             column(TotalNetPay; TotalNetPay)
             {
             }
-            column(No_of_Employees_;'No of Employees')
+            column(No_of_Employees_; 'No of Employees')
             {
             }
             column(NoOfEmployees; NoOfEmployees)
@@ -106,7 +106,7 @@ report 52206 "Client Wage Bill"
             column(Taxableamount_AssignmentMatrixX1; "Client Payroll Matrix"."Taxable amount")
             {
             }
-            column(TaxDeductible_AssignmentMatrixX1; "Client Payroll Matrix"."Reduces Taxable Amt")
+            column(TaxDeductible_AssignmentMatrixX1; "Client Payroll Matrix"."Tax Deductible")
             {
             }
             column(TaxCharged; Taxcharged)
@@ -129,35 +129,46 @@ report 52206 "Client Wage Bill"
             }
             trigger OnAfterGetRecord()
             begin
-                if NAVEmp.Get("Client Payroll Matrix"."Employee No")then begin
+                if NAVEmp.Get("Client Payroll Matrix"."Employee No") then begin
                     if NAVEmp.Status <> NAVEmp.Status::Active then CurrReport.Skip;
                     if "Client Payroll Matrix"."Tax Relief" = true then CurrReport.Skip();
                     if "Client Payroll Matrix".Amount = 0 then CurrReport.skip;
-                    begin
-                        if(Earning."Earning Type" = Earning."Earning Type"::"Tax Relief") or (Earning."Earning Type" = Earning."Earning Type"::"Insurance Relief") or (Earning."Earning Type" = Earning."Earning Type"::"Owner Occupier")then CurrReport.Skip;
+                    if "Client Payroll Matrix".Type = "Client Payroll Matrix".Type::Earning then begin
+                        if (Earning."Earning Type" = Earning."Earning Type"::"Tax Relief") or (Earning."Earning Type" = Earning."Earning Type"::"Insurance Relief") or (Earning."Earning Type" = Earning."Earning Type"::"Owner Occupier") then CurrReport.Skip;
                     end;
                     begin
-                        TotalEarnings:="Client Payroll Matrix".Amount;
+                        TotalEarnings := "Client Payroll Matrix".Amount;
                     end;
-                end;
-                if "Client Payroll Matrix".Type = "Client Payroll Matrix".Type::Payment then begin
-                    if "Client Payroll Matrix"."Tax Relief" = false then begin
-                        if Earning.Get("Client Payroll Matrix".Code)then begin
-                            if not Earning."Non-Cash Benefit" then TotalNetPay:=TotalNetPay + "Client Payroll Matrix".Amount;
-                            begin
-                                TotalEarnings+="Client Payroll Matrix".Amount end end;
-                        begin
-                            if "Client Payroll Matrix".Type = "Client Payroll Matrix".Type::Deduction then Amount:=Amount * -1;
-                        end;
-                    end
-                    else
-                        TotalNetPay:=TotalNetPay + "Client Payroll Matrix".Amount;
+                    if "Client Payroll Matrix".Type = "Client Payroll Matrix".Type::Earning then begin
+                        if "Client Payroll Matrix"."Tax Relief" = false then begin
+                            if Earning.Get("Client Payroll Matrix".Code) then begin
+                                if not Earning."Non-Cash Benefit" then TotalNetPay := TotalNetPay + "Client Payroll Matrix".Amount;
+                                begin
+                                    TotalEarnings += "Client Payroll Matrix".Amount
+                                end
+                            end;
+
+                        end
+                        else
+                            TotalNetPay := TotalNetPay + "Client Payroll Matrix".Amount;
+                    end;
+                    begin
+                        if "Client Payroll Matrix".Type = "Client Payroll Matrix".Type::Deduction then
+                            if "Client Payroll Matrix"."Tax Relief" = false then begin
+                                if Deductions.Get("Client Payroll Matrix".Code) then
+                                    Amount := Amount * -1;
+                            end
+                            else
+                                TotalNetPay := TotalNetPay + "Client Payroll Matrix".Amount;
+                    end;
                 end;
             end;
+
+
             trigger OnPreDataItem()
             begin
-                LastFieldNo:=FieldNo(Code);
-                TotalNetPay:=0;
+                LastFieldNo := FieldNo(Code);
+                TotalNetPay := 0;
             end;
         }
         dataitem("Client Loan Application"; "Client Loan Application")
@@ -165,7 +176,7 @@ report 52206 "Client Wage Bill"
             column(FORMAT_TODAY_0_4_1; Format(Today, 0, 4))
             {
             }
-            column(LOAN_STATUS_REPORT_;'LOAN STATUS REPORT')
+            column(LOAN_STATUS_REPORT_; 'LOAN STATUS REPORT')
             {
             }
             column(Loan_Application1__GETFILTERS; "Client Loan Application".GetFilters)
@@ -219,17 +230,18 @@ report 52206 "Client Wage Bill"
             trigger OnAfterGetRecord()
             begin
                 "Client Loan Application".CalcFields("Client Loan Application"."Total Repayment", "Client Loan Application"."Interest Amount", "Client Loan Application".Receipts);
-                Balance:=0;
-                Balance:=("Client Loan Application"."Approved Amount" + "Client Loan Application"."Total Repayment" - "Client Loan Application".Receipts);
-                i:=i + 1;
+                Balance := 0;
+                Balance := ("Client Loan Application"."Approved Amount" + "Client Loan Application"."Total Repayment" - "Client Loan Application".Receipts);
+                i := i + 1;
             end;
+
             trigger OnPreDataItem()
             begin
-                LastFieldNo:=FieldNo("Client Loan Product Type");
-                if "Client Payroll Matrix".FindSet(false, false)then begin
-                    NumberOfStaff:="Client Payroll Matrix".Count();
+                LastFieldNo := FieldNo("Client Loan Product Type");
+                if "Client Payroll Matrix".FindSet(false, false) then begin
+                    NumberOfStaff := "Client Payroll Matrix".Count();
                 end;
-            /*CurrReport.CreateTotals(Balance);*/
+                /*CurrReport.CreateTotals(Balance);*/
             end;
         }
     }
@@ -257,37 +269,42 @@ report 52206 "Client Wage Bill"
     begin
         EmpRec.Reset;
         EmpRec.SetRange(EmpRec."Pay Period Filter", "Client Payroll Matrix".GetRangeMin("Client Payroll Matrix"."Payroll Period"));
-        EmpRec.SetRange("Company Code", "Client Payroll Matrix".Company);
-        if EmpRec.Find('-')then repeat EmpRec.CalcFields(EmpRec."Total Allowances", EmpRec."Total Deductions");
-                if(EmpRec."Total Allowances" + EmpRec."Total Deductions") <> 0 then NoOfEmployees:=NoOfEmployees + 1;
+        // EmpRec.SetRange("Company Code", "Client Payroll Matrix".Company);
+        if EmpRec.Find('-') then
+            repeat
+                EmpRec.CalcFields(EmpRec."Total Allowances", EmpRec."Total Deductions");
+                if (EmpRec."Total Allowances" + EmpRec."Total Deductions") <> 0 then NoOfEmployees := NoOfEmployees + 1;
             //Message('test%1', EmpRec."Total Allowances");
             until EmpRec.Next = 0;
-        if "Client Payroll Matrix".Type = "Client Payroll Matrix".Type::Deduction then if "Client Payroll Matrix".GetFilter(Company) = '' then Error('Please select a company to report for.');
+        // if "Client Payroll Matrix".Type = "Client Payroll Matrix".Type::Deduction then 
+        // if "Client Payroll Matrix".GetFilter(Company) = '' then Error('Please select a company to report for.');
         if "Client Payroll Matrix".GetFilter("Payroll Period") = '' then Error('Please select a payroll period to report for.');
-        CompInfo.Get("Client Payroll Matrix".GetFilter(Company));
+        // CompInfo.Get("Client Payroll Matrix".GetFilter(Company));
         if not NoLogo then CompInfo.CalcFields(Picture);
     end;
-    var LastFieldNo: Integer;
-    NumberOfStaff: Integer;
-    FooterPrinted: Boolean;
-    TotalFor: Label 'Total for ';
-    TotalNetPay: Decimal;
-    Earning: Record "Client Earnings";
-    Deductions: Record "Client Deductions";
-    NoOfEmployees: Integer;
-    EmpRec: Record "Client Employee Master";
-    COMPANY_SUMMARYCaptionLbl: Label 'COMPANY SUMMARY';
-    PERIOD_CaptionLbl: Label 'PERIOD:';
-    CurrReport_PAGENOCaptionLbl: Label 'Page';
-    CODECaptionLbl: Label 'CODE';
-    DESCRIPTIONCaptionLbl: Label 'DESCRIPTION';
-    AMOUNTCaptionLbl: Label 'AMOUNT';
-    Balance: Decimal;
-    TotalEarnings: Decimal;
-    i: Integer;
-    TaxChargedLbl: Label 'Tax Charged';
-    Taxcharged: Decimal;
-    NAVEmp: Record "Client Employee Master";
-    CompInfo: Record "Client Company Information";
-    NoLogo: Boolean;
+
+    var
+        LastFieldNo: Integer;
+        NumberOfStaff: Integer;
+        FooterPrinted: Boolean;
+        TotalFor: Label 'Total for ';
+        TotalNetPay: Decimal;
+        Earning: Record Earning;
+        Deductions: Record Deduction;
+        NoOfEmployees: Integer;
+        EmpRec: Record Employee;
+        COMPANY_SUMMARYCaptionLbl: Label 'COMPANY SUMMARY';
+        PERIOD_CaptionLbl: Label 'PERIOD:';
+        CurrReport_PAGENOCaptionLbl: Label 'Page';
+        CODECaptionLbl: Label 'CODE';
+        DESCRIPTIONCaptionLbl: Label 'DESCRIPTION';
+        AMOUNTCaptionLbl: Label 'AMOUNT';
+        Balance: Decimal;
+        TotalEarnings: Decimal;
+        i: Integer;
+        TaxChargedLbl: Label 'Tax Charged';
+        Taxcharged: Decimal;
+        NAVEmp: Record Employee;
+        CompInfo: Record "Company Information";
+        NoLogo: Boolean;
 }

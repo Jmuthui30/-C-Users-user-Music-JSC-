@@ -4,7 +4,7 @@ codeunit 55057 HRPortalQueries
         HRPortalUsers: Record HRPortalUsers;
         Employee: Record Employee;
         Leave: Record "Leave Application";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         LeaveSetup: Record "Leave Type";
         EmployeeLeaves: Record "Leave Application";
         HrEmployees: Record Employee;

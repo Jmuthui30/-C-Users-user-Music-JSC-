@@ -26,7 +26,7 @@ table 50042 "Consolidated Recruitment Plan"
             begin
                 ConsolidatedPlan.Reset();
                 ConsolidatedPlan.SetRange("Fiscal Year", "Fiscal Year");
-                if ConsolidatedPlan.FindFirst()then Error('You have already consolidated for this year, Select another period.');
+                if ConsolidatedPlan.FindFirst() then Error('You have already consolidated for this year, Select another period.');
             end;
         }
         field(5; "Document Date"; Date)
@@ -37,7 +37,7 @@ table 50042 "Consolidated Recruitment Plan"
         {
             DataClassification = ToBeClassified;
         }
-        field(7; Status;Enum "Document Status")
+        field(7; Status; Enum "Document Status")
         {
             DataClassification = ToBeClassified;
             Editable = false;
@@ -57,22 +57,29 @@ table 50042 "Consolidated Recruitment Plan"
     trigger OnInsert()
     var
         HRSetup: Record "Human Resources Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
     begin
-        "Document Date":=today;
-        "Created By":=UserId;
-        Status:=Status::Open;
+        "Document Date" := today;
+        "Created By" := UserId;
+        Status := Status::Open;
         IF "No." = '' THEN BEGIN
             HRSetup.GET;
             HRSetup.TESTFIELD(HRSetup."Cons. Recruitment Plan Nos");
-            NoSeriesMgt.InitSeries(HRSetup."Cons. Recruitment Plan Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(HRSetup."Cons. Recruitment Plan Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(HRSetup."Recruitment Plan Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HRSetup."Recruitment Plan Nos";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         END;
         FindFiscalDate;
     end;
+
     trigger OnDelete()
     begin
         TestField(Status, Status::Open);
     end;
+
     procedure FindFiscalDate()
     var
         AccPeriod: Record "Accounting Period";
@@ -80,8 +87,8 @@ table 50042 "Consolidated Recruitment Plan"
         AccPeriod.Reset;
         AccPeriod.SetRange("Starting Date", 0D, Today);
         AccPeriod.SetRange("New Fiscal Year", true);
-        if AccPeriod.Find('+')then begin
-            "Fiscal Year":=AccPeriod."Starting Date";
+        if AccPeriod.Find('+') then begin
+            "Fiscal Year" := AccPeriod."Starting Date";
         end;
     end;
 }

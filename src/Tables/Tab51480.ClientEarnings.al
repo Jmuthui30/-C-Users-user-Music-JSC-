@@ -31,7 +31,7 @@ table 51480 "Client Earnings"
         }
         field(5; "Calculation Method"; Option)
         {
-            OptionMembers = "Flat amount","% of Basic pay","% of Gross pay","% of Insurance Amount","% of Taxable income","% of Basic after tax","Based on Hourly Rate","Based on Daily Rate","% of Salary Recovery","% of Loan Amount","% of SHIF","% of Mortgage";
+            OptionMembers = "Flat amount","% of Basic pay","% of Gross pay","% of Insurance Amount","% of Taxable income","% of Basic after tax","Based on Hourly Rate","Based on Daily Rate","% of Salary Recovery","% of Loan Amount","% of SHIF","% of Mortgage"; 
         }
         field(6; "Flat Amount"; Decimal)
         {

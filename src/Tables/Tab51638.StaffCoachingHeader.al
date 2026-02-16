@@ -11,10 +11,10 @@ table 51638 "Staff Coaching Header"
 
             trigger OnValidate()
             begin
-                if NAVemp.Get("Counsellor No.")then begin
-                    "Mobile No":=NAVemp."Mobile Phone No.";
-                    "Counsellor Name":=NAVemp."Last Name" + ' ' + NAVemp."First Name" + ' ' + NAVemp."Middle Name";
-                    "Job Title":=NAVemp."Job Title";
+                if NAVemp.Get("Counsellor No.") then begin
+                    "Mobile No" := NAVemp."Mobile Phone No.";
+                    "Counsellor Name" := NAVemp."Last Name" + ' ' + NAVemp."First Name" + ' ' + NAVemp."Middle Name";
+                    "Job Title" := NAVemp."Job Title";
                     Validate("Counsellee No.", NAVemp."Manager No.");
                 end;
             end;
@@ -32,19 +32,19 @@ table 51638 "Staff Coaching Header"
         field(6; "Global Dimension 1 Code"; Code[20])
         {
             CaptionClass = '1,1,1';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
         }
         field(7; "Global Dimension 2 Code"; Code[20])
         {
             CaptionClass = '1,1,2';
             Caption = 'Global Dimension 1 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
         field(8; "Global Dimension 3 Code"; Code[20])
         {
             CaptionClass = '1,2,3';
             Caption = 'Global Dimension 3 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(3));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(3));
         }
         field(9; "Counsellee No."; Code[20])
         {
@@ -53,11 +53,11 @@ table 51638 "Staff Coaching Header"
 
             trigger OnValidate()
             begin
-                if NAVemp.Get("Counsellee No.")then "Counsellee's Name":=NAVemp."First Name" + ' ' + NAVemp."Last Name";
-                if EmpRec.Get("Counsellee No.")then begin
-                    "Global Dimension 1 Code":=EmpRec."Global Dimension 1 Code";
-                    "Global Dimension 2 Code":=EmpRec."Global Dimension 2 Code";
-                    "Global Dimension 3 Code":=EmpRec."Global Dimension 3 Code";
+                if NAVemp.Get("Counsellee No.") then "Counsellee's Name" := NAVemp."First Name" + ' ' + NAVemp."Last Name";
+                if EmpRec.Get("Counsellee No.") then begin
+                    "Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                    "Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                    "Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
                 end;
             end;
         }
@@ -82,19 +82,19 @@ table 51638 "Staff Coaching Header"
         field(15; "Reason for Coaching"; Option)
         {
             OptionCaption = 'Performance Based Issue,Personnal Issue';
-            OptionMembers = "Performance Based Issue", "Personnal Issue";
+            OptionMembers = "Performance Based Issue","Personnal Issue";
         }
         field(16; "Staff Free to Express Self"; Option)
         {
             Caption = 'Was the staff free to express his/her self?';
             OptionCaption = 'Yes,No';
-            OptionMembers = Yes, No;
+            OptionMembers = Yes,No;
         }
         field(17; "Staff Comfortable"; Option)
         {
             Caption = 'Did the body language of the staff express that he/she was comfortable with your Coaching?';
             OptionCaption = 'Yes,No';
-            OptionMembers = Yes, No;
+            OptionMembers = Yes,No;
         }
         field(18; "More Notes"; Text[250])
         {
@@ -104,7 +104,7 @@ table 51638 "Staff Coaching Header"
         {
             Caption = 'Can the issues discussed, affect the performance of the staff leading to negative impact on the Company''s overall productivity?';
             OptionCaption = 'Yes,No';
-            OptionMembers = Yes, No;
+            OptionMembers = Yes,No;
         }
     }
     keys
@@ -121,28 +121,35 @@ table 51638 "Staff Coaching Header"
         if "No." = '' then begin
             TrainingSetup.Get;
             TrainingSetup.TestField("Training Nos.");
-            NoSeriesMgt.InitSeries(TrainingSetup."Training Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(TrainingSetup."Training Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(TrainingSetup."Training Nos.",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=TrainingSetup."Training Nos.";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
-        Date:=Today;
-        if UserSetup.Get(UserId)then begin
-            "Counsellor No.":=UserSetup."Employee No.";
+        Date := Today;
+        if UserSetup.Get(UserId) then begin
+            "Counsellor No." := UserSetup."Employee No.";
             Validate("Counsellor No.");
         end;
-        "Created By":=UserId;
-        if EmpRec.Get("Counsellor No.")then begin
-            "Global Dimension 1 Code":=EmpRec."Global Dimension 1 Code";
-            "Global Dimension 2 Code":=EmpRec."Global Dimension 2 Code";
-            "Global Dimension 3 Code":="Global Dimension 3 Code";
+        "Created By" := UserId;
+        if EmpRec.Get("Counsellor No.") then begin
+            "Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+            "Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+            "Global Dimension 3 Code" := "Global Dimension 3 Code";
         end;
-        if NAVemp.Get("Counsellor No.")then begin
-            "Job Title":=NAVemp."Job Title";
-            "Counsellor Name":=NAVemp."First Name" + ' ' + NAVemp."Last Name";
+        if NAVemp.Get("Counsellor No.") then begin
+            "Job Title" := NAVemp."Job Title";
+            "Counsellor Name" := NAVemp."First Name" + ' ' + NAVemp."Last Name";
         end;
     end;
-    var UserSetup: Record "User Setup";
-    Text000: Label 'Your are not mapped to an employee account. Kindly contact the system administrator.';
-    NAVemp: Record Employee;
-    EmpRec: Record "Employee Master";
-    TrainingSetup: Record "QuantumJumps HR Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
+
+    var
+        UserSetup: Record "User Setup";
+        Text000: Label 'Your are not mapped to an employee account. Kindly contact the system administrator.';
+        NAVemp: Record Employee;
+        EmpRec: Record "Employee Master";
+        TrainingSetup: Record "QuantumJumps HR Setup";
+        NoSeriesMgt: Codeunit "No. Series";
 }

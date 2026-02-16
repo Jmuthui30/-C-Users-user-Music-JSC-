@@ -55,7 +55,7 @@ report 51477 "Payroll Recon Combined"
                 end;
                 Difference:=Amount - LastMonthAmount;
                 if Difference <> 0 then begin
-                    //Earnings
+                    //Earnings 
                     AssignMatrixCurrent.Reset;
                     AssignMatrixCurrent.SetCurrentKey("Employee No", Type, Code, "Payroll Period", "Reference No");
                     AssignMatrixCurrent.SetRange(AssignMatrixCurrent."Employee No", Employee."No.");

@@ -14,7 +14,7 @@ table 51482 "Employee Import Header"
 
             trigger OnValidate()
             begin
-                if Comp.Get(Company)then "Company Name":=Comp.Name;
+                if Comp.Get(Company) then "Company Name" := Comp.Name;
             end;
         }
         field(4; "Company Name"; Text[100])
@@ -54,13 +54,20 @@ table 51482 "Employee Import Header"
         if "No." = '' then begin
             OutsourcingSetup.Get;
             OutsourcingSetup.TestField("Employee Import Nos.");
-            NoSeriesMgt.InitSeries(OutsourcingSetup."Employee Import Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(OutsourcingSetup."Employee Import Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(OutsourcingSetup."Employee Import Nos.",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=OutsourcingSetup."Employee Import Nos.";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
-        Date:=Today;
-        "Created By":=UserId;
-        "Created Date":=Today;
+        Date := Today;
+        "Created By" := UserId;
+        "Created Date" := Today;
     end;
-    var OutsourcingSetup: Record "Outsourcing Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    Comp: Record "Client Company Information";
+
+    var
+        OutsourcingSetup: Record "Outsourcing Setup";
+        NoSeriesMgt: Codeunit "No. Series";
+        Comp: Record "Client Company Information";
 }

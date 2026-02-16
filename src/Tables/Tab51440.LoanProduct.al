@@ -95,6 +95,6 @@ table 51440 "Loan Product"
     }
     var
         SalesSetup: Record "Sales & Receivables Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         HRsetup: Record "QuantumJumps Payroll Setup";
 }

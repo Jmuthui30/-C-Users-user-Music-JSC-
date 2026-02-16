@@ -29,17 +29,17 @@ page 52405 "Distribution by Gender"
                     buffer.SetXAxis('Gender', Buffer."Data Type"::String);
                     Employee.Reset();
                     Employee.SetRange(Gender, Employee.Gender::Male);
-                    m:=Employee.Count;
+                    m := Employee.Count;
                     Employee.Reset();
                     Employee.SetRange(Gender, Employee.Gender::Female);
-                    f:=Employee.Count;
-                    IF((m <> 0) or (f <> 0))then begin
+                    f := Employee.Count;
+                    IF ((m <> 0) or (f <> 0)) then begin
                         Buffer.AddColumn(Employee.Gender);
                         Buffer.SetValueByIndex(0, i, m);
                         Buffer.SetValueByIndex(1, i, f);
-                        i+=1;
+                        i += 1;
                     end;
-                    Buffer.Update(CurrPage.Chart);
+                    // Buffer.Update(CurrPage.Chart);
                 end;
             }
         }
@@ -59,5 +59,6 @@ page 52405 "Distribution by Gender"
             }
         }
     }
-    var myInt: Integer;
+    var
+        myInt: Integer;
 }

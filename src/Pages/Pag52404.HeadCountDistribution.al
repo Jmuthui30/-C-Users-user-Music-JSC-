@@ -29,16 +29,18 @@ page 52404 "Head Count Distribution"
                     buffer.SetXAxis('Month', Buffer."Data Type"::String);
                     AccountingPeriods.Reset();
                     AccountingPeriods.SetRange(Closed, false);
-                    if AccountingPeriods.FindSet()then repeat Employee.Reset();
+                    if AccountingPeriods.FindSet() then
+                        repeat
+                            Employee.Reset();
                             Employee.SetRange(Status, Employee.Status::Active);
-                            j:=Employee.Count;
+                            j := Employee.Count;
                             if j <> 0 then begin
                                 Buffer.AddColumn(AccountingPeriods.Name);
                                 Buffer.SetValueByIndex(0, i, j);
-                                i+=1;
+                                i += 1;
                             end;
                         until AccountingPeriods.Next() = 0;
-                    Buffer.Update(CurrPage.Chart);
+                    // Buffer.Update(CurrPage.Chart);
                 end;
             }
         }
@@ -58,5 +60,6 @@ page 52404 "Head Count Distribution"
             }
         }
     }
-    var myInt: Integer;
+    var
+        myInt: Integer;
 }

@@ -55,6 +55,11 @@ tableextension 51423 "ExtCompany Information" extends "Company Information"
             Subtype = Memo;
             Caption = 'E-Mail Signature';
         }
+         field(50012; "Company PIN No."; Code[20])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Company PIN No.';
+        }
     }
     var
         PostCode: Record "Post Code";

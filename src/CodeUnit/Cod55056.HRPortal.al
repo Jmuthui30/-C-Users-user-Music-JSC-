@@ -6,7 +6,7 @@ codeunit 55056 HRPortal
         HRPortalUsers: Record HRPortalUsers;
         Employee: Record Employee;
         Leave: Record "Leave Application";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         LeaveSetup: Record "Leave Type";
         EmployeeLeaves: Record "Leave Application";
         HrEmployees: Record Employee;
@@ -28,7 +28,7 @@ codeunit 55056 HRPortal
         MaturityDate: Date;
         NonWorkingDay: Boolean;
         NoOfWorkingDays: Decimal;
-        PayrollPeriod: Record "Payroll Period";
+        PayrollPeriod: Record "Payroll Period II";
 
         RequestorID: Record "User Setup";
 
@@ -937,7 +937,7 @@ codeunit 55056 HRPortal
             end;
         end else begin
             ImprestHeader.Init();
-            ImprestHeader."No." := NoSeriesMgt.DoGetNextNo(CashMgt."Imprest Nos", Today, true, true);
+            // ImprestHeader."No." := NoSeriesMgt.DoGetNextNo(CashMgt."Imprest Nos", Today, true, true);
             ImprestHeader.Date := Today;
             ImprestHeader."Time Inserted" := Time;
             ImprestHeader.Cashier := Cashier;
@@ -1243,7 +1243,7 @@ codeunit 55056 HRPortal
                 end;
         end else begin
             ImprestHeader.Init();
-            ImprestHeader."No." := NoSeriesMgt.DoGetNextNo(CashMgt."Imprest Surrender Nos", Today, true, true);
+            // ImprestHeader."No." := NoSeriesMgt.DoGetNextNo(CashMgt."Imprest Surrender Nos", Today, true, true);
             ImprestHeader.Date := Today;
             ImprestHeader."Time Inserted" := Time;
             ImprestHeader."Payment Type" := ImprestHeader."Payment Type"::"Imprest Surrender";
@@ -1367,7 +1367,7 @@ codeunit 55056 HRPortal
             end;
         end else begin
             ImprestHeader.Init();
-            ImprestHeader."No." := NoSeriesMgt.DoGetNextNo(CashMgt."Petty Cash Nos", Today, true, true);
+            // ImprestHeader."No." := NoSeriesMgt.DoGetNextNo(CashMgt."Petty Cash Nos", Today, true, true);
             ImprestHeader.Date := Today;
             ImprestHeader."Time Inserted" := Time;
             ImprestHeader.Cashier := Cashier;
@@ -1507,7 +1507,7 @@ codeunit 55056 HRPortal
             CashMgt.Get();
             ImprestHeader.Init();
             ImprestHeader.Date := Today;
-            ImprestHeader."No." := NoSeriesMgt.DoGetNextNo(CashMgt."Petty Cash Surrender Nos", Today, true, true);
+            // ImprestHeader."No." := NoSeriesMgt.DoGetNextNo(CashMgt."Petty Cash Surrender Nos", Today, true, true);
             ImprestHeader."Time Inserted" := Time;
             ImprestHeader."Payment Type" := ImprestHeader."Payment Type"::"Petty Cash Surrender";
             ImprestHeader."Account Type" := ImprestHeader."Account Type"::Customer;
@@ -1618,7 +1618,7 @@ codeunit 55056 HRPortal
             end;
         end else begin
             ImprestHeader.Init();
-            ImprestHeader."No." := NoSeriesMgt.DoGetNextNo(CashMgt."Staff Claim Nos", Today, true, true);
+            // ImprestHeader."No." := NoSeriesMgt.DoGetNextNo(CashMgt."Staff Claim Nos", Today, true, true);
             ImprestHeader.Date := Today;
             ImprestHeader."Time Inserted" := Time;
             ImprestHeader.Cashier := Cashier;
@@ -1741,7 +1741,7 @@ codeunit 55056 HRPortal
             TrainingRequest.Init();
             TrainingSetup.Get;
             TrainingSetup.TestField("Training Nos.");
-            NoSeriesMgt.InitSeries(TrainingSetup."Training Nos.", TrainingRequest."No. Series", 0D, TrainingRequest."No.", TrainingRequest."No. Series");
+            // NoSeriesMgt.InitSeries(TrainingSetup."Training Nos.", TrainingRequest."No. Series", 0D, TrainingRequest."No.", TrainingRequest."No. Series");
             TrainingRequest."Required Hours" := TrainingSetup."Training Hours per Year";
             TrainingRequest.Date := Today;
             TrainingRequest."Employee No" := EmpNo;

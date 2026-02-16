@@ -7,7 +7,7 @@ report 51441 "Deductions"
 
     dataset
     {
-        dataitem("Payroll Matrix"; "Payroll Matrix")
+        dataitem("Payroll Matrix"; "Assignment Matrix")
         {
             DataItemTableView = SORTING("Employee No", Type, Code, "Payroll Period", "Reference No")WHERE(Type=CONST(Deduction));
             RequestFilterFields = "Payroll Period", "Code";
@@ -161,7 +161,7 @@ report 51441 "Deductions"
                         LastName:=Emp."Last Name";
                         TotalAmount:=TotalAmount + "Payroll Matrix".Amount;
                     end;
-                    if OurEmp.Get("Payroll Matrix"."Employee No")then SHIFNo:=OurEmp."SHIF No";
+                    if OurEmp.Get("Payroll Matrix"."Employee No")then SHIFNo:=OurEmp."SHIF No.";
                 end;
             end;
             trigger OnPreDataItem()
@@ -206,7 +206,7 @@ report 51441 "Deductions"
     LastName: Text[30];
     TotalAmount: Decimal;
     "Count": Integer;
-    Deductions: Record "Payroll Matrix";
+    Deductions: Record "Assignment Matrix";
     EmployerSHIFNo: Code[20];
     DOB: Date;
     CompInfoSetup: Record "Loan Transactions";
@@ -236,11 +236,11 @@ report 51441 "Deductions"
     Name_of_EmployeeCaption_Control1000000055Lbl: Label 'Name of Employee';
     Payroll_No_Caption_Control1000000056Lbl: Label 'Payroll No.';
     Total_AmountCaptionLbl: Label 'Total Amount';
-    OurEmp: Record "Employee Master";
+    OurEmp: Record Employee;
     CompInfo: Record "Company Information";
     NoLogo: Boolean;
     procedure PayrollRounding(var Amount: Decimal)PayrollRounding: Decimal var
-        HRsetup: Record "QuantumJumps HR Setup";
+        HRsetup: Record "Human Resources Setup";
     begin
         HRsetup.Get;
         if HRsetup."Payroll Rounding Precision" = 0 then Error('You must specify the rounding precision under HR setup');

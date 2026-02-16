@@ -336,7 +336,7 @@ table 51856 "Company Jobs"
     }
     var
         CompanyJobsSetup: Record "QuantumJumps HR Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         DimisionReg: Record "Dimension Value";
 
     trigger OnInsert()
@@ -345,7 +345,12 @@ table 51856 "Company Jobs"
         if "Job ID" = '' then begin
             CompanyJobsSetup.Get;
             CompanyJobsSetup.TestField("Job Nos");
-            NoSeriesMgt.InitSeries(CompanyJobsSetup."Job Nos", xRec."Job ID", 0D, "Job ID", "No Series");
+            // NoSeriesMgt.InitSeries(CompanyJobsSetup."Job Nos", xRec."Job ID", 0D, "Job ID", "No Series");
+            if NoSeriesMgt.AreRelated(CompanyJobsSetup."Job Nos",xRec."No Series") then
+            "No Series":=xRec."No Series"
+            else
+            "No Series":=CompanyJobsSetup."Job Nos";
+            "Job ID":=NoSeriesMgt.GetNextNo("No Series",WorkDate());
             "Date Created" := Today;
             Status := Status::Open;
         end;

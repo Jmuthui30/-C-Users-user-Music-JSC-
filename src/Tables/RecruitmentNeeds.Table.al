@@ -301,7 +301,7 @@
 //     var
 //         Jobs: Record "Company Job";
 //         HRSetup: Record "Human Resources Setup";
-//         NoSeriesMgt: Codeunit NoSeriesManagement;
+//         NoSeriesMgt: Codeunit "No. Series";
 // }
 
 

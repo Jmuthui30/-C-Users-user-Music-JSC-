@@ -15,12 +15,12 @@ table 51947 "Mail Details"
 
             trigger OnValidate()
             begin
-                if EmpRec.Get("Employee Code")then begin
-                    "Global Dimension 1 Code":=EmpRec."Global Dimension 1 Code";
-                    "Global Dimension 2 Code":=EmpRec."Global Dimension 2 Code";
-                    "Global Dimension 3 Code":=EmpRec."Global Dimension 3 Code";
+                if EmpRec.Get("Employee Code") then begin
+                    "Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                    "Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                    "Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
                 end;
-                if NAVemp.Get("Employee Code")then "Employee Name":=NAVemp.FullName();
+                if NAVemp.Get("Employee Code") then "Employee Name" := NAVemp.FullName();
             end;
         }
         field(3; "Employee Name"; Text[50])
@@ -28,7 +28,7 @@ table 51947 "Mail Details"
             Editable = false;
             DataClassification = CustomerContent;
         }
-        field(4; Status;Enum "Document Status")
+        field(4; Status; Enum "Document Status")
         {
             DataClassification = CustomerContent;
             Editable = false;
@@ -46,20 +46,20 @@ table 51947 "Mail Details"
         {
             CaptionClass = '1,1,1';
             Editable = false;
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=FILTER(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = FILTER(1));
         }
         field(8; "Global Dimension 2 Code"; Code[20])
         {
             CaptionClass = '1,1,2';
             Caption = 'Global Dimension 2 Code';
             Editable = false;
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
         field(9; "Global Dimension 3 Code"; Code[20])
         {
             CaptionClass = '1,2,3';
             Caption = 'Global Dimension 3 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(3));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(3));
         }
         field(10; Posted; Boolean)
         {
@@ -89,30 +89,30 @@ table 51947 "Mail Details"
         {
             DataClassification = ToBeClassified;
             OptionCaption = 'Personal,Official';
-            OptionMembers = Personal, Official;
+            OptionMembers = Personal,Official;
         }
         field(17; "Send To"; Option)
         {
             DataClassification = ToBeClassified;
             OptionCaption = 'Department,Employee';
-            OptionMembers = Department, Employee;
+            OptionMembers = Department,Employee;
         }
         field(18; "Send To No."; code[50])
         {
             DataClassification = ToBeClassified;
-            TableRelation = IF("Send To"=CONST(Department))"Dimension Value".Code WHERE("Global Dimension No."=FILTER(1))
-            ELSE IF("Send To"=CONST(Employee))Employee;
+            TableRelation = IF ("Send To" = CONST(Department)) "Dimension Value".Code WHERE("Global Dimension No." = FILTER(1))
+            ELSE IF ("Send To" = CONST(Employee)) Employee;
 
             trigger OnValidate()
             begin
                 if "Send To" = "Send To"::Department then begin
                     //if Dim.Get("Send To No.") then begin
-                    if DimValue.Get("Send To No.")then begin
-                        "Send To Name":=DimValue.Name;
+                    if DimValue.Get("Send To No.") then begin
+                        "Send To Name" := DimValue.Name;
                     end;
                 end;
                 if "Send To" = "Send To"::Employee then begin
-                    if NAVemp1.Get("Send To No.")then "Send To Name":=NAVemp1.FullName();
+                    if NAVemp1.Get("Send To No.") then "Send To Name" := NAVemp1.FullName();
                 end;
             end;
         }
@@ -132,13 +132,13 @@ table 51947 "Mail Details"
         {
             DataClassification = ToBeClassified;
             OptionCaption = 'Incoming Mail,Outgoing Mail';
-            OptionMembers = "Incoming Mail", "Outgoing Mail";
+            OptionMembers = "Incoming Mail","Outgoing Mail";
         }
         field(23; "Sender's Department"; Code[20])
         {
             DataClassification = ToBeClassified;
             CaptionClass = '1,1,1';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=FILTER(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = FILTER(1));
         }
         field(24; "Destination Contact"; Text[100])
         {
@@ -165,37 +165,62 @@ table 51947 "Mail Details"
         PurchSetup.Get;
         if "No." = '' then begin
             PurchSetup.TestField("Mail No.");
-            NoSeriesMgt.InitSeries(PurchSetup."Mail No.", xRec."No.", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(PurchSetup."Mail No.", xRec."No.", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(PurchSetup."Mail No.",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=PurchSetup."Mail No.";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
-        "Raised by":=UserId;
-        if UsersRec.Get(UserId)then begin
+        "Raised by" := UserId;
+        if UsersRec.Get(UserId) then begin
             UsersRec.TestField("Employee No.");
-            "Employee Code":=UsersRec."Employee No.";
+            "Employee Code" := UsersRec."Employee No.";
             Validate("Employee Code");
         end;
     end;
-    var PurchSetup: Record "Procurement Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    UsersRec: Record "User Setup";
-    NAVemp: Record Employee;
-    EmpRec: Record "Employee Master";
-    Dim: Record Dimension;
-    DimValue: Record "Dimension Value";
-    NAVemp1: Record Employee;
-    procedure AssitEdit(): Boolean begin
-        PurchSetup.Get;
-        PurchSetup.TestField("Mail No.");
-        if NoSeriesMgt.SelectSeries(PurchSetup."Mail No.", xRec."No. Series", "No. Series")then begin
-            NoSeriesMgt.SetSeries("No.");
+
+    var
+        PurchSetup: Record "Procurement Setup";
+        NoSeriesMgt: Codeunit "No. Series";
+        UsersRec: Record "User Setup";
+        NAVemp: Record Employee;
+        EmpRec: Record "Employee Master";
+        Dim: Record Dimension;
+        DimValue: Record "Dimension Value";
+        NAVemp1: Record Employee;
+
+    // procedure AssitEdit(): Boolean
+    // begin
+    //     PurchSetup.Get;
+    //     PurchSetup.TestField("Mail No.");
+    //     if NoSeriesMgt.SelectSeries(PurchSetup."Mail No.", xRec."No. Series", "No. Series") then begin
+    //         NoSeriesMgt.SetSeries("No.");
+    //         exit(true);
+    //     end;
+    // end;
+     procedure AssistEdit(): Boolean
+    var
+        NoSeries: Codeunit "No. Series";
+    begin
+        PurchSetup.Get();
+
+        if NoSeries.LookupRelatedNoSeries(PurchSetup."Mail No.", xRec."No. Series", "No. Series") then begin
+            "No." := '';
+            PurchSetup.Get();
+            "No." := NoSeries.GetNextNo("No. Series", WorkDate(), true);
             exit(true);
         end;
     end;
+
     trigger OnModify()
     begin
     end;
+
     trigger OnDelete()
     begin
     end;
+
     trigger OnRename()
     begin
     end;

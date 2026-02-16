@@ -266,7 +266,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
         field(52029; "Employee's Bank"; Code[80])
         {
             DataClassification = CustomerContent;
-            TableRelation = "Bank Account";
+            TableRelation = Banks;
             Caption = 'Employee''s Bank';
 
             trigger OnValidate()
@@ -304,7 +304,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
         {
             DataClassification = CustomerContent;
             NotBlank = true;
-            // TableRelation = "Employee HR Posting Group";
+            TableRelation = "Employee HR Posting Group";
             Caption = 'Posting Group';
 
             trigger OnValidate()
@@ -1227,8 +1227,324 @@ tableextension 51424 "ExtEmployee" extends "Employee"
 
             end;
         }
+        field(52371; "Basic Arrears"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where(Type = const(Earning),
+                                                                  "Employee No" = field("No."),
+                                                                  "Payroll Period" = field("Pay Period Filter"),
+                                                                  "Basic Pay Arrears" = const(true)));
+            FieldClass = FlowField;
+            Caption = 'Basic Arrears';
+        }
+        field(52372; "Pay Period Filter"; Date)
+        {
+            FieldClass = FlowFilter;
+            TableRelation = if ("Employee Type" = filter(Permanent | Partime | Locum)) "Payroll Period II"
+            else
+            if ("Employee Type" = filter(Casual)) "Payroll Period Casuals"
+            else
+            if ("Employee Type" = filter("Board Member")) "Payroll Period Trustees";
+            Caption = 'Pay Period Filter';
+        }
+        field(52373; "Basic Pay"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where(Type = const(Earning),
+                                                                  "Employee No" = field("No."),
+                                                                  "Payroll Period" = field("Pay Period Filter"),
+                                                                  "Basic Salary Code" = const(true)));
+            Editable = false;
+            FieldClass = FlowField;
+            Caption = 'Total Accumulated Basic Pay';
+        }
+        field(52374; "Insurance Premium"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where(Type = const(Deduction),
+                                                                  "Employee No" = field("No."),
+                                                                  "Payroll Period" = field("Pay Period Filter"),
+                                                                  "Insurance Code" = const(true)));
+            FieldClass = FlowField;
+            Caption = 'Insurance Premium';
+        }
+        field(52375; "NHIF Amount"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where(Type = const(Deduction),
+                                                                  "Employee No" = field("No."),
+                                                                  "Payroll Period" = field("Pay Period Filter"),
+                                                                  "NHIF" = const(true)));
+            FieldClass = FlowField;
+            Caption = 'NHIF Amount';
+        }
+        field(52376; "Total Allowances"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where(Type = const(Earning),
+                                                                  "Employee No" = field("No."),
+                                                                  "Payroll Period" = field("Pay Period Filter"),
+                                                                  "Non-Cash Benefit" = const(false),
+                                                                  Gratuity = const(false),
+                                                                  "Normal Earnings" = const(true),
+                                                                  "Insurance Code" = filter(false)));
+            Editable = false;
+            FieldClass = FlowField;
+            Caption = 'Total Accumulated Earnings';
+        }
+        field(52377; "Taxable Allowance"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where(Taxable = const(true),
+                                                                  "Employee No" = field("No."),
+                                                                  "Payroll Period" = field("Pay Period Filter")));
+            Editable = false;
+            FieldClass = FlowField;
+            Caption = 'Total Accumulated Taxable Allowance';
+        }
+         field(52378; "Gross Excludable Allowances"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where(Type = const(Earning),
+                                                                  "Employee No" = field("No."),
+                                                                  "Payroll Period" = field("Pay Period Filter"),
+                                                                  "Non-Cash Benefit" = const(false),
+                                                                  Gratuity = const(false),
+                                                                  "Normal Earnings" = const(true),
+                                                                  "Insurance Code" = filter(false),
+                                                                  "Exclude Gross Pay Deduction" = const(true)));
+            Editable = false;
+            FieldClass = FlowField;
+            Caption = 'Total Accumulated Earnings';
+        }
+        field(52379; "House Allowance"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where(Type = const(Earning),
+                                                                  "Employee No" = field("No."),
+                                                                  "Payroll Period" = field("Pay Period Filter"),
+                                                                  "House Allowance Code" = const(true)));
+            Editable = false;
+            FieldClass = FlowField;
+            Caption = 'Total Accumulated House Allowance';
+        }
+        field(52380; "Commuter Allowance"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where(Type = const(Earning),
+                                                                  "Employee No" = field("No."),
+                                                                  "Payroll Period" = field("Pay Period Filter"),
+                                                                  "Commuter Allowance Code" = const(true)));
+            Editable = false;
+            FieldClass = FlowField;
+            Caption = 'Commuter Allowance';
+        }
+        field(52381; "Salary Arrears"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where(Type = const(Earning),
+                                                                  "Employee No" = field("No."),
+                                                                  "Payroll Period" = field("Pay Period Filter"),
+                                                                  "Salary Arrears Code" = const(true)));
+            Editable = false;
+            FieldClass = FlowField;
+            Caption = 'Salary Arrears';
+        }
+         field(52382; "Total Non-Recurring Allowances"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where(Type = const(Earning),
+                                                                  "Employee No" = field("No."),
+                                                                  "Payroll Period" = field("Pay Period Filter"),
+                                                                  "Non-Cash Benefit" = const(false),
+                                                                  Gratuity = const(false),
+                                                                  "Normal Earnings" = const(true),
+                                                                  "Insurance Code" = filter(false),
+                                                                  Frequency = const("Non-Recurring")));
+            Editable = false;
+            FieldClass = FlowField;
+            Caption = 'Total Non-Recurring Allowances';
+        }
+         field(52383; "Total Deductions"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where(Type = filter(Deduction | Loan),
+                                                                  "Employee No" = field("No."),
+                                                                  "Payroll Period" = field("Pay Period Filter")));
+            Editable = false;
+            FieldClass = FlowField;
+            Caption = 'Total Accumulated Deductions';
+        }
+        field(52384; "Loan Interest"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix"."Loan Interest" where(Type = filter(Deduction | Loan),
+                                                                           "Employee No" = field("No."),
+                                                                           "Payroll Period" = field("Pay Period Filter")));
+            FieldClass = FlowField;
+            Caption = 'Loan Interest';
+        }
+        field(52385; "Housing Levy Amount"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where(Type = const(Deduction),
+                                                                  "Employee No" = field("No."),
+                                                                  "Payroll Period" = field("Pay Period Filter"),
+                                                                  "Housing Levy" = const(true)));
+            FieldClass = FlowField;
+            Caption = 'Housing Levy Amount';
+        }
+        field(52386; "Pay Mode"; Code[20])
+        {
+            DataClassification = CustomerContent;
+            TableRelation = "Employee Pay Modes";
+            Caption = 'Pay Mode';
+        }  
+        field(52388; "Basic + Regular Allowances"; Decimal)
+        {
+            CalcFormula = Sum("Assignment Matrix".Amount WHERE(Type = CONST(Earning), "Employee No" = FIELD("No."), "Payroll Period" = FIELD("Pay Period Filter"), "Basic+Regular Allowances" = CONST(true), "Normal Earnings" = CONST(true)));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+         field(52050; "Taxable Income"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where("Employee No" = field("No."),
+                                                                  "Payroll Period" = field("Pay Period Filter"),
+                                                                  Taxable = const(true)));
+            Editable = false;
+            FieldClass = FlowField;
+            Caption = 'Taxable Income';
+        }
+        field(52038; "Cumm. PAYE"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where("Employee No" = field("No."),
+                                                                  "Payroll Period" = field("Pay Period Filter"),
+                                                                  Paye = const(true)));
+            Editable = false;
+            FieldClass = FlowField;
+            Caption = 'Total Accumulated PAYE';
+        }
+         field(52040; "Benefits-Non Cash"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where("Employee No" = field("No."),
+                                                                  "Payroll Period" = field("Pay Period Filter"),
+                                                                  "Non-Cash Benefit" = const(true),
+                                                                  Type = const(Earning),
+                                                                  Taxable = const(true)));
+            Editable = false;
+            FieldClass = FlowField;
+            Caption = 'Benefits-Non Cash';
+        }
+        field(52045; "Total Savings"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where("Employee No" = field("No."),
+                                                                  Type = const("Saving Scheme"),
+                                                                  "Payroll Period" = field("Pay Period Filter")));
+            FieldClass = FlowField;
+            Caption = 'Total Savings';
+        }
+         field(52043; "Retirement Contribution"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where("Employee No" = field("No."),
+                                                                  "Payroll Period" = field("Pay Period Filter"),
+                                                                  "Tax Deductible" = const(true),
+                                                                  Retirement = const(true)));
+            FieldClass = FlowField;
+            Caption = 'Retirement Contribution';
+        }
+         field(52034; "Tax Deductible Amount"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where("Tax Deductible" = const(true),
+                                                                  "Employee No" = field("No."),
+                                                                  "Payroll Period" = field("Pay Period Filter"),
+                                                                  "Non-Cash Benefit" = const(false)));
+            FieldClass = FlowField;
+            Caption = 'Tax Deductible Amount';
+        }
+         field(52037; "PIN Number"; Code[20])
+        {
+            DataClassification = CustomerContent;
+            // Caption = 'KRA PIN Number';
+        }
+        field(52387; "Net Pay"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where("Employee No" = field("No."),
+                                                                  "Payroll Period" = field("Pay Period Filter"),
+                                                                  "Non-Cash Benefit" = const(false),
+                                                                  Gratuity = const(false),
+                                                                  "Tax Relief" = const(false)));
+            FieldClass = FlowField;
+            Caption = 'Net Pay';
+        }
+         field(52146; "Allowances PAYE"; Decimal)
+        {
+            CalcFormula = sum("Allowance Register Line"."PAYE Amount" where("Employee No." = field("No."),
+                                                                            "Payroll Period" = field("Pay Period Filter"),
+                                                                            Posted = const(true)));
+            Caption = 'Allowances PAYE';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(52042; "Home Savings"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where("Employee No" = field("No."),
+                                                                  "Payroll Period" = field("Pay Period Filter"),
+                                                                  Type = const(Deduction),
+                                                                  "Tax Deductible" = const(true),
+                                                                  Retirement = const(false)));
+            FieldClass = FlowField;
+            Caption = 'Home Savings';
+        }
+          field(52044; "Owner Occupier"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where("Employee No" = field("No."),
+                                                                  "Payroll Period" = field("Pay Period Filter"),
+                                                                  Type = const(Earning),
+                                                                  "Tax Deductible" = const(true)));
+            FieldClass = FlowField;
+            Caption = 'Owner Occupier';
+        }
+         field(52134; "Cumm. Secondary  PAYE"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where("Employee No" = field("No."),
+                                                                  "Payroll Period" = field("Pay Period Filter"),
+                                                                  "Secondary PAYE" = const(true)));
+            Editable = false;
+            FieldClass = FlowField;
+            Caption = 'Total Accumulated Sec. PAYE';
+        }
+         field(52087; "Relief Amount"; Decimal)
+        {
+            CalcFormula = - sum("Assignment Matrix".Amount where("Employee No" = field("No."),
+                                                                   "Payroll Period" = field("Pay Period Filter"),
+                                                                   "Non-Cash Benefit" = const(true),
+                                                                   Type = const(Earning),
+                                                                   "Tax Deductible" = const(true),
+                                                                   "Tax Relief" = const(true)));
+            FieldClass = FlowField;
+            Caption = 'Relief Amount';
+        }
+         field(52113; "Employment Status"; Enum "Employment Status")
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Employment Status';
 
+            trigger OnValidate()
+            begin
+                /* HumanResSetup.Get();
+                 HumanResSetup.TestField("Maximum Probation Period");
+                  if "Employment Status"="Employment Status"::"Extended Probation" then
+                  "End Of Probation Date":=CalcDate(HumanResSetup."Maximum Probation Period","Date Of Join");
+                 */
 
+            end;
+        }
+         field(52014; "Job Position"; Code[10])
+        {
+            DataClassification = CustomerContent;
+            TableRelation = "Company Job";
+            Caption = 'Job Position';
+
+            trigger OnValidate()
+            begin
+                if Jobs.Get("Job Position") then
+                    "Job Position Title" := Jobs."Job Description";
+            end;
+        }
+        field(52236;"Home Ownership Status"; Option)
+        {
+            OptionMembers = "None", "Owner Occupier", "Home Savings";
+        }
+         field(52237; "Employee Group"; Code[20])
+        {
+            TableRelation = "Employee Groups";
+        }
     }
 
     trigger OnInsert()
@@ -1244,12 +1560,12 @@ tableextension 51424 "ExtEmployee" extends "Employee"
         RecruitmentNeed: Record "Recruitment Needs";
         HRDatesExt: Codeunit "HR Dates Mgt";
         Branches: Record "Bank Branches";
-        Banks: Record "Bank Account";
+        Banks: Record Banks;
         Jobs: Record "Company Job";
         EmpContract: Record "Employment Contract";
         // Ethnic: Record "Ethnic Communities";
         HumanResSetup: Record "Human Resources Setup";
-        PayPeriod: Record "Payroll Period";
+        PayPeriod: Record "Payroll Period II";
         Scale: Record "Salary Scale";
         //HRDates: Codeunit "Dates Management";
         // Payroll: Codeunit Payroll;

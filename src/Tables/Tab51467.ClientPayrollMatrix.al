@@ -67,7 +67,7 @@ table 51467 "Client Payroll Matrix"
                                 "Non-Cash Benefit" := Payments."Non-Cash Benefit";
                                 Taxable := Payments.Taxable;
                                 // MESSAGE('Taxable=%1',Taxable);
-                                "Reduces Taxable Amt" := Payments."Reduces Tax";
+                                "Reduces Taxable Amt" := Payments."Reduces Tax"; 
                                 if Payments."Pay Type" = Payments."Pay Type"::Recurring then
                                     "Next Period Entry" := true
                                 else
@@ -393,7 +393,7 @@ table 51467 "Client Payroll Matrix"
                                     end;
                                 end;
                                 if Deductions."Calculation Method" = Deductions."Calculation Method"::"% of Basic + Regular Allowances" then begin
-                                    if Empl.Get("Employee No") then begin
+                                    if Empl.Get("Employee No") then begin 
                                         Empl.SetRange(Empl."No.", "Employee No");
                                         //Message('no%1', "Employee No");
                                         Empl.SetRange(Empl."Pay Period Filter", "Payroll Period");
@@ -408,7 +408,7 @@ table 51467 "Client Payroll Matrix"
                                 end;
                                 //End Calculate CMFIU PAYE2
                                 //Added by Jacob
-                                //Salary Recovery
+                                //Salary Recovery 
                                 SalaryRecoveryAmt := 0;
                                 if Deductions."Calculation Method" = Deductions."Calculation Method"::"% of Salary Recovery" then begin
                                     if Empl.Get("Employee No") then begin
@@ -520,7 +520,7 @@ table 51467 "Client Payroll Matrix"
                 if (Type = Type::Payment) then
                     if Payments.Get(Company, Code) then
                         if Payments."Reduces Tax" then begin
-                            //Amount := Amount;
+                            // Amount := Amount;
                         end;
                 if (Type = Type::Payment) then if Amount < 0 then Error('Earning must not be negative');
                 if (Type = Type::Payment) then if Payments."Salary Recovery" then if (Amount > 0) then Amount := -Amount;

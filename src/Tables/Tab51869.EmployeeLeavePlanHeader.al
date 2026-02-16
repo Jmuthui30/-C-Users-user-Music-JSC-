@@ -134,7 +134,12 @@ table 51869 "Employee Leave Plan Header"
         if "Application No" = '' then begin
             HumanResSetup.Get;
             HumanResSetup.TestField("Leave Plan Nos");
-            NoSeriesMgt.InitSeries(HumanResSetup."Leave Plan Nos", xRec."No. series", 0D, "Application No", "No. series");
+            // NoSeriesMgt.InitSeries(HumanResSetup."Leave Plan Nos", xRec."No. series", 0D, "Application No", "No. series");
+            if NoSeriesMgt.AreRelated(HumanResSetup."Leave Plan Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HumanResSetup."Leave Plan Nos";
+            "Application No":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
         "Application Date" := Today;
         Status := Status::Open;
@@ -158,7 +163,7 @@ table 51869 "Employee Leave Plan Header"
         emp: Record Employee;
         LeaveTypes: Record "Leave Setup";
         HumanResSetup: Record "QuantumJumps HR Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         PlanHeader: Record "Employee Leave Plan";
         EmpLeave: Record "Employee Leaves";
         NoofMonthsWorked: Integer;

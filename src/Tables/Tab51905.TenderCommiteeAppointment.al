@@ -12,8 +12,8 @@ table 51905 "Tender Commitee Appointment"
 
             trigger OnValidate()
             begin
-                if TenderRec.Get("Tender/Quotation No")then begin
-                    Title:=TenderRec.Title;
+                if TenderRec.Get("Tender/Quotation No") then begin
+                    Title := TenderRec.Title;
                 end;
             end;
         }
@@ -24,8 +24,8 @@ table 51905 "Tender Commitee Appointment"
 
             trigger OnValidate()
             begin
-                if ProcurementComittee.Get("Committee ID")then begin
-                    "Committee Name":=ProcurementComittee.Description;
+                if ProcurementComittee.Get("Committee ID") then begin
+                    "Committee Name" := ProcurementComittee.Description;
                 end;
             end;
         }
@@ -58,7 +58,7 @@ table 51905 "Tender Commitee Appointment"
         {
             DataClassification = ToBeClassified;
         }
-        field(9; Status;Enum "Document Status")
+        field(9; Status; Enum "Document Status")
         {
             Editable = false;
         }
@@ -80,17 +80,25 @@ table 51905 "Tender Commitee Appointment"
     begin
         TestField(Status, Status::Open);
     end;
+
     trigger OnInsert()
     begin
         PurchSetup.Get;
         PurchSetup.TestField(PurchSetup."Appointment Nos.");
-        NoSeriesMgt.InitSeries(PurchSetup."Appointment Nos.", xRec."No. Series", 0D, "Appointment No", "No. Series");
-        "Creation Date":=Today;
-        "User ID":=UserId;
-        Status:=Status::Open;
+        // NoSeriesMgt.InitSeries(PurchSetup."Appointment Nos.", xRec."No. Series", 0D, "Appointment No", "No. Series");
+        if NoSeriesMgt.AreRelated(PurchSetup."Appointment Nos.",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=PurchSetup."Appointment Nos.";
+           "Appointment No":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
+        "Creation Date" := Today;
+        "User ID" := UserId;
+        Status := Status::Open;
     end;
-    var ProcurementComittee: Record "Procurement Commitee";
-    TenderRec: Record "Procurement Request";
-    PurchSetup: Record "Procurement Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
+
+    var
+        ProcurementComittee: Record "Procurement Commitee";
+        TenderRec: Record "Procurement Request";
+        PurchSetup: Record "Procurement Setup";
+        NoSeriesMgt: Codeunit "No. Series";
 }

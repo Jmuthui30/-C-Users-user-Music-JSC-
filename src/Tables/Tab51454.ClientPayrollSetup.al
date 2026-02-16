@@ -62,7 +62,7 @@ table 51454 "Client Payroll Setup"
         field(17; "Tax Relief Amount"; Decimal)
         {
         }
-        field(18; "General Payslip Message"; Text[100])
+        field(18; "General Payslip Message"; Text[2048])
         {
         }
         field(19; "Base Calendar Code"; Code[10])

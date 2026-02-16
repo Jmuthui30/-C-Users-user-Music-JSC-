@@ -9,16 +9,16 @@ table 51647 "Training Evaluation"
         {
             trigger OnValidate()
             begin
-                if EmpRec.Get("Employee No")then begin
-                    "Global Dimension 1 Code":=EmpRec."Global Dimension 1 Code";
-                    "Global Dimension 2 Code":=EmpRec."Global Dimension 2 Code";
-                    "Global Dimension 3 Code":=EmpRec."Global Dimension 3 Code";
+                if EmpRec.Get("Employee No") then begin
+                    "Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                    "Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                    "Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
                 end;
-                if NAVemp.Get("Employee No")then begin
-                    "Mobile No":=NAVemp."Mobile Phone No.";
-                    "Employment Date":=NAVemp."Employment Date";
-                    "Employee Name":=NAVemp."Last Name" + ' ' + NAVemp."First Name" + ' ' + NAVemp."Middle Name";
-                    "Job Title":=NAVemp."Job Title";
+                if NAVemp.Get("Employee No") then begin
+                    "Mobile No" := NAVemp."Mobile Phone No.";
+                    "Employment Date" := NAVemp."Employment Date";
+                    "Employee Name" := NAVemp."Last Name" + ' ' + NAVemp."First Name" + ' ' + NAVemp."Middle Name";
+                    "Job Title" := NAVemp."Job Title";
                     Validate(Manager, NAVemp."Manager No.");
                 end;
             end;
@@ -35,25 +35,25 @@ table 51647 "Training Evaluation"
         field(6; "Global Dimension 1 Code"; Code[20])
         {
             CaptionClass = '1,1,1';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
         }
         field(7; "Global Dimension 2 Code"; Code[20])
         {
             CaptionClass = '1,1,2';
             Caption = 'Global Dimension 1 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
         field(8; "Global Dimension 3 Code"; Code[20])
         {
             CaptionClass = '1,2,3';
             Caption = 'Global Dimension 3 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(3));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(3));
         }
         field(9; Manager; Code[20])
         {
             trigger OnValidate()
             begin
-                if NAVemp.Get("Global Dimension 3 Code")then Manager:=NAVemp."First Name" + ' ' + NAVemp."Last Name";
+                if NAVemp.Get("Global Dimension 3 Code") then Manager := NAVemp."First Name" + ' ' + NAVemp."Last Name";
             end;
         }
         field(10; "Manager's Name"; Text[100])
@@ -71,7 +71,7 @@ table 51647 "Training Evaluation"
         field(14; "Due Date"; Date)
         {
         }
-        field(15; Status;Enum "Document Status")
+        field(15; Status; Enum "Document Status")
         {
             Editable = false;
         }
@@ -89,12 +89,12 @@ table 51647 "Training Evaluation"
 
             trigger OnValidate()
             begin
-                if Training.Get("Training No.")then begin
-                    "Course Title":=Training."Training Title";
-                    Venue:=Training."Training Venue";
-                    Organizers:=Training.Organizers;
-                    "Start Date":=Training."Start Date";
-                    "End Date":=Training."End Date";
+                if Training.Get("Training No.") then begin
+                    "Course Title" := Training."Training Title";
+                    Venue := Training."Training Venue";
+                    Organizers := Training.Organizers;
+                    "Start Date" := Training."Start Date";
+                    "End Date" := Training."End Date";
                 end;
             end;
         }
@@ -117,7 +117,7 @@ table 51647 "Training Evaluation"
         {
             Caption = 'Is the course content relevant to your current job description?';
             OptionCaption = 'Yes,No';
-            OptionMembers = Yes, No;
+            OptionMembers = Yes,No;
         }
         field(25; "Learned Skill 1"; Text[30])
         {
@@ -136,34 +136,34 @@ table 51647 "Training Evaluation"
         {
             Caption = 'To what extent do you expect this training will make a difference in the way you do your job?';
             OptionCaption = '1 - No Difference,2,3,4,5-Tremendous Difference';
-            OptionMembers = "1 - No Difference", "2", "3", "4", "5-Tremendous Difference";
+            OptionMembers = "1 - No Difference","2","3","4","5-Tremendous Difference";
         }
         field(30; "Couse Content"; Option)
         {
             OptionCaption = 'Excellent,Good,Not Good,Poor';
-            OptionMembers = Excellent, Good, "Not Good", Poor;
+            OptionMembers = Excellent,Good,"Not Good",Poor;
         }
         field(31; Notes; Option)
         {
             OptionCaption = 'Excellent,Good,Not Good,Poor';
-            OptionMembers = Excellent, Good, "Not Good", Poor;
+            OptionMembers = Excellent,Good,"Not Good",Poor;
         }
         field(32; Presentation; Option)
         {
             OptionCaption = 'Excellent,Good,Not Good,Poor';
-            OptionMembers = Excellent, Good, "Not Good", Poor;
+            OptionMembers = Excellent,Good,"Not Good",Poor;
         }
         field(33; "Relevance Rating"; Option)
         {
             Caption = 'Relevance';
             OptionCaption = 'Excellent,Good,Not Good,Poor';
-            OptionMembers = Excellent, Good, "Not Good", Poor;
+            OptionMembers = Excellent,Good,"Not Good",Poor;
         }
         field(34; Recommend; Option)
         {
             Caption = 'Would you recommend the course for other staff ?';
             OptionCaption = 'Yes,No';
-            OptionMembers = Yes, No;
+            OptionMembers = Yes,No;
         }
         field(35; Comments; Text[250])
         {
@@ -246,30 +246,37 @@ table 51647 "Training Evaluation"
         if "No." = '' then begin
             TrainingSetup.Get;
             TrainingSetup.TestField("Training Nos.");
-            NoSeriesMgt.InitSeries(TrainingSetup."Training Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(TrainingSetup."Training Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(TrainingSetup."Training Nos.",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=TrainingSetup."Training Nos.";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
-        Date:=Today;
-        Status:=Status::Open;
-        if UserSetup.Get(UserId)then begin
-            "Employee No":=UserSetup."Employee No.";
+        Date := Today;
+        Status := Status::Open;
+        if UserSetup.Get(UserId) then begin
+            "Employee No" := UserSetup."Employee No.";
             Validate("Employee No");
         end;
-        "Created By":=UserId;
-        if EmpRec.Get("Employee No")then begin
-            "Global Dimension 1 Code":=EmpRec."Global Dimension 1 Code";
-            "Global Dimension 2 Code":=EmpRec."Global Dimension 2 Code";
-            "Global Dimension 3 Code":=EmpRec."Global Dimension 3 Code";
+        "Created By" := UserId;
+        if EmpRec.Get("Employee No") then begin
+            "Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+            "Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+            "Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
         end;
-        if NAVemp.Get("Employee No")then begin
-            "Job Title":=NAVemp."Job Title";
-            "Employee Name":=NAVemp."First Name" + ' ' + NAVemp."Last Name";
+        if NAVemp.Get("Employee No") then begin
+            "Job Title" := NAVemp."Job Title";
+            "Employee Name" := NAVemp."First Name" + ' ' + NAVemp."Last Name";
         end;
     end;
-    var UserSetup: Record "User Setup";
-    Text000: Label 'Your are not mapped to an employee account. Kindly contact the system administrator.';
-    NAVemp: Record Employee;
-    EmpRec: Record "Employee Master";
-    TrainingSetup: Record "QuantumJumps HR Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    Training: Record "Training Nomination Header";
+
+    var
+        UserSetup: Record "User Setup";
+        Text000: Label 'Your are not mapped to an employee account. Kindly contact the system administrator.';
+        NAVemp: Record Employee;
+        EmpRec: Record "Employee Master";
+        TrainingSetup: Record "QuantumJumps HR Setup";
+        NoSeriesMgt: Codeunit "No. Series";
+        Training: Record "Training Nomination Header";
 }

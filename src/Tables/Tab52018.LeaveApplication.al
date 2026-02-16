@@ -648,7 +648,12 @@ table 52018 "Leave Application"
         if "Application No" = '' then begin
             HRSetup.Get();
             HRSetup.TestField("Leave Application Nos.");
-            NoSeriesMgt.InitSeries(HRSetup."Leave Application Nos.", xRec."No. series", 0D, "Application No", "No. series");
+            // NoSeriesMgt.InitSeries(HRSetup."Leave Application Nos.", xRec."No. series", 0D, "Application No", "No. series");
+            if NoSeriesMgt.AreRelated(HRSetup."Leave Application Nos.",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HRSetup."Leave Application Nos.";
+            "Application No":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
 
         "Application Date" := Today;
@@ -695,7 +700,7 @@ table 52018 "Leave Application"
         UserSertup: Record "User Setup";
         DimMgt: Codeunit DimensionManagement;
         HRmgt: Codeunit "HR Management";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         NonWorkingDay: Boolean;
         NoofMonthsWorked: Decimal;
         Nextmonth: Date;

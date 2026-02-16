@@ -23,25 +23,25 @@ table 51833 "Fuel Voucher Header"
         field(7; "Global Dimension 1 Code"; Code[20])
         {
             CaptionClass = '1,1,1';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
 
             trigger OnValidate()
             begin
-            /*Lines.RESET;
-                Lines.SETRANGE("No.","No.");
-                Lines.MODIFYALL("Global Dimension 1 Code","Global Dimension 1 Code");*/
+                /*Lines.RESET;
+                    Lines.SETRANGE("No.","No.");
+                    Lines.MODIFYALL("Global Dimension 1 Code","Global Dimension 1 Code");*/
             end;
         }
         field(8; "Global Dimension 2 Code"; Code[20])
         {
             CaptionClass = '1,1,2';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
 
             trigger OnValidate()
             begin
-            /*Lines.RESET;
-                Lines.SETRANGE("No.","No.");
-                Lines.MODIFYALL("Global Dimension 2 Code","Global Dimension 2 Code");*/
+                /*Lines.RESET;
+                    Lines.SETRANGE("No.","No.");
+                    Lines.MODIFYALL("Global Dimension 2 Code","Global Dimension 2 Code");*/
             end;
         }
         field(9; "No. Series"; Code[20])
@@ -50,7 +50,7 @@ table 51833 "Fuel Voucher Header"
         }
         field(10; "No. of Vouchers"; Integer)
         {
-            CalcFormula = Count("Fuel Voucher Lines" WHERE("No."=FIELD("No.")));
+            CalcFormula = Count("Fuel Voucher Lines" WHERE("No." = FIELD("No.")));
             FieldClass = FlowField;
         }
     }
@@ -65,14 +65,21 @@ table 51833 "Fuel Voucher Header"
     }
     trigger OnInsert()
     begin
-        if("No." = '')then begin
+        if ("No." = '') then begin
             MotorpoolSetup.Get;
             MotorpoolSetup.TestField("Fuel Voucher Nos.");
-            NoSeriesMgt.InitSeries(MotorpoolSetup."Fuel Voucher Nos.", xRec."No.", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(MotorpoolSetup."Fuel Voucher Nos.", xRec."No.", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(MotorpoolSetup."Fuel Voucher Nos.",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=MotorpoolSetup."Fuel Voucher Nos.";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
-        "Created By":=UserId;
-        "Created Date":=Today;
+        "Created By" := UserId;
+        "Created Date" := Today;
     end;
-    var MotorpoolSetup: Record "Motorpool Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
+
+    var
+        MotorpoolSetup: Record "Motorpool Setup";
+        NoSeriesMgt: Codeunit "No. Series";
 }

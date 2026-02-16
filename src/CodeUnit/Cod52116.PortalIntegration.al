@@ -12,7 +12,7 @@ codeunit 52116 "Portal Integration"
         GeneralLedgerSetup: Record "General Ledger Setup";
         ErrorMsg: Text[250];
         Leave: Record "Leave Application";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         LeaveSetup: Record "Leave Type";
         EmployeeLeaves: Record "Employee Leaves";
         WorkflowWebhookMgt: Codeunit "Workflow Webhook Management";

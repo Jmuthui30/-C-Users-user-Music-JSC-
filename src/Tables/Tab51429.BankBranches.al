@@ -8,7 +8,7 @@ table 51429 "Bank Branches"
     {
         field(1; "Bank Code"; Code[10])
         {
-            TableRelation = "Commercial Banks";
+            TableRelation = Banks;
 
             trigger OnValidate()
             begin
@@ -44,5 +44,5 @@ table 51429 "Bank Branches"
         {
         }
     }
-    var Banks: Record "Commercial Banks";
+    var Banks: Record Banks;
 }

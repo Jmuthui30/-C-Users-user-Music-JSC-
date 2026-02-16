@@ -47,14 +47,19 @@ table 58145 "Leave Planner Header"
     var
         HRSetup: Record "Human Resources Setup";
         LeavePlannerRec: Record "Leave Planner Header";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         LeavePeriodExistsErr: Label 'Another Leave Planner Document %1 for %2 Leave Period already exists';
 
     trigger OnInsert()
     begin
         HRSetup.Get();
         HRSetup.Testfield("Leave Plan Nos");
-        NoSeriesMgt.InitSeries(HRSetup."Leave Plan Nos", xRec."No. Series", 0D, "No.", "No. Series");
+        // NoSeriesMgt.InitSeries(HRSetup."Leave Plan Nos", xRec."No. Series", 0D, "No.", "No. Series");
+        if NoSeriesMgt.AreRelated(HRSetup."Leave Plan Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HRSetup."Leave Plan Nos";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
     end;
 }
 

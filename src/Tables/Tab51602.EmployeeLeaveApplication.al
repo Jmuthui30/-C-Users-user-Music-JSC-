@@ -794,7 +794,12 @@ table 51602 "Employee Leave Application"
         if "Application No" = '' then begin
             HumanResSetup.Get;
             HumanResSetup.TestField("Leave Application Nos");
-            NoSeriesMgt.InitSeries(HumanResSetup."Leave Application Nos", xRec."No. series", 0D, "Application No", "No. series");
+            // NoSeriesMgt.InitSeries(HumanResSetup."Leave Application Nos", xRec."No. series", 0D, "Application No", "No. series");
+            if NoSeriesMgt.AreRelated(HumanResSetup."Leave Application Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HumanResSetup."Leave Application Nos";
+            "Application No":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
         "Application Date" := Today;
         if ((not "HR Created") and (not "HOD Created") and (not "SSP Created")) then begin
@@ -834,7 +839,7 @@ table 51602 "Employee Leave Application"
     var
         NAVemp: Record Employee;
         HumanResSetup: Record "QuantumJumps HR Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         LeaveTypes: Record "Leave Setup";
         EmployeePosting: Record "Employee Groups";
         emp: Record "Employee Master";

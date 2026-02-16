@@ -56,6 +56,27 @@ table 51854 "Employment History"
         {
             DataClassification = ToBeClassified;
         }
+        field(17; Current; Boolean)
+        {
+            Caption = 'Current';
+
+            trigger OnValidate()
+            var
+                EmpHistory: Record "Employment History";
+                Text000: Label 'You can''t have more than one current job \ %1  from %2 to %3 is current';
+            begin
+
+                EmpHistory.Reset();
+                EmpHistory.SetRange("Employee No.", "Employee No.");
+                if EmpHistory.Find('-') then
+                    repeat
+                        if (EmpHistory.From <> From) or (EmpHistory."To" <> "To") or
+                           (EmpHistory."Company Name" <> "Company Name") then
+                            if EmpHistory.Current then
+                                Error(Text000, EmpHistory."Company Name", EmpHistory.From, EmpHistory."To");
+                    until EmpHistory.Next() = 0;
+            end;
+        }
     }
     keys
     {

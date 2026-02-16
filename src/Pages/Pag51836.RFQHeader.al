@@ -107,9 +107,9 @@ page 51836 "RFQ Header"
             part(Control16; "RFQ Lines")
             {
                 ApplicationArea = All;
-                SubPageLink = "RFQ No"=FIELD(No);
+                SubPageLink = "RFQ No" = FIELD(No);
                 Caption = 'RFQ/RFP Lines';
-            //Visible = (Type = type::RFQ);
+                //Visible = (Type = type::RFQ);
             }
         }
         area(factboxes)
@@ -117,7 +117,7 @@ page 51836 "RFQ Header"
             part(Control23; "RFQ Documents Subpage")
             {
                 ApplicationArea = All;
-                SubPageLink = "Document No."=FIELD(No), "Table ID"=CONST(51805);
+                SubPageLink = "Document No." = FIELD(No), "Table ID" = CONST(51805);
             }
             systempart(Control13; Notes)
             {
@@ -136,7 +136,7 @@ page 51836 "RFQ Header"
                 Promoted = true;
                 PromotedIsBig = true;
                 RunObject = Page "RFQ Documents";
-                RunPageLink = "Document No."=FIELD(No), "Table ID"=CONST(51805);
+                RunPageLink = "Document No." = FIELD(No), "Table ID" = CONST(51805);
             }
             action("Get Requisitions")
             {
@@ -157,7 +157,7 @@ page 51836 "RFQ Header"
                 Promoted = true;
                 PromotedIsBig = true;
                 RunObject = Page "RFQ Vendors";
-                RunPageLink = "RFQ No"=FIELD(No);
+                RunPageLink = "RFQ No" = FIELD(No);
             }
             group("Approval Details")
             {
@@ -214,10 +214,10 @@ page 51836 "RFQ Header"
                             Attach.Reset();
                             Attach.SetRange("Document No.", Rec.No);
                             Attach.SetFilter("Attachment No.", '<>0');
-                            if Attach.FindFirst()then begin
+                            if Attach.FindFirst() then begin
                                 ApprovalsMgt.OnSendRFQForApproval(Rec);
                             end
-                            else if(Attach.Description = '') and (Attach."Attachment No." = 0)then Error('You have not attach your RFP document''s');
+                            else if (Attach.Description = '') and (Attach."Attachment No." = 0) then Error('You have not attach your RFP document''s');
                         end
                         else
                             ApprovalsMgt.OnSendRFQForApproval(Rec);
@@ -239,7 +239,7 @@ page 51836 "RFQ Header"
                         WorkflowWebhookMgt: Codeunit "Workflow Webhook Management";
                     begin
                         Rec.TestField(Status, Rec.Status::"Pending Approval");
-                        IF CONFIRM('Are you sure you want to cancel the RFQ-RFP %1. Do you want to continue?', FALSE, Rec.No)THEN ApprovalsMgt.OnCancelRFQApprovalRequest(Rec);
+                        IF CONFIRM('Are you sure you want to cancel the RFQ-RFP %1. Do you want to continue?', FALSE, Rec.No) THEN ApprovalsMgt.OnCancelRFQApprovalRequest(Rec);
                         WorkflowWebhookMgt.FindAndCancel(Rec.RecordId);
                     end;
                 }
@@ -307,7 +307,7 @@ page 51836 "RFQ Header"
                     var
                         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
                     begin
-                        IF CONFIRM('Are you sure you want to approve the Procurement Plan %1. Do you want to continue?', FALSE, Rec.No)THEN ApprovalsMgmt.ApproveRecordApprovalRequest(Rec.RecordId);
+                        IF CONFIRM('Are you sure you want to approve the Procurement Plan %1. Do you want to continue?', FALSE, Rec.No) THEN ApprovalsMgmt.ApproveRecordApprovalRequest(Rec.RecordId);
                     end;
                 }
                 action(Reject)
@@ -326,7 +326,7 @@ page 51836 "RFQ Header"
                     var
                         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
                     begin
-                        IF CONFIRM('Are you sure you want to reject the Procurement Plan %1. Do you want to continue?', FALSE, Rec.No)THEN ApprovalsMgmt.RejectRecordApprovalRequest(Rec.RecordId);
+                        IF CONFIRM('Are you sure you want to reject the Procurement Plan %1. Do you want to continue?', FALSE, Rec.No) THEN ApprovalsMgmt.RejectRecordApprovalRequest(Rec.RecordId);
                     end;
                 }
                 action(Delegate)
@@ -378,8 +378,10 @@ page 51836 "RFQ Header"
                         RFQVendors.Reset;
                         RFQVendors.SetRange("RFQ No", Rec.No);
                         if RFQVendors.FindSet then begin
-                            repeat QuoteRec.Reset;
-                                if QuoteRec.Get(QuoteRec."Document Type"::Quote, RFQVendors."Quote No")then PAGE.Run(49, QuoteRec)
+                            repeat
+                                QuoteRec.Reset;
+                                if QuoteRec.Get(QuoteRec."Document Type"::Quote, RFQVendors."Quote No") then
+                                    PAGE.Run(49, QuoteRec)
                                 else
                                     Error('A quote has not been generated for %1', RFQVendors.Name);
                             until Rec.Next = 0;
@@ -400,8 +402,9 @@ page 51836 "RFQ Header"
                     begin
                         RFQVendors.Reset;
                         RFQVendors.SetRange("RFQ No", Rec.No);
-                        if RFQVendors.Find('-')then begin
-                            repeat QuoteRec.Reset;
+                        if RFQVendors.Find('-') then begin
+                            repeat
+                                QuoteRec.Reset;
                                 QuoteRec.SetRange("No.", RFQVendors."Quote No");
                                 if QuoteRec.FindLast then begin
                                     REPORT.Run(51803, true, false, QuoteRec);
@@ -437,17 +440,18 @@ page 51836 "RFQ Header"
                     begin
                         RFQVendors.Reset;
                         RFQVendors.SetRange("RFQ No", Rec.No);
-                        if RFQVendors.Find('-')then begin
-                            repeat QuoteRec.Reset;
+                        if RFQVendors.Find('-') then begin
+                            repeat
+                                QuoteRec.Reset;
                                 QuoteRec.SetRange("No.", RFQVendors."Quote No");
                                 if QuoteRec.FindLast then begin
                                     REPORT.Run(51804, false, false, QuoteRec);
                                 end;
                             until RFQVendors.Next = 0;
-                            if QuoteRec."RFQ Status" = QuoteRec."RFQ Status"::Created then QuoteRec."RFQ Status":=QuoteRec."RFQ Status"::Sent;
+                            if QuoteRec."RFQ Status" = QuoteRec."RFQ Status"::Created then QuoteRec."RFQ Status" := QuoteRec."RFQ Status"::Sent;
                         end;
                         Message('RFQ has been sent to vendor''s.');
-                        if Rec."RFQ Status" = Rec."RFQ Status"::Created then Rec."RFQ Status":=Rec."RFQ Status"::Sent;
+                        if Rec."RFQ Status" = Rec."RFQ Status"::Created then Rec."RFQ Status" := Rec."RFQ Status"::Sent;
                     end;
                 }
                 action(Print)
@@ -471,32 +475,36 @@ page 51836 "RFQ Header"
     }
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        Rec.Status:=Rec.Status::Open;
+        Rec.Status := Rec.Status::Open;
     end;
+
     trigger OnAfterGetRecord()
     begin
         SetControlAppearance;
     end;
+
     local procedure SetControlAppearance()
     var
         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
         WorkflowWebhookMgt: Codeunit "Workflow Webhook Management";
     begin
-        OpenApprovalEntriesExistForCurrUser:=ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(Rec.RecordId);
-        OpenApprovalEntriesExist:=ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
-        CanCancelApprovalForRecord:=ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
+        OpenApprovalEntriesExistForCurrUser := ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(Rec.RecordId);
+        OpenApprovalEntriesExist := ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
+        CanCancelApprovalForRecord := ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
         WorkflowWebhookMgt.GetCanRequestAndCanCancel(Rec.RecordId, CanRequestApprovalForFlow, CanCancelApprovalForFlow);
     end;
-    var ProcurementMgt: Codeunit "Purchases Management";
-    RFQLines: Record "RFQ Lines";
-    RFQVendors: Record "RFQ Vendors";
-    QuoteRec: Record "Purchase Header";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    ApprovalsMgt: Codeunit "Approvals Mgmt. Ext";
-    OpenApprovalEntriesExistForCurrUser: Boolean;
-    OpenApprovalEntriesExist: Boolean;
-    CanCancelApprovalForRecord: Boolean;
-    CanRequestApprovalForFlow: Boolean;
-    CanCancelApprovalForFlow: Boolean;
-    Attach: Record Document;
+
+    var
+        ProcurementMgt: Codeunit "Purchases Management";
+        RFQLines: Record "RFQ Lines";
+        RFQVendors: Record "RFQ Vendors";
+        QuoteRec: Record "Purchase Header";
+        NoSeriesMgt: Codeunit "No. Series";
+        ApprovalsMgt: Codeunit "Approvals Mgmt. Ext";
+        OpenApprovalEntriesExistForCurrUser: Boolean;
+        OpenApprovalEntriesExist: Boolean;
+        CanCancelApprovalForRecord: Boolean;
+        CanRequestApprovalForFlow: Boolean;
+        CanCancelApprovalForFlow: Boolean;
+        Attach: Record Document;
 }

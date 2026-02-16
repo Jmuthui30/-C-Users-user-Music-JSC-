@@ -8,7 +8,7 @@ report 51434 "P9A"
 
     dataset
     {
-        dataitem(Employee; "Employee Master")
+        dataitem(Employee; Employee)
         {
             DataItemTableView = SORTING("No.")ORDER(Ascending);
             RequestFilterFields = "No.", "Global Dimension 1 Code";
@@ -22,12 +22,12 @@ report 51434 "P9A"
             column(COMPANYNAME; CompanyName)
             {
             }
-            column(Company_Name; Company.Name)
-            {
-            }
-            column(Company_Pin; Company."VAT Registration No.")
-            {
-            }
+            // column(Company_Name; Company.Name)
+            // {
+            // }
+            // column(Company_Pin; Company."VAT Registration No.")
+            // {
+            // }
             column(V30__;'30%')
             {
             }
@@ -376,12 +376,12 @@ report 51434 "P9A"
                     InsuranceRelief:=0;
                     IncomeTax:=0;
                     Relief:=0;
-                    if Employee."Pays Tax" then begin
+                    if Employee."Pays tax?" then begin
                         Employee.SetRange("Pay Period Filter", "Starting Date");
                         Employee.CalcFields("Taxable Allowance", "Tax Deductible Amount", "Total Allowances", Employee."Cumm. PAYE");
                         Employee.CalcFields(Employee."Taxable Allowance", "Tax Deductible Amount", Employee."Taxable Allowance");
                         Employee.CalcFields("Total Allowances", "Total Deductions");
-                        Employee.CalcFields(Basic);
+                        Employee.CalcFields("Basic Pay");
                         Employee.CalcFields("Benefits-Non Cash", "Owner Occupier");
                     end;
                     "30PerPension":=30 / 100 * Employee."Taxable Allowance";
@@ -394,7 +394,7 @@ report 51434 "P9A"
                     Earn.SetRange(Earn.Code, PayrollSetup."Owner occupier interest");
                     if Earn.Find('-')then begin
                         AssMatrix.Reset;
-                        AssMatrix.SetRange(AssMatrix.Type, AssMatrix.Type::Payment);
+                        AssMatrix.SetRange(AssMatrix.Type, AssMatrix.Type::Earning);
                         AssMatrix.SetRange(AssMatrix."Employee No", Employee."No.");
                         AssMatrix.SetRange(AssMatrix."Payroll Period", "Starting Date");
                         AssMatrix.SetRange(Code, Earn.Code);
@@ -426,7 +426,7 @@ report 51434 "P9A"
                     Earn.SetRange(Earn."Earning Type", Earn."Earning Type"::"Tax Relief");
                     if Earn.Find('-')then begin
                         AssMatrix.Reset;
-                        AssMatrix.SetRange(AssMatrix.Type, AssMatrix.Type::Payment);
+                        AssMatrix.SetRange(AssMatrix.Type, AssMatrix.Type::Earning);
                         AssMatrix.SetRange(AssMatrix."Employee No", Employee."No.");
                         AssMatrix.SetRange(AssMatrix."Payroll Period", "Starting Date");
                         AssMatrix.SetRange(Code, Earn.Code);
@@ -438,7 +438,7 @@ report 51434 "P9A"
                     Earn.SetRange(Earn."Earning Type", Earn."Earning Type"::"Insurance Relief");
                     if Earn.Find('-')then begin
                         AssMatrix.Reset;
-                        AssMatrix.SetRange(AssMatrix.Type, AssMatrix.Type::Payment);
+                        AssMatrix.SetRange(AssMatrix.Type, AssMatrix.Type::Earning);
                         AssMatrix.SetRange(AssMatrix."Employee No", Employee."No.");
                         AssMatrix.SetRange(AssMatrix."Payroll Period", "Starting Date");
                         AssMatrix.SetRange(Code, Earn.Code);
@@ -633,15 +633,15 @@ report 51434 "P9A"
                 TotPound:=0;
                 grandPAYE:=0;
                 //"Total Quarters":=0;
-                Company.Get;
-                CoPin:=Company."Giro No.";
+                // Company.Get;
+                // CoPin:=Company."Giro No.";
                 NAVEmp.Get(Employee."No.");
             end;
             trigger OnPreDataItem()
             begin
                 if(StringDate = 0D) or (EndDate = 0D)then Error('Please specify the correct period on the option of the request form');
-                Employee.SetFilter("Home Ownership Status", '<>%1', Employee."Home Ownership Status"::"Home Savings");
-                CUser:=UserId;
+                // Employee.SetFilter("Home Ownership Status", '<>%1', Employee."Home Ownership Status"::"Home Savings");
+                // CUser:=UserId;
             //GetGroup.GetUserGroup(CUser,GroupCode);
             //SETRANGE(Employee."Posting Group",GroupCode);
             end;
@@ -720,8 +720,8 @@ report 51434 "P9A"
     retirecontribution: Decimal;
     CompRec: Record "QuantumJumps HR Setup";
     "30PerPension": Decimal;
-    Earn: Record Earnings;
-    AssMatrix: Record "Payroll Matrix";
+    Earn: Record Earning;
+    AssMatrix: Record "Assignment Matrix";
     InsuranceRelief: Decimal;
     GetGroup: Codeunit "Payroll Calculator";
     GroupCode: Code[20];
@@ -862,7 +862,7 @@ report 51434 "P9A"
         TotalTax:=TotalTax;
         TotalTax:=PayrollRounding(TotalTax);
         IncomeTax:=-TotalTax;
-        if not Employee."Pays Tax" then IncomeTax:=0;
+        if not Employee."Pays tax?" then IncomeTax:=0;
     end;
     procedure PayrollRounding(var Amount: Decimal)PayrollRounding: Decimal var
         HRsetup: Record "QuantumJumps HR Setup";
