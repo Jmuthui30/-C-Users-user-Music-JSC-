@@ -1821,7 +1821,7 @@ permissionset 50000 GeneratedPermission
         report "Client Journal to GL New"=X,
         report "Client Loan Repayment Schedule"=X,
         report "Client Loan Statement"=X,
-        report "Provident Fund"=X,
+        report "Client Provident Fund"=X,
         report "Client Provident Fund Arrears"=X,
         report "Client Total Payroll Cost"=X,
         report "Client Wage Bill"=X,

@@ -1,4 +1,4 @@
-report 52205 "Provident Fund"
+report 52205 "Client Provident Fund"
 {
     // version THL- Client Payroll 1.0
     DefaultLayout = RDLC;
@@ -7,10 +7,10 @@ report 52205 "Provident Fund"
 
     dataset
     {
-        dataitem("Client Payroll Matrix"; "Assignment Matrix")
+        dataitem("Client Payroll Matrix"; "Client Payroll Matrix")
         {
             DataItemTableView = SORTING("Employee No", Type, Code, "Payroll Period", "Reference No") WHERE(Type = CONST(Deduction), Code = const('PROVIDENT'));
-            RequestFilterFields = "Payroll Period";
+            RequestFilterFields = Company, "Payroll Period", "Payroll Group";
             RequestFilterHeading = 'Provident Fund';
 
             column(Logo; CompInfo.Picture)
@@ -164,7 +164,7 @@ report 52205 "Provident Fund"
                         LastName := Emp."Last Name";
                         TotalAmount := TotalAmount + "Client Payroll Matrix".Amount;
                     end;
-                    if OurEmp.Get("Client Payroll Matrix"."Employee No") then SHIFNo := OurEmp."SHIF No.";
+                    if OurEmp.Get("Client Payroll Matrix"."Employee No") then SHIFNo := OurEmp."SHIF No";
                 end;
             end;
 
@@ -197,10 +197,10 @@ report 52205 "Provident Fund"
     trigger OnPreReport()
     begin
         "Client Payroll Matrix".SetFilter("Client Payroll Matrix".Code, 'PROVIDENT');
-        // if "Client Payroll Matrix".GetFilter(Code) = '' then Error('Please select an earning code');
-        // if "Client Payroll Matrix".GetFilter(Company) = '' then Error('Please select a company to report for.');
+        if "Client Payroll Matrix".GetFilter(Code) = '' then Error('Please select an earning code');
+        if "Client Payroll Matrix".GetFilter(Company) = '' then Error('Please select a company to report for.');
         if "Client Payroll Matrix".GetFilter("Payroll Period") = '' then Error('Please select a payroll period to report for.');
-        // CompInfo.Get("Client Payroll Matrix".GetFilter(Company));
+        CompInfo.Get("Client Payroll Matrix".GetFilter(Company));
         if not NoLogo then begin
             CompInfo.CalcFields(Picture);
         end;
@@ -209,17 +209,17 @@ report 52205 "Provident Fund"
     var
         DateSpecified: Date;
         SHIFNo: Code[20];
-        Emp: Record Employee;
+        Emp: Record "Client Employee Master";
         Id: Code[20];
         FirstName: Text[30];
         LastName: Text[30];
         TotalAmount: Decimal;
         "Count": Integer;
-        Deductions: Record "Assignment Matrix";
+        Deductions: Record "Client Payroll Matrix";
         EmployerSHIFNo: Code[20];
         DOB: Date;
         CompInfoSetup: Record "Client Loan Transactions";
-        "HR Details": Record Employee;
+        "HR Details": Record "Client Employee Master";
         CompPINNo: Code[20];
         YEAR: Integer;
         Address: Text[90];
@@ -245,8 +245,8 @@ report 52205 "Provident Fund"
         Name_of_EmployeeCaption_Control1000000055Lbl: Label 'Name of Employee';
         Payroll_No_Caption_Control1000000056Lbl: Label 'Payroll No.';
         Total_AmountCaptionLbl: Label 'Total Amount';
-        OurEmp: Record Employee;
-        CompInfo: Record "Company Information";
+        OurEmp: Record "Client Employee Master";
+        CompInfo: Record "Client Company Information";
         NoLogo: Boolean;
 
     procedure PayrollRounding(var Amount: Decimal) PayrollRounding: Decimal

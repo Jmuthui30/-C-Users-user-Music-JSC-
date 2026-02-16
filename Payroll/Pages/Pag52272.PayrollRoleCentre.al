@@ -546,7 +546,7 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                         Promoted = true;
                         PromotedCategory = "Report";
                         PromotedIsBig = true;
-                        RunObject = Report "Provident Fund";
+                        RunObject = Report "Client Provident Fund";
                         ToolTip = 'View PROVIDENT Fund Report';
                     }
                     action(PRMS)
@@ -627,7 +627,7 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                     }
                     action("Master Roll Report")
                     {
-                        RunObject = report "Master Roll Report";
+                        RunObject = report "Master Roll Report II";
                         ApplicationArea = All;
                         ToolTip = 'Executes the Master Roll Report action';
                         Caption = 'Master Roll Report';
