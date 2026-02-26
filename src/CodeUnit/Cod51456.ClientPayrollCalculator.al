@@ -493,7 +493,7 @@ codeunit 51456 "Client Payroll Calculator"
             end;
         end;
 
-        Email.Send(Mail, Enum::"Email Scenario"::Default);
+        Email.Send(Mail, Enum::"Email Scenario"::Payroll);
     end;
 
     procedure GeneratePNine(var EmpNo: Code[20]; var StartPeriod: Date; var EndPeriod: Date; var Comp: Code[20]; var XmlParameters: Text)

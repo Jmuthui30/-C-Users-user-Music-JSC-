@@ -800,7 +800,7 @@ codeunit 52001 "HR Management"
                     Receipient.Add(Employee."Company E-Mail");
                     Subject := ('Leave Application - ' + SpaceLbl + LeaveApp."Application No");
                     TimeNow := Format(Time);
-                    FormattedApplicantBody := StrSubstNo(ApplicantMsg, Employee."First Name", LeaveApp."Application No", GetLeaveName(LeaveApp."Leave Code"), LeaveApp."Start Date", LeaveApp."End Date", LeaveApp."Resumption Date", LeaveApp."Duties Taken Over By",
+                    FormattedApplicantBody := StrSubstNo(ApplicantMsg, Employee."First Name", LeaveApp."Application No", GetLeaveName(LeaveApp."Leave Code"), LeaveApp."Start Date", LeaveApp."End Date", LeaveApp."Resumption Date",LeaveRelievers."Staff Name",
                                                 Relievers, CompanyInfo.Name);
                     EmailMessage.Create(Receipient, Subject, FormattedApplicantBody, true, RecipientCC, RecipientCC);
                     Email.Send(EmailMessage);
@@ -809,28 +809,28 @@ codeunit 52001 "HR Management"
 
 
         //Notify HOD
-        if LeaveApp.Get(ApplicationNo) then begin
-            UserSetup.Reset();
-            UserSetup.SetRange("Global Dimension 1 Code", LeaveApp."Shortcut Dimension 1 Code");
-            UserSetup.SetRange("Global Dimension 2 Code", LeaveApp."Shortcut Dimension 2 Code");
-            // UserSetup.SetRange("HOD User", true);
-            if UserSetup.FindFirst() then
-                if Employee.Get(UserSetup."Employee No.") then
-                    if Employee."Company E-Mail" <> '' then begin
-                        CompanyInfo.Get();
-                        CompanyInfo.TestField(Name);
-                        SenderAddress := CompanyInfo."E-Mail";
-                        SenderName := CompanyInfo.Name;
-                        Clear(Receipient);
-                        Receipient.Add(Employee."Company E-Mail");
-                        Subject := ('Employee - ' + SpaceLbl + LeaveApp."Employee No" + SpaceLbl + '-' + SpaceLbl + LeaveApp."Employee Name" + SpaceLbl + 'Leave');
-                        TimeNow := Format(Time);
-                        FormattedHODBody := StrSubstNo(HODMsg, Employee."First Name", LeaveApp."Employee No", LeaveApp."Employee Name", LeaveApp."Start Date", LeaveApp."End Date",
-                                        LeaveApp."Resumption Date", Relievers, CompanyInfo.Name);
-                        EmailMessage.Create(Receipient, Subject, FormattedHODBody, true);
-                        Email.Send(EmailMessage);
-                    end;
-        end;
+        // if LeaveApp.Get(ApplicationNo) then begin
+        //     UserSetup.Reset();
+        //     UserSetup.SetRange("Global Dimension 1 Code", LeaveApp."Shortcut Dimension 1 Code");
+        //     UserSetup.SetRange("Global Dimension 2 Code", LeaveApp."Shortcut Dimension 2 Code");
+        //     UserSetup.SetRange("HOD User", true);
+        //     if UserSetup.FindFirst() then
+        //         if Employee.Get(UserSetup."Employee No.") then
+        //             if Employee."Company E-Mail" <> '' then begin
+        //                 CompanyInfo.Get();
+        //                 CompanyInfo.TestField(Name);
+        //                 SenderAddress := CompanyInfo."E-Mail";
+        //                 SenderName := CompanyInfo.Name;
+        //                 Clear(Receipient);
+        //                 Receipient.Add(Employee."Company E-Mail");
+        //                 Subject := ('Employee - ' + SpaceLbl + LeaveApp."Employee No" + SpaceLbl + '-' + SpaceLbl + LeaveApp."Employee Name" + SpaceLbl + 'Leave');
+        //                 TimeNow := Format(Time);
+        //                 FormattedHODBody := StrSubstNo(HODMsg, Employee."First Name", LeaveApp."Employee No", LeaveApp."Employee Name", LeaveApp."Start Date", LeaveApp."End Date",
+        //                                 LeaveApp."Resumption Date", LeaveRelievers."Staff Name", CompanyInfo.Name);
+        //                 EmailMessage.Create(Receipient, Subject, FormattedHODBody, true);
+        //                 Email.Send(EmailMessage);
+        //             end;
+        // end;
     end;
 
 

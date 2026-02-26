@@ -241,13 +241,21 @@ page 52043 "Leave Application Card"
                     ToolTip = 'Executes the Send Approval Request action';
 
                     trigger OnAction()
+                    var
+                        LeaveType: Record "Leave Type";
                     begin
                         Rec.TestField("Leave Period");
                         Rec.TestField("Days Applied");
                         Rec.TestField("Start Date");
                         Rec.TestField("End Date");
                         Rec.TestField("Leave Code");
-
+                        // if Rec.Get("Leave Code") then
+                        LeaveType.Get(Rec."Leave Code");
+                        if LeaveType."Attachment Required" then
+                            if not Rec.HasAttachments then begin
+                                Message('Please attach the required documents before sending for approval.');
+                                exit;
+                            end;
                         // HRMgt.CheckIfLeaveRelieversExist(Rec);
 
                         if ApprovalsMgmt.CheckLeaveRequestWorkflowEnabled(Rec) then
@@ -340,17 +348,17 @@ page 52043 "Leave Application Card"
                 ToolTip = 'Add a file as an attachment. You can attach images as well as documents.';
                 // RunObject = page "Attached Document";
                 // RunPageLink = "Document No" = field("Application No");
-                     trigger OnAction()
-                    var
-                        DocumentAttachmentDetails: Page "Document Attachment Details";
-                        RecRef: RecordRef;
-                    begin
-                        RecRef.GetTable(Rec);
-                        DocumentAttachmentDetails.OpenForRecRef(RecRef);
-                        if Rec.Status = Rec.Status::"Pending Approval" then
-                            DocumentAttachmentDetails.Editable(false);
-                        DocumentAttachmentDetails.RunModal();
-                    end;
+                trigger OnAction()
+                var
+                    DocumentAttachmentDetails: Page "Document Attachment Details";
+                    RecRef: RecordRef;
+                begin
+                    RecRef.GetTable(Rec);
+                    DocumentAttachmentDetails.OpenForRecRef(RecRef);
+                    if Rec.Status = Rec.Status::"Pending Approval" then
+                        DocumentAttachmentDetails.Editable(false);
+                    DocumentAttachmentDetails.RunModal();
+                end;
 
             }
             action("Notify Empoyees")
@@ -407,6 +415,8 @@ page 52043 "Leave Application Card"
         "Annual Leave Entitlement Bal":="Leave balance"+"Balance brought forward";*/
 
     end;
+
+
 
     var
         LeaveApp: Record "Leave Application";

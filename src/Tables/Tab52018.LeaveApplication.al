@@ -27,6 +27,7 @@ table 52018 "Leave Application"
                     "Shortcut Dimension 1 Code" := EmployeeRec."Global Dimension 1 Code";
                     "Shortcut Dimension 2 Code" := EmployeeRec."Global Dimension 2 Code";
                     "Mobile No" := EmployeeRec."Phone No.";
+                    "Responsibility Center":=EmployeeRec."responsibility center";
                 end;
                 // else
                 //Error(EmployeeDoesNotExistErr, "Employee No");
@@ -670,7 +671,7 @@ table 52018 "Leave Application"
             "Mobile No" := EmployeeRec."Phone No.";
             "Shortcut Dimension 1 Code" := EmployeeRec."Global Dimension 1 Code";
             "Shortcut Dimension 2 Code" := EmployeeRec."Global Dimension 2 Code";
-            //"Responsibility Center" := EmployeeRec."Responsibility Center";
+            "Responsibility Center" := EmployeeRec."responsibility center";
             "Email Adress" := EmployeeRec."Company E-Mail";
         end else
             Validate("Employee No");
@@ -734,6 +735,15 @@ table 52018 "Leave Application"
         DimMgt.ValidateDimValueCode(FieldNumber, ShortcutDimCode);
         DimMgt.SaveDefaultDim(Database::"Leave Application", "Employee No", FieldNumber, ShortcutDimCode);
         Modify();
+    end;
+    procedure HasAttachments(): Boolean
+    var
+        DocumentAttachment: Record "Document Attachment";
+    begin
+        DocumentAttachment.Reset();
+        DocumentAttachment.SetRange("Table ID", Database::"Leave Application"); 
+        DocumentAttachment.SetRange("No.", Rec."Application No");           
+        exit(not DocumentAttachment.IsEmpty);
     end;
 }
 

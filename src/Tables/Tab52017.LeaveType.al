@@ -75,6 +75,10 @@ table 52017 "Leave Type"
             OptionMembers = Active,Inactive;
             Caption = 'Status';
         }
+        field(16; "Attachment Required"; Boolean)
+        {
+            Caption = 'Attachment Required';
+        }
     }
 
     keys
