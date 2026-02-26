@@ -11,9 +11,9 @@ table 51818 "Work Ticket Header"
 
             trigger OnValidate()
             begin
-                if Fleet.Get(Vehicle)then begin
-                    if "Global Dimension 1 Code" = '' then "Global Dimension 1 Code":=Fleet."Global Dimension 1 Code";
-                    if "Global Dimension 2 Code" = '' then "Global Dimension 2 Code":=Fleet."Global Dimension 2 Code";
+                if Fleet.Get(Vehicle) then begin
+                    if "Global Dimension 1 Code" = '' then "Global Dimension 1 Code" := Fleet."Global Dimension 1 Code";
+                    if "Global Dimension 2 Code" = '' then "Global Dimension 2 Code" := Fleet."Global Dimension 2 Code";
                 end;
             end;
         }
@@ -31,7 +31,7 @@ table 51818 "Work Ticket Header"
             begin
                 Users.Reset;
                 Users.SetRange("User Name", "Authorising Officer");
-                if Users.FindFirst then "Authorising Officer Name":=Users."Full Name";
+                if Users.FindFirst then "Authorising Officer Name" := Users."Full Name";
             end;
         }
         field(6; "Authorising Officer Name"; Text[100])
@@ -50,18 +50,18 @@ table 51818 "Work Ticket Header"
         field(10; "Global Dimension 1 Code"; Code[20])
         {
             CaptionClass = '1,1,1';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
         }
         field(11; "Global Dimension 2 Code"; Code[20])
         {
             CaptionClass = '1,1,2';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
         //field(12; Status; Option)
-        field(12; Status;Enum "Document Status")
+        field(12; Status; Enum "Document Status")
         {
-        /*OptionCaption = 'Open,Issued,Closed,Canceled';
-            OptionMembers = Open,Issued,Closed,Canceled;*/
+            /*OptionCaption = 'Open,Issued,Closed,Canceled';
+                OptionMembers = Open,Issued,Closed,Canceled;*/
         }
         field(13; "Issued By"; Code[50])
         {
@@ -83,7 +83,7 @@ table 51818 "Work Ticket Header"
         }
         field(19; "Total Distance Covered (Km)"; Decimal)
         {
-            CalcFormula = Sum("Work Ticket Lines"."Distance Covered (KM)" WHERE("No."=FIELD("No.")));
+            CalcFormula = Sum("Work Ticket Lines"."Distance Covered (KM)" WHERE("No." = FIELD("No.")));
             FieldClass = FlowField;
         }
         field(20; "Total Cost of Fuel"; Decimal)
@@ -91,7 +91,7 @@ table 51818 "Work Ticket Header"
             trigger OnValidate()
             begin
                 CalcFields("Total Distance Covered (Km)");
-                if("Total Distance Covered (Km)" <> 0) and ("Total Cost of Fuel" <> 0)then "Cost of Fuel per Km":=Round("Total Cost of Fuel" / "Total Distance Covered (Km)", 0.01);
+                if ("Total Distance Covered (Km)" <> 0) and ("Total Cost of Fuel" <> 0) then "Cost of Fuel per Km" := Round("Total Cost of Fuel" / "Total Distance Covered (Km)", 0.01);
             end;
         }
         field(21; "Cost of Fuel per Km"; Decimal)
@@ -99,12 +99,12 @@ table 51818 "Work Ticket Header"
         }
         field(22; "Dim One Missing"; Boolean)
         {
-            CalcFormula = Exist("Work Ticket Lines" WHERE("Global Dimension 1 Code"=CONST(''), "No."=FIELD("No.")));
+            CalcFormula = Exist("Work Ticket Lines" WHERE("Global Dimension 1 Code" = CONST(''), "No." = FIELD("No.")));
             FieldClass = FlowField;
         }
         field(23; "Dim Two Missing"; Boolean)
         {
-            CalcFormula = Exist("Work Ticket Lines" WHERE("Global Dimension 2 Code"=CONST(''), "No."=FIELD("No.")));
+            CalcFormula = Exist("Work Ticket Lines" WHERE("Global Dimension 2 Code" = CONST(''), "No." = FIELD("No.")));
             FieldClass = FlowField;
         }
     }
@@ -119,16 +119,23 @@ table 51818 "Work Ticket Header"
     }
     trigger OnInsert()
     begin
-        if("No." = '')then begin
+        if ("No." = '') then begin
             PurchaseSetup.Get;
             PurchaseSetup.TestField("Work Ticket Nos");
-            NoSeriesMgt.InitSeries(PurchaseSetup."Work Ticket Nos", xRec."No.", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(PurchaseSetup."Work Ticket Nos", xRec."No.", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(PurchaseSetup."Work Ticket Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=PurchaseSetup."Work Ticket Nos";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
-        "Created By":=UserId;
-        "Created Date":=Today;
+        "Created By" := UserId;
+        "Created Date" := Today;
     end;
-    var PurchaseSetup: Record "Motorpool Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    Users: Record User;
-    Fleet: Record Vehicle;
+
+    var
+        PurchaseSetup: Record "Motorpool Setup";
+        NoSeriesMgt: Codeunit "No. Series";
+        Users: Record User;
+        Fleet: Record Vehicle;
 }

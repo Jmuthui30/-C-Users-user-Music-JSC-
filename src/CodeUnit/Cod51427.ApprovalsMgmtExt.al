@@ -8,7 +8,7 @@ codeunit 51427 "Approvals Mgmt. Ext"
         ApprovalMgnt: Codeunit "Approvals Mgmt.";
         WorkFlowManagement: Codeunit "Workflow Management";
         NoWorkflowEnabledErr: Label 'No workflow is enabled for this document type. Please contact your system administrator.', Comment = 'Error message shown when there is no workflow enabled for the document type.';
-        WorkflowEventHandling: Codeunit "Workflow Event Handling";
+        WorkflowEventHandling: Codeunit "Workflow Event Handling Ext";
     //#region Approval Methods
     local procedure "*****************THL - BASIC FINANCE MODULE CUSTOMIZATIONS*********************"()
     begin
@@ -348,16 +348,63 @@ codeunit 51427 "Approvals Mgmt. Ext"
 
     // procedure IsTrainingNeedsWorkflowEnabled(var TrainingNeeds: Record "Training Needs Header"): Boolean
     // begin
-    //     exit(WorkFlowManagement.CanExecuteWorkflow(TrainingNeeds, WorkflowEventHandling.runsendtrai()));
+    //     exit(WorkFlowManagement.CanExecuteWorkflow(TrainingNeeds, WorkflowEventHandling.runworkflowonsendtrain()));
     // end;
 
-    //Tender evaluation
+
     // procedure CheckTrainingNeedsWorkflowEnabled(var TrainingNeeds: Record "Training Needs Header"): Boolean
     // begin
     //     if not IsTrainingNeedsWorkflowEnabled(TrainingNeeds) then
     //         Error(NoWorkflowEnabledErr);
     //     exit(true);
     // end;
+    [IntegrationEvent(false, false)]
+    procedure OnSendTrainingRequestforApproval(var TrainingReq: Record "Training Request")
+    begin
+
+    end;
+
+    [IntegrationEvent(false, false)]
+    procedure OnCancelTrainingRequestApproval(var TrainingReq: Record "Training Request")
+    begin
+
+    end;
+
+    procedure CheckTrainingRequestWorkflowEnabled(var TrainingReq: Record "Training Request"): Boolean
+    begin
+        if not IsTrainingRequestWorkflowEnabled(TrainingReq) then
+            Error(NoWorkflowEnabledErr);
+        exit(true);
+    end;
+
+    procedure IsTrainingRequestWorkflowEnabled(var TrainingReq: Record "Training Request"): Boolean
+    begin
+        exit(WorkflowManagement.CanExecuteWorkflow(TrainingReq, WorkflowEventHandling.RunworkflowOnSendTrainingRequestforApprovalCode()));
+    end;
+    //Payroll Approval
+    procedure CheckPayrollApprovalWorkflowEnabled(var PayApproval: Record "Payroll Approval"): Boolean
+    begin
+        if not IsPayrollApprovalWorkflowEnabled(PayApproval) then
+            Error(NoWorkflowEnabledErr);
+        exit(true);
+    end;
+
+    procedure IsPayrollApprovalWorkflowEnabled(var PayApproval: Record "Payroll Approval"): Boolean
+    begin
+        exit(WorkflowManagement.CanExecuteWorkflow(PayApproval, WorkflowEventHandling.RunworkflowOnSendPayrollApprovalforApprovalCode()));
+    end;
+
+    [IntegrationEvent(false, false)]
+    procedure OnSendPayrollApprovalRequest(var PayApproval: Record "Payroll Approval")
+    begin
+
+    end;
+
+    [IntegrationEvent(false, false)]
+    procedure OnCancelPayrollApprovalRequest(var PayApproval: Record "Payroll Approval")
+    begin
+
+    end;
 
     local procedure "***********************Recruitment Request******************************************"()
     begin
@@ -526,7 +573,9 @@ codeunit 51427 "Approvals Mgmt. Ext"
         Appraisal: Record "Performance Appraisal";
         Orientation: Record "Staff Orientation Header";
         Claim: Record "Medical Claim";
+        PayrollApproval: Record "Payroll Approval";
         CSR: Record "Staff CSR";
+        TrainingReq: Record "Training Request";
         Training: Record "Staff Training Header";
         TrainingNeeds: Record "Training Needs Header";
         Recruitment: Record "Recruitment Request";
@@ -829,6 +878,24 @@ codeunit 51427 "Approvals Mgmt. Ext"
                     EmpAppraisal.Modify(true);
                     IsHandled := true;
                 end;
+            //18. TrainingRequest
+            Database::"Training Request":
+                begin
+                    RecRef.SetTable(TrainingReq);
+                    TrainingReq.Validate(Status, TrainingReq.Status::"Pending Approval");
+                    TrainingReq.Modify(true);
+                    Variant := TrainingReq;
+                    IsHandled := true;
+                end;
+                 //Payroll Approval
+            Database::"Payroll Approval":
+                begin
+                    RecRef.SetTable(PayrollApproval);
+                    PayrollApproval.Validate(Status, PayrollApproval.Status::"Pending Approval");
+                    PayrollApproval.Modify(true);
+                    Variant := PayrollApproval;
+                    IsHandled := true;
+                end;
             //***********************THL - SERVICE MANAGEMENT MODULE CUSTOMIZATIONS***************************
             //1. Job Worksheet
             DATABASE::"Worksheet Requisitions Lines":
@@ -885,8 +952,10 @@ codeunit 51427 "Approvals Mgmt. Ext"
         LeavePlan: Record "Employee Leave Plan Header";
         EmpObjectives: Record "Employee Appraisal Objectives";
         EmpAppraisal: Record "Employee Appraisals";
+        PayrollApproval: Record "Payroll Approval";
         WorksheetRequisitionsLines: Record "Worksheet Requisitions Lines";
         ServiceLine: Record "Service Line";
+        TrainingReq: Record "Training Request";
         ConsolidatedRecruitmentPlan: Record "Consolidated Recruitment Plan";
         CompanyEstablishment: Record "Company Jobs";
         RecruitmentNeed: Record "Recruitment Needs";
@@ -1122,6 +1191,25 @@ codeunit 51427 "Approvals Mgmt. Ext"
                 begin
                     RecRef.SETTABLE(RecruitmentNeed);
                     ApprovalEntryArgument."Document No." := RecruitmentNeed."No.";
+                end;
+            //16.TrainingRequest
+            Database::"Training Request":
+                begin
+                    RecRef.SetTable(TrainingReq);
+                    ApprovalEntryArgument."Document Type" := ApprovalEntryArgument."Document Type"::TrainingRequest;
+                    ApprovalEntryArgument."Document No." := TrainingReq."Request No.";
+                    ApprovalEntryArgument."Salespers./Purch. Code" := '';
+                end;
+                //Payroll Approval
+            Database::"Payroll Approval":
+                begin
+                    RecRef.SetTable(PayrollApproval);
+                    PayrollApproval.CalcFields("Total Earnings");
+                    ApprovalEntryArgument."Document Type" := ApprovalEntryArgument."Document Type"::"Staff Payroll Approval";
+                    ApprovalEntryArgument."Document No." := CopyStr(PayrollApproval.Code, 1, MaxStrLen(ApprovalEntryArgument."Document No."));
+                    ApprovalEntryArgument.Description := PayrollApproval."Period Description";
+                    ApprovalEntryArgument.Amount := PayrollApproval."Total Earnings";
+                    ApprovalEntryArgument."Amount (LCY)" := PayrollApproval."Total Earnings";
                 end;
             //
             //**********************THL - SERVICE MANAGEMENT MODULE CUSTOMIZATIONS**************************

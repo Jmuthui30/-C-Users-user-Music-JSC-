@@ -11,7 +11,7 @@ table 50000 "PV Header"
             begin
                 CashMgt.Get;
                 if "No." <> xRec."No." then NoSeriesMgt.TestManual(CashMgt."PV Nos");
-                "No. Series":='';
+                "No. Series" := '';
             end;
         }
         field(2; Date; Date)
@@ -33,7 +33,7 @@ table 50000 "PV Header"
                 if "External Document No" <> '' then begin
                     PV.Reset;
                     PV.SetRange(PV."External Document No", "External Document No");
-                    if PV.Find('-')then begin
+                    if PV.Find('-') then begin
                         if PV."No." <> "No." then Error('Cheque No. already exists');
                     end;
                 end;
@@ -50,7 +50,7 @@ table 50000 "PV Header"
         {
             trigger OnValidate()
             begin
-                "Payee Account Name":=Payee;
+                "Payee Account Name" := Payee;
             end;
         }
         field(9; "On behalf of"; Text[100])
@@ -66,12 +66,13 @@ table 50000 "PV Header"
 
             trigger OnValidate()
             begin
-                if(Posted = true) and (xRec.Posted <> Posted)then begin
+                if (Posted = true) and (xRec.Posted <> Posted) then begin
                     PVLines.Reset;
                     PVLines.SetRange(No, "No.");
                     if PVLines.FindSet then begin
-                        repeat PVLines.Posted:=true;
-                            PVLines."Posted Date":=Today;
+                        repeat
+                            PVLines.Posted := true;
+                            PVLines."Posted Date" := Today;
                             PVLines.Modify;
                         until PVLines.Next = 0;
                     end;
@@ -89,7 +90,7 @@ table 50000 "PV Header"
         field(14; "Global Dimension 1 Code"; Code[20])
         {
             CaptionClass = '1,1,1';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
 
             trigger OnValidate()
             begin
@@ -99,7 +100,7 @@ table 50000 "PV Header"
         field(15; "Global Dimension 2 Code"; Code[20])
         {
             CaptionClass = '1,1,2';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
 
             trigger OnValidate()
             begin
@@ -113,7 +114,7 @@ table 50000 "PV Header"
         field(17; "Total Amount"; Decimal)
         {
             Caption = 'Net Amount';
-            CalcFormula = Sum("PV Lines"."Net Amount" WHERE(No=FIELD("No.")));
+            CalcFormula = Sum("PV Lines"."Net Amount" WHERE(No = FIELD("No.")));
             Editable = false;
             FieldClass = FlowField;
         }
@@ -121,11 +122,11 @@ table 50000 "PV Header"
         {
             TableRelation = "Bank Account";
         }
-        field(19; Status;Enum "Document Status")
+        field(19; Status; Enum "Document Status")
         {
             Editable = false;
         }
-        field(20; "Payment Type";Enum "Payment Types")
+        field(20; "Payment Type"; Enum "Payment Types")
         {
         }
         field(21; Currency; Code[20])
@@ -144,7 +145,7 @@ table 50000 "PV Header"
         {
             Editable = false;
             OptionCaption = 'G/L Account,Customer,Vendor,Bank Account,Fixed Asset';
-            OptionMembers = "G/L Account", Customer, Vendor, "Bank Account", "Fixed Asset";
+            OptionMembers = "G/L Account",Customer,Vendor,"Bank Account","Fixed Asset";
         }
         field(24; "Payee Account No."; Code[20])
         {
@@ -163,16 +164,18 @@ table 50000 "PV Header"
         {
             trigger OnLookup()
             begin
-                case "Account Type" of "Account Type"::Customer: begin
-                    CustLedger.Reset;
-                    CustLedger.SetCurrentKey(CustLedger."Customer No.", Open, "Document No.");
-                    CustLedger.SetRange(CustLedger."Customer No.", "Payee Account No.");
-                    CustLedger.SetRange(Open, true);
-                    CustLedger.CalcFields(CustLedger.Amount);
-                    if PAGE.RunModal(25, CustLedger) = ACTION::LookupOK then begin
-                        "Applies- To Doc No.":=CustLedger."Document No.";
-                    end;
-                end;
+                case "Account Type" of
+                    "Account Type"::Customer:
+                        begin
+                            CustLedger.Reset;
+                            CustLedger.SetCurrentKey(CustLedger."Customer No.", Open, "Document No.");
+                            CustLedger.SetRange(CustLedger."Customer No.", "Payee Account No.");
+                            CustLedger.SetRange(Open, true);
+                            CustLedger.CalcFields(CustLedger.Amount);
+                            if PAGE.RunModal(25, CustLedger) = ACTION::LookupOK then begin
+                                "Applies- To Doc No." := CustLedger."Document No.";
+                            end;
+                        end;
                 end;
             end;
         }
@@ -182,7 +185,7 @@ table 50000 "PV Header"
         field(30; "Original Document"; Option)
         {
             OptionCaption = ',Imprest,Staff Claim';
-            OptionMembers = , Imprest, "Staff Claim";
+            OptionMembers = ,Imprest,"Staff Claim";
         }
         field(31; "PV Creation DateTime"; DateTime)
         {
@@ -206,19 +209,19 @@ table 50000 "PV Header"
         }
         field(42; "Pending Approvals"; Integer)
         {
-            CalcFormula = Count("Approval Entry" WHERE("Table ID"=CONST(50000), "Document No."=FIELD("No."), Status=FILTER(Open|Created)));
+            CalcFormula = Count("Approval Entry" WHERE("Table ID" = CONST(50000), "Document No." = FIELD("No."), Status = FILTER(Open | Created)));
             Caption = 'Pending Approvals';
             FieldClass = FlowField;
             Editable = false;
         }
         field(43; "Total Amount LCY"; Decimal)
         {
-            CalcFormula = Sum("PV Lines"."Amount LCY" WHERE(No=FIELD("No.")));
+            CalcFormula = Sum("PV Lines"."Amount LCY" WHERE(No = FIELD("No.")));
             FieldClass = FlowField;
         }
         field(44; "Approvals Trail"; Integer)
         {
-            CalcFormula = Count("Approval Entry" WHERE("Table ID"=CONST(50000), "Document No."=FIELD("No."), Status=FILTER(Approved)));
+            CalcFormula = Count("Approval Entry" WHERE("Table ID" = CONST(50000), "Document No." = FIELD("No."), Status = FILTER(Approved)));
             FieldClass = FlowField;
             Caption = 'Approvers';
             Editable = false;
@@ -229,12 +232,12 @@ table 50000 "PV Header"
 
             trigger OnValidate()
             begin
-                if Banks.Get("Payee Bank Code")then "Payee Bank":=Banks.Name;
+                if Banks.Get("Payee Bank Code") then "Payee Bank" := Banks.Name;
             end;
         }
         field(46; "Branch Code"; Code[10])
         {
-            TableRelation = "Bank Branches"."Branch Code" WHERE("Bank Code"=FIELD("Payee Bank Code"));
+            TableRelation = "Bank Branches"."Branch Code" WHERE("Bank Code" = FIELD("Payee Bank Code"));
 
             trigger OnLookup()
             begin
@@ -243,11 +246,12 @@ table 50000 "PV Header"
                 Branches.SetRange("Bank Code", "Payee Bank Code");
                 if PAGE.RunModal(PAGE::"Bank Branches", Branches) = ACTION::LookupOK then Validate("Branch Code", Branches."Branch Code");
             end;
+
             trigger OnValidate()
             begin
-                if Branches.Get("Payee Bank Code", "Branch Code")then begin
-                    "Branch Name":=Branches."Branch Name";
-                    "Sort Code":=Branches."Sort Code";
+                if Branches.Get("Payee Bank Code", "Branch Code") then begin
+                    "Branch Name" := Branches."Branch Name";
+                    "Sort Code" := Branches."Sort Code";
                 end;
             end;
         }
@@ -269,34 +273,33 @@ table 50000 "PV Header"
                 TestField("Branch Name");
                 if "Ben ID" <> '' then begin
                     if Confirm('There is an existing saved Bank Record for this beneficiary, are you trying to overwrite it?', false) = true then begin
-                        if BankDetails.Get("Ben ID")then begin
-                            BankDetails."BENEFICIARY NAME":=Payee;
-                            BankDetails."BEN ACCT NO":="Payee Account No.";
-                            BankDetails."FULL BEN NAME":=Payee;
-                            BankDetails.BANKNAME:="Payee Bank";
-                            BankDetails."BANK CODE":="Payee Bank Code";
-                            BankDetails."BRANCH CODE":="Branch Code";
-                            BankDetails."BC.SORT.CODE":="Payee Bank Code" + PadStr('', 3 - StrLen("Branch Code"), '0') + "Branch Code";
-                            BankDetails."BRANCH NAME":="Branch Name";
+                        if BankDetails.Get("Ben ID") then begin
+                            BankDetails."BENEFICIARY NAME" := Payee;
+                            BankDetails."BEN ACCT NO" := "Payee Account No.";
+                            BankDetails."FULL BEN NAME" := Payee;
+                            BankDetails.BANKNAME := "Payee Bank";
+                            BankDetails."BANK CODE" := "Payee Bank Code";
+                            BankDetails."BRANCH CODE" := "Branch Code";
+                            BankDetails."BC.SORT.CODE" := "Payee Bank Code" + PadStr('', 3 - StrLen("Branch Code"), '0') + "Branch Code";
+                            BankDetails."BRANCH NAME" := "Branch Name";
                             BankDetails.Modify;
                         end;
                         Message('Bank Details Successfully Modified.');
                     end;
                 end
-                else
-                begin
+                else begin
                     BankDetails.Init;
-                    BankDetails."BEN ID":=Format(CurrentDateTime);
-                    BankDetails."BENEFICIARY NAME":=Payee;
-                    BankDetails."BEN ACCT NO":="Payee Account No.";
-                    BankDetails."FULL BEN NAME":=Payee;
-                    BankDetails.BANKNAME:="Payee Bank";
-                    BankDetails."BANK CODE":="Payee Bank Code";
-                    BankDetails."BRANCH CODE":="Branch Code";
-                    BankDetails."BRANCH NAME":="Branch Name";
-                    BankDetails."BC.SORT.CODE":="Payee Bank Code" + PadStr('', 3 - StrLen("Branch Code"), '0') + "Branch Code";
+                    BankDetails."BEN ID" := Format(CurrentDateTime);
+                    BankDetails."BENEFICIARY NAME" := Payee;
+                    BankDetails."BEN ACCT NO" := "Payee Account No.";
+                    BankDetails."FULL BEN NAME" := Payee;
+                    BankDetails.BANKNAME := "Payee Bank";
+                    BankDetails."BANK CODE" := "Payee Bank Code";
+                    BankDetails."BRANCH CODE" := "Branch Code";
+                    BankDetails."BRANCH NAME" := "Branch Name";
+                    BankDetails."BC.SORT.CODE" := "Payee Bank Code" + PadStr('', 3 - StrLen("Branch Code"), '0') + "Branch Code";
                     BankDetails.Insert;
-                    "Ben ID":=BankDetails."BEN ID";
+                    "Ben ID" := BankDetails."BEN ID";
                     Modify;
                     Message('Bank Details saved successfully.');
                 end;
@@ -317,7 +320,7 @@ table 50000 "PV Header"
         }
         field(59; "Total Withholding Tax"; Decimal)
         {
-            CalcFormula = Sum("PV Lines"."W/Tax Amount" WHERE(No=FIELD("No.")));
+            CalcFormula = Sum("PV Lines"."W/Tax Amount" WHERE(No = FIELD("No.")));
             Editable = false;
             FieldClass = FlowField;
         }
@@ -330,25 +333,25 @@ table 50000 "PV Header"
         }
         field(62; "Stamp Duty Amount"; Decimal)
         {
-            CalcFormula = Sum("PV Lines"."Stamp Duty Amount" WHERE(No=FIELD("No.")));
+            CalcFormula = Sum("PV Lines"."Stamp Duty Amount" WHERE(No = FIELD("No.")));
             Editable = false;
             FieldClass = FlowField;
         }
         field(63; "Purchase Invoice Amount"; Decimal)
         {
-            CalcFormula = Sum("PV Lines"."Purchase Invoice Amount" WHERE(No=FIELD("No.")));
+            CalcFormula = Sum("PV Lines"."Purchase Invoice Amount" WHERE(No = FIELD("No.")));
             Editable = false;
             FieldClass = FlowField;
         }
         field(66; "Gross Amount"; Decimal)
         {
-            CalcFormula = Sum("PV Lines".Amount WHERE(No=FIELD("No.")));
+            CalcFormula = Sum("PV Lines".Amount WHERE(No = FIELD("No.")));
             Editable = false;
             FieldClass = FlowField;
         }
         field(67; "Outstanding Amount"; Decimal)
         {
-            CalcFormula = Sum("PV Lines"."Outstanding Amount" WHERE(No=FIELD("No.")));
+            CalcFormula = Sum("PV Lines"."Outstanding Amount" WHERE(No = FIELD("No.")));
             Editable = false;
             FieldClass = FlowField;
         }
@@ -367,53 +370,82 @@ table 50000 "PV Header"
         TestField(Status, Status::Open);
         TestField(Posted, false);
     end;
+
     trigger OnInsert()
     begin
         GLSetup.Get();
         GLSetup.TestField(GLSetup."PV Nos");
-        if "No." = '' then NoSeriesMgt.InitSeries(GLSetup."PV Nos", xRec."No. Series", 0D, "No.", "No. Series");
+        // if "No." = '' then NoSeriesMgt.InitSeries(GLSetup."PV Nos", xRec."No. Series", 0D, "No.", "No. Series");
+        if NoSeriesMgt.AreRelated(GLSetup."PV Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=GLSetup."PV Nos";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
     end;
+
     trigger OnRename()
     begin
         TestField(Posted, false);
     end;
-    var GLSetup: Record "Cash Management Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    GLAccount: Record "G/L Account";
-    Customer: Record Customer;
-    Vendor: Record Vendor;
-    Bank: Record "Bank Account";
-    FixedAsset: Record "Fixed Asset";
-    Amt: Integer;
-    CustLedger: Record "Cust. Ledger Entry";
-    CustLedger1: Record "Cust. Ledger Entry";
-    UserSetup: Record "User Setup";
-    PV: Record "PV Header";
-    CashMgt: Record "Cash Management Setup";
-    Text000: Label 'Cash management setup does''''nt exist';
-    Emp: Record "Employee Master";
-    NAVEmp: Record Employee;
-    Banks: Record "Commercial Banks";
-    EmployeeAccMapping: Record "Employee Customer Mapping";
-    PVLines: Record "PV Lines";
-    Text001: Label 'Please create staff customer account for %1';
-    AdvancedFinanceSetup: Record "Advanced Finance Setup";
-    Customer2: Record Customer;
-    EmployeeAccMapping2: Record "Employee Customer Mapping";
-    CreatingText: Label 'Nairobi,Kisumu,Kericho';
-    Text002: Label 'You are about to create a Payment Voucher, Kindly select the site.';
-    Selection: Integer;
-    Branches: Record "Bank Branches";
-    BankDetails: Record "Payee Bank Details";
+
+    var
+        GLSetup: Record "Cash Management Setup";
+        NoSeriesMgt: Codeunit "No. Series";
+        GLAccount: Record "G/L Account";
+        Customer: Record Customer;
+        Vendor: Record Vendor;
+        Bank: Record "Bank Account";
+        FixedAsset: Record "Fixed Asset";
+        Amt: Integer;
+        CustLedger: Record "Cust. Ledger Entry";
+        CustLedger1: Record "Cust. Ledger Entry";
+        UserSetup: Record "User Setup";
+        PV: Record "PV Header";
+        CashMgt: Record "Cash Management Setup";
+        Text000: Label 'Cash management setup does''''nt exist';
+        Emp: Record "Employee Master";
+        NAVEmp: Record Employee;
+        Banks: Record "Commercial Banks";
+        EmployeeAccMapping: Record "Employee Customer Mapping";
+        PVLines: Record "PV Lines";
+        Text001: Label 'Please create staff customer account for %1';
+        AdvancedFinanceSetup: Record "Advanced Finance Setup";
+        Customer2: Record Customer;
+        EmployeeAccMapping2: Record "Employee Customer Mapping";
+        CreatingText: Label 'Nairobi,Kisumu,Kericho';
+        Text002: Label 'You are about to create a Payment Voucher, Kindly select the site.';
+        Selection: Integer;
+        Branches: Record "Bank Branches";
+        BankDetails: Record "Payee Bank Details";
+
     [Scope('Cloud')]
-    procedure AssistEdit(): Boolean begin
+    // procedure AssistEdit(): Boolean
+    // begin
+    //     GLSetup.Get();
+    //     GLSetup.TestField(GLSetup."PV Nos");
+    //     if NoSeriesMgt.SelectSeries(GLSetup."PV Nos", xRec."No. Series", "No. Series") then begin
+    //         NoSeriesMgt.SetSeries("No.");
+    //         exit(true);
+    //     end;
+    // end;
+      procedure AssistEdit(OldPVHeader: Record "PV Header"): Boolean
+    var
+        NoSeries: Codeunit "No. Series";
+        NoSeriesCode: Code[20];
+    begin
         GLSetup.Get();
-        GLSetup.TestField(GLSetup."PV Nos");
-        if NoSeriesMgt.SelectSeries(GLSetup."PV Nos", xRec."No. Series", "No. Series")then begin
-            NoSeriesMgt.SetSeries("No.");
+        // TestNoSeries();
+
+
+        if NoSeries.LookupRelatedNoSeries(GLSetup."PV Nos", OldPVHeader."No. Series", "No. Series") then begin
+            "No." := '';
+            GLSetup.Get();
+            // TestNoSeries();
+            "No." := NoSeries.GetNextNo("No. Series", WorkDate(), true);
             exit(true);
         end;
     end;
+
     local procedure UpdatePaymentLines()
     var
         Lines: Record "PV Lines";
@@ -421,10 +453,11 @@ table 50000 "PV Header"
         Lines.Reset();
         Lines.SetRange(No, "No.");
         Lines.SetFilter(Amount, '<>%1', 0);
-        if Lines.FindSet()then begin
-            repeat Lines."Global Dimension 1 Code":="Global Dimension 1 Code";
-                Lines."Global Dimension 2 Code":="Global Dimension 2 Code";
-                Lines."Currency Code":=Currency;
+        if Lines.FindSet() then begin
+            repeat
+                Lines."Global Dimension 1 Code" := "Global Dimension 1 Code";
+                Lines."Global Dimension 2 Code" := "Global Dimension 2 Code";
+                Lines."Currency Code" := Currency;
             until Lines.Next() = 0;
         end;
     end;

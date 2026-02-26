@@ -283,7 +283,12 @@ table 51439 "Loan Application"
         if "Loan No" = '' then begin
             if LoanType.Get("Loan Product Type") then begin
                 LoanType.TestField(LoanType."Loan No Series");
-                NoSeriesMgt.InitSeries(LoanType."Loan No Series", xRec."No Series", 0D, "Loan No", "No Series");
+                // NoSeriesMgt.InitSeries(LoanType."Loan No Series", xRec."No Series", 0D, "Loan No", "No Series");
+                if NoSeriesMgt.AreRelated(LoanType."Loan No Series",xRec."No Series") then
+            "No Series":=xRec."No Series"
+            else
+            "No Series":=LoanType."Loan No Series";
+            "Loan No":=NoSeriesMgt.GetNextNo("No Series",WorkDate());
             end;
         end
     end;
@@ -298,7 +303,7 @@ table 51439 "Loan Application"
     end;
 
     var
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         HRsetup: Record "Human Resources Setup";
         LoanType: Record "Loan Product";
         EmpRec: Record "Employee Master";

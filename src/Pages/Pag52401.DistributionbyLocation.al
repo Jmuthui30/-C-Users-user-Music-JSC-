@@ -31,17 +31,19 @@ page 52401 "Distribution by Location"
                     EmployeeMaster2.SetRange(Status, EmployeeMaster2.Status::Active);
                     Dimensions.Reset();
                     Dimensions.SetRange("Dimension Code", 'DEPARTMENT');
-                    if Dimensions.FindSet()then repeat EmployeeMaster.Reset();
+                    if Dimensions.FindSet() then
+                        repeat
+                            EmployeeMaster.Reset();
                             EmployeeMaster.SetRange("Global Dimension 1 Code", Dimensions.Code);
                             EmployeeMaster.SetRange(Status, EmployeeMaster.Status::Active);
-                            j:=Round(((EmployeeMaster.Count / EmployeeMaster2.Count) * 100), 0.05);
+                            j := Round(((EmployeeMaster.Count / EmployeeMaster2.Count) * 100), 0.05);
                             if j <> 0 then begin
                                 Buffer.AddColumn(Dimensions.Name);
                                 Buffer.SetValueByIndex(0, i, j);
-                                i+=1;
+                                i += 1;
                             end;
                         until Dimensions.Next() = 0;
-                    Buffer.Update(CurrPage.Chart);
+                    // Buffer.Update(CurrPage.Chart);
                 end;
             }
         }

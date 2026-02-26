@@ -145,7 +145,7 @@ page 52071 "Procurement Plan Header"
                 Editable = ((Rec.Status = Rec.Status::Open) OR (Rec.Status = Rec.Status::Released));
                 ApplicationArea = All;
                 UpdatePropagation = Both;
-                SubPageLink = "Plan No"=FIELD("No.");
+                SubPageLink = "Plan No" = FIELD("No.");
             }
         }
         area(factboxes)
@@ -265,10 +265,12 @@ page 52071 "Procurement Plan Header"
                         if Rec."Empty No." = true then Error('The No. must be filled on the lines.');
                         Lines.Reset;
                         Lines.SetRange("Plan No", Rec."No.");
-                        if Lines.FindSet then repeat Lines.TestField(Quantity);
+                        if Lines.FindSet then
+                            repeat
+                                Lines.TestField(Quantity);
                                 Lines.TestField("Source of Funds");
                                 //if (Lines."Department Code" = '') AND (Lines."Global Dimension 2 Code" = '') AND (Lines."Source of Funds" = '') then
-                                if(Lines."Department Code" = '')then Error('The Department Code can not be blank for procurement plan lines %1', Lines."Line No");
+                                if (Lines."Department Code" = '') then Error('The Department Code can not be blank for procurement plan lines %1', Lines."Line No");
                             until Lines.Next = 0;
                         ApprovalsMgt.OnSendProcurePlanForApproval(Rec);
                     end;
@@ -289,7 +291,7 @@ page 52071 "Procurement Plan Header"
                         WorkflowWebhookMgt: Codeunit "Workflow Webhook Management";
                     begin
                         Rec.TestField(Status, Rec.Status::"Pending Approval");
-                        IF CONFIRM('Are you sure you want to cancel the Procurement Plan %1. Do you want to continue?', FALSE, Rec."No.")THEN ApprovalsMgt.OnCancelProcurePlanApprovalRequest(Rec);
+                        IF CONFIRM('Are you sure you want to cancel the Procurement Plan %1. Do you want to continue?', FALSE, Rec."No.") THEN ApprovalsMgt.OnCancelProcurePlanApprovalRequest(Rec);
                         WorkflowWebhookMgt.FindAndCancel(Rec.RecordId);
                     end;
                 }
@@ -357,7 +359,7 @@ page 52071 "Procurement Plan Header"
                     var
                         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
                     begin
-                        IF CONFIRM('Are you sure you want to approve the Procurement Plan %1. Do you want to continue?', FALSE, Rec."No.")THEN ApprovalsMgmt.ApproveRecordApprovalRequest(Rec.RecordId);
+                        IF CONFIRM('Are you sure you want to approve the Procurement Plan %1. Do you want to continue?', FALSE, Rec."No.") THEN ApprovalsMgmt.ApproveRecordApprovalRequest(Rec.RecordId);
                     end;
                 }
                 action(Reject)
@@ -376,7 +378,7 @@ page 52071 "Procurement Plan Header"
                     var
                         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
                     begin
-                        IF CONFIRM('Are you sure you want to reject the Procurement Plan %1. Do you want to continue?', FALSE, Rec."No.")THEN ApprovalsMgmt.RejectRecordApprovalRequest(Rec.RecordId);
+                        IF CONFIRM('Are you sure you want to reject the Procurement Plan %1. Do you want to continue?', FALSE, Rec."No.") THEN ApprovalsMgmt.RejectRecordApprovalRequest(Rec.RecordId);
                     end;
                 }
                 action(Delegate)
@@ -420,51 +422,61 @@ page 52071 "Procurement Plan Header"
     }
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        Rec.Status:=Rec.Status::Open;
+        Rec.Status := Rec.Status::Open;
     end;
+
     trigger OnAfterGetRecord()
     begin
         SetControlAppearance;
     end;
+
     local procedure SetControlAppearance()
     var
         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
         WorkflowWebhookMgt: Codeunit "Workflow Webhook Management";
     begin
-        OpenApprovalEntriesExistForCurrUser:=ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(Rec.RecordId);
-        OpenApprovalEntriesExist:=ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
-        CanCancelApprovalForRecord:=ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
+        OpenApprovalEntriesExistForCurrUser := ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(Rec.RecordId);
+        OpenApprovalEntriesExist := ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
+        CanCancelApprovalForRecord := ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
         WorkflowWebhookMgt.GetCanRequestAndCanCancel(Rec.RecordId, CanRequestApprovalForFlow, CanCancelApprovalForFlow);
     end;
-    var ProcurementPlan: Record "Procurement Plan Header";
-    ProcurementList: Record "Procurement Plan Lines";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    ApprovalsMgt: Codeunit "Approvals Mgmt. Ext";
-    OpenApprovalEntriesExistForCurrUser: Boolean;
-    OpenApprovalEntriesExist: Boolean;
-    CanCancelApprovalForRecord: Boolean;
-    CanRequestApprovalForFlow: Boolean;
-    CanCancelApprovalForFlow: Boolean;
-    ProcurementImp: XmlPort "Import Procurement Plan";
-    Lines: Record "Procurement Plan Lines";
-    PurchMg: Codeunit "Purchases Management";
-    PageEditable: Boolean;
+
+    var
+        ProcurementPlan: Record "Procurement Plan Header";
+        ProcurementList: Record "Procurement Plan Lines";
+        NoSeriesMgt: Codeunit "No. Series";
+        ApprovalsMgt: Codeunit "Approvals Mgmt. Ext";
+        OpenApprovalEntriesExistForCurrUser: Boolean;
+        OpenApprovalEntriesExist: Boolean;
+        CanCancelApprovalForRecord: Boolean;
+        CanRequestApprovalForFlow: Boolean;
+        CanCancelApprovalForFlow: Boolean;
+        ProcurementImp: XmlPort "Import Procurement Plan";
+        Lines: Record "Procurement Plan Lines";
+        PurchMg: Codeunit "Purchases Management";
+        PageEditable: Boolean;
+
     trigger OnOpenPage()
     begin
-        if Rec.status = Rec.status::Released then PageEditable:=false
+        if Rec.status = Rec.status::Released then
+            PageEditable := false
         else
-            PageEditable:=true;
+            PageEditable := true;
     end;
+
     trigger OnAfterGetCurrRecord()
     begin
         CalculatePercentage();
-        if Rec.status = Rec.status::Released then PageEditable:=false
+        if Rec.status = Rec.status::Released then
+            PageEditable := false
         else
-            PageEditable:=true;
+            PageEditable := true;
     end;
-    local procedure CalculatePercentage(): Decimal begin
+
+    local procedure CalculatePercentage(): Decimal
+    begin
         if Rec."AGPO Reservation" <> 0 then begin
-            Rec."% of AGPO Reservation":=(Rec."AGPO Reservation" / Rec."Total Estimate") * 100;
+            Rec."% of AGPO Reservation" := (Rec."AGPO Reservation" / Rec."Total Estimate") * 100;
         end;
     end;
 }

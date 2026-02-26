@@ -44,7 +44,7 @@ table 50021 "Leave Reimbursement"
         {
             Caption = 'Reimbursement Option';
             OptionCaption = 'Add to Leave Balance,Convert to Cash';
-            OptionMembers = "Add to Leave Balance", "Convert to Cash";
+            OptionMembers = "Add to Leave Balance","Convert to Cash";
         }
         field(9; "Conversion Rate"; Decimal)
         {
@@ -53,7 +53,7 @@ table 50021 "Leave Reimbursement"
 
             trigger OnValidate()
             begin
-                Rec.Amount:=Rec."No of Days to Reimburse" * Rec."Conversion Rate";
+                Rec.Amount := Rec."No of Days to Reimburse" * Rec."Conversion Rate";
             end;
         }
         field(10; Amount; Decimal)
@@ -61,7 +61,7 @@ table 50021 "Leave Reimbursement"
             Caption = 'Amount';
             DataClassification = CustomerContent;
         }
-        field(11; Status;Enum "Sales Document Status")
+        field(11; Status; Enum "Sales Document Status")
         {
             Caption = 'Status';
             DataClassification = CustomerContent;
@@ -87,11 +87,13 @@ table 50021 "Leave Reimbursement"
     trigger OnInsert()
     begin
         if "No." = '' then begin
-        // if LoanType.Get("Loan Product Type") then begin
-        //     LoanType.TestField(LoanType."Loan No Series");
-        //     NoSeriesMgt.InitSeries(LoanType."Loan No Series", xRec."No Series", 0D, "Loan No", "No Series");
-        // end;
+            // if LoanType.Get("Loan Product Type") then begin
+            //     LoanType.TestField(LoanType."Loan No Series");
+            //     NoSeriesMgt.InitSeries(LoanType."Loan No Series", xRec."No Series", 0D, "Loan No", "No Series");
+            // end;
         end;
     end;
-    var NoSeriesMgt: Codeunit NoSeriesManagement;
+
+    var
+        NoSeriesMgt: Codeunit "No. Series";
 }

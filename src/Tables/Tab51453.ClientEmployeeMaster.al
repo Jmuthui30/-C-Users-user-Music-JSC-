@@ -561,7 +561,12 @@ table 51453 "Client Employee Master"
         if "No." = '' then begin
             OutsourcingSetup.Get;
             OutsourcingSetup.TestField("Employee Import Nos.");
-            NoSeriesMgt.InitSeries(OutsourcingSetup."Employee Import Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(OutsourcingSetup."Employee Import Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(OutsourcingSetup."Employee Import Nos.",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=OutsourcingSetup."Employee Import Nos.";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
     end;
 
@@ -574,7 +579,7 @@ table 51453 "Client Employee Master"
         NameLength: Integer;
         CostCenter: Record "Client Cost Center";
         OutsourcingSetup: Record "Outsourcing Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         HRSetup: Record "Human Resources Setup";
 
     [IntegrationEvent(false, false)]
@@ -582,16 +587,29 @@ table 51453 "Client Employee Master"
     begin
     end;
 
-    procedure AssitEdit(): Boolean
+    // procedure AssitEdit(): Boolean
+    // begin
+    //     OutsourcingSetup.Get;
+    //     OutsourcingSetup.TestField("Employee Import Nos.");
+    //     if NoSeriesMgt.SelectSeries(OutsourcingSetup."Employee Import Nos.", xRec."No. Series", "No. Series") then begin
+    //         NoSeriesMgt.SetSeries("No.");
+    //         exit(true);
+    //     end;
+    // end;
+  procedure AssistEdit(): Boolean
+    var
+        NoSeries: Codeunit "No. Series";
+        NoSeriesCode: Code[20];
     begin
-        OutsourcingSetup.Get;
-        OutsourcingSetup.TestField("Employee Import Nos.");
-        if NoSeriesMgt.SelectSeries(OutsourcingSetup."Employee Import Nos.", xRec."No. Series", "No. Series") then begin
-            NoSeriesMgt.SetSeries("No.");
+        OutsourcingSetup.Get();
+
+        if NoSeries.LookupRelatedNoSeries(NoSeriesCode, xRec."No. Series", "No. Series") then begin
+            "No." := '';
+            OutsourcingSetup.Get();
+            "No." := NoSeries.GetNextNo("No. Series", WorkDate(), true);
             exit(true);
         end;
     end;
-
     procedure GetPayPeriod(): Date
     var
         PayPeriod: Record "Client Payroll Period";

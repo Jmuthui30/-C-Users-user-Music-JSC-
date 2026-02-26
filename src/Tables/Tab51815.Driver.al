@@ -9,7 +9,7 @@ table 51815 "Driver"
         field(1; "No."; Code[20])
         {
             Editable = false;
-        //TableRelation = Employee;
+            //TableRelation = Employee;
         }
         field(2; "Employee No."; Code[20])
         {
@@ -19,13 +19,13 @@ table 51815 "Driver"
             var
                 myInt: Integer;
             begin
-                if Emp.Get("Employee No.")then begin
-                    "Global Dimension 1 Code":=Emp."Global Dimension 1 Code";
-                    "Global Dimension 2 Code":=Emp."Global Dimension 2 Code";
+                if Emp.Get("Employee No.") then begin
+                    "Global Dimension 1 Code" := Emp."Global Dimension 1 Code";
+                    "Global Dimension 2 Code" := Emp."Global Dimension 2 Code";
                 end;
-                if NAVemp.Get("Employee No.")then Name:=NAVemp.FullName;
-                "Job Title":=NAVEmp."Job Title";
-                "Phone No.":=NAVEmp."Phone No.";
+                if NAVemp.Get("Employee No.") then Name := NAVemp.FullName;
+                "Job Title" := NAVEmp."Job Title";
+                "Phone No." := NAVEmp."Phone No.";
             end;
         }
         field(3; Name; Text[100])
@@ -55,7 +55,7 @@ table 51815 "Driver"
         field(11; Status; Option)
         {
             OptionCaption = 'Available,Unavailable,Exited';
-            OptionMembers = Available, Unavailable, Exited;
+            OptionMembers = Available,Unavailable,Exited;
         }
         field(12; Picture; BLOB)
         {
@@ -68,12 +68,12 @@ table 51815 "Driver"
         field(14; "Global Dimension 1 Code"; Code[20])
         {
             CaptionClass = '1,1,1';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
         }
         field(15; "Global Dimension 2 Code"; Code[20])
         {
             CaptionClass = '1,1,2';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
         field(16; "No. Series"; Code[20])
         {
@@ -103,22 +103,44 @@ table 51815 "Driver"
     }
     trigger OnInsert()
     begin
-        if("No." = '')then begin
+        if ("No." = '') then begin
             MotorSetup.Get;
             MotorSetup.TestField("Driver Nos");
-            NoSeriesMgt.InitSeries(MotorSetup."Driver Nos", xRec."No.", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(MotorSetup."Driver Nos", xRec."No.", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(MotorSetup."Driver Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=MotorSetup."Driver Nos";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
-        "Raised By":=UserId;
+        "Raised By" := UserId;
     end;
-    var Emp: Record "Employee Master";
-    NAVEmp: Record Employee;
-    MotorSetup: Record "Motorpool Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    procedure AssitEdit(): Boolean begin
-        MotorSetup.Get;
-        MotorSetup.TestField("Driver Nos");
-        if NoSeriesMgt.SelectSeries(MotorSetup."Driver Nos", xRec."No. Series", "No. Series")then begin
-            NoSeriesMgt.SetSeries("No.");
+
+    var
+        Emp: Record "Employee Master";
+        NAVEmp: Record Employee;
+        MotorSetup: Record "Motorpool Setup";
+        NoSeriesMgt: Codeunit "No. Series";
+
+    // procedure AssitEdit(): Boolean
+    // begin
+    //     MotorSetup.Get;
+    //     MotorSetup.TestField("Driver Nos");
+    //     if NoSeriesMgt.SelectSeries(MotorSetup."Driver Nos", xRec."No. Series", "No. Series") then begin
+    //         NoSeriesMgt.SetSeries("No.");
+    //         exit(true);
+    //     end;
+    // end;
+     procedure AssistEdit(): Boolean
+    var
+        NoSeries: Codeunit "No. Series";
+    begin
+        MotorSetup.Get();
+
+        if NoSeries.LookupRelatedNoSeries(MotorSetup."Driver Nos", xRec."No. Series", "No. Series") then begin
+            "No." := '';
+            MotorSetup.Get();
+            "No." := NoSeries.GetNextNo("No. Series", WorkDate(), true);
             exit(true);
         end;
     end;

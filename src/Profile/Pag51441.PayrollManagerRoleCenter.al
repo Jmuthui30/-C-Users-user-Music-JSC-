@@ -5,6 +5,7 @@ page 51441 "Payroll Manager Role Center"
     Caption = 'Payroll Manager Role Center';
     PageType = RoleCenter;
     ApplicationArea = All;
+    
 
     layout
     {
@@ -357,6 +358,17 @@ page 51441 "Payroll Manager Role Center"
                         PromotedIsBig = true;
                         RunObject = Report "A Third Rule Report";
                         ToolTip = 'View Client A Third Rule Report';
+                    }
+                    action(PRMS)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'PRMS Report';
+                        Image = "Report";
+                        Promoted = true;
+                        PromotedCategory = "Report";
+                        PromotedIsBig = true;
+                        RunObject = Report "PRMS Report";
+                        ToolTip = 'View PRMS Report';
                     }
                     action("Company Totals")
                     {

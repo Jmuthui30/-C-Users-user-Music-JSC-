@@ -8,10 +8,10 @@ table 51603 "Employee Off/Holidays"
 
             trigger OnValidate()
             begin
-                if NAVEmp.Get("Employee No")then begin
-                    "Employee Name":=NAVEmp."First Name" + ' ' + NAVEmp."Middle Name" + ' ' + NAVEmp."Last Name";
-                    if Emp.Get("Employee No")then begin
-                        if Emp."Contract Type" <> '' then "Contract No.":=Emp."Contract Type";
+                if NAVEmp.Get("Employee No") then begin
+                    "Employee Name" := NAVEmp."First Name" + ' ' + NAVEmp."Middle Name" + ' ' + NAVEmp."Last Name";
+                    if Emp.Get("Employee No") then begin
+                        if Emp."Contract Type" <> '' then "Contract No." := Emp."Contract Type";
                     end;
                 end;
             end;
@@ -23,14 +23,14 @@ table 51603 "Employee Off/Holidays"
                 if "No." <> xRec."No." then begin
                     HumanResSetup.Get;
                     NoSeriesMgt.TestManual(HumanResSetup."Leave Recall Nos");
-                    "No. Series":='';
+                    "No. Series" := '';
                 end;
             end;
         }
         field(3; Date; Date)
         {
-        //The property 'ValidateTableRelation' can only be set if the property 'TableRelation' is set
-        //ValidateTableRelation = false;
+            //The property 'ValidateTableRelation' can only be set if the property 'TableRelation' is set
+            //ValidateTableRelation = false;
         }
         field(4; Approved; Boolean)
         {
@@ -38,26 +38,25 @@ table 51603 "Employee Off/Holidays"
             begin
                 "Leave Types".Reset;
                 "Leave Types".SetRange("Leave Types"."Off/Holidays Days Leave", true);
-                if "Leave Types".Find('-')then;
+                if "Leave Types".Find('-') then;
                 "Employee Leave".Reset;
                 "Employee Leave".SetRange("Employee Leave"."Employee No", "Employee No");
                 "Employee Leave".SetRange("Employee Leave"."Leave Code", "Leave Types".Code);
-                if "Employee Leave".Find('-')then;
+                if "Employee Leave".Find('-') then;
                 if Approved = true then begin
                     ;
-                    "Employee Leave".Balance:="Employee Leave".Balance + 1;
+                    "Employee Leave".Balance := "Employee Leave".Balance + 1;
                     "Employee Leave".Modify;
                 end
-                else
-                begin
-                    "Employee Leave".Balance:="Employee Leave".Balance - 1;
+                else begin
+                    "Employee Leave".Balance := "Employee Leave".Balance - 1;
                     "Employee Leave".Modify;
                 end;
             end;
         }
         field(5; "Leave Application"; Code[20])
         {
-            TableRelation = "Employee Leave Application" WHERE(Status=CONST(Released), "Leave Code"=CONST('ANNUAL'), Recalled=CONST(false));
+            TableRelation = "Employee Leave Application" WHERE(Status = CONST(Released), "Leave Code" = CONST('ANNUAL'), Recalled = CONST(false));
 
             trigger OnValidate()
             begin
@@ -81,24 +80,24 @@ table 51603 "Employee Off/Holidays"
                 END;
                  "No. of Off Days":=NoOfDaysOff;
                                  */
-                LStDate:=0D;
+                LStDate := 0D;
                 LeaveApplication.Reset;
-                if LeaveApplication.Get("Leave Application")then begin
+                if LeaveApplication.Get("Leave Application") then begin
                     //  NoOfDaysOff:=0;
-                    "Leave Ending Date":=LeaveApplication."End Date";
-                    "Employee No":=LeaveApplication."Employee No";
-                    "Employee Name":=LeaveApplication.Name;
-                    "Directorate Code":=LeaveApplication."Global Dimension 1 Code";
-                    "Leave Code":=LeaveApplication."Leave Code";
-                    LStDate:=LeaveApplication."Start Date";
+                    "Leave Ending Date" := LeaveApplication."End Date";
+                    "Employee No" := LeaveApplication."Employee No";
+                    "Employee Name" := LeaveApplication.Name;
+                    "Directorate Code" := LeaveApplication."Global Dimension 1 Code";
+                    "Leave Code" := LeaveApplication."Leave Code";
+                    LStDate := LeaveApplication."Start Date";
                     DimensionsValue.Reset;
                     DimensionsValue.SetRange(DimensionsValue."Dimension Code", 'DEPARTMENT');
                     DimensionsValue.SetRange(DimensionsValue.Code, LeaveApplication."Global Dimension 1 Code");
-                    if DimensionsValue.Find('-')then "Department Name":=DimensionsValue.Name;
+                    if DimensionsValue.Find('-') then "Department Name" := DimensionsValue.Name;
                     DimensionsValue.Reset;
                     DimensionsValue.SetRange(DimensionsValue."Dimension Code", 'DIRECTORATE');
                     DimensionsValue.SetRange(DimensionsValue.Code, LeaveApplication."Global Dimension 1 Code");
-                    if DimensionsValue.Find('-')then "Directorate Name":=DimensionsValue.Name;
+                    if DimensionsValue.Find('-') then "Directorate Name" := DimensionsValue.Name;
                 end;
             end;
         }
@@ -119,7 +118,7 @@ table 51603 "Employee Off/Holidays"
             begin
                 LeaveApplication.Reset;
                 LeaveApplication.SetRange(LeaveApplication."Application No", "Leave Application");
-                if LeaveApplication.Find('-')then if LeaveApplication."Days Applied" < "No. of Off Days" then Error('The days you are trying to recall for %1 are more than the leave days applied they for', "Employee Name");
+                if LeaveApplication.Find('-') then if LeaveApplication."Days Applied" < "No. of Off Days" then Error('The days you are trying to recall for %1 are more than the leave days applied they for', "Employee Name");
                 Validate("Recalled From");
             end;
         }
@@ -144,26 +143,27 @@ table 51603 "Employee Off/Holidays"
                 startDate: Date;
             begin
                 GeneralOptions.Get;
-                if "Recalled From" <> 0D then d:="Recalled From";
-                if LeaveApplication.Get("Leave Application")then startDate:=LeaveApplication."Start Date";
-                if(d < startDate)then Error('You cannot Recall Leave before its Start Date');
-                if(d > "Leave Ending Date")then Error('You cannot Recall Leave that have exceeded End Date');
-                NotworkingDaysRecall:=0;
-                FullDays:=Round("No. of Off Days", 1, '<');
-                HalfDays:="No. of Off Days" - FullDays;
-                if("No. of Off Days" <> 0) and ("No. of Off Days" >= 1)then begin
-                    repeat if not CalendarMgmt.CheckDateStatus(GeneralOptions."Base Calendar Code", d, Description)then NotworkingDaysRecall:=NotworkingDaysRecall + 1;
+                if "Recalled From" <> 0D then d := "Recalled From";
+                if LeaveApplication.Get("Leave Application") then startDate := LeaveApplication."Start Date";
+                if (d < startDate) then Error('You cannot Recall Leave before its Start Date');
+                if (d > "Leave Ending Date") then Error('You cannot Recall Leave that have exceeded End Date');
+                NotworkingDaysRecall := 0;
+                FullDays := Round("No. of Off Days", 1, '<');
+                HalfDays := "No. of Off Days" - FullDays;
+                if ("No. of Off Days" <> 0) and ("No. of Off Days" >= 1) then begin
+                    repeat
+                        if not CalendarMgmt.CheckDateStatus(GeneralOptions."Base Calendar Code", d, Description) then NotworkingDaysRecall := NotworkingDaysRecall + 1;
                         LeaveApplication.Reset;
-                        if LeaveApplication.Get("Leave Application")then LeaveCode:=LeaveApplication."Leave Code";
-                        if LeaveTypes.Get(LeaveCode)then begin
+                        if LeaveApplication.Get("Leave Application") then LeaveCode := LeaveApplication."Leave Code";
+                        if LeaveTypes.Get(LeaveCode) then begin
                             if LeaveTypes."Inclusive of Holidays" then begin
                                 BaseCalendar.Reset;
                                 BaseCalendar.SetRange(BaseCalendar."Base Calendar Code", GeneralOptions."Base Calendar Code");
                                 BaseCalendar.SetRange(BaseCalendar.Date, d);
                                 BaseCalendar.SetRange(BaseCalendar.Nonworking, true);
                                 BaseCalendar.SetRange(BaseCalendar."Recurring System", BaseCalendar."Recurring System"::"Annual Recurring");
-                                if BaseCalendar.Find('-')then begin
-                                    NotworkingDaysRecall:=NotworkingDaysRecall + 1;
+                                if BaseCalendar.Find('-') then begin
+                                    NotworkingDaysRecall := NotworkingDaysRecall + 1;
                                 end;
                             end;
                             if LeaveTypes."Inclusive of Saturday" then begin
@@ -171,11 +171,11 @@ table 51603 "Employee Off/Holidays"
                                 BaseCalender.SetRange(BaseCalender."Period Type", BaseCalender."Period Type"::Date);
                                 BaseCalender.SetRange(BaseCalender."Period Start", d);
                                 BaseCalender.SetRange(BaseCalender."Period No.", 6);
-                                if BaseCalender.Find('-')then begin
-                                    NotworkingDaysRecall:=NotworkingDaysRecall + 1;
-                                // MESSAGE('SATURDAYS=%1',NotworkingDaysRecall);
-                                //   END;
-                                // MESSAGE('SATURDAY =%1 Day of week %2',BaseCalender."Period Start",BaseCalender."Period Name");
+                                if BaseCalender.Find('-') then begin
+                                    NotworkingDaysRecall := NotworkingDaysRecall + 1;
+                                    // MESSAGE('SATURDAYS=%1',NotworkingDaysRecall);
+                                    //   END;
+                                    // MESSAGE('SATURDAY =%1 Day of week %2',BaseCalender."Period Start",BaseCalender."Period Name");
                                 end;
                             end;
                             if LeaveTypes."Inclusive of Sunday" then begin
@@ -184,16 +184,16 @@ table 51603 "Employee Off/Holidays"
                                 BaseCalender.SetRange(BaseCalender."Period Start", d);
                                 BaseCalender.SetRange(BaseCalender."Period No.", 7);
                                 // BaseCalendar.SETRANGE(BaseCalendar.Nonworking,true);
-                                if BaseCalender.Find('-')then begin
-                                    NotworkingDaysRecall:=NotworkingDaysRecall + 1;
-                                // MESSAGE('SUNDAYS=%1',NotworkingDaysRecall);
-                                //MESSAGE('Sunday =%1 Day of week %2',BaseCalender."Period Start",BaseCalender."Period Name");
+                                if BaseCalender.Find('-') then begin
+                                    NotworkingDaysRecall := NotworkingDaysRecall + 1;
+                                    // MESSAGE('SUNDAYS=%1',NotworkingDaysRecall);
+                                    //MESSAGE('Sunday =%1 Day of week %2',BaseCalender."Period Start",BaseCalender."Period Name");
                                 end;
                             end;
                             if LeaveTypes."Off/Holidays Days Leave" then;
-                        // MESSAGE('Off/Holidays Days Leave');
+                            // MESSAGE('Off/Holidays Days Leave');
                         end;
-                        d:=CalcDate('1D', d);
+                        d := CalcDate('1D', d);
                     //  MESSAGE('NotworkingDaysRecall=%1',NotworkingDaysRecall);
                     //  MESSAGE('d=%1',FORMAT(d));
                     //NotworkingDaysRecall:=NotworkingDaysRecall+1;
@@ -202,13 +202,13 @@ table 51603 "Employee Off/Holidays"
                     // "No. of Off Days" :="No. of Off Days"-NotworkingDaysRecall;
                     // "No. of Off Days" :="No. of Off Days" + 1;
                     //  MESSAGE('No. of Off Days=%1',"No. of Off Days");
-                    "Recalled To":=d - 1;
-                // END;
-                // END;
+                    "Recalled To" := d - 1;
+                    // END;
+                    // END;
                 end
-                else if("No. of Off Days" <> 0) and ("No. of Off Days" < 1)then begin
-                        "Recalled To":="Recalled From";
-                    end;
+                else if ("No. of Off Days" <> 0) and ("No. of Off Days" < 1) then begin
+                    "Recalled To" := "Recalled From";
+                end;
                 if "Recalled To" <> 0D then Validate("Recalled To");
             end;
         }
@@ -219,39 +219,39 @@ table 51603 "Employee Off/Holidays"
 
             trigger OnValidate()
             begin
-                if("Recalled To" > "Leave Ending Date")then Error('You cannot Recall Leave that have exceeded End Date');
-            /*
-                
-                
-                IF ("Recalled To"="Recalled From") THEN
-                   "No. of Off Days":=1
-                
-                ELSE
-                  BEGIN
-                
-                 GeneralOptions.GET;
-                //IF  "Recalled To">"Recall Date" THEN
-                //ERROR('Recall end date is greater than recall start date');
-                 IF LeaveApplication.GET("Leave Application") THEN
-                 BEGIN
-                   NoOfDaysOff:=1;
-                     "Leave Ending Date":=LeaveApplication."End Date";
-                   IF LeaveApplication."End Date"<>0D THEN
-                   BEGIN
-                   NextDate:="Recalled From";
-                   REPEAT
-                   IF NOT CalendarMgmt.CheckDateStatus(GeneralOptions."Base Calendar Code",NextDate,Description) THEN
-                   NoOfDaysOff:=NoOfDaysOff+1;
-                
-                   NextDate:=CALCDATE('1D',NextDate);
-                 //  UNTIL NextDate=LeaveApplication."End Date";
-                     UNTIL NextDate="Recalled To"; //By Isaac
-                   END;
-                
-                 END;
-                  "No. of Off Days":=NoOfDaysOff;
-                END;
-                 */
+                if ("Recalled To" > "Leave Ending Date") then Error('You cannot Recall Leave that have exceeded End Date');
+                /*
+
+
+                    IF ("Recalled To"="Recalled From") THEN
+                       "No. of Off Days":=1
+
+                    ELSE
+                      BEGIN
+
+                     GeneralOptions.GET;
+                    //IF  "Recalled To">"Recall Date" THEN
+                    //ERROR('Recall end date is greater than recall start date');
+                     IF LeaveApplication.GET("Leave Application") THEN
+                     BEGIN
+                       NoOfDaysOff:=1;
+                         "Leave Ending Date":=LeaveApplication."End Date";
+                       IF LeaveApplication."End Date"<>0D THEN
+                       BEGIN
+                       NextDate:="Recalled From";
+                       REPEAT
+                       IF NOT CalendarMgmt.CheckDateStatus(GeneralOptions."Base Calendar Code",NextDate,Description) THEN
+                       NoOfDaysOff:=NoOfDaysOff+1;
+
+                       NextDate:=CALCDATE('1D',NextDate);
+                     //  UNTIL NextDate=LeaveApplication."End Date";
+                         UNTIL NextDate="Recalled To"; //By Isaac
+                       END;
+
+                     END;
+                      "No. of Off Days":=NoOfDaysOff;
+                    END;
+                     */
             end;
         }
         field(14; "Fiscal Start Date"; Date)
@@ -263,13 +263,13 @@ table 51603 "Employee Off/Holidays"
 
             trigger OnValidate()
             begin
-                if NAVEmp.Get("Recalled By")then begin
-                    Name:=NAVEmp."First Name" + ' ' + NAVEmp."Middle Name" + ' ' + NAVEmp."Last Name";
+                if NAVEmp.Get("Recalled By") then begin
+                    Name := NAVEmp."First Name" + ' ' + NAVEmp."Middle Name" + ' ' + NAVEmp."Last Name";
                     //Name:=Emp."First Name"+' '  +Emp."Middle Name"+' '  + Emp."Last Name";
                     DimensionsValue.Reset();
                     DimensionsValue.SetRange(DimensionsValue."Dimension Code", 'DEPARTMENT');
                     DimensionsValue.SetRange(DimensionsValue.Code, NAVEmp."Global Dimension 1 Code");
-                    if DimensionsValue.FindFirst()then "Head Of Department":=DimensionsValue.Name;
+                    if DimensionsValue.FindFirst() then "Head Of Department" := DimensionsValue.Name;
                 end;
             end;
         }
@@ -284,7 +284,7 @@ table 51603 "Employee Off/Holidays"
         {
             Editable = false;
         }
-        field(19; Status;Enum "Document Status")
+        field(19; Status; Enum "Document Status")
         {
             Editable = false;
         }
@@ -333,41 +333,50 @@ table 51603 "Employee Off/Holidays"
         if "No." = '' then begin
             HumanResSetup.Get;
             HumanResSetup.TestField(HumanResSetup."Leave Recall Nos");
-            NoSeriesMgt.InitSeries(HumanResSetup."Leave Recall Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(HumanResSetup."Leave Recall Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(HumanResSetup."Leave Recall Nos",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=HumanResSetup."Leave Recall Nos";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
-        Date:=Today;
-        Status:=Status::Open;
-        "Recall Date":=Today;
+        Date := Today;
+        Status := Status::Open;
+        "Recall Date" := Today;
         FindMaturityDate;
-        "Maturity Date":=MaturityDate;
-        "Fiscal Start Date":=FiscalStart;
+        "Maturity Date" := MaturityDate;
+        "Fiscal Start Date" := FiscalStart;
     end;
+
     trigger OnModify()
     begin
-    //MESSAGE('You are modifying leave recall data for %1 are you sure you want to do this', "Employee Name");
+        //MESSAGE('You are modifying leave recall data for %1 are you sure you want to do this', "Employee Name");
     end;
-    var NAVEmp: Record Employee;
-    Emp: Record "Employee Master";
-    "Leave Types": Record "Leave Setup";
-    "Employee Leave": Record "Employee Leaves";
-    LeaveApplication: Record "Employee Leave Application";
-    DimensionsValue: Record "Dimension Value";
-    GeneralOptions: Record "QuantumJumps HR Setup";
-    d: Date;
-    NotworkingDaysRecall: Integer;
-    FullDays: Decimal;
-    HalfDays: Decimal;
-    CalendarMgmt: Codeunit "AL Calendar Management";
-    Description: Text[30];
-    LeaveCode: Code[30];
-    LeaveTypes: Record "Leave Setup";
-    BaseCalendar: Record "Base Calendar Change";
-    BaseCalender: Record Date;
-    HumanResSetup: Record "QuantumJumps HR Setup";
-    FiscalStart: Date;
-    MaturityDate: Date;
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    LStDate: Date;
+
+    var
+        NAVEmp: Record Employee;
+        Emp: Record "Employee Master";
+        "Leave Types": Record "Leave Setup";
+        "Employee Leave": Record "Employee Leaves";
+        LeaveApplication: Record "Employee Leave Application";
+        DimensionsValue: Record "Dimension Value";
+        GeneralOptions: Record "QuantumJumps HR Setup";
+        d: Date;
+        NotworkingDaysRecall: Integer;
+        FullDays: Decimal;
+        HalfDays: Decimal;
+        CalendarMgmt: Codeunit "AL Calendar Management";
+        Description: Text[30];
+        LeaveCode: Code[30];
+        LeaveTypes: Record "Leave Setup";
+        BaseCalendar: Record "Base Calendar Change";
+        BaseCalender: Record Date;
+        HumanResSetup: Record "QuantumJumps HR Setup";
+        FiscalStart: Date;
+        MaturityDate: Date;
+        NoSeriesMgt: Codeunit "No. Series";
+        LStDate: Date;
+
     procedure FindMaturityDate()
     var
         AccPeriod: Record "Accounting Period";
@@ -375,25 +384,39 @@ table 51603 "Employee Off/Holidays"
         AccPeriod.Reset;
         AccPeriod.SetRange("Starting Date", 0D, Today);
         AccPeriod.SetRange("New Fiscal Year", true);
-        if AccPeriod.Find('+')then begin
-            if LeaveTypes.Get('ANNUAL')then begin
+        if AccPeriod.Find('+') then begin
+            if LeaveTypes.Get('ANNUAL') then begin
                 if Format(LeaveTypes."Leave Fiscal Year Difference") <> '' then begin
-                    FiscalStart:=CalcDate(Format(LeaveTypes."Leave Fiscal Year Difference"), AccPeriod."Starting Date");
-                    MaturityDate:=CalcDate('1Y', FiscalStart) - 1;
+                    FiscalStart := CalcDate(Format(LeaveTypes."Leave Fiscal Year Difference"), AccPeriod."Starting Date");
+                    MaturityDate := CalcDate('1Y', FiscalStart) - 1;
                 end
-                else
-                begin
-                    FiscalStart:=AccPeriod."Starting Date";
-                    MaturityDate:=CalcDate('1Y', FiscalStart) - 1;
+                else begin
+                    FiscalStart := AccPeriod."Starting Date";
+                    MaturityDate := CalcDate('1Y', FiscalStart) - 1;
                 end;
             end;
         end;
     end;
-    procedure AssitEdit(): Boolean begin
-        HumanResSetup.Get;
-        HumanResSetup.TestField("Leave Recall Nos");
-        if NoSeriesMgt.SelectSeries(HumanResSetup."Leave Recall Nos", xRec."No. Series", "No. Series")then begin
-            NoSeriesMgt.SetSeries("No.");
+
+    // procedure AssitEdit(): Boolean
+    // begin
+    //     HumanResSetup.Get;
+    //     HumanResSetup.TestField("Leave Recall Nos");
+    //     if NoSeriesMgt.SelectSeries(HumanResSetup."Leave Recall Nos", xRec."No. Series", "No. Series") then begin
+    //         NoSeriesMgt.SetSeries("No.");
+    //         exit(true);
+    //     end;
+    // end;
+    procedure AssistEdit(): Boolean
+    var
+        NoSeries: Codeunit "No. Series";
+    begin
+        HumanResSetup.Get();
+
+        if NoSeries.LookupRelatedNoSeries(HumanResSetup."Leave Recall Nos", xRec."No. Series", "No. Series") then begin
+            "No." := '';
+            HumanResSetup.Get();
+            "No." := NoSeries.GetNextNo("No. Series", WorkDate(), true);
             exit(true);
         end;
     end;

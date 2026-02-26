@@ -22,15 +22,15 @@ page 51908 "MD Role Center"
                     ApplicationArea = All;
                 }
             }
-            group(Control1900724708)
-            {
-                ShowCaption = false;
+            // group(Control1900724708)
+            // {
+            //     ShowCaption = false;
 
-                chartpart(Control108; "Generic Charts")
-                {
-                    ApplicationArea = All;
-                }
-            }
+            //     chartpart(Control108; "Generic Charts")
+            //     {
+            //         ApplicationArea = All;
+            //     }
+            // }
         }
     }
     actions

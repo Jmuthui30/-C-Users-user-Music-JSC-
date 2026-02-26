@@ -3,7 +3,7 @@ page 51861 "Driver Card"
     // version THL- PRM 1.0
     PageType = Card;
     SourceTable = Driver;
-    SourceTableView = WHERE(Status=CONST(Available));
+    SourceTableView = WHERE(Status = CONST(Available));
 
     layout
     {
@@ -84,5 +84,6 @@ page 51861 "Driver Card"
     actions
     {
     }
-    var NoSeriesMgt: Codeunit NoSeriesManagement;
+    var
+        NoSeriesMgt: Codeunit "No. Series";
 }

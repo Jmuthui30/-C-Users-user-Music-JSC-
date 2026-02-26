@@ -460,7 +460,7 @@ page 51426 "Payroll Employee List"
                     action("<Report P10>")
                     {
                         ApplicationArea = Basic, Suite;
-                        Caption = 'P10';
+                        Caption = 'P10'; 
                         Image = "Report";
                         Promoted = true;
                         PromotedCategory = "Report";

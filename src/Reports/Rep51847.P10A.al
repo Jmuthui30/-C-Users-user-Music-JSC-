@@ -6,7 +6,7 @@ report 51847 "P10 A"
 
     dataset
     {
-        dataitem("Payroll matrix"; "Client Payroll Matrix")
+        dataitem("Payroll matrix"; "Assignment Matrix")
         {
             DataItemTableView = WHERE(Type=FILTER(Deduction), Paye=const(true));
             RequestFilterFields = "Payroll Period";

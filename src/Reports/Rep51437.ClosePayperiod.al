@@ -13,29 +13,32 @@ report 51437 "Close Pay period"
         {
             trigger OnPostDataItem()
             begin
-                if PayperiodStart <> StartingDate then Error('Cannot Close this Pay period Without Closing the preceding ones')
-                else
-                begin
-                    if PayPeriod.Get(StartingDate)then begin
-                        PayPeriod."Close Pay":=true;
-                        PayPeriod.Closed:=true;
-                        PayPeriod."Closed By":=UserId;
-                        PayPeriod."Closed on Date":=CurrentDateTime;
+                if PayperiodStart <> StartingDate then
+                    Error('Cannot Close this Pay period Without Closing the preceding ones')
+                else begin
+                    if PayPeriod.Get(StartingDate) then begin
+                        PayPeriod."Close Pay" := true;
+                        PayPeriod.Closed := true;
+                        PayPeriod."Closed By" := UserId;
+                        PayPeriod."Closed on Date" := CurrentDateTime;
                         PayPeriod.Modify;
                         Message('The period has been closed');
                     end;
                 end;
                 // Go thru assignment matrix for loans and validate code
-                NewPeriod:=CalcDate('1M', PayperiodStart);
+                NewPeriod := CalcDate('1M', PayperiodStart);
                 Loan.Reset;
-                if Loan.Find('-')then begin
-                    repeat AssMatrix.Reset;
+                if Loan.Find('-') then begin
+                    repeat
+                        AssMatrix.Reset;
                         AssMatrix.SetRange(AssMatrix."Payroll Period", NewPeriod);
                         AssMatrix.SetRange(Code, Loan.Code);
-                        if AssMatrix.Find('-')then begin
-                            repeat if NAVEmp.Get("Payroll Matrix"."Employee No")then begin
-                                    if(NAVEmp.Status = NAVEmp.Status::Active)then AssMatrix.Validate(Code);
-                                    AssMatrix.Modify end;
+                        if AssMatrix.Find('-') then begin
+                            repeat
+                                if NAVEmp.Get("Payroll Matrix"."Employee No") then begin
+                                    if (NAVEmp.Status = NAVEmp.Status::Active) then AssMatrix.Validate(Code);
+                                    AssMatrix.Modify
+                                end;
                             until AssMatrix.Next = 0;
                         end;
                     until Loan.Next = 0;
@@ -57,85 +60,165 @@ report 51437 "Close Pay period"
     }
     trigger OnPreReport()
     begin
-        if not Confirm('Please ensure all checks for the current period have been done. Do you wish to continue?')then Error('The period has not been closed');
+        if not Confirm('Please ensure all checks for the current period have been done. Do you wish to continue?') then Error('The period has not been closed');
         //PayrollRun.RUN;
         DeducePayPeriod;
         ClosePeriodTrans;
         CreateNewEntries(PayperiodStart);
         UpdateSalaryPointers(PayperiodStart);
     end;
-    var Proceed: Boolean;
-    CurrentPeriodEnd: Date;
-    DaysAdded: Code[10];
-    PayPeriod: Record "Payroll Period";
-    StartingDate: Date;
-    PayperiodStart: Date;
-    LoansUpdate: Boolean;
-    EmpRec: Record "Employee Master";
-    TaxableAmount: Decimal;
-    RightBracket: Boolean;
-    AmountRemaining: Decimal;
-    IncomeTax: Decimal;
-    NetPay: Decimal;
-    Loan: Record "Loan Transactions";
-    ReducedBal: Decimal;
-    InterestAmt: Decimal;
-    CompRec: Record "Human Resources Setup";
-    HseLimit: Decimal;
-    ExcessRetirement: Decimal;
-    relief: Decimal;
-    Outstanding: Decimal;
-    CreateRec: Boolean;
-    benefits: Record Earnings;
-    deductions: Record Deductions;
-    InterestDiff: Decimal;
-    Rounding: Boolean;
-    PD: Record "Payroll Matrix";
-    Pay: Record Earnings;
-    Ded: Record Deductions;
-    TaxCode: Code[10];
-    CfAmount: Decimal;
-    TempAmount: Decimal;
-    EmpRec1: Record "Employee Master";
-    Emprec2: Record "Employee Master";
-    NewPeriod: Date;
-    AssMatrix: Record "Payroll Matrix";
-    PayrollRun: Report "Payroll Calculator";
-    Schedule: Record "Loan Schedule";
-    Window: Dialog;
-    EmployeeName: Text[200];
-    GetGroup: Codeunit "Payroll Calculator";
-    GroupCode: Code[20];
-    CUser: Code[50];
-    LoanApplicationForm: Record "Loan Application";
-    Discontinue: Boolean;
-    NAVEmp: Record Employee;
-    RemainingAmount: Decimal;
+
+    var
+        Proceed: Boolean;
+        CurrentPeriodEnd: Date;
+        DaysAdded: Code[10];
+        PayPeriod: Record "Payroll Period";
+        StartingDate: Date;
+        PayperiodStart: Date;
+        LoansUpdate: Boolean;
+        EmpRec: Record "Employee Master";
+        TaxableAmount: Decimal;
+        RightBracket: Boolean;
+        AmountRemaining: Decimal;
+        IncomeTax: Decimal;
+        NetPay: Decimal;
+        Loan: Record "Loan Transactions";
+        ReducedBal: Decimal;
+        InterestAmt: Decimal;
+        CompRec: Record "Human Resources Setup";
+        HseLimit: Decimal;
+        ExcessRetirement: Decimal;
+        relief: Decimal;
+        Outstanding: Decimal;
+        CreateRec: Boolean;
+        benefits: Record Earnings;
+        deductions: Record Deductions;
+        InterestDiff: Decimal;
+        Rounding: Boolean;
+        PD: Record "Payroll Matrix";
+        Pay: Record Earnings;
+        Ded: Record Deductions;
+        TaxCode: Code[10];
+        CfAmount: Decimal;
+        TempAmount: Decimal;
+        EmpRec1: Record "Employee Master";
+        Emprec2: Record "Employee Master";
+        NewPeriod: Date;
+        AssMatrix: Record "Payroll Matrix";
+        PayrollRun: Report "Payroll Calculator";
+        Schedule: Record "Loan Schedule";
+        Window: Dialog;
+        EmployeeName: Text[200];
+        GetGroup: Codeunit "Payroll Calculator";
+        GroupCode: Code[20];
+        CUser: Code[50];
+        LoanApplicationForm: Record "Loan Application";
+        Discontinue: Boolean;
+        NAVEmp: Record Employee;
+        RemainingAmount: Decimal;
+
     procedure GetCurrentPeriod(var Payperiod: Record "Payroll Period")
     begin
-        CurrentPeriodEnd:=Payperiod."Starting Date";
-        StartingDate:=CurrentPeriodEnd;
-        CurrentPeriodEnd:=CalcDate('1M', CurrentPeriodEnd - 1);
+        CurrentPeriodEnd := Payperiod."Starting Date";
+        StartingDate := CurrentPeriodEnd;
+        CurrentPeriodEnd := CalcDate('1M', CurrentPeriodEnd - 1);
     end;
+
+    procedure CalculateRepaymentAmount(var EmpNo: Code[20]; var LoanNo: Code[20]; var LoanInterest: Decimal; LastPayment: Date) Repayment: Decimal
+    var
+        LoanApplication: Record "Payroll Loan Application";
+        Balance: Decimal;
+    begin
+        Repayment := 0;
+        LoanInterest := 0;
+        //Get the loan being repaid
+        LoanApplication.Reset();
+        LoanApplication.SetRange(LoanApplication."Loan No", LoanNo);
+        LoanApplication.SetRange(LoanApplication."Employee No", EmpNo);
+        LoanApplication.SetRange("Date filter", 0D, LastPayment);
+        if LoanApplication.FindFirst() then
+            if LoanApplication."Interest Calculation Method" <> LoanApplication."Interest Calculation Method"::"Sacco Reducing Balance" then begin
+                LoanApplication.CalcFields("Total Repayment", Receipts);
+                Balance := LoanApplication."Approved Amount" - (LoanApplication."Total Repayment") - Abs(LoanApplication.Receipts);
+                Repayment := LoanApplication.Repayment;
+                LoanInterest := (LoanApplication."Interest Rate" / 100 * Balance / 12);
+                LoanInterest := PayrollRounding(LoanInterest);
+                if Balance <= 0 then
+                    Repayment := 0;
+                exit(Repayment);
+            end
+            else begin
+                /*
+                RepaymentSchedule.Reset();
+                RepaymentSchedule.SetRange(RepaymentSchedule."Loan No",LoanNo);
+                RepaymentSchedule.SetRange(RepaymentSchedule."Employee No",EmpNo);
+                RepaymentSchedule.SetRange("Repayment Date",CalcDate('1M',PayperiodStart));
+                 if RepaymentSchedule.FindFirst() then begin
+                    Repayment:=-RepaymentSchedule."Monthly Repayment";
+                    Repayment:=PayrollRounding(Repayment);
+                    exit(Repayment);
+                 end;
+                 */
+                //Get Principal Repayment and subtract the interest on the balance
+                LoanApplication.CalcFields("Total Repayment", Receipts);
+                Balance := LoanApplication."Approved Amount" - Abs(LoanApplication."Total Repayment") - Abs(LoanApplication.Receipts);
+
+                //MESSAGE('bal%1',Balance);
+                LoanInterest := (LoanApplication."Interest Rate" / 100 * Balance / 12);
+                LoanInterest := PayrollRounding(LoanInterest);
+                if Balance < Repayment then
+                    Repayment := Balance
+                else
+                    Repayment := LoanApplication.Repayment;
+
+                if Balance <= 0 then
+                    Repayment := 0;
+                exit(Repayment);
+            end;
+
+    end;
+
+    procedure PayrollRounding(var Amount: Decimal) PayrollRounding: Decimal
+    var
+        HRsetup: Record "Human Resources Setup";
+    begin
+        HRsetup.Get();
+        if HRsetup."Payroll Rounding Precision" = 0 then
+            Error('You must specify the rounding precision under HR setup');
+        if HRsetup."Payroll Rounding Type" = HRsetup."Payroll Rounding Type"::Nearest then
+            PayrollRounding := Round(Amount, HRsetup."Payroll Rounding Precision", '=');
+        if HRsetup."Payroll Rounding Type" = HRsetup."Payroll Rounding Type"::Up then
+            PayrollRounding := Round(Amount, HRsetup."Payroll Rounding Precision", '>');
+        if HRsetup."Payroll Rounding Type" = HRsetup."Payroll Rounding Type"::Down then
+            PayrollRounding := Round(Amount, HRsetup."Payroll Rounding Precision", '<');
+    end;
+
+
+
+
     procedure DeducePayPeriod()
     var
         PayPeriodRec: Record "Payroll Period";
     begin
         PayPeriodRec.Reset;
         PayPeriodRec.SetRange(PayPeriodRec."Close Pay", false);
-        if PayPeriodRec.Find('-')then PayperiodStart:=PayPeriodRec."Starting Date";
+        if PayPeriodRec.Find('-') then PayperiodStart := PayPeriodRec."Starting Date";
     end;
+
     procedure ClosePeriodTrans()
     var
         EarnDeduct: Record "Payroll Matrix";
     begin
         EarnDeduct.Reset;
         EarnDeduct.SetRange(EarnDeduct."Payroll Period", PayperiodStart);
-        if EarnDeduct.Find('-')then repeat EarnDeduct.Closed:=true;
-                EarnDeduct."Payroll Period":=PayperiodStart;
+        if EarnDeduct.Find('-') then
+            repeat
+                EarnDeduct.Closed := true;
+                EarnDeduct."Payroll Period" := PayperiodStart;
                 EarnDeduct.Modify;
             until EarnDeduct.Next = 0;
     end;
+
     procedure CreateNewEntries(var CurrPeriodStat: Date)
     var
         PaymentDed: Record "Payroll Matrix";
@@ -143,52 +226,53 @@ report 51437 "Close Pay period"
     begin
         /*This function creates new entries for the next Payroll period which are accessible and editable
         by the user of the Payroll. It should ideally create new entries if the EmpRec is ACTIVE*/
-        NewPeriod:=CalcDate('1M', PayperiodStart);
+        NewPeriod := CalcDate('1M', PayperiodStart);
         Window.Open('Creating Next period entries ##############################1', EmployeeName);
         PaymentDed.Reset;
         PaymentDed.SetRange(PaymentDed."Payroll Period", PayperiodStart);
         PaymentDed.SetRange(PaymentDed."Next Period Entry", true);
         //PaymentDed.SETFILTER(PaymentDed.Amount, '<>%1',0);
-        if PaymentDed.Find('-')then begin
-            repeat CreateRec:=true;
+        if PaymentDed.Find('-') then begin
+            repeat
+                CreateRec := true;
                 AssignMatrix.Init;
-                AssignMatrix."Employee No":=PaymentDed."Employee No";
-                AssignMatrix.Type:=PaymentDed.Type;
-                AssignMatrix.Code:=PaymentDed.Code;
-                AssignMatrix."Global Dimension 1 code":=PaymentDed."Global Dimension 1 code";
-                AssignMatrix."Global Dimension 2 Code":=PaymentDed."Global Dimension 2 Code";
-                AssignMatrix."Reference No":=PaymentDed."Reference No";
-                AssignMatrix.Retirement:=PaymentDed.Retirement;
-                AssignMatrix."Payroll Period":=CalcDate('1M', PayperiodStart);
-                AssignMatrix.Amount:=PaymentDed.Amount;
-                AssignMatrix.Description:=PaymentDed.Description;
-                AssignMatrix.Taxable:=PaymentDed.Taxable;
-                AssignMatrix."Reduces Taxable Amt":=PaymentDed."Reduces Taxable Amt";
-                AssignMatrix."Non-Cash Benefit":=PaymentDed."Non-Cash Benefit";
-                AssignMatrix."No. of Units":=PaymentDed."No. of Units";
-                AssignMatrix."Employer Amount":=PaymentDed."Employer Amount";
-                AssignMatrix."Global Dimension 1 code":=PaymentDed."Global Dimension 1 code";
-                AssignMatrix."Global Dimension 2 Code":=PaymentDed."Global Dimension 2 Code";
-                AssignMatrix."Global Dimension 3 Code":=PaymentDed."Global Dimension 3 Code";
-                AssignMatrix."Next Period Entry":=PaymentDed."Next Period Entry";
-                AssignMatrix."Payroll Group":=PaymentDed."Payroll Group";
-                AssignMatrix."Basic Salary Code":=PaymentDed."Basic Salary Code";
-                AssignMatrix."Normal Earnings":=PaymentDed."Normal Earnings";
-                AssignMatrix."Tax Relief":=PaymentDed."Tax Relief";
+                AssignMatrix."Employee No" := PaymentDed."Employee No";
+                AssignMatrix.Type := PaymentDed.Type;
+                AssignMatrix.Code := PaymentDed.Code;
+                AssignMatrix."Global Dimension 1 code" := PaymentDed."Global Dimension 1 code";
+                AssignMatrix."Global Dimension 2 Code" := PaymentDed."Global Dimension 2 Code";
+                AssignMatrix."Reference No" := PaymentDed."Reference No";
+                AssignMatrix.Retirement := PaymentDed.Retirement;
+                AssignMatrix."Payroll Period" := CalcDate('1M', PayperiodStart);
+                AssignMatrix.Amount := PaymentDed.Amount;
+                AssignMatrix.Description := PaymentDed.Description;
+                AssignMatrix.Taxable := PaymentDed.Taxable;
+                AssignMatrix."Reduces Taxable Amt" := PaymentDed."Reduces Taxable Amt";
+                AssignMatrix."Non-Cash Benefit" := PaymentDed."Non-Cash Benefit";
+                AssignMatrix."No. of Units" := PaymentDed."No. of Units";
+                AssignMatrix."Employer Amount" := PaymentDed."Employer Amount";
+                AssignMatrix."Global Dimension 1 code" := PaymentDed."Global Dimension 1 code";
+                AssignMatrix."Global Dimension 2 Code" := PaymentDed."Global Dimension 2 Code";
+                AssignMatrix."Global Dimension 3 Code" := PaymentDed."Global Dimension 3 Code";
+                AssignMatrix."Next Period Entry" := PaymentDed."Next Period Entry";
+                AssignMatrix."Payroll Group" := PaymentDed."Payroll Group";
+                AssignMatrix."Basic Salary Code" := PaymentDed."Basic Salary Code";
+                AssignMatrix."Normal Earnings" := PaymentDed."Normal Earnings";
+                AssignMatrix."Tax Relief" := PaymentDed."Tax Relief";
                 if PaymentDed."Global Dimension 1 code" = '' then begin
                     Emprec2.Reset;
-                    if Emprec2.Get(PaymentDed."Employee No")then begin
-                        AssignMatrix."Global Dimension 1 code":=Emprec2."Global Dimension 1 Code";
-                        AssignMatrix."Global Dimension 2 Code":=Emprec2."Global Dimension 2 Code";
-                        AssignMatrix."Global Dimension 3 Code":=Emprec2."Global Dimension 3 Code";
+                    if Emprec2.Get(PaymentDed."Employee No") then begin
+                        AssignMatrix."Global Dimension 1 code" := Emprec2."Global Dimension 1 Code";
+                        AssignMatrix."Global Dimension 2 Code" := Emprec2."Global Dimension 2 Code";
+                        AssignMatrix."Global Dimension 3 Code" := Emprec2."Global Dimension 3 Code";
                     end;
                 end;
                 EmpRec.Reset;
-                if EmpRec.Get(PaymentDed."Employee No")then begin
-                    AssignMatrix."Payroll Group":=EmpRec."Employee Group";
+                if EmpRec.Get(PaymentDed."Employee No") then begin
+                    AssignMatrix."Payroll Group" := EmpRec."Employee Group";
                     NAVEmp.Get(PaymentDed."Employee No");
                     Window.Update(1, NAVEmp."First Name" + ' ' + NAVEmp."Middle Name" + ' ' + NAVEmp."Last Name");
-                    if(NAVEmp.Status = NAVEmp.Status::Active) and (CreateRec = true)then if not AssignMatrix.Get(AssignMatrix."Employee No", AssignMatrix.Type, AssignMatrix.Code, AssignMatrix."Payroll Period", AssignMatrix."Reference No")then AssignMatrix.Insert;
+                    if (NAVEmp.Status = NAVEmp.Status::Active) and (CreateRec = true) then if not AssignMatrix.Get(AssignMatrix."Employee No", AssignMatrix.Type, AssignMatrix.Code, AssignMatrix."Payroll Period", AssignMatrix."Reference No") then AssignMatrix.Insert;
                 end;
             until PaymentDed.Next = 0;
         end;
@@ -196,39 +280,37 @@ report 51437 "Close Pay period"
         PaymentDed.Reset;
         PaymentDed.SetRange(PaymentDed."Payroll Period", NewPeriod);
         PaymentDed.SetRange(Type, PaymentDed.Type::Deduction);
-        if PaymentDed.Find('-')then begin
-            repeat LoanApplicationForm.Reset;
+        if PaymentDed.Find('-') then begin
+            repeat
+                LoanApplicationForm.Reset;
                 LoanApplicationForm.SetRange(LoanApplicationForm."Deduction Code", PaymentDed.Code);
                 LoanApplicationForm.SetRange(LoanApplicationForm."Loan No", PaymentDed."Reference No");
-                if LoanApplicationForm.Find('-')then begin
+                if LoanApplicationForm.Find('-') then begin
                     LoanApplicationForm.SetRange(LoanApplicationForm."Date filter", 0D, PayperiodStart);
                     LoanApplicationForm.CalcFields(LoanApplicationForm."Total Repayment", LoanApplicationForm."Total Loan", LoanApplicationForm.Receipts);
                     if LoanApplicationForm."Total Loan" <> 0 then begin
-                        if((LoanApplicationForm."Total Loan" + LoanApplicationForm."Total Repayment") - LoanApplicationForm.Receipts) <= 0 then begin
+                        if ((LoanApplicationForm."Total Loan" + LoanApplicationForm."Total Repayment") - LoanApplicationForm.Receipts) <= 0 then begin
                             Message('Loan %1 has expired', PaymentDed."Reference No");
                             PaymentDed.Delete;
                         end
-                        else
-                        begin
-                            if(LoanApplicationForm."Total Loan" + LoanApplicationForm."Total Repayment") < LoanApplicationForm.Repayment then begin
+                        else begin
+                            if (LoanApplicationForm."Total Loan" + LoanApplicationForm."Total Repayment") < LoanApplicationForm.Repayment then begin
                                 LoanApplicationForm.CalcFields(LoanApplicationForm."Total Repayment");
-                                PaymentDed.Amount:=-(LoanApplicationForm."Total Loan" + LoanApplicationForm."Total Repayment");
+                                PaymentDed.Amount := -(LoanApplicationForm."Total Loan" + LoanApplicationForm."Total Repayment");
                                 // PaymentDed."Next Period Entry":=FALSE;
                                 PaymentDed.Modify;
                             end;
                         end;
                     end
-                    else
-                    begin
-                        if(LoanApplicationForm."Approved Amount" + LoanApplicationForm."Total Repayment") <= 0 then begin
+                    else begin
+                        if (LoanApplicationForm."Approved Amount" + LoanApplicationForm."Total Repayment") <= 0 then begin
                             Message('Loan %1 has expired', PaymentDed."Reference No");
                             PaymentDed.Delete;
                         end
-                        else
-                        begin
-                            if(LoanApplicationForm."Approved Amount" + LoanApplicationForm."Total Repayment") < LoanApplicationForm.Repayment then begin
+                        else begin
+                            if (LoanApplicationForm."Approved Amount" + LoanApplicationForm."Total Repayment") < LoanApplicationForm.Repayment then begin
                                 LoanApplicationForm.CalcFields(LoanApplicationForm."Total Repayment");
-                                PaymentDed.Amount:=-(LoanApplicationForm."Approved Amount" + LoanApplicationForm."Total Repayment");
+                                PaymentDed.Amount := -(LoanApplicationForm."Approved Amount" + LoanApplicationForm."Total Repayment");
                                 // PaymentDed."Next Period Entry":=FALSE;
                                 PaymentDed.Modify;
                             end;
@@ -238,15 +320,18 @@ report 51437 "Close Pay period"
             until PaymentDed.Next = 0;
         end;
     end;
+
     procedure Initialize()
     var
         InitEarnDeduct: Record "Payroll Matrix";
     begin
         InitEarnDeduct.SetRange(InitEarnDeduct.Closed, false);
-        repeat InitEarnDeduct."Payroll Period":=PayperiodStart;
+        repeat
+            InitEarnDeduct."Payroll Period" := PayperiodStart;
             InitEarnDeduct.Modify;
         until InitEarnDeduct.Next = 0;
     end;
+
     procedure GetTaxBracket(var TaxableAmount: Decimal)
     var
         TaxTable: Record Bracket;
@@ -254,32 +339,34 @@ report 51437 "Close Pay period"
         Tax: Decimal;
         EndTax: Boolean;
     begin
-        AmountRemaining:=TaxableAmount;
-        AmountRemaining:=AmountRemaining;
-        AmountRemaining:=Round(AmountRemaining, 0.01);
-        EndTax:=false;
+        AmountRemaining := TaxableAmount;
+        AmountRemaining := AmountRemaining;
+        AmountRemaining := Round(AmountRemaining, 0.01);
+        EndTax := false;
         TaxTable.SetRange("Table Code", TaxCode);
-        if TaxTable.Find('-')then begin
-            repeat if AmountRemaining <= 0 then EndTax:=true
-                else
-                begin
-                    if Round((TaxableAmount), 0.01) > TaxTable."Upper Limit" then Tax:=TaxTable."Taxable Amount" * TaxTable.Percentage / 100
-                    else
-                    begin
-                        Tax:=AmountRemaining * TaxTable.Percentage / 100;
-                        TotalTax:=TotalTax + Tax;
-                        EndTax:=true;
+        if TaxTable.Find('-') then begin
+            repeat
+                if AmountRemaining <= 0 then
+                    EndTax := true
+                else begin
+                    if Round((TaxableAmount), 0.01) > TaxTable."Upper Limit" then
+                        Tax := TaxTable."Taxable Amount" * TaxTable.Percentage / 100
+                    else begin
+                        Tax := AmountRemaining * TaxTable.Percentage / 100;
+                        TotalTax := TotalTax + Tax;
+                        EndTax := true;
                     end;
                     if not EndTax then begin
-                        AmountRemaining:=AmountRemaining - TaxTable."Taxable Amount";
-                        TotalTax:=TotalTax + Tax;
+                        AmountRemaining := AmountRemaining - TaxTable."Taxable Amount";
+                        TotalTax := TotalTax + Tax;
                     end;
                 end;
-            until(TaxTable.Next = 0) or EndTax = true;
+            until (TaxTable.Next = 0) or EndTax = true;
         end;
-        TotalTax:=TotalTax;
-        IncomeTax:=-TotalTax;
+        TotalTax := TotalTax;
+        IncomeTax := -TotalTax;
     end;
+
     procedure CreateLIBenefit(var Employee: Code[10]; var BenefitCode: Code[10]; var ReducedBalance: Decimal)
     var
         PaymentDeduction: Record "Payroll Matrix";
@@ -287,25 +374,28 @@ report 51437 "Close Pay period"
         allowances: Record Earnings;
     begin
         PaymentDeduction.Init;
-        PaymentDeduction."Employee No":=Employee;
-        PaymentDeduction.Code:=BenefitCode;
-        PaymentDeduction.Type:=PaymentDeduction.Type::Payment;
-        PaymentDeduction."Payroll Period":=CalcDate('1M', PayperiodStart);
-        PaymentDeduction.Amount:=ReducedBalance * InterestDiff;
-        PaymentDeduction."Non-Cash Benefit":=true;
-        PaymentDeduction.Taxable:=true;
+        PaymentDeduction."Employee No" := Employee;
+        PaymentDeduction.Code := BenefitCode;
+        PaymentDeduction.Type := PaymentDeduction.Type::Payment;
+        PaymentDeduction."Payroll Period" := CalcDate('1M', PayperiodStart);
+        PaymentDeduction.Amount := ReducedBalance * InterestDiff;
+        PaymentDeduction."Non-Cash Benefit" := true;
+        PaymentDeduction.Taxable := true;
         //PaymentDeduction."Next Period Entry":=TRUE;
-        if allowances.Get(BenefitCode)then PaymentDeduction.Description:=allowances.Description;
+        if allowances.Get(BenefitCode) then PaymentDeduction.Description := allowances.Description;
         PaymentDeduction.Insert;
     end;
-    procedure CoinageAnalysis(var NetPay: Decimal)NetPay1: Decimal var
+
+    procedure CoinageAnalysis(var NetPay: Decimal) NetPay1: Decimal
+    var
         Index: Integer;
         Intex: Integer;
-        AmountArray: array[15]of Decimal;
-        NoOfUnitsArray: array[15]of Integer;
+        AmountArray: array[15] of Decimal;
+        NoOfUnitsArray: array[15] of Integer;
         MinAmount: Decimal;
     begin
     end;
+
     procedure UpdateSalaryPointers(var PayrollPeriod: Date)
     var
         Emp: Record Employee;
@@ -313,7 +403,7 @@ report 51437 "Close Pay period"
     begin
         Emp.Reset;
         Emp.SetRange(Emp.Status, Emp.Status::Active);
-        if Emp.Find('-')then begin
+        if Emp.Find('-') then begin
             repeat /*IF FORMAT(DATE2DMY(NewPeriod,2))=Emp."Incremental Month" THEN
             BEGIN
             IF INCSTR(Emp.Present)<Emp.Halt THEN

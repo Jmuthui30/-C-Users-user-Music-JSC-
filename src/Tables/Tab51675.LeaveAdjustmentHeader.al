@@ -18,7 +18,7 @@ table 51675 "Leave Adjustment Header"
         {
             Editable = false;
             OptionCaption = 'New,Closed,Pending Approval,Approved,Rejected';
-            OptionMembers = New, Closed, "Pending Approval", Approved, Rejected;
+            OptionMembers = New,Closed,"Pending Approval",Approved,Rejected;
         }
         field(4; "Created By"; Code[50])
         {
@@ -53,7 +53,7 @@ table 51675 "Leave Adjustment Header"
         field(9; Type; Option)
         {
             OptionCaption = 'Positive,Negative';
-            OptionMembers = Positive, Negative;
+            OptionMembers = Positive,Negative;
         }
         field(10; Description; Text[50])
         {
@@ -67,8 +67,8 @@ table 51675 "Leave Adjustment Header"
 
             trigger OnValidate()
             begin
-                if LeaveTypes.Get("Leave Type")then begin
-                    "Leave Type Name":=LeaveTypes.Description;
+                if LeaveTypes.Get("Leave Type") then begin
+                    "Leave Type Name" := LeaveTypes.Description;
                 end;
             end;
         }
@@ -85,28 +85,32 @@ table 51675 "Leave Adjustment Header"
     }
     trigger OnDelete()
     begin
-    //TESTFIELD(Status,Status::New);
+        //TESTFIELD(Status,Status::New);
     end;
+
     trigger OnInsert()
     begin
         if "Leave Adjustments No." = '' then begin
             LeaveSetup.Get('ANNUAL');
             LeaveSetup.TestField("Adjustment Nos");
-            "Leave Adjustments No.":=NoSeriesManagement.GetNextNo(LeaveSetup."Adjustment Nos", Today, true);
+            "Leave Adjustments No." := NoSeriesManagement.GetNextNo(LeaveSetup."Adjustment Nos", Today, true);
         end;
-        "Created By":=UserId;
-        "Date Created":=WorkDate;
-        "Last Date Modified":=WorkDate;
-        "Last Modified By":=UserId;
+        "Created By" := UserId;
+        "Date Created" := WorkDate;
+        "Last Date Modified" := WorkDate;
+        "Last Modified By" := UserId;
     end;
+
     trigger OnModify()
     begin
-        "Last Date Modified":=WorkDate;
-        "Last Modified By":=UserId;
+        "Last Date Modified" := WorkDate;
+        "Last Modified By" := UserId;
     end;
-    var Employee: Record Employee;
-    HumanResourcesSetup: Record "Human Resources Setup";
-    NoSeriesManagement: Codeunit NoSeriesManagement;
-    LeaveTypes: Record "Leave Setup";
-    LeaveSetup: Record "Leave Setup";
+
+    var
+        Employee: Record Employee;
+        HumanResourcesSetup: Record "Human Resources Setup";
+        NoSeriesManagement: Codeunit "No. Series";
+        LeaveTypes: Record "Leave Setup";
+        LeaveSetup: Record "Leave Setup";
 }

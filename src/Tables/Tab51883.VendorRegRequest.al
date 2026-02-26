@@ -67,10 +67,10 @@ table 51883 "Vendor Reg. Request"
                 Clear(CountedXters);
                 if "Email Address" <> '' then begin
                     repeat begin
-                        CountedXters:=CountedXters + 1;
-                        if(CopyStr("Email Address", CountedXters, 1)) = '@' then atExists:=true;
+                        CountedXters := CountedXters + 1;
+                        if (CopyStr("Email Address", CountedXters, 1)) = '@' then atExists := true;
                     end;
-                    until((CountedXters = StrLen("Email Address")) or atExists);
+                    until ((CountedXters = StrLen("Email Address")) or atExists);
                     if atExists = false then Error('Provide a valid email address!');
                 end;
             end;
@@ -118,7 +118,7 @@ table 51883 "Vendor Reg. Request"
             TableRelation = Vendor;
             Editable = false;
         }
-        field(20; Status;Enum "Document Status")
+        field(20; Status; Enum "Document Status")
         {
             Editable = false;
 
@@ -134,13 +134,13 @@ table 51883 "Vendor Reg. Request"
         }
         field(22; Approvers; Integer)
         {
-            CalcFormula = Count("Approval Entry" WHERE("Table ID"=CONST(51883), "Document No."=FIELD("No."), Status=FILTER(Approved)));
+            CalcFormula = Count("Approval Entry" WHERE("Table ID" = CONST(51883), "Document No." = FIELD("No."), Status = FILTER(Approved)));
             FieldClass = FlowField;
             Caption = 'Approvers';
         }
         field(23; "Pending Approvals Ext"; Integer)
         {
-            CalcFormula = Count("Approval Entry" WHERE("Table ID"=CONST(51883), "Document No."=FIELD("No."), Status=FILTER(Open|Created)));
+            CalcFormula = Count("Approval Entry" WHERE("Table ID" = CONST(51883), "Document No." = FIELD("No."), Status = FILTER(Open | Created)));
             Caption = 'Pending Approvals';
             FieldClass = FlowField;
             Editable = false;
@@ -149,12 +149,12 @@ table 51883 "Vendor Reg. Request"
         {
             DataClassification = ToBeClassified;
             OptionCaption = ' ,Local Vendor (Limited),Local Vendor (Non-Limited),International Vendor';
-            OptionMembers = " ", "Local Vendor (Limited)", "Local Vendor (Non-Limited)", "International Vendor";
+            OptionMembers = " ","Local Vendor (Limited)","Local Vendor (Non-Limited)","International Vendor";
         }
         field(25; Country; text[30])
         {
             DataClassification = ToBeClassified;
-            TableRelation = Country.Code where(Blocked=filter(false));
+            TableRelation = Country.Code where(Blocked = filter(false));
 
             trigger OnValidate()
             var
@@ -162,7 +162,7 @@ table 51883 "Vendor Reg. Request"
             begin
                 Country.Reset();
                 Country.SetRange(Code, Rec.Country);
-                if Country.FindSet()then "Country Name":=Country.Name;
+                if Country.FindSet() then "Country Name" := Country.Name;
             end;
         }
         field(100; "Country Name"; Text[100])
@@ -195,7 +195,7 @@ table 51883 "Vendor Reg. Request"
         {
             DataClassification = CustomerContent;
         }
-        field(40; "Ownership";Enum CompanyOwnership)
+        field(40; "Ownership"; Enum CompanyOwnership)
         {
             DataClassification = CustomerContent;
         }
@@ -252,14 +252,14 @@ table 51883 "Vendor Reg. Request"
         {
             DataClassification = CustomerContent;
         }
-        field(54; Gender;Enum "Employee Gender")
+        field(54; Gender; Enum "Employee Gender")
         {
             DataClassification = CustomerContent;
         }
         field(55; "National ID No."; Code[20])
         {
             DataClassification = CustomerContent;
-        //NotBlank = true;
+            //NotBlank = true;
         }
         field(56; "Personal KRA PIN"; Code[50])
         {
@@ -318,9 +318,9 @@ table 51883 "Vendor Reg. Request"
             begin
                 CommercialBanks.Reset();
                 CommercialBanks.SetRange(Code, "Bank Code");
-                if CommercialBanks.FindSet()then begin
-                    "Bank Name":=CommercialBanks.Name;
-                    "Bank Swift Code":=CommercialBanks."Swift Code";
+                if CommercialBanks.FindSet() then begin
+                    "Bank Name" := CommercialBanks.Name;
+                    "Bank Swift Code" := CommercialBanks."Swift Code";
                 end;
             end;
         }
@@ -334,8 +334,8 @@ table 51883 "Vendor Reg. Request"
                 CommercialBankBranches.Reset();
                 CommercialBankBranches.SetRange("Bank Code", "Bank Code");
                 CommercialBankBranches.SetRange("Branch Code", "Bank Branch Code");
-                if CommercialBankBranches.FindSet()then begin
-                    "Bank Branch Name":=CommercialBankBranches."Branch Name";
+                if CommercialBankBranches.FindSet() then begin
+                    "Bank Branch Name" := CommercialBankBranches."Branch Name";
                 end;
             end;
         }
@@ -364,19 +364,27 @@ table 51883 "Vendor Reg. Request"
         ProcurementSetup.Get;
         if "No." = '' then begin
             ProcurementSetup.TestField("Vendor Reg Req Nos.");
-            NoSeriesMgt.InitSeries(ProcurementSetup."Vendor Reg Req Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(ProcurementSetup."Vendor Reg Req Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(ProcurementSetup."Vendor Reg Req Nos.",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=ProcurementSetup."Vendor Reg Req Nos.";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
-        "Created By":=UserId;
-        Status:=Status::Open;
-        Date:=Today;
+        "Created By" := UserId;
+        Status := Status::Open;
+        Date := Today;
     end;
+
     trigger OnDelete()
     begin
         TestField(Status, Status::Open);
     end;
-    var NoSeriesMgt: Codeunit NoSeriesManagement;
-    ProcurementSetup: Record "Procurement Setup";
-    VendorOnboardingMgnt: Codeunit "Vendor Onboarding Mgnt";
-    CommercialBanks: Record "Commercial Banks";
-    CommercialBankBranches: Record "Bank Branches";
+
+    var
+        NoSeriesMgt: Codeunit "No. Series";
+        ProcurementSetup: Record "Procurement Setup";
+        VendorOnboardingMgnt: Codeunit "Vendor Onboarding Mgnt";
+        CommercialBanks: Record "Commercial Banks";
+        CommercialBankBranches: Record "Bank Branches";
 }

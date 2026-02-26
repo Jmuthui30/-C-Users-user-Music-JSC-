@@ -15,21 +15,21 @@ table 51935 "Repair Header"
                     UsersRec.Reset;
                     UsersRec.SetRange("Employee No.", "Employee Code");
                     if UsersRec.FindFirst then begin
-                        "Requested For":=UsersRec."User ID";
-                        "Purchaser Code":=UsersRec."User ID";
-                    /* if EmpRec.Get(UsersRec."Employee No") then begin
-                             "Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
-                             "Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
-                         end;*/
+                        "Requested For" := UsersRec."User ID";
+                        "Purchaser Code" := UsersRec."User ID";
+                        /* if EmpRec.Get(UsersRec."Employee No") then begin
+                                 "Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                                 "Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                             end;*/
                     end;
                 end;
                 //Ibrahim Wasiu, Date: 4th June 2021
-                if EmpRec.Get("Employee Code")then begin
-                    "Global Dimension 1 Code":=EmpRec."Global Dimension 1 Code";
-                    "Global Dimension 2 Code":=EmpRec."Global Dimension 2 Code";
-                    "Global Dimension 3 Code":=EmpRec."Global Dimension 3 Code";
+                if EmpRec.Get("Employee Code") then begin
+                    "Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                    "Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                    "Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
                 end;
-                if NAVemp.Get("Employee Code")then "Employee Name":=NAVemp.FullName();
+                if NAVemp.Get("Employee Code") then "Employee Name" := NAVemp.FullName();
             end;
         }
         field(3; "Employee Name"; Text[50])
@@ -45,7 +45,7 @@ table 51935 "Repair Header"
         {
             DataClassification = CustomerContent;
         }
-        field(7; Status;Enum "Document Status")
+        field(7; Status; Enum "Document Status")
         {
             Caption = 'Status';
             Editable = false;
@@ -54,8 +54,9 @@ table 51935 "Repair Header"
             begin
                 Lines.Reset;
                 Lines.SetRange("Repair No", "No.");
-                if Lines.Find('-')then begin
-                    repeat Lines.Status:=Status;
+                if Lines.Find('-') then begin
+                    repeat
+                        Lines.Status := Status;
                         Lines.Modify;
                     until Lines.Next = 0;
                 end;
@@ -79,13 +80,13 @@ table 51935 "Repair Header"
         {
             CaptionClass = '1,1,1';
             Editable = false;
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=FILTER(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = FILTER(1));
 
             trigger OnValidate()
             begin
                 Lines.Reset;
                 Lines.SetRange("Repair No", "No.");
-                if Lines.Find('-')then Lines.ModifyAll("Global Dimension 1 Code", "Global Dimension 1 Code");
+                if Lines.Find('-') then Lines.ModifyAll("Global Dimension 1 Code", "Global Dimension 1 Code");
             end;
         }
         field(12; "Global Dimension 2 Code"; Code[20])
@@ -93,20 +94,20 @@ table 51935 "Repair Header"
             CaptionClass = '1,1,2';
             Caption = 'Global Dimension 2 Code';
             Editable = false;
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
 
             trigger OnValidate()
             begin
                 Lines.Reset;
                 Lines.SetRange("Repair No", "No.");
-                if Lines.Find('-')then Lines.ModifyAll("Global Dimension 2 Code", "Global Dimension 2 Code");
+                if Lines.Find('-') then Lines.ModifyAll("Global Dimension 2 Code", "Global Dimension 2 Code");
             end;
         }
         field(13; "Global Dimension 3 Code"; Code[20])
         {
             CaptionClass = '1,2,3';
             Caption = 'Global Dimension 3 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(3));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(3));
         }
         field(14; "Procurement Plan"; Code[20])
         {
@@ -114,7 +115,7 @@ table 51935 "Repair Header"
         }
         field(15; "Fault Type"; code[20])
         {
-            TableRelation = "Fault Code".Code where("Fault Area Code"=field("Fault Area"), "Symptom Code"=field("Fault Symptom"));
+            TableRelation = "Fault Code".Code where("Fault Area Code" = field("Fault Area"), "Symptom Code" = field("Fault Symptom"));
         }
         field(17; "Fault Symptom"; code[20])
         {
@@ -125,7 +126,7 @@ table 51935 "Repair Header"
         }
         field(19; "No of Approvals"; Integer)
         {
-            CalcFormula = Count("Approval Entry" WHERE("Table ID"=CONST(51935), "Document No."=FIELD("No.")));
+            CalcFormula = Count("Approval Entry" WHERE("Table ID" = CONST(51935), "Document No." = FIELD("No.")));
             Editable = false;
             FieldClass = FlowField;
         }
@@ -163,7 +164,7 @@ table 51935 "Repair Header"
         field(30; "RR Closed By"; Option)
         {
             OptionCaption = ' ,Direct Receipt of Goods/Services,Work Order,Rejection';
-            OptionMembers = " ", "Direct Receipt of Goods/Services", "Work Order", Rejection;
+            OptionMembers = " ","Direct Receipt of Goods/Services","Work Order",Rejection;
         }
         field(31; "Closed Date"; Date)
         {
@@ -173,12 +174,12 @@ table 51935 "Repair Header"
         }
         field(33; "Quantity Requested"; Decimal)
         {
-            CalcFormula = Sum("Repair Lines".Quantity WHERE("Repair No"=FIELD("No.")));
+            CalcFormula = Sum("Repair Lines".Quantity WHERE("Repair No" = FIELD("No.")));
             FieldClass = FlowField;
         }
         field(34; Amount; Decimal)
         {
-            CalcFormula = Sum("Repair Lines".Amount WHERE("Repair No"=FIELD("No.")));
+            CalcFormula = Sum("Repair Lines".Amount WHERE("Repair No" = FIELD("No.")));
             FieldClass = FlowField;
         }
         field(35; "Reason Code"; Code[50])
@@ -187,25 +188,25 @@ table 51935 "Repair Header"
 
             trigger OnValidate()
             begin
-                if Expenses.Get("Reason Code")then begin
-                    Reason:=Expenses.Description;
-                    "Account Type":=Expenses."Account Type";
-                    "Account No":=Expenses."Account No";
+                if Expenses.Get("Reason Code") then begin
+                    Reason := Expenses.Description;
+                    "Account Type" := Expenses."Account Type";
+                    "Account No" := Expenses."Account No";
                 end;
             end;
         }
         field(36; "Account Type"; Option)
         {
             OptionCaption = 'G/L Account,Vendor,Customer,Item,Fixed Asset';
-            OptionMembers = "G/L Account", Vendor, Customer, Item, "Fixed Asset";
+            OptionMembers = "G/L Account",Vendor,Customer,Item,"Fixed Asset";
         }
         field(37; "Account No"; Code[20])
         {
-            TableRelation = IF("Account Type"=CONST("G/L Account"))"G/L Account" WHERE("Account Type"=CONST(Posting), Blocked=CONST(false))
-            ELSE IF("Account Type"=CONST(Vendor))Vendor
-            ELSE IF("Account Type"=CONST(Customer))Customer
-            ELSE IF("Account Type"=CONST(Item))Item
-            ELSE IF("Account Type"=CONST("Fixed Asset"))"Fixed Asset";
+            TableRelation = IF ("Account Type" = CONST("G/L Account")) "G/L Account" WHERE("Account Type" = CONST(Posting), Blocked = CONST(false))
+            ELSE IF ("Account Type" = CONST(Vendor)) Vendor
+            ELSE IF ("Account Type" = CONST(Customer)) Customer
+            ELSE IF ("Account Type" = CONST(Item)) Item
+            ELSE IF ("Account Type" = CONST("Fixed Asset")) "Fixed Asset";
         }
         field(38; "Requested For"; Code[50])
         {
@@ -214,11 +215,11 @@ table 51935 "Repair Header"
 
             trigger OnValidate()
             begin
-                if UsersRec.Get("Requested For")then begin
-                    if EmpRec.Get(UsersRec."Employee No.")then begin
-                        "Global Dimension 1 Code":=EmpRec."Global Dimension 1 Code";
-                        "Global Dimension 2 Code":=EmpRec."Global Dimension 2 Code";
-                        "Global Dimension 3 Code":=EmpRec."Global Dimension 3 Code";
+                if UsersRec.Get("Requested For") then begin
+                    if EmpRec.Get(UsersRec."Employee No.") then begin
+                        "Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                        "Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                        "Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
                     end;
                 end;
             end;
@@ -252,13 +253,13 @@ table 51935 "Repair Header"
         }
         field(47; "Pending Approvals"; Integer)
         {
-            CalcFormula = Count("Approval Entry" WHERE("Table ID"=CONST(51935), "Document No."=FIELD("No."), Status=FILTER(Open|Created)));
+            CalcFormula = Count("Approval Entry" WHERE("Table ID" = CONST(51935), "Document No." = FIELD("No."), Status = FILTER(Open | Created)));
             Caption = 'Pending Approvals';
             FieldClass = FlowField;
         }
         field(48; "Empty No."; Boolean)
         {
-            CalcFormula = Exist("Repair Lines" WHERE(No=CONST(''), "Repair No"=FIELD("No.")));
+            CalcFormula = Exist("Repair Lines" WHERE(No = CONST(''), "Repair No" = FIELD("No.")));
             FieldClass = FlowField;
         }
         field(49; "SharePoint Link"; Text[250])
@@ -334,7 +335,7 @@ table 51935 "Repair Header"
         }
         field(68; Approvers; Integer)
         {
-            CalcFormula = Count("Approval Entry" WHERE("Table ID"=CONST(51935), "Document No."=FIELD("No."), Status=FILTER(Approved)));
+            CalcFormula = Count("Approval Entry" WHERE("Table ID" = CONST(51935), "Document No." = FIELD("No."), Status = FILTER(Approved)));
             FieldClass = FlowField;
             Caption = 'Approvers';
         }
@@ -342,7 +343,7 @@ table 51935 "Repair Header"
         {
             DataClassification = CustomerContent;
             OptionCaption = ' ,Contractor,Electrician,Mechanic,Millwright,Maintenance,Operator';
-            OptionMembers = , Contractor, Electrician, Mechanic, Millwright, Maintenance, Operator;
+            OptionMembers = ,Contractor,Electrician,Mechanic,Millwright,Maintenance,Operator;
         }
         field(70; "Asset Location"; code[20])
         {
@@ -353,7 +354,7 @@ table 51935 "Repair Header"
             begin
                 Lines.Reset;
                 Lines.SetRange("Repair No", "No.");
-                if Lines.Find('-')then Lines.ModifyAll("Asset Location", "Asset Location");
+                if Lines.Find('-') then Lines.ModifyAll("Asset Location", "Asset Location");
             end;
         }
     }
@@ -368,36 +369,58 @@ table 51935 "Repair Header"
         PurchSetup.Get;
         if "No." = '' then begin
             PurchSetup.TestField("Repair Requisition No.");
-            NoSeriesMgt.InitSeries(PurchSetup."Repair Requisition No.", xRec."No.", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(PurchSetup."Repair Requisition No.", xRec."No.", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(PurchSetup."Repair Requisition No.", xRec."No. Series") then
+                "No. Series" := xRec."No. Series"
+            else
+                "No. Series" := PurchSetup."Repair Requisition No.";
+            "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
         end;
-        "Raised by":=UserId;
-        "Needed By Date":=Today;
+        "Raised by" := UserId;
+        "Needed By Date" := Today;
         //"Expiration Date" := WorkDate;
-        if(not "RR Created") and (not "SSP Created")then begin
-            "Requested For":=UserId;
-            "Purchaser Code":=UserId;
-            if UsersRec.Get(UserId)then begin
+        if (not "RR Created") and (not "SSP Created") then begin
+            "Requested For" := UserId;
+            "Purchaser Code" := UserId;
+            if UsersRec.Get(UserId) then begin
                 UsersRec.TestField("Employee No.");
-                "Employee Code":=UsersRec."Employee No.";
+                "Employee Code" := UsersRec."Employee No.";
                 Validate("Employee Code");
             end;
         end;
-        "Repair Start Date":=CurrentDateTime;
-        "Procurement Plan":=PurchSetup."Effective Procurement Plan";
+        "Repair Start Date" := CurrentDateTime;
+        "Procurement Plan" := PurchSetup."Effective Procurement Plan";
     end;
-    var PurchSetup: Record "Procurement Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    UsersRec: Record "User Setup";
-    NAVemp: Record Employee;
-    EmpRec: Record "Employee Master";
-    Expenses: Record "Expense Codes";
-    Lines: Record "Repair Lines";
-    FaultRec: Record "Fault Code";
-    procedure AssitEdit(): Boolean begin
-        PurchSetup.Get;
-        PurchSetup.TestField("Repair Requisition No.");
-        if NoSeriesMgt.SelectSeries(PurchSetup."Repair Requisition No.", xRec."No. Series", "No. Series")then begin
-            NoSeriesMgt.SetSeries("No.");
+
+    var
+        PurchSetup: Record "Procurement Setup";
+        NoSeriesMgt: Codeunit "No. Series";
+        UsersRec: Record "User Setup";
+        NAVemp: Record Employee;
+        EmpRec: Record "Employee Master";
+        Expenses: Record "Expense Codes";
+        Lines: Record "Repair Lines";
+        FaultRec: Record "Fault Code";
+
+    // procedure AssitEdit(): Boolean
+    // begin
+    //     PurchSetup.Get;
+    //     PurchSetup.TestField("Repair Requisition No.");
+    //     if NoSeriesMgt.SelectSeries(PurchSetup."Repair Requisition No.", xRec."No. Series", "No. Series") then begin
+    //         NoSeriesMgt.SetSeries("No.");
+    //         exit(true);
+    //     end;
+    // end;
+    procedure AssistEdit(): Boolean
+    var
+        NoSeries: Codeunit "No. Series";
+    begin
+        PurchSetup.Get();
+
+        if NoSeries.LookupRelatedNoSeries(PurchSetup."Repair Requisition No.", xRec."No. Series", "No. Series") then begin
+            "No." := '';
+            PurchSetup.Get();
+            "No." := NoSeries.GetNextNo("No. Series", WorkDate(), true);
             exit(true);
         end;
     end;

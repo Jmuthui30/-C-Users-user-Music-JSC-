@@ -88,6 +88,6 @@ table 51470 "Client Loan Product"
     }
     var
         SalesSetup: Record "Sales & Receivables Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         HRsetup: Record "Client Payroll Setup";
 }

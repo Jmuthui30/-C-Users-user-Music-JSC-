@@ -8,7 +8,7 @@ page 50003 "Payment Voucher List"
     ApplicationArea = All;
     UsageCategory = Lists;
     SourceTable = "PV Header";
-    SourceTableView = WHERE("Payment Type"=CONST("Payment Voucher"));
+    SourceTableView = WHERE("Payment Type" = CONST("Payment Voucher"));
 
     layout
     {
@@ -149,7 +149,8 @@ page 50003 "Payment Voucher List"
                 begin
                     Rec.TestField("Paying Bank Account");
                     Rec.TestField("Pay Mode");
-                    if Rec."Pay Mode" = 'EFT' then Error('You cannot post an EFT Transaction')
+                    if Rec."Pay Mode" = 'EFT' then
+                        Error('You cannot post an EFT Transaction')
                     else
                         PVPost."Post Payment Voucher"(Rec);
                 end;
@@ -176,16 +177,17 @@ page 50003 "Payment Voucher List"
                     Payment2.SetRange(EFT_No, '');
                     Payment2.SetRange("Pay Mode", 'EFT');
                     Payment2.SetRange(Posted, false);
-                    if Payment2.Find('-')then begin
+                    if Payment2.Find('-') then begin
                         EFTHeader.Init;
-                        EFTHeader.No:=CashMgnt.GenerateEFTNo;
-                        EFTHeader."Transaction Date":=Today;
-                        EFTHeader."Process Module":=EFTHeader."Process Module"::PVs;
+                        EFTHeader.No := CashMgnt.GenerateEFTNo;
+                        EFTHeader."Transaction Date" := Today;
+                        EFTHeader."Process Module" := EFTHeader."Process Module"::PVs;
                         EFTHeader.Validate("Paying Bank Account", Rec."Paying Bank Account");
-                        EFTHeader.Status:=EFTHeader.Status::Logged;
+                        EFTHeader.Status := EFTHeader.Status::Logged;
                         EFTHeader.Insert(true);
                         // CREATE EFT LINES
-                        repeat CashMgnt.PostPVEft(Payment2, EFTHeader);
+                        repeat
+                            CashMgnt.PostPVEft(Payment2, EFTHeader);
                         until Payment2.Next = 0;
                         Message('Selected Record(s) successfully sent to EFT Page for Processing');
                         PAGE.Run(Page::"EFT Payment Card", EFTHeader);
@@ -212,7 +214,7 @@ page 50003 "Payment Voucher List"
                     Rec.TestField("Payee Account Name");
                     Rec.TestField(Payee);
                     Rec.CalcFields("Total Amount");
-                    Ref:=Format(Rec."No.");
+                    Ref := Format(Rec."No.");
                     CashMgt.InsertEFTEntries(Rec."Payee Bank Code", Rec."Branch Code", Rec."Payee Account No.", Rec."Payee Account Name", Rec."Total Amount", Ref);
                     Message('EFT Entries Sent.');
                 end;
@@ -225,7 +227,7 @@ page 50003 "Payment Voucher List"
                 PromotedIsBig = true;
                 PromotedCategory = Category8;
                 RunObject = Page "PV Documents";
-                RunPageLink = "Document No."=FIELD("No."), "Table ID"=CONST(50000);
+                RunPageLink = "Document No." = FIELD("No."), "Table ID" = CONST(50000);
             }
             action("Select Approvers")
             {
@@ -441,58 +443,80 @@ page 50003 "Payment Voucher List"
     }
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        Rec."Payment Type":=Rec."Payment Type"::"Payment Voucher";
-        Rec.Cashier:=UserId;
-        Rec.Status:=Rec.Status::Open;
+        Rec."Payment Type" := Rec."Payment Type"::"Payment Voucher";
+        Rec.Cashier := UserId;
+        Rec.Status := Rec.Status::Open;
     end;
+
     trigger OnOpenPage()
     begin
         Rec.SetRange("Payment Type", Rec."Payment Type"::"Payment Voucher");
     end;
-    procedure AssistEdit(PaymentVoucher: Record "PV Header"): Boolean begin
-        PV:=Rec;
-        GLSetup.Get();
-        GLSetup.TestField(GLSetup."PV Nos");
-        NoSeriesMgt.SelectSeries(GLSetup."PV Nos", PaymentVoucher."No. Series", PV."No. Series");
-        Rec:=PV;
-        exit(true);
+
+    // procedure AssistEdit(PaymentVoucher: Record "PV Header"): Boolean
+    // begin
+    //     PV := Rec;
+    //     GLSetup.Get();
+    //     GLSetup.TestField(GLSetup."PV Nos");
+    //     NoSeriesMgt.SelectSeries(GLSetup."PV Nos", PaymentVoucher."No. Series", PV."No. Series");
+    //     Rec := PV;
+    //     exit(true);
+    // end;
+    procedure AssistEdit(OldPaymentRec: Record Payments): Boolean
+    var
+        PV: Record "PV Header";
+        NoSeries: Codeunit "No. Series";
+        OldPV: Record "PV Header";
+    begin
+        PV := Rec;
+
+        // show the selection UI
+        if NoSeries.LookupRelatedNoSeries(GLSetup."PV Nos", OldPV."No. Series", PV."No. Series") then begin
+            // assign the next number from the selected series
+            PV."No." := NoSeries.GetNextNo(PV."No. Series");
+            Rec := PV;
+            exit(true);
+        end;
     end;
+
     local procedure SetControlAppearance()
     var
         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
         WorkflowWebhookMgt: Codeunit "Workflow Webhook Management";
     begin
-        OpenApprovalEntriesExistForCurrUser:=ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(Rec.RecordId);
-        OpenApprovalEntriesExist:=ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
-        CanCancelApprovalForRecord:=ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
+        OpenApprovalEntriesExistForCurrUser := ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(Rec.RecordId);
+        OpenApprovalEntriesExist := ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
+        CanCancelApprovalForRecord := ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
         WorkflowWebhookMgt.GetCanRequestAndCanCancel(Rec.RecordId, CanRequestApprovalForFlow, CanCancelApprovalForFlow);
     end;
-    var PV: Record "PV Header";
-    GLSetup: Record "Cash Management Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    PVPost: Codeunit "Finance Management";
-    ApprovalsMgt: Codeunit "Approvals Mgmt. Ext";
-    OpenApprovalEntriesExistForCurrUser: Boolean;
-    OpenApprovalEntriesExist: Boolean;
-    CanCancelApprovalForRecord: Boolean;
-    CanRequestApprovalForFlow: Boolean;
-    CanCancelApprovalForFlow: Boolean;
-    [InDataSet]
-    SalaryAdvanced: Boolean;
-    ShowEFT: Boolean;
-    ShowMpesa: Boolean;
-    BeneficiaryBanks: Record "Payee Bank Details";
-    AdvancedFinanceSetup: Record "Advanced Finance Setup";
-    Approvers: Record "Workflow User Group Member";
-    EditPayrollPeriod: Boolean;
-    CashMgt: Codeunit "Cash Management";
-    Ref: Text;
-    Payment2: Record "PV Header";
-    EFTHeader: Record "EFT Header";
-    EFTHeaderCount: Record "EFT Header";
-    EFTNo: Code[20];
-    eftlines: Record "EFT Lines";
-    PVLine: Record "PV Lines";
-    Payment: Record "PV Header";
-    CashMgnt: Codeunit "Cash Management";
+
+    var
+        PV: Record "PV Header";
+        GLSetup: Record "Cash Management Setup";
+        NoSeriesMgt: Codeunit "No. Series";
+        PVPost: Codeunit "Finance Management";
+        ApprovalsMgt: Codeunit "Approvals Mgmt. Ext";
+        OpenApprovalEntriesExistForCurrUser: Boolean;
+        OpenApprovalEntriesExist: Boolean;
+        CanCancelApprovalForRecord: Boolean;
+        CanRequestApprovalForFlow: Boolean;
+        CanCancelApprovalForFlow: Boolean;
+        [InDataSet]
+        SalaryAdvanced: Boolean;
+        ShowEFT: Boolean;
+        ShowMpesa: Boolean;
+        BeneficiaryBanks: Record "Payee Bank Details";
+        AdvancedFinanceSetup: Record "Advanced Finance Setup";
+        Approvers: Record "Workflow User Group Member";
+        EditPayrollPeriod: Boolean;
+        CashMgt: Codeunit "Cash Management";
+        Ref: Text;
+        Payment2: Record "PV Header";
+        EFTHeader: Record "EFT Header";
+        EFTHeaderCount: Record "EFT Header";
+        EFTNo: Code[20];
+        eftlines: Record "EFT Lines";
+        PVLine: Record "PV Lines";
+        Payment: Record "PV Header";
+        CashMgnt: Codeunit "Cash Management";
 }

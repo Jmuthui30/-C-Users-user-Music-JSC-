@@ -24,12 +24,13 @@ table 51442 "Loan Top-up"
             begin
                 LoanApp.Reset;
                 LoanApp.SetRange(LoanApp."Loan No", "Loan No");
-                if LoanApp.Find('-')then begin
+                if LoanApp.Find('-') then begin
                     AssMatrix.Reset;
                     AssMatrix.SetRange(AssMatrix."Payroll Period", "Payroll Period");
                     AssMatrix.SetRange(AssMatrix.Code, LoanApp."Deduction Code");
-                    if AssMatrix.Find('-')then begin
-                        repeat AssMatrix.Amount:=Repayment;
+                    if AssMatrix.Find('-') then begin
+                        repeat
+                            AssMatrix.Amount := Repayment;
                             AssMatrix.Modify;
                         until AssMatrix.Next = 0;
                     end;
@@ -53,20 +54,21 @@ table 51442 "Loan Top-up"
     fieldgroups
     {
     }
-    var NoSeriesMgt: Codeunit NoSeriesManagement;
-    HRsetup: Record "Human Resources Setup";
-    LoanType: Record "Client Loan Product";
-    EmpRec: Record Employee;
-    PeriodInterest: Decimal;
-    Installments: Decimal;
-    NewSchedule: Record "Client Loan Schedule";
-    RunningDate: Date;
-    Interest: Decimal;
-    FlatPeriodInterest: Decimal;
-    FlatRateTotalInterest: Decimal;
-    FlatPeriodInterval: Code[10];
-    LineNoInt: Integer;
-    RemainingPrincipalAmountDec: Decimal;
-    AssMatrix: Record "Client Payroll Matrix";
-    LoanApp: Record "Client Loan Application";
+    var
+        NoSeriesMgt: Codeunit "No. Series";
+        HRsetup: Record "Human Resources Setup";
+        LoanType: Record "Client Loan Product";
+        EmpRec: Record Employee;
+        PeriodInterest: Decimal;
+        Installments: Decimal;
+        NewSchedule: Record "Client Loan Schedule";
+        RunningDate: Date;
+        Interest: Decimal;
+        FlatPeriodInterest: Decimal;
+        FlatRateTotalInterest: Decimal;
+        FlatPeriodInterval: Code[10];
+        LineNoInt: Integer;
+        RemainingPrincipalAmountDec: Decimal;
+        AssMatrix: Record "Client Payroll Matrix";
+        LoanApp: Record "Client Loan Application";
 }

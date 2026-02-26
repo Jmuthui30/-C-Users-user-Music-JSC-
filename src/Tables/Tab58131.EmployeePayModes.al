@@ -19,24 +19,24 @@ table 58131 "Employee Pay Modes"
             TableRelation = "G/L Account";
             Caption = 'G/L Account';
         }
-        // field(4; "Total Earnings"; Decimal)
-        // {
-        //     CalcFormula = sum("Assignment Matrix".Amount where(Type = const(Earning),
-        //                                                           "Payroll Period" = field("Pay Period Filter"),
-        //                                                           "Pay Mode" = field("Pay Mode")));
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        //     Caption = 'Total Earnings';
-        // }
-        // field(5; "Total Deductions"; Decimal)
-        // {
-        //     CalcFormula = sum("Assignment Matrix".Amount where(Type = const(Deduction),
-        //                                                           "Payroll Period" = field("Pay Period Filter"),
-        //                                                           "Pay Mode" = field("Pay Mode")));
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        //     Caption = 'Total Deductions';
-        // }
+        field(4; "Total Earnings"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where(Type = const(Earning),
+                                                                  "Payroll Period" = field("Pay Period Filter"),
+                                                                  "Pay Mode" = field("Pay Mode")));
+            Editable = false;
+            FieldClass = FlowField;
+            Caption = 'Total Earnings';
+        }
+        field(5; "Total Deductions"; Decimal)
+        {
+            CalcFormula = sum("Assignment Matrix".Amount where(Type = const(Deduction),
+                                                                  "Payroll Period" = field("Pay Period Filter"),
+                                                                  "Pay Mode" = field("Pay Mode")));
+            Editable = false;
+            FieldClass = FlowField;
+            Caption = 'Total Deductions';
+        }
         field(6; "Pay Period Filter"; Date)
         {
             FieldClass = FlowFilter;

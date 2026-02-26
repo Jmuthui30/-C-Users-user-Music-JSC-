@@ -299,7 +299,8 @@ codeunit 50003 "HR Dates Mgt"
         DayPos: Integer;
         AmpersandPos: Integer;
         CommaPos: Integer;
-        TempText: Text[10];
+        TempText: Text[100];
+        StartPos: Integer;
     begin
         Y := 0;
         M := 0;
@@ -309,41 +310,61 @@ codeunit 50003 "HR Dates Mgt"
         DiffString := DelChr(DiffString, '=', ' '); // remove all spaces
         DiffString := UpperCase(DiffString); // standardize casing
 
-        // Position markers
+        // Find position markers - look for various formats
         YearPos := StrPos(DiffString, 'Y');
+        if YearPos = 0 then
+            YearPos := StrPos(DiffString, 'YEAR');
+
         MonthPos := StrPos(DiffString, 'M');
+        if MonthPos = 0 then
+            MonthPos := StrPos(DiffString, 'MONTH');
+
         DayPos := StrPos(DiffString, 'D');
+        if DayPos = 0 then
+            DayPos := StrPos(DiffString, 'DAY');
+
         AmpersandPos := StrPos(DiffString, '&');
         CommaPos := StrPos(DiffString, ',');
 
-        // Extract Year
+        // Extract Year (from start to first separator or Y/YEAR)
         if YearPos > 1 then begin
             TempText := CopyStr(DiffString, 1, YearPos - 1);
-            Evaluate(Y, TempText);
+            if Evaluate(Y, TempText) then; // safely evaluate
         end;
 
-        // Extract Month (between comma and 'M')
-        if (CommaPos > 0) and (MonthPos > CommaPos) then begin
-            TempText := CopyStr(DiffString, CommaPos + 1, MonthPos - (CommaPos + 1));
-            Evaluate(M, TempText);
-        end
-        else if (YearPos = 0) and (MonthPos > 1) then begin
-            // Format like "9M&30D" (no year)
-            TempText := CopyStr(DiffString, 1, MonthPos - 1);
-            Evaluate(M, TempText);
+        // Extract Month
+        StartPos := 1;
+        if (CommaPos > 0) then
+            StartPos := CommaPos + 1
+        else if (YearPos > 0) then
+            StartPos := YearPos + 1;
+
+        if MonthPos > StartPos then begin
+            TempText := CopyStr(DiffString, StartPos, MonthPos - StartPos);
+            // Clean any non-numeric characters
+            TempText := DelChr(TempText, '=', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ,&');
+            if Evaluate(M, TempText) then; // safely evaluate
         end;
 
-        // Extract Day (between '&' and 'D')
-        if (AmpersandPos > 0) and (DayPos > AmpersandPos) then begin
-            TempText := CopyStr(DiffString, AmpersandPos + 1, DayPos - (AmpersandPos + 1));
-            Evaluate(D, TempText);
+        // Extract Day
+        StartPos := 1;
+        if (AmpersandPos > 0) then
+            StartPos := AmpersandPos + 1
+        else if (MonthPos > 0) then
+            StartPos := MonthPos + 1
+        else if (YearPos > 0) then
+            StartPos := YearPos + 1;
+
+        if DayPos > StartPos then begin
+            TempText := CopyStr(DiffString, StartPos, DayPos - StartPos);
+            // Clean any non-numeric characters
+            TempText := DelChr(TempText, '=', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ,&');
+            if Evaluate(D, TempText) then; // safely evaluate
         end;
 
         // Convert to decimal
         DecimalAge := Round(Y + (M / 12) + (D / 365), 0.01);
         exit(DecimalAge);
     end;
-
-
 
 }

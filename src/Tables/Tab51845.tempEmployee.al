@@ -30,7 +30,7 @@ table 51845 "temp_Employee"
 
             trigger OnValidate()
             begin
-                if("Search Name" = UpperCase(xRec.Initials)) or ("Search Name" = '')then "Search Name":=Initials;
+                if ("Search Name" = UpperCase(xRec.Initials)) or ("Search Name" = '') then "Search Name" := Initials;
             end;
         }
         field(6; "Job Title"; Text[30])
@@ -43,7 +43,7 @@ table 51845 "temp_Employee"
 
             trigger OnValidate()
             begin
-                if "Search Name" = '' then "Search Name":=SetSearchNameToFullnameAndInitials;
+                if "Search Name" = '' then "Search Name" := SetSearchNameToFullnameAndInitials;
             end;
         }
         field(8; Address; Text[50])
@@ -57,8 +57,8 @@ table 51845 "temp_Employee"
         field(10; City; Text[30])
         {
             Caption = 'City';
-            TableRelation = IF("Country/Region Code"=CONST(''))"Post Code".City
-            ELSE IF("Country/Region Code"=FILTER(<>''))"Post Code".City WHERE("Country/Region Code"=FIELD("Country/Region Code"));
+            TableRelation = IF ("Country/Region Code" = CONST('')) "Post Code".City
+            ELSE IF ("Country/Region Code" = FILTER(<> '')) "Post Code".City WHERE("Country/Region Code" = FIELD("Country/Region Code"));
             //This property is currently not supported
             //TestTableRelation = false;
             ValidateTableRelation = false;
@@ -71,8 +71,8 @@ table 51845 "temp_Employee"
         field(11; "Post Code"; Code[20])
         {
             Caption = 'Post Code';
-            TableRelation = IF("Country/Region Code"=CONST(''))"Post Code"
-            ELSE IF("Country/Region Code"=FILTER(<>''))"Post Code" WHERE("Country/Region Code"=FIELD("Country/Region Code"));
+            TableRelation = IF ("Country/Region Code" = CONST('')) "Post Code"
+            ELSE IF ("Country/Region Code" = FILTER(<> '')) "Post Code" WHERE("Country/Region Code" = FIELD("Country/Region Code"));
             //This property is currently not supported
             //TestTableRelation = false;
             ValidateTableRelation = false;
@@ -112,7 +112,7 @@ table 51845 "temp_Employee"
         field(16; "Alt. Address Code"; Code[10])
         {
             Caption = 'Alt. Address Code';
-            TableRelation = "Alternative Address".Code WHERE("Employee No."=FIELD("No."));
+            TableRelation = "Alternative Address".Code WHERE("Employee No." = FIELD("No."));
         }
         field(17; "Alt. Address Start Date"; Date)
         {
@@ -148,7 +148,7 @@ table 51845 "temp_Employee"
         {
             Caption = 'Gender';
             OptionCaption = ' ,Female,Male';
-            OptionMembers = " ", Female, Male;
+            OptionMembers = " ",Female,Male;
         }
         field(25; "Country/Region Code"; Code[10])
         {
@@ -178,7 +178,7 @@ table 51845 "temp_Employee"
         {
             Caption = 'Status';
             OptionCaption = 'Active,Inactive,Terminated';
-            OptionMembers = Active, Inactive, Terminated;
+            OptionMembers = Active,Inactive,Terminated;
 
             trigger OnValidate()
             begin
@@ -209,7 +209,7 @@ table 51845 "temp_Employee"
         {
             CaptionClass = '1,1,1';
             Caption = 'Global Dimension 1 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
 
             trigger OnValidate()
             begin
@@ -220,7 +220,7 @@ table 51845 "temp_Employee"
         {
             CaptionClass = '1,1,2';
             Caption = 'Global Dimension 2 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
 
             trigger OnValidate()
             begin
@@ -230,11 +230,11 @@ table 51845 "temp_Employee"
         field(38; "Resource No."; Code[20])
         {
             Caption = 'Resource No.';
-            TableRelation = Resource WHERE(Type=CONST(Person));
+            TableRelation = Resource WHERE(Type = CONST(Person));
         }
         field(39; Comment; Boolean)
         {
-            CalcFormula = Exist("Human Resource Comment Line" WHERE("Table Name"=CONST(Employee), "No."=FIELD("No.")));
+            CalcFormula = Exist("Human Resource Comment Line" WHERE("Table Name" = CONST(Employee), "No." = FIELD("No.")));
             Caption = 'Comment';
             Editable = false;
             FieldClass = FlowField;
@@ -254,14 +254,14 @@ table 51845 "temp_Employee"
             CaptionClass = '1,3,1';
             Caption = 'Global Dimension 1 Filter';
             FieldClass = FlowFilter;
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
         }
         field(43; "Global Dimension 2 Filter"; Code[20])
         {
             CaptionClass = '1,3,2';
             Caption = 'Global Dimension 2 Filter';
             FieldClass = FlowFilter;
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
         field(44; "Cause of Absence Filter"; Code[10])
         {
@@ -271,9 +271,9 @@ table 51845 "temp_Employee"
         }
         field(45; "Total Absence (Base)"; Decimal)
         {
-            CalcFormula = Sum("Employee Absence"."Quantity (Base)" WHERE("Employee No."=FIELD("No."), "Cause of Absence Code"=FIELD("Cause of Absence Filter"), "From Date"=FIELD("Date Filter")));
+            CalcFormula = Sum("Employee Absence"."Quantity (Base)" WHERE("Employee No." = FIELD("No."), "Cause of Absence Code" = FIELD("Cause of Absence Filter"), "From Date" = FIELD("Date Filter")));
             Caption = 'Total Absence (Base)';
-            DecimalPlaces = 0: 5;
+            DecimalPlaces = 0 : 5;
             Editable = false;
             FieldClass = FlowField;
         }
@@ -354,7 +354,7 @@ table 51845 "temp_Employee"
         field(59; Balance; Decimal)
         {
             AutoFormatType = 1;
-            CalcFormula = -Sum("Detailed Employee Ledger Entry".Amount WHERE("Employee No."=FIELD("No."), "Initial Entry Global Dim. 1"=FIELD("Global Dimension 1 Filter"), "Initial Entry Global Dim. 2"=FIELD("Global Dimension 2 Filter"), "Posting Date"=FIELD("Date Filter")));
+            CalcFormula = - Sum("Detailed Employee Ledger Entry".Amount WHERE("Employee No." = FIELD("No."), "Initial Entry Global Dim. 1" = FIELD("Global Dimension 1 Filter"), "Initial Entry Global Dim. 2" = FIELD("Global Dimension 2 Filter"), "Posting Date" = FIELD("Date Filter")));
             Caption = 'Balance';
             Editable = false;
             FieldClass = FlowField;
@@ -367,7 +367,7 @@ table 51845 "temp_Employee"
         {
             Caption = 'Application Method';
             OptionCaption = 'Manual,Apply to Oldest';
-            OptionMembers = Manual, "Apply to Oldest";
+            OptionMembers = Manual,"Apply to Oldest";
         }
         field(140; Image; Media)
         {
@@ -420,30 +420,34 @@ table 51845 "temp_Employee"
         {
         }
     }
-    var HumanResSetup: Record "Human Resources Setup";
-    Res: Record Resource;
-    PostCode: Record "Post Code";
-    AlternativeAddr: Record "Alternative Address";
-    EmployeeQualification: Record "Employee Qualification";
-    Relative: Record "Employee Relative";
-    EmployeeAbsence: Record "Employee Absence";
-    MiscArticleInformation: Record "Misc. Article Information";
-    ConfidentialInformation: Record "Confidential Information";
-    HumanResComment: Record "Human Resource Comment Line";
-    SalespersonPurchaser: Record "Salesperson/Purchaser";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    EmployeeResUpdate: Codeunit "Employee/Resource Update";
-    EmployeeSalespersonUpdate: Codeunit "Employee/Salesperson Update";
-    DimMgt: Codeunit DimensionManagement;
-    Text000: Label 'Before you can use Online Map, you must fill in the Online Map Setup window.\See Setting Up Online Map in Help.';
-    BlockedEmplForJnrlErr: Label 'You cannot create this document because employee %1 is blocked due to privacy.', Comment = '%1 = employee no.';
-    BlockedEmplForJnrlPostingErr: Label 'You cannot post this document because employee %1 is blocked due to privacy.', Comment = '%1 = employee no.';
+    var
+        HumanResSetup: Record "Human Resources Setup";
+        Res: Record Resource;
+        PostCode: Record "Post Code";
+        AlternativeAddr: Record "Alternative Address";
+        EmployeeQualification: Record "Employee Qualification";
+        Relative: Record "Employee Relative";
+        EmployeeAbsence: Record "Employee Absence";
+        MiscArticleInformation: Record "Misc. Article Information";
+        ConfidentialInformation: Record "Confidential Information";
+        HumanResComment: Record "Human Resource Comment Line";
+        SalespersonPurchaser: Record "Salesperson/Purchaser";
+        NoSeriesMgt: Codeunit "No. Series";
+        EmployeeResUpdate: Codeunit "Employee/Resource Update";
+        EmployeeSalespersonUpdate: Codeunit "Employee/Salesperson Update";
+        DimMgt: Codeunit DimensionManagement;
+        Text000: Label 'Before you can use Online Map, you must fill in the Online Map Setup window.\See Setting Up Online Map in Help.';
+        BlockedEmplForJnrlErr: Label 'You cannot create this document because employee %1 is blocked due to privacy.', Comment = '%1 = employee no.';
+        BlockedEmplForJnrlPostingErr: Label 'You cannot post this document because employee %1 is blocked due to privacy.', Comment = '%1 = employee no.';
+
     [Scope('Cloud')]
-    procedure FullName(): Text[100]var
+    procedure FullName(): Text[100]
+    var
         NewFullName: Text[100];
         Handled: Boolean;
     begin
     end;
+
     [Scope('Cloud')]
     procedure ValidateShortcutDimCode(FieldNumber: Integer; var ShortcutDimCode: Code[20])
     begin
@@ -451,37 +455,47 @@ table 51845 "temp_Employee"
         DimMgt.SaveDefaultDim(DATABASE::Employee, "No.", FieldNumber, ShortcutDimCode);
         Modify;
     end;
+
     procedure DisplayMap()
     var
         MapPoint: Record "Online Map Setup";
         MapMgt: Codeunit "Online Map Management";
     begin
-        if MapPoint.FindFirst then MapMgt.MakeSelection(DATABASE::Employee, GetPosition)
+        if MapPoint.FindFirst then
+            MapMgt.MakeSelection(DATABASE::Employee, GetPosition)
         else
             Message(Text000);
     end;
+
     local procedure UpdateSearchName()
     var
         PrevSearchName: Code[250];
     begin
-        PrevSearchName:=xRec.FullName + ' ' + xRec.Initials;
-        if((("First Name" <> xRec."First Name") or ("Middle Name" <> xRec."Middle Name") or ("Last Name" <> xRec."Last Name") or (Initials <> xRec.Initials)) and ("Search Name" = PrevSearchName))then "Search Name":=SetSearchNameToFullnameAndInitials;
+        PrevSearchName := xRec.FullName + ' ' + xRec.Initials;
+        if ((("First Name" <> xRec."First Name") or ("Middle Name" <> xRec."Middle Name") or ("Last Name" <> xRec."Last Name") or (Initials <> xRec.Initials)) and ("Search Name" = PrevSearchName)) then "Search Name" := SetSearchNameToFullnameAndInitials;
     end;
-    local procedure SetSearchNameToFullnameAndInitials(): Code[250]begin
+
+    local procedure SetSearchNameToFullnameAndInitials(): Code[250]
+    begin
         exit(FullName + ' ' + Initials);
     end;
+
     [Scope('Cloud')]
-    procedure GetBankAccountNo(): Text begin
+    procedure GetBankAccountNo(): Text
+    begin
         if IBAN <> '' then exit(DelChr(IBAN, '=<>'));
         if "Bank Account No." <> '' then exit("Bank Account No.");
     end;
+
     [Scope('Cloud')]
     procedure CheckBlockedEmployeeOnJnls(IsPosting: Boolean)
     begin
         if "Privacy Blocked" then begin
             if IsPosting then Error(BlockedEmplForJnrlPostingErr, "No.");
-            Error(BlockedEmplForJnrlErr, "No.")end;
+            Error(BlockedEmplForJnrlErr, "No.")
+        end;
     end;
+
     [IntegrationEvent(false, false)]
     local procedure OnBeforeGetFullName(Employee: Record Employee; var NewFullName: Text[100]; var Handled: Boolean)
     begin

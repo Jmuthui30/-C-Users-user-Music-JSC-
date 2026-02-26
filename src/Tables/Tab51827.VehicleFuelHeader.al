@@ -13,20 +13,20 @@ table 51827 "Vehicle Fuel Header"
         }
         field(4; "Total Fuel Capacity"; Decimal)
         {
-            CalcFormula = Sum("Vehicle Fuel Details"."Fuel Capacity" WHERE("No."=FIELD("No.")));
+            CalcFormula = Sum("Vehicle Fuel Details"."Fuel Capacity" WHERE("No." = FIELD("No.")));
             FieldClass = FlowField;
         }
         field(5; "Total Fuel Cost"; Decimal)
         {
-            CalcFormula = Sum("Vehicle Fuel Details"."Fuel Cost" WHERE("No."=FIELD("No.")));
+            CalcFormula = Sum("Vehicle Fuel Details"."Fuel Cost" WHERE("No." = FIELD("No.")));
             FieldClass = FlowField;
         }
         field(6; Posted; Boolean)
         {
             trigger OnValidate()
             begin
-                "Posted By":=UserId;
-                "Posted Date":=Today;
+                "Posted By" := UserId;
+                "Posted Date" := Today;
             end;
         }
         field(7; "Posted Date"; Date)
@@ -42,7 +42,7 @@ table 51827 "Vehicle Fuel Header"
         field(10; "Global Dimension 1 Code"; Code[20])
         {
             CaptionClass = '1,1,1';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
 
             trigger OnValidate()
             begin
@@ -54,7 +54,7 @@ table 51827 "Vehicle Fuel Header"
         field(11; "Global Dimension 2 Code"; Code[20])
         {
             CaptionClass = '1,1,2';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
 
             trigger OnValidate()
             begin
@@ -75,15 +75,22 @@ table 51827 "Vehicle Fuel Header"
     }
     trigger OnInsert()
     begin
-        if("No." = '')then begin
+        if ("No." = '') then begin
             MotorpoolSetup.Get;
             MotorpoolSetup.TestField("Fuel Card Nos.");
-            NoSeriesMgt.InitSeries(MotorpoolSetup."Fuel Card Nos.", xRec."No.", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(MotorpoolSetup."Fuel Card Nos.", xRec."No.", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(MotorpoolSetup."Fuel Card Nos.",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=MotorpoolSetup."Fuel Card Nos.";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
-        "Created By":=UserId;
-        "Created Date":=Today;
+        "Created By" := UserId;
+        "Created Date" := Today;
     end;
-    var NoSeriesMgt: Codeunit NoSeriesManagement;
-    MotorpoolSetup: Record "Motorpool Setup";
-    Lines: Record "Vehicle Fuel Details";
+
+    var
+        NoSeriesMgt: Codeunit "No. Series";
+        MotorpoolSetup: Record "Motorpool Setup";
+        Lines: Record "Vehicle Fuel Details";
 }

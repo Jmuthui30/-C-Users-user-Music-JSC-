@@ -25,8 +25,8 @@ page 52408 "Distribution by Tenure"
                     Buffer.Initialize();
                     Buffer.AddMeasure('Gender', 0, Buffer."Data Type"::Integer, Buffer."Chart Type"::Column);
                     buffer.SetXAxis('Employees', Buffer."Data Type"::String);
-                    if Employee.FindSet()then repeat until Employee.Next() = 0;
-                    Buffer.Update(CurrPage.Chart);
+                    if Employee.FindSet() then repeat until Employee.Next() = 0;
+                    // Buffer.Update(CurrPage.Chart);
                 end;
             }
         }
@@ -46,5 +46,6 @@ page 52408 "Distribution by Tenure"
             }
         }
     }
-    var myInt: Integer;
+    var
+        myInt: Integer;
 }

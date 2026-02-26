@@ -23,35 +23,35 @@ table 52140 "Staff Based Budget Header"
             Editable = false;
             CaptionClass = '1,1,1';
             Caption = 'Global Dimension 1 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
 
             trigger OnValidate()
             begin
                 StaffBasedBudget.Reset();
                 StaffBasedBudget.SetRange(Budget, Budget);
                 StaffBasedBudget.SetRange("Global Dimension 1 Code", "Global Dimension 1 Code");
-                if StaffBasedBudget.FindFirst()then Error(StrSubstNo(Text000, "Global Dimension 1 Code"));
+                if StaffBasedBudget.FindFirst() then Error(StrSubstNo(Text000, "Global Dimension 1 Code"));
             end;
         }
         field(5; "Global Dimension 2 Code"; Code[20])
         {
             CaptionClass = '1,1,2';
             Caption = 'Global Dimension 2 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
         field(6; "Global Dimension 3 Code"; Code[20])
         {
             CaptionClass = '1,2,3';
             Caption = 'Global Dimension 3 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(3));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(3));
         }
         field(7; Amount; Decimal)
         {
             Editable = false;
             FieldClass = FlowField;
-            CalcFormula = sum("Staff Based Budget".Amount WHERE(Budget=field(Budget), Department=field("Global Dimension 1 Code")));
+            CalcFormula = sum("Staff Based Budget".Amount WHERE(Budget = field(Budget), Department = field("Global Dimension 1 Code")));
         }
-        field(8; Status;Enum "Document Status")
+        field(8; Status; Enum "Document Status")
         {
             DataClassification = ToBeClassified;
             Editable = false;
@@ -61,8 +61,9 @@ table 52140 "Staff Based Budget Header"
                 StaffBasedLines.Reset();
                 StaffBasedLines.SetRange(Budget, Budget);
                 StaffBasedLines.SetRange(Department, "Global Dimension 1 Code");
-                If StaffBasedLines.FindSet()then begin
-                    repeat StaffBasedLines.Status:=Status;
+                If StaffBasedLines.FindSet() then begin
+                    repeat
+                        StaffBasedLines.Status := Status;
                         StaffBasedLines.Modify(true);
                     until StaffBasedLines.Next() = 0;
                 end;
@@ -98,14 +99,21 @@ table 52140 "Staff Based Budget Header"
     begin
         if "No." = '' then begin
             AdvancedFinanceSetup.TestField("Staff Based Budget");
-            NoSeriesMgt.InitSeries(AdvancedFinanceSetup."Staff Based Budget", xRec."No. Series", 0D, "No.", "No. Series");
-            "Created Date":=Today;
-            "Created By":=UserId;
+            // NoSeriesMgt.InitSeries(AdvancedFinanceSetup."Staff Based Budget", xRec."No. Series", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated(AdvancedFinanceSetup."Staff Based Budget",xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=AdvancedFinanceSetup."Staff Based Budget";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
+            "Created Date" := Today;
+            "Created By" := UserId;
         end;
     end;
-    var AdvancedFinanceSetup: Record "Advanced Finance Setup";
-    NoSeriesMgt: Codeunit NoSeriesManagement;
-    StaffBasedBudget: Record "Staff Based Budget Header";
-    StaffBasedLines: Record "Staff Based Budget";
-    Text000: Label 'The Staff Based Budget for % have already been Created!';
+
+    var
+        AdvancedFinanceSetup: Record "Advanced Finance Setup";
+        NoSeriesMgt: Codeunit "No. Series";
+        StaffBasedBudget: Record "Staff Based Budget Header";
+        StaffBasedLines: Record "Staff Based Budget";
+        Text000: Label 'The Staff Based Budget for % have already been Created!';
 }

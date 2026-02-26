@@ -17,9 +17,9 @@ table 51830 "Vehicle Service Header"
 
             trigger OnValidate()
             begin
-                if Fleet.Get("Vehicle Reg No.")then begin
-                    "Engine No.":=Fleet."Engine No.";
-                    Make:=Fleet.Description;
+                if Fleet.Get("Vehicle Reg No.") then begin
+                    "Engine No." := Fleet."Engine No.";
+                    Make := Fleet.Description;
                 end;
             end;
         }
@@ -30,8 +30,8 @@ table 51830 "Vehicle Service Header"
         {
             trigger OnValidate()
             begin
-                "Posted By":=UserId;
-                "Posted Date":=Today;
+                "Posted By" := UserId;
+                "Posted Date" := Today;
             end;
         }
         field(7; "Posted Date"; Date)
@@ -47,7 +47,7 @@ table 51830 "Vehicle Service Header"
         field(10; "Global Dimension 1 Code"; Code[20])
         {
             CaptionClass = '1,1,1';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
 
             trigger OnValidate()
             begin
@@ -59,7 +59,7 @@ table 51830 "Vehicle Service Header"
         field(11; "Global Dimension 2 Code"; Code[20])
         {
             CaptionClass = '1,1,2';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
 
             trigger OnValidate()
             begin
@@ -85,7 +85,7 @@ table 51830 "Vehicle Service Header"
         }
         field(17; "Total Cost"; Decimal)
         {
-            CalcFormula = Sum("Vehicle Service Details".Amount WHERE("No."=FIELD("No.")));
+            CalcFormula = Sum("Vehicle Service Details".Amount WHERE("No." = FIELD("No.")));
             FieldClass = FlowField;
         }
         field(18; "Mechanic No."; Code[20])
@@ -94,7 +94,7 @@ table 51830 "Vehicle Service Header"
 
             trigger OnValidate()
             begin
-                if Mechanics.Get("Mechanic No.")then "Mechanic Name":=Mechanics.Name;
+                if Mechanics.Get("Mechanic No.") then "Mechanic Name" := Mechanics.Name;
             end;
         }
         field(19; "Mechanic Name"; Text[100])
@@ -118,17 +118,24 @@ table 51830 "Vehicle Service Header"
     }
     trigger OnInsert()
     begin
-        if("No." = '')then begin
+        if ("No." = '') then begin
             MotorpoolSetup.Get;
             MotorpoolSetup.TestField("Vehicle Service Nos.");
-            NoSeriesMgt.InitSeries(MotorpoolSetup."Vehicle Service Nos.", xRec."No.", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(MotorpoolSetup."Vehicle Service Nos.", xRec."No.", 0D, "No.", "No. Series");
+            if NoSeriesMgt.AreRelated((MotorpoolSetup."Vehicle Service Nos."),xRec."No. Series") then
+            "No. Series":=xRec."No. Series"
+            else
+            "No. Series":=MotorpoolSetup."Vehicle Service Nos.";
+            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
         end;
-        "Created By":=UserId;
-        "Created Date":=Today;
+        "Created By" := UserId;
+        "Created Date" := Today;
     end;
-    var NoSeriesMgt: Codeunit NoSeriesManagement;
-    MotorpoolSetup: Record "Motorpool Setup";
-    Lines: Record "Vehicle Fuel Details";
-    Fleet: Record Vehicle;
-    Mechanics: Record Driver;
+
+    var
+        NoSeriesMgt: Codeunit "No. Series";
+        MotorpoolSetup: Record "Motorpool Setup";
+        Lines: Record "Vehicle Fuel Details";
+        Fleet: Record Vehicle;
+        Mechanics: Record Driver;
 }

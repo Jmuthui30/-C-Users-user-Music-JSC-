@@ -425,90 +425,75 @@ codeunit 51456 "Client Payroll Calculator"
     procedure GeneratePayslip(var EmpNo: Code[20]; var Period: Date)
     var
         Employee: Record "Client Employee Master";
+        EmpRec: Record "Client Employee Master";
         PeriodName: Text;
         Comp: Code[20];
         ClientEmail: List of [Text];
         TempBlob: Codeunit "Temp Blob";
-        Subject: Text;
+        Subject: Text[250];
         Body: Text;
         CompInfo: Record "Client Company Information";
         Mail: Codeunit "Email Message";
         Email: Codeunit Email;
-        outStreamReport: OutStream;
-        inStreamReport: InStream;
-        RecRef: RecordRef;
-        ReportParameters: Record "Report Parameters";
-        XmlParameters: Text;
-        CurrentUser: Code[50];
-        IStream: InStream;
-        Content: File;
-        EmailMessage: Codeunit "Email Message";
-        PasswordHandler: Codeunit "Password Handler";
-        SMSMsg: Label 'Hi.Use password %1 for opening Tender-%2.';
-        Receipient: List of [Text];
-        EmailBody: Text;
-        SMSBody: Text;
-        OpeningPassword: Text;
+        OutStr: OutStream;
+        InStr: InStream;
+        FileName: Text[250];
+        PayPeriodText: Text[50];
+        Payslip: Report "Client Payslip";
     begin
-        Clear(ReportParameters);
-        Clear(XmlParameters);
-        CurrentUser := UserId;
-        //Generation
-        if PayPeriod.Get(Period) then PeriodName := PayPeriod.Name + ' '; //+ Format(Period, 1, 3);        
-        Comp := '';
-        Employee.Reset;
-        Employee.SetRange("No.", EmpNo);
-        Employee.SetFilter("Pay Period Filter", '%1', Period);
-        if Employee.FindFirst then Comp := Employee."Company Code";
-        if Comp <> '' then begin
-            //Sending
-            ClientRec.Get(EmpNo);
-            CompInfo.Get(Comp);
-            if ClientRec."Email Address" <> '' then ClientEmail.Add(ClientRec."Email Address");
-            //ClientEmail.Add('vincent.okoth@teknohub.sytems');
-            if ClientEmail.Count <> 0 then begin
-                Subject := StrSubstNo(Comp + ' ' + '%1 Payslip', Format(Period, 0, '<Month text>-<Year4>'));
-                Body += 'Hello, ' + Employee."Full Name";
-                //Body += '<br><br>';
-                //Body += 'Kindly ignore this mail is for test purpose';
-                Body += '<br><br>';
-                Body += StrSubstNo('Kindly find the attached payslip for the month of %1', Format(Period, 0, '<Month text>-<Year4>'));
-                Body += '<br><br>';
-                Body += 'Thank you.';
-                Body += '<br><br>';
-                Body += 'Kindly do not respond as this is a system genated email.';
-                Body += '<br><br>';
-                Body += 'Yours Sincerely,';
-                Body += '<br><br>';
-                Body += '<b>Payroll Department<b>';
-                Body += '<br>';
-                Body += CompInfo.Name;
-                Body += '<br><br>';
-                Body += 'This email message and any file(s) transmitted with it is intended solely for the individual or entity to whom it is addressed and may contain confidential and/or legally privileged information which confidentiality and/or privilege is not lost or waived by reason of mistaken transmission.';
-                Body += '<br>';
-                Body += 'If you have received this message by error you are not authorized to view disseminate distribute or copy the message without the written consent of Judicial Service Commission and are requested to contact the sender by telephone or e-mail and destroy the original.';
-                Body += '<br>';
-                Mail.Create(ClientEmail, Subject, Body, true);
-                Employee.Reset();
-                Employee.SETRANGE("No.", Employee."No.");
-                Employee.SetFilter("Pay Period Filter", '%1', Period);
-                if Employee.FindFirst() then RecRef.GetTable(Employee);
-                //Generate blob from report
-                //with ReportParameters do begin
-                ReportParameters.SetAutoCalcFields(Parameters);
-                ReportParameters.Get(51455, CurrentUser);
-                ReportParameters.Parameters.CreateInStream(IStream);
-                IStream.ReadText(XmlParameters);
-                //end;
-                TempBlob.CreateOutStream(outStreamReport);
-                TempBlob.CreateInStream(inStreamReport);
-                Report.SaveAs(51455, XmlParameters, ReportFormat::Pdf, outStreamReport, RecRef);
-                Mail.AddAttachment(Format(Period, 0, '<Month Text>-<Year4>') + ' Payslip ' + Employee."No." + '.pdf', 'PDF', inStreamReport);
-                Email.Send(Mail);
+        if PayPeriod.Get(Period) then
+            PeriodName := PayPeriod.Name + ' ';
 
-                //  SMSBody := StrSubstNo(SMSMsg, CommitteeMember."Opening Password", TenderRec.Title);
+        Employee.Reset();
+        Employee.SetRange("No.", EmpNo);
+        Employee.SetRange("Pay Period Filter", Period);
+        if not Employee.FindFirst() then
+            exit;
+
+        Comp := Employee."Company Code";
+        if Comp = '' then
+            exit;
+
+        ClientRec.Get(EmpNo);
+        CompInfo.Get(Comp);
+
+        Clear(ClientEmail);
+        if ClientRec."Email Address" <> '' then
+            ClientEmail.Add(ClientRec."Email Address");
+
+        if ClientEmail.Count = 0 then
+            exit;
+
+        PayPeriodText := Format(Period, 0, '<Month Text> <Year4>');
+        Subject := CopyStr('Payslip for Period - ' + PayPeriodText, 1, 250);
+        FileName := CopyStr(PayPeriodText + '-' + Employee."No." + '.pdf', 1, 250);
+        Body :=
+            'Hello, ' + Employee."Full Name" + '<br><br>' +
+            'Kindly find the attached payslip for the month of ' + PayPeriodText + '<br><br>' +
+            'Thank you.<br><br>' +
+            'Kindly do not respond as this is a system generated email.<br><br>' +
+            'Yours Sincerely,<br><br>' +
+            '<b>Payroll Department</b><br>' +
+            CompInfo.Name;
+
+        Mail.Create(ClientEmail, Subject, Body, true);
+
+        //Save Pdf
+        EmpRec.Reset();
+        EmpRec.SetRange("No.", Employee."No.");
+        EmpRec.SetRange("Pay Period Filter", Period);
+        if EmpRec.FindFirst() then begin
+            Clear(Payslip);
+            Payslip.SetTableView(EmpRec);
+            clear(TempBlob);
+            TempBlob.CreateOutStream(OutStr);
+            if Payslip.SaveAs('', ReportFormat::Pdf, OutStr) then begin
+                TempBlob.CreateInStream(InStr);
+                Mail.AddAttachment(FileName, 'PDF', InStr);
             end;
         end;
+
+        Email.Send(Mail, Enum::"Email Scenario"::Default);
     end;
 
     procedure GeneratePNine(var EmpNo: Code[20]; var StartPeriod: Date; var EndPeriod: Date; var Comp: Code[20]; var XmlParameters: Text)

@@ -1,5 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>MSRB</am:Name>
+      <am:Version>15.0.20283.0</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>MSRB</am:Name>
+      <am:Version>15.0.20283.0</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2026-02-05T06:39:44.1033324Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource">
@@ -7,9 +18,83 @@
         <DataProvider>SQL</DataProvider>
         <ConnectString />
       </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
       <rd:DataSourceID>bb73bb64-27e0-429f-935f-39d5fa16536f</rd:DataSourceID>
     </DataSource>
   </DataSources>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+      <Fields>
+        <Field Name="CompName">
+          <DataField>CompName</DataField>
+        </Field>
+        <Field Name="Logo">
+          <DataField>Logo</DataField>
+        </Field>
+        <Field Name="OurBankName">
+          <DataField>OurBankName</DataField>
+        </Field>
+        <Field Name="OurBankAddress">
+          <DataField>OurBankAddress</DataField>
+        </Field>
+        <Field Name="OurBankTown">
+          <DataField>OurBankTown</DataField>
+        </Field>
+        <Field Name="Bank_Code">
+          <DataField>Bank_Code</DataField>
+        </Field>
+        <Field Name="No">
+          <DataField>No</DataField>
+        </Field>
+        <Field Name="Bank_Branch">
+          <DataField>Bank_Branch</DataField>
+        </Field>
+        <Field Name="Bank_Branch_Name">
+          <DataField>Bank_Branch_Name</DataField>
+        </Field>
+        <Field Name="Name">
+          <DataField>Name</DataField>
+        </Field>
+        <Field Name="Bank_Name">
+          <DataField>Bank_Name</DataField>
+        </Field>
+        <Field Name="StaffID">
+          <DataField>StaffID</DataField>
+        </Field>
+        <Field Name="BankName">
+          <DataField>BankName</DataField>
+        </Field>
+        <Field Name="AccountNumber">
+          <DataField>AccountNumber</DataField>
+        </Field>
+        <Field Name="Current">
+          <DataField>Current</DataField>
+        </Field>
+        <Field Name="CurrentFormat">
+          <DataField>CurrentFormat</DataField>
+        </Field>
+        <Field Name="Filters">
+          <DataField>Filters</DataField>
+        </Field>
+        <Field Name="ChequeNo">
+          <DataField>ChequeNo</DataField>
+        </Field>
+        <Field Name="CurrentDate">
+          <DataField>CurrentDate</DataField>
+        </Field>
+        <Field Name="MonthStartDate">
+          <DataField>MonthStartDate</DataField>
+        </Field>
+        <Field Name="EFTText">
+          <DataField>EFTText</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -1164,7 +1249,7 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
-            <Top>0.17937in</Top>
+            <Top>0.19584in</Top>
             <Height>1.19664in</Height>
             <Width>7.41825in</Width>
             <Style>
@@ -1180,9 +1265,10 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>="Pay Period"+""+Fields!MonthStartDate.Value</Value>
+                    <Value>=Fields!MonthStartDate.Value</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Format>y</Format>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1209,13 +1295,13 @@
             </Style>
           </Textbox>
         </ReportItems>
-        <Height>3.49507cm</Height>
+        <Height>3.53689cm</Height>
         <Style />
       </Body>
       <Width>18.84236cm</Width>
       <Page>
         <PageHeader>
-          <Height>2.15194cm</Height>
+          <Height>2.43419cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -1272,8 +1358,8 @@
               <Value>=Fields!Logo.Value</Value>
               <MIMEType>image/bmp</MIMEType>
               <Sizing>FitProportional</Sizing>
-              <Top>0.2248in</Top>
-              <Left>1.93485in</Left>
+              <Top>0.00119in</Top>
+              <Left>3.97279in</Left>
               <Height>0.62243in</Height>
               <Width>1.9685in</Width>
               <ZIndex>1</ZIndex>
@@ -1301,6 +1387,12 @@
       </Page>
     </ReportSection>
   </ReportSections>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>4</NumberOfColumns>
+      <NumberOfRows>2</NumberOfRows>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -1340,77 +1432,4 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
   <rd:ReportID>48c614aa-6b9c-41d7-9ad8-b47fc9af1fcc</rd:ReportID>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Fields>
-        <Field Name="CompName">
-          <DataField>CompName</DataField>
-        </Field>
-        <Field Name="Logo">
-          <DataField>Logo</DataField>
-        </Field>
-        <Field Name="OurBankName">
-          <DataField>OurBankName</DataField>
-        </Field>
-        <Field Name="OurBankAddress">
-          <DataField>OurBankAddress</DataField>
-        </Field>
-        <Field Name="OurBankTown">
-          <DataField>OurBankTown</DataField>
-        </Field>
-        <Field Name="Bank_Code">
-          <DataField>Bank_Code</DataField>
-        </Field>
-        <Field Name="No">
-          <DataField>No</DataField>
-        </Field>
-        <Field Name="Bank_Branch">
-          <DataField>Bank_Branch</DataField>
-        </Field>
-        <Field Name="Bank_Branch_Name">
-          <DataField>Bank_Branch_Name</DataField>
-        </Field>
-        <Field Name="Name">
-          <DataField>Name</DataField>
-        </Field>
-        <Field Name="Bank_Name">
-          <DataField>Bank_Name</DataField>
-        </Field>
-        <Field Name="StaffID">
-          <DataField>StaffID</DataField>
-        </Field>
-        <Field Name="BankName">
-          <DataField>BankName</DataField>
-        </Field>
-        <Field Name="AccountNumber">
-          <DataField>AccountNumber</DataField>
-        </Field>
-        <Field Name="Current">
-          <DataField>Current</DataField>
-        </Field>
-        <Field Name="CurrentFormat">
-          <DataField>CurrentFormat</DataField>
-        </Field>
-        <Field Name="Filters">
-          <DataField>Filters</DataField>
-        </Field>
-        <Field Name="ChequeNo">
-          <DataField>ChequeNo</DataField>
-        </Field>
-        <Field Name="CurrentDate">
-          <DataField>CurrentDate</DataField>
-        </Field>
-        <Field Name="MonthStartDate">
-          <DataField>MonthStartDate</DataField>
-        </Field>
-        <Field Name="EFTText">
-          <DataField>EFTText</DataField>
-        </Field>
-      </Fields>
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-    </DataSet>
-  </DataSets>
 </Report>

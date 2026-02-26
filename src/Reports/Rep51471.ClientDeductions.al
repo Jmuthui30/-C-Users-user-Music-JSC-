@@ -9,7 +9,7 @@ report 51471 "Client Deductions"
     {
         dataitem("Client Payroll Matrix"; "Client Payroll Matrix")
         {
-            DataItemTableView = SORTING("Employee No", Type, Code, "Payroll Period", "Reference No")WHERE(Type=CONST(Deduction));
+            DataItemTableView = SORTING("Employee No", Type, Code, "Payroll Period", "Reference No") WHERE(Type = CONST(Deduction));
             RequestFilterFields = Company, "Payroll Period", "Code", "Payroll Group";
             RequestFilterHeading = 'Deduction';
 
@@ -156,20 +156,26 @@ report 51471 "Client Deductions"
             }
             trigger OnAfterGetRecord()
             begin
-                Deductions.SetRange(Deductions."Employee No", "Client Payroll Matrix"."Employee No");
-                Deductions.SetRange(Deductions."Normal Earnings", true);
-                if Deductions.Find('-')then begin
-                    if Emp.Get("Client Payroll Matrix"."Employee No")then begin
-                        FirstName:=Emp."First Name";
-                        LastName:=Emp."Last Name";
-                        TotalAmount:=TotalAmount + "Client Payroll Matrix".Amount;
+                if Emp.Get("Client Payroll Matrix"."Employee No") then begin
+                    if Emp.Status = Emp.Status::Inactive then begin
+                        CurrReport.Skip;
+                        exit;
                     end;
-                    if OurEmp.Get("Client Payroll Matrix"."Employee No")then SHIFNo:=OurEmp."SHIF No";
+
+                    FirstName := Emp."First Name";
+                    LastName := Emp."Last Name";
+                    TotalAmount := TotalAmount + "Client Payroll Matrix".Amount;
                 end;
+
+                if OurEmp.Get("Client Payroll Matrix"."Employee No") then
+                    SHIFNo := OurEmp."SHIF No";
             end;
+
+
             trigger OnPreDataItem()
             begin
-                DateSpecified:="Client Payroll Matrix".GetRangeMin("Client Payroll Matrix"."Payroll Period");
+                DateSpecified := "Client Payroll Matrix".GetRangeMin("Client Payroll Matrix"."Payroll Period");
+                // Emp.SetRange(Status, Emp.Status::Active);
             end;
         }
     }
@@ -203,54 +209,58 @@ report 51471 "Client Deductions"
             CompInfo.CalcFields(Picture);
         end;
     end;
-    var DateSpecified: Date;
-    SHIFNo: Code[20];
-    Emp: Record "Client Employee Master";
-    Id: Code[20];
-    FirstName: Text[30];
-    LastName: Text[30];
-    TotalAmount: Decimal;
-    "Count": Integer;
-    Deductions: Record "Client Payroll Matrix";
-    EmployerSHIFNo: Code[20];
-    DOB: Date;
-    CompInfoSetup: Record "Client Loan Transactions";
-    "HR Details": Record "Client Employee Master";
-    CompPINNo: Code[20];
-    YEAR: Integer;
-    Address: Text[90];
-    Tel: Text[30];
-    Counter: Integer;
-    AmountCaptionLbl: Label 'Amount';
-    PageCaptionLbl: Label 'Page';
-    MONTHLY_EARNINGS_REPORTCaptionLbl: Label 'MONTHLY DEDUCTIONS REPORT';
-    Name_of_EmployeeCaptionLbl: Label 'Name of Employee';
-    EMPLOYER_NOCaptionLbl: Label 'EMPLOYER NO';
-    Payroll_No_CaptionLbl: Label 'Payroll No.';
-    PERIODCaptionLbl: Label 'PERIOD';
-    EMPLOYERCaptionLbl: Label 'EMPLOYER';
-    ADDRESSCaptionLbl: Label 'ADDRESS';
-    EMPLOYER_PIN_NOCaptionLbl: Label 'EMPLOYER PIN NO';
-    TEL_NOCaptionLbl: Label 'TEL NO';
-    PageCaption_Control44Lbl: Label 'Page';
-    UserCaptionLbl: Label 'User';
-    MONTHLY_EARNINGS_REPORTCaption_Control49Lbl: Label 'MONTHLY DEDUCTIONS REPORT';
-    EMPLOYER_NOCaption_Control1000000008Lbl: Label 'EMPLOYER NO';
-    PERIODCaption_Control1000000010Lbl: Label 'PERIOD';
-    AmountCaption_Control1000000005Lbl: Label 'Amount';
-    Name_of_EmployeeCaption_Control1000000055Lbl: Label 'Name of Employee';
-    Payroll_No_Caption_Control1000000056Lbl: Label 'Payroll No.';
-    Total_AmountCaptionLbl: Label 'Total Amount';
-    OurEmp: Record "Client Employee Master";
-    CompInfo: Record "Client Company Information";
-    NoLogo: Boolean;
-    procedure PayrollRounding(var Amount: Decimal)PayrollRounding: Decimal var
+
+    var
+        DateSpecified: Date;
+        SHIFNo: Code[20];
+        Emp: Record "Client Employee Master";
+        Id: Code[20];
+        FirstName: Text[30];
+        LastName: Text[30];
+        TotalAmount: Decimal;
+        "Count": Integer;
+        Deductions: Record "Client Payroll Matrix";
+        EmployerSHIFNo: Code[20];
+        DOB: Date;
+        CompInfoSetup: Record "Client Loan Transactions";
+        "HR Details": Record "Client Employee Master";
+        CompPINNo: Code[20];
+        YEAR: Integer;
+        Address: Text[90];
+        Tel: Text[30];
+        Counter: Integer;
+        AmountCaptionLbl: Label 'Amount';
+        PageCaptionLbl: Label 'Page';
+        MONTHLY_EARNINGS_REPORTCaptionLbl: Label 'MONTHLY DEDUCTIONS REPORT';
+        Name_of_EmployeeCaptionLbl: Label 'Name of Employee';
+        EMPLOYER_NOCaptionLbl: Label 'EMPLOYER NO';
+        Payroll_No_CaptionLbl: Label 'Payroll No.';
+        PERIODCaptionLbl: Label 'PERIOD';
+        EMPLOYERCaptionLbl: Label 'EMPLOYER';
+        ADDRESSCaptionLbl: Label 'ADDRESS';
+        EMPLOYER_PIN_NOCaptionLbl: Label 'EMPLOYER PIN NO';
+        TEL_NOCaptionLbl: Label 'TEL NO';
+        PageCaption_Control44Lbl: Label 'Page';
+        UserCaptionLbl: Label 'User';
+        MONTHLY_EARNINGS_REPORTCaption_Control49Lbl: Label 'MONTHLY DEDUCTIONS REPORT';
+        EMPLOYER_NOCaption_Control1000000008Lbl: Label 'EMPLOYER NO';
+        PERIODCaption_Control1000000010Lbl: Label 'PERIOD';
+        AmountCaption_Control1000000005Lbl: Label 'Amount';
+        Name_of_EmployeeCaption_Control1000000055Lbl: Label 'Name of Employee';
+        Payroll_No_Caption_Control1000000056Lbl: Label 'Payroll No.';
+        Total_AmountCaptionLbl: Label 'Total Amount';
+        OurEmp: Record "Client Employee Master";
+        CompInfo: Record "Client Company Information";
+        NoLogo: Boolean;
+
+    procedure PayrollRounding(var Amount: Decimal) PayrollRounding: Decimal
+    var
         HRsetup: Record "QuantumJumps HR Setup";
     begin
         HRsetup.Get;
         if HRsetup."Payroll Rounding Precision" = 0 then Error('You must specify the rounding precision under HR setup');
-        if HRsetup."Payroll Rounding Type" = HRsetup."Payroll Rounding Type"::Nearest then PayrollRounding:=Round(Amount, HRsetup."Payroll Rounding Precision", '=');
-        if HRsetup."Payroll Rounding Type" = HRsetup."Payroll Rounding Type"::Up then PayrollRounding:=Round(Amount, HRsetup."Payroll Rounding Precision", '>');
-        if HRsetup."Payroll Rounding Type" = HRsetup."Payroll Rounding Type"::Down then PayrollRounding:=Round(Amount, HRsetup."Payroll Rounding Precision", '<');
+        if HRsetup."Payroll Rounding Type" = HRsetup."Payroll Rounding Type"::Nearest then PayrollRounding := Round(Amount, HRsetup."Payroll Rounding Precision", '=');
+        if HRsetup."Payroll Rounding Type" = HRsetup."Payroll Rounding Type"::Up then PayrollRounding := Round(Amount, HRsetup."Payroll Rounding Precision", '>');
+        if HRsetup."Payroll Rounding Type" = HRsetup."Payroll Rounding Type"::Down then PayrollRounding := Round(Amount, HRsetup."Payroll Rounding Precision", '<');
     end;
 }

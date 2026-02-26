@@ -1,5 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>MSRB</am:Name>
+      <am:Version>15.0.20283.0</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>MSRB</am:Name>
+      <am:Version>15.0.20283.0</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2026-02-05T07:05:31.8278512Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource">
@@ -7,6 +18,7 @@
         <DataProvider>SQL</DataProvider>
         <ConnectString />
       </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
       <rd:DataSourceID>bb73bb64-27e0-429f-935f-39d5fa16536f</rd:DataSourceID>
     </DataSource>
   </DataSources>
@@ -1164,7 +1176,7 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
-            <Top>0.17937in</Top>
+            <Top>0.22361in</Top>
             <Height>1.19664in</Height>
             <Width>7.41825in</Width>
             <Style>
@@ -1180,9 +1192,10 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>="Pay Period"+""+Fields!MonthStartDate.Value</Value>
+                    <Value>=Fields!PayPeriodDisplay.Value</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Format>y</Format>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1194,7 +1207,7 @@
             <rd:DefaultName>Textbox31</rd:DefaultName>
             <Top>0cm</Top>
             <Left>0cm</Left>
-            <Height>0.39159cm</Height>
+            <Height>0.56798cm</Height>
             <Width>4.91452cm</Width>
             <ZIndex>1</ZIndex>
             <Style>
@@ -1209,13 +1222,13 @@
             </Style>
           </Textbox>
         </ReportItems>
-        <Height>3.49507cm</Height>
+        <Height>3.60744cm</Height>
         <Style />
       </Body>
       <Width>18.84236cm</Width>
       <Page>
         <PageHeader>
-          <Height>2.15194cm</Height>
+          <Height>2.92808cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -1253,7 +1266,7 @@
               </Paragraphs>
               <rd:DefaultName>Textbox40</rd:DefaultName>
               <Top>0.00301cm</Top>
-              <Left>4.91452cm</Left>
+              <Left>6.4491cm</Left>
               <Height>0.56798cm</Height>
               <Width>4.99999cm</Width>
               <Style>
@@ -1272,9 +1285,9 @@
               <Value>=Fields!Logo.Value</Value>
               <MIMEType>image/bmp</MIMEType>
               <Sizing>FitProportional</Sizing>
-              <Top>0.2248in</Top>
-              <Left>1.93485in</Left>
-              <Height>0.62243in</Height>
+              <Top>0.29424in</Top>
+              <Left>2.53902in</Left>
+              <Height>0.7266in</Height>
               <Width>1.9685in</Width>
               <ZIndex>1</ZIndex>
               <Style>
