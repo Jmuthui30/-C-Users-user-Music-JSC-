@@ -276,8 +276,6 @@ codeunit 55056 HRPortal
         end;
     end;
 
-
-
     procedure CreateLeaveApplication(EmpNo: Code[50]; LeaveType: Code[30]; StartDate: DateTime; Days: Decimal; Remarks: Text[2048]; ApplicationNo: Code[50]; onBehalf: Boolean) status: Text
     var
         HRSetup: Record "Human Resources Setup";
@@ -290,7 +288,8 @@ codeunit 55056 HRPortal
             Leave.Reset();
             Leave.SetRange("Application No", ApplicationNo);
             if Leave.Find('-') then begin
-
+                If (HrEmployees."Responsibility Center" = '') then
+                    Error('Responsibility Center must be specified for this employee.Kindly Contact ICT');
                 Leave."Apply on behalf" := onBehalf;
                 Leave."Employee No" := HrEmployees."No.";
                 Leave.Validate("Employee No");
@@ -298,7 +297,8 @@ codeunit 55056 HRPortal
                 Leave."Mobile No" := HrEmployees."Mobile Phone No.";
                 Leave."Email Adress" := HrEmployees."Company E-Mail";
                 Leave."Leave Period" := HRmgt.GetCurrentLeavePeriodCode();
-                //Leave."Responsibility Center" := HrEmployees."Responsibility Center";
+                Leave."Responsibility Center" := HrEmployees."Responsibility Center";
+                Leave.Validate("Responsibility Center");
                 Leave."Application Date" := today;
                 Leave."Leave Code" := CopyStr(LeaveType, 1, MaxStrLen(Leave."Leave Code"));
                 Leave.Validate("Leave Code");
@@ -320,6 +320,8 @@ codeunit 55056 HRPortal
                     status := 'danger*You have an open leave application ' + Leave."Application No" + ' kindly proceed to utilize it before creating a new one.';
                 end else begin
                     Leave.Init();
+                    If (HrEmployees."Responsibility Center" = '') then
+                        Error('Responsibility Center must be specified for this employee.Kindly Contact ICT');
                     HRSetup.Get();
                     Leave."Application No" := NoSeriesMgt.GetNextNo(HRSetup."Leave Application Nos.", Today, true);
                     Leave.Insert();
@@ -330,7 +332,8 @@ codeunit 55056 HRPortal
                     Leave."Mobile No" := HrEmployees."Mobile Phone No.";
                     Leave."Email Adress" := HrEmployees."Company E-Mail";
                     Leave."Leave Period" := HRmgt.GetCurrentLeavePeriodCode();
-                    //Leave."Responsibility Center" := HrEmployees."Responsibility Center";
+                    Leave."Responsibility Center" := HrEmployees."Responsibility Center";
+                    Leave.Validate("Responsibility Center");
                     Leave."Application Date" := today;
                     Leave."Leave Code" := CopyStr(LeaveType, 1, MaxStrLen(Leave."Leave Code"));
                     Leave.Validate("Leave Code");
