@@ -699,6 +699,7 @@ table 51005 "Payment Lines"
                     if "Based On Travel Rates" then begin
                         "No of Days" := GetNoOfDays();
                         //Amount := GetDestinationRate();
+                        // Validate(Amount,GetDestinationRate());
                         Validate(Amount);
                     end else begin
                         if "Daily Rate" <> 0 then
@@ -800,6 +801,7 @@ table 51005 "Payment Lines"
         field(498; "No of Days"; Integer)
         {
             Caption = 'No of Days';
+            Editable = false;
 
             trigger OnValidate()
             begin
@@ -1282,6 +1284,35 @@ table 51005 "Payment Lines"
                 exit(Employee."Salary Scale");
         end
     end; */
+    local procedure GetDestinationRate(): Decimal
+    var
+        AEAListing: Record "AEA Listing";
+        TotalAmount: Decimal;
+    begin
+        if PaymentRec.Get(No) then begin
+            AEAListing.Reset();
+            AEAListing.SetRange(Location, PaymentRec.Destination);
+            AEAListing.SetRange("Job Group", GetJobGroup());
+            if AEAListing.FindFirst() then begin
+                "Daily Rate" := AEAListing."Maximum Perdiem Rate";
+                TotalAmount := "Daily Rate" * "No of Days";
+                exit(TotalAmount);
+            end else
+                Error('No AEA rate found for destination %1 and job group %2.',
+                      PaymentRec.Destination, GetJobGroup());
+        end;
+    end;
+
+    local procedure GetJobGroup(): Code[20]
+    var
+        Employee: Record Employee;
+    begin
+        if PaymentRec.Get(No) then begin
+            PaymentRec.TestField("Staff No.");
+            if Employee.Get(PaymentRec."Staff No.") then
+                exit(Employee."Salary Scale");
+        end;
+    end;
 
     local procedure GetNoOfDays(): Integer
     begin

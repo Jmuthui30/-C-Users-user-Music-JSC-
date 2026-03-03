@@ -2306,6 +2306,12 @@ page 51061 "Finance Role Center"
                         RunObject = page "Imprest Types";
                         ToolTip = 'Executes the Imprest Types action';
                     }
+                    action("Travel Locations")
+                    {
+                        Caption = 'Travel Locations';
+                        RunObject = page "Travel Locations";
+                        ToolTip = 'Executes the Travel Locations action';
+                    }
                     // TDY Locations
                     action("TDY Locations Codes")
                     {

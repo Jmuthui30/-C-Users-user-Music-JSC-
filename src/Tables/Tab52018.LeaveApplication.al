@@ -6,7 +6,22 @@ table 52018 "Leave Application"
     DrillDownPageId = "Leave Application List";
     fields
     {
-        field(1; "Employee No"; Code[20])
+        field(1; "Application No"; Code[20])
+        {
+            NotBlank = false;
+            Caption = 'Application No';
+
+            trigger OnValidate()
+            begin
+                "Application Date" := Today;
+                if "Application No" <> xRec."Application No" then begin
+                    HumanResSetup.Get();
+                    NoSeriesMgt.TestManual(HumanResSetup."Leave Application Nos.");
+                    "No. series" := '';
+                end;
+            end;
+        }
+        field(2; "Employee No"; Code[20])
         {
             NotBlank = false;
             TableRelation = Employee."No.";
@@ -27,28 +42,14 @@ table 52018 "Leave Application"
                     "Shortcut Dimension 1 Code" := EmployeeRec."Global Dimension 1 Code";
                     "Shortcut Dimension 2 Code" := EmployeeRec."Global Dimension 2 Code";
                     "Mobile No" := EmployeeRec."Phone No.";
-                    "Responsibility Center":=EmployeeRec."responsibility center";
+                    "Responsibility Center" := EmployeeRec."responsibility center";
                 end;
                 // else
                 //Error(EmployeeDoesNotExistErr, "Employee No");
 
             end;
         }
-        field(2; "Application No"; Code[20])
-        {
-            NotBlank = false;
-            Caption = 'Application No';
-
-            trigger OnValidate()
-            begin
-                "Application Date" := Today;
-                if "Application No" <> xRec."Application No" then begin
-                    HumanResSetup.Get();
-                    NoSeriesMgt.TestManual(HumanResSetup."Leave Application Nos.");
-                    "No. series" := '';
-                end;
-            end;
-        }
+        
         field(3; "Leave Code"; Code[20])
         {
             TableRelation = "Leave Type".Code where(Status = const(Active));
@@ -650,11 +651,11 @@ table 52018 "Leave Application"
             HRSetup.Get();
             HRSetup.TestField("Leave Application Nos.");
             // NoSeriesMgt.InitSeries(HRSetup."Leave Application Nos.", xRec."No. series", 0D, "Application No", "No. series");
-            if NoSeriesMgt.AreRelated(HRSetup."Leave Application Nos.",xRec."No. Series") then
-            "No. Series":=xRec."No. Series"
+            if NoSeriesMgt.AreRelated(HRSetup."Leave Application Nos.", xRec."No. Series") then
+                "No. Series" := xRec."No. Series"
             else
-            "No. Series":=HRSetup."Leave Application Nos.";
-            "Application No":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
+                "No. Series" := HRSetup."Leave Application Nos.";
+            "Application No" := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
         end;
 
         "Application Date" := Today;
@@ -736,13 +737,18 @@ table 52018 "Leave Application"
         DimMgt.SaveDefaultDim(Database::"Leave Application", "Employee No", FieldNumber, ShortcutDimCode);
         Modify();
     end;
+
     procedure HasAttachments(): Boolean
     var
         DocumentAttachment: Record "Document Attachment";
     begin
         DocumentAttachment.Reset();
-        DocumentAttachment.SetRange("Table ID", Database::"Leave Application"); 
-        DocumentAttachment.SetRange("No.", Rec."Application No");           
+        DocumentAttachment.SetRange("Table ID", Database::"Leave Application");
+        DocumentAttachment.SetRange("No.", Rec."Application No");
+        // Message('Table ID: %1 | App No: %2 | Count: %3',
+        //     Database::"Leave Application",
+        //     Rec."Application No",
+        //     DocumentAttachment.Count);
         exit(not DocumentAttachment.IsEmpty);
     end;
 }

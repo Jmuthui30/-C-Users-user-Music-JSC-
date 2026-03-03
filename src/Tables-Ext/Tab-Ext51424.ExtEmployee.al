@@ -333,7 +333,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
         field(52033; "Salary Scale"; Code[30])
         {
             DataClassification = CustomerContent;
-            TableRelation = "Salary Scale".Scale;
+            TableRelation = "Client Salary Scale".Scale;
             Caption = 'Salary Grade';
 
             trigger OnValidate()

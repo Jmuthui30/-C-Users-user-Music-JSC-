@@ -181,7 +181,7 @@ codeunit 52007 "Wkflw Event Response HR Ext"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Workflow Response Handling", 'OnReleaseDocument', '', false, false)]
     local procedure OnReleaseDocument(RecRef: RecordRef; var Handled: Boolean)
     var
-
+        HRMgnt: Codeunit "HR Management";
         LRecall: Record "Employee Off/Holiday";
         LeaveApp: Record "Leave Application";
         LAdj: Record "Leave Bal Adjustment Header";
@@ -201,6 +201,8 @@ codeunit 52007 "Wkflw Event Response HR Ext"
                     LeaveApp.SetView(RecRef.GetView());
                     Handled := true;
                     WorkflowResponses.ReleaseLeave(VarVariant);
+                    // if LeaveApp.FindFirst() then
+                        // HRMgnt.NotifyLeaveReliever(LeaveApp."Application No");
                 end;
             //Recruitment
             Database::"Recruitment Needs":

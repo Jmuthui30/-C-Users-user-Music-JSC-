@@ -745,9 +745,10 @@ codeunit 52001 "HR Management"
 
         //Notify Relieving Employee
         if LeaveApp.Get(ApplicationNo) then begin
-            LeaveRelievers.Reset();
+            if LeaveRelievers.Get(ApplicationNo, LeaveApp."Employee No") then
+                LeaveRelievers.Reset();
             LeaveRelievers.SetRange("Leave Code", ApplicationNo);
-            if LeaveRelievers.FindSet() then
+            if LeaveRelievers.FindFirst() then
                 repeat
                     Message('Reliever: %1', LeaveRelievers."Staff Name");
                     Employee.Reset();
@@ -800,7 +801,7 @@ codeunit 52001 "HR Management"
                     Receipient.Add(Employee."Company E-Mail");
                     Subject := ('Leave Application - ' + SpaceLbl + LeaveApp."Application No");
                     TimeNow := Format(Time);
-                    FormattedApplicantBody := StrSubstNo(ApplicantMsg, Employee."First Name", LeaveApp."Application No", GetLeaveName(LeaveApp."Leave Code"), LeaveApp."Start Date", LeaveApp."End Date", LeaveApp."Resumption Date",LeaveRelievers."Staff Name",
+                    FormattedApplicantBody := StrSubstNo(ApplicantMsg, Employee."First Name", LeaveApp."Application No", GetLeaveName(LeaveApp."Leave Code"), LeaveApp."Start Date", LeaveApp."End Date", LeaveApp."Resumption Date", LeaveRelievers."Staff Name",
                                                 Relievers, CompanyInfo.Name);
                     EmailMessage.Create(Receipient, Subject, FormattedApplicantBody, true, RecipientCC, RecipientCC);
                     Email.Send(EmailMessage);
@@ -833,9 +834,47 @@ codeunit 52001 "HR Management"
         // end;
     end;
 
+    procedure NotifyApproverByEmail(var ApprovalEntry: Record "Approval Entry")
+    var
+        UserSetup: Record "User Setup";
+        CompanyInfo: Record "Company Information";
+        Email: Codeunit Email;
+        EmailMessage: Codeunit "Email Message";
+        RecRef: RecordRef;
+        Subject: Text;
+        Body: Text;
+        Recipients: List of [Text];
+    begin
+        if ApprovalEntry.Status <> ApprovalEntry.Status::Open then
+            exit;
 
+        if not UserSetup.Get(ApprovalEntry."Approver ID") then
+            exit;
 
+        if UserSetup."E-Mail" = '' then
+            exit;
 
+        RecRef.Get(ApprovalEntry."Record ID to Approve");
+
+        CompanyInfo.Get();
+
+        Subject := StrSubstNo('Approval Required for - %1 %2',
+            RecRef.Caption,
+            ApprovalEntry."Document No.");
+
+        Body :=
+            StrSubstNo(
+                'Dear %1,<br><br>%2 %3 requires your approval.<br><br>Kind regards,<br>%4',
+                UserSetup."User ID",
+                RecRef.Caption,
+                ApprovalEntry."Document No.",
+                CompanyInfo.Name);
+
+        Recipients.Add(UserSetup."E-Mail");
+
+        EmailMessage.Create(Recipients, Subject, Body, true);
+        Email.Send(EmailMessage);
+    end;
 
     procedure UpdateContract(ContractNo: Code[20]; EmployeeNo: Code[20])
     var

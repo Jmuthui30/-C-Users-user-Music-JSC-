@@ -249,7 +249,7 @@ page 52043 "Leave Application Card"
                         Rec.TestField("Start Date");
                         Rec.TestField("End Date");
                         Rec.TestField("Leave Code");
-                        // if Rec.Get("Leave Code") then
+                        // // if Rec.Get("Leave Code") then
                         LeaveType.Get(Rec."Leave Code");
                         if LeaveType."Attachment Required" then
                             if not Rec.HasAttachments then begin

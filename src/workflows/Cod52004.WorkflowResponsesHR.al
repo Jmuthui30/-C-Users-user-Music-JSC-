@@ -43,12 +43,12 @@ codeunit 52004 "Workflow Responses HR"
         if Leave.FindFirst() then begin
             Leave.Validate(Status, Leave.Status::Released);
             Leave.Modify(true);
-            HRMgnt.LeaveApplication(Leave."Application No");
-            if guiAllowed then begin
-                if Confirm('Do you want to notify the leave applicant and their reliever(s)', false) then
+            // HRMgnt.LeaveApplication(Leave."Application No");
+            // // if guiAllowed then begin
+            // //     if Confirm('Do you want to notify the leave applicant and their reliever(s)', false) then
+            // HRMgnt.NotifyLeaveReliever(Leave."Application No");
+            //     end else
                     HRMgnt.NotifyLeaveReliever(Leave."Application No");
-            end else
-                HRMgnt.NotifyLeaveReliever(Leave."Application No");
         end;
     end;
 

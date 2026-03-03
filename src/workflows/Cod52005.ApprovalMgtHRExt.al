@@ -6,6 +6,24 @@ codeunit 52005 "Approval Mgt HR Ext"
         WorkFlowManagement: Codeunit "Workflow Management";
         NoWorkflowEnabledErr: Label 'No approval workflow for this record type is enabled.';
 
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnAfterCreateApprovalRequestForApproverChain', '', false, false)]
+    // local procedure OnAfterCreateApprovalRequestForApproverChain(var ApprovalEntryArgument: Record "Approval Entry"; var ApproverId: Code[50]; var WorkflowStepArgument: Record "Workflow Step Argument"; var UserSetup: Record "User Setup"; var SufficientApproverOnly: Boolean)
+    // var
+    //     HRMgmt: Codeunit "HR Management";
+    // begin
+    //     if ApprovalEntryArgument.Status <> ApprovalEntryArgument.Status::Open then
+    //         exit;
+
+    //     if ApproverId = '' then
+    //         exit;
+    //     // Notify approver of approval request
+    //     // if SufficientApproverOnly then
+    //     //     exit;
+
+    //     HRMgmt.NotifyApproverByEmail(ApprovalEntryArgument);
+
+    // end;
+
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnPopulateApprovalEntryArgument', '', false, false)]
     local procedure OnPopulateApprovalEntryArgument(var RecRef: RecordRef; var ApprovalEntryArgument: Record "Approval Entry"; WorkflowStepInstance: Record "Workflow Step Instance")
