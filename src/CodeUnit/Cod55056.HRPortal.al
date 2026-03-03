@@ -703,7 +703,7 @@ codeunit 55056 HRPortal
         if ApprovalMgtHR.CheckLeaveRequestWorkflowEnabled(LeaveApplication) then
             ApprovalMgtHR.OnSendLeaveRequestApproval(LeaveApplication);
         UpdateApprovalEntries(DocNo, UserID);
-        HRMgt.NotifyLeaveReliever(LeaveApplication."Application No");
+        //HRMgt.NotifyLeaveReliever(LeaveApplication."Application No");
         status := 'success*Document has been successfully sent for approval';
     end;
 
