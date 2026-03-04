@@ -323,7 +323,7 @@ table 51004 Payments
                                     if "Payment Type" = "Payment Type"::Imprest then
                                         if Customer."Balance (LCY)" > 0 then
                                             Error('You cannot apply for a new imprest because you have an outstanding balance of KES %1', Customer."Balance (LCY)");
-                               
+
                                 end;
                                 UserSetup.TestField("Employee No.");
                                 "Staff No." := UserSetup."Employee No.";
@@ -1079,8 +1079,7 @@ table 51004 Payments
                 "Due Date" := CalcDate(CashMgt."Imprest Due Date", "Date of Completion");
 
                 //Get no of days
-                "No of Days" := ("Date of Completion" - "Date of Project");
-                PopulateImprestLines();
+                "No of Days" := ("Date of Completion" - "Date of Project") + 1;
             end;
         }
         field(50034; "Due Date"; Date)
@@ -1132,7 +1131,6 @@ table 51004 Payments
                     TestField(Cashier);
                     GetStaffNo(Cashier);
                 end;
-                PopulateImprestLines();
             end;
         }
         field(50037; "Receiving Bank Amount"; Decimal)
@@ -2117,71 +2115,5 @@ table 51004 Payments
         end;
     end;
 
-    procedure PopulateImprestLines()
-    var
-        PayLine: Record "Payment Lines";
-        AEAListing: Record "AEA Listing";
-        Employee: Record Employee;
-        RecType: Record "Receipts and Payment Types";
-        NextLineNo: Integer;
-        JobGroup: Code[20];
-    begin
-        // Only proceed if all required header fields are filled
-        if (Destination = '') or ("Date of Project" = 0D) or ("Date of Completion" = 0D) then
-            exit;
-
-        if "Date of Completion" < "Date of Project" then
-            Error('Return Date cannot be earlier than Travel Date.');
-
-        // Get employee job group
-        TestField("Staff No.");
-        if Employee.Get("Staff No.") then
-            JobGroup := Employee."Salary Scale"
-        else
-            exit;
-
-        // Check AEA rate exists for this destination + job group
-        if not AEAListing.Get(Destination, JobGroup) then begin
-            Message('No AEA rate found for destination %1 and job group %2. Lines not populated.',
-                    Destination, JobGroup);
-            exit;
-        end;
-
-        // Delete existing unpopulated/auto-generated lines to avoid duplicates
-        // PayLine.Reset();
-        // PayLine.SetRange(No, "No.");
-        // PayLine.SetRange("Based On Travel Rates", true);
-        // PayLine.DeleteAll(true);
-
-        // Find next line no
-        PayLine.Reset();
-        PayLine.SetRange(No, "No.");
-        if PayLine.FindLast() then
-            NextLineNo := PayLine."Line No" + 10000
-        else
-            NextLineNo := 10000;
-
-        // Find the relevant Imprest expenditure type that uses travel rates
-        RecType.Reset();
-        RecType.SetRange(Type, RecType.Type::Imprest);
-        RecType.SetRange("Based On Travel Rates Table", true);
-        RecType.SetRange(Blocked, false);
-        if not RecType.FindFirst() then begin
-            Message('No Imprest expenditure type with travel rates found. Please configure Receipts and Payment Types.');
-            exit;
-        end;
-
-        // Insert the line
-        PayLine.Init();
-        PayLine.No := "No.";
-        PayLine."Line No" := NextLineNo;
-        PayLine."Payment Type" := PayLine."Payment Type"::Imprest;
-        // PayLine."Based On Travel Rates" := true;
-        PayLine.Destination := Destination;
-        PayLine."No of Days" := "No of Days";
-        PayLine."Daily Rate" := AEAListing."Maximum Perdiem Rate";
-        // PayLine."Expenditure Type" := RecType.Code;
-        // PayLine.Validate("Expenditure Type"); // This triggers account, amount calc
-        PayLine.Insert(true);
-    end;
+   
 }

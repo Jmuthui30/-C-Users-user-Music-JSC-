@@ -680,6 +680,10 @@ table 51005 "Payment Lines"
                                                                                                                                 Blocked = const(false));
 
             trigger OnValidate()
+            var
+                AEAListing: Record "AEA Listing";
+                Employee: Record Employee;
+                JobGroup: Code[20];
             begin
                 GetPaymentHeader();
                 RecTypes.Reset();
@@ -692,22 +696,30 @@ table 51005 "Payment Lines"
                         Validate("Account No");
                     "Imprest Payment" := RecTypes."Imprest Payment";
                     "Claim Payment" := RecTypes."Claim Payment";
-                    //"No of Days" := GetNoOfDays();
-
-                    //Description:=RecTypes.Description;
                     "Based On Travel Rates" := RecTypes."Based On Travel Rates Table";
+
                     if "Based On Travel Rates" then begin
+                        // Pull No of Days from header
                         "No of Days" := GetNoOfDays();
-                        //Amount := GetDestinationRate();
-                        // Validate(Amount,GetDestinationRate());
-                        Validate(Amount);
+
+                        // Get employee job group
+                        if Employee.Get(PaymentRec."Staff No.") then
+                            JobGroup := Employee."Salary Scale";
+
+                        // Pull Daily Rate from AEA Listing
+                        if AEAListing.Get(PaymentRec.Destination, JobGroup) then begin
+                            "Daily Rate" := AEAListing."Maximum Perdiem Rate";
+                            Validate(Amount, "Daily Rate" * "No of Days");
+                        end else
+                            Message('No AEA rate found for destination %1 and job group %2.',
+                                    PaymentRec.Destination, JobGroup);
                     end else begin
                         if "Daily Rate" <> 0 then
-                            Amount := "Daily Rate" * "No of Days";
-                        Validate(Amount);
+                            Validate(Amount, "Daily Rate" * "No of Days");
                     end;
                 end;
             end;
+
         }
         field(96; Comments; Text[250])
         {

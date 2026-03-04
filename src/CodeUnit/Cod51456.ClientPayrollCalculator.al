@@ -563,6 +563,8 @@ codeunit 51456 "Client Payroll Calculator"
                 Email.Send(Mail);
             end;
         end;
+        Email.Send(Mail, Enum::"Email Scenario"::Payroll);
+
     end;
 
     procedure InsertDeductionPayrollEntrySpecificPeriod(var EmployeeNo: Code[20]; var "Code": Code[10]; var Amount: Decimal; var Period: Date)
