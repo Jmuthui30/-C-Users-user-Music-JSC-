@@ -647,7 +647,10 @@ codeunit 55056 HRPortal
         StatementInstream: InStream;
     begin
         Employee.Reset;
-        Employee.SetFilter("No.", employeeNumber);
+        Employee.SetRange("No.", employeeNumber);
+        Employee.SetRange("Company Code", 'JSC');
+        // Employee.SetRange("Starting Date", DT2DATE(startDate));
+        // Employee.SetRange("Starting Date", DT2DATE(startDate));
         if Employee.FindSet then begin
             ClientP9AReport.SetPeriod(DT2DATE(startDate), DT2DATE(endDate));
             ClientP9AReport.SetTableView(Employee);
