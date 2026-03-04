@@ -560,10 +560,9 @@ codeunit 51456 "Client Payroll Calculator"
                 TempBlob.CreateInStream(inStreamReport);
                 Report.SaveAs(51464, XmlParameters, ReportFormat::Pdf, outStreamReport, RecRef);
                 Mail.AddAttachment(Format(StartPeriod, 0, '<Month Text>-<Year4>') + Format(EndPeriod, 0, '<Month Text>-<Year4>') + ' P9 ' + Employee."No." + '.pdf', 'PDF', inStreamReport);
-                Email.Send(Mail);
+                Email.Send(Mail, Enum::"Email Scenario"::Payroll);
             end;
         end;
-        Email.Send(Mail, Enum::"Email Scenario"::Payroll);
 
     end;
 
