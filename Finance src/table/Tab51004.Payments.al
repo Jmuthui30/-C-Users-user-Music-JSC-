@@ -1123,7 +1123,8 @@ table 51004 Payments
         {
             Caption = 'Destination';
             // TableRelation = Destination."Destination Code";
-            TableRelation = "AEA Listing".Location;
+            // TableRelation = "AEA Listing".Location;
+            TableRelation = "Travel Locations".Code;
 
             trigger OnValidate()
             begin
