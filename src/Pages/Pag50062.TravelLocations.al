@@ -25,7 +25,7 @@ page 50062 "Travel Locations"
     actions
     {
 
-        area(Processing)
+        area(Navigation)
         {
             action(TDYRates)
             {
