@@ -973,7 +973,7 @@ codeunit 55056 HRPortal
         end;
     end;
 
-    procedure CreateImprestRequisitionLines(imprestno: Code[30]; ImprestType: Code[50]; noOfDays: Integer; DailyRate: Decimal) status: Text
+    procedure CreateImprestRequisitionLines(imprestno: Code[30]; ImprestType: Code[50]) status: Text
     var
         ImprestLines1: Record "Payment Lines";
         prevLineNo: Integer;
@@ -991,13 +991,13 @@ codeunit 55056 HRPortal
             ImprestLines."Line No" := prevLineNo;
             ImprestLines."Expenditure Type" := ImprestType;
             ImprestLines.Validate("Expenditure Type");
-            ImprestLines."No of Days" := noOfDays;
-            ImprestLines.Validate("No of Days");
-            ImprestLines."Daily Rate" := DailyRate;
-            ImprestLines.Validate("Daily Rate");
-            ImprestLines."No of Days" := ImprestHeader."No of Days";
-            ImprestLines.Validate("No of Days");
-            ImprestLines.Destination := ImprestHeader.Destination;
+            // ImprestLines."No of Days" := noOfDays;
+            // ImprestLines.Validate("No of Days");
+            // ImprestLines."Daily Rate" := DailyRate;
+            // ImprestLines.Validate("Daily Rate");
+            // ImprestLines."No of Days" := ImprestHeader."No of Days";
+            // ImprestLines.Validate("No of Days");
+            // ImprestLines.Destination := ImprestHeader.Destination;
             // ImprestLines."Shortcut Dimension 1 Code" := Dim1;
             // ImprestLines."Shortcut Dimension 2 Code" := Dim2;
             // ImprestLines.ValidateShortcutDimCode(3, Dim3);
@@ -1006,10 +1006,12 @@ codeunit 55056 HRPortal
             // ImprestLines.ValidateShortcutDimCode(6, Dim6);
             // ImprestLines.ValidateShortcutDimCode(7, Dim7);
             if ImprestLines.Insert(true) then begin
-                ImprestLines."No of Days" := noOfDays;
-                ImprestLines.Validate("No of Days");
-                ImprestLines."Daily Rate" := DailyRate;
-                ImprestLines.Validate("Daily Rate");
+                ImprestLines."Expenditure Type" := ImprestType;
+                ImprestLines.Validate("Expenditure Type");
+                // ImprestLines."No of Days" := noOfDays;
+                // ImprestLines.Validate("No of Days");
+                // ImprestLines."Daily Rate" := DailyRate;
+                // ImprestLines.Validate("Daily Rate");
                 ImprestLines.Modify();
                 status := 'success*Imprest Line has been added succesfully';
             end else begin
