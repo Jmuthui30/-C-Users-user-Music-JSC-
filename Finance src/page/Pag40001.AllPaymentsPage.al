@@ -1,4 +1,4 @@
-page 40001 AllPaymentsPage
+page 51125 AllPaymentsPage
 {
     ApplicationArea = All;
     Caption = 'All Payments';
