@@ -9,7 +9,7 @@
       <am:Name>MSRB</am:Name>
       <am:Version>15.0.20283.0</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-02-05T07:05:31.8278512Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-02-20T08:02:17.6448033Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -1192,7 +1192,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=Fields!PayPeriodDisplay.Value</Value>
+                    <Value>=First(Fields!MonthStartDate.Value, "DataSet_Result")</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
                       <Format>y</Format>

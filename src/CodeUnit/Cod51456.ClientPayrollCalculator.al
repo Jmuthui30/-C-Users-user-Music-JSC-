@@ -493,7 +493,7 @@ codeunit 51456 "Client Payroll Calculator"
             end;
         end;
 
-        Email.Send(Mail, Enum::"Email Scenario"::Default);
+        Email.Send(Mail, Enum::"Email Scenario"::Payroll);
     end;
 
     procedure GeneratePNine(var EmpNo: Code[20]; var StartPeriod: Date; var EndPeriod: Date; var Comp: Code[20]; var XmlParameters: Text)
@@ -560,9 +560,10 @@ codeunit 51456 "Client Payroll Calculator"
                 TempBlob.CreateInStream(inStreamReport);
                 Report.SaveAs(51464, XmlParameters, ReportFormat::Pdf, outStreamReport, RecRef);
                 Mail.AddAttachment(Format(StartPeriod, 0, '<Month Text>-<Year4>') + Format(EndPeriod, 0, '<Month Text>-<Year4>') + ' P9 ' + Employee."No." + '.pdf', 'PDF', inStreamReport);
-                Email.Send(Mail);
+                Email.Send(Mail, Enum::"Email Scenario"::Payroll);
             end;
         end;
+
     end;
 
     procedure InsertDeductionPayrollEntrySpecificPeriod(var EmployeeNo: Code[20]; var "Code": Code[10]; var Amount: Decimal; var Period: Date)

@@ -17,4 +17,8 @@ enumextension 50002 "Email Scenario Ext" extends "Email Scenario"
     {
         Caption = 'ICT';
     }
+    value(52146427; Payroll)
+    {
+        Caption = 'Payroll';
+    }
 }

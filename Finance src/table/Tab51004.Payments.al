@@ -323,6 +323,7 @@ table 51004 Payments
                                     if "Payment Type" = "Payment Type"::Imprest then
                                         if Customer."Balance (LCY)" > 0 then
                                             Error('You cannot apply for a new imprest because you have an outstanding balance of KES %1', Customer."Balance (LCY)");
+
                                 end;
                                 UserSetup.TestField("Employee No.");
                                 "Staff No." := UserSetup."Employee No.";
@@ -1078,7 +1079,7 @@ table 51004 Payments
                 "Due Date" := CalcDate(CashMgt."Imprest Due Date", "Date of Completion");
 
                 //Get no of days
-                "No of Days" := ("Date of Completion" - "Date of Project");
+                "No of Days" := ("Date of Completion" - "Date of Project") + 1;
             end;
         }
         field(50034; "Due Date"; Date)
@@ -1121,7 +1122,9 @@ table 51004 Payments
         field(50036; Destination; Code[100])
         {
             Caption = 'Destination';
-            TableRelation = Destination."Destination Code";
+            // TableRelation = Destination."Destination Code";
+            // TableRelation = "AEA Listing".Location;
+            TableRelation = "Travel Locations".Code;
 
             trigger OnValidate()
             begin
@@ -2112,4 +2115,6 @@ table 51004 Payments
                 exit(CashMgtSetup."Property Expense Claim Nos");
         end;
     end;
+
+   
 }

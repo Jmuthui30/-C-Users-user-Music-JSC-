@@ -22,4 +22,26 @@ page 50062 "Travel Locations"
             }
         }
     }
+    actions
+    {
+
+        area(Navigation)
+        {
+            action(TDYRates)
+            {
+                Caption = 'TDY Rates';
+                Image = Rates;
+                ToolTip = 'View or set per diem rates for this location.';
+
+                trigger OnAction()
+                var
+                    TDYLocation: Record "AEA Listing"; // use actual table name
+                begin
+                    TDYLocation.SetRange(Location, Rec.Code);
+                    Page.Run(Page::"TDY Locations", TDYLocation);
+                end;
+            }
+        }
+    }
+
 }

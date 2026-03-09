@@ -63,6 +63,10 @@ page 58041 "Leave Types Setup"
                 {
                     ToolTip = 'Specifies the value of the Status field';
                 }
+                field("Attachment Required"; Rec."Attachment Required")
+                {
+                    ToolTip = 'Specifies the value of the Attachment Required field';
+                }
             }
         }
     }

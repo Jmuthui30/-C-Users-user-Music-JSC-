@@ -459,7 +459,7 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                         Promoted = true;
                         PromotedCategory = "Report";
                         PromotedIsBig = true;
-                        RunObject = Report "A Third Rule Report";
+                        RunObject = Report "Third Rule Report";
                         ToolTip = 'View Client A Third Rule Report';
                     }
                     action("Client Wage Bill")
@@ -546,7 +546,7 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                         Promoted = true;
                         PromotedCategory = "Report";
                         PromotedIsBig = true;
-                        RunObject = Report "Client Provident Fund";
+                        RunObject = Report "Provident Fund report";
                         ToolTip = 'View PROVIDENT Fund Report';
                     }
                     action(PRMS)

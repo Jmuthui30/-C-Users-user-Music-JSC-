@@ -449,16 +449,16 @@ table 51467 "Client Payroll Matrix"
                             end;
                             //added for Uganda requirements
                             // added by Lob vega
-                            if Deductions."Calculation Method" = Deductions."Calculation Method"::"Based on Table" then begin
-                                if Empl.Get("Employee No") then begin
-                                    Empl.CalcFields(Empl.Basic, Empl."Total Allowances");
-                                    Amount := ((Deductions.Percentage / 100) * (Empl.Basic + Empl."Total Allowances"));
-                                    "Employer Amount" := ((Deductions."Percentage Employer" / 100) * (Empl.Basic + Empl."Total Allowances"));
-                                    Amount := PayrollRounding(Amount);
-                                    Validate(Amount);
-                                    "Employer Amount" := PayrollRounding("Employer Amount");
-                                end;
-                            end;
+                            // if Deductions."Calculation Method" = Deductions."Calculation Method"::"Based on Table" then begin
+                            //     if Empl.Get("Employee No") then begin
+                            //         Empl.CalcFields(Empl.Basic, Empl."Total Allowances");
+                            //         Amount := ((Deductions.Percentage / 100) * (Empl.Basic + Empl."Total Allowances"));
+                            //         "Employer Amount" := ((Deductions."Percentage Employer" / 100) * (Empl.Basic + Empl."Total Allowances"));
+                            //         Amount := PayrollRounding(Amount);
+                            //         Validate(Amount);
+                            //         "Employer Amount" := PayrollRounding("Employer Amount");
+                            //     end;
+                            // end;
                             //added for BM requirements
                             if Deductions."Calculation Method" = Deductions."Calculation Method"::"% of Basic Pay+Hse Allowance" then begin
                                 if Empl.Get("Employee No") then begin
@@ -1028,7 +1028,7 @@ table 51467 "Client Payroll Matrix"
                                 Loop := true
                             else begin
                                 if BasicPay >= BracketTable."Upper Limit" then begin
-                                    TableAmount := (BracketTable."Taxable Amount" * BracketTable.Percentage / 100);
+                                    TableAmount := (BracketTable."Base Amount" * BracketTable.Percentage / 100);
                                     if Deductions."Pension Scheme" then begin
                                         if i = 1 then begin
                                             if (BracketTable.Percentage = 0) and (BracketTable.Amount <> 0) then
@@ -1044,7 +1044,7 @@ table 51467 "Client Payroll Matrix"
                                         end;
                                     end;
                                     TotalAmt := TotalAmt + TableAmount;
-                                    if Deductions."Pension Scheme" then TotalAmt := TotalAmt + TierI;
+                                    // if Deductions."Pension Scheme" then TotalAmt := TotalAmt + TierI;
                                 end
                                 else begin
                                     PensionableAmt := PensionableAmt - BracketTable."Lower Limit";
@@ -1065,7 +1065,7 @@ table 51467 "Client Payroll Matrix"
                                         end;
                                     end;
                                     TotalAmt := TotalAmt + TableAmount;
-                                    if Deductions."Pension Scheme" then TotalAmt := TotalAmt + TierI;
+                                    // if Deductions."Pension Scheme" then TotalAmt := TotalAmt + TierI;
                                 end;
                             end;
                         until (BracketTable.Next = 0) or Loop = true;

@@ -1,6 +1,6 @@
 page 50030 "TDY Locations"
 {
-    DeleteAllowed = false;
+    DeleteAllowed = true;
     PageType = List;
     ApplicationArea = All;
     UsageCategory = Lists;
