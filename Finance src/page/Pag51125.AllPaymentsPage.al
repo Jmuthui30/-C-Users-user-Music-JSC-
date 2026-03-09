@@ -80,6 +80,34 @@ page 51125 AllPaymentsPage
                 {
                     ApplicationArea = All;
                 }
+                field("Staff No."; Rec."Staff No.")
+                {
+                    ToolTip = 'Specifies the value of the Staff No. field';
+                }
+                field(Status; Rec.Status)
+                {
+                    ToolTip = 'Specifies the value of the Status field';
+                }
+                field("Date of Project"; Rec."Date of Project")
+                {
+                    ToolTip = 'Specifies the value of the Date of Project field';
+                }
+                field("Date of Completion"; Rec."Date of Completion")
+                {
+                    ToolTip = 'Specifies the value of the Date of Completion field';
+                }
+                field("Shortcut Dimension 1 Code"; Rec."Shortcut Dimension 1 Code")
+                {
+                    ToolTip = 'Specifies the value of the Shortcut Dimension 1 Code field';
+                }
+                field("Shortcut Dimension 2 Code"; Rec."Shortcut Dimension 2 Code")
+                {
+                    ToolTip = 'Specifies the value of the Shortcut Dimension 2 Code field';
+                }
+                field(Destination; Rec.Destination)
+                {
+                    ToolTip = 'Specifies the value of the Destination field';
+                }
             }
         }
     }
