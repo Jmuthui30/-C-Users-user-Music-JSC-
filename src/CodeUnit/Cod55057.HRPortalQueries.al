@@ -138,11 +138,13 @@ codeunit 55057 HRPortalQueries
     end;
 
     procedure FAWEfnGetDestinations() data: Text
+    var
+        destination: Record "Travel Locations";
     begin
         destination.Reset();
         if destination.FindSet() then begin
             repeat
-                data += destination."Destination Code" + '*' + Format(destination."Destination Name") + '::::';
+                data += destination.Code + '*' + Format(destination.Code) + '::::';
             until destination.Next = 0;
         end;
         Exit(data);

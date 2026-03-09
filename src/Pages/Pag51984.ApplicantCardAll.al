@@ -150,7 +150,7 @@ page 51984 "Applicant Card-All"
                 field(Age; Rec.Age)
                 {
                     ApplicationArea = All;
-                    Enabled = false;
+                    // Enabled = false;
                     ToolTip = 'Specifies the employee''s initials.';
 
                 }
@@ -226,6 +226,7 @@ page 51984 "Applicant Card-All"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the employee''s initials.';
                     ShowMandatory = true;
+                    Enabled = true;
                 }
                 field(Disability; Rec.Disability)
                 {

@@ -49,4 +49,54 @@ page 52435 "Portal Users"
             }
         }
     }
+    actions
+    {
+        area(Processing)
+        {
+            action(GenerateP92)
+            {
+                Caption = 'Generate P92 (76653)';
+                ApplicationArea = All;
+                Image = Report;
+                Promoted = true;
+                PromotedCategory = Process;
+
+                trigger OnAction()
+                var
+                    Base64Pdf: Text;
+                    StartDateTime: DateTime;
+                    EndDateTime: DateTime;
+                    TempBlob: Codeunit "Temp Blob";
+                    OutStr: OutStream;
+                    InStr: InStream;
+                    FileName: Text;
+                    Base64Convert: Codeunit "Base64 Convert";
+                    HRPortal: Codeunit HRPortal;
+                begin
+                    // Hardcoded dates for 2025
+                    StartDateTime := CreateDateTime(DMY2DATE(1, 1, 2025), 0T);
+                    EndDateTime := CreateDateTime(DMY2DATE(31, 12, 2025), 235959T);
+
+                    // Call your function
+                    Base64Pdf := HRPortal.FAWEgenerateP92('76653', StartDateTime, EndDateTime);
+
+                    Message(Base64Pdf);
+                    if Base64Pdf = 'Report not found.' then begin
+                        Message(Base64Pdf);
+                        exit;
+                    end;
+
+                    // // Convert Base64 back to PDF stream
+                    // TempBlob.CreateOutStream(OutStr);
+                    // Base64Convert.FromBase64(Base64Pdf, OutStr);
+
+                    // TempBlob.CreateInStream(InStr);
+
+                    // FileName := 'P92_76653_2025.pdf';
+
+                    // DownloadFromStream(InStr, '', '', '', FileName);
+                end;
+            }
+        }
+    }
 }

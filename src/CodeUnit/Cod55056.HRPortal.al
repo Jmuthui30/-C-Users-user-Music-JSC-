@@ -276,8 +276,6 @@ codeunit 55056 HRPortal
         end;
     end;
 
-
-
     procedure CreateLeaveApplication(EmpNo: Code[50]; LeaveType: Code[30]; StartDate: DateTime; Days: Decimal; Remarks: Text[2048]; ApplicationNo: Code[50]; onBehalf: Boolean) status: Text
     var
         HRSetup: Record "Human Resources Setup";
@@ -290,7 +288,8 @@ codeunit 55056 HRPortal
             Leave.Reset();
             Leave.SetRange("Application No", ApplicationNo);
             if Leave.Find('-') then begin
-
+                If (HrEmployees."Responsibility Center" = '') then
+                    Error('Responsibility Center must be specified for this employee.Kindly Contact ICT');
                 Leave."Apply on behalf" := onBehalf;
                 Leave."Employee No" := HrEmployees."No.";
                 Leave.Validate("Employee No");
@@ -298,7 +297,8 @@ codeunit 55056 HRPortal
                 Leave."Mobile No" := HrEmployees."Mobile Phone No.";
                 Leave."Email Adress" := HrEmployees."Company E-Mail";
                 Leave."Leave Period" := HRmgt.GetCurrentLeavePeriodCode();
-                //Leave."Responsibility Center" := HrEmployees."Responsibility Center";
+                Leave."Responsibility Center" := HrEmployees."Responsibility Center";
+                Leave.Validate("Responsibility Center");
                 Leave."Application Date" := today;
                 Leave."Leave Code" := CopyStr(LeaveType, 1, MaxStrLen(Leave."Leave Code"));
                 Leave.Validate("Leave Code");
@@ -320,6 +320,8 @@ codeunit 55056 HRPortal
                     status := 'danger*You have an open leave application ' + Leave."Application No" + ' kindly proceed to utilize it before creating a new one.';
                 end else begin
                     Leave.Init();
+                    If (HrEmployees."Responsibility Center" = '') then
+                        Error('Responsibility Center must be specified for this employee.Kindly Contact ICT');
                     HRSetup.Get();
                     Leave."Application No" := NoSeriesMgt.GetNextNo(HRSetup."Leave Application Nos.", Today, true);
                     Leave.Insert();
@@ -330,7 +332,8 @@ codeunit 55056 HRPortal
                     Leave."Mobile No" := HrEmployees."Mobile Phone No.";
                     Leave."Email Adress" := HrEmployees."Company E-Mail";
                     Leave."Leave Period" := HRmgt.GetCurrentLeavePeriodCode();
-                    //Leave."Responsibility Center" := HrEmployees."Responsibility Center";
+                    Leave."Responsibility Center" := HrEmployees."Responsibility Center";
+                    Leave.Validate("Responsibility Center");
                     Leave."Application Date" := today;
                     Leave."Leave Code" := CopyStr(LeaveType, 1, MaxStrLen(Leave."Leave Code"));
                     Leave.Validate("Leave Code");
@@ -644,7 +647,10 @@ codeunit 55056 HRPortal
         StatementInstream: InStream;
     begin
         Employee.Reset;
-        Employee.SetFilter("No.", employeeNumber);
+        Employee.SetRange("No.", employeeNumber);
+        Employee.SetRange("Company Code", 'JSC');
+        // Employee.SetRange("Starting Date", DT2DATE(startDate));
+        // Employee.SetRange("Starting Date", DT2DATE(startDate));
         if Employee.FindSet then begin
             ClientP9AReport.SetPeriod(DT2DATE(startDate), DT2DATE(endDate));
             ClientP9AReport.SetTableView(Employee);
@@ -700,7 +706,7 @@ codeunit 55056 HRPortal
         if ApprovalMgtHR.CheckLeaveRequestWorkflowEnabled(LeaveApplication) then
             ApprovalMgtHR.OnSendLeaveRequestApproval(LeaveApplication);
         UpdateApprovalEntries(DocNo, UserID);
-        HRMgt.NotifyLeaveReliever(LeaveApplication."Application No");
+        //HRMgt.NotifyLeaveReliever(LeaveApplication."Application No");
         status := 'success*Document has been successfully sent for approval';
     end;
 
@@ -967,7 +973,7 @@ codeunit 55056 HRPortal
         end;
     end;
 
-    procedure CreateImprestRequisitionLines(imprestno: Code[30]; ImprestType: Code[50]; noOfDays: Integer; DailyRate: Decimal) status: Text
+    procedure CreateImprestRequisitionLines(imprestno: Code[30]; ImprestType: Code[50]) status: Text
     var
         ImprestLines1: Record "Payment Lines";
         prevLineNo: Integer;
@@ -985,13 +991,13 @@ codeunit 55056 HRPortal
             ImprestLines."Line No" := prevLineNo;
             ImprestLines."Expenditure Type" := ImprestType;
             ImprestLines.Validate("Expenditure Type");
-            ImprestLines."No of Days" := noOfDays;
-            ImprestLines.Validate("No of Days");
-            ImprestLines."Daily Rate" := DailyRate;
-            ImprestLines.Validate("Daily Rate");
-            ImprestLines."No of Days" := ImprestHeader."No of Days";
-            ImprestLines.Validate("No of Days");
-            ImprestLines.Destination := ImprestHeader.Destination;
+            // ImprestLines."No of Days" := noOfDays;
+            // ImprestLines.Validate("No of Days");
+            // ImprestLines."Daily Rate" := DailyRate;
+            // ImprestLines.Validate("Daily Rate");
+            // ImprestLines."No of Days" := ImprestHeader."No of Days";
+            // ImprestLines.Validate("No of Days");
+            // ImprestLines.Destination := ImprestHeader.Destination;
             // ImprestLines."Shortcut Dimension 1 Code" := Dim1;
             // ImprestLines."Shortcut Dimension 2 Code" := Dim2;
             // ImprestLines.ValidateShortcutDimCode(3, Dim3);
@@ -1000,10 +1006,12 @@ codeunit 55056 HRPortal
             // ImprestLines.ValidateShortcutDimCode(6, Dim6);
             // ImprestLines.ValidateShortcutDimCode(7, Dim7);
             if ImprestLines.Insert(true) then begin
-                ImprestLines."No of Days" := noOfDays;
-                ImprestLines.Validate("No of Days");
-                ImprestLines."Daily Rate" := DailyRate;
-                ImprestLines.Validate("Daily Rate");
+                ImprestLines."Expenditure Type" := ImprestType;
+                ImprestLines.Validate("Expenditure Type");
+                // ImprestLines."No of Days" := noOfDays;
+                // ImprestLines.Validate("No of Days");
+                // ImprestLines."Daily Rate" := DailyRate;
+                // ImprestLines.Validate("Daily Rate");
                 ImprestLines.Modify();
                 status := 'success*Imprest Line has been added succesfully';
             end else begin
