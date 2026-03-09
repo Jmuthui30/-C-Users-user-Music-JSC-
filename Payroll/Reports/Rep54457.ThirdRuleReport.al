@@ -2,7 +2,7 @@ report 54457 "Third Rule Report"
 {
     // version THL- Client Payroll 1.0
     DefaultLayout = RDLC;
-    RDLCLayout = './Reports/SSRS/A Third Rule Report.rdlc';
+    RDLCLayout = './Payroll/Report Layouts/Third Rule Report.rdlc';
     Caption = 'Client A Third Rule Report';
     UsageCategory = ReportsAndAnalysis;
 
@@ -11,7 +11,7 @@ report 54457 "Third Rule Report"
         dataitem(Employee; Employee)
         {
             DataItemTableView = SORTING("No.");
-            RequestFilterFields =Status, "Pay Period Filter", "Employee Group", "No.";
+            RequestFilterFields = Status, "Pay Period Filter", "Employee Group", "No.";
 
             column(FORMAT_TODAY_0_4_; Format(Today, 0, 4))
             {
@@ -943,7 +943,7 @@ report 54457 "Third Rule Report"
             column(Other_AllowancesCaption; Other_AllowancesCaptionLbl)
             {
             }
-            column(Date_of_Birth;employee."Birth Date")
+            column(Date_of_Birth; employee."Birth Date")
             {
             }
             column(DateEngaged; employee."Date Of Join")

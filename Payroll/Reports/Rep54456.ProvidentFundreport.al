@@ -2,7 +2,7 @@ report 54456 "Provident Fund report"
 {
     // version THL- Client Payroll 1.0
     DefaultLayout = RDLC;
-    RDLCLayout = './Reports/SSRS/Client Provident Fund.rdlc';
+    RDLCLayout = './Payroll/Report Layouts/Provident Fund.rdlc';
     UsageCategory = ReportsAndAnalysis;
 
     dataset
