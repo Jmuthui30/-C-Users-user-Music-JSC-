@@ -8,7 +8,7 @@ codeunit 51810 "Commitments"
         CommitmentEntries: Record "Commitment Entries";
         PurchaseHeader: Record "Purchase Header";
         PurchaseLine: Record "Purchase Line";
-        ImprestHeader: Record "Imprest Header";
+        ImprestHeader: Record Payments;
         ImprestDetails: Record "Imprest Details";
         lineno: Integer;
         CommitAmount: Decimal;
@@ -41,7 +41,7 @@ codeunit 51810 "Commitments"
                         ImprestDetails.Commited:=true;
                         ImprestDetails.Modify(true);
                     until ImprestDetails.Next = 0;
-                ImprestHeader.Committed:=true;
+                // ImprestHeader.Committed:=true;
                 ImprestHeader.Modify;
             end;
         end
@@ -86,7 +86,7 @@ codeunit 51810 "Commitments"
     procedure "Process UnCommitment Entry"("No.": Code[20]; Entry_type: Code[20]; LPO: Code[20])
     var
         CommitmentEntries: Record "Commitment Entries";
-        ImprestHeader: Record "Imprest Header";
+        ImprestHeader: Record Payments;
         ImprestDetails: Record "Imprest Details";
         lineno: Integer;
         PVHeader: Record "PV Header";
@@ -122,7 +122,7 @@ codeunit 51810 "Commitments"
                         CommitmentEntries.Insert(true);
                     end;
                     until ImprestDetails.Next = 0;
-                ImprestHeader.Uncommitted:=true;
+                // ImprestHeader.Uncommitted:=true;
                 ImprestHeader.Modify;
             end;
         end

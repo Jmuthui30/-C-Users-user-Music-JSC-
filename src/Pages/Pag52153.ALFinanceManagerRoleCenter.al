@@ -835,651 +835,652 @@ page 52153 "AL Finance Manager Role Center"
                     RunObject = Page "Imprest Memo List";
                     RunPageView = where(Status = const(Released));
                 }
-                action("New Imprests")
-                {
-                    ApplicationArea = All;
-                    Caption = 'New Imprests';
-                    RunObject = Page "Imprests";
-                    RunPageView = where(Status = const(Open));
-                }
-                action("Pending Approval Imprests")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Pending Approval Imprests';
-                    RunObject = Page "Imprests";
-                    RunPageView = where(Status = const("Pending Approval"));
-                }
-                action("Approved Imprests")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Approved Imprests';
-                    RunObject = Page "Imprests";
-                    RunPageView = where(Status = const(Released));
-                }
-                action("UnSurrendered Expenses")
-                {
-                    ApplicationArea = All;
-                    Caption = 'UnSurrendered Cash';
-                    RunObject = Page "Imprest Surrenders";
-                    RunPageView = where(Status = filter(Open | Rejected), "Surrender Posted" = const(false));
-                }
-            }
-            group(CashRetirement)
-            {
-                Caption = 'Imprest Surrender';
-                Image = Travel;
+                // action("New Imprests")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'New Imprests';
+                //     RunObject = Page "Imprests";
+                //     RunPageView = where(Status = const(Open));
+                // }
+                // action("Pending Approval Imprests")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Pending Approval Imprests';
+                //     RunObject = Page "Imprests";
+                //     RunPageView = where(Status = const("Pending Approval"));
+                // }
+                // action("Approved Imprests")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Approved Imprests';
+                //     RunObject = Page "Imprests";
+                //     RunPageView = where(Status = const(Released));
+                // }
+                //     action("UnSurrendered Expenses")
+                //     {
+                //         ApplicationArea = All;
+                //         Caption = 'UnSurrendered Cash';
+                //         RunObject = Page "Imprest Surrenders";
+                //         RunPageView = where(Status = filter(Open | Rejected), "Surrender Posted" = const(false));
+                //     }
+                // }
+                // group(CashRetirement)
+                // {
+                //     Caption = 'Imprest Surrender';
+                //     Image = Travel;
 
-                action("Imprest Surrender Approval")
+                //     action("Imprest Surrender Approval")
+                //     {
+                //         ApplicationArea = All;
+                //         Caption = 'Imprest Surrender Approval';
+                //         RunObject = Page "Imprest Surrenders";
+                //         RunPageView = where(Status = const("Pending Approval"), "Surrender Posted" = const(false));
+                //     }
+                //     action("Unposted Imprest Surrender")
+                //     {
+                //         ApplicationArea = All;
+                //         Caption = 'Unposted Imprest Surrender';
+                //         RunObject = Page "Imprest Surrenders";
+                //         RunPageView = where(Status = const(Released), "Surrender Posted" = const(false));
+                //     }
+                //     action("Posted Imprest Surrenders")
+                //     {
+                //         ApplicationArea = All;
+                //         Caption = 'Posted Imprest Surrenders';
+                //         RunObject = Page "Imprest Surrenders";
+                //         RunPageView = where(Status = const(Released), "Surrender Posted" = const(true));
+                //     }
+                // }
+                group("Staff Claim")
                 {
-                    ApplicationArea = All;
-                    Caption = 'Imprest Surrender Approval';
-                    RunObject = Page "Imprest Surrenders";
-                    RunPageView = where(Status = const("Pending Approval"), "Surrender Posted" = const(false));
-                }
-                action("Unposted Imprest Surrender")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Unposted Imprest Surrender';
-                    RunObject = Page "Imprest Surrenders";
-                    RunPageView = where(Status = const(Released), "Surrender Posted" = const(false));
-                }
-                action("Posted Imprest Surrenders")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Posted Imprest Surrenders';
-                    RunObject = Page "Imprest Surrenders";
-                    RunPageView = where(Status = const(Released), "Surrender Posted" = const(true));
-                }
-            }
-            group("Staff Claim")
-            {
-                Caption = 'Staff Claim';
-                Image = Calculator;
+                    Caption = 'Staff Claim';
+                    // Image = Calculator;
 
-                action("Create New Staff Claim")
-                {
-                    ApplicationArea = All;
-                    Caption = 'New Staff Claim';
-                    RunObject = Page "Staff Claims";
-                    RunPageView = where(Status = const(Open));
+                    // action("Create New Staff Claim")
+                    // {
+                    //     ApplicationArea = All;
+                    //     Caption = 'New Staff Claim';
+                    //     RunObject = Page "Staff Claims";
+                    //     RunPageView = where(Status = const(Open));
+                    // }
+                    // action("Staff Claim Pending Approval")
+                    // {
+                    //     ApplicationArea = All;
+                    //     Caption = 'Staff Claim Approvals';
+                    //     RunObject = Page "Staff Claims";
+                    //     RunPageView = where(Status = const("Pending Approval"));
+                    // }
+                    // action("Approved Staff Claim")
+                    // {
+                    //     ApplicationArea = All;
+                    //     Caption = 'Approved Staff Claim';
+                    //     RunObject = Page "Staff Claims";
+                    //     RunPageView = where(Status = const(Released), "Claim Posted" = const(false));
+                    // }
+                    // action("Posted Staff Claim")
+                    // {
+                    //     ApplicationArea = All;
+                    //     Caption = 'Posted Staff Claim';
+                    //     RunObject = Page "Staff Claims";
+                    //     RunPageView = where(Status = const(Released), "Claim Posted" = const(true));
+                    // }
                 }
-                action("Staff Claim Pending Approval")
+                group(Payables)
                 {
-                    ApplicationArea = All;
-                    Caption = 'Staff Claim Approvals';
-                    RunObject = Page "Staff Claims";
-                    RunPageView = where(Status = const("Pending Approval"));
-                }
-                action("Approved Staff Claim")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Approved Staff Claim';
-                    RunObject = Page "Staff Claims";
-                    RunPageView = where(Status = const(Released), "Claim Posted" = const(false));
-                }
-                action("Posted Staff Claim")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Posted Staff Claim';
-                    RunObject = Page "Staff Claims";
-                    RunPageView = where(Status = const(Released), "Claim Posted" = const(true));
-                }
-            }
-            group(Payables)
-            {
-                Caption = 'Payables';
-                Image = Payables;
+                    Caption = 'Payables';
+                    // Image = Payables;
 
-                action(Action163)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Vendors';
-                    RunObject = Page "Vendor List";
+                    action(Action163)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Vendors';
+                        RunObject = Page "Vendor List";
+                    }
+                    action(Vendors_bl)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Balance';
+                        Image = Balance;
+                        RunObject = Page "Vendor List";
+                        RunPageView = WHERE("Balance (LCY)" = FILTER(<> 0));
+                    }
+                    action("Purchase Invoice")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Purchase Invoice';
+                        RunObject = Page "Purchase Invoices";
+                    }
+                    action("Posted Purchase Invoice")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Posted Purchase Invoice';
+                        RunObject = Page "Posted Purchase Invoices";
+                    }
+                    action("Payment Request Review")
+                    {
+                        ApplicationArea = All;
+                        RunObject = Page "Payment Request Review";
+                    }
+                    action("Purchase Credit Memo")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Purchase Credit Memo';
+                        RunObject = Page "Purchase Credit Memos";
+                    }
                 }
-                action(Vendors_bl)
+                group("Requests For Payment")
                 {
-                    ApplicationArea = All;
-                    Caption = 'Balance';
-                    Image = Balance;
-                    RunObject = Page "Vendor List";
-                    RunPageView = WHERE("Balance (LCY)" = FILTER(<> 0));
-                }
-                action("Purchase Invoice")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Purchase Invoice';
-                    RunObject = Page "Purchase Invoices";
-                }
-                action("Posted Purchase Invoice")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Posted Purchase Invoice';
-                    RunObject = Page "Posted Purchase Invoices";
-                }
-                action("Payment Request Review")
-                {
-                    ApplicationArea = All;
-                    RunObject = Page "Payment Request Review";
-                }
-                action("Purchase Credit Memo")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Purchase Credit Memo';
-                    RunObject = Page "Purchase Credit Memos";
-                }
-            }
-            group("Requests For Payment")
-            {
-                Caption = 'Payment Requests';
-                Image = Bank;
+                    Caption = 'Payment Requests';
+                    // Image = Bank;
 
-                action(PaymentRequestReview)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Payment Request Review';
-                    RunObject = Page "Payment Request Review";
+                    action(PaymentRequestReview)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Payment Request Review';
+                        RunObject = Page "Payment Request Review";
+                    }
+                    action("New Requests for Payment")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'New Payment Requests';
+                        RunObject = Page "Payment Requests";
+                        RunPageView = where(Status = const(Open));
+                    }
+                    action("Requests for Payment Pending Approval")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Payment Requests Pending Approval';
+                        RunObject = Page "Payment Requests";
+                        RunPageView = where(Status = const("Pending Approval"));
+                    }
+                    action("Approved Requests for Payment")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Approved Payment Requests';
+                        RunObject = Page "Payment Requests";
+                        RunPageView = where(Status = const(Released), Posted = const(false));
+                    }
+                    action("Processed Req for Payment")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Processed Payment Requests';
+                        RunObject = Page "Payment Requests";
+                        RunPageView = where(Status = const(Released), Posted = const(true));
+                    }
                 }
-                action("New Requests for Payment")
+                group("Payment Voucher")
                 {
-                    ApplicationArea = All;
-                    Caption = 'New Payment Requests';
-                    RunObject = Page "Payment Requests";
-                    RunPageView = where(Status = const(Open));
-                }
-                action("Requests for Payment Pending Approval")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Payment Requests Pending Approval';
-                    RunObject = Page "Payment Requests";
-                    RunPageView = where(Status = const("Pending Approval"));
-                }
-                action("Approved Requests for Payment")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Approved Payment Requests';
-                    RunObject = Page "Payment Requests";
-                    RunPageView = where(Status = const(Released), Posted = const(false));
-                }
-                action("Processed Req for Payment")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Processed Payment Requests';
-                    RunObject = Page "Payment Requests";
-                    RunPageView = where(Status = const(Released), Posted = const(true));
-                }
-            }
-            group("Payment Voucher")
-            {
-                Caption = 'Payment Voucher';
+                    Caption = 'Payment Voucher';
 
-                action("Create Payment Vourcher")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Create Payment Vourcher';
-                    RunObject = Page "Payment Voucher List";
-                    RunPageView = where(Status = const(Open));
+                    action("Create Payment Vourcher")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Create Payment Vourcher';
+                        RunObject = Page "Payment Voucher List";
+                        RunPageView = where(Status = const(Open));
+                    }
+                    action("Pending Approval Payment Voucher")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Pending Approval Payment Voucher';
+                        RunObject = Page "Payment Voucher List";
+                        RunPageView = where(Status = const("Pending Approval"));
+                    }
+                    action("Approved & Unposted Payment Voucher")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Approved & Unposted Payment Voucher';
+                        RunObject = Page "Payment Voucher List";
+                        RunPageView = where(Status = const(Released), Posted = const(false));
+                    }
+                    action("Posted Payment Voucher")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Posted Payment Voucher';
+                        RunObject = Page "Payment Voucher List";
+                        RunPageView = where(Posted = const(true));
+                    }
+                    action("Payment Vouchers sent to EFT")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Payment Vouchers sent to EFT';
+                        RunObject = Page "Payment Voucher List";
+                        RunPageMode = View;
+                        RunPageView = WHERE(EFT_No = FILTER(<> ''));
+                    }
+                    action("EFT Payment Integration Awaiting Post")
+                    {
+                        ApplicationArea = All;
+                        RunObject = Page "EFT List";
+                        RunPageView = WHERE(Status = CONST("Processed by Bank"), "EFT Posted" = CONST(false), "Process Module" = FILTER(<> PVs));
+                    }
+                    action("EFT Payment Integration (Staff Claim, Imprest)")
+                    {
+                        ApplicationArea = All;
+                        RunObject = Page "EFT List";
+                        RunPageView = WHERE(Status = CONST("Processed by Bank"), "EFT Posted" = CONST(false));
+                    }
+                    action("EFT Payment Integration List")
+                    {
+                        ApplicationArea = All;
+                        RunObject = Page "EFT List";
+                        RunPageView = WHERE(Status = FILTER(<> "Processed by Bank"));
+                    }
+                    action("EFT Payment Lines List")
+                    {
+                        ApplicationArea = All;
+                        RunObject = Page "EFT Lines View";
+                        RunPageMode = View;
+                    }
+                    action("EFT Payment Integration Posted")
+                    {
+                        ApplicationArea = All;
+                        RunObject = Page "EFT List";
+                        RunPageView = WHERE(Status = CONST("Processed by Bank"), "EFT Posted" = CONST(true));
+                    }
                 }
-                action("Pending Approval Payment Voucher")
+                group(Receivables)
                 {
-                    ApplicationArea = All;
-                    Caption = 'Pending Approval Payment Voucher';
-                    RunObject = Page "Payment Voucher List";
-                    RunPageView = where(Status = const("Pending Approval"));
-                }
-                action("Approved & Unposted Payment Voucher")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Approved & Unposted Payment Voucher';
-                    RunObject = Page "Payment Voucher List";
-                    RunPageView = where(Status = const(Released), Posted = const(false));
-                }
-                action("Posted Payment Voucher")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Posted Payment Voucher';
-                    RunObject = Page "Payment Voucher List";
-                    RunPageView = where(Posted = const(true));
-                }
-                action("Payment Vouchers sent to EFT")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Payment Vouchers sent to EFT';
-                    RunObject = Page "Payment Voucher List";
-                    RunPageMode = View;
-                    RunPageView = WHERE(EFT_No = FILTER(<> ''));
-                }
-                action("EFT Payment Integration Awaiting Post")
-                {
-                    ApplicationArea = All;
-                    RunObject = Page "EFT List";
-                    RunPageView = WHERE(Status = CONST("Processed by Bank"), "EFT Posted" = CONST(false), "Process Module" = FILTER(<> PVs));
-                }
-                action("EFT Payment Integration (Staff Claim, Imprest)")
-                {
-                    ApplicationArea = All;
-                    RunObject = Page "EFT List";
-                    RunPageView = WHERE(Status = CONST("Processed by Bank"), "EFT Posted" = CONST(false));
-                }
-                action("EFT Payment Integration List")
-                {
-                    ApplicationArea = All;
-                    RunObject = Page "EFT List";
-                    RunPageView = WHERE(Status = FILTER(<> "Processed by Bank"));
-                }
-                action("EFT Payment Lines List")
-                {
-                    ApplicationArea = All;
-                    RunObject = Page "EFT Lines View";
-                    RunPageMode = View;
-                }
-                action("EFT Payment Integration Posted")
-                {
-                    ApplicationArea = All;
-                    RunObject = Page "EFT List";
-                    RunPageView = WHERE(Status = CONST("Processed by Bank"), "EFT Posted" = CONST(true));
-                }
-            }
-            group(Receivables)
-            {
-                Caption = 'Receivables';
-                Image = Receivables;
+                    Caption = 'Receivables';
+                    // Image = Receivables;
 
-                action(Action167)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Customers';
-                    RunObject = Page "Customer List";
+                    action(Action167)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Customers';
+                        RunObject = Page "Customer List";
+                    }
+                    action(CustomerBalance)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Balance';
+                        Image = Balance;
+                        RunObject = Page "Customer List";
+                        RunPageView = WHERE("Balance (LCY)" = FILTER(<> 0));
+                    }
+                    action("Sales Invoice")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Sales Invoice';
+                        RunObject = Page "Sales Invoice List";
+                    }
+                    action("Sales Credit Memo")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Sales Credit Memo';
+                        RunObject = Page "Sales Credit Memos";
+                    }
                 }
-                action(CustomerBalance)
+                group(Receipts)
                 {
-                    ApplicationArea = All;
-                    Caption = 'Balance';
-                    Image = Balance;
-                    RunObject = Page "Customer List";
-                    RunPageView = WHERE("Balance (LCY)" = FILTER(<> 0));
-                }
-                action("Sales Invoice")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Sales Invoice';
-                    RunObject = Page "Sales Invoice List";
-                }
-                action("Sales Credit Memo")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Sales Credit Memo';
-                    RunObject = Page "Sales Credit Memos";
-                }
-            }
-            group(Receipts)
-            {
-                Caption = 'Receipts';
+                    Caption = 'Receipts';
 
-                action("Create Receipt")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Create Receipt';
-                    RunObject = Page "Receipts";
-                    RunPageView = where(Posted = const(false));
+                    action("Create Receipt")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Create Receipt';
+                        RunObject = Page "Receipts";
+                        RunPageView = where(Posted = const(false));
+                    }
+                    action("Posted Receipt")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Posted Receipts';
+                        RunObject = Page "Receipts";
+                        RunPageView = where(Posted = const(true));
+                    }
                 }
-                action("Posted Receipt")
+                group("Management Reporting")
                 {
-                    ApplicationArea = All;
-                    Caption = 'Posted Receipts';
-                    RunObject = Page "Receipts";
-                    RunPageView = where(Posted = const(true));
-                }
-            }
-            group("Management Reporting")
-            {
-                Caption = 'Management Reporting';
-                Image = Payables;
+                    Caption = 'Management Reporting';
+                    // Image = Payables;
 
-                action("Account Schedules")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Account Schedules';
-                    RunObject = Page "Account Schedule Names";
+                    action("Account Schedules")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Account Schedules';
+                        RunObject = Page "Account Schedule Names";
+                    }
+                    action("Analysis Views")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Analysis Views';
+                        RunObject = Page "Analysis View List";
+                    }
+                    action("Cost Types")
+                    {
+                        ApplicationArea = CostAccounting;
+                        Caption = 'Cost Types';
+                        Promoted = true;
+                        PromotedCategory = Process;
+                        RunObject = Page "Chart of Cost Types";
+                        ToolTip = 'View the chart of cost types with a structure and functionality that resembles the general ledger chart of accounts. You can transfer the general ledger income statement accounts or create your own chart of cost types.';
+                    }
+                    action("Cost Centers")
+                    {
+                        ApplicationArea = CostAccounting;
+                        Caption = 'Cost Centers';
+                        Promoted = true;
+                        PromotedCategory = Process;
+                        RunObject = Page "Chart of Cost Centers";
+                        ToolTip = 'Manage cost centers, which are departments and profit centers that are responsible for costs and income. Often, there are more cost centers set up in cost accounting than in any dimension that is set up in the general ledger. In the general ledger, usually only the first level cost centers for direct costs and the initial costs are used. In cost accounting, additional cost centers are created for additional allocation levels.';
+                    }
+                    action("Cost Objects")
+                    {
+                        ApplicationArea = CostAccounting;
+                        Caption = 'Cost Objects';
+                        Promoted = true;
+                        PromotedCategory = Process;
+                        RunObject = Page "Chart of Cost Objects";
+                        ToolTip = 'Set up cost objects, which are products, product groups, or services of a company. These are the finished goods of a company that carry the costs. You can link cost centers to departments and cost objects to projects in your company.';
+                    }
+                    action("Cost Allocations")
+                    {
+                        ApplicationArea = CostAccounting;
+                        Caption = 'Cost Allocations';
+                        Promoted = true;
+                        PromotedCategory = Process;
+                        RunObject = Page "Cost Allocation Sources";
+                        ToolTip = 'Manage allocation rules to allocate costs and revenues between cost types, cost centers, and cost objects. Each allocation consists of an allocation source and one or more allocation targets. For example, all costs for the cost type Electricity and Heating are an allocation source. You want to allocate the costs to the cost centers Workshop, Production, and Sales, which are three allocation targets.';
+                    }
+                    action("Cost Budgets")
+                    {
+                        ApplicationArea = CostAccounting;
+                        Caption = 'Cost Budgets';
+                        Promoted = true;
+                        PromotedCategory = Process;
+                        RunObject = Page "Cost Budget Names";
+                        ToolTip = 'Set up cost accounting budgets that are created based on cost types just as a budget for the general ledger is created based on general ledger accounts. A cost budget is created for a certain period of time, for example, a fiscal year. You can create as many cost budgets as needed. You can create a new cost budget manually, or by importing a cost budget, or by copying an existing cost budget as the budget base.';
+                    }
                 }
-                action("Analysis Views")
+                group("Fixed Assets")
                 {
-                    ApplicationArea = All;
-                    Caption = 'Analysis Views';
-                    RunObject = Page "Analysis View List";
-                }
-                action("Cost Types")
-                {
-                    ApplicationArea = CostAccounting;
-                    Caption = 'Cost Types';
-                    Promoted = true;
-                    PromotedCategory = Process;
-                    RunObject = Page "Chart of Cost Types";
-                    ToolTip = 'View the chart of cost types with a structure and functionality that resembles the general ledger chart of accounts. You can transfer the general ledger income statement accounts or create your own chart of cost types.';
-                }
-                action("Cost Centers")
-                {
-                    ApplicationArea = CostAccounting;
-                    Caption = 'Cost Centers';
-                    Promoted = true;
-                    PromotedCategory = Process;
-                    RunObject = Page "Chart of Cost Centers";
-                    ToolTip = 'Manage cost centers, which are departments and profit centers that are responsible for costs and income. Often, there are more cost centers set up in cost accounting than in any dimension that is set up in the general ledger. In the general ledger, usually only the first level cost centers for direct costs and the initial costs are used. In cost accounting, additional cost centers are created for additional allocation levels.';
-                }
-                action("Cost Objects")
-                {
-                    ApplicationArea = CostAccounting;
-                    Caption = 'Cost Objects';
-                    Promoted = true;
-                    PromotedCategory = Process;
-                    RunObject = Page "Chart of Cost Objects";
-                    ToolTip = 'Set up cost objects, which are products, product groups, or services of a company. These are the finished goods of a company that carry the costs. You can link cost centers to departments and cost objects to projects in your company.';
-                }
-                action("Cost Allocations")
-                {
-                    ApplicationArea = CostAccounting;
-                    Caption = 'Cost Allocations';
-                    Promoted = true;
-                    PromotedCategory = Process;
-                    RunObject = Page "Cost Allocation Sources";
-                    ToolTip = 'Manage allocation rules to allocate costs and revenues between cost types, cost centers, and cost objects. Each allocation consists of an allocation source and one or more allocation targets. For example, all costs for the cost type Electricity and Heating are an allocation source. You want to allocate the costs to the cost centers Workshop, Production, and Sales, which are three allocation targets.';
-                }
-                action("Cost Budgets")
-                {
-                    ApplicationArea = CostAccounting;
-                    Caption = 'Cost Budgets';
-                    Promoted = true;
-                    PromotedCategory = Process;
-                    RunObject = Page "Cost Budget Names";
-                    ToolTip = 'Set up cost accounting budgets that are created based on cost types just as a budget for the general ledger is created based on general ledger accounts. A cost budget is created for a certain period of time, for example, a fiscal year. You can create as many cost budgets as needed. You can create a new cost budget manually, or by importing a cost budget, or by copying an existing cost budget as the budget base.';
-                }
-            }
-            group("Fixed Assets")
-            {
-                Caption = 'Fixed Assets';
-                Image = FixedAssets;
-
-                action(Action17)
-                {
-                    ApplicationArea = All;
                     Caption = 'Fixed Assets';
-                    RunObject = Page "Fixed Asset List";
-                    ToolTip = 'Manage periodic depreciation of your machinery or machines, keep track of your maintenance costs, manage insurance policies related to fixed assets, and monitor fixed asset statistics.';
-                }
-                action(Insurance)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Insurance';
-                    RunObject = Page "Insurance List";
-                    ToolTip = 'Manage insurance policies for fixed assets and monitor insurance coverage.';
-                }
-                action("Fixed Assets G/L Journals")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Fixed Assets G/L Journals';
-                    RunObject = Page "General Journal Batches";
-                    RunPageView = WHERE("Template Type" = CONST(Assets), Recurring = CONST(false));
-                    ToolTip = 'Post fixed asset transactions, such as acquisition and depreciation, in integration with the general ledger. The FA G/L Journal is a general journal, which is integrated into the general ledger.';
-                }
-                action("Fixed Assets Journals")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Fixed Assets Journals';
-                    RunObject = Page "FA Journal Batches";
-                    RunPageView = WHERE(Recurring = CONST(false));
-                    ToolTip = 'Post fixed asset transactions, such as acquisition and depreciation book without integration to the general ledger.';
-                }
-                action("Fixed Assets Reclass. Journals")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Fixed Assets Reclass. Journals';
-                    RunObject = Page "FA Reclass. Journal Batches";
-                    ToolTip = 'Transfer, split, or combine fixed assets by preparing reclassification entries to be posted in the fixed asset journal.';
-                }
-                action("Insurance Journals")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Insurance Journals';
-                    RunObject = Page "Insurance Journal Batches";
-                    ToolTip = 'Post entries to the insurance coverage ledger.';
-                }
-                action("<Action3>")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Recurring General Journals';
-                    RunObject = Page "General Journal Batches";
-                    RunPageView = WHERE("Template Type" = CONST(General), Recurring = CONST(true));
-                    ToolTip = 'Define how to post transactions that recur with few or no changes to general ledger, bank, customer, vendor, or fixed asset accounts';
-                }
-                action("Recurring Fixed Asset Journals")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Recurring Fixed Asset Journals';
-                    RunObject = Page "FA Journal Batches";
-                    RunPageView = WHERE(Recurring = CONST(true));
-                    ToolTip = 'Post recurring fixed asset transactions, such as acquisition and depreciation book without integration to the general ledger.';
-                }
-            }
-            group("Posted Documents")
-            {
-                Caption = 'Posted Documents';
-                Image = FiledPosted;
+                    // Image = FixedAssets;
 
-                action("Posted Payment Vouchers")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Posted Payment Vouchers';
-                    RunObject = Page "Payment Voucher List";
-                    RunPageView = where(Posted = const(true));
+                    action(Action17)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Fixed Assets';
+                        RunObject = Page "Fixed Asset List";
+                        ToolTip = 'Manage periodic depreciation of your machinery or machines, keep track of your maintenance costs, manage insurance policies related to fixed assets, and monitor fixed asset statistics.';
+                    }
+                    action(Insurance)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Insurance';
+                        RunObject = Page "Insurance List";
+                        ToolTip = 'Manage insurance policies for fixed assets and monitor insurance coverage.';
+                    }
+                    action("Fixed Assets G/L Journals")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Fixed Assets G/L Journals';
+                        RunObject = Page "General Journal Batches";
+                        RunPageView = WHERE("Template Type" = CONST(Assets), Recurring = CONST(false));
+                        ToolTip = 'Post fixed asset transactions, such as acquisition and depreciation, in integration with the general ledger. The FA G/L Journal is a general journal, which is integrated into the general ledger.';
+                    }
+                    action("Fixed Assets Journals")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Fixed Assets Journals';
+                        RunObject = Page "FA Journal Batches";
+                        RunPageView = WHERE(Recurring = CONST(false));
+                        ToolTip = 'Post fixed asset transactions, such as acquisition and depreciation book without integration to the general ledger.';
+                    }
+                    action("Fixed Assets Reclass. Journals")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Fixed Assets Reclass. Journals';
+                        RunObject = Page "FA Reclass. Journal Batches";
+                        ToolTip = 'Transfer, split, or combine fixed assets by preparing reclassification entries to be posted in the fixed asset journal.';
+                    }
+                    action("Insurance Journals")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Insurance Journals';
+                        RunObject = Page "Insurance Journal Batches";
+                        ToolTip = 'Post entries to the insurance coverage ledger.';
+                    }
+                    action("<Action3>")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Recurring General Journals';
+                        RunObject = Page "General Journal Batches";
+                        RunPageView = WHERE("Template Type" = CONST(General), Recurring = CONST(true));
+                        ToolTip = 'Define how to post transactions that recur with few or no changes to general ledger, bank, customer, vendor, or fixed asset accounts';
+                    }
+                    action("Recurring Fixed Asset Journals")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Recurring Fixed Asset Journals';
+                        RunObject = Page "FA Journal Batches";
+                        RunPageView = WHERE(Recurring = CONST(true));
+                        ToolTip = 'Post recurring fixed asset transactions, such as acquisition and depreciation book without integration to the general ledger.';
+                    }
                 }
-                action("Posted Cash Receipts")
+                group("Posted Documents")
                 {
-                    ApplicationArea = All;
-                    Caption = 'Posted Cash Receipts';
-                    RunObject = Page "Receipts";
-                    RunPageView = where(Posted = const(true));
-                }
-                action("Processed Requests for Payment")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Processed Payment Requests';
-                    RunObject = Page "Payment Requests";
-                    RunPageView = where(Posted = const(true));
-                }
-                action("Contractual Commitments")
-                {
-                    ApplicationArea = All;
-                    Visible = false;
-                    Caption = 'Contractual Commitments';
-                    RunObject = Page "Contract Commitments";
-                    RunPageView = where(Commited = const(true));
-                }
-                action("Posted Sales Invoices")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Posted Sales Invoices';
-                    Image = PostedOrder;
-                    RunObject = Page "Posted Sales Invoices";
-                }
-                action("Posted Sales Credit Memos")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Posted Sales Credit Memos';
-                    Image = PostedOrder;
-                    RunObject = Page "Posted Sales Credit Memos";
-                }
-                action("Posted Purchase Invoices")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Posted Purchase Invoices';
-                    RunObject = Page "Posted Purchase Invoices";
-                }
-                action("Posted Purchase Credit Memos")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Posted Purchase Credit Memos';
-                    RunObject = Page "Posted Purchase Credit Memos";
-                }
-                action("Issued Reminders")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Issued Reminders';
-                    Image = OrderReminder;
-                    RunObject = Page "Issued Reminder List";
-                }
-                action("Issued Fin. Charge Memos")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Issued Fin. Charge Memos';
-                    Image = PostedMemo;
-                    RunObject = Page "Issued Fin. Charge Memo List";
-                }
-                action("G/L Registers")
-                {
-                    ApplicationArea = All;
-                    Caption = 'G/L Registers';
-                    Image = GLRegisters;
-                    RunObject = Page "G/L Registers";
-                }
-                action("Cost Accounting Registers")
-                {
-                    ApplicationArea = All;
-                    Visible = false;
-                    Caption = 'Cost Accounting Registers';
-                    RunObject = Page "Cost Registers";
-                }
-                action("Cost Accounting Budget Registers")
-                {
-                    ApplicationArea = All;
-                    Visible = false;
-                    Caption = 'Cost Accounting Budget Registers';
-                    RunObject = Page "Cost Budget Registers";
-                }
-            }
-            group(Administration)
-            {
-                Caption = 'Administration';
-                Image = Administration;
+                    Caption = 'Posted Documents';
+                    // Image = FiledPosted;
 
-                action(Action84)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Commercial Banks';
-                    RunObject = Page "Commercial Banks";
+                    action("Posted Payment Vouchers")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Posted Payment Vouchers';
+                        RunObject = Page "Payment Voucher List";
+                        RunPageView = where(Posted = const(true));
+                    }
+                    action("Posted Cash Receipts")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Posted Cash Receipts';
+                        RunObject = Page "Receipts";
+                        RunPageView = where(Posted = const(true));
+                    }
+                    action("Processed Requests for Payment")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Processed Payment Requests';
+                        RunObject = Page "Payment Requests";
+                        RunPageView = where(Posted = const(true));
+                    }
+                    action("Contractual Commitments")
+                    {
+                        ApplicationArea = All;
+                        Visible = false;
+                        Caption = 'Contractual Commitments';
+                        RunObject = Page "Contract Commitments";
+                        RunPageView = where(Commited = const(true));
+                    }
+                    action("Posted Sales Invoices")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Posted Sales Invoices';
+                        Image = PostedOrder;
+                        RunObject = Page "Posted Sales Invoices";
+                    }
+                    action("Posted Sales Credit Memos")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Posted Sales Credit Memos';
+                        Image = PostedOrder;
+                        RunObject = Page "Posted Sales Credit Memos";
+                    }
+                    action("Posted Purchase Invoices")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Posted Purchase Invoices';
+                        RunObject = Page "Posted Purchase Invoices";
+                    }
+                    action("Posted Purchase Credit Memos")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Posted Purchase Credit Memos';
+                        RunObject = Page "Posted Purchase Credit Memos";
+                    }
+                    action("Issued Reminders")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Issued Reminders';
+                        Image = OrderReminder;
+                        RunObject = Page "Issued Reminder List";
+                    }
+                    action("Issued Fin. Charge Memos")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Issued Fin. Charge Memos';
+                        Image = PostedMemo;
+                        RunObject = Page "Issued Fin. Charge Memo List";
+                    }
+                    action("G/L Registers")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'G/L Registers';
+                        Image = GLRegisters;
+                        RunObject = Page "G/L Registers";
+                    }
+                    action("Cost Accounting Registers")
+                    {
+                        ApplicationArea = All;
+                        Visible = false;
+                        Caption = 'Cost Accounting Registers';
+                        RunObject = Page "Cost Registers";
+                    }
+                    action("Cost Accounting Budget Registers")
+                    {
+                        ApplicationArea = All;
+                        Visible = false;
+                        Caption = 'Cost Accounting Budget Registers';
+                        RunObject = Page "Cost Budget Registers";
+                    }
                 }
-                action(Action85)
+                group(Administration)
                 {
-                    ApplicationArea = All;
-                    Caption = 'Employee Banks';
-                    RunObject = Page "Employee Bank List";
+                    Caption = 'Administration';
+                    // Image = Administration;
 
-                    ;
-                }
-                action(Currencies)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Currencies';
-                    Image = Currency;
-                    RunObject = Page Currencies;
-                    ToolTip = 'View the different currencies that you trade in.';
-                }
-                action("Accounting Periods")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Accounting Periods';
-                    Image = AccountingPeriods;
-                    RunObject = Page "Accounting Periods";
-                    ToolTip = 'Set up the number of accounting periods, such as 12 monthly periods, within the fiscal year and specify which period is the start of the new fiscal year.';
-                }
-                action("Number Series")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Number Series';
-                    RunObject = Page "No. Series";
-                    ToolTip = 'View or edit the number series that are used to organize transactions';
-                }
-                action(Action43)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Analysis Views';
-                    RunObject = Page "Analysis View List";
-                    ToolTip = 'Analyze amounts in your general ledger by their dimensions using analysis views that you have set up.';
-                }
-                action(Action93)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Account Schedules';
-                    RunObject = Page "Account Schedule Names";
-                    ToolTip = 'Open your account schedules to analyze figures in general ledger accounts or to compare general ledger entries with general ledger budget entries.';
-                }
-                action(Dimensions)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Dimensions';
-                    Image = Dimensions;
-                    RunObject = Page Dimensions;
-                    ToolTip = 'View or edit dimensions, such as area, project, or department, that you can assign to sales and purchase documents to distribute costs and analyze transaction history.';
-                }
-                action("Bank Account Posting Groups")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Bank Account Posting Groups';
-                    RunObject = Page "Bank Account Posting Groups";
-                    ToolTip = 'Set up posting groups, so that payments in and out of each bank account are posted to the specified general ledger account.';
-                }
-                action("Cash Management Setup")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Cash Management Setup';
-                    RunObject = Page "Cash Management Setup List";
-                }
-                action("Transaction Type")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Transaction Type';
-                    RunObject = Page "Transaction Type";
-                }
-                action("Pay Mode")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Pay Mode';
-                    RunObject = Page "Pay Mode";
-                }
-                action("Advanced Finance Setup")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Advanced Finance Setup';
-                    RunObject = Page "Advanced Finance Setup";
-                }
-                action("Budget User Roles")
-                {
-                    ApplicationArea = All;
-                    Caption = 'User Budget Roles';
-                    Image = Setup;
-                    RunObject = Page "Budget Users";
-                }
-                action("Expense Codes")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Expense Codes';
-                    RunObject = Page "Expense Codes";
-                }
-                action("Employee Customer AC Mapping")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Employee Customer AC Mapping';
-                    RunObject = Page "Employee Customer AC Mapping";
-                }
-                action("Travel Locations")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Travel Locations';
-                    RunObject = Page "Travel Locations";
-                }
-                action("DSA Rates")
-                {
-                    ApplicationArea = All;
-                    Caption = 'DSA Rates';
-                    RunObject = Page "TDY Locations";
+                    action(Action84)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Commercial Banks';
+                        RunObject = Page "Commercial Banks";
+                    }
+                    action(Action85)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Employee Banks';
+                        RunObject = Page "Employee Bank List";
+
+                        ;
+                    }
+                    action(Currencies)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Currencies';
+                        Image = Currency;
+                        RunObject = Page Currencies;
+                        ToolTip = 'View the different currencies that you trade in.';
+                    }
+                    action("Accounting Periods")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Accounting Periods';
+                        Image = AccountingPeriods;
+                        RunObject = Page "Accounting Periods";
+                        ToolTip = 'Set up the number of accounting periods, such as 12 monthly periods, within the fiscal year and specify which period is the start of the new fiscal year.';
+                    }
+                    action("Number Series")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Number Series';
+                        RunObject = Page "No. Series";
+                        ToolTip = 'View or edit the number series that are used to organize transactions';
+                    }
+                    action(Action43)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Analysis Views';
+                        RunObject = Page "Analysis View List";
+                        ToolTip = 'Analyze amounts in your general ledger by their dimensions using analysis views that you have set up.';
+                    }
+                    action(Action93)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Account Schedules';
+                        RunObject = Page "Account Schedule Names";
+                        ToolTip = 'Open your account schedules to analyze figures in general ledger accounts or to compare general ledger entries with general ledger budget entries.';
+                    }
+                    action(Dimensions)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Dimensions';
+                        Image = Dimensions;
+                        RunObject = Page Dimensions;
+                        ToolTip = 'View or edit dimensions, such as area, project, or department, that you can assign to sales and purchase documents to distribute costs and analyze transaction history.';
+                    }
+                    action("Bank Account Posting Groups")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Bank Account Posting Groups';
+                        RunObject = Page "Bank Account Posting Groups";
+                        ToolTip = 'Set up posting groups, so that payments in and out of each bank account are posted to the specified general ledger account.';
+                    }
+                    action("Cash Management Setup")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Cash Management Setup';
+                        RunObject = Page "Cash Management Setup List";
+                    }
+                    action("Transaction Type")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Transaction Type';
+                        RunObject = Page "Transaction Type";
+                    }
+                    action("Pay Mode")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Pay Mode';
+                        RunObject = Page "Pay Mode";
+                    }
+                    action("Advanced Finance Setup")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Advanced Finance Setup';
+                        RunObject = Page "Advanced Finance Setup";
+                    }
+                    action("Budget User Roles")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'User Budget Roles';
+                        Image = Setup;
+                        RunObject = Page "Budget Users";
+                    }
+                    action("Expense Codes")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Expense Codes';
+                        RunObject = Page "Expense Codes";
+                    }
+                    action("Employee Customer AC Mapping")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Employee Customer AC Mapping';
+                        RunObject = Page "Employee Customer AC Mapping";
+                    }
+                    action("Travel Locations")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Travel Locations';
+                        RunObject = Page "Travel Locations";
+                    }
+                    action("DSA Rates")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'DSA Rates';
+                        RunObject = Page "TDY Locations";
+                    }
                 }
             }
         }

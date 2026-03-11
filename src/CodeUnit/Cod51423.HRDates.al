@@ -118,7 +118,7 @@ codeunit 51423 "HR Dates"
             end;
         end
         else
-            Message('For Date Calculation Enter All Applicable Dates!');
+            // Message('For Date Calculation Enter All Applicable Dates!');
         exit;
     end;
     procedure DifferenceStartEnd(StartDate: Date; EndDate: Date)DaysValue: Integer var

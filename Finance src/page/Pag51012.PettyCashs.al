@@ -400,7 +400,7 @@ page 51012 "Petty Cashs"
                         //DocPrint.PrintPurchHeader(Rec);
 
                         Payments.SetRange("No.", Rec."No.");
-                        Report.Run(Report::"Petty Cash Voucher", true, false, Payments)
+                        // Report.Run(Report::"Petty Cash Voucher", true, false, Payments)
                     end;
                 }
             }

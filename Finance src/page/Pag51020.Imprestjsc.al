@@ -1,4 +1,4 @@
-page 51020 Imprestjsc
+page 51020 "Imprestjsc Card"
 {
     ApplicationArea = All;
     Caption = 'Imprest';

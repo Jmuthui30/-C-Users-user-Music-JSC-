@@ -77,20 +77,20 @@ page 51887 "Principal Investigator RC"
         {
             ToolTip = 'Manage your business. See KPIs, trial balance, and favorite customers.';
 
-            action("New Imprest")
-            {
-                ApplicationArea = All;
-                Caption = 'New Imprest';
-                RunObject = Page "SS Imprests";
-                RunPageView = where(Status = const(Open));
-            }
-            action("Imprest Pending Approval")
-            {
-                ApplicationArea = All;
-                Caption = 'Imprest Pending Approval';
-                RunObject = Page "SS Imprests";
-                RunPageView = where(Status = const("Pending Approval"));
-            }
+            // action("New Imprest")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'New Imprest';
+            //     RunObject = Page "SS Imprests";
+            //     RunPageView = where(Status = const(Open));
+            // }
+            // action("Imprest Pending Approval")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Imprest Pending Approval';
+            //     RunObject = Page "SS Imprests";
+            //     RunPageView = where(Status = const("Pending Approval"));
+            // }
         }
         area(sections)
         {
@@ -331,38 +331,38 @@ page 51887 "Principal Investigator RC"
                 Image = AdministrationSalesPurchases;
                 ToolTip = 'Acess Services from HR Department';
 
-                action("New Petty Cash Request")
-                {
-                    ApplicationArea = All;
-                    Caption = 'New Petty Cash Request';
-                    RunObject = Page "SS Petty Cash";
-                    RunPageView = where(Status = const(Open));
-                }
-                action("Petty Cash Requests Pending Aproval")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Petty Cash Requests Pending Aproval';
-                    RunObject = Page "SS Petty Cash";
-                    RunPageView = where(Status = const("Pending Approval"));
-                }
-                action("Approved Petty Cash Requests")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Approved Petty Cash Requests';
-                    RunObject = Page "SS Petty Cash";
-                    RunPageView = where(Status = const(Released));
-                }
+                // action("New Petty Cash Request")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'New Petty Cash Request';
+                //     RunObject = Page "SS Petty Cash";
+                //     RunPageView = where(Status = const(Open));
+                // }
+                // action("Petty Cash Requests Pending Aproval")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Petty Cash Requests Pending Aproval';
+                //     RunObject = Page "SS Petty Cash";
+                //     RunPageView = where(Status = const("Pending Approval"));
+                // }
+                // action("Approved Petty Cash Requests")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Approved Petty Cash Requests';
+                //     RunObject = Page "SS Petty Cash";
+                //     RunPageView = where(Status = const(Released));
+                // }
                 group("SS Archives")
                 {
                     Caption = 'Archives';
 
-                    action("Processed Petty Cash Requests")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Processed Petty Cash Requests';
-                        RunObject = Page "SS Petty Cash";
-                        RunPageView = where(Status = const(Released), Posted = const(true));
-                    }
+                    // action("Processed Petty Cash Requests")
+                    // {
+                    //     ApplicationArea = All;
+                    //     Caption = 'Processed Petty Cash Requests';
+                    //     RunObject = Page "SS Petty Cash";
+                    //     RunPageView = where(Status = const(Released), Posted = const(true));
+                    // }
                 }
             }
         }

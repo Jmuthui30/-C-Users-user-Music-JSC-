@@ -105,7 +105,7 @@ codeunit 50003 "HR Dates Mgt"
             end;
         end
         else
-            Message('For Date Calculation Enter All Applicable Dates!');
+            // Message('For Date Calculation Enter All Applicable Dates!');
         exit;
     end;
     //***********************************************************************************
@@ -210,7 +210,7 @@ codeunit 50003 "HR Dates Mgt"
             end;
         end
         else
-            Message('For Date Calculation Enter All Applicable Dates!');
+            // Message('For Date Calculation Enter All Applicable Dates!');
         exit;
     end;
 

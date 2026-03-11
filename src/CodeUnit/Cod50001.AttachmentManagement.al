@@ -17,7 +17,7 @@ codeunit 50001 "Attachment Management"
         // EmployeeExit: Record "Employee Exit";
         // PettyCash: Record "Petty Cash Header";
         // PaymentRequest: Record "Payment Request Header";
-        Imprest: Record "Imprest Header";
+        // Imprest: Record "Imprest Header";
     begin
         case DocumentAttachment."Table ID" of //**********Finance**********
         DATABASE::"Requisition Header": begin
@@ -96,10 +96,10 @@ codeunit 50001 "Attachment Management"
         //         if PaymentRequest.Get(DocumentAttachment."No.") then
         //             RecRef.GetTable(PaymentRequest);
         //end;
-        DATABASE::"Imprest Header": begin
-            RecRef.Open(DATABASE::"Imprest Header");
-            if Imprest.Get(DocumentAttachment."No.")then RecRef.GetTable(Imprest);
-        end;
+        // DATABASE::"Imprest Header": begin
+        //     RecRef.Open(DATABASE::"Imprest Header");
+        //     if Imprest.Get(DocumentAttachment."No.")then RecRef.GetTable(Imprest);
+        // end;
         // DATABASE::"Pr Employee Change Header":
         //     begin
         //         RecRef.Open(DATABASE::"Pr Employee Change Header");
@@ -125,11 +125,11 @@ codeunit 50001 "Attachment Management"
         // Database::"Employee Exit",
         // Database::"Petty Cash Header",
         // Database::"Payment Request Header",
-        Database::"Imprest Header": begin
-            FieldRef:=RecRef.Field(1);
-            RecNo:=FieldRef.Value;
-            DocumentAttachment.SetRange("No.", RecNo);
-        end;
+        // Database::"Imprest Header": begin
+        //     FieldRef:=RecRef.Field(1);
+        //     RecNo:=FieldRef.Value;
+        //     DocumentAttachment.SetRange("No.", RecNo);
+        // end;
         Database::"Employee Leave Application": begin
             FieldRef:=RecRef.Field(1);
             RecNo:=FieldRef.Value;
@@ -161,11 +161,11 @@ codeunit 50001 "Attachment Management"
         // Database::"Employee Exit",
         // Database::"Petty Cash Header",
         // Database::"Payment Request Header",
-        Database::"Imprest Header": begin
-            FieldRef:=RecRef.Field(1);
-            RecNo:=FieldRef.Value;
-            DocumentAttachment.Validate("No.", RecNo);
-        end;
+        // Database::"Imprest Header": begin
+        //     FieldRef:=RecRef.Field(1);
+        //     RecNo:=FieldRef.Value;
+        //     DocumentAttachment.Validate("No.", RecNo);
+        // end;
         Database::"Employee Leave Application": begin
             FieldRef:=RecRef.Field(1);
             RecNo:=FieldRef.Value;
@@ -196,10 +196,10 @@ codeunit 50001 "Attachment Management"
         // Database::"Employee Exit",
         // Database::"Petty Cash Header",
         // Database::"Payment Request Header",
-        Database::"Imprest Header": begin
-            FieldRef:=RecRef.Field(1);
-            RecNo:=FieldRef.Value;
-        end;
+        // Database::"Imprest Header": begin
+        //     FieldRef:=RecRef.Field(1);
+        //     RecNo:=FieldRef.Value;
+        // end;
         Database::"Employee Leave Application": begin
             FieldRef:=RecRef.Field(1);
             RecNo:=FieldRef.Value;

@@ -93,7 +93,7 @@ table 52362 "Training Budget"
             //                                                                  "Dimension Set ID" = field("Dimension Set ID")));
             Caption = 'Commitments';
             Editable = false;
-            FieldClass = FlowField;
+            // FieldClass = FlowField;
         }
         field(11; Date; Date)
         {

@@ -7,9 +7,9 @@ report 52101 "Imprest Summary"
 
     dataset
     {
-        dataitem("Imprest Header"; "Imprest Header")
+        dataitem("Imprest Header"; Payments)
         {
-            RequestFilterFields = "No.", "Employee No.", "Global Dimension 1 Code", "Global Dimension 2 Code", "Global Dimension 3 Code", Date, Status, "Surrender Date", "Due Date";
+            RequestFilterFields = "No.", "Staff No.", "Shortcut Dimension 1 Code", "Shortcut Dimension 2 Code", "Shortcut Dimension 3 Code", Date, Status, "Surrender Date", "Due Date";
 
             column(Logo; CompInfo.Picture)
             {
@@ -26,34 +26,34 @@ report 52101 "Imprest Summary"
             column(ImprestNo; "Imprest Header"."No.")
             {
             }
-            column(EmpNo; "Imprest Header"."Employee No.")
+            column(EmpNo; "Imprest Header"."Staff No.")
             {
             }
-            column(EmpName; "Imprest Header"."Employee Name")
+            column(EmpName; "Imprest Header".Payee)
             {
             }
-            column(JobTitle; "Imprest Header"."Job Title")
+            column(JobTitle; "Imprest Header"."Shortcut Dimension 2 Code")
             {
             }
-            column(DimOne; "Imprest Header"."Global Dimension 1 Code")
+            column(DimOne; "Imprest Header"."Shortcut Dimension 1 Code")
             {
             }
-            column(DimTwo; "Imprest Header"."Global Dimension 2 Code")
+            column(DimTwo; "Imprest Header"."Shortcut Dimension 2 Code")
             {
             }
-            column(DimThree; "Imprest Header"."Global Dimension 3 Code")
+            column(DimThree; "Imprest Header"."Shortcut Dimension 3 Code")
             {
             }
             column(Date; "Imprest Header".Date)
             {
             }
-            column(RequestType; "Imprest Header".Type)
+            column(RequestType; "Imprest Header"."Payment Type")
             {
             }
-            column(TotalDaysInTheField; "Imprest Header"."Total Days in the Field")
+            column(TotalDaysInTheField; "Imprest Header"."No of Days")
             {
             }
-            column(TotalRequestAmount; "Imprest Header"."Total Request Amount")
+            column(TotalRequestAmount; "Imprest Header"."Imprest Amount")
             {
             }
             column(Status; "Imprest Header".Status)
@@ -65,16 +65,16 @@ report 52101 "Imprest Summary"
             column(DueDate; "Imprest Header".Date)
             {
             }
-            column(TotalSurrenderAmount; "Imprest Header"."Total Surrender Amount")
+            column(TotalSurrenderAmount; "Imprest Header"."Receipt Amount")
             {
             }
-            column(TotalClaim; "Imprest Header"."Total Claim")
+            column(TotalClaim; "Imprest Header"."Actual Amount Spent")
             {
             }
-            column(TotalRefund; "Imprest Header"."Total Refund")
+            column(TotalRefund; "Imprest Header"."Total Amount")
             {
             }
-            column(NetRefundClaim; "Imprest Header"."Net Refund (Net Claim)")
+            column(NetRefundClaim; "Imprest Header"."Remaining Amount")
             {
             }
         }

@@ -1361,39 +1361,39 @@ page 51488 "HR Officer Role Center"
             {
                 Caption = 'Finance Self Service';
 
-                action("SS New Petty Cash Request")
-                {
-                    ApplicationArea = All;
-                    Caption = 'New Petty Cash Request';
-                    RunObject = Page "SS Petty Cash";
-                    RunPageView = where(Status = const(Open));
-                }
-                action("SS Pending Approval Petty Cash Request")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Petty Cash Request Pending Approval';
-                    RunObject = Page "SS Petty Cash";
-                    RunPageView = where(Status = const("Pending Approval"));
-                }
-                action("SS Approved Petty Cash Request")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Approved Petty Cash Request';
-                    RunObject = Page "SS Petty Cash";
-                    RunPageView = where(Status = const(Released));
-                }
-                group("SS Archived")
-                {
-                    Caption = 'Archive';
+                // action("SS New Petty Cash Request")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'New Petty Cash Request';
+                //     RunObject = Page "SS Petty Cash";
+                //     RunPageView = where(Status = const(Open));
+                // }
+                // action("SS Pending Approval Petty Cash Request")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Petty Cash Request Pending Approval';
+                //     RunObject = Page "SS Petty Cash";
+                //     RunPageView = where(Status = const("Pending Approval"));
+                // }
+                // action("SS Approved Petty Cash Request")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Approved Petty Cash Request';
+                //     RunObject = Page "SS Petty Cash";
+                //     RunPageView = where(Status = const(Released));
+                // }
+                // group("SS Archived")
+                // {
+                //     Caption = 'Archive';
 
-                    action("SS Posted Petty Cash Request")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Processed Petty Cash Request';
-                        RunObject = Page "SS Petty Cash";
-                        RunPageView = where(Posted = const(true));
-                    }
-                }
+                //     action("SS Posted Petty Cash Request")
+                //     {
+                //         ApplicationArea = All;
+                //         Caption = 'Processed Petty Cash Request';
+                //         RunObject = Page "SS Petty Cash";
+                //         RunPageView = where(Posted = const(true));
+                //     }
+                // }
             }
         }
         area(processing)

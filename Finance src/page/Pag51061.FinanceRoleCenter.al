@@ -2006,7 +2006,7 @@ page 51061 "Finance Role Center"
                     action(ImprestSurr)
                     {
                         Caption = 'Imprest Surrenders';
-                        RunObject = page "Imprest Surrenders";
+                        RunObject = page "Imprest Surrenderss";
                         ToolTip = 'Executes the Imprests Surrenders action';
                     }
                     action("Petty Cash List")

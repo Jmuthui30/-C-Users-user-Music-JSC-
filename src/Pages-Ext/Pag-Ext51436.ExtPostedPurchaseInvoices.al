@@ -76,7 +76,7 @@ pageextension 51436 "ExtPosted Purchase Invoices" extends "Posted Purchase Invoi
 
                 trigger OnAction()
                 begin
-                    PaymentMgnt.InvoicePaymentRequest(Rec);
+                    // PaymentMgnt.InvoicePaymentRequest(Rec);
                 end;
             }
         }

@@ -33,7 +33,6 @@ table 50023 "Applicant Current Employment"
             var
                 Error001: Label 'Kindly note To Date %1 cannot be previous From Date %2';
             begin
-                /// if "To Date" <= "From Date" then
                 //   Error(Error001, "To Date", "From Date");
                 // Validate("From Date");
                 "Employment Period" := Dates.DetermineDatesDiffrence("From Date", "To Date")
