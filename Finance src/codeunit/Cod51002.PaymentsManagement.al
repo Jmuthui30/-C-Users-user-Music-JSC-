@@ -3841,7 +3841,7 @@ codeunit 51002 "Payments Management"
             2:
                 Page.Run(Page::"Payment Voucher", PaymentRec);
             3:
-                Page.Run(Page::"Staff Claim", PaymentRec);
+                Page.Run(Page::"Staff Claim List", PaymentRec);
         end;
     end;
 

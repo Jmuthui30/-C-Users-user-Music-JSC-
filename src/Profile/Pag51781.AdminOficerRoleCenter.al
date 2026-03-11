@@ -480,34 +480,34 @@ page 51781 "Admin Oficer Role Center"
                 Image = AdministrationSalesPurchases;
                 ToolTip = 'Acess Services from HR Department';
 
-                action("New Petty Cash Request")
-                {
-                    ApplicationArea = All;
-                    Caption = 'New Petty Cash Request';
-                    RunObject = Page "SS Petty Cash";
-                    RunPageView = where(Status = const(Open));
-                }
-                action("Petty Cash Requests Pending Aproval")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Petty Cash Requests Pending Aproval';
-                    RunObject = Page "SS Petty Cash";
-                    RunPageView = where(Status = const("Pending Approval"));
-                }
-                action("SS Approved Petty Cash Requests")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Approved Petty Cash Requests';
-                    RunObject = Page "SS Petty Cash";
-                    RunPageView = where(Status = const(Released));
-                }
-                action("Processed Petty Cash Requests")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Processed Petty Cash Requests';
-                    RunObject = Page "SS Petty Cash";
-                    RunPageView = where(Status = const(Released), Posted = const(true));
-                }
+                // action("New Petty Cash Request")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'New Petty Cash Request';
+                //     RunObject = Page "SS Petty Cash";
+                //     RunPageView = where(Status = const(Open));
+                // }
+                // action("Petty Cash Requests Pending Aproval")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Petty Cash Requests Pending Aproval';
+                //     RunObject = Page "SS Petty Cash";
+                //     RunPageView = where(Status = const("Pending Approval"));
+                // }
+                // action("SS Approved Petty Cash Requests")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Approved Petty Cash Requests';
+                //     RunObject = Page "SS Petty Cash";
+                //     RunPageView = where(Status = const(Released));
+                // }
+                // action("Processed Petty Cash Requests")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Processed Petty Cash Requests';
+                //     RunObject = Page "SS Petty Cash";
+                //     RunPageView = where(Status = const(Released), Posted = const(true));
+                // }
             }
         }
     }

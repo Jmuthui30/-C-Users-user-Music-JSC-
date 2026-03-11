@@ -2180,7 +2180,7 @@ codeunit 55056 HRPortal
         if Payments.FindSet then begin
             TempBlob_lRec.CreateOutStream(OutStr, TEXTENCODING::UTF8);
             RecRef.GetTable(Payments);
-            Report.SaveAs(Report::"Petty Cash Voucher", '', ReportFormat::Pdf, OutStr, RecRef);
+            // Report.SaveAs(Report::"Petty Cash Voucher", '', ReportFormat::Pdf, OutStr, RecRef);
             FileManagement_lCdu.BLOBExport(TempBlob_lRec, STRSUBSTNO('PettyCashVoucher_%1.Pdf', Payments."No."), TRUE);
             TempBlob_lRec.CreateInstream(InStr, TEXTENCODING::UTF8);
             BaseImage := Base64Convert.ToBase64(InStr);

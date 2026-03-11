@@ -633,34 +633,34 @@ page 51793 "AL Finance, HR & Admin Manager"
                     Caption = 'Settled Employee Medical Claims';
                     RunObject = Page "Medical Claims - Settled";
                 }
-                action("Imprests Pending Approval")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Imprests Pending Approval';
-                    RunObject = Page "Imprests";
-                    RunPageView = where(Status = const("Pending Approval"));
-                }
-                action("Approved Imprests")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Approved Imprests';
-                    RunObject = Page "Imprests";
-                    RunPageView = where(Status = const(Released));
-                }
-                action("Unritired Cash")
-                {
-                    ApplicationArea = All;
-                    Caption = 'UnSurrendered Cash';
-                    RunObject = Page "Imprest Surrenders";
-                    RunPageView = where(Status = const(open), "Surrender Posted" = const(false));
-                }
-                action("Imprest Surrenders")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Imprest Surrenders';
-                    RunObject = Page "Imprest Surrenders";
-                    RunPageView = where(Status = const(Released), "Surrender Posted" = const(false));
-                }
+                // action("Imprests Pending Approval")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Imprests Pending Approval';
+                //     RunObject = Page "Imprests";
+                //     RunPageView = where(Status = const("Pending Approval"));
+                // }
+                // action("Approved Imprests")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Approved Imprests';
+                //     RunObject = Page "Imprests";
+                //     RunPageView = where(Status = const(Released));
+                // }
+                // action("Unritired Cash")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'UnSurrendered Cash';
+                //     RunObject = Page "Imprest Surrenders";
+                //     RunPageView = where(Status = const(open), "Surrender Posted" = const(false));
+                // }
+                // action("Imprest Surrenders")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Imprest Surrenders';
+                //     RunObject = Page "Imprest Surrenders";
+                //     RunPageView = where(Status = const(Released), "Surrender Posted" = const(false));
+                // }
             }
             group("3rd Party Payrolls")
             {
@@ -1599,76 +1599,76 @@ page 51793 "AL Finance, HR & Admin Manager"
                     Caption = 'Time Sheet';
                     RunObject = Page "Time Sheet List";
                 }
-                action(Action133)
-                {
-                    ApplicationArea = All;
-                    Caption = 'New Petty Cash Request';
-                    RunObject = Page "SS Petty Cash";
-                    RunPageView = where(Status = const(Open));
-                }
-                action("Petty Cash Requests Pending Aproval")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Petty Cash Requests Pending Aproval';
-                    RunObject = Page "SS Petty Cash";
-                    RunPageView = where(Status = const("Pending Approval"));
-                }
-                action(Action22)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Approved Petty Cash Requests';
-                    RunObject = Page "SS Petty Cash";
-                    RunPageView = where(Status = const(Released));
-                }
-                action("Processed Petty Cash Requests")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Processed Petty Cash Requests';
-                    RunObject = Page "SS Petty Cash";
-                    RunPageView = where(Status = const(Released), Posted = const(true));
-                }
-                action("New Imprest")
-                {
-                    ApplicationArea = All;
-                    Caption = 'New Imprest';
-                    RunObject = Page "SS Imprests";
-                    RunPageView = where(Status = const(Open));
-                }
-                action(Action184)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Imprests Pending Approval';
-                    RunObject = Page "SS Imprests";
-                    RunPageView = where(Status = const("Pending Approval"));
-                }
-                action(Action183)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Approved Imprests';
-                    RunObject = Page "SS Imprests";
-                    RunPageView = where(Status = const(Released));
-                }
-                action(Action182)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Imprest Surrender';
-                    RunObject = Page "SS Imprest Surrenders";
-                    RunPageView = where(Status = const(Open), "Surrender Posted" = const(false));
-                }
-                action("Imprest Surrender Pending Approval")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Imprest Surrenders Pending Approval';
-                    RunObject = Page "SS Imprest Surrenders";
-                    RunPageView = where(Status = const(Released), "Surrender Posted" = const(false));
-                }
-                action("Closed Imprest Surrenders")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Closed Imprest Surrenders';
-                    RunObject = Page "SS Imprest Surrenders";
-                    RunPageView = where(Status = const(Released), "Surrender Posted" = const(true));
-                }
+                // action(Action133)
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'New Petty Cash Request';
+                //     RunObject = Page "SS Petty Cash";
+                //     RunPageView = where(Status = const(Open));
+                // }
+                // action("Petty Cash Requests Pending Aproval")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Petty Cash Requests Pending Aproval';
+                //     RunObject = Page "SS Petty Cash";
+                //     RunPageView = where(Status = const("Pending Approval"));
+                // }
+                // action(Action22)
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Approved Petty Cash Requests';
+                //     RunObject = Page "SS Petty Cash";
+                //     RunPageView = where(Status = const(Released));
+                // }
+                // action("Processed Petty Cash Requests")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Processed Petty Cash Requests';
+                //     RunObject = Page "SS Petty Cash";
+                //     RunPageView = where(Status = const(Released), Posted = const(true));
+                // }
+                // action("New Imprest")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'New Imprest';
+                //     RunObject = Page "SS Imprests";
+                //     RunPageView = where(Status = const(Open));
+                // }
+                // action(Action184)
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Imprests Pending Approval';
+                //     RunObject = Page "SS Imprests";
+                //     RunPageView = where(Status = const("Pending Approval"));
+                // }
+                // action(Action183)
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Approved Imprests';
+                //     RunObject = Page "SS Imprests";
+                //     RunPageView = where(Status = const(Released));
+                // }
+                // action(Action182)
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Imprest Surrender';
+                //     RunObject = Page "SS Imprest Surrenders";
+                //     RunPageView = where(Status = const(Open), "Surrender Posted" = const(false));
+                // }
+                // action("Imprest Surrender Pending Approval")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Imprest Surrenders Pending Approval';
+                //     RunObject = Page "SS Imprest Surrenders";
+                //     RunPageView = where(Status = const(Released), "Surrender Posted" = const(false));
+                // }
+                // action("Closed Imprest Surrenders")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Closed Imprest Surrenders';
+                //     RunObject = Page "SS Imprest Surrenders";
+                //     RunPageView = where(Status = const(Released), "Surrender Posted" = const(true));
+                // }
                 action("New Leave Application")
                 {
                     ApplicationArea = All;

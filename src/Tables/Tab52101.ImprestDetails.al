@@ -10,9 +10,9 @@ table 52101 "Imprest Details"
             trigger OnValidate()
             begin
                 If ImprestHeader.Get("No.")then begin
-                    "Global Dimension 1 Code":=ImprestHeader."Global Dimension 1 Code";
-                    "Global Dimension 2 Code":=ImprestHeader."Global Dimension 2 Code";
-                    "Global Dimension 3 Code":=ImprestHeader."Global Dimension 3 Code";
+                    "Global Dimension 1 Code":=ImprestHeader."Shortcut Dimension 1 Code";
+                    "Global Dimension 2 Code":=ImprestHeader."Shortcut Dimension 2 Code";
+                    "Global Dimension 3 Code":=ImprestHeader."Shortcut Dimension 3 Code";
                 end;
             end;
         }
@@ -184,6 +184,6 @@ table 52101 "Imprest Details"
     {
     }
     var ExpenseCodes: Record "Expense Codes";
-    ImprestHeader: Record "Imprest Header";
+    ImprestHeader: Record Payments;
     FinanceMgnt: Codeunit "Finance Management";
 }

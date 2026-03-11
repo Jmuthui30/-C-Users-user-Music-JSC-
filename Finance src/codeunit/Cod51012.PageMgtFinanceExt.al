@@ -26,9 +26,9 @@ codeunit 51012 "Page Mgt Finance Ext"
         RecordRef.SetTable(Payments);
         case Payments."Payment Type" of
             Payments."Payment Type"::Imprest:
-                exit(Page::Imprest);
+                exit(Page::"Imprestjsc Card");
             Payments."Payment Type"::"Imprest Surrender":
-                exit(Page::"Imprest Surrender");
+                exit(Page::"Imprest Surrenderss");
             Payments."Payment Type"::"Petty Cash":
                 exit(Page::"Petty Cash");
             Payments."Payment Type"::"Petty Cash Surrender":
@@ -36,7 +36,7 @@ codeunit 51012 "Page Mgt Finance Ext"
             Payments."Payment Type"::"Payment Voucher":
                 exit(Page::"Payment Voucher");
             Payments."Payment Type"::"Staff Claim":
-                exit(Page::"Staff Claim");
+                exit(Page::"Staff Claim List");
             Payments."Payment Type"::"Bank Transfer":
                 exit(Page::"InterBank Transfer");
             Payments."Payment Type"::"Property Expense":

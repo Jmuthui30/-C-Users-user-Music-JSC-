@@ -46,7 +46,7 @@ codeunit 52104 "Cash Management"
     Payment: Record "PV Header";
     FinanceMgt: Codeunit "Finance Management";
     isautopost: Boolean;
-    ImprestHeader: Record "Imprest Header";
+    // ImprestHeader: Record "Imprest Header";
     ImprestManagement: Codeunit "Imprest Management";
     LineNo: Integer;
     ImprestLines: Record "Imprest Details";
@@ -273,73 +273,73 @@ codeunit 52104 "Cash Management"
         PVHeader.EFT_No:=EFTHeader.No;
         PVHeader.Modify(true);
     end;
-    procedure PostStaffClaimEFT(StaffClaim: Record "Imprest Header"; EFTHeader: Record "EFT Header")
-    begin
-        StaffClaim.TestField("Claim Pay Mode");
-        StaffClaim.TestField("Employee No.");
-        StaffClaim.CalcFields("Total Surrender Amount");
-        EFTLines."EFT No":=EFTHeader.No;
-        EFTLines."PV No":=StaffClaim."No.";
-        EFTLines.Amount:=StaffClaim."Total Surrender Amount";
-        EFTLines.Payee:=StaffClaim."Employee Name";
-        EFTLines."Account No":=StaffClaim."Payroll No.";
-        EFTLines."Account Name":=StaffClaim."Employee Name";
-        if EmployeeMaster.Get(StaffClaim."Employee No.")then begin
-            EmployeeMaster.TestField("Bank Account Number");
-            EmployeeMaster.TestField("Bank Code");
-            EmployeeMaster.TestField("Bank Branch");
-            EFTLines."Bank Account No":=EmployeeMaster."Bank Account Number";
-            if CommercialBanks.Get(EmployeeMaster."Bank Code")then EFTLines."Bank Name":=CommercialBanks.Name;
-            EFTLines."Sort Code":=EmployeeMaster."Bank Branch";
-        end;
-        // emploeebankacc.Reset;
-        // emploeebankacc.SetRange(Code, EmployeeMaster."Bank Code");
-        // if emploeebankacc.FindFirst then begin
-        //     emploeebankacc.TestField("Bank Branch No.");
-        //     "Sort Code" := emploeebankacc."Bank Branch No.";
-        // end;
-        StaffClaim.Description:=ImprestLines.Narration;
-        if StaffClaim.Description = '' then StaffClaim.Description:=Format(EFTHeader."Process Module") + ' for ' + StaffClaim."No.";
-        EFTLines.Insert(true);
-        StaffClaim."EFT No":=EFTHeader.No;
-        //"Claim Paying Account" := '111001';
-        StaffClaim."Claim Payment Tx No":=EFTHeader.No;
-        StaffClaim.Modify(true);
-    end;
-    procedure PostCashAdvanceEFT(CashAdvance: Record "Imprest Header"; EFTHeader: Record "EFT Header")
-    begin
-        CashAdvance.TestField("Pay Mode");
-        CashAdvance.TestField("Employee No.");
-        ImprestLines.Reset;
-        ImprestLines.SetRange("No.", CashAdvance."No.");
-        ImprestLines.FindFirst;
-        CashAdvance.CalcFields("Total Request Amount");
-        EFTLines."EFT No":=EFTHeader.No;
-        EFTLines."PV No":=CashAdvance."No.";
-        EFTLines.Amount:=CashAdvance."Total Request Amount";
-        EFTLines.Payee:=CashAdvance."Employee Name";
-        EFTLines."Account No":=CashAdvance."Payroll No.";
-        EFTLines."Account Name":=CashAdvance."Employee Name";
-        if EmployeeMaster.Get(CashAdvance."Employee No.")then begin
-            EmployeeMaster.TestField("Bank Account Number");
-            EmployeeMaster.TestField("Bank Code");
-            EmployeeMaster.TestField("Bank Branch");
-            EFTLines."Bank Account No":=EmployeeMaster."Bank Account Number";
-            if CommercialBanks.Get(EmployeeMaster."Bank Code")then EFTLines."Bank Name":=CommercialBanks.Name;
-            EFTLines."Sort Code":=EmployeeMaster."Bank Branch";
-        // emploeebankacc.Reset;
-        // emploeebankacc.SetRange(Code, EmployeeMaster."Bank Code");
-        // if emploeebankacc.FindFirst then
-        //     "Sort Code" := emploeebankacc."Bank Branch No.";
-        end;
-        EFTLines.Description:=ImprestLines.Narration;
-        if EFTLines.Description = '' then EFTLines.Description:=Format(EFTHeader."Process Module") + ' for ' + CashAdvance."No.";
-        EFTLines.Insert(true);
-        CashAdvance."EFT No":=EFTHeader.No;
-        CashAdvance."Claim Paying Account":='111001';
-        CashAdvance."Payment Tx No.(Cheque No.)":=EFTHeader.No;
-        CashAdvance.Modify;
-    end;
+    // procedure PostStaffClaimEFT(StaffClaim: Record "Imprest Header"; EFTHeader: Record "EFT Header")
+    // begin
+    //     StaffClaim.TestField("Claim Pay Mode");
+    //     StaffClaim.TestField("Employee No.");
+    //     StaffClaim.CalcFields("Total Surrender Amount");
+    //     EFTLines."EFT No":=EFTHeader.No;
+    //     EFTLines."PV No":=StaffClaim."No.";
+    //     EFTLines.Amount:=StaffClaim."Total Surrender Amount";
+    //     EFTLines.Payee:=StaffClaim."Employee Name";
+    //     EFTLines."Account No":=StaffClaim."Payroll No.";
+    //     EFTLines."Account Name":=StaffClaim."Employee Name";
+    //     if EmployeeMaster.Get(StaffClaim."Employee No.")then begin
+    //         EmployeeMaster.TestField("Bank Account Number");
+    //         EmployeeMaster.TestField("Bank Code");
+    //         EmployeeMaster.TestField("Bank Branch");
+    //         EFTLines."Bank Account No":=EmployeeMaster."Bank Account Number";
+    //         if CommercialBanks.Get(EmployeeMaster."Bank Code")then EFTLines."Bank Name":=CommercialBanks.Name;
+    //         EFTLines."Sort Code":=EmployeeMaster."Bank Branch";
+    //     end;
+    //     // emploeebankacc.Reset;
+    //     // emploeebankacc.SetRange(Code, EmployeeMaster."Bank Code");
+    //     // if emploeebankacc.FindFirst then begin
+    //     //     emploeebankacc.TestField("Bank Branch No.");
+    //     //     "Sort Code" := emploeebankacc."Bank Branch No.";
+    //     // end;
+    //     StaffClaim.Description:=ImprestLines.Narration;
+    //     if StaffClaim.Description = '' then StaffClaim.Description:=Format(EFTHeader."Process Module") + ' for ' + StaffClaim."No.";
+    //     EFTLines.Insert(true);
+    //     StaffClaim."EFT No":=EFTHeader.No;
+    //     //"Claim Paying Account" := '111001';
+    //     StaffClaim."Claim Payment Tx No":=EFTHeader.No;
+    //     StaffClaim.Modify(true);
+    // end;
+    // procedure PostCashAdvanceEFT(CashAdvance: Record "Imprest Header"; EFTHeader: Record "EFT Header")
+    // begin
+    //     CashAdvance.TestField("Pay Mode");
+    //     CashAdvance.TestField("Employee No.");
+    //     ImprestLines.Reset;
+    //     ImprestLines.SetRange("No.", CashAdvance."No.");
+    //     ImprestLines.FindFirst;
+    //     CashAdvance.CalcFields("Total Request Amount");
+    //     EFTLines."EFT No":=EFTHeader.No;
+    //     EFTLines."PV No":=CashAdvance."No.";
+    //     EFTLines.Amount:=CashAdvance."Total Request Amount";
+    //     EFTLines.Payee:=CashAdvance."Employee Name";
+    //     EFTLines."Account No":=CashAdvance."Payroll No.";
+    //     EFTLines."Account Name":=CashAdvance."Employee Name";
+    //     if EmployeeMaster.Get(CashAdvance."Employee No.")then begin
+    //         EmployeeMaster.TestField("Bank Account Number");
+    //         EmployeeMaster.TestField("Bank Code");
+    //         EmployeeMaster.TestField("Bank Branch");
+    //         EFTLines."Bank Account No":=EmployeeMaster."Bank Account Number";
+    //         if CommercialBanks.Get(EmployeeMaster."Bank Code")then EFTLines."Bank Name":=CommercialBanks.Name;
+    //         EFTLines."Sort Code":=EmployeeMaster."Bank Branch";
+    //     // emploeebankacc.Reset;
+    //     // emploeebankacc.SetRange(Code, EmployeeMaster."Bank Code");
+    //     // if emploeebankacc.FindFirst then
+    //     //     "Sort Code" := emploeebankacc."Bank Branch No.";
+    //     end;
+    //     EFTLines.Description:=ImprestLines.Narration;
+    //     if EFTLines.Description = '' then EFTLines.Description:=Format(EFTHeader."Process Module") + ' for ' + CashAdvance."No.";
+    //     EFTLines.Insert(true);
+    //     CashAdvance."EFT No":=EFTHeader.No;
+    //     CashAdvance."Claim Paying Account":='111001';
+    //     CashAdvance."Payment Tx No.(Cheque No.)":=EFTHeader.No;
+    //     CashAdvance.Modify;
+    // end;
     procedure SendEmail(var EFTHeader: Record "EFT Header")
     var
         attachmentName: Text;
@@ -349,7 +349,7 @@ codeunit 52104 "Cash Management"
         PVReport: Report "Payment Voucher";
         pathcode2: Text;
         npayment: Record "PV Header";
-        imprestheader: Record "Imprest Header";
+        // imprestheader: Record "Imprest Header";
         mail: Codeunit "Email Message";
         email: Codeunit Email;
         Body: Text;
@@ -396,10 +396,10 @@ codeunit 52104 "Cash Management"
                 //         end;
                 //     end;
                 // end;
-                end;
-                if(EFTHeader."Process Module" = EFTHeader."Process Module"::"Staff Claim") or (EFTHeader."Process Module" = EFTHeader."Process Module"::"Imprest") or (EFTHeader."Process Module" = EFTHeader."Process Module"::Surrender)then begin
-                    imprestheader.Get(EFTLines."PV No");
-                    imprestheader.SetRange("No.", EFTLines."PV No");
+                // end;
+                // if(EFTHeader."Process Module" = EFTHeader."Process Module"::"Staff Claim") or (EFTHeader."Process Module" = EFTHeader."Process Module"::"Imprest") or (EFTHeader."Process Module" = EFTHeader."Process Module"::Surrender)then begin
+                //     imprestheader.Get(EFTLines."PV No");
+                //     imprestheader.SetRange("No.", EFTLines."PV No");
                 // IncomingDocumentAttachment.Reset;
                 // IncomingDocumentAttachment.SetRange("Incoming Document Entry No.", imprestheader."Incoming Document Entry No.");
                 // if IncomingDocumentAttachment.FindFirst then begin
@@ -443,67 +443,67 @@ codeunit 52104 "Cash Management"
         Payment.Get(EFTLines."PV No");
         FinanceMgt."Post Payment Voucher"(Payment);
     end;
-    procedure AutoPost(eftheaderNo: Text)
-    var
-        eftHead: Record "EFT Header";
-    begin
-        eftHead.Reset;
-        eftHead.Get(eftheaderNo);
-        if isautopost = false then if eftHead.Status <> eftHead.Status::"Processed by Bank" then Error('The Transaction cannot be posted at this stage.');
-        //IF "EFT Posted" THEN ERROR ('The transaction has already been posted');
-        dup.Open('Posting Transactions for #1');
-        EFTLines.Reset;
-        EFTLines.SetRange("EFT No", eftHead.No);
-        EFTLines.SetRange(Status, EFTLines.Status::Processed);
-        if eftHead."Process Module" = eftHead."Process Module"::"Staff Claim" then begin
-            if EFTLines.FindFirst then begin
-                repeat ImprestHeader.Get(EFTLines."PV No");
-                    ImprestHeader.CalcFields("Total Claim");
-                    ImprestHeader."Claim Pay Mode":='EFT';
-                    ImprestHeader."Claim Payment Tx No":=eftHead.No;
-                    if ImprestHeader."Surrender Posted" = false then ImprestManagement.PostStaffClaim(ImprestHeader);
-                //IF (ImprestHeader."No."<> 'CLM000574') AND (ImprestHeader."No."<> 'CLM000583') AND (ImprestHeader."No."<> 'CLM000604')AND (ImprestHeader."No."<> 'CLM000610') AND (ImprestHeader."No."<> 'CLM000611')THEN
-                until EFTLines.Next = 0;
-                Message('Staff Claim Updated Successfully');
-            end;
-        end;
-        if eftHead."Process Module" = eftHead."Process Module"::"Imprest" then begin
-            if EFTLines.FindFirst then begin
-                repeat ImprestHeader.Get(EFTLines."PV No");
-                    ImprestHeader.CalcFields("Total Request Amount");
-                    ImprestHeader."Pay Mode":='EFT';
-                    ImprestHeader."Payment Tx No.(Cheque No.)":=eftHead.No;
-                    if ImprestHeader."Paying Bank Code" = '' then ImprestHeader."Paying Bank Code":='111001';
-                    if ImprestHeader."Request Posted" = false then ImprestManagement.PostImprestRequest(ImprestHeader);
-                until EFTLines.Next = 0;
-                Message('Imprest Updated Successfully');
-            end;
-        end;
-        if eftHead."Process Module" = eftHead."Process Module"::Surrender then begin
-            if EFTLines.FindFirst then begin
-                repeat ImprestHeader.Get(EFTLines."PV No");
-                    ImprestHeader.CalcFields("Total Claim");
-                    ImprestHeader."Claim Pay Mode":='EFT';
-                    ImprestManagement.PostImprestSurrender(ImprestHeader);
-                until EFTLines.Next = 0;
-                Message('Surrender Updated Successfully');
-            end;
-        end;
-        if eftHead."Process Module" = eftHead."Process Module"::PVs then begin
-            if EFTLines.FindFirst then begin
-                repeat Payment.Reset;
-                    Payment.Get(EFTLines."PV No");
-                    if Payment."Paying Bank Account" = '' then Payment."Paying Bank Account":='111001';
-                    Payment.Modify;
-                    PostPV(EFTLines);
-                until EFTLines.Next = 0;
-                Message('Payment vouchers Updated Successfully');
-            end;
-        end;
-        eftHead."EFT Posted":=true;
-        eftHead.Modify;
-        dup.Close;
-    end;
+    // procedure AutoPost(eftheaderNo: Text)
+    // var
+    //     eftHead: Record "EFT Header";
+    // begin
+    //     eftHead.Reset;
+    //     eftHead.Get(eftheaderNo);
+    //     if isautopost = false then if eftHead.Status <> eftHead.Status::"Processed by Bank" then Error('The Transaction cannot be posted at this stage.');
+    //     //IF "EFT Posted" THEN ERROR ('The transaction has already been posted');
+    //     dup.Open('Posting Transactions for #1');
+    //     EFTLines.Reset;
+    //     EFTLines.SetRange("EFT No", eftHead.No);
+    //     EFTLines.SetRange(Status, EFTLines.Status::Processed);
+    //     if eftHead."Process Module" = eftHead."Process Module"::"Staff Claim" then begin
+    //         if EFTLines.FindFirst then begin
+    //             repeat ImprestHeader.Get(EFTLines."PV No");
+    //                 ImprestHeader.CalcFields("Total Claim");
+    //                 ImprestHeader."Claim Pay Mode":='EFT';
+    //                 ImprestHeader."Claim Payment Tx No":=eftHead.No;
+    //                 if ImprestHeader."Surrender Posted" = false then ImprestManagement.PostStaffClaim(ImprestHeader);
+    //             //IF (ImprestHeader."No."<> 'CLM000574') AND (ImprestHeader."No."<> 'CLM000583') AND (ImprestHeader."No."<> 'CLM000604')AND (ImprestHeader."No."<> 'CLM000610') AND (ImprestHeader."No."<> 'CLM000611')THEN
+    //             until EFTLines.Next = 0;
+    //             Message('Staff Claim Updated Successfully');
+    //         end;
+    //     end;
+    //     if eftHead."Process Module" = eftHead."Process Module"::"Imprest" then begin
+    //         if EFTLines.FindFirst then begin
+    //             repeat ImprestHeader.Get(EFTLines."PV No");
+    //                 ImprestHeader.CalcFields("Total Request Amount");
+    //                 ImprestHeader."Pay Mode":='EFT';
+    //                 ImprestHeader."Payment Tx No.(Cheque No.)":=eftHead.No;
+    //                 if ImprestHeader."Paying Bank Code" = '' then ImprestHeader."Paying Bank Code":='111001';
+    //                 if ImprestHeader."Request Posted" = false then ImprestManagement.PostImprestRequest(ImprestHeader);
+    //             until EFTLines.Next = 0;
+    //             Message('Imprest Updated Successfully');
+    //         end;
+    //     end;
+    //     if eftHead."Process Module" = eftHead."Process Module"::Surrender then begin
+    //         if EFTLines.FindFirst then begin
+    //             repeat ImprestHeader.Get(EFTLines."PV No");
+    //                 ImprestHeader.CalcFields("Total Claim");
+    //                 ImprestHeader."Claim Pay Mode":='EFT';
+    //                 ImprestManagement.PostImprestSurrender(ImprestHeader);
+    //             until EFTLines.Next = 0;
+    //             Message('Surrender Updated Successfully');
+    //         end;
+    //     end;
+    //     if eftHead."Process Module" = eftHead."Process Module"::PVs then begin
+    //         if EFTLines.FindFirst then begin
+    //             repeat Payment.Reset;
+    //                 Payment.Get(EFTLines."PV No");
+    //                 if Payment."Paying Bank Account" = '' then Payment."Paying Bank Account":='111001';
+    //                 Payment.Modify;
+    //                 PostPV(EFTLines);
+    //             until EFTLines.Next = 0;
+    //             Message('Payment vouchers Updated Successfully');
+    //         end;
+    //     end;
+    //     eftHead."EFT Posted":=true;
+    //     eftHead.Modify;
+    //     dup.Close;
+    // end;
     procedure MakeEFTPayment(var EFT: Record "EFT Header")
     begin
         EftLines.Reset;
@@ -532,58 +532,58 @@ codeunit 52104 "Cash Management"
         Message(resp);
         dup.Close;
     end;
-    procedure PostProcessedEFT(var EFT: Record "EFT Header")
-    begin
-        if EFT.Status <> EFT.Status::"Processed by Bank" then Error('The Transaction cannot be posted at this stage.');
-        //IF "EFT Posted" THEN ERROR ('The transaction has already been posted');
-        dup.Open('Posting Transactions for #1');
-        EftLines.Reset;
-        EftLines.SetRange("EFT No", EFT.No);
-        EftLines.SetRange(Status, EftLines.Status::Processed);
-        if EFT."Process Module" = EFT."Process Module"::"Staff Claim" then begin
-            if EftLines.FindFirst then begin
-                repeat ImprestHeader.Get(EftLines."PV No");
-                    ImprestHeader.CalcFields("Total Claim");
-                    ImprestHeader."Claim Pay Mode":='EFT';
-                    ImprestHeader."Claim Payment Tx No":=EFT.No;
-                    if ImprestHeader."Surrender Posted" = false then ImprestManagement.PostStaffClaim(ImprestHeader);
-                until EftLines.Next = 0;
-                Message('Staff Claim Updated Successfully');
-            end;
-        end;
-        if EFT."Process Module" = EFT."Process Module"::"Imprest" then begin
-            if EftLines.FindFirst then begin
-                repeat ImprestHeader.Get(EftLines."PV No");
-                    ImprestHeader.CalcFields("Total Request Amount");
-                    ImprestHeader."Pay Mode":='EFT';
-                    ImprestHeader."Payment Tx No.(Cheque No.)":=EFT.No;
-                    if ImprestHeader."Paying Bank Code" = '' then ImprestHeader."Paying Bank Code":='111001';
-                    if ImprestHeader."Request Posted" = false then ImprestManagement.PostImprestRequest(ImprestHeader);
-                until EftLines.Next = 0;
-                Message('Imprest Updated Successfully');
-            end;
-        end;
-        if EFT."Process Module" = EFT."Process Module"::Surrender then begin
-            if EftLines.FindFirst then begin
-                repeat ImprestHeader.Get(EftLines."PV No");
-                    ImprestHeader.CalcFields("Total Claim");
-                    ImprestHeader."Claim Pay Mode":='EFT';
-                    ImprestManagement.PostImprestSurrender(ImprestHeader);
-                until EftLines.Next = 0;
-                Message('Surrender Updated Successfully');
-            end;
-        end;
-        if EFT."Process Module" = EFT."Process Module"::PVs then begin
-            if EftLines.FindFirst then begin
-                repeat CashMgnt.PostPV(EftLines);
-                until EftLines.Next = 0;
-                Message('Payment vouchers Updated Successfully');
-            end;
-        end;
-        EFT."EFT Posted":=true;
-        EFT.Modify;
-        dup.Close;
-    end;
+    // procedure PostProcessedEFT(var EFT: Record "EFT Header")
+    // begin
+    //     if EFT.Status <> EFT.Status::"Processed by Bank" then Error('The Transaction cannot be posted at this stage.');
+    //     //IF "EFT Posted" THEN ERROR ('The transaction has already been posted');
+    //     dup.Open('Posting Transactions for #1');
+    //     EftLines.Reset;
+    //     EftLines.SetRange("EFT No", EFT.No);
+    //     EftLines.SetRange(Status, EftLines.Status::Processed);
+    //     if EFT."Process Module" = EFT."Process Module"::"Staff Claim" then begin
+    //         if EftLines.FindFirst then begin
+    //             repeat ImprestHeader.Get(EftLines."PV No");
+    //                 ImprestHeader.CalcFields("Total Claim");
+    //                 ImprestHeader."Claim Pay Mode":='EFT';
+    //                 ImprestHeader."Claim Payment Tx No":=EFT.No;
+    //                 if ImprestHeader."Surrender Posted" = false then ImprestManagement.PostStaffClaim(ImprestHeader);
+    //             until EftLines.Next = 0;
+    //             Message('Staff Claim Updated Successfully');
+    //         end;
+    //     end;
+    //     if EFT."Process Module" = EFT."Process Module"::"Imprest" then begin
+    //         if EftLines.FindFirst then begin
+    //             repeat ImprestHeader.Get(EftLines."PV No");
+    //                 ImprestHeader.CalcFields("Total Request Amount");
+    //                 ImprestHeader."Pay Mode":='EFT';
+    //                 ImprestHeader."Payment Tx No.(Cheque No.)":=EFT.No;
+    //                 if ImprestHeader."Paying Bank Code" = '' then ImprestHeader."Paying Bank Code":='111001';
+    //                 if ImprestHeader."Request Posted" = false then ImprestManagement.PostImprestRequest(ImprestHeader);
+    //             until EftLines.Next = 0;
+    //             Message('Imprest Updated Successfully');
+    //         end;
+    //     end;
+    //     if EFT."Process Module" = EFT."Process Module"::Surrender then begin
+    //         if EftLines.FindFirst then begin
+    //             repeat ImprestHeader.Get(EftLines."PV No");
+    //                 ImprestHeader.CalcFields("Total Claim");
+    //                 ImprestHeader."Claim Pay Mode":='EFT';
+    //                 ImprestManagement.PostImprestSurrender(ImprestHeader);
+    //             until EftLines.Next = 0;
+    //             Message('Surrender Updated Successfully');
+    //         end;
+    //     end;
+    //     if EFT."Process Module" = EFT."Process Module"::PVs then begin
+    //         if EftLines.FindFirst then begin
+    //             repeat CashMgnt.PostPV(EftLines);
+    //             until EftLines.Next = 0;
+    //             Message('Payment vouchers Updated Successfully');
+    //         end;
+    //     end;
+    //     EFT."EFT Posted":=true;
+    //     EFT.Modify;
+    //     dup.Close;
+    // end;
     procedure ReturnEFT(var EFT: Record "EFT Header")
     begin
         EftLines.Reset;
@@ -601,30 +601,30 @@ codeunit 52104 "Cash Management"
                     EftLines.Modify;
                 end;
             until EftLines.Next = 0 end;
-        if EFT."Process Module" = EFT."Process Module"::"Imprest" then begin
-            ImprestHeader.Reset;
-            ImprestHeader.Get(EftLines."PV No");
-            if ImprestHeader."EFT No" = EftLines."EFT No" then begin
-                ImprestHeader."EFT No":='';
-                ImprestHeader.Modify;
-            end;
-        end;
-        if EFT."Process Module" = EFT."Process Module"::"Staff Claim" then begin
-            ImprestHeader.Reset;
-            ImprestHeader.Get(EftLines."PV No");
-            if ImprestHeader."EFT No" = EftLines."EFT No" then begin
-                ImprestHeader."EFT No":='';
-                ImprestHeader.Modify;
-            end;
-        end;
-        if EFT."Process Module" = EFT."Process Module"::Surrender then begin
-            ImprestHeader.Reset;
-            ImprestHeader.Get(EftLines."PV No");
-            if ImprestHeader."Surrender EFT No" = EftLines."EFT No" then begin
-                ImprestHeader."Surrender EFT No":='';
-                ImprestHeader.Modify;
-            end;
-        end;
+        // if EFT."Process Module" = EFT."Process Module"::"Imprest" then begin
+        //     ImprestHeader.Reset;
+        //     ImprestHeader.Get(EftLines."PV No");
+        //     if ImprestHeader."EFT No" = EftLines."EFT No" then begin
+        //         ImprestHeader."EFT No":='';
+        //         ImprestHeader.Modify;
+        //     end;
+        // end;
+        // if EFT."Process Module" = EFT."Process Module"::"Staff Claim" then begin
+        //     ImprestHeader.Reset;
+        //     ImprestHeader.Get(EftLines."PV No");
+        //     if ImprestHeader."EFT No" = EftLines."EFT No" then begin
+        //         ImprestHeader."EFT No":='';
+        //         ImprestHeader.Modify;
+        //     end;
+        // end;
+        // if EFT."Process Module" = EFT."Process Module"::Surrender then begin
+        //     ImprestHeader.Reset;
+        //     ImprestHeader.Get(EftLines."PV No");
+        //     if ImprestHeader."Surrender EFT No" = EftLines."EFT No" then begin
+        //         ImprestHeader."Surrender EFT No":='';
+        //         ImprestHeader.Modify;
+        //     end;
+        // end;
         if EFT."No of Record Processed" = 0 then begin
             EFT.Status:=EFT.Status::Rejected;
             EFT.Modify;
@@ -655,7 +655,7 @@ codeunit 52104 "Cash Management"
                 isautopost:=true;
                 EFT.Reset;
                 Sleep(30);
-                CashMgnt.AutoPost(EFT.No);
+                // CashMgnt.AutoPost(EFT.No);
             end;
             Message(resp);
             dup.Close;

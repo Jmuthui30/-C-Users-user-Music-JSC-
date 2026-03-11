@@ -253,13 +253,13 @@ page 51918 "Junior Accountant Role Center"
                 Caption = 'Imprest Surrender';
                 Image = Travel;
 
-                action("Posted Imprest Surrenders")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Posted Imprest Surrenders';
-                    RunObject = Page "Imprest Surrenders";
-                    RunPageView = where("Surrender Posted"=const(true));
-                }
+                // action("Posted Imprest Surrenders")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Posted Imprest Surrenders';
+                //     RunObject = Page "Imprest Surrenders";
+                //     RunPageView = where("Surrender Posted"=const(true));
+                // }
             }
             group(Receipts)
             {
@@ -285,34 +285,34 @@ page 51918 "Junior Accountant Role Center"
                 Caption = 'Staff Claim';
                 Image = Calculator;
 
-                action("Create New Staff Claim")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Create New Staff Claim';
-                    RunObject = Page "SS Staff Claims";
-                    RunPageView = where(Status=const(Open));
-                }
-                action("Staff Claim Pending Approval")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Staff ClaimPending Approval';
-                    RunObject = Page "Staff Claims";
-                    RunPageView = where(Status=const("Pending Approval"));
-                }
-                action("Approved Staff Claim")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Approved Staff Claim';
-                    RunObject = Page "Staff Claims";
-                    RunPageView = where(Status=const(Released));
-                }
-                action("Posted Staff Claim")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Posted Staff Claim';
-                    RunObject = Page "Staff Claims";
-                    RunPageView = where(Status=const(Released), "Claim Posted"=const(true));
-                }
+                // action("Create New Staff Claim")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Create New Staff Claim';
+                //     RunObject = Page "SS Staff Claims";
+                //     RunPageView = where(Status=const(Open));
+                // }
+                // action("Staff Claim Pending Approval")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Staff ClaimPending Approval';
+                //     RunObject = Page "Staff Claims";
+                //     RunPageView = where(Status=const("Pending Approval"));
+                // }
+                // action("Approved Staff Claim")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Approved Staff Claim';
+                //     RunObject = Page "Staff Claims";
+                //     RunPageView = where(Status=const(Released));
+                // }
+                // action("Posted Staff Claim")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Posted Staff Claim';
+                //     RunObject = Page "Staff Claims";
+                //     RunPageView = where(Status=const(Released), "Claim Posted"=const(true));
+                // }
             }
             group("Journals ")
             {
@@ -517,38 +517,38 @@ page 51918 "Junior Accountant Role Center"
             {
                 Caption = 'Finance Self Service';
 
-                action("New Petty Cash Request")
-                {
-                    ApplicationArea = All;
-                    Caption = 'New Petty Cash Request';
-                    RunObject = Page "SS Petty Cash";
-                    RunPageView = where(Status=const(Open));
-                }
-                action("Petty Cash Requests Pending Aproval")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Petty Cash Requests Pending Aproval';
-                    RunObject = Page "SS Petty Cash";
-                    RunPageView = where(Status=const("Pending Approval"));
-                }
-                action("Approved Petty Cash Requests")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Approved Petty Cash Requests';
-                    RunObject = Page "SS Petty Cash";
-                    RunPageView = where(Status=const(Released));
-                }
+                // action("New Petty Cash Request")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'New Petty Cash Request';
+                //     RunObject = Page "SS Petty Cash";
+                //     RunPageView = where(Status=const(Open));
+                // }
+                // action("Petty Cash Requests Pending Aproval")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Petty Cash Requests Pending Aproval';
+                //     RunObject = Page "SS Petty Cash";
+                //     RunPageView = where(Status=const("Pending Approval"));
+                // }
+                // action("Approved Petty Cash Requests")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Approved Petty Cash Requests';
+                //     RunObject = Page "SS Petty Cash";
+                //     RunPageView = where(Status=const(Released));
+                // }
                 group("SS Archives")
                 {
                     Caption = 'Archives';
 
-                    action("Processed Petty Cash Requests")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Processed Petty Cash Requests';
-                        RunObject = Page "SS Petty Cash";
-                        RunPageView = where(Status=const(Released), Posted=const(true));
-                    }
+                    // action("Processed Petty Cash Requests")
+                    // {
+                    //     ApplicationArea = All;
+                    //     Caption = 'Processed Petty Cash Requests';
+                    //     RunObject = Page "SS Petty Cash";
+                    //     RunPageView = where(Status=const(Released), Posted=const(true));
+                    // }
                 }
             }
         }

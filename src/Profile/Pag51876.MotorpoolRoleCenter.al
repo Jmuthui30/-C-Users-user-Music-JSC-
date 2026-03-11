@@ -217,48 +217,48 @@ page 51876 "Motorpool Role Center"
                     Caption = 'My Fullfilled Purchase Requisitions';
                     RunObject = Page "SS Purch Requisitions - Closed";
                 }
-                action("New Imprest")
-                {
-                    ApplicationArea = All;
-                    Caption = 'New Imprest';
-                    RunObject = Page "SS Imprests";
-                    RunPageView = where(Status=const(Open));
-                }
-                action("Imprest Requests Pending Approval")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Imprests Pending Approval';
-                    RunObject = Page "SS Imprests";
-                    RunPageView = where(Status=const("Pending Approval"));
-                }
-                action("Approved Imprest Requests")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Approved Imprests';
-                    RunObject = Page "SS Imprests";
-                    RunPageView = where(Status=const(Released));
-                }
-                action("UnSurrendered Cash")
-                {
-                    ApplicationArea = All;
-                    Caption = 'UnSurrendered Cash';
-                    RunObject = Page "SS Imprest Surrenders";
-                    RunPageView = where(Status=const(Open), "Surrender Posted"=const(false));
-                }
-                action("Imprest Surrenders Pending Approval")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Imprest Surrenders Pending Approval';
-                    RunObject = Page "SS Imprest Surrenders";
-                    RunPageView = where(Status=const(Released), "Surrender Posted"=const(false));
-                }
-                action("Imprest Surrender")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Imprest Surrender';
-                    RunObject = Page "SS Imprest Surrenders";
-                    RunPageView = where(Status=const(Released), "Surrender Posted"=const(true));
-                }
+                // action("New Imprest")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'New Imprest';
+                //     RunObject = Page "SS Imprests";
+                //     RunPageView = where(Status=const(Open));
+                // }
+                // action("Imprest Requests Pending Approval")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Imprests Pending Approval';
+                //     RunObject = Page "SS Imprests";
+                //     RunPageView = where(Status=const("Pending Approval"));
+                // }
+                // action("Approved Imprest Requests")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Approved Imprests';
+                //     RunObject = Page "SS Imprests";
+                //     RunPageView = where(Status=const(Released));
+                // }
+                // action("UnSurrendered Cash")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'UnSurrendered Cash';
+                //     RunObject = Page "SS Imprest Surrenders";
+                //     RunPageView = where(Status=const(Open), "Surrender Posted"=const(false));
+                // }
+                // action("Imprest Surrenders Pending Approval")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Imprest Surrenders Pending Approval';
+                //     RunObject = Page "SS Imprest Surrenders";
+                //     RunPageView = where(Status=const(Released), "Surrender Posted"=const(false));
+                // }
+                // action("Imprest Surrender")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Imprest Surrender';
+                //     RunObject = Page "SS Imprest Surrenders";
+                //     RunPageView = where(Status=const(Released), "Surrender Posted"=const(true));
+                // }
                 action("My Staff Profile")
                 {
                     ApplicationArea = All;

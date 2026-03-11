@@ -50,15 +50,15 @@ codeunit 51427 "Approvals Mgmt. Ext"
     begin
     end;
 
-    [IntegrationEvent(false, false)]
-    procedure OnSendImprestForApproval(var Imprest: Record "Imprest Header")
-    begin
-    end;
+    // [IntegrationEvent(false, false)]
+    // procedure OnSendImprestForApproval(var Imprest: Record "Imprest Header")
+    // begin
+    // end;
 
-    [IntegrationEvent(false, false)]
-    procedure OnCancelImprestApprovalRequest(var Imprest: Record "Imprest Header")
-    begin
-    end;
+    // [IntegrationEvent(false, false)]
+    // procedure OnCancelImprestApprovalRequest(var Imprest: Record "Imprest Header")
+    // begin
+    // end;
 
     local procedure "***********************Imprest Memo******************************************"()
     begin
@@ -557,7 +557,7 @@ codeunit 51427 "Approvals Mgmt. Ext"
     var
         PV: Record "PV Header";
         PettyCash: Record "Expense Claim Header";
-        Imprest: Record "Imprest Header";
+        Imprest: Record Payments;
         RequestForPayment: Record "Request for Payment";
         SupplementaryBudget: Record "Supplementary Budget Request";
         StaffBasedBudget: Record "Staff Based Budget Header";
@@ -612,13 +612,13 @@ codeunit 51427 "Approvals Mgmt. Ext"
                     IsHandled := true;
                 end;
             //3. Imprest
-            DATABASE::"Imprest Header":
-                begin
-                    RecRef.SetTable(Imprest);
-                    Imprest.Validate(Status, Imprest.Status::"Pending Approval");
-                    Imprest.Modify(true);
-                    IsHandled := true;
-                end;
+            // DATABASE::"Imprest Header":
+            //     begin
+            //         RecRef.SetTable(Imprest);
+            //         Imprest.Validate(Status, Imprest.Status::"Pending Approval");
+            //         Imprest.Modify(true);
+            //         IsHandled := true;
+            //     end;
             //
             //3. Imprest Memo
             DATABASE::"Imprest Memo Header":
@@ -928,7 +928,7 @@ codeunit 51427 "Approvals Mgmt. Ext"
     var
         PV: Record "PV Header";
         PettyCash: Record "Expense Claim Header";
-        Imprest: Record "Imprest Header";
+        Imprest: Record Payments;
         RequestForPayment: Record "Request for Payment";
         SupplementaryBudget: Record "Supplementary Budget Request";
         StaffBasedBudget: Record "Staff Based Budget Header";
@@ -986,21 +986,21 @@ codeunit 51427 "Approvals Mgmt. Ext"
                 END;
             //
             //2. Imprest
-            DATABASE::"Imprest Header":
-                BEGIN
-                    Imprest.CALCFIELDS("Total Request Amount");
-                    Imprest.CALCFIELDS("Total Surrender Amount");
-                    RecRef.SETTABLE(Imprest);
-                    ApprovalEntryArgument."Document No." := Imprest."No.";
-                    if Imprest.Type = Imprest.Type::Request then begin
-                        ApprovalEntryArgument.Amount := Imprest."Total Request Amount";
-                        ApprovalEntryArgument."Amount (LCY)" := Imprest."Total Request Amount";
-                    end
-                    else if Imprest.Type = Imprest.Type::Surrender then begin
-                        ApprovalEntryArgument.Amount := Imprest."Total Surrender Amount";
-                        ApprovalEntryArgument."Amount (LCY)" := Imprest."Total Surrender Amount";
-                    end;
-                END;
+            // DATABASE::"Imprest Header":
+            //     BEGIN
+            //         Imprest.CALCFIELDS("Total Request Amount");
+            //         Imprest.CALCFIELDS("Total Surrender Amount");
+            //         RecRef.SETTABLE(Imprest);
+            //         ApprovalEntryArgument."Document No." := Imprest."No.";
+            //         if Imprest.Type = Imprest.Type::Request then begin
+            //             ApprovalEntryArgument.Amount := Imprest."Total Request Amount";
+            //             ApprovalEntryArgument."Amount (LCY)" := Imprest."Total Request Amount";
+            //         end
+            //         else if Imprest.Type = Imprest.Type::Surrender then begin
+            //             ApprovalEntryArgument.Amount := Imprest."Total Surrender Amount";
+            //             ApprovalEntryArgument."Amount (LCY)" := Imprest."Total Surrender Amount";
+            //         end;
+            //     END;
             //
             //2. Imprest Memo
             DATABASE::"Imprest Memo Header":
@@ -1272,12 +1272,12 @@ codeunit 51427 "Approvals Mgmt. Ext"
                 end;
             //
             //2. Imprest
-            DATABASE::"Imprest Header":
-                begin
-                    ApprovalCommentLine.SetRange("Table ID", RecRef.Number);
-                    ApprovalCommentLine.SetRange("Record ID to Approve", RecRef.RecordId);
-                    ApprovalMgnt.FindApprovalEntryForCurrUser(ApprovalEntry, RecRef.RecordId);
-                end;
+            // DATABASE::"Imprest Header":
+            //     begin
+            //         ApprovalCommentLine.SetRange("Table ID", RecRef.Number);
+            //         ApprovalCommentLine.SetRange("Record ID to Approve", RecRef.RecordId);
+            //         ApprovalMgnt.FindApprovalEntryForCurrUser(ApprovalEntry, RecRef.RecordId);
+            //     end;
             //
             //2. Imprest Memo
             DATABASE::"Imprest Memo Header":

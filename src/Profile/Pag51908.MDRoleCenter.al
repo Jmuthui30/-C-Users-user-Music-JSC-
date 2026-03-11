@@ -494,75 +494,75 @@ page 51908 "MD Role Center"
                 Caption = 'Imprests';
                 Image = Travel;
 
-                action("ImprestsPending Approval")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Imprests Pending Approval';
-                    RunObject = Page "Imprests";
-                    RunPageView = where(Status = const("Pending Approval"));
-                }
-                action("Approved Imprests")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Approved Imprests';
-                    RunObject = Page "Imprests";
-                    RunPageView = where(Status = const(Released));
-                }
-                action("UnSurrendered Cash")
-                {
-                    ApplicationArea = All;
-                    Caption = 'UnSurrendered Cash';
-                    RunObject = Page "Imprest Surrenders";
-                    RunPageView = where(Status = const(open), "Surrender Posted" = const(false));
-                }
-                action("Unposted Imprest Surrenders")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Unposted Imprest Surrenders';
-                    RunObject = Page "Imprest Surrenders";
-                    RunPageView = where(Status = const(Released), "Surrender Posted" = const(false));
-                }
-                action("Closed Imprest Surrenders")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Closed Imprest Surrenders';
-                    RunObject = Page "Imprest Surrenders";
-                    RunPageView = where(Status = const(Released), "Surrender Posted" = const(true));
-                }
+                // action("ImprestsPending Approval")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Imprests Pending Approval';
+                //     RunObject = Page "Imprests";
+                //     RunPageView = where(Status = const("Pending Approval"));
+                // }
+                // action("Approved Imprests")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Approved Imprests';
+                //     RunObject = Page "Imprests";
+                //     RunPageView = where(Status = const(Released));
+                // }
+                // action("UnSurrendered Cash")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'UnSurrendered Cash';
+                //     RunObject = Page "Imprest Surrenders";
+                //     RunPageView = where(Status = const(open), "Surrender Posted" = const(false));
+                // }
+                // action("Unposted Imprest Surrenders")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Unposted Imprest Surrenders';
+                //     RunObject = Page "Imprest Surrenders";
+                //     RunPageView = where(Status = const(Released), "Surrender Posted" = const(false));
+                // }
+                // action("Closed Imprest Surrenders")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Closed Imprest Surrenders';
+                //     RunObject = Page "Imprest Surrenders";
+                //     RunPageView = where(Status = const(Released), "Surrender Posted" = const(true));
+                // }
             }
             group("Staff Claim")
             {
                 Caption = 'Staff Claim';
                 Image = Calculator;
 
-                action("Create New Staff Claim")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Create New Staff Claim';
-                    RunObject = Page "SS Staff Claims";
-                    RunPageView = where(Status = const(Open));
-                }
-                action("Staff Claim Pending Approval")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Staff Claim Pending Approval';
-                    RunObject = Page "Staff Claims";
-                    RunPageView = where(Status = const("Pending Approval"));
-                }
-                action("Approved Staff Claim")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Approved Staff Claim';
-                    RunObject = Page "Staff Claims";
-                    RunPageView = where(Status = const(Released));
-                }
-                action("Posted Staff Claim")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Posted Staff Claim';
-                    RunObject = Page "Staff Claims";
-                    RunPageView = where(Status = const(Released), "Claim Posted" = const(true));
-                }
+                // action("Create New Staff Claim")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Create New Staff Claim';
+                //     RunObject = Page "SS Staff Claims";
+                //     RunPageView = where(Status = const(Open));
+                // }
+                // action("Staff Claim Pending Approval")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Staff Claim Pending Approval';
+                //     RunObject = Page "Staff Claims";
+                //     RunPageView = where(Status = const("Pending Approval"));
+                // }
+                // action("Approved Staff Claim")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Approved Staff Claim';
+                //     RunObject = Page "Staff Claims";
+                //     RunPageView = where(Status = const(Released));
+                // }
+                // action("Posted Staff Claim")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Posted Staff Claim';
+                //     RunObject = Page "Staff Claims";
+                //     RunPageView = where(Status = const(Released), "Claim Posted" = const(true));
+                // }
             }
             group("Expense Claims")
             {
@@ -938,48 +938,48 @@ page 51908 "MD Role Center"
                     Caption = 'My Fullfilled Purchase Requisitions';
                     RunObject = Page "SS Purch Requisitions - Closed";
                 }
-                action("New Imprest")
-                {
-                    ApplicationArea = All;
-                    Caption = 'New Imprest';
-                    RunObject = Page "SS Imprests";
-                    RunPageView = where(Status = const(Open));
-                }
-                action("Imprest Requests Pending Approval")
-                {
-                    ApplicationArea = All;
-                    Caption = 'IImprests Pending Approval';
-                    RunObject = Page "SS Imprests";
-                    RunPageView = where(Status = const("Pending Approval"));
-                }
-                action("ApprovedCashAdvances")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Approved Imprests';
-                    RunObject = Page "SS Imprests";
-                    RunPageView = where(Status = const(Released));
-                }
-                action("UnSurrenderedCash")
-                {
-                    ApplicationArea = All;
-                    Caption = 'UnSurrendered Cash';
-                    RunObject = Page "SS Imprest Surrenders";
-                    RunPageView = where(Status = const(Open), "Surrender Posted" = const(false));
-                }
-                action("Imprest Surrenders Pending Approval")
-                {
-                    ApplicationArea = All;
-                    Caption = 'ITO Imprest Surrenders Pending Approval';
-                    RunObject = Page "SS Imprest Surrenders";
-                    RunPageView = where(Status = const(Released), "Surrender Posted" = const(false));
-                }
-                action("CashRetirement")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Imprest Surrender';
-                    RunObject = Page "SS Imprest Surrenders";
-                    RunPageView = where(Status = const(Released), "Surrender Posted" = const(true));
-                }
+                // action("New Imprest")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'New Imprest';
+                //     RunObject = Page "SS Imprests";
+                //     RunPageView = where(Status = const(Open));
+                // }
+                // action("Imprest Requests Pending Approval")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'IImprests Pending Approval';
+                //     RunObject = Page "SS Imprests";
+                //     RunPageView = where(Status = const("Pending Approval"));
+                // }
+                // action("ApprovedCashAdvances")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Approved Imprests';
+                //     RunObject = Page "SS Imprests";
+                //     RunPageView = where(Status = const(Released));
+                // }
+                // action("UnSurrenderedCash")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'UnSurrendered Cash';
+                //     RunObject = Page "SS Imprest Surrenders";
+                //     RunPageView = where(Status = const(Open), "Surrender Posted" = const(false));
+                // }
+                // action("Imprest Surrenders Pending Approval")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'ITO Imprest Surrenders Pending Approval';
+                //     RunObject = Page "SS Imprest Surrenders";
+                //     RunPageView = where(Status = const(Released), "Surrender Posted" = const(false));
+                // }
+                // action("CashRetirement")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Imprest Surrender';
+                //     RunObject = Page "SS Imprest Surrenders";
+                //     RunPageView = where(Status = const(Released), "Surrender Posted" = const(true));
+                // }
                 action("My Staff Profile")
                 {
                     ApplicationArea = All;

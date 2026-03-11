@@ -71,7 +71,7 @@ codeunit 51605 "HR Communication Management"
     var
         Lines: Record "Imprest Memo Lines";
         BCLink: Text;
-        ImprestHeader: Record "Imprest Header";
+        ImprestHeader: Record Payments;
     begin
         CompInfo.Get;
         // ImprestHeader.Reset();

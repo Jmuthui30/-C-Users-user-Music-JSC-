@@ -480,76 +480,76 @@ page 52146 "Branch Manager Role Center"
                 Image = AdministrationSalesPurchases;
                 ToolTip = 'Acess Services from HR Department';
 
-                action("New Imprest")
-                {
-                    ApplicationArea = All;
-                    Caption = 'New Imprest';
-                    RunObject = Page "SS Imprests";
-                    RunPageView = where(Status=const(Open));
-                }
-                action("Imprests Pending Approval")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Imprests Pending Approval';
-                    RunObject = Page "SS Imprests";
-                    RunPageView = where(Status=const("Pending Approval"));
-                }
-                action("Approved Imprests")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Approved Imprests';
-                    RunObject = Page "SS Imprests";
-                    RunPageView = where(Status=const(Released));
-                }
-                action("UnSurrendered Cash")
-                {
-                    ApplicationArea = All;
-                    Caption = 'UnSurrendered Cash';
-                    RunObject = Page "SS Imprest Surrenders";
-                    RunPageView = where(Status=const(Open), "Surrender Posted"=const(false));
-                }
-                action("Imprest Surrenders Pending Approval")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Imprest Surrenders Pending Approval';
-                    RunObject = Page "SS Imprest Surrenders";
-                    RunPageView = where(Status=const(Released), "Surrender Posted"=const(false));
-                }
-                action("Surrendered Imprest")
-                {
-                    Caption = 'Surrendered Imprest';
-                    ApplicationArea = All;
-                    RunObject = Page "SS Imprest Surrenders";
-                    RunPageView = where(Status=const(Released), "Surrender Posted"=const(true));
-                }
-                action("New Petty Cash Request")
-                {
-                    ApplicationArea = All;
-                    Caption = 'New Petty Cash Request';
-                    RunObject = Page "SS Petty Cash";
-                    RunPageView = where(Status=const(Open));
-                }
-                action("Petty Cash Requests Pending Aproval")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Petty Cash Requests Pending Aproval';
-                    RunObject = Page "SS Petty Cash";
-                    RunPageView = where(Status=const("Pending Approval"));
-                }
-                action(Action22)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Approved Petty Cash Requests';
-                    RunObject = Page "SS Petty Cash";
-                    RunPageView = where(Status=const(Released));
-                }
-                action("Processed Petty Cash Requests")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Processed Petty Cash Requests';
-                    RunObject = Page "SS Petty Cash";
-                    RunPageView = where(Status=const(Released), Posted=const(true));
-                }
+                // action("New Imprest")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'New Imprest';
+                //     RunObject = Page "SS Imprests";
+                //     RunPageView = where(Status=const(Open));
+                // }
+                // action("Imprests Pending Approval")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Imprests Pending Approval';
+                //     RunObject = Page "SS Imprests";
+                //     RunPageView = where(Status=const("Pending Approval"));
+                // }
+                // action("Approved Imprests")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Approved Imprests';
+                //     RunObject = Page "SS Imprests";
+                //     RunPageView = where(Status=const(Released));
+                // }
+                // action("UnSurrendered Cash")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'UnSurrendered Cash';
+                //     RunObject = Page "SS Imprest Surrenders";
+                //     RunPageView = where(Status=const(Open), "Surrender Posted"=const(false));
+                // }
+                // action("Imprest Surrenders Pending Approval")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Imprest Surrenders Pending Approval';
+                //     RunObject = Page "SS Imprest Surrenders";
+                //     RunPageView = where(Status=const(Released), "Surrender Posted"=const(false));
+                // }
+                // action("Surrendered Imprest")
+                // {
+                //     Caption = 'Surrendered Imprest';
+                //     ApplicationArea = All;
+                //     RunObject = Page "SS Imprest Surrenders";
+                //     RunPageView = where(Status=const(Released), "Surrender Posted"=const(true));
+                // }
+                // action("New Petty Cash Request")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'New Petty Cash Request';
+                //     RunObject = Page "SS Petty Cash";
+                //     RunPageView = where(Status=const(Open));
+                // }
+                // action("Petty Cash Requests Pending Aproval")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Petty Cash Requests Pending Aproval';
+                //     RunObject = Page "SS Petty Cash";
+                //     RunPageView = where(Status=const("Pending Approval"));
+                // }
+                // action(Action22)
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Approved Petty Cash Requests';
+                //     RunObject = Page "SS Petty Cash";
+                //     RunPageView = where(Status=const(Released));
+                // }
+                // action("Processed Petty Cash Requests")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Processed Petty Cash Requests';
+                //     RunObject = Page "SS Petty Cash";
+                //     RunPageView = where(Status=const(Released), Posted=const(true));
+                // }
             }
             group(Administration)
             {

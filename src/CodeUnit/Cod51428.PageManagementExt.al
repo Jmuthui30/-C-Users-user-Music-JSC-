@@ -16,7 +16,7 @@ codeunit 51428 "Page Management Ext"
         //1. Petty Cash
         DATABASE::"Expense Claim Header": exit(PAGE::"Petty Cash Header");
         //2. Imprest
-        DATABASE::"Imprest Header": exit(GetImprestHeaderPageID(RecordRef));
+        // DATABASE::"Imprest Header": exit(GetImprestHeaderPageID(RecordRef));
         //
         //2. Imprest
         DATABASE::"Imprest Memo Header": exit(PAGE::"Imprest Memo Header");
@@ -111,15 +111,15 @@ codeunit 51428 "Page Management Ext"
     local procedure GetConditionalListPageID(RecRef: RecordRef): Integer begin
         case RecRef.Number of end;
     end;
-    local procedure GetImprestHeaderPageID(RecRef: RecordRef): Integer var
-        ImprestHeader: Record "Imprest Header";
-    begin
-        RecRef.SetTable(ImprestHeader);
-        case ImprestHeader."Staff Claim" of ImprestHeader."Staff Claim" = false: if ImprestHeader.Type = ImprestHeader.Type::Request then exit(PAGE::"Imprest")
-            else if ImprestHeader.Type = ImprestHeader.Type::Surrender then exit(PAGE::"Imprest Surrender");
-        ImprestHeader."Staff Claim" = true: exit(PAGE::"Staff Claim");
-        end;
-    end;
+    // local procedure GetImprestHeaderPageID(RecRef: RecordRef): Integer var
+    //     ImprestHeader: Record "Imprest Header";
+    // begin
+    //     RecRef.SetTable(ImprestHeader);
+    //     case ImprestHeader."Staff Claim" of ImprestHeader."Staff Claim" = false: if ImprestHeader.Type = ImprestHeader.Type::Request then exit(PAGE::"Imprest")
+    //         else if ImprestHeader.Type = ImprestHeader.Type::Surrender then exit(PAGE::"Imprest Surrender");
+    //     ImprestHeader."Staff Claim" = true: exit(PAGE::"Staff Claim");
+    //     end;
+    // end;
     local procedure GetBalScoreCardHeaderPageID(RecRef: RecordRef): Integer var
         BalScoreCard: Record "Bal Score Card Header";
     begin

@@ -86,30 +86,30 @@ page 52166 "EFT Lines"
                             Payment.Modify;
                         end;
                     end;
-                    if recHeader."Process Module" = recHeader."Process Module"::"Imprest" then begin
-                        ImprestHeader.Reset;
-                        ImprestHeader.Get(Rec."PV No");
-                        if ImprestHeader."EFT No" = Rec."EFT No" then begin
-                            ImprestHeader."EFT No":='';
-                            ImprestHeader.Modify;
-                        end;
-                    end;
-                    if recHeader."Process Module" = recHeader."Process Module"::"Staff Claim" then begin
-                        ImprestHeader.Reset;
-                        ImprestHeader.Get(Rec."PV No");
-                        if ImprestHeader."EFT No" = Rec."EFT No" then begin
-                            ImprestHeader."EFT No":='';
-                            ImprestHeader.Modify;
-                        end;
-                    end;
-                    if recHeader."Process Module" = recHeader."Process Module"::Surrender then begin
-                        ImprestHeader.Reset;
-                        ImprestHeader.Get(Rec."PV No");
-                        if ImprestHeader."Surrender EFT No" = Rec."EFT No" then begin
-                            ImprestHeader."Surrender EFT No":='';
-                            ImprestHeader.Modify;
-                        end;
-                    end;
+                    // if recHeader."Process Module" = recHeader."Process Module"::"Imprest" then begin
+                    //     ImprestHeader.Reset;
+                    //     ImprestHeader.Get(Rec."PV No");
+                    //     if ImprestHeader."EFT No" = Rec."EFT No" then begin
+                    //         ImprestHeader."EFT No":='';
+                    //         ImprestHeader.Modify;
+                    //     end;
+                    // end;
+                    // if recHeader."Process Module" = recHeader."Process Module"::"Staff Claim" then begin
+                    //     ImprestHeader.Reset;
+                    //     ImprestHeader.Get(Rec."PV No");
+                    //     if ImprestHeader."EFT No" = Rec."EFT No" then begin
+                    //         ImprestHeader."EFT No":='';
+                    //         ImprestHeader.Modify;
+                    //     end;
+                    // end;
+                    // if recHeader."Process Module" = recHeader."Process Module"::Surrender then begin
+                    //     ImprestHeader.Reset;
+                    //     ImprestHeader.Get(Rec."PV No");
+                    //     if ImprestHeader."Surrender EFT No" = Rec."EFT No" then begin
+                    //         ImprestHeader."Surrender EFT No":='';
+                    //         ImprestHeader.Modify;
+                    //     end;
+                    // end;
                     Rec.Status:=Rec.Status::Returned;
                     Rec.Modify;
                 end;
@@ -133,5 +133,5 @@ page 52166 "EFT Lines"
     SalesInvoiceHeadr: Record "Sales Cr.Memo Header";
     recHeader: Record "EFT Header";
     Payment: Record "PV Header";
-    ImprestHeader: Record "Imprest Header";
+    // ImprestHeader: Record "Imprest Header";
 }
