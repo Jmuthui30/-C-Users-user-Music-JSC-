@@ -1,6 +1,7 @@
 table 50463 "Imprest Header"
 {
     // version THL- ADV.FIN 1.0
+    ObsoleteState = Removed;
     Caption = 'Imprest, Retire & Claim';
     DataCaptionFields = "No.", "Employee No.";
 

@@ -68,14 +68,14 @@ table 52116 "Request for Payment Lines"
                         Validate("Source Document No.", LPO."No.");
                     end;
                 end
-                else if "Source Document" = "Source Document"::"Travel Order" then begin
-                    ITO.Reset;
-                    ITO.SetRange(Type, ITO.Type::Request);
-                    ITO.SetRange(Status, ITO.Status::Released);
-                    if PAGE.RunModal(PAGE::"Imprests", ITO) = ACTION::LookupOK then begin
-                        Validate("Source Document No.", ITO."No.");
-                    end;
-                end
+                // else if "Source Document" = "Source Document"::"Travel Order" then begin
+                //     ITO.Reset;
+                //     ITO.SetRange(Type, ITO.Type::Request);
+                //     ITO.SetRange(Status, ITO.Status::Released);
+                //     if PAGE.RunModal(PAGE::"Imprests", ITO) = ACTION::LookupOK then begin
+                //         Validate("Source Document No.", ITO."No.");
+                //     end;
+                // end
                 else if "Source Document" = "Source Document"::"Supplier Invoice" then begin
                     Invoice.Reset;
                     if "Creditor No." <> '' then Invoice.SetRange("Buy-from Vendor No.", "Creditor No.");
@@ -100,16 +100,16 @@ table 52116 "Request for Payment Lines"
                         "Currency Code" := LPO."Currency Code";
                     end;
                 end
-                else if "Source Document" = "Source Document"::"Travel Order" then begin
-                    //ITO.RESET;
-                    if ITO.Get("Source Document No.") then begin
-                        ITO.CalcFields("Total Request Amount");
-                        Amount := ITO."Total Request Amount";
-                        "Global Dimension 1 Code" := ITO."Global Dimension 1 Code";
-                        "Global Dimension 2 Code" := ITO."Global Dimension 2 Code";
-                        "Being Payment for" := ITO.Justification;
-                    end;
-                end
+                // else if "Source Document" = "Source Document"::"Travel Order" then begin
+                //     //ITO.RESET;
+                //     if ITO.Get("Source Document No.") then begin
+                //         ITO.CalcFields("Total Request Amount");
+                //         Amount := ITO."Total Request Amount";
+                //         "Global Dimension 1 Code" := ITO."Global Dimension 1 Code";
+                //         "Global Dimension 2 Code" := ITO."Global Dimension 2 Code";
+                //         "Being Payment for" := ITO.Justification;
+                //     end;
+                // end
                 else if "Source Document" = "Source Document"::"Supplier Invoice" then begin
                     if Invoice.Get("Source Document No.") then begin
                         Invoice.CalcFields("Amount Including VAT");
@@ -192,7 +192,7 @@ table 52116 "Request for Payment Lines"
         NoSeriesMgt: Codeunit "No. Series";
         Supplier: Record Vendor;
         LPO: Record "Purchase Header";
-        ITO: Record "Imprest Header";
+        // ITO: Record "Imprest Header";
         Staff: Record Customer;
         Invoice: Record "Purch. Inv. Header";
         Header: Record "Request for Payment";
@@ -204,11 +204,11 @@ table 52116 "Request for Payment Lines"
             LPO.SetRange("No.", "Source Document No.");
             PAGE.Run(PAGE::"Purchase Order", LPO);
         end
-        else if "Source Document" = "Source Document"::"Travel Order" then begin
-            ITO.Reset;
-            ITO.SetRange("No.", "Source Document No.");
-            PAGE.Run(PAGE::"Imprests", ITO);
-        end
+        // else if "Source Document" = "Source Document"::"Travel Order" then begin
+        //     ITO.Reset;
+        //     ITO.SetRange("No.", "Source Document No.");
+        //     PAGE.Run(PAGE::"Imprests", ITO);
+        // end
         else if "Source Document" = "Source Document"::"Supplier Invoice" then begin
             Invoice.Reset;
             Invoice.SetRange("No.", "Source Document No.");

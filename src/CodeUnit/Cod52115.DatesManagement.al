@@ -379,7 +379,7 @@ codeunit 52115 "Dates Management"
                     AgeString := '';
             end;
         end else
-            Message('For Date Calculation Enter All Applicable Dates!');
+            // Message('For Date Calculation Enter All Applicable Dates!');
         exit;
     end;
 

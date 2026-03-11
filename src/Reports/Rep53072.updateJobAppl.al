@@ -9,6 +9,7 @@ report 53072 "update Job Appl."
         dataitem("Job Application"; "Job Application")
         {
             RequestFilterFields = "No.", "Recruitment Needs No.", "Job Title", "Applicant No.";
+            DataItemTableView = where("Application Status" = const(Submited));
             column(No_; "No.")
             {
             }
@@ -726,7 +727,7 @@ report 53072 "update Job Appl."
                     ApplicantSubmittedJob."To Date 10" := ApplicantsQual."To Date";
                     ApplicantSubmittedJob."Grade/Class 10" := ApplicantsQual."Grade/Class";
                     ApplicantSubmittedJob."Description 10" := ApplicantsQual.Description;
-                    ApplicantSubmittedJob."Artisan Desc" := StrSubstNo(ArtisanDesc,ArtisanCourseDescription,ApplicantSubmittedJob."Area of Specialization 10", ApplicantSubmittedJob."Institution/Company 10", Date2DMY(ApplicantSubmittedJob."To Date 10", 3));
+                    ApplicantSubmittedJob."Artisan Desc" := StrSubstNo(ArtisanDesc, ArtisanCourseDescription, ApplicantSubmittedJob."Area of Specialization 10", ApplicantSubmittedJob."Institution/Company 10", Date2DMY(ApplicantSubmittedJob."To Date 10", 3));
                 end;
 
             until ApplicantsQual.Next() = 0;

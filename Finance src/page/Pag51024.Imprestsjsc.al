@@ -2,7 +2,7 @@ page 51024 Imprestsjsc
 {
     ApplicationArea = All;
     Caption = 'Imprests';
-    CardPageId = Imprestjsc;
+    CardPageId = "Imprestjsc Card";
     DeleteAllowed = false;
     Editable = false;
     PageType = List;

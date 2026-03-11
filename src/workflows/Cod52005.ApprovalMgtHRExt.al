@@ -94,50 +94,50 @@ codeunit 52005 "Approval Mgt HR Ext"
         end;
     end;
 
-   [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnDelegateApprovalRequest', '', false, false)]
-local procedure OnDelegateApprovalRequest(var ApprovalEntry: Record "Approval Entry")
-var
-    ApprovalEntryToUpdate: Record "Approval Entry";
-    WorkflowStepInstance: Record "Workflow Step Instance";
-    ApprovalsMgmt: Codeunit "Approvals Mgmt.";
-    NextSequenceNo: Integer;
-begin
-    // Case 1 - Delegated to someone else notify them
-    if ApprovalEntry."Approver ID" <> CopyStr(UserId(), 1, 50) then begin
-        if WorkflowStepInstance.Get(ApprovalEntry."Workflow Step Instance ID") then
-            ApprovalsMgmt.CreateApprovalEntryNotification(ApprovalEntry, WorkflowStepInstance);
-        exit;
-    end;
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnDelegateApprovalRequest', '', false, false)]
+    local procedure OnDelegateApprovalRequest(var ApprovalEntry: Record "Approval Entry")
+    var
+        ApprovalEntryToUpdate: Record "Approval Entry";
+        WorkflowStepInstance: Record "Workflow Step Instance";
+        ApprovalsMgmt: Codeunit "Approvals Mgmt.";
+        NextSequenceNo: Integer;
+    begin
+        // Case 1 - Delegated to someone else notify them
+        if ApprovalEntry."Approver ID" <> CopyStr(UserId(), 1, 50) then begin
+            if WorkflowStepInstance.Get(ApprovalEntry."Workflow Step Instance ID") then
+                ApprovalsMgmt.CreateApprovalEntryNotification(ApprovalEntry, WorkflowStepInstance);
+            exit;
+        end;
 
-    // Case 2 - Delegated to yourself auto-approve and advance chain
-    ApprovalEntryToUpdate.SetRange("Record ID to Approve", ApprovalEntry."Record ID to Approve");
-    ApprovalEntryToUpdate.SetRange("Workflow Step Instance ID", ApprovalEntry."Workflow Step Instance ID");
-    ApprovalEntryToUpdate.SetRange("Approver ID", UserId());
-    ApprovalEntryToUpdate.SetRange(Status, ApprovalEntryToUpdate.Status::Open);
-    if ApprovalEntryToUpdate.FindFirst() then begin
-        NextSequenceNo := ApprovalEntryToUpdate."Sequence No." + 1;
-        ApprovalEntryToUpdate.Status := ApprovalEntryToUpdate.Status::Approved;
-        ApprovalEntryToUpdate.Modify(true);
-    end else
-        exit;
-
-    // Find next sequence and flip to Open
-    ApprovalEntryToUpdate.Reset();
-    ApprovalEntryToUpdate.SetRange("Record ID to Approve", ApprovalEntry."Record ID to Approve");
-    ApprovalEntryToUpdate.SetRange("Workflow Step Instance ID", ApprovalEntry."Workflow Step Instance ID");
-    ApprovalEntryToUpdate.SetRange("Sequence No.", NextSequenceNo);
-    ApprovalEntryToUpdate.SetRange(Status, ApprovalEntryToUpdate.Status::Created);
-    if ApprovalEntryToUpdate.FindFirst() then begin
-        ApprovalEntryToUpdate.Status := ApprovalEntryToUpdate.Status::Open;
-        ApprovalEntryToUpdate.Modify(true);
-
-        // Notify next approver in chain
-        if WorkflowStepInstance.Get(ApprovalEntryToUpdate."Workflow Step Instance ID") then
+        // Case 2 - Delegated to yourself auto-approve and advance chain
+        ApprovalEntryToUpdate.SetRange("Record ID to Approve", ApprovalEntry."Record ID to Approve");
+        ApprovalEntryToUpdate.SetRange("Workflow Step Instance ID", ApprovalEntry."Workflow Step Instance ID");
+        ApprovalEntryToUpdate.SetRange("Approver ID", UserId());
         ApprovalEntryToUpdate.SetRange(Status, ApprovalEntryToUpdate.Status::Open);
-        if ApprovalEntryToUpdate.FindFirst() then
-            ApprovalsMgmt.CreateApprovalEntryNotification(ApprovalEntryToUpdate, WorkflowStepInstance);
+        if ApprovalEntryToUpdate.FindFirst() then begin
+            NextSequenceNo := ApprovalEntryToUpdate."Sequence No." + 1;
+            ApprovalEntryToUpdate.Status := ApprovalEntryToUpdate.Status::Approved;
+            ApprovalEntryToUpdate.Modify(true);
+        end else
+            exit;
+
+        // Find next sequence and flip to Open
+        ApprovalEntryToUpdate.Reset();
+        ApprovalEntryToUpdate.SetRange("Record ID to Approve", ApprovalEntry."Record ID to Approve");
+        ApprovalEntryToUpdate.SetRange("Workflow Step Instance ID", ApprovalEntry."Workflow Step Instance ID");
+        ApprovalEntryToUpdate.SetRange("Sequence No.", NextSequenceNo);
+        ApprovalEntryToUpdate.SetRange(Status, ApprovalEntryToUpdate.Status::Created);
+        if ApprovalEntryToUpdate.FindFirst() then begin
+            ApprovalEntryToUpdate.Status := ApprovalEntryToUpdate.Status::Open;
+            ApprovalEntryToUpdate.Modify(true);
+
+            // Notify next approver in chain
+            if WorkflowStepInstance.Get(ApprovalEntryToUpdate."Workflow Step Instance ID") then
+                ApprovalEntryToUpdate.SetRange(Status, ApprovalEntryToUpdate.Status::Open);
+            if ApprovalEntryToUpdate.FindFirst() then
+                ApprovalsMgmt.CreateApprovalEntryNotification(ApprovalEntryToUpdate, WorkflowStepInstance);
+        end;
     end;
-end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnSetStatusToPendingApproval', '', false, false)]
     local procedure OnSetStatusToPendingApproval(RecRef: RecordRef; var Variant: Variant; var IsHandled: Boolean)

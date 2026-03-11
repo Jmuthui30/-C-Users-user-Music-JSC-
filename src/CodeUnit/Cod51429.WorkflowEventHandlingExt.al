@@ -259,33 +259,33 @@ codeunit 51429 "Workflow Event Handling Ext"
         exit(UpperCase('RunWorkflowOnSendImprestForApproval'));
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt. Ext", 'OnSendImprestForApproval', '', false, false)]
-    procedure RunWorkflowOnSendImprestForApproval(var Imprest: Record "Imprest Header")
-    begin
-        WorkflowManagement.HandleEvent(RunWorkflowOnSendImprestForApprovalCode, Imprest);
-    end;
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt. Ext", 'OnSendImprestForApproval', '', false, false)]
+    // procedure RunWorkflowOnSendImprestForApproval(var Imprest: Record "Imprest Header")
+    // begin
+    //     WorkflowManagement.HandleEvent(RunWorkflowOnSendImprestForApprovalCode, Imprest);
+    // end;
 
     procedure RunWorkflowOnCancelImprestApprovalRequestCode(): Code[128]
     begin
         exit(UpperCase('RunWorkflowOnCancelImprestApprovalRequest'));
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt. Ext", 'OnCancelImprestApprovalRequest', '', false, false)]
-    procedure RunWorkflowOnCancelImprestApprovalRequest(var Imprest: Record "Imprest Header")
-    begin
-        WorkflowManagement.HandleEvent(RunWorkflowOnCancelImprestApprovalRequestCode, Imprest);
-    end;
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt. Ext", 'OnCancelImprestApprovalRequest', '', false, false)]
+    // procedure RunWorkflowOnCancelImprestApprovalRequest(var Imprest: Record "Imprest Header")
+    // begin
+    //     WorkflowManagement.HandleEvent(RunWorkflowOnCancelImprestApprovalRequestCode, Imprest);
+    // end;
 
-    procedure RunWorkflowOnAfterReleaseImprestCode(): Code[128]
-    begin
-        exit(UpperCase('RunWorkflowOnAfterReleaseImprest'));
-    end;
+    // procedure RunWorkflowOnAfterReleaseImprestCode(): Code[128]
+    // begin
+    //     exit(UpperCase('RunWorkflowOnAfterReleaseImprest'));
+    // end;
 
-    [EventSubscriber(ObjectType::Codeunit, CodeUnit::"Release Imprest", 'OnAfterReleaseImprest', '', false, false)]
-    procedure RunWorkflowOnAfterReleaseImprest(var Imprest: Record "Imprest Header")
-    begin
-        WorkflowManagement.HandleEvent(RunWorkflowOnAfterReleaseImprestCode, Imprest);
-    end;
+    // [EventSubscriber(ObjectType::Codeunit, CodeUnit::"Release Imprest", 'OnAfterReleaseImprest', '', false, false)]
+    // procedure RunWorkflowOnAfterReleaseImprest(var Imprest: Record "Imprest Header")
+    // begin
+    //     WorkflowManagement.HandleEvent(RunWorkflowOnAfterReleaseImprestCode, Imprest);
+    // end;
     //
     //"******************** Imprest Memo Approval**************************"
     procedure RunWorkflowOnSendImprestMemoForApprovalCode(): Code[128]
@@ -1365,11 +1365,11 @@ codeunit 51429 "Workflow Event Handling Ext"
         WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnCancelPettyCashApprovalRequestCode, DATABASE::"Expense Claim Header", CancelPettyCashApprovalRequestEventDescTxt, 0, false);
         WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnAfterReleasePettyCashCode, DATABASE::"Expense Claim Header", PettyCashReleasedEventDescTxt, 0, false);
         //
-        //2. Imprest:
-        WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnSendImprestForApprovalCode, DATABASE::"Imprest Header", ImprestSendForApprovalEventDescTxt, 0, false);
-        WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnCancelImprestApprovalRequestCode, DATABASE::"Imprest Header", CancelImprestApprovalRequestEventDescTxt, 0, false);
-        WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnAfterReleaseImprestCode, DATABASE::"Imprest Header", ImprestReleasedEventDescTxt, 0, false);
-        //
+        // //2. Imprest:
+        // WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnSendImprestForApprovalCode, DATABASE::"Imprest Header", ImprestSendForApprovalEventDescTxt, 0, false);
+        // WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnCancelImprestApprovalRequestCode, DATABASE::"Imprest Header", CancelImprestApprovalRequestEventDescTxt, 0, false);
+        // WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnAfterReleaseImprestCode, DATABASE::"Imprest Header", ImprestReleasedEventDescTxt, 0, false);
+        // //
         //2. Imprest Memo:
         WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnSendImprestMemoForApprovalCode, DATABASE::"Imprest Memo Header", ImprestMemoSendForApprovalEventDescTxt, 0, false);
         WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnCancelImprestMemoApprovalRequestCode, DATABASE::"Imprest Memo Header", CancelImprestMemoApprovalRequestEventDescTxt, 0, false);

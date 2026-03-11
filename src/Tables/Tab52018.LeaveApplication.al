@@ -209,16 +209,16 @@ table 52018 "Leave Application"
 
                         "End Date" := NextWorkingDate - 1;
                         "Resumption Date" := NextWorkingDate;
-                        Message('enddate is %1', "Resumption Date");
+                        // Message('End date is %1', "Resumption Date");
                     end;
 
                 //check if the date that the person is supposed to report back is a working day or not
                 //get base calendar to use
                 NonWorkingDay := false;
-                if "Start Date" <> 0D then
+                if ("Start Date" <> 0D) and ("Resumption Date"<>0D) then
                     while NonWorkingDay = false
                       do begin
-                        //NonWorkingDay := HRmgt.CheckNonWorkingDay(HumanResSetup."Default Base Calendar", "Resumption Date", Dsptn);
+                        NonWorkingDay := HRmgt.CheckNonWorkingDay(BaseCalenderCode, "Resumption Date", Description);
                         if NonWorkingDay then begin
                             NonWorkingDay := false;
                             "Resumption Date" := CalcDate('1D', "Resumption Date");

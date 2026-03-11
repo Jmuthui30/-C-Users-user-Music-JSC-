@@ -261,106 +261,106 @@ codeunit 52111 "EftPost"
                 end
                 */
     end;
-    local procedure CheckIfEFTIsAlreadyPosted(var EFTHeader: Record "EFT Header")PostDecision: Boolean var
-        PVHeader: Record "PV Header";
-        GLRegister: Record "G/L Register";
-        ImprestHeader: Record "Imprest Header";
-        GLEntry: Record "G/L Entry";
-        BankLedger: Record "Bank Account Ledger Entry";
-    begin
-        //PVs
-        if EFTHeader."Process Module" = EFTHeader."Process Module"::PVs then begin
-            PostDecision:=true;
-            PVHeader.Reset;
-            PVHeader.SetRange(EFT_No, EFTHeader.No);
-            if PVHeader.FindFirst then begin
-                GLEntry.Reset;
-                GLEntry.SetRange(GLEntry."Document No.", PVHeader."No.");
-                GLEntry.SetRange(GLEntry.Reversed, false);
-                GLEntry.SetRange("Posting Date", PVHeader.Date);
-                if GLEntry.FindFirst then begin
-                    PVHeader.Posted:=true;
-                    PVHeader.Validate(Posted);
-                    PVHeader.Modify;
-                    PostDecision:=false;
-                end
-                else
-                    PostDecision:=true;
-            end;
-        end
-        //Staff Claim
-        else if(EFTHeader."Process Module" = EFTHeader."Process Module"::"Staff Claim")then begin
-                PostDecision:=true;
-                ImprestHeader.Reset;
-                ImprestHeader.SetRange("EFT No", EFTHeader.No);
-                if ImprestHeader.FindFirst then begin
-                    BankLedger.Reset;
-                    BankLedger.SetCurrentKey(BankLedger."Document No.", BankLedger."Posting Date");
-                    BankLedger.SetRange(BankLedger."Document No.", ImprestHeader."No.");
-                    if BankLedger.FindFirst then begin
-                        ImprestHeader."Claim Pay Mode":='EFT';
-                        ImprestHeader."Claim Payment Tx No":=EFTHeader.No;
-                        ImprestHeader."Claim Posted":=true;
-                        ImprestHeader."Claim Posted By":=UserId;
-                        ImprestHeader."Claim Posted Date":=Today;
-                        ImprestHeader."Staff Claim":=true;
-                        ImprestHeader.Status:=ImprestHeader.Status::Released;
-                        ImprestHeader.Modify;
-                        PostDecision:=false;
-                    end
-                    else
-                        PostDecision:=true;
-                end;
-            end
-            //Imprest
-            else if(EFTHeader."Process Module" = EFTHeader."Process Module"::"Imprest")then begin
-                    PostDecision:=true;
-                    ImprestHeader.Reset;
-                    ImprestHeader.SetRange("EFT No", EFTHeader.No);
-                    if ImprestHeader.FindFirst then begin
-                        GLEntry.Reset;
-                        GLEntry.SetRange(GLEntry."Document No.", ImprestHeader."No.");
-                        GLEntry.SetRange(GLEntry.Reversed, false);
-                        GLEntry.SetRange("Posting Date", ImprestHeader.Date);
-                        if GLEntry.FindFirst then begin
-                            ImprestHeader."Pay Mode":='EFT';
-                            ImprestHeader."Payment Tx No.(Cheque No.)":=EFTHeader.No;
-                            if ImprestHeader."Paying Bank Code" = '' then ImprestHeader."Paying Bank Code":='111001';
-                            ImprestHeader.Validate("Request Posted", true);
-                            ImprestHeader."Request Posted By":=UserId;
-                            ImprestHeader."Request Posted Date":=Today;
-                            ImprestHeader.Type:=ImprestHeader.Type::Surrender;
-                            ImprestHeader.Modify;
-                            PostDecision:=false;
-                        end
-                        else
-                            PostDecision:=true;
-                    end;
-                end
-                //Surrender
-                else if(EFTHeader."Process Module" = EFTHeader."Process Module"::Surrender)then begin
-                        PostDecision:=true;
-                        ImprestHeader.Reset;
-                        ImprestHeader.SetRange("EFT No", EFTHeader.No);
-                        if ImprestHeader.FindFirst then begin
-                            GLEntry.Reset;
-                            GLEntry.SetRange(GLEntry."Document No.", ImprestHeader."No.");
-                            GLEntry.SetRange(GLEntry.Reversed, false);
-                            GLEntry.SetRange("Posting Date", Today);
-                            if GLEntry.FindFirst then begin
-                                ImprestHeader."Claim Pay Mode":='EFT';
-                                ImprestHeader."Surrender Posted":=true;
-                                ImprestHeader."Surrender Posted By":=UserId;
-                                ImprestHeader."Surrender Posted Date":=Today;
-                                ImprestHeader.Type:=ImprestHeader.Type::Surrender;
-                                ImprestHeader.Status:=ImprestHeader.Status::Released;
-                                ImprestHeader.Modify;
-                                PostDecision:=false;
-                            end
-                            else
-                                PostDecision:=true;
-                        end;
-                    end;
-        exit(PostDecision);
-    end;
+    // local procedure CheckIfEFTIsAlreadyPosted(var EFTHeader: Record "EFT Header")PostDecision: Boolean var
+    //     PVHeader: Record "PV Header";
+    //     GLRegister: Record "G/L Register";
+    //     // ImprestHeader: Record "Imprest Header";
+    //     GLEntry: Record "G/L Entry";
+    //     BankLedger: Record "Bank Account Ledger Entry";
+    // begin
+    //     //PVs
+    //     if EFTHeader."Process Module" = EFTHeader."Process Module"::PVs then begin
+    //         PostDecision:=true;
+    //         PVHeader.Reset;
+    //         PVHeader.SetRange(EFT_No, EFTHeader.No);
+    //         if PVHeader.FindFirst then begin
+    //             GLEntry.Reset;
+    //             GLEntry.SetRange(GLEntry."Document No.", PVHeader."No.");
+    //             GLEntry.SetRange(GLEntry.Reversed, false);
+    //             GLEntry.SetRange("Posting Date", PVHeader.Date);
+    //             if GLEntry.FindFirst then begin
+    //                 PVHeader.Posted:=true;
+    //                 PVHeader.Validate(Posted);
+    //                 PVHeader.Modify;
+    //                 PostDecision:=false;
+    //             end
+    //             else
+    //                 PostDecision:=true;
+    //         end;
+    //     end
+    //     //Staff Claim
+    //     else if(EFTHeader."Process Module" = EFTHeader."Process Module"::"Staff Claim")then begin
+    //             PostDecision:=true;
+    //             ImprestHeader.Reset;
+    //             ImprestHeader.SetRange("EFT No", EFTHeader.No);
+    //             if ImprestHeader.FindFirst then begin
+    //                 BankLedger.Reset;
+    //                 BankLedger.SetCurrentKey(BankLedger."Document No.", BankLedger."Posting Date");
+    //                 BankLedger.SetRange(BankLedger."Document No.", ImprestHeader."No.");
+    //                 if BankLedger.FindFirst then begin
+    //                     ImprestHeader."Claim Pay Mode":='EFT';
+    //                     ImprestHeader."Claim Payment Tx No":=EFTHeader.No;
+    //                     ImprestHeader."Claim Posted":=true;
+    //                     ImprestHeader."Claim Posted By":=UserId;
+    //                     ImprestHeader."Claim Posted Date":=Today;
+    //                     ImprestHeader."Staff Claim":=true;
+    //                     ImprestHeader.Status:=ImprestHeader.Status::Released;
+    //                     ImprestHeader.Modify;
+    //                     PostDecision:=false;
+    //                 end
+    //                 else
+    //                     PostDecision:=true;
+    //             end;
+    //         end
+    //         //Imprest
+    //         else if(EFTHeader."Process Module" = EFTHeader."Process Module"::"Imprest")then begin
+    //                 PostDecision:=true;
+    //                 ImprestHeader.Reset;
+    //                 ImprestHeader.SetRange("EFT No", EFTHeader.No);
+    //                 if ImprestHeader.FindFirst then begin
+    //                     GLEntry.Reset;
+    //                     GLEntry.SetRange(GLEntry."Document No.", ImprestHeader."No.");
+    //                     GLEntry.SetRange(GLEntry.Reversed, false);
+    //                     GLEntry.SetRange("Posting Date", ImprestHeader.Date);
+    //                     if GLEntry.FindFirst then begin
+    //                         ImprestHeader."Pay Mode":='EFT';
+    //                         ImprestHeader."Payment Tx No.(Cheque No.)":=EFTHeader.No;
+    //                         if ImprestHeader."Paying Bank Code" = '' then ImprestHeader."Paying Bank Code":='111001';
+    //                         ImprestHeader.Validate("Request Posted", true);
+    //                         ImprestHeader."Request Posted By":=UserId;
+    //                         ImprestHeader."Request Posted Date":=Today;
+    //                         ImprestHeader.Type:=ImprestHeader.Type::Surrender;
+    //                         ImprestHeader.Modify;
+    //                         PostDecision:=false;
+    //                     end
+    //                     else
+    //                         PostDecision:=true;
+    //                 end;
+    //             end
+    //             //Surrender
+    //             else if(EFTHeader."Process Module" = EFTHeader."Process Module"::Surrender)then begin
+    //                     PostDecision:=true;
+    //                     ImprestHeader.Reset;
+    //                     ImprestHeader.SetRange("EFT No", EFTHeader.No);
+    //                     if ImprestHeader.FindFirst then begin
+    //                         GLEntry.Reset;
+    //                         GLEntry.SetRange(GLEntry."Document No.", ImprestHeader."No.");
+    //                         GLEntry.SetRange(GLEntry.Reversed, false);
+    //                         GLEntry.SetRange("Posting Date", Today);
+    //                         if GLEntry.FindFirst then begin
+    //                             ImprestHeader."Claim Pay Mode":='EFT';
+    //                             ImprestHeader."Surrender Posted":=true;
+    //                             ImprestHeader."Surrender Posted By":=UserId;
+    //                             ImprestHeader."Surrender Posted Date":=Today;
+    //                             ImprestHeader.Type:=ImprestHeader.Type::Surrender;
+    //                             ImprestHeader.Status:=ImprestHeader.Status::Released;
+    //                             ImprestHeader.Modify;
+    //                             PostDecision:=false;
+    //                         end
+    //                         else
+    //                             PostDecision:=true;
+    //                     end;
+    //                 end;
+    //     exit(PostDecision);
+    // end;
 }

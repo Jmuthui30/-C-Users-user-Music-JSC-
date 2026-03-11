@@ -548,7 +548,7 @@ codeunit 51430 "Workflow Response Handling Ext"
         TargetRecRef: RecordRef;
         PV: Record "PV Header";
         PettyCash: Record "Expense Claim Header";
-        Imprest: Record "Imprest Header";
+        Imprest: Record Payments;
         RequestForPayment: Record "Request for Payment";
         SupplementaryBudget: Record "Supplementary Budget Request";
         StaffBasedBudget: Record "Staff Based Budget Header";
@@ -601,13 +601,13 @@ codeunit 51430 "Workflow Response Handling Ext"
                     Handled := true;
                 end;
             //2. Imprest
-            DATABASE::"Imprest Header":
-                begin
-                    RecRef.SetTable(Imprest);
-                    Imprest.Validate(Status, Imprest.Status::Released);
-                    Imprest.Modify;
-                    Handled := true;
-                end;
+            // DATABASE::"Imprest Header":
+            //     begin
+            //         RecRef.SetTable(Imprest);
+            //         Imprest.Validate(Status, Imprest.Status::Released);
+            //         Imprest.Modify;
+            //         Handled := true;
+            //     end;
             //
             //2. Imprest Memo
             DATABASE::"Imprest Memo Header":
@@ -901,7 +901,7 @@ codeunit 51430 "Workflow Response Handling Ext"
         TargetRecRef: RecordRef;
         PV: Record "PV Header";
         PettyCash: Record "Expense Claim Header";
-        Imprest: Record "Imprest Header";
+        Imprest: Record Payments;
         RequestForPayment: Record "Request for Payment";
         SupplementaryBudget: Record "Supplementary Budget Request";
         StaffBasedBudget: Record "Staff Based Budget Header";
@@ -953,14 +953,14 @@ codeunit 51430 "Workflow Response Handling Ext"
                     PettyCash.Modify;
                     Handled := true;
                 end;
-            //2. Imprest
-            DATABASE::"Imprest Header":
-                begin
-                    RecRef.SetTable(Imprest);
-                    Imprest.Validate(Status, Imprest.Status::Open);
-                    Imprest.Modify;
-                    Handled := true;
-                end;
+            // //2. Imprest
+            // DATABASE::"Imprest Header":
+            //     begin
+            //         RecRef.SetTable(Imprest);
+            //         Imprest.Validate(Status, Imprest.Status::Open);
+            //         Imprest.Modify;
+            //         Handled := true;
+            //     end;
             //2. Imprest Memo
             DATABASE::"Imprest Memo Header":
                 begin

@@ -411,7 +411,7 @@ table 50465 "Imprest Memo Lines"
     }
     var Emp: Record "Client Employee Master";
     Leave: Record "Employee Leave Application";
-    Imprest: Record "Imprest Header";
+    // Imprest: Record "Imprest Header";
     Header: Record "Imprest Memo Header";
     DSARates: Record "AEA Listing";
     ImprestSetup: Record "Advanced Finance Setup";
@@ -440,13 +440,13 @@ table 50465 "Imprest Memo Lines"
         Leave.SetRange(Status, Leave.Status::Released);
         if Leave.FindFirst()then Error('An employee on leave cannot be picked for an event.');
         //Check Employee with unsurrendered imprest
-        Imprest.Reset();
-        Imprest.SetRange("Employee No.", EmpNo);
-        Imprest.SetRange(Type, Imprest.Type::Surrender);
-        Imprest.SetFilter(Status, '%1|%2', Imprest.Status::Open, Imprest.Status::Rejected);
-        Imprest.SetRange("Surrender Posted", false);
-        If Imprest.FindFirst()then Error('An employee with an unsurrendered imprest cannot be picked for an event.');
-        GetDefaultAllowances(Rec);
+        // Imprest.Reset();
+        // Imprest.SetRange("Employee No.", EmpNo);
+        // Imprest.SetRange(Type, Imprest.Type::Surrender);
+        // Imprest.SetFilter(Status, '%1|%2', Imprest.Status::Open, Imprest.Status::Rejected);
+        // Imprest.SetRange("Surrender Posted", false);
+        // If Imprest.FindFirst()then Error('An employee with an unsurrendered imprest cannot be picked for an event.');
+        // GetDefaultAllowances(Rec);
     end;
     local procedure GetHeader()
     begin

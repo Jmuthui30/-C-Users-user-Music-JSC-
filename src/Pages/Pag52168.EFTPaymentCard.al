@@ -76,7 +76,7 @@ page 52168 "EFT Payment Card"
 
                 trigger OnAction()
                 begin
-                    CashMgnt.PostProcessedEFT(Rec);
+                    // CashMgnt.PostProcessedEFT(Rec);
                 end;
             }
             action("Send Related Email")
@@ -203,9 +203,9 @@ page 52168 "EFT Payment Card"
     PRLines: Record "Request for Payment Lines";
     IncomingDocumentAttachment: Record "Incoming Document Attachment";
     ImprestManagement: Codeunit "Imprest Management";
-    ImprestHeader: Record "Imprest Header";
-    StaffClaimVoucherReport: Report "Staff Claim Voucher Report";
-    CashAdvanceVoucherReport: Report "Imprest Request";
+    // ImprestHeader: Record "Imprest Header";
+    // StaffClaimVoucherReport: Report "Staff Claim Voucher Report";
+    // CashAdvanceVoucherReport: Report "Imprest Request";
     CanPost: Boolean;
     UserPersonalization: Record "User Personalization";
     eftImport: XMLport "Import Eft Lines";

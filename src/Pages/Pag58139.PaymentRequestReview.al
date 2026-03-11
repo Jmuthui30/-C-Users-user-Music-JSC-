@@ -86,7 +86,7 @@ page 58139 "Payment Request Review"
 
                 trigger OnAction();
                 begin
-                    PaymentMngt.ExecutePaymentRequestReview(false, '');
+                    // PaymentMngt.ExecutePaymentRequestReview(false, '');
                 end;
             }
         }

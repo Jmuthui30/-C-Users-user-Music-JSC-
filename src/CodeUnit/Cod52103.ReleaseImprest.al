@@ -20,55 +20,55 @@ codeunit 52103 "Release Imprest"
     // Insurance: 61423 - 61622 = 199
     // Sacco:   61623 - 62422 = ***
     // ***********************
-    TableNo = "Imprest Header";
+    // TableNo = "Imprest Header";
 
-    trigger OnRun()
-    begin
-        if Rec.Status = Rec.Status::Released then exit;
-        if Rec.Status in[Rec.Status::Open, Rec.Status::Rejected]then Error(StrSubstNo(CanReleasedIfStatusErr, Rec.Status::"Pending Approval"));
-        //TESTFIELD("Request Posted",FALSE);
-        Rec.Status:=Rec.Status::Released;
-        Rec.Modify(true);
-        OnAfterReleaseImprest(Rec);
-    end;
-    var NothingToReleaseErr: Label 'There is nothing to release for the incoming document number %1.', Comment = '%1 = Incoming Document Entry No';
-    DocReleasedWhenApprovedErr: Label 'This document can only be released when the approval process is complete.';
-    CancelOrCompleteToReopenDocErr: Label 'The approval process must be cancelled or completed to reopen this document.';
-    CanReleasedIfStatusErr: Label 'It is only possible to release the record when the status is %1.', Comment = '%1 = status released, %2 = status pending approval';
-    procedure Reopen(var Imprest: Record "Imprest Header")
-    begin
-        if Imprest.Status = Imprest.Status::Open then exit;
-        ClearReleaseFields(Imprest);
-        Imprest.Status:=Imprest.Status::Open;
-        Imprest.Modify(true);
-    end;
-    procedure Reject(var Imprest: Record "Imprest Header")
-    begin
-        ClearReleaseFields(Imprest);
-        Imprest.Status:=Imprest.Status::Open;
-        Imprest.Modify(true);
-    end;
-    procedure PerformManualRelease(var Imprest: Record "Imprest Header")
-    var
-        ApprovalsMgmt: Codeunit "Approvals Mgmt.";
-    begin
-        CODEUNIT.Run(CODEUNIT::"Release Imprest", Imprest);
-    end;
-    procedure PerformManualReopen(var Imprest: Record "Imprest Header")
-    begin
-        if Imprest.Status = Imprest.Status::"Pending Approval" then Error(CancelOrCompleteToReopenDocErr);
-        Reopen(Imprest);
-    end;
-    procedure PerformManualReject(var Imprest: Record "Imprest Header")
-    begin
-        if Imprest.Status = Imprest.Status::"Pending Approval" then Error(CancelOrCompleteToReopenDocErr);
-        Reject(Imprest);
-    end;
-    local procedure ClearReleaseFields(var Imprest: Record "Imprest Header")
-    begin
-    end;
-    [IntegrationEvent(false, false)]
-    procedure OnAfterReleaseImprest(var Imprest: Record "Imprest Header")
-    begin
-    end;
+    // trigger OnRun()
+    // begin
+    //     if Rec.Status = Rec.Status::Released then exit;
+    //     if Rec.Status in[Rec.Status::Open, Rec.Status::Rejected]then Error(StrSubstNo(CanReleasedIfStatusErr, Rec.Status::"Pending Approval"));
+    //     //TESTFIELD("Request Posted",FALSE);
+    //     Rec.Status:=Rec.Status::Released;
+    //     Rec.Modify(true);
+    //     OnAfterReleaseImprest(Rec);
+    // end;
+    // var NothingToReleaseErr: Label 'There is nothing to release for the incoming document number %1.', Comment = '%1 = Incoming Document Entry No';
+    // DocReleasedWhenApprovedErr: Label 'This document can only be released when the approval process is complete.';
+    // CancelOrCompleteToReopenDocErr: Label 'The approval process must be cancelled or completed to reopen this document.';
+    // CanReleasedIfStatusErr: Label 'It is only possible to release the record when the status is %1.', Comment = '%1 = status released, %2 = status pending approval';
+    // procedure Reopen(var Imprest: Record "Imprest Header")
+    // begin
+    //     if Imprest.Status = Imprest.Status::Open then exit;
+    //     ClearReleaseFields(Imprest);
+    //     Imprest.Status:=Imprest.Status::Open;
+    //     Imprest.Modify(true);
+    // end;
+    // procedure Reject(var Imprest: Record "Imprest Header")
+    // begin
+    //     ClearReleaseFields(Imprest);
+    //     Imprest.Status:=Imprest.Status::Open;
+    //     Imprest.Modify(true);
+    // end;
+    // procedure PerformManualRelease(var Imprest: Record "Imprest Header")
+    // var
+    //     ApprovalsMgmt: Codeunit "Approvals Mgmt.";
+    // begin
+    //     CODEUNIT.Run(CODEUNIT::"Release Imprest", Imprest);
+    // end;
+    // procedure PerformManualReopen(var Imprest: Record "Imprest Header")
+    // begin
+    //     if Imprest.Status = Imprest.Status::"Pending Approval" then Error(CancelOrCompleteToReopenDocErr);
+    //     Reopen(Imprest);
+    // end;
+    // procedure PerformManualReject(var Imprest: Record "Imprest Header")
+    // begin
+    //     if Imprest.Status = Imprest.Status::"Pending Approval" then Error(CancelOrCompleteToReopenDocErr);
+    //     Reject(Imprest);
+    // end;
+    // local procedure ClearReleaseFields(var Imprest: Record "Imprest Header")
+    // begin
+    // end;
+    // [IntegrationEvent(false, false)]
+    // procedure OnAfterReleaseImprest(var Imprest: Record "Imprest Header")
+    // begin
+    // end;
 }

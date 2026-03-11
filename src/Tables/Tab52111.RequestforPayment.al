@@ -170,7 +170,7 @@ table 52111 "Request for Payment"
         NoSeriesMgt: Codeunit "No. Series";
         Supplier: Record Vendor;
         LPO: Record "Purchase Header";
-        ITO: Record "Imprest Header";
+        // ITO: Record "Imprest Header";
         Staff: Record Customer;
         Invoice: Record "Purch. Inv. Header";
 }

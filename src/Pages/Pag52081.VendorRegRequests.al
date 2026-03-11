@@ -116,7 +116,7 @@ page 52081 "Vendor Reg Requests"
                     var
                         ApprovalsMgt: Codeunit "Approvals Mgmt.";
                     begin
-                        ApprovalsMgt.RunWorkflowEntriesPage(Rec.RecordId, DATABASE::"Imprest Header", 0, Rec."No.");
+                        // ApprovalsMgt.RunWorkflowEntriesPage(Rec.RecordId, DATABASE::"Imprest Header", 0, Rec."No.");
                     end;
                 }
             }
