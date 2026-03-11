@@ -317,6 +317,16 @@ codeunit 55057 HRPortalQueries
     begin
 
         begin
+            // LeaveLedger.Reset();
+            // LeaveLedger.SetRange("Staff No.", EmpNo);
+            // LeaveLedger.SetRange("Leave Entry Type", LeaveLedger."Leave Entry Type"::Negative);
+            // LeaveLedger.SetRange(Closed, false);
+            // if LeaveLedger.FindLast() then
+            //     if (LeaveLedger."Leave End Date" > DT2Date(startDate)) and (LeaveLedger."Leave Start Date" < DT2Date(startDate)) then
+            //         // Error('You have a running %1 leave ending on %2', LeaveLedger."Leave Type", LeaveLedger."Leave End Date");
+
+            //         if xRec.Status <> Status::Open then
+            //             Error('You cannot change a document an approved document');
 
             HumanResSetup.Get();
             // HumanResSetup.TestField(HumanResSetup."Default Base Calendar");
@@ -384,10 +394,11 @@ codeunit 55057 HRPortalQueries
             //check if the date that the person is supposed to report back is a working day or not
             //get base calendar to use
             NonWorkingDay := false;
-            if DT2Date(startDate) <> 0D then
+            if (DT2Date(startDate) <> 0D) and (ResumptionDate <> 0D) then
                 while NonWorkingDay = false
                   do begin
                     //NonWorkingDay := HRmgt.CheckNonWorkingDay(HumanResSetup."Default Base Calendar", "Resumption Date", Dsptn);
+                    NonWorkingDay := HRmgt.CheckNonWorkingDay(BaseCalenderCode, ResumptionDate, Description);
                     if NonWorkingDay then begin
                         NonWorkingDay := false;
                         ResumptionDate := CalcDate('1D', ResumptionDate);
