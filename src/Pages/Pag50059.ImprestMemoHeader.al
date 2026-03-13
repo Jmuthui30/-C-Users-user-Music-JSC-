@@ -28,10 +28,10 @@ page 50059 "Imprest Memo Header"
                 field(Subject; Rec.Subject)
                 {
                 }
-                field(Memo; Rec.Memo)
-                {
-                    MultiLine = true;
-                }
+                // field(Memo; Rec.Memo)
+                // {
+                //     MultiLine = true;
+                // }
                 field("Sender Name"; Rec."Sender Name")
                 {
                     Importance = Additional;
@@ -195,7 +195,7 @@ page 50059 "Imprest Memo Header"
                 }
             }
 
-            group(message)
+            group(Message)
             {
                 field("Message body"; "Message body")
                 {
