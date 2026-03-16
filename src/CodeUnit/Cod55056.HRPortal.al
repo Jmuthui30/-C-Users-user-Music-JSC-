@@ -742,16 +742,17 @@ codeunit 55056 HRPortal
             exit(HrEmployees."No.");
     end;
 
-    procedure CreateImprestMemo(No: Code[30]; From: Text; ToWho: Code[50]; employeeNumber: code[10]; subject: Text[250]; memoDescription: Text; Purpose: Text[2048]; location: Text; deaprturelocation: Text; departureDate: DateTime; returnlocation: Text; returnDate: DateTime; startDate: DateTime; noOfDaysInField: Integer; international: Boolean; DSA: Boolean; CordinationAllowance: Boolean; FacilitatorAllowance: Boolean; SecritariateAllowance: Boolean; RapporteurAllowance: Boolean; DriverAllowance: Boolean; retreatAllowance: Boolean; expertAllowance: Boolean; AirTicket: Boolean; conference: Boolean; groundTransport: Boolean; accommodation: Boolean; outOfPocket: Boolean; tutorialFee: Boolean; mileageAllowance: Boolean; quarterPerDiem: Boolean; directorate: code[50]; department: code[50]) status: Text
+    procedure CreateImprestMemo(No: Code[30]; ToWho: Code[50]; employeeNumber: code[10]; subject: Text[250]; memoDescription: Text; Purpose: Text[2048]; location: Text; deaprturelocation: Text; departureDate: DateTime; returnlocation: Text; returnDate: DateTime; startDate: DateTime; noOfDaysInField: Integer; international: Boolean; DSA: Boolean; CordinationAllowance: Boolean; FacilitatorAllowance: Boolean; SecritariateAllowance: Boolean; RapporteurAllowance: Boolean; DriverAllowance: Boolean; retreatAllowance: Boolean; expertAllowance: Boolean; AirTicket: Boolean; conference: Boolean; groundTransport: Boolean; accommodation: Boolean; outOfPocket: Boolean; tutorialFee: Boolean; mileageAllowance: Boolean; quarterPerDiem: Boolean; directorate: code[50]; department: code[50]) status: Text
     var
         glsetup: Record "General Ledger Setup";
         Staff: Record Employee;
     begin
         CashMgt.Get();
+        Staff.Get(employeeNumber);
         if No <> '' then begin
             memo.Get(No);
             memo.Date := Today;
-            memo.From := From;
+            memo.From := Staff."Job Id";
             memo."To" := ToWho;
             memo.Subject := subject;
             memo."Message body" := memoDescription;
@@ -799,7 +800,7 @@ codeunit 55056 HRPortal
             //NoSeriesMgt.InitSeries(glsetup."ERC Memo Nos", memo."Memo No", 0D, memo."Memo No", memo."No. Series");
             //memo."Memo No" := NoSeriesMgt.DoGetNextNo(glsetup."ERC Memo Nos", Today, true, true);
             memo.Date := Today;
-            memo.From := From;
+            memo.From := Staff."Job Id";
             //memo.To := From;
             memo.Subject := subject;
             memo."Message body" := memoDescription;
@@ -833,7 +834,7 @@ codeunit 55056 HRPortal
             memo."Global Dimension 1 Code" := directorate;
             memo."Global Dimension 2 Code" := department;
             If memo.Insert(true) then begin
-                Staff.Get(employeeNumber);
+                // Staff.Get(employeeNumber);
                 memo.From := Staff."Job Id";
                 memo."To" := ToWho;
                 memo."Sender Name" := Staff."Job Title";
@@ -910,7 +911,7 @@ codeunit 55056 HRPortal
         status := 'success*Imprest Memo Request approval request has been successfully cancelled.';
     end;
 
-    procedure CreateImprestRequisition(No: Code[30]; AccountNo: Code[30]; activity: Code[100]; department: code[100]; TravelType: Integer; Purpose: Text[2048]; Destination: Code[250]; TravelDate: DateTime; ReturnDate: DateTime; Cashier: Code[30]) status: Text
+    procedure CreateImprestRequisition(No: Code[30]; AccountNo: Code[30]; activity: Code[100]; department: code[100]; TravelType: Integer; Purpose: Text[2048]; Destination: Text[250]; TravelDate: DateTime; ReturnDate: DateTime; Cashier: Code[30]) status: Text
     var
     begin
         CashMgt.Get();
