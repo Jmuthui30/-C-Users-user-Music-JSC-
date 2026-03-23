@@ -294,6 +294,29 @@ page 50059 "Imprest Memo Header"
                         CurrPage.Close();
                     end;
                 }
+                action(ReportMemo)
+                {
+                    ApplicationArea = All;
+
+                    ;
+                    Caption = 'Memo Report';
+                    Image = SendConfirmation;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    PromotedIsBig = true;
+                    PromotedOnly = true;
+                    // RunObject = report "Memo Report";
+                    //Visible = Rec.Status = Rec.Status::Released;
+                    trigger OnAction()
+                    var
+                        Memo: Record "Imprest Memo Header";
+                    begin
+                        Memo.Reset();
+                        Memo.SetRange("No.", Rec."No.");
+                        Report.Run(Report::"Memo Report", true, false, Memo);
+                    end;
+
+                }
                 action(Approve)
                 {
                     ApplicationArea = Suite;
@@ -520,21 +543,7 @@ page 50059 "Imprest Memo Header"
                         Message('Completed');
                     end;
                 }
-                action(ReportMemo)
-                {
-                    ApplicationArea = All;
 
-                    ;
-                    Caption = 'Memo Report';
-                    Image = SendConfirmation;
-                    Promoted = true;
-                    PromotedCategory = Process;
-                    PromotedIsBig = true;
-                    PromotedOnly = true;
-                    RunObject = report "Memo Report";
-                    //Visible = Rec.Status = Rec.Status::Released;
-
-                }
             }
         }
     }
