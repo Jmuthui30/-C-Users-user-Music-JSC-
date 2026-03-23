@@ -221,8 +221,7 @@ page 52359 "Appraisal Card-New"
         {
             action("Print Objectives")
             {
-                Visible = true;
-                Caption = 'Report';
+                Visible = false;
                 Image = "Report";
                 Promoted = true;
                 PromotedCategory = "Report";
@@ -242,7 +241,6 @@ page 52359 "Appraisal Card-New"
                 Promoted = true;
                 PromotedCategory = "Report";
                 ToolTip = 'Executes the Print Objectives action';
-                Visible=false;
 
                 trigger OnAction()
                 begin
@@ -282,7 +280,7 @@ page 52359 "Appraisal Card-New"
                         Error('The appraisal record %1 no longer exists.', Rec."Appraisal No");
 
                     // now Rec is fresh, you can safely update fields or modify
-                    // Rec."Appraisal Status" := Rec."Appraisal Status"::Set;
+                    Rec."Appraisal Status" := Rec."Appraisal Status"::Set;
                     Commit();
                     Rec.Modify();
                 end;
