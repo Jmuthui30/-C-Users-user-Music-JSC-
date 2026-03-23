@@ -1,4 +1,4 @@
-page 40001 "Portal Uploads Memo,Leave"
+page 59999 "Portal Uploads Memo,Leave"
 {
     Caption = 'Portal Upload';
     PageType = List;
