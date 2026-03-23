@@ -221,7 +221,8 @@ page 52359 "Appraisal Card-New"
         {
             action("Print Objectives")
             {
-                Visible = false;
+                Visible = true;
+                Caption = 'Report';
                 Image = "Report";
                 Promoted = true;
                 PromotedCategory = "Report";
@@ -241,6 +242,7 @@ page 52359 "Appraisal Card-New"
                 Promoted = true;
                 PromotedCategory = "Report";
                 ToolTip = 'Executes the Print Objectives action';
+                Visible=false;
 
                 trigger OnAction()
                 begin
@@ -275,12 +277,12 @@ page 52359 "Appraisal Card-New"
                     if ApprovalsMgmt.CheckNewEmpAppraisalWorkflowEnabled(Rec) then
                         ApprovalsMgmt.OnSendNewEmpAppraisalRequestforApproval(Rec);
 
-                    // 🔑 Refresh Rec from the DB to avoid stale record error
+                    // Refresh Rec from the DB to avoid stale record error
                     if not Rec.Get(Rec."Appraisal No") then
                         Error('The appraisal record %1 no longer exists.', Rec."Appraisal No");
 
                     // now Rec is fresh, you can safely update fields or modify
-                    Rec."Appraisal Status" := Rec."Appraisal Status"::Set;
+                    // Rec."Appraisal Status" := Rec."Appraisal Status"::Set;
                     Commit();
                     Rec.Modify();
                 end;

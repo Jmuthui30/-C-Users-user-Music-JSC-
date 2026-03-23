@@ -1,6 +1,6 @@
 table 52076 "SharePoint Intergration"
 {
-    DataClassification = ToBeClassified;
+    DataClassification = ToBeClassified; 
 
     fields
     {
