@@ -1,4 +1,4 @@
-page 40001 "Portal Uploads Memo,Leave"
+page 59999 "Portal Uploads Memo,Leave"
 {
     Caption = 'Portal Upload';
     PageType = List;
@@ -19,7 +19,7 @@ page 40001 "Portal Uploads Memo,Leave"
 
                 }
                 field("Application No"; Rec."Application No") { ApplicationArea = all; Editable = false; }
-                field(LocalUrl; Rec.LocalUrl) { ApplicationArea = all; Visible = false; }
+                field(LocalUrl; Rec.LocalUrl) { ApplicationArea = all; Visible = true; }
                 field(Description; Rec.Description) { ApplicationArea = all; Editable = false; }
                 field(Uploaded; Rec.Uploaded) { ApplicationArea = all; Editable = false; }
                 field(Fetch_To_Sharepoint; Rec.Fetch_To_Sharepoint) { ApplicationArea = all; Editable = false; }

@@ -275,7 +275,7 @@ page 52359 "Appraisal Card-New"
                     if ApprovalsMgmt.CheckNewEmpAppraisalWorkflowEnabled(Rec) then
                         ApprovalsMgmt.OnSendNewEmpAppraisalRequestforApproval(Rec);
 
-                    // 🔑 Refresh Rec from the DB to avoid stale record error
+                    // Refresh Rec from the DB to avoid stale record error
                     if not Rec.Get(Rec."Appraisal No") then
                         Error('The appraisal record %1 no longer exists.', Rec."Appraisal No");
 
