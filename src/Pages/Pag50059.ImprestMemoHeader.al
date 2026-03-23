@@ -28,10 +28,10 @@ page 50059 "Imprest Memo Header"
                 field(Subject; Rec.Subject)
                 {
                 }
-                field(Memo; Rec.Memo)
-                {
-                    MultiLine = true;
-                }
+                // field(Memo; Rec.Memo)
+                // {
+                //     MultiLine = true;
+                // }
                 field("Sender Name"; Rec."Sender Name")
                 {
                     Importance = Additional;
@@ -195,7 +195,7 @@ page 50059 "Imprest Memo Header"
                 }
             }
 
-            group(message)
+            group(Message)
             {
                 field("Message body"; "Message body")
                 {
@@ -238,7 +238,7 @@ page 50059 "Imprest Memo Header"
                     var
                         SharepointHandler: Codeunit "Portal Integration";
                     begin
-                        SharepointHandler.UploadFilesToSharePoint(Rec."No.", 'MEMO');
+                        SharepointHandler.UploadFilesToSharePointII(Rec."No.", 'MEMO');
                     end;
                 }
 
@@ -252,8 +252,8 @@ page 50059 "Imprest Memo Header"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     PromotedOnly = true;
-                    RunObject = page "Portal Uploads";
-                    RunPageLink = "Document No" = field("No.");
+                    RunObject = page "Portal Uploads Memo,Leave";
+                    RunPageLink = "Application No" = field("No.");
                 }
             }
             group(Approval)
@@ -293,6 +293,29 @@ page 50059 "Imprest Memo Header"
                         ApprovalsMngt.OnCancelImprestMemoApprovalRequest(Rec);
                         CurrPage.Close();
                     end;
+                }
+                action(ReportMemo)
+                {
+                    ApplicationArea = All;
+
+                    ;
+                    Caption = 'Memo Report';
+                    Image = SendConfirmation;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    PromotedIsBig = true;
+                    PromotedOnly = true;
+                    // RunObject = report "Memo Report";
+                    //Visible = Rec.Status = Rec.Status::Released;
+                    trigger OnAction()
+                    var
+                        Memo: Record "Imprest Memo Header";
+                    begin
+                        Memo.Reset();
+                        Memo.SetRange("No.", Rec."No.");
+                        Report.Run(Report::"Memo Report", true, false, Memo);
+                    end;
+
                 }
                 action(Approve)
                 {
@@ -520,21 +543,7 @@ page 50059 "Imprest Memo Header"
                         Message('Completed');
                     end;
                 }
-                action(ReportMemo)
-                {
-                    ApplicationArea = All;
 
-                    ;
-                    Caption = 'Memo Report';
-                    Image = SendConfirmation;
-                    Promoted = true;
-                    PromotedCategory = Process;
-                    PromotedIsBig = true;
-                    PromotedOnly = true;
-                    RunObject = report "Memo Report";
-                    //Visible = Rec.Status = Rec.Status::Released;
-
-                }
             }
         }
     }

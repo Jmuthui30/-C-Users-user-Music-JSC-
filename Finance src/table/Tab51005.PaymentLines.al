@@ -681,7 +681,8 @@ table 51005 "Payment Lines"
 
             trigger OnValidate()
             var
-                AEAListing: Record "AEA Listing";
+                // AEAListing: Record "AEA Listing";
+                DSARates: Record "DSA Rates";
                 Employee: Record Employee;
                 JobGroup: Code[20];
             begin
@@ -707,12 +708,12 @@ table 51005 "Payment Lines"
                             JobGroup := Employee."Salary Scale";
 
                         // Pull Daily Rate from AEA Listing
-                        if AEAListing.Get(PaymentRec.Destination, JobGroup) then begin
-                            "Daily Rate" := AEAListing."Maximum Perdiem Rate";
+                        if DSARates.Get(JobGroup) then begin
+                            "Daily Rate" := DSARates.Rates;
                             Validate(Amount, "Daily Rate" * "No of Days");
                         end else
-                            Message('No AEA rate found for destination %1 and job group %2.',
-                                    PaymentRec.Destination, JobGroup);
+                            Message('No rate found for job group %2.',
+                                     JobGroup);
                     end else begin
                         if "Daily Rate" <> 0 then
                             Validate(Amount, "Daily Rate" * "No of Days");

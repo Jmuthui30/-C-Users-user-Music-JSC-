@@ -224,6 +224,28 @@ table 51017 "Finance Management Cue"
             Editable = false;
             FieldClass = FlowField;
         }
+        field(43; "Imprest Memo"; Integer)
+        {
+            CalcFormula = count("Imprest Memo Header" where(Status = filter(<> Released),
+                            Posted = const(false)));
+            Caption = 'Imprest Memos';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(44; "Imprest Memos-Approved"; Integer)
+        {
+            CalcFormula = count("Imprest Memo Header" where(Posted = const(false), Status = const(Released)));
+            Caption = 'Imprest Memos-Approved';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(45; "Posted Imprest Memos"; Integer)
+        {
+            CalcFormula = count("Imprest Memo Header" where(Posted = const(true)));
+            Caption = 'Posted Imprest Memos';
+            Editable = false;
+            FieldClass = FlowField;
+        }
     }
 
     keys

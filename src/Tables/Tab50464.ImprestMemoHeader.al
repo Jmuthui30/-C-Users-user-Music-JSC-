@@ -5,7 +5,7 @@ table 50464 "Imprest Memo Header"
 
     fields
     {
-        field(1; "No."; Code[20])
+        field(1; "No."; Code[30])
         {
         }
         field(2; "Created By"; Code[50])
@@ -14,7 +14,7 @@ table 50464 "Imprest Memo Header"
         field(3; Date; Date)
         {
         }
-        field(4; From; Code[20])
+        field(4; From; Code[50])
         {
             trigger OnValidate()
             begin
@@ -30,9 +30,41 @@ table 50464 "Imprest Memo Header"
                 end;
             end;
         }
+        // field(5; "To"; Code[10])
+        // {
+        //     TableRelation = "Company Jobs"."Job ID" where("Occupied Position" = const(0));
+        //     trigger OnValidate()
+        //     begin
+        //         if Rec."To" <> '' then begin
+        //             Staff.Reset();
+        //             Staff.SetRange("Job Id", Rec."To");
+        //             Staff.SetRange(Status, Staff.Status::Active);
+        //             if Staff.FindLast() then begin
+        //                 Rec."Recipient Name" := Staff."Job Title";
+        //                 Rec."Recipient Email" := Staff."Company E-Mail";
+        //                 if Rec."Recipient Email" = '' then Error(Text000);
+        //             end
+        //             else
+        //                 error('There is no staff occupying this job position currently. Please select a different recipient.');
+        //         end;
+        //     end;
+        // }
         field(5; "To"; Code[10])
         {
-            TableRelation = "Company Jobs";
+            trigger OnLookup()
+            var
+                CompanyJobs: Record "Company Jobs";
+                JobList: Page "Company Job List";
+            begin
+                CompanyJobs.SetFilter("Occupied Position", '>0');
+                JobList.SetTableView(CompanyJobs);
+                JobList.LookupMode(true);
+                if JobList.RunModal() = Action::LookupOK then begin
+                    JobList.GetRecord(CompanyJobs);
+                    Rec."To" := CompanyJobs."Job ID";
+                    Rec.Validate("To");  // triggers OnValidate to populate Recipient fields
+                end;
+            end;
 
             trigger OnValidate()
             begin
@@ -41,12 +73,13 @@ table 50464 "Imprest Memo Header"
                     Staff.SetRange("Job Id", Rec."To");
                     Staff.SetRange(Status, Staff.Status::Active);
                     if Staff.FindLast() then begin
+                        // Rec."To Name" := Staff.Name;
                         Rec."Recipient Name" := Staff."Job Title";
                         Rec."Recipient Email" := Staff."Company E-Mail";
                         if Rec."Recipient Email" = '' then Error(Text000);
                     end
                     else
-                        error('There is no staff occupying this job position currently. Please select a different recipient.');
+                        Error('There is no staff occupying this job position currently. Please select a different recipient.');
                 end;
             end;
         }
@@ -89,13 +122,13 @@ table 50464 "Imprest Memo Header"
         }
         field(18; "Activity Location"; Code[10])
         {
-            TableRelation = "Travel Locations";
+            // TableRelation = "Travel Locations";
 
-            trigger OnValidate()
-            begin
-                TravelLocation.Get(Rec."Activity Location");
-                Rec.International := TravelLocation.International;
-            end;
+            // trigger OnValidate()
+            // begin
+            //     TravelLocation.Get(Rec."Activity Location");
+            //     Rec.International := TravelLocation.International;
+            // end;
         }
         field(19; "Departure Location"; Text[30])
         {
@@ -234,7 +267,7 @@ table 50464 "Imprest Memo Header"
         {
             DataClassification = ToBeClassified;
         }
-        field(61; "Global Dimension 1 Code"; Code[20])
+        field(61; "Global Dimension 1 Code"; Code[30])
         {
             CaptionClass = '1,1,1';
             Caption = 'Global Dimension 1 Code';
@@ -245,7 +278,7 @@ table 50464 "Imprest Memo Header"
                 CommitmentMgt.InsertImprestBudgetAnalysis(Rec);
             end;
         }
-        field(62; "Global Dimension 2 Code"; Code[20])
+        field(62; "Global Dimension 2 Code"; Code[30])
         {
             CaptionClass = '1,1,2';
             Caption = 'Global Dimension 2 Code';
@@ -256,7 +289,7 @@ table 50464 "Imprest Memo Header"
                 CommitmentMgt.InsertImprestBudgetAnalysis(Rec);
             end;
         }
-        field(63; "Budget Line"; Code[20])
+        field(63; "Budget Line"; Code[30])
         {
             DataClassification = ToBeClassified;
             TableRelation = "G/L Account" where("Account Type" = const(Posting));
@@ -297,11 +330,11 @@ table 50464 "Imprest Memo Header"
             DataClassification = ToBeClassified;
             Editable = false;
         }
-        field(69; "PR No."; Code[20])
+        field(69; "PR No."; Code[30])
         {
             DataClassification = ToBeClassified;
         }
-        field(70; "Payroll Claim No."; Code[20])
+        field(70; "Payroll Claim No."; Code[30])
         {
             DataClassification = ToBeClassified;
         }
@@ -439,11 +472,11 @@ table 50464 "Imprest Memo Header"
             ImprestMemoSetup.Get;
             ImprestMemoSetup.TestField("Imprest Memo Nos");
             // NoSeriesMgt.InitSeries(ImprestMemoSetup."Imprest Memo Nos", xRec."No. Series", 0D, "No.", "No. Series");
-            if NoSeriesMgt.AreRelated(ImprestMemoSetup."Imprest Memo Nos",xRec."No. Series") then
-            "No. Series":=xRec."No. Series"
+            if NoSeriesMgt.AreRelated(ImprestMemoSetup."Imprest Memo Nos", xRec."No. Series") then
+                "No. Series" := xRec."No. Series"
             else
-            "No. Series":=ImprestMemoSetup."Imprest Memo Nos";
-            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
+                "No. Series" := ImprestMemoSetup."Imprest Memo Nos";
+            "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
         end;
         Rec."Created By" := UserId;
         Rec.Date := Today;
@@ -451,7 +484,7 @@ table 50464 "Imprest Memo Header"
             if UserSetup.Get(UserId) then begin
                 UserSetup.TestField("Employee No.");
                 Staff.Get(UserSetup."Employee No.");
-                Rec.From := Staff."Job Id";
+                Rec.From := Staff."Job Title";
                 Rec."Sender Name" := Staff."Job Title";
                 Rec."Sender Email" := Staff."Company E-Mail";
                 if Rec."Sender Email" = '' then Error(Text001);

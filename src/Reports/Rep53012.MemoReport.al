@@ -8,6 +8,11 @@ report 53012 "Memo Report"
     {
         dataitem("Imprest Memo Header"; "Imprest Memo Header")
         {
+            column(CompInfoLogo; CompInfo.Picture)
+            { }
+            column(CompInfoName; CompInfo.Name) { }
+            column(CompInfoAddress; CompInfo.Address) { }
+
             column(No_; "No.")
             {
 
@@ -19,10 +24,12 @@ report 53012 "Memo Report"
             column(Subject; Subject) { }
             column(Message_body; "Message body") { }
             column(Message_body_1; "Message body 1") { }
+            column(Recipient_Name; "Recipient Name") { }
+            column(Sender_Name; "Sender Name") { }
             dataitem("Imprest Memo Lines"; "Imprest Memo Lines")
             {
                 DataItemLink = "No." = field("No.");
-                column(No_Line; "No.") { }
+                column(Account_No_;"Account No."){}
                 column(Name; Name) { }
                 column(Title; Title) { }
                 column(Amount; Amount) { }
@@ -30,6 +37,7 @@ report 53012 "Memo Report"
             }
         }
     }
+
 
     requestpage
     {
@@ -59,10 +67,16 @@ report 53012 "Memo Report"
             //     }
             // }
         }
+
     }
 
-
+    trigger OnPreReport()
+    begin
+        CompInfo.Get();
+        CompInfo.CalcFields(Picture);
+    end;
 
     var
         myInt: Integer;
+        CompInfo: Record "Company Information";
 }
