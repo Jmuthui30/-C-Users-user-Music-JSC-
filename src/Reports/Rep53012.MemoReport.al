@@ -30,7 +30,6 @@ report 53012 "Memo Report"
             {
                 DataItemLink = "No." = field("No.");
                 column(Account_No_;"Account No."){}
-                column(No_Line; "No.") { }
                 column(Name; Name) { }
                 column(Title; Title) { }
                 column(Amount; Amount) { }
