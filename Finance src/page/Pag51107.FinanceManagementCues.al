@@ -43,6 +43,12 @@ page 51107 "Finance Management Cues"
                     DrillDownPageId = "Imprest Surrenderss";
                     ToolTip = 'Specifies the value of the Imprest Surrenders field';
                 }
+                 field("Imprest Memo"; Rec."Imprest Memo")
+                {
+                    Caption = 'Imprest Memo';
+                    DrillDownPageId = "Imprest Memo List";
+                    ToolTip = 'Specifies the value of the Imprest Memo field';
+                }
                 field("Petty Cash Surrenders"; Rec."Petty Cash Surrenders")
                 {
                     Caption = 'Petty Cash Surrenders';
@@ -71,6 +77,12 @@ page 51107 "Finance Management Cues"
                     DrillDownPageId = "Approved Imprests";
                     ToolTip = 'Specifies the value of the Imprests-Approved field';
                 }
+                // field("Imprest Memos-Approved";"Imprest Memos-Approved")
+                // {
+                //     Caption = 'Imprests Memos-Approved';
+                //     DrillDownPageId = "Approved Imprests";
+                //     ToolTip = 'Specifies the value of the Imprests-Approved field';
+                // }
                 field(PettyCashApproved; Rec."Petty Cash-Approved")
                 {
                     Caption = 'Petty Cash - Approved';

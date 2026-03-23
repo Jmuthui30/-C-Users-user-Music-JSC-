@@ -2300,6 +2300,13 @@ page 51061 "Finance Role Center"
                         RunObject = page "Cash Management Setups";
                         ToolTip = 'Executes the Cash Management Setup action';
                     }
+                    action("Advanced Finance Setup")
+                    {
+                        Caption = 'Advanced Finance Setup';
+                        Image = Setup;
+                        RunObject = page "Advanced Finance Setup";
+                        ToolTip = 'Executes the Advanced Finance Setup action';
+                    }
                     action("Imprest Types")
                     {
                         Caption = 'Imprest Types';
@@ -2318,6 +2325,12 @@ page 51061 "Finance Role Center"
                         Caption = 'TDY Locations';
                         RunObject = page "TDY Locations";
                         ToolTip = 'Executes the Expense Codes action';
+                    }
+                    action("DSA Rates")
+                    {
+                        Caption = 'DSA Rates';
+                        RunObject = page "DSA Rates";
+                        ToolTip = 'Executes the DSA Rates action';
                     }
                     //"Client Salary Scales"
                     action("Client Salary Scales")

@@ -430,6 +430,8 @@ table 50465 "Imprest Memo Lines"
             Rec.Name:=BCEmp."First Name" + ' ' + BCEmp."Last Name";
             Rec.Title:=BCEmp."Job Title";
             Rec.Email:=BCEmp."Company E-Mail";
+            Rec."Global Dimension 1 Code":=BCEmp."Global Dimension 1 Code";
+            Rec."Global Dimension 2 Code":=BCEmp."Global Dimension 2 Code";
         end;
         GetHeader();
         //Check Employee On Leave
@@ -469,9 +471,9 @@ table 50465 "Imprest Memo Lines"
         //DSA
         if Rec.Type = Rec.Type::Staff then begin
             Rec."Pay DSA":=true;
-            if DSARates.Get(Header."Activity Location", Rec."Job Group")then Rec.DSA:=DSARates.Total * Header."Total Days in the Field"
+            if DSARates.Get(Rec."Job Group")then Rec.DSA:=DSARates.Total * Header."Total Days in the Field"
             else
-                Error('DSA for location ' + Header."Activity Location" + ' has not been set up for the Job Group ' + Rec."Job Group");
+                Error('The Job Group rates has not been set up for' + Rec."Job Group");
         end
         else
         begin
