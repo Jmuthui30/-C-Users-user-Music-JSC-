@@ -790,6 +790,7 @@ codeunit 55056 HRPortal
             memo."Sender Email" := Staff."Company E-Mail";
             memo."Global Dimension 1 Code" := directorate;
             memo."Global Dimension 2 Code" := department;
+            memo.Status := memo.Status::Open;
             if memo.modify(true) then begin
                 status := 'success*Memo has been modified succesfully*' + memo."No.";
             end else begin
@@ -833,6 +834,7 @@ codeunit 55056 HRPortal
             memo."Quarter Per Diem" := quarterPerDiem;
             memo."Global Dimension 1 Code" := directorate;
             memo."Global Dimension 2 Code" := department;
+            memo.Status := memo.Status::Open;
             If memo.Insert(true) then begin
                 // Staff.Get(employeeNumber);
                 memo.From := Staff."Job Id";
