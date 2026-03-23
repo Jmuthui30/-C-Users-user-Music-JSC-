@@ -238,7 +238,7 @@ page 50059 "Imprest Memo Header"
                     var
                         SharepointHandler: Codeunit "Portal Integration";
                     begin
-                        SharepointHandler.UploadFilesToSharePoint(Rec."No.", 'MEMO');
+                        SharepointHandler.UploadFilesToSharePointII(Rec."No.", 'MEMO');
                     end;
                 }
 
@@ -252,8 +252,8 @@ page 50059 "Imprest Memo Header"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     PromotedOnly = true;
-                    RunObject = page "Portal Uploads";
-                    RunPageLink = "Document No" = field("No.");
+                    RunObject = page "Portal Uploads Memo,Leave";
+                    RunPageLink = "Application No" = field("No.");
                 }
             }
             group(Approval)

@@ -282,6 +282,33 @@ page 51012 "Petty Cashs"
         // }
         area(Processing)
         {
+            group(Sharepoint)
+            {
+                action(ImportDocument)
+                {
+                    Caption = 'Import Document to Sharepoint';
+                    ApplicationArea = All;
+                    Image = Attach;
+                    ToolTip = 'Add a file as an attachment. You can attach images as well as documents.';
+
+                    trigger OnAction()
+                    var
+                        SharepointHandler: Codeunit "Portal Integration";
+                    begin
+                        SharepointHandler.UploadFilesToSharePointII(Rec."No.", 'MEMO');
+                    end;
+                }
+
+                action("Sharepoint Attachments")
+                {
+                    ApplicationArea = all;
+                    Ellipsis = true;
+                    Image = Attachments;
+                    Visible = true;
+                    RunObject = page "Portal Uploads Memo,Leave";
+                    RunPageLink = "Application No" = field("No.");
+                }
+            }
             group("F&unctions")
             {
                 Caption = 'F&unctions';

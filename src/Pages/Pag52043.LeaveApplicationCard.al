@@ -213,7 +213,7 @@ page 52043 "Leave Application Card"
                     var
                         SharepointHandler: Codeunit "Portal Integration";
                     begin
-                        SharepointHandler.UploadFilesToSharePoint(Rec."Application No", 'LEAVE');
+                        SharepointHandler.UploadFilesToSharePointII(Rec."Application No", 'LEAVE');
                     end;
                 }
 
@@ -227,8 +227,8 @@ page 52043 "Leave Application Card"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     PromotedOnly = true;
-                    RunObject = page "Portal Uploads";
-                    RunPageLink = "Document No" = field("Application No");
+                    RunObject = page "Portal Uploads Memo,Leave";
+                    RunPageLink = "Application No" = field("Application No");
                 }
                 action("Send For Approval")
                 {

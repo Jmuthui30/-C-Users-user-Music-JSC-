@@ -1173,6 +1173,92 @@ codeunit 52116 "Portal Integration"
             Error('Failed to upload files to SharePoint: %1 %2', HttpResponseMessage.HttpStatusCode(), ResponseText);
     end;
 
+procedure UploadFilesToSharePointII(DocNo: Code[30]; Type: Code[100])
+    var
+        HttpClient: HttpClient;
+        HttpRequestMessage: HttpRequestMessage;
+        HttpResponseMessage: HttpResponseMessage;
+        RequestHeaders: HttpHeaders;
+        ContentHeaders: HttpHeaders;
+        JsonResponse: JsonObject;
+        AuthToken: SecretText;
+        SharePointFileUrl: Text;
+        ResponseText: Text;
+        OutStream: OutStream;
+        FileContent: InStream;
+        TempBlob: Codeunit "Temp Blob";
+        FileName: Text;
+        MimeType: Text;
+        EncodedPath: Text;
+        HeaderName: Text;
+        HeaderValue: Text;
+        Headers: HttpHeaders;
+        ContentHeader: HttpHeaders;
+        RequestContent: HttpContent;
+        DownloadUrl: Text;
+        PortalUploads: Record "SharePoint Intergrations";
+
+    begin
+        // Get OAuth token
+        AuthToken := GetOAuthToken();
+
+        if AuthToken.IsEmpty() then
+            Error('Failed to obtain access token.');
+
+        if not UploadIntoStream('Select a File to Import', '', '', FileName, FileContent) then
+            Error('No file selected.');
+
+        // Copy to TempBlob and get a fresh stream
+        TempBlob.CreateOutStream(OutStream);
+        CopyStream(OutStream, FileContent);
+        TempBlob.CreateInStream(FileContent); // Get fresh InStream for upload
+
+        // Set MIME type based on file extension
+        MimeType := GetMimeType(FileName);
+
+        // Encode path and build URL
+        EncodedPath := EncodeUrl(Type + '/' + DocNo + '/' + FileName);
+        SharePointFileUrl :=
+          'https://graph.microsoft.com/v1.0/sites/jscgoke.sharepoint.com,7a664df7-dd2a-4923-bce4-84150f6ffee0' +
+          '/drives/b!901meirdI0m85IQVD2_-4L6kylRennlChB-b4Io3UUz6HTryvLeBToA5e2mq2Zea/root:/' + EncodedPath + ':/content';
+
+
+        // Initialize the HTTP request
+        HttpRequestMessage.SetRequestUri(SharePointFileUrl);
+        HttpRequestMessage.Method := 'PUT';
+        HttpRequestMessage.GetHeaders(Headers);
+        Headers.Add('Authorization', SecretStrSubstNo('Bearer %1', AuthToken));
+        RequestContent.GetHeaders(ContentHeader);
+        ContentHeader.Clear();
+        ContentHeader.Add('Content-Type', MimeType);
+        HttpRequestMessage.Content.WriteFrom(FileContent);
+        // Send the HTTP request
+        if HttpClient.Send(HttpRequestMessage, HttpResponseMessage) then begin
+            if HttpResponseMessage.IsSuccessStatusCode() then begin
+                HttpResponseMessage.Content.ReadAs(ResponseText);
+                JsonResponse.ReadFrom(ResponseText);
+                ExtractCleanDownloadUrl(JsonResponse, DownloadUrl);
+                PortalUploads.Init();
+                PortalUploads."Application No" := DocNo;
+                PortalUploads.Description := FileName;
+                PortalUploads.LocalUrl := DownloadUrl;
+                PortalUploads.SP_URL_Returned := DownloadUrl;
+                PortalUploads.Uploaded := true;
+                PortalUploads.Fetch_To_Sharepoint := true;
+                PortalUploads.Polled := true;
+                PortalUploads.Base_URL := 'https://jscgoke.sharepoint.com/sites/jscportals/ERP%20Document' + '/' + 'PAYMENT VOUCHER' + '/';
+                PortalUploads.Insert(true);
+                Message('Uploaded Successfully');
+            end else begin
+                //Report errors!
+                HttpResponseMessage.Content.ReadAs(ResponseText);
+                Error('Failed to upload files to SharePoint: %1 %2', HttpResponseMessage.HttpStatusCode(), ResponseText);
+            end;
+        end else
+            Error('Failed to upload files to SharePoint: %1 %2', HttpResponseMessage.HttpStatusCode(), ResponseText);
+    end;
+
+
 
     local procedure EncodeUrl(Value: Text): Text
     var
