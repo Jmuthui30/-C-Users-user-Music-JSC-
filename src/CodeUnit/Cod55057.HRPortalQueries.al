@@ -214,7 +214,7 @@ codeunit 55057 HRPortalQueries
         employeeAppraisal.SetRange("Employee No", empNo);
         if employeeAppraisal.FindSet() then begin
             repeat
-                data += employeeAppraisal."Appraisal No" + '*' + employeeAppraisal."Appraisers Name" + '*' + Format(employeeAppraisal."Appraisal Status") + '::::';
+                data += employeeAppraisal."Appraisal No" + '*' + employeeAppraisal."Appraisers Name" + '*' + Format(employeeAppraisal."Appraisal Status") + '*' + Format(employeeAppraisal."Appraiser No") + '*' + Format(employeeAppraisal."Appraisal Period") + '*' + Format(employeeAppraisal."Appraisal Type") + '::::';
             until employeeAppraisal.Next = 0;
 
         end;
