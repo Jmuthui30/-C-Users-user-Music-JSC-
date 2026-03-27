@@ -4,7 +4,7 @@ page 51742 "HR & Admin Manager Role Center"
     // CurrPage."Help And Setup List".ShowFeatured;
     Caption = 'HR & Payroll Manager Role Center';
     PageType = RoleCenter;
-    ApplicationArea=All;
+    ApplicationArea = All;
 
     layout
     {
@@ -1626,6 +1626,13 @@ page 51742 "HR & Admin Manager Role Center"
                     ApplicationArea = All;
                     Caption = 'Training Nomination';
                     RunObject = Page "Training Nomination List";
+                }
+                action("Training Application")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Training Application';
+                    Image = PersonInCharge;
+                    RunObject = Page "SS Training List - Open";
                 }
                 action("Training Pending Approval")
                 {

@@ -56,7 +56,7 @@ table 50464 "Imprest Memo Header"
                 CompanyJobs: Record "Company Jobs";
                 JobList: Page "Company Job List";
             begin
-                CompanyJobs.SetFilter("Occupied Position", '>0');
+                // CompanyJobs.SetFilter("Occupied Position", '>0');
                 JobList.SetTableView(CompanyJobs);
                 JobList.LookupMode(true);
                 if JobList.RunModal() = Action::LookupOK then begin

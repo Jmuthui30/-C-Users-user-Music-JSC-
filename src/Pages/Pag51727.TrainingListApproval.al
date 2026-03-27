@@ -11,7 +11,7 @@ page 51727 "Training List - Approval"
     ApplicationArea = All;
     UsageCategory = Lists;
     SourceTable = "Staff Training Header";
-    SourceTableView = WHERE(Status=CONST("Pending Approval"));
+    SourceTableView = WHERE(Status = CONST("Pending Approval"));
 
     layout
     {
