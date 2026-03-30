@@ -84,7 +84,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                 Editable = false;
             }
         }
-        addlast(General)
+        addafter("Salespers./Purch. Code")
         {
              field(Notify; Notify)
             {
