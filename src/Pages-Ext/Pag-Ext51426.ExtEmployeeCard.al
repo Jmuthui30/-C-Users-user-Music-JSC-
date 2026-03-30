@@ -86,7 +86,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
         }
         addafter("Salespers./Purch. Code")
         {
-             field(Notify; Notify)
+            field(Notify; Notify)
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Notify field.';
@@ -96,7 +96,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
 
         addafter("Privacy Blocked")
         {
-           
+
             field("Manager/Supervisor"; Rec."Manager/Supervisor")
             {
                 ApplicationArea = All;
