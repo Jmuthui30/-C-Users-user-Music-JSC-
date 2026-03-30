@@ -799,9 +799,17 @@ codeunit 52001 "HR Management"
                     SenderName := CompanyInfo.Name;
                     Clear(Receipient);
                     Receipient.Add(Employee."Company E-Mail");
+                    // Build CC list
+                    Employee.Reset();
+                    Employee.SetRange(Notify, true);
+                    if Employee.FindSet() then
+                        repeat
+                            if Employee."Company E-Mail" <> '' then
+                                RecipientCC.Add(Employee."Company E-Mail");
+                        until Employee.Next() = 0;
                     Subject := ('Leave Application - ' + SpaceLbl + LeaveApp."Application No");
                     TimeNow := Format(Time);
-                    FormattedApplicantBody := StrSubstNo(ApplicantMsg, Employee."First Name", LeaveApp."Application No", GetLeaveName(LeaveApp."Leave Code"), LeaveApp."Start Date", LeaveApp."End Date", LeaveApp."Resumption Date", LeaveRelievers."Staff Name",
+                    FormattedApplicantBody := StrSubstNo(ApplicantMsg,LeaveApp."Employee Name", LeaveApp."Application No", GetLeaveName(LeaveApp."Leave Code"), LeaveApp."Start Date", LeaveApp."End Date", LeaveApp."Resumption Date", LeaveRelievers."Staff Name",
                                                 Relievers, CompanyInfo.Name);
                     EmailMessage.Create(Receipient, Subject, FormattedApplicantBody, true, RecipientCC, RecipientCC);
                     Email.Send(EmailMessage);
