@@ -461,6 +461,7 @@ page 50059 "Imprest Memo Header"
                     begin
                         CommitmentMgt.InsertImprestBudgetAnalysis(Rec);
                         Commit();
+
                         CommitmentMgt.ImprestMemoBudgetCheck(Rec);
                         Message('Completed');
                     end;

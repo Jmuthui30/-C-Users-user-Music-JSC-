@@ -49,38 +49,45 @@ table 50464 "Imprest Memo Header"
         //         end;
         //     end;
         // }
-        field(5; "To"; Code[10])
+        field(5; "To"; Code[1000])
         {
-            trigger OnLookup()
-            var
-                CompanyJobs: Record "Company Jobs";
-                JobList: Page "Company Job List";
-            begin
-                // CompanyJobs.SetFilter("Occupied Position", '>0');
-                JobList.SetTableView(CompanyJobs);
-                JobList.LookupMode(true);
-                if JobList.RunModal() = Action::LookupOK then begin
-                    JobList.GetRecord(CompanyJobs);
-                    Rec."To" := CompanyJobs."Job ID";
-                    Rec.Validate("To");  // triggers OnValidate to populate Recipient fields
-                end;
-            end;
+            // trigger OnLookup()
+            // var
+            //     CompanyJobs: Record "Company Jobs";
+            //     JobList: Page "Company Job List";
+            // begin
+            //     // CompanyJobs.SetFilter("Occupied Position", '>0');
+            //     JobList.SetTableView(CompanyJobs);
+            //     JobList.LookupMode(true);
+            //     if JobList.RunModal() = Action::LookupOK then begin
+            //         JobList.GetRecord(CompanyJobs);
+            //         Rec."To" := CompanyJobs."Job ID";
+            //         Rec.Validate("To");  // triggers OnValidate to populate Recipient fields
+            //     end;
+            // end;
+            TableRelation = Employee;
 
             trigger OnValidate()
+            var
+                Empl: Record Employee;
             begin
-                if Rec."To" <> '' then begin
-                    Staff.Reset();
-                    Staff.SetRange("Job Id", Rec."To");
-                    Staff.SetRange(Status, Staff.Status::Active);
-                    if Staff.FindLast() then begin
-                        // Rec."To Name" := Staff.Name;
-                        Rec."Recipient Name" := Staff."Job Title";
-                        Rec."Recipient Email" := Staff."Company E-Mail";
-                        if Rec."Recipient Email" = '' then Error(Text000);
-                    end
-                    else
-                        Error('There is no staff occupying this job position currently. Please select a different recipient.');
-                end;
+                if Empl.Get("To") then
+                    Rec."Recipient Name" := Empl.FullName();
+                Rec."Recipient Email" := Empl."E-Mail";
+
+                // if Rec."To" <> '' then begin
+                //     Staff.Reset();
+                //     Staff.SetRange("Job Id", Rec."To");
+                //     Staff.SetRange(Status, Staff.Status::Active);
+                //     if Staff.FindLast() then begin
+                //         // Rec."To Name" := Staff.Name;
+                //         Rec."Recipient Name" := Staff."Job Title";
+                //         Rec."Recipient Email" := Staff."Company E-Mail";
+                //         if Rec."Recipient Email" = '' then Error(Text000);
+                //     end
+                //     else
+                //         Error('There is no staff occupying this job position currently. Please select a different recipient.');
+                // end;
             end;
         }
         field(6; Subject; Text[50])
@@ -296,11 +303,13 @@ table 50464 "Imprest Memo Header"
 
             trigger OnValidate()
             begin
+
                 if "Budget Line" <> '' then begin
                     Rec."Amount on Budget" := CommitmentMgt.GetAvailableBudget(Rec."Budget Line", Rec.Date, Rec."Global Dimension 1 Code", Rec."Global Dimension 2 Code");
                     Rec.CalcFields("Total Amount");
                     if Rec."Amount on Budget" > "Total Amount" then Rec."Budget Available" := true;
                 end;
+
             end;
         }
         field(64; "Amount on Budget"; Decimal)
