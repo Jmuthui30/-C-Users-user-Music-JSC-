@@ -56,6 +56,10 @@ page 51933 "HR Employee Card"
                     Importance = Promoted;
                     ToolTip = 'Specifies the employee''s job title.';
                 }
+                field(Notify;Notify)
+                {
+                    ApplicationArea = All;
+                }
                 field(Initials; Rec.Initials)
                 {
                     ApplicationArea = Basic, Suite;
