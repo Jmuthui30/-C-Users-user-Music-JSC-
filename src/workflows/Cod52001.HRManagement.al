@@ -732,6 +732,7 @@ codeunit 52001 "HR Management"
         SpaceLbl: Label '  ';
         Receipient: List of [Text];
         RecipientCC: List of [Text];
+        RecipientBCC:List of [Text];
         FormattedApplicantBody: Text;
         FormattedHODBody: Text;
         FormattedRelieverBody: Text;
@@ -811,7 +812,7 @@ codeunit 52001 "HR Management"
                     TimeNow := Format(Time);
                     FormattedApplicantBody := StrSubstNo(ApplicantMsg,LeaveApp."Employee Name", LeaveApp."Application No", GetLeaveName(LeaveApp."Leave Code"), LeaveApp."Start Date", LeaveApp."End Date", LeaveApp."Resumption Date", LeaveRelievers."Staff Name",
                                                 Relievers, CompanyInfo.Name);
-                    EmailMessage.Create(Receipient, Subject, FormattedApplicantBody, true, RecipientCC, RecipientCC);
+                    EmailMessage.Create(Receipient, Subject, FormattedApplicantBody, true, RecipientCC,RecipientBCC);
                     Email.Send(EmailMessage);
                 end;
         end;
