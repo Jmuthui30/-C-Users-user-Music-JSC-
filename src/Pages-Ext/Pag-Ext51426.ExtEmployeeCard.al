@@ -84,9 +84,19 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                 Editable = false;
             }
         }
+        addafter("Salespers./Purch. Code")
+        {
+            field(Notify; Notify)
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Notify field.';
+
+            }
+        }
 
         addafter("Privacy Blocked")
         {
+
             field("Manager/Supervisor"; Rec."Manager/Supervisor")
             {
                 ApplicationArea = All;
