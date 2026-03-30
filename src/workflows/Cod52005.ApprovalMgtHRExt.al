@@ -218,7 +218,7 @@ codeunit 52005 "Approval Mgt HR Ext"
 
         end;
     end;
-
+  
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnRejectApprovalRequest', '', false, false)]
     local procedure PerformActionsOnRejectApprovalRequest(var ApprovalEntry: Record "Approval Entry")
@@ -260,6 +260,83 @@ codeunit 52005 "Approval Mgt HR Ext"
         end;
     end;
 
+
+   [EventSubscriber(ObjectType::Table, Database::"Approval Entry", 'OnAfterModifyEvent', '', false, false)]
+    local procedure OnAfterModifyApprovalEntry(var Rec: Record "Approval Entry"; var xRec: Record "Approval Entry"; RunTrigger: Boolean)
+    var
+        LeaveApplication: Record "Leave Application";
+        OpenEntries: Record "Approval Entry";
+    begin
+        if Rec.IsTemporary then
+            exit;
+
+        // Only care about Leave Application entries
+        if Rec."Table ID" <> Database::"Leave Application" then
+            exit;
+
+        // Only fire when this entry just became Approved
+        if Rec.Status <> Rec.Status::Approved then
+            exit;
+
+        if xRec.Status = xRec.Status::Approved then
+            exit; // Already was approved, not a new transition
+
+        // Check no other open or created entries remain for this document
+        OpenEntries.SetRange("Table ID", Database::"Leave Application");
+        OpenEntries.SetRange("Document No.", Rec."Document No.");
+        OpenEntries.SetFilter(Status, '%1|%2', OpenEntries.Status::Open, OpenEntries.Status::Created);
+        if not OpenEntries.IsEmpty() then
+            exit;
+
+        // Fetch the Leave Application and confirm it is Released
+        if not LeaveApplication.Get(Rec."Document No.") then
+            exit;
+
+        if LeaveApplication.Status <> LeaveApplication.Status::Released then
+            exit;
+
+        SendLeaveNotification(LeaveApplication);
+    end;
+
+    local procedure SendLeaveNotification(LeaveApplication: Record "Leave Application")
+    var
+        Employee: Record Employee;
+        EmailMessage: Codeunit "Email Message";
+        Email: Codeunit Email;
+        Subject: Text;
+        Body: Text;
+    begin
+        Subject := StrSubstNo('Leave Approved: %1 - %2',
+            LeaveApplication."Application No",
+            LeaveApplication."Employee Name");
+
+        Body := StrSubstNo(
+            '<p>Dear Team,</p><p>Leave Application <b>%1</b> has been fully approved.</p>' +
+            '<p><b>Employee:</b> %2<br/>' +
+            '<b>Leave Type:</b> %3<br/>' +
+            '<b>From:</b> %4<br/>' +
+            '<b>To:</b> %5<br/>' +
+            '<b>Days Applied:</b> %6</p>' +
+            '<p>Regards,<br/>HR System</p>',
+            LeaveApplication."Application No",
+            LeaveApplication."Employee Name",
+            LeaveApplication."Leave Code",
+            LeaveApplication."Start Date",
+            LeaveApplication."End Date",
+            LeaveApplication."Days Applied");
+
+        Employee.Reset();
+        Employee.SetRange(Notify, true);
+        if Employee.FindSet() then
+            repeat
+                if Employee."Company E-Mail" <> '' then begin
+                    Clear(EmailMessage);
+                    Clear(Email);
+                    EmailMessage.Create(Employee."Company E-Mail", Subject, Body, true);
+                    Email.Send(EmailMessage, Enum::"Email Scenario"::Default);
+                end;
+            until Employee.Next() = 0;
+    end;
 
 
     procedure CheckLeaveRequestWorkflowEnabled(var LeaveRequest: Record "Leave Application"): Boolean

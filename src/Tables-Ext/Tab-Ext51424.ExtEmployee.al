@@ -1296,7 +1296,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
             FieldClass = FlowField;
             Caption = 'Total Accumulated Taxable Allowance';
         }
-         field(52378; "Gross Excludable Allowances"; Decimal)
+        field(52378; "Gross Excludable Allowances"; Decimal)
         {
             CalcFormula = sum("Assignment Matrix".Amount where(Type = const(Earning),
                                                                   "Employee No" = field("No."),
@@ -1340,7 +1340,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
             FieldClass = FlowField;
             Caption = 'Salary Arrears';
         }
-         field(52382; "Total Non-Recurring Allowances"; Decimal)
+        field(52382; "Total Non-Recurring Allowances"; Decimal)
         {
             CalcFormula = sum("Assignment Matrix".Amount where(Type = const(Earning),
                                                                   "Employee No" = field("No."),
@@ -1354,7 +1354,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
             FieldClass = FlowField;
             Caption = 'Total Non-Recurring Allowances';
         }
-         field(52383; "Total Deductions"; Decimal)
+        field(52383; "Total Deductions"; Decimal)
         {
             CalcFormula = sum("Assignment Matrix".Amount where(Type = filter(Deduction | Loan),
                                                                   "Employee No" = field("No."),
@@ -1385,14 +1385,14 @@ tableextension 51424 "ExtEmployee" extends "Employee"
             DataClassification = CustomerContent;
             TableRelation = "Employee Pay Modes";
             Caption = 'Pay Mode';
-        }  
+        }
         field(52388; "Basic + Regular Allowances"; Decimal)
         {
             CalcFormula = Sum("Assignment Matrix".Amount WHERE(Type = CONST(Earning), "Employee No" = FIELD("No."), "Payroll Period" = FIELD("Pay Period Filter"), "Basic+Regular Allowances" = CONST(true), "Normal Earnings" = CONST(true)));
             Editable = false;
             FieldClass = FlowField;
         }
-         field(52050; "Taxable Income"; Decimal)
+        field(52050; "Taxable Income"; Decimal)
         {
             CalcFormula = sum("Assignment Matrix".Amount where("Employee No" = field("No."),
                                                                   "Payroll Period" = field("Pay Period Filter"),
@@ -1410,7 +1410,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
             FieldClass = FlowField;
             Caption = 'Total Accumulated PAYE';
         }
-         field(52040; "Benefits-Non Cash"; Decimal)
+        field(52040; "Benefits-Non Cash"; Decimal)
         {
             CalcFormula = sum("Assignment Matrix".Amount where("Employee No" = field("No."),
                                                                   "Payroll Period" = field("Pay Period Filter"),
@@ -1429,7 +1429,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
             FieldClass = FlowField;
             Caption = 'Total Savings';
         }
-         field(52043; "Retirement Contribution"; Decimal)
+        field(52043; "Retirement Contribution"; Decimal)
         {
             CalcFormula = sum("Assignment Matrix".Amount where("Employee No" = field("No."),
                                                                   "Payroll Period" = field("Pay Period Filter"),
@@ -1438,7 +1438,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
             FieldClass = FlowField;
             Caption = 'Retirement Contribution';
         }
-         field(52034; "Tax Deductible Amount"; Decimal)
+        field(52034; "Tax Deductible Amount"; Decimal)
         {
             CalcFormula = sum("Assignment Matrix".Amount where("Tax Deductible" = const(true),
                                                                   "Employee No" = field("No."),
@@ -1447,7 +1447,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
             FieldClass = FlowField;
             Caption = 'Tax Deductible Amount';
         }
-         field(52037; "PIN Number"; Code[20])
+        field(52037; "PIN Number"; Code[20])
         {
             DataClassification = CustomerContent;
             // Caption = 'KRA PIN Number';
@@ -1462,7 +1462,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
             FieldClass = FlowField;
             Caption = 'Net Pay';
         }
-         field(52146; "Allowances PAYE"; Decimal)
+        field(52146; "Allowances PAYE"; Decimal)
         {
             CalcFormula = sum("Allowance Register Line"."PAYE Amount" where("Employee No." = field("No."),
                                                                             "Payroll Period" = field("Pay Period Filter"),
@@ -1481,7 +1481,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
             FieldClass = FlowField;
             Caption = 'Home Savings';
         }
-          field(52044; "Owner Occupier"; Decimal)
+        field(52044; "Owner Occupier"; Decimal)
         {
             CalcFormula = sum("Assignment Matrix".Amount where("Employee No" = field("No."),
                                                                   "Payroll Period" = field("Pay Period Filter"),
@@ -1490,7 +1490,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
             FieldClass = FlowField;
             Caption = 'Owner Occupier';
         }
-         field(52134; "Cumm. Secondary  PAYE"; Decimal)
+        field(52134; "Cumm. Secondary  PAYE"; Decimal)
         {
             CalcFormula = sum("Assignment Matrix".Amount where("Employee No" = field("No."),
                                                                   "Payroll Period" = field("Pay Period Filter"),
@@ -1499,7 +1499,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
             FieldClass = FlowField;
             Caption = 'Total Accumulated Sec. PAYE';
         }
-         field(52087; "Relief Amount"; Decimal)
+        field(52087; "Relief Amount"; Decimal)
         {
             CalcFormula = - sum("Assignment Matrix".Amount where("Employee No" = field("No."),
                                                                    "Payroll Period" = field("Pay Period Filter"),
@@ -1510,7 +1510,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
             FieldClass = FlowField;
             Caption = 'Relief Amount';
         }
-         field(52113; "Employment Status"; Enum "Employment Status")
+        field(52113; "Employment Status"; Enum "Employment Status")
         {
             DataClassification = CustomerContent;
             Caption = 'Employment Status';
@@ -1520,12 +1520,12 @@ tableextension 51424 "ExtEmployee" extends "Employee"
                 /* HumanResSetup.Get();
                  HumanResSetup.TestField("Maximum Probation Period");
                   if "Employment Status"="Employment Status"::"Extended Probation" then
-                  "End Of Probation Date":=CalcDate(HumanResSetup."Maximum Probation Period","Date Of Join");
+                //   "End Of Probation Date":=CalcDate(HumanResSetup."Maximum Probation Period","Date Of Join");
                  */
 
             end;
         }
-         field(52014; "Job Position"; Code[10])
+        field(52014; "Job Position"; Code[10])
         {
             DataClassification = CustomerContent;
             TableRelation = "Company Job";
@@ -1537,13 +1537,18 @@ tableextension 51424 "ExtEmployee" extends "Employee"
                     "Job Position Title" := Jobs."Job Description";
             end;
         }
-        field(52236;"Home Ownership Status"; Option)
+        field(52236; "Home Ownership Status"; Option)
         {
-            OptionMembers = "None", "Owner Occupier", "Home Savings";
+            OptionMembers = "None","Owner Occupier","Home Savings";
         }
-         field(52237; "Employee Group"; Code[20])
+        field(52237; "Employee Group"; Code[20])
         {
             TableRelation = "Employee Groups";
+        }
+        field(52238; Notify; Boolean)
+        {
+            Caption = 'Notify Leave Approval';
+            DataClassification = CustomerContent;
         }
     }
 
