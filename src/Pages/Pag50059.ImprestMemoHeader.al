@@ -169,6 +169,7 @@ page 50059 "Imprest Memo Header"
                 field("Budget Line"; Rec."Budget Line")
                 {
                     Importance = Additional;
+                    Visible = false;
                 }
                 field("Amount on Budget"; Rec."Amount on Budget")
                 {

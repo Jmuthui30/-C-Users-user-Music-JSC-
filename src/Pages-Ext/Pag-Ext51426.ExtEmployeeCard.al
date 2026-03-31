@@ -67,6 +67,12 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Other Name field.';
             }
+            field(Notify; Notify)
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Notify field.';
+
+            }
         }
         addafter("Bank Branch No.")
         {
@@ -86,12 +92,12 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
         }
         addafter("Salespers./Purch. Code")
         {
-            field(Notify; Notify)
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the value of the Notify field.';
+            // field(Notify; Notify)
+            // {
+            //     ApplicationArea = All;
+            //     ToolTip = 'Specifies the value of the Notify field.';
 
-            }
+            // }
         }
 
         addafter("Privacy Blocked")
