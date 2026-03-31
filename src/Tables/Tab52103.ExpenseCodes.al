@@ -15,23 +15,23 @@ table 52103 "Expense Codes"
         field(3; "Account Type"; Option)
         {
             OptionCaption = 'G/L Account,Vendor,Customer,Item,Fixed Asset';
-            OptionMembers = "G/L Account", Vendor, Customer, Item, "Fixed Asset";
+            OptionMembers = "G/L Account",Vendor,Customer,Item,"Fixed Asset";
         }
         field(4; "Account No"; Code[10])
         {
-            TableRelation = IF("Account Type"=CONST("G/L Account"))"G/L Account" WHERE("Account Type"=CONST(Posting), Blocked=CONST(false))
-            ELSE IF("Account Type"=CONST(Vendor))Vendor
-            ELSE IF("Account Type"=CONST(Customer))Customer
-            ELSE IF("Account Type"=CONST(Item))Item
-            ELSE IF("Account Type"=CONST("Fixed Asset"))"Fixed Asset";
+            TableRelation = IF ("Account Type" = CONST("G/L Account")) "G/L Account" WHERE("Account Type" = CONST(Posting), Blocked = CONST(false))
+            ELSE IF ("Account Type" = CONST(Vendor)) Vendor
+            ELSE IF ("Account Type" = CONST(Customer)) Customer
+            ELSE IF ("Account Type" = CONST(Item)) Item
+            ELSE IF ("Account Type" = CONST("Fixed Asset")) "Fixed Asset";
 
             trigger OnValidate()
             begin
-                if "Account Type" = "Account Type"::"G/L Account" then if GLAcc.Get("Account No")then "Account Name":=GLAcc.Name;
-                if "Account Type" = "Account Type"::Vendor then if Ven.Get("Account No")then "Account Name":=Ven.Name;
-                if "Account Type" = "Account Type"::Customer then if Cust.Get("Account No")then "Account Name":=Cust.Name;
-                if "Account Type" = "Account Type"::Item then if Item.Get("Account No")then "Account Name":=Item.Description;
-                if "Account Type" = "Account Type"::"Fixed Asset" then if FA.Get("Account No")then "Account Name":=FA.Description;
+                if "Account Type" = "Account Type"::"G/L Account" then if GLAcc.Get("Account No") then "Account Name" := GLAcc.Name;
+                if "Account Type" = "Account Type"::Vendor then if Ven.Get("Account No") then "Account Name" := Ven.Name;
+                if "Account Type" = "Account Type"::Customer then if Cust.Get("Account No") then "Account Name" := Cust.Name;
+                if "Account Type" = "Account Type"::Item then if Item.Get("Account No") then "Account Name" := Item.Description;
+                if "Account Type" = "Account Type"::"Fixed Asset" then if FA.Get("Account No") then "Account Name" := FA.Description;
             end;
         }
         field(5; "Account Name"; Text[50])
@@ -40,13 +40,61 @@ table 52103 "Expense Codes"
         field(6; "Treatment On Imprest"; Option)
         {
             OptionCaption = 'Order from Service Provider,Pay Cash to Traveller,Reject,Process to Payroll';
-            OptionMembers = "Order from Service Provider", "Pay Cash to Traveller", Reject, "Process to Payroll";
+            OptionMembers = "Order from Service Provider","Pay Cash to Traveller",Reject,"Process to Payroll";
         }
         field(7; "Payroll Code"; Code[20])
         {
             DataClassification = ToBeClassified;
-            TableRelation = if("Treatment On Imprest"=const("Process to Payroll"))"Client Earnings";
+            TableRelation = if ("Treatment On Imprest" = const("Process to Payroll")) "Client Earnings";
         }
+        //JSG 01
+        field(8; "JSG 1"; Decimal)
+        {
+        }
+        field(9; "JSG 2"; Decimal)
+        {
+        }
+        field(10; "JSG 3"; Decimal)
+        {
+        }
+        field(11; "JSG 4"; Decimal)
+        {
+        }
+        field(12; "JSG 5"; Decimal)
+        {
+        }
+        field(13; "JSG 6"; Decimal)
+        {
+        }
+        field(14; "JSG 7"; Decimal)
+        {
+        }
+        field(15; "JSG 8"; Decimal)
+        {
+        }
+        field(16; "JSG 9"; Decimal)
+        {
+        }
+        field(17; "JSG 10"; Decimal)
+        {
+        }
+        field(18; "JSG 11"; Decimal)
+        {
+        }
+        field(19; "JSG 12"; Decimal)
+        {
+        }
+        field(20; "JSG 13"; Decimal)
+        {
+        }
+        field(21; "JSG 14"; Decimal)
+        {
+        }
+        field(22; "JSG 15"; Decimal)
+        {
+        }
+
+
     }
     keys
     {
@@ -57,9 +105,10 @@ table 52103 "Expense Codes"
     fieldgroups
     {
     }
-    var GLAcc: Record "G/L Account";
-    Ven: Record Vendor;
-    Cust: Record Customer;
-    Item: Record Item;
-    FA: Record "Fixed Asset";
+    var
+        GLAcc: Record "G/L Account";
+        Ven: Record Vendor;
+        Cust: Record Customer;
+        Item: Record Item;
+        FA: Record "Fixed Asset";
 }

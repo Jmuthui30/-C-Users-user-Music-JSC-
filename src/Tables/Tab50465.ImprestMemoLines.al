@@ -15,13 +15,13 @@ table 50465 "Imprest Memo Lines"
         }
         field(3; "Type"; Option)
         {
-            OptionMembers = Staff, Expert;
+            OptionMembers = Staff,Expert;
             Caption = 'Type';
         }
         field(4; "Account No."; Code[20])
         {
             Caption = 'Account No.';
-            TableRelation = Employee where(Status=const(Active));
+            TableRelation = Employee where(Status = const(Active));
 
             trigger OnValidate()
             begin
@@ -36,13 +36,13 @@ table 50465 "Imprest Memo Lines"
         {
             CaptionClass = '1,1,1';
             Caption = 'Global Dimension 1 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
         }
         field(7; "Global Dimension 2 Code"; Code[20])
         {
             CaptionClass = '1,1,2';
             Caption = 'Global Dimension 2 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
         field(8; Title; Text[50])
         {
@@ -54,7 +54,7 @@ table 50465 "Imprest Memo Lines"
 
             trigger OnValidate()
             begin
-                if(Rec.Cordinator <> xRec.Cordinator) and (Rec.Cordinator = true)then begin
+                if (Rec.Cordinator <> xRec.Cordinator) and (Rec.Cordinator = true) then begin
                     if Rec.Secretary then Error('One cannot be a Secretary and Cordinator at the same event!');
                     GetHeader();
                     if not Header."Cordination Allowance" then Error('Cordination Allowance should be enabled on the Memo Options above for you to nominate a cordinator.');
@@ -73,7 +73,7 @@ table 50465 "Imprest Memo Lines"
 
             trigger OnValidate()
             begin
-                if(Rec.Facilitator <> xRec.Facilitator) and (Rec.Facilitator = true)then begin
+                if (Rec.Facilitator <> xRec.Facilitator) and (Rec.Facilitator = true) then begin
                     GetHeader();
                     if not Header."Facilitator Allowance" then Error('Facilitator Allowance should be enabled on the Memo Options above for you to nominate a facilitator.');
                     ImprestSetup.Get();
@@ -91,7 +91,7 @@ table 50465 "Imprest Memo Lines"
 
             trigger OnValidate()
             begin
-                if(Rec.Secretary <> xRec.Secretary) and (Rec.Secretary = true)then begin
+                if (Rec.Secretary <> xRec.Secretary) and (Rec.Secretary = true) then begin
                     GetHeader();
                     if not Header."Secretariat Allowance" then Error('Secretariat Allowance should be enabled on the Memo Options above for you to nominate a Seceretary.');
                     if Rec.Cordinator then Error('One cannot be a Secretary and Cordinator at the same event!');
@@ -110,7 +110,7 @@ table 50465 "Imprest Memo Lines"
 
             trigger OnValidate()
             begin
-                if(Rec.Rapporteur <> xRec.Rapporteur) and (Rec.Rapporteur = true)then begin
+                if (Rec.Rapporteur <> xRec.Rapporteur) and (Rec.Rapporteur = true) then begin
                     GetHeader();
                     if not Header."Rapporteur Allowance" then Error('Rapporteur Allowance should be enabled on the Memo Options above for you to nominate a Rapporteur.');
                     ImprestSetup.Get();
@@ -128,7 +128,7 @@ table 50465 "Imprest Memo Lines"
 
             trigger OnValidate()
             begin
-                if(Rec.Driver <> xRec.Driver) and (Rec.Driver = true)then begin
+                if (Rec.Driver <> xRec.Driver) and (Rec.Driver = true) then begin
                     GetHeader();
                     if not Header."Driver Allowance" then Error('Driver Allowance should be enabled on the Memo Options above for you to nominate a Driver.');
                     ImprestSetup.Get();
@@ -178,10 +178,12 @@ table 50465 "Imprest Memo Lines"
 
             trigger OnValidate()
             begin
-                if(Rec."Pay DSA" <> xRec."Pay DSA") and (Rec."Pay DSA" = true)then begin
+                if (Rec."Pay DSA" <> xRec."Pay DSA") and (Rec."Pay DSA" = true) then begin
                     GetHeader();
                     if not Header.DSA then Error('DSA Allowance should be enabled on the Memo Options above.');
-                    if Rec.Type = Rec.Type::Expert then if Confirm('DSA is only payable to staff. Do you still want to pay DSA to an Expert?', false) = true then GetDefaultAllowances(Rec)
+                    if Rec.Type = Rec.Type::Expert then
+                        if Confirm('DSA is only payable to staff. Do you still want to pay DSA to an Expert?', false) = true then
+                            GetDefaultAllowances(Rec)
                         else
                             error('Aborted');
                 end;
@@ -383,9 +385,10 @@ table 50465 "Imprest Memo Lines"
                 ExchRate.Reset();
                 ExchRate.SetRange("Currency Code", Rec.Currency);
                 ExchRate.SetRange("Starting Date", 0D, Header.Date);
-                if ExchRate.FindLast()then Rec."Exchange Rate":=ExchRate."Relational Exch. Rate Amount"
+                if ExchRate.FindLast() then
+                    Rec."Exchange Rate" := ExchRate."Relational Exch. Rate Amount"
                 else
-                    Rec."Exchange Rate":=1;
+                    Rec."Exchange Rate" := 1;
                 GetTotals();
             end;
         }
@@ -409,30 +412,76 @@ table 50465 "Imprest Memo Lines"
             Clustered = true;
         }
     }
-    var Emp: Record "Client Employee Master";
-    Leave: Record "Employee Leave Application";
-    // Imprest: Record "Imprest Header";
-    Header: Record "Imprest Memo Header";
-    DSARates: Record "AEA Listing";
-    ImprestSetup: Record "Advanced Finance Setup";
-    ExchRate: Record "Currency Exchange Rate";
-    BCEmp: Record Employee;
-    MemoLines: Record "Imprest Memo Lines";
-    CommitmentMgt: Codeunit "Commitment Management";
+    var
+        Emp: Record "Client Employee Master";
+        Leave: Record "Employee Leave Application";
+        // Imprest: Record "Imprest Header";
+        Header: Record "Imprest Memo Header";
+        DSARates: Record "AEA Listing";
+        ImprestSetup: Record "Advanced Finance Setup";
+        ExchRate: Record "Currency Exchange Rate";
+        BCEmp: Record Employee;
+        MemoLines: Record "Imprest Memo Lines";
+        CommitmentMgt: Codeunit "Commitment Management";
+        ExpenseCodes: Record "Expense Codes";
+        GradesScale: Record "DSA Rates";
+
     local procedure CheckEmployeeValidity(EmpNo: Code[20])
     begin
         Rec.TestField("Account No.");
         Emp.Get(Rec."Account No.");
         Emp.TestField(Scale);
-        Rec."Job Group":=Emp.Scale;
+        Rec."Job Group" := Emp.Scale;
+        // ExpenseCodes.Get(Rec."Expense Code");
         if Rec.Type = Rec.Type::Staff then begin
             BCEmp.Get(Rec."Account No.");
-            Rec.Name:=BCEmp."First Name" + ' ' + BCEmp."Last Name";
-            Rec.Title:=BCEmp."Job Title";
-            Rec.Email:=BCEmp."Company E-Mail";
-            Rec."Global Dimension 1 Code":=BCEmp."Global Dimension 1 Code";
-            Rec."Global Dimension 2 Code":=BCEmp."Global Dimension 2 Code";
+            Rec.Name := BCEmp."First Name" + ' ' + BCEmp."Last Name";
+            Rec.Title := BCEmp."Job Title";
+            Rec.Email := BCEmp."Company E-Mail";
+            Rec."Global Dimension 1 Code" := BCEmp."Global Dimension 1 Code";
+            Rec."Global Dimension 2 Code" := BCEmp."Global Dimension 2 Code";
         end;
+
+        if GradesScale.Get(Rec."Job Group") then begin
+            if Header.Get(Rec."No.") then begin
+
+                Message('Job Group is %1', Rec."Job Group");
+                if Header.DSA = true then
+                    Rec.DSA := GradesScale.DSA;
+                if Header."Air Ticket" = true then
+                    Rec."Air Ticket" := GradesScale."Air Ticket";
+                if Header.Conference = true then
+                    Rec.Conference := GradesScale.Conference;
+                if Header."Ground Transport" = true then
+                    Rec."Ground Transport" := GradesScale."Ground Transport";
+                if Header.Accomodation = true then
+                    Rec.Accomodation := GradesScale.Accomodation;
+                if Header."Cordination Allowance" = true then
+                    Rec."Cordination Allowance" := GradesScale."Cordination Allowance";
+                if Header."Facilitator Allowance" = true then
+                    Rec."Facilitator Allowance" := GradesScale."Facilitator Allowance";
+                if Header."Secretariat Allowance" = true then
+                    Rec."Secretariat Allowance" := GradesScale."Secretariat Allowance";
+                if Header."Out of Pocket Allowance" = true then
+                    Rec."Out of Pocket Allowance" := GradesScale."Out of Pocket Allowance";
+                if Header."Rapporteur Allowance" = true then
+                    Rec."Rapporteur Allowance" := GradesScale."Rapporteur Allowance";
+                if Header."Driver Allowance" = true then
+                    Rec."Driver Allowance" := GradesScale."Driver Allowance";
+                if Header."Retreat Allowance" = true then
+                    Rec."Retreat Allowance" := GradesScale."Retreat Allowance";
+                if Header."Expert Allowance" = true then
+                    Rec."Expert Allowance" := GradesScale."Expert Allowance";
+                if Header."Tuition Fee" = true then
+                    Rec."Tuition Fee" := GradesScale."Tuition Fee";
+                if Header."Mileage Allowance" = true then
+                    Rec."Mileage Allowance" := GradesScale."Mileage Allowance";
+                if Header."Quarter Per Diem" = true then
+                    Rec."Quarter Per Diem" := GradesScale."Quarter Per Diem";
+            end;
+        end;
+
+
         GetHeader();
         //Check Employee On Leave
         Leave.Reset();
@@ -440,7 +489,7 @@ table 50465 "Imprest Memo Lines"
         Leave.SetRange("Start Date", 0D, Header."Start Date");
         Leave.SetRange("Resumption Date", Header."Start Date", Header."End Date");
         Leave.SetRange(Status, Leave.Status::Released);
-        if Leave.FindFirst()then Error('An employee on leave cannot be picked for an event.');
+        if Leave.FindFirst() then Error('An employee on leave cannot be picked for an event.');
         //Check Employee with unsurrendered imprest
         // Imprest.Reset();
         // Imprest.SetRange("Employee No.", EmpNo);
@@ -450,6 +499,7 @@ table 50465 "Imprest Memo Lines"
         // If Imprest.FindFirst()then Error('An employee with an unsurrendered imprest cannot be picked for an event.');
         // GetDefaultAllowances(Rec);
     end;
+
     local procedure GetHeader()
     begin
         Rec.TestField("No.");
@@ -457,80 +507,89 @@ table 50465 "Imprest Memo Lines"
         Header.TestField("Date");
         Header.TestField("Start Date");
         Header.TestField("Activity Location");
-        Rec.International:=Header.International;
-        if Rec.Type = Rec.Type::Staff then Rec."Pay DSA":=Header.DSA;
-        Rec."Global Dimension 1 Code":=Header."Global Dimension 1 Code";
-        Rec."Global Dimension 2 Code":=Header."Global Dimension 2 Code";
-        Rec.Location:=Header."Activity Location";
-        Rec.Days:=Header."Total Days in the Field";
+        Rec.International := Header.International;
+        if Rec.Type = Rec.Type::Staff then Rec."Pay DSA" := Header.DSA;
+        Rec."Global Dimension 1 Code" := Header."Global Dimension 1 Code";
+        Rec."Global Dimension 2 Code" := Header."Global Dimension 2 Code";
+        Rec.Location := Header."Activity Location";
+        Rec.Days := Header."Total Days in the Field";
     end;
+
     local procedure GetDefaultAllowances(var Rec: Record "Imprest Memo Lines")
     begin
         GetHeader();
         ImprestSetup.Get();
         //DSA
         if Rec.Type = Rec.Type::Staff then begin
-            Rec."Pay DSA":=true;
-            if DSARates.Get(Rec."Job Group")then Rec.DSA:=DSARates.Total * Header."Total Days in the Field"
+            Rec."Pay DSA" := true;
+            if DSARates.Get(Rec."Job Group") then
+                Rec.DSA := DSARates.Total * Header."Total Days in the Field"
             else
                 Error('The Job Group rates has not been set up for' + Rec."Job Group");
         end
-        else
-        begin
-            if Rec."Pay DSA" = false then Rec.DSA:=0;
+        else begin
+            if Rec."Pay DSA" = false then Rec.DSA := 0;
         end;
-        if Rec.Cordinator then Rec."Cordination Allowance":=ImprestSetup."Cordination Allowance" * (Header."Total Days in the Field" + 2)
+        if Rec.Cordinator then
+            Rec."Cordination Allowance" := ImprestSetup."Cordination Allowance" * (Header."Total Days in the Field" + 2)
         else
-            Rec."Cordination Allowance":=0;
-        if Rec.Rapporteur then Rec."Rapporteur Allowance":=ImprestSetup."Rapporteur Allowance" * Header."Total Days in the Field"
+            Rec."Cordination Allowance" := 0;
+        if Rec.Rapporteur then
+            Rec."Rapporteur Allowance" := ImprestSetup."Rapporteur Allowance" * Header."Total Days in the Field"
         else
-            Rec."Rapporteur Allowance":=0;
-        if Rec.Secretary then Rec."Secretariat Allowance":=ImprestSetup."Secretariat Allowance" * Header."Total Days in the Field"
+            Rec."Rapporteur Allowance" := 0;
+        if Rec.Secretary then
+            Rec."Secretariat Allowance" := ImprestSetup."Secretariat Allowance" * Header."Total Days in the Field"
         else
-            Rec."Secretariat Allowance":=0;
+            Rec."Secretariat Allowance" := 0;
         if Rec."Facilitator Allowance" = 0 then begin
-            if Rec.Facilitator then Rec."Facilitator Allowance":=ImprestSetup."Facilitator Allowance" * Header."Total Days in the Field"
+            if Rec.Facilitator then
+                Rec."Facilitator Allowance" := ImprestSetup."Facilitator Allowance" * Header."Total Days in the Field"
             else
-                Rec."Facilitator Allowance":=0;
+                Rec."Facilitator Allowance" := 0;
         end;
-        if Rec.Driver then Rec."Driver Allowance":=ImprestSetup."Driver Allowance" * (Header."Total Days in the Field" + 2)
+        if Rec.Driver then
+            Rec."Driver Allowance" := ImprestSetup."Driver Allowance" * (Header."Total Days in the Field" + 2)
         else
-            Rec."Driver Allowance":=0;
+            Rec."Driver Allowance" := 0;
         if Header.Accomodation then begin
             //Out of Pocket
-            if Header."Out of Pocket Allowance" then Rec."Out of Pocket Allowance":=ImprestSetup."Out of Pocket Allowance" * Header."Total Days in the Field"
+            if Header."Out of Pocket Allowance" then
+                Rec."Out of Pocket Allowance" := ImprestSetup."Out of Pocket Allowance" * Header."Total Days in the Field"
             else
-                Rec."Out of Pocket Allowance":=0;
+                Rec."Out of Pocket Allowance" := 0;
             //Retreat Allowance
             MemoLines.Reset();
             MemoLines.SetRange("No.", Header."No.");
             if MemoLines.Count > ImprestSetup."Max. No. of Retreaters" then begin
                 //Message('To get retreat allowance, the Maximum Number of participants per event cannot be more than ' + Format(ImprestSetup."Max. No. of Retreaters") + ' ,therefore no particpant qualifies for Retreat Allowance.');
-                "Retreat Allowance":=0;
+                "Retreat Allowance" := 0;
             end
-            else
-            begin
-                if Header."Total Days in the Field" > ImprestSetup."Max. No. of Retreat Days" then "Retreat Allowance":=0
+            else begin
+                if Header."Total Days in the Field" > ImprestSetup."Max. No. of Retreat Days" then
+                    "Retreat Allowance" := 0
                 else
-                    "Retreat Allowance":=ImprestSetup."Retreat Allowance" * Header."Total Days in the Field";
+                    "Retreat Allowance" := ImprestSetup."Retreat Allowance" * Header."Total Days in the Field";
             end;
             //Experts are not paid Retreat andOut of Pocket Allowances
             if Rec.Type = Rec.Type::Expert then begin
-                Rec."Retreat Allowance":=0;
-                Rec."Out of Pocket Allowance":=0;
+                Rec."Retreat Allowance" := 0;
+                Rec."Out of Pocket Allowance" := 0;
             end;
         end;
         //Expert Allowance
-        if Rec.Expert then Rec."Expert Allowance":=ImprestSetup."Expert Allowance" * Header."Total Days in the Field"
+        if Rec.Expert then
+            Rec."Expert Allowance" := ImprestSetup."Expert Allowance" * Header."Total Days in the Field"
         else
-            Rec."Expert Allowance":=0;
+            Rec."Expert Allowance" := 0;
         GetTotals();
         CommitmentMgt.ImprestMemoBudgetCheck(Header);
     end;
+
     local procedure GetTotals()
     begin
-        Rec.Amount:=Rec.DSA + Rec."Air Ticket" + Rec.Conference + Rec."Ground Transport" + Rec.Accomodation + Rec."Cordination Allowance" + Rec."Facilitator Allowance" + Rec."Secretariat Allowance" + Rec."Out of Pocket Allowance" + Rec."Rapporteur Allowance" + Rec."Driver Allowance" + Rec."Retreat Allowance" + Rec."Expert Allowance" + Rec."Tuition Fee" + Rec."Mileage Allowance" + Rec."Quarter Per Diem" + Rec."Other Costs";
-        if Rec."Exchange Rate" = 0 then Rec."Exchange Rate":=1;
-        Rec."Amount LCY":=Rec.Amount * Rec."Exchange Rate";
+        Rec.Amount := Rec.DSA + Rec."Air Ticket" + Rec.Conference + Rec."Ground Transport" + Rec.Accomodation + Rec."Cordination Allowance" + Rec."Facilitator Allowance" + Rec."Secretariat Allowance" + Rec."Out of Pocket Allowance" + Rec."Rapporteur Allowance" + Rec."Driver Allowance" + Rec."Retreat Allowance" + Rec."Expert Allowance" + Rec."Tuition Fee" + Rec."Mileage Allowance" + Rec."Quarter Per Diem" + Rec."Other Costs";
+        if Rec."Exchange Rate" = 0 then Rec."Exchange Rate" := 1;
+        Rec."Amount LCY" := Rec.Amount * Rec."Exchange Rate";
     end;
 }
