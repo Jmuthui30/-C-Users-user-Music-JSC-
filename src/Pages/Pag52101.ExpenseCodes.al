@@ -36,10 +36,7 @@ page 52101 "Expense Codes"
                 {
                     ApplicationArea = All;
                 }
-                field("Payroll Code"; Rec."Payroll Code")
-                {
-                    ApplicationArea = All;
-                }
+
             }
         }
     }

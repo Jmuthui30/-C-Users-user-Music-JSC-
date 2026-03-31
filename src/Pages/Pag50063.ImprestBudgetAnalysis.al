@@ -18,6 +18,16 @@ page 50063 "Imprest Budget Analysis"
                 field("Budget Line"; Rec."Budget Line")
                 {
                 }
+                field("Budget Period Start"; "Budget Period Start")
+                {
+                }
+                field("Budget Period End"; "Budget Period End")
+                {
+                }
+                // "Budget Date Filter"
+                field("Budget Date Filter"; Rec."Budget Date Filter")
+                {
+                }
                 field(Description; Rec.Description)
                 {
                 }

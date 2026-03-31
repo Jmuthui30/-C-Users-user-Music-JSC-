@@ -89,7 +89,7 @@ page 50061 "Imprest Memo Lines"
                 }
                 field(DSA; Rec.DSA)
                 {
-                    Visible = VarDSA;
+                    // Visible = VarDSA;
                     trigger OnValidate()
                     begin
                         CurrPage.Update(false);
@@ -97,7 +97,7 @@ page 50061 "Imprest Memo Lines"
                 }
                 field("Air Ticket"; Rec."Air Ticket")
                 {
-                    Visible = VarAirTicket;
+                    // Visible = VarAirTicket;
                     trigger OnValidate()
                     begin
                         CurrPage.Update(false);
@@ -105,7 +105,7 @@ page 50061 "Imprest Memo Lines"
                 }
                 field(Conference; Rec.Conference)
                 {
-                    Visible = VarConference;
+                    // Visible = VarConference;
                     trigger OnValidate()
                     begin
                         CurrPage.Update(false);
@@ -113,7 +113,7 @@ page 50061 "Imprest Memo Lines"
                 }
                 field("Ground Transport"; Rec."Ground Transport")
                 {
-                    Visible = VarGroundTransport;
+                    // Visible = VarGroundTransport;
                     trigger OnValidate()
                     begin
                         CurrPage.Update(false);
@@ -121,7 +121,7 @@ page 50061 "Imprest Memo Lines"
                 }
                 field("Cordination Allowance"; Rec."Cordination Allowance")
                 {
-                    Visible = VarCordinationAllowance;
+                    // Visible = VarCordinationAllowance;
                     trigger OnValidate()
                     begin
                         CurrPage.Update(false);
@@ -129,7 +129,7 @@ page 50061 "Imprest Memo Lines"
                 }
                 field("Facilitator Allowance"; Rec."Facilitator Allowance")
                 {
-                    Visible = VarFacilitatorAllowance;
+                    // Visible = VarFacilitatorAllowance;
                     trigger OnValidate()
                     begin
                         CurrPage.Update(false);
@@ -137,7 +137,7 @@ page 50061 "Imprest Memo Lines"
                 }
                 field("Secretariat Allowance"; Rec."Secretariat Allowance")
                 {
-                    Visible = VarSecretariatAllowance;
+                    // Visible = VarSecretariatAllowance;
                     trigger OnValidate()
                     begin
                         CurrPage.Update(false);
@@ -145,7 +145,7 @@ page 50061 "Imprest Memo Lines"
                 }
                 field("Out of Pocket Allowance"; Rec."Out of Pocket Allowance")
                 {
-                    Visible = VarOutofPocketAllowance;
+                    // Visible = VarOutofPocketAllowance;
                     trigger OnValidate()
                     begin
                         CurrPage.Update(false);
@@ -153,7 +153,7 @@ page 50061 "Imprest Memo Lines"
                 }
                 field("Rapporteur Allowance"; Rec."Rapporteur Allowance")
                 {
-                    Visible = VarRapporteurAllowance;
+                    // Visible = VarRapporteurAllowance;
 
                     trigger OnValidate()
                     begin
@@ -162,7 +162,7 @@ page 50061 "Imprest Memo Lines"
                 }
                 field("Driver Allowance"; Rec."Driver Allowance")
                 {
-                    Visible = VarDriverAllowance;
+                    // Visible = VarDriverAllowance;
                     trigger OnValidate()
                     begin
                         CurrPage.Update(false);
@@ -170,7 +170,7 @@ page 50061 "Imprest Memo Lines"
                 }
                 field("Retreat Allowance"; Rec."Retreat Allowance")
                 {
-                    Visible = VarRetreatAllowance;
+                    // Visible = VarRetreatAllowance;
                     trigger OnValidate()
                     begin
                         CurrPage.Update(false);
@@ -178,7 +178,7 @@ page 50061 "Imprest Memo Lines"
                 }
                 field("Expert Allowance"; Rec."Expert Allowance")
                 {
-                    Visible = VarExpertAllowance;
+                    // Visible = VarExpertAllowance;
                     trigger OnValidate()
                     begin
                         CurrPage.Update(false);
@@ -186,7 +186,7 @@ page 50061 "Imprest Memo Lines"
                 }
                 field(Accomodation; Rec.Accomodation)
                 {
-                    Visible = VarAccomodation;
+                    // Visible = VarAccomodation;
 
                     trigger OnValidate()
                     begin
@@ -195,7 +195,7 @@ page 50061 "Imprest Memo Lines"
                 }
                 field("Tuition Fee"; Rec."Tuition Fee")
                 {
-                    Visible = VarTuitionFee;
+                    // Visible = VarTuitionFee;
                     trigger OnValidate()
                     begin
                         CurrPage.Update(false);
