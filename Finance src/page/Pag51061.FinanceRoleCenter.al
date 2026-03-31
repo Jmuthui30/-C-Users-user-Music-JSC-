@@ -2328,7 +2328,7 @@ page 51061 "Finance Role Center"
                     }
                     action("DSA Rates")
                     {
-                        Caption = 'DSA Rates';
+                        Caption = 'Grades Scale Rates';
                         RunObject = page "DSA Rates";
                         ToolTip = 'Executes the DSA Rates action';
                     }
