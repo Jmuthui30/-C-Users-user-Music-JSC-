@@ -42,13 +42,15 @@ codeunit 52004 "Workflow Responses HR"
         Leave.SetRange("Application No", LeaveReq."Application No");
         if Leave.FindFirst() then begin
             Leave.Validate(Status, Leave.Status::Released);
-            Leave.Modify(true);
+            Leave.Modify(true); 
+            Commit();
+            HRMgnt.NotifyLeaveReliever(Leave."Application No");
             // HRMgnt.LeaveApplication(Leave."Application No");
             // // if guiAllowed then begin
             // //     if Confirm('Do you want to notify the leave applicant and their reliever(s)', false) then
             // HRMgnt.NotifyLeaveReliever(Leave."Application No");
             //     end else
-                    HRMgnt.NotifyLeaveReliever(Leave."Application No");
+                   
         end;
     end;
 
