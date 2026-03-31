@@ -732,6 +732,7 @@ codeunit 52001 "HR Management"
         SpaceLbl: Label '  ';
         Receipient: List of [Text];
         RecipientCC: List of [Text];
+        RecipientBCC:List of [Text];
         FormattedApplicantBody: Text;
         FormattedHODBody: Text;
         FormattedRelieverBody: Text;
@@ -750,7 +751,7 @@ codeunit 52001 "HR Management"
             LeaveRelievers.SetRange("Leave Code", ApplicationNo);
             if LeaveRelievers.FindFirst() then
                 repeat
-                    Message('Reliever: %1', LeaveRelievers."Staff Name");
+                    // Message('Reliever: %1', LeaveRelievers."Staff Name");
                     Employee.Reset();
                     if Employee.Get(LeaveRelievers."Staff No") then
                         if Employee."Company E-Mail" <> '' then begin
@@ -760,7 +761,7 @@ codeunit 52001 "HR Management"
                             SenderName := CompanyInfo.Name;
                             Clear(Receipient);
                             Receipient.Add(Employee."Company E-Mail");
-                            Message('Reliever Email: %1', Employee."Company E-Mail");
+                            // Message('Reliever Email: %1', Employee."Company E-Mail");
                             Subject := ('Relieving - ' + SpaceLbl + LeaveApp."Employee No" + SpaceLbl + LeaveApp."Employee Name");
                             TimeNow := Format(Time);
                             FormattedRelieverBody := StrSubstNo(RelievingEmpMsg, Employee."First Name", LeaveApp."Employee No", LeaveApp."Employee Name", LeaveApp."Start Date", LeaveApp."End Date", CompanyInfo.Name);
@@ -811,7 +812,7 @@ codeunit 52001 "HR Management"
                     TimeNow := Format(Time);
                     FormattedApplicantBody := StrSubstNo(ApplicantMsg,LeaveApp."Employee Name", LeaveApp."Application No", GetLeaveName(LeaveApp."Leave Code"), LeaveApp."Start Date", LeaveApp."End Date", LeaveApp."Resumption Date", LeaveRelievers."Staff Name",
                                                 Relievers, CompanyInfo.Name);
-                    EmailMessage.Create(Receipient, Subject, FormattedApplicantBody, true, RecipientCC, RecipientCC);
+                    EmailMessage.Create(Receipient, Subject, FormattedApplicantBody, true, RecipientCC,RecipientBCC);
                     Email.Send(EmailMessage);
                 end;
         end;
