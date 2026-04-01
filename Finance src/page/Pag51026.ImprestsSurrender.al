@@ -210,7 +210,7 @@ page 51026 "Imprests Surrender"
                     Enabled = false;
                     ToolTip = 'Specifies the value of the Cashier field';
                 }
-                field("Payment Type";"Payment Type"){ApplicationArea=all;Visible=false;}
+                field("Payment Type"; "Payment Type") { ApplicationArea = all; Visible = false; }
             }
             part(Control19; "Imprest Surrender Lines")
             {
@@ -345,6 +345,24 @@ page 51026 "Imprests Surrender"
                         SharepointHandler.UploadFilesToSharePoint(Rec."No.", 'IMPREST SURRENDER');
                     end;
                 }
+                //   action(ImportDocument)
+                // {
+                //     Caption = 'Import Document to Sharepoint';
+                //     ApplicationArea = All;
+                //     Image = Attach;
+                //     // Promoted = true;
+                //     // PromotedCategory = Process;
+                //     // PromotedIsBig = true;
+                //     // PromotedOnly = true;
+                //     ToolTip = 'Add a file as an attachment. You can attach images as well as documents.';
+
+                //     trigger OnAction()
+                //     var
+                //         SharepointHandler: Codeunit "Portal Integration";
+                //     begin
+                //         SharepointHandler.UploadFilesToSharePoint(Rec."No.", 'IMPREST SURRENDER');
+                //     end;
+                // }
 
                 action("Sharepoint Attachments")
                 {
