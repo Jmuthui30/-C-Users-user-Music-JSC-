@@ -6179,6 +6179,12 @@ End Function
         <Field Name="Date_Payments">
           <DataField>Date_Payments</DataField>
         </Field>
+        <Field Name="Staff_No_">
+          <DataField>Staff_No_</DataField>
+        </Field>
+        <Field Name="User_Department">
+          <DataField>User_Department</DataField>
+        </Field>
         <Field Name="PaymentsNarration">
           <DataField>PaymentsNarration</DataField>
         </Field>
