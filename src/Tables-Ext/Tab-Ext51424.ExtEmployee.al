@@ -338,7 +338,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
 
             trigger OnValidate()
             begin
-                TestField("Date Of Join");
+                //TestField("Date Of Join");
 
                 if Scale.Get("Salary Scale") then
                     Halt := Scale."Maximum Pointer";
