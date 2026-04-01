@@ -66,6 +66,8 @@ report 51004 "Imprest Surrender"
             column(Payee_Payments; Payments.Payee)
             {
             }
+            column(Staff_No_; "Staff No.")
+            { }
             column(Onbehalfof_Payments; Payments."On behalf of")
             {
             }
@@ -92,6 +94,10 @@ report 51004 "Imprest Surrender"
             }
             column(TotalAmount_Payments; Payments."Total Amount")
             {
+            }
+            column(Imprest_Amount; "Imprest Amount")
+            {
+
             }
             column(PayingBankAccount_Payments; Payments."Paying Bank Account")
             {
@@ -156,6 +162,10 @@ report 51004 "Imprest Surrender"
             column(ExaminedBy; GetUserName(Approver[2]))
             {
             }
+            column(Destination; Destination)
+            { }
+            column(No_of_Days; "No of Days")
+            { }
             column(DateApproved; ApproverDate[2])
             {
             }
@@ -384,6 +394,11 @@ report 51004 "Imprest Surrender"
                     //Expenditure Type
                     //IF TransType.GET("Payment Lines"."Expenditure Type") THEN;
                 end;
+            }
+            dataitem("SharePoint Intergration"; "SharePoint Intergration")
+            {
+                DataItemLink = "Document No" = field("No.");
+                column(Description; Description) { }
             }
 
             trigger OnPreDataItem()
