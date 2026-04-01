@@ -2377,12 +2377,13 @@ page 51061 "Finance Role Center"
                         RunObject = page "Property Expense Types";
                         ToolTip = 'Executes the Property Expense Types action';
                     }
-                    // action("Destination Codes")
-                    // {
-                    //     Caption = 'Destination Codes';
-                    //     RunObject = page "Destination Code";
-                    //     ToolTip = 'Executes the Destination Codes action';
-                    // }
+                    action("Commitment Entries")
+                    {
+                        Caption = 'Commitment Entries';
+                        RunObject = page "Commitment Entries";
+                        ToolTip = 'Executes the Commitment Entries action';
+                    }
+
                     action("Banker Cheque Register")
                     {
                         Caption = 'Banker Cheque Register';
