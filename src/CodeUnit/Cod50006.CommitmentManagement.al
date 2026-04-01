@@ -489,8 +489,8 @@ codeunit 50006 "Commitment Management"
                 BudgetAnalysis."Memo No." := Memo."No.";
                 BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
                 BudgetAnalysis.Description := ExpenseCodes."Account Name";
-                BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                // BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                // BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
                 BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
                 BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
                 BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
@@ -541,8 +541,8 @@ codeunit 50006 "Commitment Management"
                 BudgetAnalysis."Memo No." := Memo."No.";
                 BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
                 BudgetAnalysis.Description := ExpenseCodes."Account Name";
-                BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                // BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                // BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
                 BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
                 BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
                 BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
@@ -567,8 +567,8 @@ codeunit 50006 "Commitment Management"
                 BudgetAnalysis."Memo No." := Memo."No.";
                 BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
                 BudgetAnalysis.Description := ExpenseCodes."Account Name";
-                BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                // BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                // BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
                 BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
                 BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
                 BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
@@ -929,17 +929,18 @@ codeunit 50006 "Commitment Management"
                 Commitments.SetFilter("Commitment No", '<>%1', Memo."No.");
                 Commitments.SetRange("Commitment Date", CMSetup."Current Budget Start Date", CMSetup."Current Budget End Date");
                 Commitments.SetRange("Account No.", BudgetAnalysis."Budget Line");
-                if BudgetAnalysis."Global Dimension 1 Code" <> '' then Commitments.SetRange("Global Dimension 1", BudgetAnalysis."Global Dimension 1 Code");
-                if BudgetAnalysis."Global Dimension 2 Code" <> '' then Commitments.SetRange("Global Dimension 2", BudgetAnalysis."Global Dimension 2 Code");
+                // if BudgetAnalysis."Global Dimension 1 Code" <> '' then Commitments.SetRange("Global Dimension 1", BudgetAnalysis."Global Dimension 1 Code");
+                // if BudgetAnalysis."Global Dimension 2 Code" <> '' then Commitments.SetRange("Global Dimension 2", BudgetAnalysis."Global Dimension 2 Code");
                 if Commitments.FindSet() then begin
                     Commitments.CalcSums("Committed Amount");
                     CommittedAmount := Commitments."Committed Amount";
                 end;
+                // Message('Checking budget for %1', CommittedAmount);
                 GLAccount.Get(BudgetAnalysis."Budget Line");
                 GLAccount.SetFilter("Budget Filter", BudgetAnalysis."Budget Code");
                 GLAccount.SetFilter("Date Filter", BudgetAnalysis."Budget Date Filter");
-                GLAccount.SetFilter("Global Dimension 1 Filter", BudgetAnalysis."Global Dimension 1 Code");
-                GLAccount.SetFilter("Global Dimension 2 Filter", BudgetAnalysis."Global Dimension 2 Code");
+                // GLAccount.SetFilter("Global Dimension 1 Filter", BudgetAnalysis."Global Dimension 1 Code");
+                // GLAccount.SetFilter("Global Dimension 2 Filter", BudgetAnalysis."Global Dimension 2 Code");
                 GLAccount.CalcFields(Balance, "Budgeted Amount");
                 BudgetAnalysis.CalcFields("Amount on Budget");
                 BudgetAnalysis."Available Balance" := GLAccount."Budgeted Amount" - CommittedAmount - GLAccount.Balance;
