@@ -1093,8 +1093,6 @@ codeunit 52116 "Portal Integration"
         HttpClient: HttpClient;
         HttpRequestMessage: HttpRequestMessage;
         HttpResponseMessage: HttpResponseMessage;
-        RequestHeaders: HttpHeaders;
-        ContentHeaders: HttpHeaders;
         JsonResponse: JsonObject;
         AuthToken: SecretText;
         SharePointFileUrl: Text;
@@ -1105,49 +1103,43 @@ codeunit 52116 "Portal Integration"
         FileName: Text;
         MimeType: Text;
         EncodedPath: Text;
-        HeaderName: Text;
-        HeaderValue: Text;
         Headers: HttpHeaders;
         ContentHeader: HttpHeaders;
         RequestContent: HttpContent;
         DownloadUrl: Text;
         PortalUploads: Record "SharePoint Intergration";
-
     begin
-        // Get OAuth token
         AuthToken := GetOAuthToken();
-
         if AuthToken.IsEmpty() then
             Error('Failed to obtain access token.');
 
         if not UploadIntoStream('Select a File to Import', '', '', FileName, FileContent) then
             Error('No file selected.');
 
-        // Copy to TempBlob and get a fresh stream
         TempBlob.CreateOutStream(OutStream);
         CopyStream(OutStream, FileContent);
-        TempBlob.CreateInStream(FileContent); // Get fresh InStream for upload
+        TempBlob.CreateInStream(FileContent);
 
-        // Set MIME type based on file extension
         MimeType := GetMimeType(FileName);
-
-        // Encode path and build URL
-        EncodedPath := EncodeUrl(Type + '/' + DocNo + '/' + FileName);
+        // EncodedPath := EncodeUrl(Type + '/' + DocNo + '/' + FileName);
+        EncodedPath := EncodeUrl(Type) + '/' + EncodeUrl(DocNo) + '/' + EncodeUrl(FileName);
         SharePointFileUrl :=
-          'https://graph.microsoft.com/v1.0/sites/jscgoke.sharepoint.com,7a664df7-dd2a-4923-bce4-84150f6ffee0' +
-          '/drives/b!901meirdI0m85IQVD2_-4L6kylRennlChB-b4Io3UUz6HTryvLeBToA5e2mq2Zea/root:/' + EncodedPath + ':/content';
+            'https://graph.microsoft.com/v1.0/sites/jscgoke.sharepoint.com,7a664df7-dd2a-4923-bce4-84150f6ffee0' +
+            '/drives/b!901meirdI0m85IQVD2_-4L6kylRennlChB-b4Io3UUz6HTryvLeBToA5e2mq2Zea/root:/' + EncodedPath + ':/content';
 
+        // Build content first
+        RequestContent.WriteFrom(FileContent);
+        RequestContent.GetHeaders(ContentHeader);
+        ContentHeader.Remove('Content-Type');       // remove default text/plain
+        ContentHeader.Add('Content-Type', MimeType);
 
-        // Initialize the HTTP request
+        // Build request
         HttpRequestMessage.SetRequestUri(SharePointFileUrl);
         HttpRequestMessage.Method := 'PUT';
         HttpRequestMessage.GetHeaders(Headers);
         Headers.Add('Authorization', SecretStrSubstNo('Bearer %1', AuthToken));
-        RequestContent.GetHeaders(ContentHeader);
-        ContentHeader.Clear();
-        ContentHeader.Add('Content-Type', MimeType);
-        HttpRequestMessage.Content.WriteFrom(FileContent);
-        // Send the HTTP request
+        HttpRequestMessage.Content := RequestContent; // ← assign content to message
+
         if HttpClient.Send(HttpRequestMessage, HttpResponseMessage) then begin
             if HttpResponseMessage.IsSuccessStatusCode() then begin
                 HttpResponseMessage.Content.ReadAs(ResponseText);
@@ -1161,120 +1153,121 @@ codeunit 52116 "Portal Integration"
                 PortalUploads.Uploaded := true;
                 PortalUploads.Fetch_To_Sharepoint := true;
                 PortalUploads.Polled := true;
-                PortalUploads.Base_URL := 'https://jscgoke.sharepoint.com/sites/jscportals/ERP%20Document' + '/' + 'PAYMENT VOUCHER' + '/';
+                PortalUploads.Base_URL :=
+                    'https://jscgoke.sharepoint.com/sites/jscportals/ERP%20Document' + '/' + 'PAYMENT VOUCHER' + '/';
                 PortalUploads.Insert(true);
                 Message('Uploaded Successfully');
             end else begin
-                //Report errors!
                 HttpResponseMessage.Content.ReadAs(ResponseText);
-                Error('Failed to upload files to SharePoint: %1 %2', HttpResponseMessage.HttpStatusCode(), ResponseText);
+                Error('Failed to upload to SharePoint: %1 %2', HttpResponseMessage.HttpStatusCode(), ResponseText);
             end;
         end else
-            Error('Failed to upload files to SharePoint: %1 %2', HttpResponseMessage.HttpStatusCode(), ResponseText);
+            Error('Failed to send request to SharePoint: %1 %2', HttpResponseMessage.HttpStatusCode(), ResponseText);
     end;
 
-procedure UploadFilesToSharePointII(DocNo: Code[30]; Type: Code[100])
+    procedure UploadFilesToSharePointII(DocNo: Code[30]; Type: Code[100])
     var
         HttpClient: HttpClient;
         HttpRequestMessage: HttpRequestMessage;
         HttpResponseMessage: HttpResponseMessage;
-        RequestHeaders: HttpHeaders;
+        HttpHeaders: HttpHeaders;
         ContentHeaders: HttpHeaders;
         JsonResponse: JsonObject;
         AuthToken: SecretText;
         SharePointFileUrl: Text;
         ResponseText: Text;
-        OutStream: OutStream;
-        FileContent: InStream;
         TempBlob: Codeunit "Temp Blob";
         FileName: Text;
         MimeType: Text;
         EncodedPath: Text;
-        HeaderName: Text;
-        HeaderValue: Text;
-        Headers: HttpHeaders;
-        ContentHeader: HttpHeaders;
-        RequestContent: HttpContent;
-        DownloadUrl: Text;
         PortalUploads: Record "SharePoint Intergrations";
-
+        FileContent: InStream;
+        OutStream: OutStream;
     begin
-        // Get OAuth token
+        // 1. Get OAuth token
         AuthToken := GetOAuthToken();
-
         if AuthToken.IsEmpty() then
             Error('Failed to obtain access token.');
 
+        // 2. Select file
         if not UploadIntoStream('Select a File to Import', '', '', FileName, FileContent) then
             Error('No file selected.');
 
-        // Copy to TempBlob and get a fresh stream
+        // 3. Copy to TempBlob to reset stream
         TempBlob.CreateOutStream(OutStream);
         CopyStream(OutStream, FileContent);
-        TempBlob.CreateInStream(FileContent); // Get fresh InStream for upload
+        TempBlob.CreateInStream(FileContent); // reset stream for upload
 
-        // Set MIME type based on file extension
+        // 4. Get MIME type
         MimeType := GetMimeType(FileName);
 
-        // Encode path and build URL
-        EncodedPath := EncodeUrl(Type + '/' + DocNo + '/' + FileName);
+        // 5. Encode path properly (replace spaces and illegal chars)
+        EncodedPath := StrSubstNo('%1/%2/%3',
+                        EncodeUrl(Type),
+                        EncodeUrl(DocNo),
+                        EncodeUrl(FileName));
+
+        // 6. Build SharePoint Graph API URL using site ID
         SharePointFileUrl :=
-          'https://graph.microsoft.com/v1.0/sites/jscgoke.sharepoint.com,7a664df7-dd2a-4923-bce4-84150f6ffee0' +
-          '/drives/b!901meirdI0m85IQVD2_-4L6kylRennlChB-b4Io3UUz6HTryvLeBToA5e2mq2Zea/root:/' + EncodedPath + ':/content';
+            'https://graph.microsoft.com/v1.0/sites/7a664df7-dd2a-4923-bce4-84150f6ffee0/drive/root:/' +
+            EncodedPath +
+            ':/content';
 
-
-        // Initialize the HTTP request
-        HttpRequestMessage.SetRequestUri(SharePointFileUrl);
+        // 7. Prepare HTTP request
         HttpRequestMessage.Method := 'PUT';
-        HttpRequestMessage.GetHeaders(Headers);
-        Headers.Add('Authorization', SecretStrSubstNo('Bearer %1', AuthToken));
-        RequestContent.GetHeaders(ContentHeader);
-        ContentHeader.Clear();
-        ContentHeader.Add('Content-Type', MimeType);
-        HttpRequestMessage.Content.WriteFrom(FileContent);
-        // Send the HTTP request
+        HttpRequestMessage.SetRequestUri(SharePointFileUrl);
+
+        // 8. Add Authorization header
+        HttpRequestMessage.GetHeaders(HttpHeaders);
+        HttpHeaders.Add('Authorization', SecretStrSubstNo('Bearer %1', AuthToken));
+
+        // 9. Write file content to request
+        HttpRequestMessage.Content().WriteFrom(FileContent);
+        HttpRequestMessage.Content().GetHeaders(ContentHeaders);
+        ContentHeaders.Clear();
+        ContentHeaders.Add('Content-Type', MimeType);
+
+        // 10. Send request
         if HttpClient.Send(HttpRequestMessage, HttpResponseMessage) then begin
             if HttpResponseMessage.IsSuccessStatusCode() then begin
                 HttpResponseMessage.Content.ReadAs(ResponseText);
                 JsonResponse.ReadFrom(ResponseText);
-                ExtractCleanDownloadUrl(JsonResponse, DownloadUrl);
+
+                // Save to portal uploads
                 PortalUploads.Init();
                 PortalUploads."Application No" := DocNo;
                 PortalUploads.Description := FileName;
-                PortalUploads.LocalUrl := DownloadUrl;
-                PortalUploads.SP_URL_Returned := DownloadUrl;
+                PortalUploads.LocalUrl := SharePointFileUrl;
+                PortalUploads.SP_URL_Returned := SharePointFileUrl;
                 PortalUploads.Uploaded := true;
                 PortalUploads.Fetch_To_Sharepoint := true;
                 PortalUploads.Polled := true;
-                PortalUploads.Base_URL := 'https://jscgoke.sharepoint.com/sites/jscportals/ERP%20Document' + '/' + 'PAYMENT VOUCHER' + '/';
+                PortalUploads.Base_URL := 'https://jscgoke.sharepoint.com/sites/jscportals/ERP%20Document/PAYMENT VOUCHER/';
                 PortalUploads.Insert(true);
+
                 Message('Uploaded Successfully');
             end else begin
-                //Report errors!
                 HttpResponseMessage.Content.ReadAs(ResponseText);
                 Error('Failed to upload files to SharePoint: %1 %2', HttpResponseMessage.HttpStatusCode(), ResponseText);
             end;
         end else
-            Error('Failed to upload files to SharePoint: %1 %2', HttpResponseMessage.HttpStatusCode(), ResponseText);
+            Error('Failed to send request to SharePoint.');
     end;
-
-
 
     local procedure EncodeUrl(Value: Text): Text
     var
         EncodedText: Text;
     begin
         EncodedText := Value;
-        EncodedText := StrSubstNo(EncodedText, ' ', '%20');
-        EncodedText := StrSubstNo(EncodedText, '#', '%23');
-        EncodedText := StrSubstNo(EncodedText, '%', '%25');
-        EncodedText := StrSubstNo(EncodedText, '&', '%26');
-        EncodedText := StrSubstNo(EncodedText, '+', '%2B');
-        EncodedText := StrSubstNo(EncodedText, '?', '%3F');
-        EncodedText := StrSubstNo(EncodedText, '/', '%2F');
+        EncodedText := EncodedText.Replace('%', '%25');   
+        EncodedText := EncodedText.Replace(' ', '%20');
+        EncodedText := EncodedText.Replace('#', '%23');
+        EncodedText := EncodedText.Replace('&', '%26');
+        EncodedText := EncodedText.Replace('+', '%2B');
+        EncodedText := EncodedText.Replace('?', '%3F');
+        EncodedText := EncodedText.Replace('~', '%7E');
         exit(EncodedText);
     end;
-
 
     local procedure GetMimeType(FileName: Text): Text
     var

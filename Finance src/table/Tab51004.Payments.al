@@ -1795,6 +1795,8 @@ table 51004 Payments
         Cashier := CopyStr(UserId, 1, MaxStrLen(Cashier));
         "User Id" := CopyStr(UserId, 1, MaxStrLen("User Id"));
         "Created By" := CopyStr(UserId, 1, MaxStrLen("Created By"));
+        if UserSetup.Get("User Id") then
+        "User Department":=UserSetup."Global Dimension 2 Code";
     end;
 
     procedure DefaultPettyCash(var BankCode: Code[20]): Code[20]

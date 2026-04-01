@@ -48,6 +48,14 @@ report 51018 "Payment Voucher-Vendor"
             column(Date_Payments; Payments.Date)
             {
             }
+            column(Staff_No_;"Staff No.")
+            {
+
+            }
+            column(User_Department;"User Department")
+            {
+                
+            }
             column(PaymentsNarration; Payments."Payment Narration")
             {
             }
@@ -658,6 +666,12 @@ report 51018 "Payment Voucher-Vendor"
             Type = RDLC;
             LayoutFile = './src/report_layout/PV-Vendor(AACC).rdl';
             Caption = 'Payment Voucher Vendor-AACC';
+        }
+        layout("Payment Voucher(AACC)")
+        {
+            Type = RDLC;
+            LayoutFile = './src/report_layout/Payment Voucher(PV).rdl';
+            Caption = 'Payment Voucher';
         }
     }
 
