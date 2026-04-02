@@ -2,6 +2,7 @@ page 50001 "Payment Voucher"
 {
     // version THL-Basic Fin 1.0
     DeleteAllowed = false;
+    UsageCategory = Lists;
     PageType = Card;
     SourceTable = "PV Header";
     PromotedActionCategories = 'New,Process,Report,Approval,Release,Request Approval,Workflow,Attachments';
