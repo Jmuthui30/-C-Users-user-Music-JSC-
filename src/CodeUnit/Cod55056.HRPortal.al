@@ -2157,7 +2157,7 @@ codeunit 55056 HRPortal
 
     procedure FAWEgenerateImprestMemoExpenditure(employeeNumber: Code[20]; docNo: Text) BaseImage: Text
     var
-        ImprestMemo: Record Payments;
+        ImprestMemo: Record "Imprest Memo Header";
     begin
 
         Employee.RESET;
