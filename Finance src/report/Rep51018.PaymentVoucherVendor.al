@@ -670,7 +670,7 @@ report 51018 "Payment Voucher-Vendor"
         layout("Payment Voucher(AACC)")
         {
             Type = RDLC;
-            LayoutFile = './src/report_layout/PaymentVoucherII.rdl';
+            LayoutFile = './src/report_layout/PaymentVoucherII.rdlc';
             Caption = 'Payment Voucher';
         }
     }
