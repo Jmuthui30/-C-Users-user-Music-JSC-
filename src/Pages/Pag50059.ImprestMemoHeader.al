@@ -324,7 +324,7 @@ page 50059 "Imprest Memo Header"
 
                     ;
                     Caption = 'Expenditure Report';
-                    Image = Info;
+                    Image = CreditMemo;
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
