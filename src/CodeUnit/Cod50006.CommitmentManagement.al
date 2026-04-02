@@ -477,12 +477,13 @@ codeunit 50006 "Commitment Management"
         ImprestMemoHeader: Record "Imprest Memo Header";
 
     begin
-        // BudgetAnalysis.Reset();
-        // BudgetAnalysis.SetRange("Memo No.", Memo."No.");
-        // BudgetAnalysis.Delete();
+        BudgetAnalysis.Reset();
+        BudgetAnalysis.SetRange("Memo No.", Memo."No.");
         BudgetAnalysis.DeleteAll();
-
-
+        // BudgetAnalysis.DeleteAll();
+        // ImprestMemoHeader.Reset();
+        // if ImprestMemoHeader.Get(Memo."No.") then
+        //     Message('In Memo No %1', Memo."No.");
         if (Memo.Status <> Memo.Status::Open) and (Memo.Status <> Memo.Status::"Pending Approval") then exit;
         if not CMSetup.Get() then exit;
         CMSetup.TestField("Current Budget");
@@ -491,6 +492,7 @@ codeunit 50006 "Commitment Management"
         ImprestSetup.Get();
         ImprestSetup.TestField("DSA Expense Code");
         IF Memo.DSA = true then begin
+            // Message('Inserting Budget Analysis for DSA Expense Code %1', ImprestSetup."DSA Expense Code");
             if ExpenseCodes.Get(ImprestSetup."DSA Expense Code") then begin
                 ExpenseCodes.TestField("Account No");
                 if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
