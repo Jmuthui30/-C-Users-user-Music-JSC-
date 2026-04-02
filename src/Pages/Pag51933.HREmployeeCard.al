@@ -56,7 +56,7 @@ page 51933 "HR Employee Card"
                     Importance = Promoted;
                     ToolTip = 'Specifies the employee''s job title.';
                 }
-                field(Notify;Notify)
+                field(Notify; Notify)
                 {
                     ApplicationArea = All;
                 }
@@ -412,7 +412,11 @@ page 51933 "HR Employee Card"
             group(Payments)
             {
                 Caption = 'Payments';
-
+                field("Salary Scale"; "Salary Scale")
+                {
+                    ApplicationArea = BasicHR;
+                    ToolTip = 'Specifies the salary scale of the employee.';
+                }
                 field("Employee Posting Group"; Rec."Employee Posting Group")
                 {
                     ApplicationArea = BasicHR;

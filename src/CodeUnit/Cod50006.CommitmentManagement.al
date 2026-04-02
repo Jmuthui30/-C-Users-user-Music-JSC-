@@ -474,7 +474,16 @@ codeunit 50006 "Commitment Management"
         ImprestSetup: Record "Advanced Finance Setup";
         ExpenseCodes: Record "Expense Codes";
         CMSetup: Record "Cash Management Setups";
+        ImprestMemoHeader: Record "Imprest Memo Header";
+
     begin
+        BudgetAnalysis.Reset();
+        BudgetAnalysis.SetRange("Memo No.", Memo."No.");
+        BudgetAnalysis.DeleteAll();
+        // BudgetAnalysis.DeleteAll();
+        // ImprestMemoHeader.Reset();
+        // if ImprestMemoHeader.Get(Memo."No.") then
+        //     Message('In Memo No %1', Memo."No.");
         if (Memo.Status <> Memo.Status::Open) and (Memo.Status <> Memo.Status::"Pending Approval") then exit;
         if not CMSetup.Get() then exit;
         CMSetup.TestField("Current Budget");
@@ -482,421 +491,455 @@ codeunit 50006 "Commitment Management"
         CMSetup.TestField("Current Budget End Date");
         ImprestSetup.Get();
         ImprestSetup.TestField("DSA Expense Code");
-        if ExpenseCodes.Get(ImprestSetup."DSA Expense Code") then begin
-            ExpenseCodes.TestField("Account No");
-            if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
-                BudgetAnalysis.Init();
-                BudgetAnalysis."Memo No." := Memo."No.";
-                BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
-                BudgetAnalysis.Description := ExpenseCodes."Account Name";
-                // BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                // BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis.Insert();
-            end
-            else begin
-                BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis2.Modify();
+        IF Memo.DSA = true then begin
+            // Message('Inserting Budget Analysis for DSA Expense Code %1', ImprestSetup."DSA Expense Code");
+            if ExpenseCodes.Get(ImprestSetup."DSA Expense Code") then begin
+                ExpenseCodes.TestField("Account No");
+                if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
+                    BudgetAnalysis.Init();
+                    BudgetAnalysis."Memo No." := Memo."No.";
+                    BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
+                    BudgetAnalysis.Description := ExpenseCodes."Account Name";
+                    // BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    // BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis.Insert();
+                end
+                else begin
+                    BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis2.Modify();
+                end;
             end;
-        end;
+        END;
         ImprestSetup.TestField("Air Ticket Expense Code");
-        if ExpenseCodes.Get(ImprestSetup."Air Ticket Expense Code") then begin
-            ExpenseCodes.TestField("Account No");
-            if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
-                BudgetAnalysis.Init();
-                BudgetAnalysis."Memo No." := Memo."No.";
-                BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
-                BudgetAnalysis.Description := ExpenseCodes."Account Name";
-                BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis.Insert();
-            end
-            else begin
-                BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis2.Modify();
+        if Memo."Air Ticket" = true then begin
+            if ExpenseCodes.Get(ImprestSetup."Air Ticket Expense Code") then begin
+                ExpenseCodes.TestField("Account No");
+                if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
+
+                    BudgetAnalysis.Init();
+                    BudgetAnalysis."Memo No." := Memo."No.";
+                    BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
+                    BudgetAnalysis.Description := ExpenseCodes."Account Name";
+                    BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis.Insert();
+                end
+                else begin
+                    BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis2.Modify();
+                end;
             end;
         end;
-        ImprestSetup.TestField("Conference Expense Code");
-        if ExpenseCodes.Get(ImprestSetup."Conference Expense Code") then begin
-            ExpenseCodes.TestField("Account No");
-            if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
-                BudgetAnalysis.Init();
-                BudgetAnalysis."Memo No." := Memo."No.";
-                BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
-                BudgetAnalysis.Description := ExpenseCodes."Account Name";
-                // BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                // BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis.Insert();
-            end
-            else begin
-                BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis2.Modify();
+        if Memo."Conference" = true then begin
+            ImprestSetup.TestField("Conference Expense Code");
+            if ExpenseCodes.Get(ImprestSetup."Conference Expense Code") then begin
+                ExpenseCodes.TestField("Account No");
+                if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
+                    BudgetAnalysis.Init();
+                    BudgetAnalysis."Memo No." := Memo."No.";
+                    BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
+                    BudgetAnalysis.Description := ExpenseCodes."Account Name";
+                    // BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    // BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis.Insert();
+                end
+                else begin
+                    BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis2.Modify();
+                end;
             end;
         end;
-        ImprestSetup.TestField("G.Transport Expense Code");
-        if ExpenseCodes.Get(ImprestSetup."G.Transport Expense Code") then begin
-            ExpenseCodes.TestField("Account No");
-            if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
-                BudgetAnalysis.Init();
-                BudgetAnalysis."Memo No." := Memo."No.";
-                BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
-                BudgetAnalysis.Description := ExpenseCodes."Account Name";
-                // BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                // BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis.Insert();
-            end
-            else begin
-                BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis2.Modify();
+        if Memo."Ground Transport" = true then begin
+            ImprestSetup.TestField("G.Transport Expense Code");
+            if ExpenseCodes.Get(ImprestSetup."G.Transport Expense Code") then begin
+                ExpenseCodes.TestField("Account No");
+                if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
+                    BudgetAnalysis.Init();
+                    BudgetAnalysis."Memo No." := Memo."No.";
+                    BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
+                    BudgetAnalysis.Description := ExpenseCodes."Account Name";
+                    // BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    // BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis.Insert();
+                end
+                else begin
+                    BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis2.Modify();
+                end;
             end;
         end;
-        ImprestSetup.TestField("Cord. Allow Expense Code");
-        if ExpenseCodes.Get(ImprestSetup."Cord. Allow Expense Code") then begin
-            ExpenseCodes.TestField("Account No");
-            if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
-                BudgetAnalysis.Init();
-                BudgetAnalysis."Memo No." := Memo."No.";
-                BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
-                BudgetAnalysis.Description := ExpenseCodes."Account Name";
-                BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis.Insert();
-            end
-            else begin
-                BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis2.Modify();
+        if Memo."Cordination Allowance" = true then begin
+            ImprestSetup.TestField("Cord. Allow Expense Code");
+            if ExpenseCodes.Get(ImprestSetup."Cord. Allow Expense Code") then begin
+                ExpenseCodes.TestField("Account No");
+                if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
+                    BudgetAnalysis.Init();
+                    BudgetAnalysis."Memo No." := Memo."No.";
+                    BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
+                    BudgetAnalysis.Description := ExpenseCodes."Account Name";
+                    BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis.Insert();
+                end
+                else begin
+                    BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis2.Modify();
+                end;
             end;
         end;
-        ImprestSetup.TestField("Facilitator Allow Expense Code");
-        if ExpenseCodes.Get(ImprestSetup."Facilitator Allow Expense Code") then begin
-            ExpenseCodes.TestField("Account No");
-            if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
-                BudgetAnalysis.Init();
-                BudgetAnalysis."Memo No." := Memo."No.";
-                BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
-                BudgetAnalysis.Description := ExpenseCodes."Account Name";
-                BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis.Insert();
-            end
-            else begin
-                BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis2.Modify();
+        if Memo."Facilitator Allowance" = true then begin
+            ImprestSetup.TestField("Facilitator Allow Expense Code");
+            if ExpenseCodes.Get(ImprestSetup."Facilitator Allow Expense Code") then begin
+                ExpenseCodes.TestField("Account No");
+                if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
+                    BudgetAnalysis.Init();
+                    BudgetAnalysis."Memo No." := Memo."No.";
+                    BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
+                    BudgetAnalysis.Description := ExpenseCodes."Account Name";
+                    BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis.Insert();
+                end
+                else begin
+                    BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis2.Modify();
+                end;
             end;
         end;
-        ImprestSetup.TestField("Secretariat Allow Expense Code");
-        if ExpenseCodes.Get(ImprestSetup."Secretariat Allow Expense Code") then begin
-            ExpenseCodes.TestField("Account No");
-            if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
-                BudgetAnalysis.Init();
-                BudgetAnalysis."Memo No." := Memo."No.";
-                BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
-                BudgetAnalysis.Description := ExpenseCodes."Account Name";
-                BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis.Insert();
-            end
-            else begin
-                BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis2.Modify();
+        if Memo."Secretariat Allowance" = true then begin
+            ImprestSetup.TestField("Secretariat Allow Expense Code");
+            if ExpenseCodes.Get(ImprestSetup."Secretariat Allow Expense Code") then begin
+                ExpenseCodes.TestField("Account No");
+                if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
+                    BudgetAnalysis.Init();
+                    BudgetAnalysis."Memo No." := Memo."No.";
+                    BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
+                    BudgetAnalysis.Description := ExpenseCodes."Account Name";
+                    BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis.Insert();
+                end
+                else begin
+                    BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis2.Modify();
+                end;
             end;
         end;
-        ImprestSetup.TestField("Out of Pocket Expense Code");
-        if ExpenseCodes.Get(ImprestSetup."Out of Pocket Expense Code") then begin
-            ExpenseCodes.TestField("Account No");
-            if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
-                BudgetAnalysis.Init();
-                BudgetAnalysis."Memo No." := Memo."No.";
-                BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
-                BudgetAnalysis.Description := ExpenseCodes."Account Name";
-                BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis.Insert();
-            end
-            else begin
-                BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis2.Modify();
+        if Memo."Out of Pocket Allowance" = true then begin
+            ImprestSetup.TestField("Out of Pocket Expense Code");
+            if ExpenseCodes.Get(ImprestSetup."Out of Pocket Expense Code") then begin
+                ExpenseCodes.TestField("Account No");
+                if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
+                    BudgetAnalysis.Init();
+                    BudgetAnalysis."Memo No." := Memo."No.";
+                    BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
+                    BudgetAnalysis.Description := ExpenseCodes."Account Name";
+                    BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis.Insert();
+                end
+                else begin
+                    BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis2.Modify();
+                end;
             end;
         end;
-        ImprestSetup.TestField("Rapporteur Allow Expense Code");
-        if ExpenseCodes.Get(ImprestSetup."Rapporteur Allow Expense Code") then begin
-            ExpenseCodes.TestField("Account No");
-            if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
-                BudgetAnalysis.Init();
-                BudgetAnalysis."Memo No." := Memo."No.";
-                BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
-                BudgetAnalysis.Description := ExpenseCodes."Account Name";
-                BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis.Insert();
-            end
-            else begin
-                BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis2.Modify();
+        if Memo."Rapporteur Allowance" = true then begin
+            ImprestSetup.TestField("Rapporteur Allow Expense Code");
+            if ExpenseCodes.Get(ImprestSetup."Rapporteur Allow Expense Code") then begin
+                ExpenseCodes.TestField("Account No");
+                if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
+                    BudgetAnalysis.Init();
+                    BudgetAnalysis."Memo No." := Memo."No.";
+                    BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
+                    BudgetAnalysis.Description := ExpenseCodes."Account Name";
+                    BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis.Insert();
+                end
+                else begin
+                    BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis2.Modify();
+                end;
             end;
         end;
-        ImprestSetup.TestField("Driver Allow Expense Code");
-        if ExpenseCodes.Get(ImprestSetup."Driver Allow Expense Code") then begin
-            ExpenseCodes.TestField("Account No");
-            if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
-                BudgetAnalysis.Init();
-                BudgetAnalysis."Memo No." := Memo."No.";
-                BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
-                BudgetAnalysis.Description := ExpenseCodes."Account Name";
-                BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis.Insert();
-            end
-            else begin
-                BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis2.Modify();
+        if Memo."Driver Allowance" = true then begin
+            ImprestSetup.TestField("Driver Allow Expense Code");
+            if ExpenseCodes.Get(ImprestSetup."Driver Allow Expense Code") then begin
+                ExpenseCodes.TestField("Account No");
+                if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
+                    BudgetAnalysis.Init();
+                    BudgetAnalysis."Memo No." := Memo."No.";
+                    BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
+                    BudgetAnalysis.Description := ExpenseCodes."Account Name";
+                    BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis.Insert();
+                end
+                else begin
+                    BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis2.Modify();
+                end;
             end;
         end;
-        ImprestSetup.TestField("Retreat Allow Expense Code");
-        if ExpenseCodes.Get(ImprestSetup."Retreat Allow Expense Code") then begin
-            ExpenseCodes.TestField("Account No");
-            if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
-                BudgetAnalysis.Init();
-                BudgetAnalysis."Memo No." := Memo."No.";
-                BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
-                BudgetAnalysis.Description := ExpenseCodes."Account Name";
-                BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis.Insert();
-            end
-            else begin
-                BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis2.Modify();
+        if Memo."Retreat Allowance" = true then begin
+            ImprestSetup.TestField("Retreat Allow Expense Code");
+            if ExpenseCodes.Get(ImprestSetup."Retreat Allow Expense Code") then begin
+                ExpenseCodes.TestField("Account No");
+                if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
+                    BudgetAnalysis.Init();
+                    BudgetAnalysis."Memo No." := Memo."No.";
+                    BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
+                    BudgetAnalysis.Description := ExpenseCodes."Account Name";
+                    BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis.Insert();
+                end
+                else begin
+                    BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis2.Modify();
+                end;
             end;
         end;
-        ImprestSetup.TestField("Expert Allow Expense Code");
-        if ExpenseCodes.Get(ImprestSetup."Expert Allow Expense Code") then begin
-            ExpenseCodes.TestField("Account No");
-            if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
-                BudgetAnalysis.Init();
-                BudgetAnalysis."Memo No." := Memo."No.";
-                BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
-                BudgetAnalysis.Description := ExpenseCodes."Account Name";
-                BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis.Insert();
-            end
-            else begin
-                BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis2.Modify();
+        if Memo."Expert Allowance" = true then begin
+            ImprestSetup.TestField("Expert Allow Expense Code");
+            if ExpenseCodes.Get(ImprestSetup."Expert Allow Expense Code") then begin
+                ExpenseCodes.TestField("Account No");
+                if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
+                    BudgetAnalysis.Init();
+                    BudgetAnalysis."Memo No." := Memo."No.";
+                    BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
+                    BudgetAnalysis.Description := ExpenseCodes."Account Name";
+                    BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis.Insert();
+                end
+                else begin
+                    BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis2.Modify();
+                end;
             end;
-        end;
-        ImprestSetup.TestField("Accomodation Expense Code");
-        if ExpenseCodes.Get(ImprestSetup."Accomodation Expense Code") then begin
-            ExpenseCodes.TestField("Account No");
-            if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
-                BudgetAnalysis.Init();
-                BudgetAnalysis."Memo No." := Memo."No.";
-                BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
-                BudgetAnalysis.Description := ExpenseCodes."Account Name";
-                BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis.Insert();
-            end
-            else begin
-                BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis2.Modify();
+        END;
+        if Memo."Accomodation" = true then begin
+            ImprestSetup.TestField("Accomodation Expense Code");
+            if ExpenseCodes.Get(ImprestSetup."Accomodation Expense Code") then begin
+                ExpenseCodes.TestField("Account No");
+                if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
+                    BudgetAnalysis.Init();
+                    BudgetAnalysis."Memo No." := Memo."No.";
+                    BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
+                    BudgetAnalysis.Description := ExpenseCodes."Account Name";
+                    BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis.Insert();
+                end
+                else begin
+                    BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis2.Modify();
+                end;
             end;
-        end;
-        ImprestSetup.TestField("Tuition Expense Code");
-        if ExpenseCodes.Get(ImprestSetup."Tuition Expense Code") then begin
-            ExpenseCodes.TestField("Account No");
-            if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
-                BudgetAnalysis.Init();
-                BudgetAnalysis."Memo No." := Memo."No.";
-                BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
-                BudgetAnalysis.Description := ExpenseCodes."Account Name";
-                BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis.Insert();
-            end
-            else begin
-                BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis2.Modify();
+        END;
+        if MemO."Tuition Fee" = true then begin
+            ImprestSetup.TestField("Tuition Expense Code");
+            if ExpenseCodes.Get(ImprestSetup."Tuition Expense Code") then begin
+                ExpenseCodes.TestField("Account No");
+                if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
+                    BudgetAnalysis.Init();
+                    BudgetAnalysis."Memo No." := Memo."No.";
+                    BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
+                    BudgetAnalysis.Description := ExpenseCodes."Account Name";
+                    BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis.Insert();
+                end
+                else begin
+                    BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis2.Modify();
+                end;
             end;
-        end;
-        ImprestSetup.TestField("Mileage Expense Code");
-        if ExpenseCodes.Get(ImprestSetup."Mileage Expense Code") then begin
-            ExpenseCodes.TestField("Account No");
-            if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
-                BudgetAnalysis.Init();
-                BudgetAnalysis."Memo No." := Memo."No.";
-                BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
-                BudgetAnalysis.Description := ExpenseCodes."Account Name";
-                BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis.Insert();
-            end
-            else begin
-                BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis2.Modify();
+        END;
+        if Memo."Mileage Allowance" = true then begin
+            ImprestSetup.TestField("Mileage Expense Code");
+            if ExpenseCodes.Get(ImprestSetup."Mileage Expense Code") then begin
+                ExpenseCodes.TestField("Account No");
+                if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
+                    BudgetAnalysis.Init();
+                    BudgetAnalysis."Memo No." := Memo."No.";
+                    BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
+                    BudgetAnalysis.Description := ExpenseCodes."Account Name";
+                    BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis.Insert();
+                end
+                else begin
+                    BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis2.Modify();
+                end;
             end;
-        end;
-        ImprestSetup.TestField("Qtr. Per Diem Expense Code");
-        if ExpenseCodes.Get(ImprestSetup."Qtr. Per Diem Expense Code") then begin
-            ExpenseCodes.TestField("Account No");
-            if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
-                BudgetAnalysis.Init();
-                BudgetAnalysis."Memo No." := Memo."No.";
-                BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
-                BudgetAnalysis.Description := ExpenseCodes."Account Name";
-                BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis.Insert();
-            end
-            else begin
-                BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
-                BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
-                BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
-                BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
-                BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
-                BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
-                BudgetAnalysis2.Modify();
+        END;
+        if Memo."Quarter Per Diem" = true then begin
+            ImprestSetup.TestField("Qtr. Per Diem Expense Code");
+            if ExpenseCodes.Get(ImprestSetup."Qtr. Per Diem Expense Code") then begin
+                ExpenseCodes.TestField("Account No");
+                if not BudgetAnalysis2.Get(Memo."No.", ExpenseCodes."Account No") then begin
+                    BudgetAnalysis.Init();
+                    BudgetAnalysis."Memo No." := Memo."No.";
+                    BudgetAnalysis."Budget Line" := ExpenseCodes."Account No";
+                    BudgetAnalysis.Description := ExpenseCodes."Account Name";
+                    BudgetAnalysis."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis.Insert();
+                end
+                else begin
+                    BudgetAnalysis2."Global Dimension 1 Code" := Memo."Global Dimension 1 Code";
+                    BudgetAnalysis2."Global Dimension 2 Code" := Memo."Global Dimension 2 Code";
+                    BudgetAnalysis2."Budget Code" := CMSetup."Current Budget";
+                    BudgetAnalysis2."Budget Period Start" := CMSetup."Current Budget Start Date";
+                    BudgetAnalysis2."Budget Period End" := CMSetup."Current Budget End Date";
+                    BudgetAnalysis2."Budget Date Filter" := Format(CMSetup."Current Budget Start Date") + '..' + Format(CMSetup."Current Budget End Date");
+                    BudgetAnalysis2.Modify();
+                end;
             end;
-        end;
+        END;
         InsertImprestExpenses(Memo);
     end;
 

@@ -413,7 +413,8 @@ table 50465 "Imprest Memo Lines"
         }
     }
     var
-        Emp: Record "Client Employee Master";
+        // Emp: Record "Client Employee Master";
+        Emp: Record Employee;
         Leave: Record "Employee Leave Application";
         // Imprest: Record "Imprest Header";
         Header: Record "Imprest Memo Header";
@@ -430,8 +431,8 @@ table 50465 "Imprest Memo Lines"
     begin
         Rec.TestField("Account No.");
         Emp.Get(Rec."Account No.");
-        Emp.TestField(Scale);
-        Rec."Job Group" := Emp.Scale;
+        Emp.TestField("Salary Scale");
+        Rec."Job Group" := Emp."Salary Scale";
         // ExpenseCodes.Get(Rec."Expense Code");
         if Rec.Type = Rec.Type::Staff then begin
             BCEmp.Get(Rec."Account No.");
@@ -481,7 +482,8 @@ table 50465 "Imprest Memo Lines"
             end;
         end;
 
-
+        Amount := Rec.DSA + Rec."Air Ticket" + Rec.Conference + Rec."Ground Transport" + Rec.Accomodation + Rec."Cordination Allowance" + Rec."Facilitator Allowance" + Rec."Secretariat Allowance" + Rec."Out of Pocket Allowance" + Rec."Rapporteur Allowance" + Rec."Driver Allowance" + Rec."Retreat Allowance" + Rec."Expert Allowance" + Rec."Tuition Fee" + Rec."Mileage Allowance" + Rec."Quarter Per Diem" + Rec."Other Costs";
+        Rec."Amount LCY" := Rec.Amount * Rec."Exchange Rate";
         GetHeader();
         //Check Employee On Leave
         Leave.Reset();

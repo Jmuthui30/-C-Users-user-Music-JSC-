@@ -318,6 +318,29 @@ page 50059 "Imprest Memo Header"
                     end;
 
                 }
+                action(ReportExpenditure)
+                {
+                    ApplicationArea = All;
+
+                    ;
+                    Caption = 'Expenditure Report';
+                    Image = CreditMemo;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    PromotedIsBig = true;
+                    PromotedOnly = true;
+                    // RunObject = report "Memo Report";
+                    //Visible = Rec.Status = Rec.Status::Released;
+                    trigger OnAction()
+                    var
+                        Memo: Record "Imprest Memo Header";
+                    begin
+                        Memo.Reset();
+                        Memo.SetRange("No.", Rec."No.");
+                        Report.Run(Report::"Expenditure Requisition Form", true, false, Memo);
+                    end;
+
+                }
                 action(Approve)
                 {
                     ApplicationArea = Suite;
