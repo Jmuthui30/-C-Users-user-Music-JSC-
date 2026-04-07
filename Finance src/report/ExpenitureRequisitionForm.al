@@ -123,10 +123,10 @@ report 51244 "Expenditure Requisition Form"
         {
             area(processing)
             {
-                action(LayoutName)
-                {
+                // action(LayoutName)
+                // {
 
-                }
+                // }
             }
         }
     }
@@ -135,7 +135,9 @@ report 51244 "Expenditure Requisition Form"
     {
         layout(RequisitionForm)
         {
+            //  applicationArea = All;
             Type = RDLC;
+
             LayoutFile = './Finance src/report_layout/RequisitionForm.rdl';
         }
     }
