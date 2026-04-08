@@ -1,7 +1,7 @@
 page 52169 "Training Needs Open"
 {
     ApplicationArea = All;
-    CardPageID = "Training Needs";
+    CardPageID = "Training Need";
     PageType = List;
     SourceTable = "Training Need";
     SourceTableView = where(Status = filter(Open | Application));

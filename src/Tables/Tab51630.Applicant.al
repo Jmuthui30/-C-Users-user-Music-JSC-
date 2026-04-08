@@ -505,9 +505,7 @@ table 51630 "Applicant"
         field(87; "Pays Tax"; Boolean)
         {
         }
-        /* field(88; "ID Number"; Code[10])
-        {
-        } */
+
         field(89; "Passport No."; Code[10])
         {
         }

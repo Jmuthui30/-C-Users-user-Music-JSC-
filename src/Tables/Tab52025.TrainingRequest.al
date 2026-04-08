@@ -445,12 +445,12 @@ table 52025 "Training Request"
         if "Request No." = '' then begin
             HRSetup.Get();
             HRSetup.TestField("Training Request Nos");
-            // NoSeriesMgt.InitSeries(HRSetup."Training Request Nos", xRec."No. Series", 0D, "Request No.", "No. Series");
-            if NoSeriesMgt.AreRelated(HRSetup."Training Request Nos",xRec."No. Series") then
-            "No. Series":=xRec."No. Series"
+            //NoSeriesMgt.InitSeries(HRSetup."Training Request Nos", xRec."No. Series", 0D, "Request No.", "No. Series");
+            if NoSeriesMgt.AreRelated(HRSetup."Training Request Nos", xRec."No. Series") then
+                "No. Series" := xRec."No. Series"
             else
-            "No. Series":=HRSetup."Training Request Nos";
-           "Request No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
+                "No. Series" := HRSetup."Training Request Nos";
+            "Request No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
             "GL Account" := HRSetup."Account No (Training)";
         end;
 
