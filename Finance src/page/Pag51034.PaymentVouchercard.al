@@ -533,17 +533,25 @@ page 51034 "Payment Voucher card"
 
                     trigger OnAction()
                     begin
+
+
+
                         PaymentRec.Reset();
                         PaymentRec.SetRange(PaymentRec."No.", Rec."No.");
-                        if PaymentRec.FindFirst() then begin
-                            PLines.Reset();
-                            PLines.SetRange(No, PaymentRec."No.");
-                            if PLines.FindFirst() then
-                                if PLines."Account Type" <> PLines."Account Type"::Vendor then
-                                    Report.Run(Report::"Payment Voucher", true, false, PaymentRec)
-                                else
-                                    Report.Run(Report::"Payment Voucher-Vendor", true, false, PaymentRec);
-                        end;
+                        if PaymentRec.Find('-') then
+                            Report.Run(Report::"Payment Voucher", true, false, PaymentRec);
+
+                        // PaymentRec.Reset();
+                        // PaymentRec.SetRange(PaymentRec."No.", Rec."No.");
+                        // if PaymentRec.FindFirst() then begin
+                        //     // PLines.Reset();
+                        //     // PLines.SetRange(No, PaymentRec."No.");
+                        //     // if PLines.FindFirst() then
+                        //     //if PLines."Account Type" <> PLines."Account Type"::Vendor then
+                        //     Report.Run(Report::"Payment Voucher", true, false, PaymentRec);
+                        //     // else
+                        //     //     Report.Run(Report::"Payment Voucher-Vendor", true, false, PaymentRec);
+                        // end;
                     end;
                 }
                 action(PaymentAdvice)

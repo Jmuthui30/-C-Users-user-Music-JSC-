@@ -732,7 +732,7 @@ codeunit 52001 "HR Management"
         SpaceLbl: Label '  ';
         Receipient: List of [Text];
         RecipientCC: List of [Text];
-        RecipientBCC:List of [Text];
+        RecipientBCC: List of [Text];
         FormattedApplicantBody: Text;
         FormattedHODBody: Text;
         FormattedRelieverBody: Text;
@@ -810,9 +810,9 @@ codeunit 52001 "HR Management"
                         until Employee.Next() = 0;
                     Subject := ('Leave Application - ' + SpaceLbl + LeaveApp."Application No");
                     TimeNow := Format(Time);
-                    FormattedApplicantBody := StrSubstNo(ApplicantMsg,LeaveApp."Employee Name", LeaveApp."Application No", GetLeaveName(LeaveApp."Leave Code"), LeaveApp."Start Date", LeaveApp."End Date", LeaveApp."Resumption Date", LeaveRelievers."Staff Name",
+                    FormattedApplicantBody := StrSubstNo(ApplicantMsg, LeaveApp."Employee Name", LeaveApp."Application No", GetLeaveName(LeaveApp."Leave Code"), LeaveApp."Start Date", LeaveApp."End Date", LeaveApp."Resumption Date", LeaveRelievers."Staff Name",
                                                 Relievers, CompanyInfo.Name);
-                    EmailMessage.Create(Receipient, Subject, FormattedApplicantBody, true, RecipientCC,RecipientBCC);
+                    EmailMessage.Create(Receipient, Subject, FormattedApplicantBody, true, RecipientCC, RecipientBCC);
                     Email.Send(EmailMessage);
                 end;
         end;
@@ -1421,30 +1421,21 @@ codeunit 52001 "HR Management"
         Applicants.Get(ApplicationNo);
         Applicants.TestField("E-Mail");
 
-        // ApplicantEducation.Reset();
-        // ApplicantEducation.SetRange(ApplicantEducation."Qualification Code", ApplicationNo);
-        // ApplicantEducation.SetRange(ApplicantEducation."Qualification Type", ApplicantEducation."Qualification Type"::Academic);
-        // if ApplicantEducation.IsEmpty() then
-        //     Error('Please add at least one academic qualification');
+
 
         CompanyInfo.Get();
         CompanyInfo.CalcFields(Picture);
         CompanyInfo.TestField(Name);
         CompanyInfo.TestField("E-Mail");
 
-        //CompanyInfo."E-Mail Signature".CreateInStream(Instr);
-        //CompanyInfo."E-Mail".IndexOf(Instr);
-        // EmailSignBigText.Read(Instr);
-        // EmailSignText := Format(EmailSignBigText);
+
 
         SenderName := CompanyInfo.Name;
         SenderAddress := CompanyInfo."E-Mail";
         Receipient.Add(Applicants."E-Mail");
         Subject := 'Applicant Account Created';
         TimeNow := (Format(Time));
-        // FormattedBody := StrSubstNo(NewBodyLbl, Applicants."First Name", CompanyInfo.Name);
-        // EmailMessage.Create(Receipient, Subject, FormattedBody, true);
-        // Email.Send(EmailMessage);
+
 
 
         //********************************************
