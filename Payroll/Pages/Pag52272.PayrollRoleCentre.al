@@ -587,7 +587,7 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                     {
                         Caption = 'P10 Report';
                         Image = "Report";
-                        RunObject = report P10;
+                        RunObject = report "KRA ITAX P10 Report";
                         ApplicationArea = All;
                         ToolTip = 'Executes the P10 Report action';
                     }
