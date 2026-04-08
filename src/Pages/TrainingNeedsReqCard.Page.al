@@ -4,7 +4,7 @@ page 52319 "Training Needs Req Card"
     Caption = 'Training Needs Req Card';
     PageType = Card;
     SourceTable = "Training Needs Request";
-    
+
     layout
     {
         area(Content)
@@ -12,7 +12,7 @@ page 52319 "Training Needs Req Card"
             group(General)
             {
                 Caption = 'General';
-                
+
                 field(No; Rec.No)
                 {
                     ToolTip = 'Specifies the value of the No field';
@@ -89,7 +89,7 @@ page 52319 "Training Needs Req Card"
                     TrainingNeeds."Need Source" := Rec."Need Source";
                     TrainingNeeds."Training Objectives" := Rec."Training Objectives";
                     TrainingNeeds.Insert(true);
-                    Page.Run(Page::"Training Needs", TrainingNeeds);
+                    Page.Run(Page::"Training Need", TrainingNeeds);
                     Rec."Need created" := true;
                     Rec.Status := Rec.Status::Created;
                     Rec.Modify();

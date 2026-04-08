@@ -1715,86 +1715,86 @@ page 51742 "HR & Admin Manager Role Center"
 
 
 
-            // group("Training & Development")
-            // {
-            //     Caption = 'Training & Development';
-            //     Image = Marketing;
-            //     ToolTip = 'Track Employee Training & Development';
+            group("Training & Development")
+            {
+                Caption = 'Training & Development';
+                Image = Marketing;
+                ToolTip = 'Track Employee Training & Development';
 
-            //     action("Competency and Qualifications Catalogue")
-            //     {
-            //         ApplicationArea = All;
-            //         Caption = 'Competency and Qualifications Catalogue';
-            //         RunObject = Page "HR_Qualifications";
-            //     }
-            //     action(Coaching)
-            //     {
-            //         ApplicationArea = All;
-            //         Caption = 'Coaching';
-            //         RunObject = Page "Coaching List";
-            //     }
-            //     action("Training Needs Assesment")
-            //     {
-            //         ApplicationArea = All;
-            //         Caption = 'Training Needs Assesment';
-            //         RunObject = Page "New Training Needs Assesment";
-            //     }
-            //     action("Training Needs Under Review")
-            //     {
-            //         ApplicationArea = All;
-            //         Caption = 'Training Needs Under Review';
-            //         RunObject = Page "Training Needs List-Approval";
-            //     }
-            //     action("Training Nomination")
-            //     {
-            //         ApplicationArea = All;
-            //         Caption = 'Training Nomination';
-            //         RunObject = Page "Training Nomination List";
-            //     }
-            //     action("Training Application")
-            //     {
-            //         ApplicationArea = All;
-            //         Caption = 'Training Application';
-            //         Image = PersonInCharge;
-            //         RunObject = Page "SS Training List - Open";
-            //     }
-            //     action("Training Pending Approval")
-            //     {
-            //         ApplicationArea = All;
-            //         Caption = 'Training Pending Approval';
-            //         Image = PersonInCharge;
-            //         RunObject = Page "Training List - Approval";
-            //     }
-            //     action("Approved Training")
-            //     {
-            //         ApplicationArea = Suite;
-            //         Caption = 'Approved Training';
-            //         RunObject = Page "Training List - Approved";
-            //     }
-            //     action("Training Evaluation")
-            //     {
-            //         ApplicationArea = All;
-            //         Caption = 'Training Evaluation';
-            //         RunObject = Page "Training Evaluation List";
-            //     }
-            //     group("Training Administration")
-            //     {
-            //         Caption = 'Administration';
+                action("Competency and Qualifications Catalogue")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Competency and Qualifications Catalogue';
+                    RunObject = Page "HR_Qualifications";
+                }
+                action(Coaching)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Coaching';
+                    RunObject = Page "Coaching List";
+                }
+                action("Training Needs Assesment")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Training Needs Assesment';
+                    RunObject = Page "New Training Needs Assesment";
+                }
+                action("Training Needs Under Review")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Training Needs Under Review';
+                    RunObject = Page "Training Needs List-Approval";
+                }
+                action("Training Nomination")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Training Nomination';
+                    RunObject = Page "Training Nomination List";
+                }
+                action("Training Application")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Training Application';
+                    Image = PersonInCharge;
+                    RunObject = Page "SS Training List - Open";
+                }
+                action("Training Pending Approval")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Training Pending Approval';
+                    Image = PersonInCharge;
+                    RunObject = Page "Training List - Approval";
+                }
+                action("Approved Training")
+                {
+                    ApplicationArea = Suite;
+                    Caption = 'Approved Training';
+                    RunObject = Page "Training List - Approved";
+                }
+                action("Training Evaluation2")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Training Evaluation';
+                    RunObject = Page "Training Evaluation List";
+                }
+                group("Training Administration")
+                {
+                    Caption = 'Administration';
 
-            //         action("Performance Issues")
-            //         {
-            //             ApplicationArea = All;
-            //             Caption = 'Performance Issues';
-            //             RunObject = Page "Performance Issues";
-            //         }
-            //         action("Training Needs")
-            //         {
-            //             ApplicationArea = All;
-            //             Caption = 'Training Needs';
-            //             RunObject = Page "Training Needs";
-            //         }
-            //     }
-            // }
+                    action("Performance Issues")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Performance Issues';
+                        RunObject = Page "Performance Issues";
+                    }
+                    action("Training Needs2")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Training Needs';
+                        RunObject = Page "Training Needs";
+                    }
+                }
+            }
             group(Disciplinary)
             {
                 Caption = 'Staff Disciplinary & Misconduct';
