@@ -8,10 +8,10 @@ report 51476 "Client Master Roll Report2"
 
     dataset
     {
-        dataitem(Employee; "Client Employee Master")
+        dataitem(Employee; Employee)
         {
             DataItemTableView = SORTING("No.");
-            RequestFilterFields = "Company Code", Status, "Pay Period Filter", "No.";
+            RequestFilterFields = Status, "Pay Period Filter", "No.";
 
             column(FORMAT_TODAY_0_4_; Format(Today, 0, 4))
             {
@@ -19,8 +19,9 @@ report 51476 "Client Master Roll Report2"
             column(COMPANYNAME; CompInfo.Name)
             {
             }
-            column(Ethnic_Group; "Ethnic Group") { }
-            column(Departure_Date; "Departure Date") { }
+            column(Ethnic_Group; "Ethnic Name") { }
+            // column(Departure_Date; "Departure Date") { }
+            column(Departure_Date; "Date Of Leaving") { }
             /*column(CurrReport_PAGENO;CurrReport.PageNo)
             {
             }*/
@@ -756,7 +757,7 @@ report 51476 "Client Master Roll Report2"
             column(Name_; 'Name')
             {
             }
-            column(Employee__No__; "Payroll No.")
+            column(Employee__No__; "No.")
             {
             }
             column(Allowances_1_; Allowances[1])
@@ -1281,22 +1282,22 @@ report 51476 "Client Master Roll Report2"
             column(Other_AllowancesCaption; Other_AllowancesCaptionLbl)
             {
             }
-            column(Date_of_Birth; "Date of Birth")
+            column(Date_of_Birth; "Birth Date")
             {
             }
             column(Age; Age)
             {
             }
-            column(ID_Number; "ID Number")
+            column(ID_Number; "ID No.")
             {
             }
-            column(DateEngaged; "Starting Date")
+            column(DateEngaged; "Date Of Join")
             {
             }
             column(Gender; Gender)
             {
             }
-            column(Grade; Scale)
+            column(Grade; "Salary Scale")
             {
             }
             column(Station; "Employee Group")
@@ -1315,11 +1316,11 @@ report 51476 "Client Master Roll Report2"
                 //end;
                 counter := counter + 1;
                 NetPay := Employee."Total Allowances" + Employee."Total Deductions";
-                NetPay := Payroll.NetPayRounding(NetPay, Employee."Company Code");
+                // NetPay := Payroll.NetPayRounding(NetPay);
                 if HREmployee.Get(Employee."No.") then Designation := HREmployee."Job Title";
                 if SendToEFT then begin
-                    Banks.Get(Employee."Bank Code");
-                    CashMgt.InsertEFTEntries(Employee."Bank Code", Employee."Bank Branch", Employee."Bank Account Number", EmpName, NetPay, Banks.Name);
+                    Banks.Get(Employee."Employee's Bank");
+                    CashMgt.InsertEFTEntries(Employee."Employee's Bank", Employee."Bank Branch", Employee."Bank Account Number", EmpName, NetPay, Banks.Name);
                 end;
                 if NAVEmp.Get(Employee."No.") then begin
                     EmpName := NAVEmp."First Name" + ' ' + NAVEmp."Last Name";
@@ -1339,9 +1340,9 @@ report 51476 "Client Master Roll Report2"
                 for i := 1 to NoOfEarnings do begin
                     Assignmat.Reset;
                     Assignmat.SetRange(Assignmat."Employee No", Employee."No.");
-                    Assignmat.SetRange(Assignmat.Type, Assignmat.Type::Payment);
+                    Assignmat.SetRange(Assignmat.Type, Assignmat.Type::Earning);
                     Assignmat.SetRange(Assignmat.Code, Earncode[i]);
-                    Assignmat.SetRange(Assignmat.Company, Employee.GetFilter("Company Code"));
+                    // Assignmat.SetRange(Assignmat.Company, Employee.GetFilter("Company Code"));
                     Assignmat.SetRange(Assignmat."Payroll Period", DateSpecified);
                     Assignmat.SetFilter(Assignmat.Amount, '<>%1', 0);
                     if Assignmat.Find('-') then Allowances[i] := Assignmat.Amount;
@@ -1356,7 +1357,7 @@ report 51476 "Client Master Roll Report2"
                 for i := 1 to 100 do begin
                     Assignmat.Reset;
                     Assignmat.SetRange(Assignmat."Employee No", Employee."No.");
-                    Assignmat.SetRange(Company, Employee.GetFilter("Company Code"));
+                    // Assignmat.SetRange(Company, Employee.GetFilter("Company Code"));
                     Assignmat.SetRange(Assignmat.Type, Assignmat.Type::Deduction);
                     Assignmat.SETFILTER(Assignmat.Code, '%1|%2|%3', 'PAYE', 'SHIF', 'NSSF');
                     Assignmat.SetRange(Assignmat.Code, deductcode[i]);
@@ -1372,7 +1373,7 @@ report 51476 "Client Master Roll Report2"
                     Assignmat.SetRange(Assignmat.Type, Assignmat.Type::Deduction);
                     Assignmat.SetRange(Assignmat.Code, CCcode[i]);
                     Assignmat.SetRange(Assignmat."Payroll Period", DateSpecified);
-                    Assignmat.SetRange(Assignmat.Company, Employee.GetFilter("Company Code"));
+                    // Assignmat.SetRange(Assignmat.Company, Employee.GetFilter("Company Code"));
                     Assignmat.SetFilter(Assignmat."Employer Amount", '<>%1', 0);
                     if Assignmat.Find('-') then CompanyCosts[i] := Abs(Assignmat."Employer Amount");
                     TotalCompanyCosts := TotalCompanyCosts + CompanyCosts[i];
@@ -1414,12 +1415,12 @@ report 51476 "Client Master Roll Report2"
     }
     trigger OnPreReport()
     begin
-        if Employee.GetFilter("Company Code") = '' then Error('You must select a company to report for.');
+        // if Employee.GetFilter("Company Code") = '' then Error('You must select a company to report for.');
         if Employee.GetFilter("Pay Period Filter") = '' then Error('You must select a pay period to report for.');
         DateSpecified := Employee.GetRangeMin(Employee."Pay Period Filter");
         //Earnings
         EarnRec.Reset;
-        EarnRec.SetRange(Company, Employee.GetFilter("Company Code"));
+        // EarnRec.SetRange(Company, Employee.GetFilter("Company Code"));
         EarnRec.SetRange(EarnRec."Show on Master Roll", true);
         if EarnRec.Find('-') then
             repeat
@@ -1433,7 +1434,7 @@ report 51476 "Client Master Roll Report2"
             until EarnRec.Next = 0;
         //Earnings
         EarnRec.Reset;
-        EarnRec.SetRange(Company, Employee.GetFilter("Company Code"));
+        // EarnRec.SetRange(Company, Employee.GetFilter("Company Code"));
         EarnRec.SetRange(EarnRec."Show on Master Roll", true);
         EarnRec.SetRange(EarnRec."Earning Type", EarnRec."Earning Type"::"Tax Relief");
         if EarnRec.Find('-') then
@@ -1448,9 +1449,9 @@ report 51476 "Client Master Roll Report2"
             until EarnRec.Next = 0;
         //Earnings
         EarnRec.Reset;
-        EarnRec.SetRange(Company, Employee.GetFilter("Company Code"));
+        // EarnRec.SetRange(Company, Employee.GetFilter("Company Code"));
         EarnRec.SetRange(EarnRec."Show on Master Roll", true);
-        EarnRec.SetRange(EarnRec."Calculation Method", EarnRec."Calculation Method"::"% of SHIF");
+        EarnRec.SetRange(EarnRec."Calculation Method", EarnRec."Calculation Method"::"% of NHIF Amount");
         if EarnRec.Find('-') then
             repeat
                 EarnRec.SetFilter("Pay Period Filter", '%1', DateSpecified);
@@ -1464,7 +1465,7 @@ report 51476 "Client Master Roll Report2"
         NoOfEarnings := i;
         //Deductions
         DedRec.Reset;
-        DedRec.SetRange(Company, Employee.GetFilter("Company Code"));
+        // DedRec.SetRange(Company, Employee.GetFilter("Company Code"));
         DedRec.SetRange(DedRec."Show on Master Roll", true);
         if DedRec.Find('-') then
             repeat
@@ -1479,7 +1480,7 @@ report 51476 "Client Master Roll Report2"
         NoOfDeductions := j;
         //Company Costs
         CCRec.Reset;
-        CCRec.SetRange(Company, Employee.GetFilter("Company Code"));
+        // CCRec.SetRange(Company, Employee.GetFilter("Company Code"));
         CCRec.SetRange(CCRec."Show on Master Roll", true);
         if CCRec.Find('-') then
             repeat
@@ -1491,7 +1492,7 @@ report 51476 "Client Master Roll Report2"
                     CCDesc[k] := 'ER ' + CCRec.Description;
                 end;
             until CCRec.Next = 0;
-        CompInfo.Get(Employee.GetFilter("Company Code"));
+        // CompInfo.Get(Employee.GetFilter("Company Code"));
         CompInfo.CalcFields(Picture);
     end;
 
@@ -1499,9 +1500,9 @@ report 51476 "Client Master Roll Report2"
         Allowances: array[100] of Decimal;
         Deductions: array[100] of Decimal;
         CompanyCosts: array[100] of Decimal;
-        EarnRec: Record "Client Earnings";
-        DedRec: Record "Client Deductions";
-        CCRec: Record "Client Deductions";
+        EarnRec: Record Earning;
+        DedRec: Record Deduction;
+        CCRec: Record Deduction;
         Earncode: array[100] of Code[20];
         deductcode: array[100] of Code[20];
         CCcode: array[100] of Code[20];
@@ -1511,7 +1512,7 @@ report 51476 "Client Master Roll Report2"
         i: Integer;
         j: Integer;
         k: Integer;
-        Assignmat: Record "Client Payroll Matrix";
+        Assignmat: Record "Assignment Matrix";
         DateSpecified: Date;
         Totallowances: Decimal;
         TotalDeductions: Decimal;
@@ -1521,16 +1522,16 @@ report 51476 "Client Master Roll Report2"
         counter: Integer;
         HRSetup: Record "Human Resources Setup";
         NetPay: Decimal;
-        Payroll: Codeunit "Client Payroll Calculator";
+        Payroll: Codeunit Payroll;
         MASTER_ROLLCaptionLbl: Label 'MASTER ROLL';
         CurrReport_PAGENOCaptionLbl: Label 'Page';
         Other_AllowancesCaptionLbl: Label 'Other Allowances';
-        NAVEmp: Record "Client Employee Master";
+        NAVEmp: Record Employee;
         EmpName: Text;
-        CompInfo: Record "Client Company Information";
+        CompInfo: Record "Company Information";
         SendToEFT: Boolean;
         CashMgt: Codeunit "Cash Management";
-        Banks: Record "Commercial Banks";
+        Banks: Record Banks;
         TotalRelief: Decimal;
         NoOfEarnings: Integer;
         NoOfDeductions: Integer;
