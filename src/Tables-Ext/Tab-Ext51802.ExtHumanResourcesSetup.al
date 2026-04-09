@@ -605,5 +605,9 @@ tableextension 51802 "ExtHuman Resources Setup" extends "Human Resources Setup"
             TableRelation = "No. Series";
             Caption = 'Employee Change Nos';
         }
+        field(52054; "Owner occupier interest"; Code[10])
+        {
+            TableRelation = Earning.Code ;
+        }
     }
 }

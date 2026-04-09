@@ -133,6 +133,10 @@ pageextension 51804 "ExtHuman Resources Setup" extends "Human Resources Setup"
             {
                 ApplicationArea = all;
             }
+            field("Owner occupier interest"; Rec."Owner occupier interest")
+            {
+                ApplicationArea = All;
+            }
             field("Exit Nos"; Rec."Exit Nos")
             {
                 ApplicationArea = All;

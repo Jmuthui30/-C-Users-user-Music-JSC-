@@ -609,7 +609,8 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                     action("P9A Report ")
                     {
                         Image = ResourcePlanning;
-                        RunObject = report "P9A Report";
+                        // RunObject = report "P9A Report";
+                        RunObject = report "Client P9A";
                         ApplicationArea = All;
                         ToolTip = 'Executes the P9A Report  action';
                         Caption = 'P9A Report ';
