@@ -205,7 +205,7 @@ report 51464 "Client P9A"
             column(Insurance_ReliefCaption; Insurance_ReliefCaptionLbl)
             {
             }
-            dataitem("Client Payroll Period"; "Client Payroll Period")
+            dataitem("Client Payroll Period"; "Payroll Period II")
             {
                 DataItemTableView = SORTING("Starting Date") ORDER(Ascending);
 
@@ -413,7 +413,7 @@ report 51464 "Client P9A"
                     //RetirementVar:=ABS(Employee."Retirement Contribution");
                     //Ajeso
                     // PayrollSetup.Get(Employee.GetFilter("Company Code"));
-                    PayrollSetup.TestField(PayrollSetup."Owner occupier interest");
+                    // PayrollSetup.TestField(PayrollSetup."Owner occupier interest");
                     PensionLimit := PayrollSetup."Pension Limit Amount";
                     Earn.Reset;
                     Earn.SetCurrentKey(Earn."Earning Type");
@@ -752,13 +752,13 @@ report 51464 "Client P9A"
                 {
                     ApplicationArea = All;
                     StyleExpr = FALSE;
-                    TableRelation = "Client Payroll Period";
+                    TableRelation = "Payroll Period II";
                 }
                 field("End Date"; EndDate)
                 {
                     ApplicationArea = All;
                     StyleExpr = FALSE;
-                    TableRelation = "Client Payroll Period";
+                    TableRelation = "Payroll Period II";
                 }
             }
         }
@@ -951,7 +951,7 @@ report 51464 "Client P9A"
 
     procedure GetTaxBracket(var TaxableAmount: Decimal)
     var
-        TaxTable: Record "Client Bracket";
+        TaxTable: Record "Brackets";
         TotalTax: Decimal;
         Tax: Decimal;
         EndTax: Boolean;
