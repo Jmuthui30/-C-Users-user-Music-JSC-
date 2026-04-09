@@ -24,100 +24,6 @@
       <rd:DataSourceID>fef53311-8250-435a-a226-8680b32cff42</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="FORMAT_TODAY_0_4_">
-          <DataField>FORMAT_TODAY_0_4_</DataField>
-        </Field>
-        <Field Name="COMPANYNAME">
-          <DataField>COMPANYNAME</DataField>
-        </Field>
-        <Field Name="USERID">
-          <DataField>USERID</DataField>
-        </Field>
-        <Field Name="PayrollMonth">
-          <DataField>PayrollMonth</DataField>
-        </Field>
-        <Field Name="EarningCode">
-          <DataField>EarningCode</DataField>
-        </Field>
-        <Field Name="EarningDescription">
-          <DataField>EarningDescription</DataField>
-        </Field>
-        <Field Name="PAYROLL_RECONCILIATIONCaption">
-          <DataField>PAYROLL_RECONCILIATIONCaption</DataField>
-        </Field>
-        <Field Name="CurrReport_PAGENOCaption">
-          <DataField>CurrReport_PAGENOCaption</DataField>
-        </Field>
-        <Field Name="EmployeeCaption">
-          <DataField>EmployeeCaption</DataField>
-        </Field>
-        <Field Name="Current_PeriodCaption">
-          <DataField>Current_PeriodCaption</DataField>
-        </Field>
-        <Field Name="Last_PeriodCaption">
-          <DataField>Last_PeriodCaption</DataField>
-        </Field>
-        <Field Name="DifferenceCaption">
-          <DataField>DifferenceCaption</DataField>
-        </Field>
-        <Field Name="Pay_Period_Filter">
-          <DataField>Pay_Period_Filter</DataField>
-        </Field>
-        <Field Name="EarningEmployeeNo">
-          <DataField>EarningEmployeeNo</DataField>
-        </Field>
-        <Field Name="EarningAmount">
-          <DataField>EarningAmount</DataField>
-        </Field>
-        <Field Name="EarningAmountFormat">
-          <DataField>EarningAmountFormat</DataField>
-        </Field>
-        <Field Name="EarningEmpName">
-          <DataField>EarningEmpName</DataField>
-        </Field>
-        <Field Name="EarningLastMonthVal">
-          <DataField>EarningLastMonthVal</DataField>
-        </Field>
-        <Field Name="EarningLastMonthValFormat">
-          <DataField>EarningLastMonthValFormat</DataField>
-        </Field>
-        <Field Name="EarningDifference">
-          <DataField>EarningDifference</DataField>
-        </Field>
-        <Field Name="EarningDifferenceFormat">
-          <DataField>EarningDifferenceFormat</DataField>
-        </Field>
-        <Field Name="Type">
-          <DataField>Type</DataField>
-        </Field>
-        <Field Name="Payroll_Period">
-          <DataField>Payroll_Period</DataField>
-        </Field>
-        <Field Name="EanEarningCode">
-          <DataField>EanEarningCode</DataField>
-        </Field>
-        <Field Name="EarningPayrollPeriod">
-          <DataField>EarningPayrollPeriod</DataField>
-        </Field>
-        <Field Name="EarningRefNo">
-          <DataField>EarningRefNo</DataField>
-        </Field>
-        <Field Name="Payroll_Period_">
-          <DataField>Payroll_Period_</DataField>
-        </Field>
-        <Field Name="CompanyInfo">
-          <DataField>CompanyInfo</DataField>
-        </Field>
-      </Fields>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -1301,12 +1207,6 @@
       </Page>
     </ReportSection>
   </ReportSections>
-  <ReportParametersLayout>
-    <GridLayoutDefinition>
-      <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
-    </GridLayoutDefinition>
-  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -1344,4 +1244,98 @@ End Function
 </Code>
   <Language>=User!Language</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="FORMAT_TODAY_0_4_">
+          <DataField>FORMAT_TODAY_0_4_</DataField>
+        </Field>
+        <Field Name="COMPANYNAME">
+          <DataField>COMPANYNAME</DataField>
+        </Field>
+        <Field Name="USERID">
+          <DataField>USERID</DataField>
+        </Field>
+        <Field Name="PayrollMonth">
+          <DataField>PayrollMonth</DataField>
+        </Field>
+        <Field Name="EarningCode">
+          <DataField>EarningCode</DataField>
+        </Field>
+        <Field Name="EarningDescription">
+          <DataField>EarningDescription</DataField>
+        </Field>
+        <Field Name="PAYROLL_RECONCILIATIONCaption">
+          <DataField>PAYROLL_RECONCILIATIONCaption</DataField>
+        </Field>
+        <Field Name="CurrReport_PAGENOCaption">
+          <DataField>CurrReport_PAGENOCaption</DataField>
+        </Field>
+        <Field Name="EmployeeCaption">
+          <DataField>EmployeeCaption</DataField>
+        </Field>
+        <Field Name="Current_PeriodCaption">
+          <DataField>Current_PeriodCaption</DataField>
+        </Field>
+        <Field Name="Last_PeriodCaption">
+          <DataField>Last_PeriodCaption</DataField>
+        </Field>
+        <Field Name="DifferenceCaption">
+          <DataField>DifferenceCaption</DataField>
+        </Field>
+        <Field Name="Pay_Period_Filter">
+          <DataField>Pay_Period_Filter</DataField>
+        </Field>
+        <Field Name="EarningEmployeeNo">
+          <DataField>EarningEmployeeNo</DataField>
+        </Field>
+        <Field Name="EarningAmount">
+          <DataField>EarningAmount</DataField>
+        </Field>
+        <Field Name="EarningAmountFormat">
+          <DataField>EarningAmountFormat</DataField>
+        </Field>
+        <Field Name="EarningEmpName">
+          <DataField>EarningEmpName</DataField>
+        </Field>
+        <Field Name="EarningLastMonthVal">
+          <DataField>EarningLastMonthVal</DataField>
+        </Field>
+        <Field Name="EarningLastMonthValFormat">
+          <DataField>EarningLastMonthValFormat</DataField>
+        </Field>
+        <Field Name="EarningDifference">
+          <DataField>EarningDifference</DataField>
+        </Field>
+        <Field Name="EarningDifferenceFormat">
+          <DataField>EarningDifferenceFormat</DataField>
+        </Field>
+        <Field Name="Type">
+          <DataField>Type</DataField>
+        </Field>
+        <Field Name="Payroll_Period">
+          <DataField>Payroll_Period</DataField>
+        </Field>
+        <Field Name="EanEarningCode">
+          <DataField>EanEarningCode</DataField>
+        </Field>
+        <Field Name="EarningPayrollPeriod">
+          <DataField>EarningPayrollPeriod</DataField>
+        </Field>
+        <Field Name="EarningRefNo">
+          <DataField>EarningRefNo</DataField>
+        </Field>
+        <Field Name="Payroll_Period_">
+          <DataField>Payroll_Period_</DataField>
+        </Field>
+        <Field Name="CompanyInfo">
+          <DataField>CompanyInfo</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>

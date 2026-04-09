@@ -1303,12 +1303,19 @@ report 51476 "Client Master Roll Report2"
             column(Grade; Scale)
             {
             }
+            column(AnniversaryMonth; AnniversaryMonth)
+            {
+            }
+
+
+
             column(Station; "Employee Group")
             {
             }
             column(Designation; Designation)
             {
             }
+
             trigger OnAfterGetRecord()
             begin
                 Employee.CalcFields(Employee."Total Allowances", Employee."Total Deductions");
@@ -1385,6 +1392,8 @@ report 51476 "Client Master Roll Report2"
                 begin
                     if HREmployee.Get(Employee."No.") then begin
                         Age := Dates.DetermineAge(HREmployee."Birth Date", Today);
+                        AnniversaryMonth := HREmployee."Incremental Month";
+
                     end;
                 end;
             end;
@@ -1512,6 +1521,7 @@ report 51476 "Client Master Roll Report2"
         EarnDesc: array[100] of Text[50];
         DedDesc: array[100] of Text[50];
         CCDesc: array[100] of Text[50];
+        AnniversaryMonth: Text[30];
         Thismonth: Date;
         i: Integer;
         j: Integer;
