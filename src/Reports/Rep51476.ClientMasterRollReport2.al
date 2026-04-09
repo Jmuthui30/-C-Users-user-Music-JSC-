@@ -16,6 +16,7 @@ report 51476 "Client Master Roll Report2"
             column(FORMAT_TODAY_0_4_; Format(Today, 0, 4))
             {
             }
+            column(PayrollMonth; StrSubstNo('%1', Format(Thismonth, 0, ' '))) { }
             column(COMPANYNAME; CompInfo.Name)
             {
             }
@@ -1296,6 +1297,9 @@ report 51476 "Client Master Roll Report2"
             column(Gender; Gender)
             {
             }
+            column(PIN_Number; "PIN Number")
+            {
+            }
             column(Grade; Scale)
             {
             }
@@ -1508,6 +1512,7 @@ report 51476 "Client Master Roll Report2"
         EarnDesc: array[100] of Text[50];
         DedDesc: array[100] of Text[50];
         CCDesc: array[100] of Text[50];
+        Thismonth: Date;
         i: Integer;
         j: Integer;
         k: Integer;
