@@ -410,6 +410,37 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                         ApplicationArea = All;
                         ToolTip = 'Executes the Deductions Report action';
                     }
+
+                    action("Third Parties Deductions Report")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Third Parties Deductions Report';
+                        Image = "Report";
+                        Promoted = true;
+                        PromotedCategory = "Report";
+                        PromotedIsBig = true;
+                        RunObject = Report "Client Deduction-Institution";
+                    }
+                    action("Total Deductions Only Per Employee")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Total Deductions Only Per Employee';
+                        Image = "Report";
+                        Promoted = true;
+                        PromotedCategory = "Report";
+                        PromotedIsBig = true;
+                        RunObject = Report "Total Deductions/Employee";
+                    }
+                    action("Total Earnings Only Per Employee")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Total Earnings Only Per Employee';
+                        Image = "Report";
+                        Promoted = true;
+                        PromotedCategory = "Report";
+                        PromotedIsBig = true;
+                        RunObject = Report "Total Earnings/Employee";
+                    }
                     action("Net Pay Report")
                     {
                         Image = "Report";
