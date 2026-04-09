@@ -200,4 +200,28 @@ codeunit 52004 "Workflow Responses HR"
         end;
     end;
 
+    procedure ReopenTrainingRequest(var TrainingReq: Record "Training Request")
+    var
+        TrainingRequest: Record "Training Request";
+    begin
+        TrainingRequest.Reset();
+        TrainingRequest.SetRange("Request No.", TrainingReq."Request No.");
+        if TrainingRequest.FindFirst() then begin
+            TrainingRequest.Status := TrainingRequest.Status::Open;
+            TrainingRequest.Modify(true)
+        end;
+    end;
+
+    procedure ReleaseTrainingRequest(var TrainingReq: Record "Training Request")
+    var
+        TrainingRequest: Record "Training Request";
+    begin
+        TrainingRequest.Reset();
+        TrainingRequest.SetRange("Request No.", TrainingReq."Request No.");
+        if TrainingRequest.FindFirst() then begin
+            TrainingRequest.Status := TrainingRequest.Status::Released;
+            TrainingRequest.Modify(true);
+        end;
+    end;
+
 }

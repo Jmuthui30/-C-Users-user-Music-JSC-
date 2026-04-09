@@ -211,7 +211,7 @@ page 51984 "Applicant Card-All"
                 field("Home County"; Rec."Home County")
                 {
                     ApplicationArea = All;
-                    ShowMandatory = true;
+                    //  ShowMandatory = true;
                     // Visible = Rec.Nationality = Rec.Nationality::Kenyan;
                     // Enabled = Rec.Nationality = Rec.Nationality::Kenyan;
                 }

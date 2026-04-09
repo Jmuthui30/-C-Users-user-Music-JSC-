@@ -185,8 +185,12 @@ page 52396 "Training Request Card"
                 trigger OnAction()
                 begin
 
-                    // if ApprovalsMgmt.CheckTrainingRequestWorkflowEnabled(Rec) then
-                    //     ApprovalsMgmt.OnSendTrainingRequestforApproval(Rec);
+                    if Rec.Status <> Rec.Status::Open then
+                        Error('Only records with Open status can be sent for approval.');
+                    if ApprovalsMgmt.CheckTrainingRequestWorkflowEnabled(Rec) then
+                        ApprovalsMgmt.OnSendTrainingRequestforApproval(Rec);
+                    CurrPage.Close();
+                    Message('Training Request %1 has been sent for approval.', Rec."Request No.");
                 end;
             }
             action("Cancel Approval Request")
@@ -201,7 +205,8 @@ page 52396 "Training Request Card"
 
                 trigger OnAction()
                 begin
-                    // ApprovalsMgmt.OnCancelTrainingRequestApproval(Rec);
+                    if ApprovalsMgmt.CheckTrainingRequestWorkflowEnabled(Rec) then
+                        ApprovalsMgmt.OnCancelTrainingRequestApproval(Rec);
                 end;
             }
             action("View Approvals")
