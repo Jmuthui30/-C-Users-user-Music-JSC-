@@ -8,7 +8,7 @@
             "request": "launch",
             "type": "al",
             "environmentType": "Sandbox",
-            "environmentName": "Payroll",
+            "environmentName": "TEST",
             // "startupObjectId": 51742,
             // "startupObjectType": "Page",
             "schemaUpdateMode": "ForceSync",
