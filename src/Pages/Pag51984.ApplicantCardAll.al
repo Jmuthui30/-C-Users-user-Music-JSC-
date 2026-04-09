@@ -197,7 +197,6 @@ page 51984 "Applicant Card-All"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the employee''s initials.';
                     Caption = 'National ID No.';
-                    //  Editable= Rec.Nationality = Rec.Nationality::Kenyan;
                     trigger OnValidate()
                     begin
                         if Rec.Nationality = Rec.Nationality::Kenyan then begin
@@ -205,15 +204,10 @@ page 51984 "Applicant Card-All"
                                 Error('National ID is mandatory for Kenyan applicants.');
                         end;
                     end;
-                    // Visible = Rec.Nationality = Rec.Nationality::Kenyan;
-                    // Enabled = Rec.Nationality = Rec.Nationality::Kenyan;
                 }
                 field("Home County"; Rec."Home County")
                 {
                     ApplicationArea = All;
-                    //  ShowMandatory = true;
-                    // Visible = Rec.Nationality = Rec.Nationality::Kenyan;
-                    // Enabled = Rec.Nationality = Rec.Nationality::Kenyan;
                 }
                 field("Ethnic Group"; Rec."Ethnic Group")
                 {
