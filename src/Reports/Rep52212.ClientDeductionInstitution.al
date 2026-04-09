@@ -169,7 +169,7 @@ report 52212 "Client Deduction-Institution"
                 {
                     Caption = 'Payroll Period';
                     ApplicationArea = all;
-                    TableRelation = "Client Payroll Period"."Starting Date";
+                    TableRelation = "Payroll Period II"."Starting Date";
                 }
                 field(ReportTitle; ReportTitle)
                 {
@@ -205,7 +205,7 @@ report 52212 "Client Deduction-Institution"
     CompInfo: Record "Company Information";
     PeriodName: Text[30];
     AppliedFilters: Text;
-    PRPayrollPeriods: Record "Payroll Period";
+    PRPayrollPeriods: Record "Payroll Period II";
     EmpName: Text;
     Client: Record "Company Information";
     HREmp: Record "Employee";
