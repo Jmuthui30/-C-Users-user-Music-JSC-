@@ -1550,6 +1550,36 @@ tableextension 51424 "ExtEmployee" extends "Employee"
             Caption = 'Notify Leave Approval';
             DataClassification = CustomerContent;
         }
+        field(52239; "SHIF+InsuranceRelief"; Decimal)
+        {
+            CalcFormula = Sum("Assignment Matrix".Amount WHERE(Type = CONST(Earning), "Employee No" = FIELD("No."), "Payroll Period" = FIELD("Pay Period Filter"), "Insurance Relief" = CONST(true) //"Normal Earnings" = CONST(false),
+            /*Company = field("Company Code")*/));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(52240; Insurance; Decimal)
+        {
+            CalcFormula = Sum("Assignment Matrix".Amount WHERE(Type = CONST(Deduction), "Employee No" = FIELD("No."), "Payroll Period" = FIELD("Pay Period Filter"), "Insurance Code" = CONST(true)));
+            FieldClass = FlowField;
+        }
+        field(52241; Retirement; Decimal)
+        {
+            CalcFormula = Sum("Assignment Matrix".Amount WHERE(Type = CONST(Deduction), "Employee No" = FIELD("No."), "Payroll Period" = FIELD("Pay Period Filter"), Retirement = CONST(true)));
+            FieldClass = FlowField;
+        }
+        field(52242; "Personal+Insurance+SHIF-Relief"; Decimal)
+        {
+            CalcFormula = Sum("Assignment Matrix".Amount WHERE(Type = CONST(Earning), "Employee No" = FIELD("No."), "Payroll Period" = FIELD("Pay Period Filter"), "Tax Relief" = CONST(true)/*, //"Normal Earnings" = CONST(false),
+            Company = field("Company Code")*/));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(52243; "Global Dimension 3 Code"; Code[20])
+        {
+            CaptionClass = '1,2,3';
+            Caption = 'Global Dimension 3 Code';
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(3));
+        }
     }
 
     trigger OnInsert()
