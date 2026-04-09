@@ -1,8 +1,9 @@
 report 52215 "KRA ITAX P10 Report"
 {
     // version THL- Client Payroll 1.0
-    DefaultLayout = RDLC;
-    RDLCLayout = './Reports/SSRS/KRA ITAX P10 Report.rdlc';
+    // DefaultLayout = RDLC;
+    // RDLCLayout = './Reports/SSRS/KRA ITAX P10 Report.rdlc';
+    DefaultRenderingLayout = "KRA ITAX P10 Report";
     UsageCategory = ReportsAndAnalysis;
 
     dataset
@@ -312,6 +313,30 @@ report 52215 "KRA ITAX P10 Report"
         {
         }
     }
+    rendering
+    {
+        layout(P10A)
+        {
+            Type = RDLC;
+            LayoutFile = './Reports/SSRS/P10 A.rdlc';
+        }
+        layout(P10B)
+        {
+            Type = RDLC;
+            LayoutFile = './Reports/SSRS/P10 B.rdlc';
+        }
+        layout(P10Monthly)
+        {
+            Type = RDLC;
+            LayoutFile = './Reports/SSRS/P10Monthly.rdlc';
+
+        }
+        layout("KRA ITAX P10 Report")
+        {
+            Type = RDLC;
+            LayoutFile = './Reports/SSRS/KRA ITAX P10 Report.rdlc';
+        }
+    }
     labels
     {
     }
@@ -466,7 +491,7 @@ report 52215 "KRA ITAX P10 Report"
 
     procedure GetTaxBracket(var TaxableAmount: Decimal)
     var
-        TaxTable: Record "Client Bracket";
+        TaxTable: Record Bracket;
         TotalTax: Decimal;
         Tax: Decimal;
         EndTax: Boolean;
@@ -511,7 +536,7 @@ report 52215 "KRA ITAX P10 Report"
 
     procedure PayrollRounding(var Amount: Decimal) PayrollRounding: Decimal
     var
-        HRsetup: Record "QuantumJumps HR Setup";
+        HRsetup: Record "Human Resources Setup";
     begin
         HRsetup.Get;
         if HRsetup."Payroll Rounding Precision" = 0 then Error('You must specify the rounding precision under HR setup');
@@ -519,4 +544,5 @@ report 52215 "KRA ITAX P10 Report"
         if HRsetup."Payroll Rounding Type" = HRsetup."Payroll Rounding Type"::Up then PayrollRounding := Round(Amount, HRsetup."Payroll Rounding Precision", '>');
         if HRsetup."Payroll Rounding Type" = HRsetup."Payroll Rounding Type"::Down then PayrollRounding := Round(Amount, HRsetup."Payroll Rounding Precision", '<');
     end;
+    
 }

@@ -1569,7 +1569,7 @@ tableextension 51424 "ExtEmployee" extends "Employee"
         }
         field(52242; "Personal+Insurance+SHIF-Relief"; Decimal)
         {
-            CalcFormula = Sum("Client Payroll Matrix".Amount WHERE(Type = CONST(Payment), "Employee No" = FIELD("No."), "Payroll Period" = FIELD("Pay Period Filter"), "Tax Relief" = CONST(true)/*, //"Normal Earnings" = CONST(false),
+            CalcFormula = Sum("Assignment Matrix".Amount WHERE(Type = CONST(Earning), "Employee No" = FIELD("No."), "Payroll Period" = FIELD("Pay Period Filter"), "Tax Relief" = CONST(true)/*, //"Normal Earnings" = CONST(false),
             Company = field("Company Code")*/));
             Editable = false;
             FieldClass = FlowField;
