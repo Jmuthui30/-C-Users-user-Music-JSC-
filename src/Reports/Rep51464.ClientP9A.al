@@ -8,10 +8,10 @@ report 51464 "Client P9A"
 
     dataset
     {
-        dataitem(Employee; "Client Employee Master")
+        dataitem(Employee; Employee)
         {
             DataItemTableView = SORTING("No.") ORDER(Ascending);
-            RequestFilterFields = "Company Code", "No.";
+            RequestFilterFields =  "No.";
 
             column(First_Name________Middle_Name_; NAVEmp."First Name" + ' ' + NAVEmp."Middle Name")
             {
@@ -22,10 +22,10 @@ report 51464 "Client P9A"
             column(COMPANYNAME; CompanyName)
             {
             }
-            column(Company_Name; Company.Name)
+            column(Company_Name; CompanyInfo.Name)
             {
             }
-            column(Company_Pin; Company."VAT Registration No.")
+            column(Company_Pin; CompanyInfo."VAT Registration No.")
             {
             }
             column(V30__; '30%')
@@ -151,7 +151,7 @@ report 51464 "Client P9A"
             column(SHIF_InsuranceRelief; "SHIF+InsuranceRelief")
             {
             }
-            column(SHIF_No; "SHIF No")
+            column(SHIF_No;"SHIF No.")
             {
             }
             column(ECaption; ECaptionLbl)
@@ -398,12 +398,12 @@ report 51464 "Client P9A"
                     Relief := 0;
                     TotalSHIFInsRelief := 0;
                     TOTALCummPAYE := 0;
-                    if Employee."Pays Tax" then begin
+                    if Employee."Pays Tax?" then begin
                         Employee.SetRange("Pay Period Filter", "Starting Date");
                         Employee.CalcFields("Taxable Allowance", "Tax Deductible Amount", "Total Allowances", Employee."Cumm. PAYE", Employee."SHIF+InsuranceRelief", Employee.Retirement);
                         Employee.CalcFields(Employee."Taxable Allowance", "Tax Deductible Amount", Employee."Taxable Allowance");
                         Employee.CalcFields("Total Allowances", "Total Deductions");
-                        Employee.CalcFields(Basic);
+                        Employee.CalcFields("Basic Pay");
                         Employee.CalcFields("Benefits-Non Cash", "Owner Occupier");
                     end;
                     TOTALCummPAYE := Employee."SHIF+InsuranceRelief" + Employee."Cumm. PAYE";
@@ -412,7 +412,7 @@ report 51464 "Client P9A"
                     TotalV30PerPension := Employee.Retirement;
                     //RetirementVar:=ABS(Employee."Retirement Contribution");
                     //Ajeso
-                    PayrollSetup.Get(Employee.GetFilter("Company Code"));
+                    // PayrollSetup.Get(Employee.GetFilter("Company Code"));
                     PayrollSetup.TestField(PayrollSetup."Owner occupier interest");
                     PensionLimit := PayrollSetup."Pension Limit Amount";
                     Earn.Reset;
@@ -420,11 +420,11 @@ report 51464 "Client P9A"
                     Earn.SetRange(Earn.Code, PayrollSetup."Owner occupier interest");
                     if Earn.Find('-') then begin
                         AssMatrix.Reset;
-                        AssMatrix.SetRange(AssMatrix.Type, AssMatrix.Type::Payment);
+                        AssMatrix.SetRange(AssMatrix.Type, AssMatrix.Type::Earning);
                         AssMatrix.SetRange(AssMatrix."Employee No", Employee."No.");
                         AssMatrix.SetRange(AssMatrix."Payroll Period", "Starting Date");
                         AssMatrix.SetRange(Code, Earn.Code);
-                        AssMatrix.SetRange(Company, CompCode);
+                        // AssMatrix.SetRange(Company, CompCode);
                         if AssMatrix.Find('-') then begin
                             OwnerOccupierAmt := AssMatrix.Amount;
                             OccupierVar := AssMatrix.Amount;
@@ -432,7 +432,7 @@ report 51464 "Client P9A"
                     end;
                     // Get Owner Occupier
                     //END;
-                    GetPaye.CalculateTaxableAmount(Employee."No.", "Client Payroll Period"."Starting Date", IncomeTax, TaxableAmount, RetirementVar, Employee."Company Code");
+                    GetPaye.CalculateTaxableAmount(Employee."No.", "Client Payroll Period"."Starting Date", IncomeTax, TaxableAmount, RetirementVar/*, Employee."Company Code"*/);
                     //TaxableAmount:=Employee."Taxable Allowance"+Employee."Retirement Contribution"- OwnerOccupierAmt;
                     //OccupierVar := OwnerOccupierAmt;
                     /*
@@ -457,11 +457,11 @@ report 51464 "Client P9A"
                         if Earn.Find('-') then begin
                             Relief := 0;
                             AssMatrix.Reset;
-                            AssMatrix.SetRange(AssMatrix.Type, AssMatrix.Type::Payment);
+                            AssMatrix.SetRange(AssMatrix.Type, AssMatrix.Type::Earning);
                             AssMatrix.SetRange(AssMatrix."Employee No", Employee."No.");
                             AssMatrix.SetRange(AssMatrix."Payroll Period", "Starting Date");
                             AssMatrix.SetRange(Code, Earn.Code);
-                            AssMatrix.SetRange(Company, CompCode);
+                            // AssMatrix.SetRange(Company, CompCode);
                             if AssMatrix.Find('-') then Relief := AssMatrix.Amount;
                         end;
                     end;
@@ -474,19 +474,19 @@ report 51464 "Client P9A"
                         if Earn.Find('-') then begin
                             InsuranceRelief := 0;
                             AssMatrix.Reset;
-                            AssMatrix.SetRange(AssMatrix.Type, AssMatrix.Type::Payment);
+                            AssMatrix.SetRange(AssMatrix.Type, AssMatrix.Type::Earning);
                             //AssMatrix.SetRange(AssMatrix."Normal Earnings", AssMatrix."Normal Earnings" = false);
                             AssMatrix.SetRange(AssMatrix."Employee No", Employee."No.");
                             AssMatrix.SetRange(AssMatrix."Payroll Period", "Starting Date");
                             AssMatrix.SetRange(Code, Earn.Code);
-                            AssMatrix.SetRange(Company, CompCode);
+                            // AssMatrix.SetRange(Company, CompCode);
                             if AssMatrix.Find('-') then InsuranceRelief := AssMatrix.Amount;
                         end;
                     end;
                     //*****************SHIF
 
                     Deduction.Reset();
-                    Deduction.SetCurrentKey(Deduction."SHIF Code");
+                    Deduction.SetCurrentKey(Deduction.NHIF);
                     Deduction.SetRange(Deduction.Code, 'SHIF');
                     if Deduction.Find('-') then begin
                         SHIFAmount := 0;
@@ -495,7 +495,7 @@ report 51464 "Client P9A"
                         AssMatrix.SetRange(AssMatrix."Employee No", Employee."No.");
                         AssMatrix.SetRange(AssMatrix."Payroll Period", "Starting Date");
                         AssMatrix.SetRange(Code, Deduction.Code);
-                        AssMatrix.SetRange(Company, CompCode);
+                        // AssMatrix.SetRange(Company, CompCode);
                         if AssMatrix.Find('-') then
                             SHIFAmount := -AssMatrix.Amount;
                     end;
@@ -510,7 +510,7 @@ report 51464 "Client P9A"
                         AssMatrix.SetRange(AssMatrix."Employee No", Employee."No.");
                         AssMatrix.SetRange(AssMatrix."Payroll Period", "Starting Date");
                         AssMatrix.SetRange(Code, Deduction.Code);
-                        AssMatrix.SetRange(Company, CompCode);
+                        // AssMatrix.SetRange(Company, CompCode);
                         if AssMatrix.Find('-') then
                             AHLAmount := -AssMatrix.Amount;
                     end;
@@ -525,7 +525,7 @@ report 51464 "Client P9A"
                         AssMatrix.SetRange(AssMatrix."Employee No", Employee."No.");
                         AssMatrix.SetRange(AssMatrix."Payroll Period", "Starting Date");
                         AssMatrix.SetRange(Code, Deduction.Code);
-                        AssMatrix.SetRange(Company, CompCode);
+                        // AssMatrix.SetRange(Company, CompCode);
                         if AssMatrix.Find('-') then
                             PRMFAmount := -AssMatrix.Amount;
                     end;
@@ -724,8 +724,8 @@ report 51464 "Client P9A"
                 TotPound := 0;
                 grandPAYE := 0;
                 //"Total Quarters":=0;
-                Company.Get(Employee.GetFilter("Company Code"));
-                CoPin := Company."VAT Registration No.";
+                // CompanyInfo.Get(Employee.GetFilter("Company Code"));
+                CoPin := CompanyInfo."VAT Registration No.";
                 NAVEmp.Get(Employee."No.");
             end;
 
@@ -771,8 +771,8 @@ report 51464 "Client P9A"
     }
     trigger OnPreReport()
     begin
-        if Employee.GetFilter("Company Code") = '' then Error('Please select a company to report for.');
-        CompCode := Employee.GetFilter("Company Code");
+        // if Employee.GetFilter("Company Code") = '' then Error('Please select a company to report for.');
+        // CompCode := Employee.GetFilter("Company Code");
     end;
 
     procedure SetPeriod(StartDt: Date; EndDt: Date)
@@ -825,19 +825,19 @@ report 51464 "Client P9A"
         EndDate: Date;
         TotOcc: Decimal;
         TotRet: Decimal;
-        Company: Record "Client Company Information";
+        CompanyInfo: Record "Company Information";
         CoPin: Text[30];
         grandPAYE: Decimal;
         TaxCode: Code[10];
         retirecontribution: Decimal;
-        CompRec: Record "QuantumJumps HR Setup";
+        CompRec: Record "Human Resources Setup";
         "30PerPension": Decimal;
         TotalV30PerPension: Decimal;
-        Earn: Record "Client Earnings";
-        Deduction: Record "Client Deductions";
-        AssMatrix: Record "Client Payroll Matrix";
+        Earn: Record Earning;
+        Deduction: Record Deduction;
+        AssMatrix: Record "Assignment Matrix";
         InsuranceRelief: Decimal;
-        GetGroup: Codeunit "Client Payroll Calculator";
+        GetGroup: Codeunit Payroll;
         GroupCode: Code[20];
         CUser: Code[50];
         Employers_Name_CaptionLbl: Label 'Employers Name:';
@@ -935,7 +935,7 @@ report 51464 "Client P9A"
         EmptyStringCaption_Control224Lbl: Label '=';
         KshsCaptionLbl: Label 'Kshs';
         OwnerOccupierAmt: Decimal;
-        GetPaye: Codeunit "Client Payroll Calculator";
+        GetPaye: Codeunit Payroll;
         IMPORTANT: Label 'IMPORTANT';
         "UseP9A(a)": Label '(a)  For all liable Employees and where director/ employees receives benefits in addition to cash emoluments.';
         "UseP9A(b)": Label '(b)  Where an Employee is eligible to deduction on owner occupier interest and the total interest payable in the year is K.shs. 150,000/= and above.';
@@ -945,8 +945,8 @@ report 51464 "Client P9A"
         CompletionByEmployerLbl: Label 'To be completed by Employer at end of year';
         "1_Use_P9A": Label '1. Use P9A ';
         b_Attach: Label '(b) Attach ';
-        PayrollSetup: Record "Client Payroll Setup";
-        NAVEmp: Record "Client Employee Master";
+        PayrollSetup: Record "Human Resources Setup";
+        NAVEmp: Record Employee;
         CompCode: Code[20];
 
     procedure GetTaxBracket(var TaxableAmount: Decimal)
@@ -982,7 +982,7 @@ report 51464 "Client P9A"
         TotalTax := TotalTax;
         TotalTax := PayrollRounding(TotalTax);
         IncomeTax := -TotalTax;
-        if not Employee."Pays Tax" then IncomeTax := 0;
+        if not Employee."Pays Tax?" then IncomeTax := 0;
     end;
 
     procedure PayrollRounding(var Amount: Decimal) PayrollRounding: Decimal
