@@ -14,7 +14,7 @@ report 51478 "Payroll Reconciliation"
             column(FORMAT_TODAY_0_4_; Format(Today, 0, 4)) { }
             column(COMPANYNAME; CompanyName) { }
             column(USERID; UserId) { }
-            column(PayrollMonth; StrSubstNo('%1', Format(Thismonth, 0, ' '))) { }
+            column(PayrollMonth; StrSubstNo('PERIOD: %1', Format(Thismonth, 0, '<Month Text> <Year4>'))) { }
             column(EarningCode; Code) { }
             column(EarningDescription; Desc) { }
             column(PAYROLL_RECONCILIATIONCaption; PAYROLL_RECONCILIATIONCaptionLbl) { }
@@ -112,7 +112,14 @@ report 51478 "Payroll Reconciliation"
 
             trigger OnPreDataItem()
             begin
-                // Set filter to include BOTH current and last month
+                if "Assignment Matrix-X".GetFilter("Payroll Period") = '' then
+                    Error('No Payroll Period filter set. Please set one on the request page.');
+
+                Thismonth := "Assignment Matrix-X".GetRangeMin("Payroll Period");
+                Lastmonth := CalcDate('-1M', Thismonth);
+
+                // Message('ThisMonth: %1, LastMonth: %2', Thismonth, Lastmonth);  
+
                 SetRange("Payroll Period", Lastmonth, Thismonth);
             end;
 
