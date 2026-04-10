@@ -4,13 +4,13 @@ table 52362 "Training Budget"
     Caption = 'Training Budget';
     fields
     {
-        field(1; "Training Year"; Code[10])
+        field(1; "Training Year"; Code[100])
         {
             Caption = 'Training Year';
         }
-        field(2; "Budget Item No"; Code[20])
+        field(2; "Budget Item No"; Code[200])
         {
-            NotBlank = true;
+            //NotBlank = true;
             Caption = 'Budget Item No';
         }
         field(3; "Source of Funds"; Code[15])
@@ -47,7 +47,7 @@ table 52362 "Training Budget"
 
 
                 if "Estimated Cost" > (BudgetAmount - TrainingPlanAmount) then
-                    Error('Overall budget amount for A/C no %1 has been exceeded by %2. Total Budgeted amount = %3', "Source of Funds",
+                    Message('Overall budget amount for A/C no %1 has been exceeded by %2. Total Budgeted amount = %3', "Source of Funds",
                     ("Estimated Cost" - (BudgetAmount - TrainingPlanAmount)), BudgetAmount);
             end;
         }
@@ -105,11 +105,11 @@ table 52362 "Training Budget"
                 HRSetup.TestField("Training Budget Item Nos");
                 if "Budget Item No" = '' then
                     // NoSeriesMgt.InitSeries(HRSetup."Training Budget Item Nos", xRec."No. Series", 0D, "Budget Item No", "No. Series");
-                    if NoSeriesMgt.AreRelated(HRSetup."Training Budget Item Nos",xRec."No. Series") then
-            "No. Series":=xRec."No. Series"
-            else
-            "No. Series":=HRSetup."Training Budget Item Nos";
-            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
+                    if NoSeriesMgt.AreRelated(HRSetup."Training Budget Item Nos", xRec."No. Series") then
+                        "No. Series" := xRec."No. Series"
+                    else
+                        "No. Series" := HRSetup."Training Budget Item Nos";
+                "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
             end;
         }
         field(12; "Date Filter"; Date)
@@ -146,7 +146,7 @@ table 52362 "Training Budget"
             TableRelation = "Dimension Set Entry";
             Caption = 'Dimension Set ID';
         }
-        field(16; "No. Series"; code[10])
+        field(16; "No. Series"; code[100])
         {
             Caption = 'No. Series';
         }

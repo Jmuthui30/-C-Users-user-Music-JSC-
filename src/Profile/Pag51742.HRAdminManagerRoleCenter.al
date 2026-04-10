@@ -1603,7 +1603,7 @@ page 51742 "HR & Admin Manager Role Center"
                     Caption = 'Training Budget';
                     action("Training Budget")
                     {
-                        RunObject = page "Training Plan";
+                        RunObject = page "Training Plan Budget";
                         ToolTip = 'Executes the Training Budget action';
                         Caption = 'Training Budget';
                     }
@@ -1643,6 +1643,8 @@ page 51742 "HR & Admin Manager Role Center"
                 }
                 group("Training Needs Requisitions")
                 {
+                    Visible = false;
+                    Caption = 'Training Needs Requisitions';
                     action("Open Training Needs Requisitions")
                     {
                         RunObject = page "Training Needs Requisitions";
