@@ -4,12 +4,12 @@ table 52361 "Training Needs Lines"
     Caption = 'Training Needs Lines';
     fields
     {
-        field(1; "Document No."; Code[20])
+        field(1; "Document No."; Code[200])
         {
             TableRelation = "Training Need";
             Caption = 'Document No.';
         }
-        field(3; "Expense Code"; Code[20])
+        field(3; "Expense Code"; Code[200])
         {
             TableRelation = "Training Budget"."Budget Item No";
             Caption = 'Expense Code';
@@ -19,6 +19,7 @@ table 52361 "Training Needs Lines"
                 TrainingBudget: Record "Training Budget";
             begin
                 if TrainingBudget.Get("Expense Code") then begin
+                    Message('Budget Item: %1, Description: %2', TrainingBudget."No.", TrainingBudget.Description);
                     "G/L Account" := TrainingBudget."No.";
                     "Expense name" := TrainingBudget.Description;
                     "Budget Line" := TrainingBudget."Source of Funds";
@@ -26,7 +27,7 @@ table 52361 "Training Needs Lines"
 
             end;
         }
-        field(4; "G/L Account"; Code[20])
+        field(4; "G/L Account"; Code[200])
         {
             TableRelation = "G/L Account"."No.";
             Caption = 'G/L Account';
@@ -52,7 +53,7 @@ table 52361 "Training Needs Lines"
         {
             Caption = 'Amount (LCY)';
         }
-        field(7; "Currency Code"; Code[10])
+        field(7; "Currency Code"; Code[100])
         {
             TableRelation = Currency;
             Caption = 'Currency Code';
@@ -115,11 +116,11 @@ table 52361 "Training Needs Lines"
             OptionMembers = Open,Closed,Application;
             Caption = 'Status';
         }
-        field(15; "Expense name"; Text[30])
+        field(15; "Expense name"; Text[300])
         {
             Caption = 'Expense name';
         }
-        field(16; "Budget Line"; Code[20])
+        field(16; "Budget Line"; Code[200])
         {
             TableRelation = "G/L Account";
             Caption = 'Budget Line';

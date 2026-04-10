@@ -96,6 +96,11 @@ pageextension 51804 "ExtHuman Resources Setup" extends "Human Resources Setup"
                 ApplicationArea = All;
             }
             // Training Needs Nos
+            // "Training Budget Item Nos"
+            field("Training Budget Item Nos"; "Training Budget Item Nos")
+            {
+                ApplicationArea = All;
+            }
             field("Training Needs Nos."; Rec."Training Needs Nos")
             {
                 ApplicationArea = All;

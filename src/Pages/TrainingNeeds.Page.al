@@ -170,7 +170,7 @@ page 52170 "Training Need"
                     }
                 }
             }
-            part(Control39; "Training Needs Lines")
+            part(Control39; "Training Needs Line")
             {
                 //Visible = true;
                 SubPageLink = "Document No." = field(Code);
@@ -224,6 +224,20 @@ page 52170 "Training Need"
                         Rec.Status := Rec.Status::Closed;
                         Rec.Modify();
                     end;
+                end;
+            }
+            action("Needs Assesment Form")
+            {
+                ApplicationArea = All;
+                Image = "Report";
+                Promoted = true;
+                PromotedIsBig = true;
+
+                trigger OnAction()
+                begin
+                    Rec.Reset;
+                    // Rec.SetRange("No.", Rec."No.");
+                    REPORT.Run(51608, true, false, Rec);
                 end;
             }
             action("Proposed Training Participants")

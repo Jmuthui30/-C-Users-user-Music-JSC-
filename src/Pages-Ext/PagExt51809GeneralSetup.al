@@ -14,6 +14,10 @@ pageextension 51809 "Ext General Ledger Setup" extends "General Ledger Setup"
             {
                 ApplicationArea = All;
             }
+            field("Current Budget"; "Current Budget")
+            {
+                ApplicationArea = All;
+            }
 
         }
     }
