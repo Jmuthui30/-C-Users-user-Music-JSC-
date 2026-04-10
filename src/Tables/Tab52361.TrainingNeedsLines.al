@@ -18,8 +18,11 @@ table 52361 "Training Needs Lines"
             var
                 TrainingBudget: Record "Training Budget";
             begin
-                if TrainingBudget.Get("Expense Code") then begin
+                TrainingBudget.Reset();
+                TrainingBudget.SetRange("Budget Item No", "Expense Code");
+                if TrainingBudget.Find('-') then begin
                     Message('Budget Item: %1, Description: %2', TrainingBudget."No.", TrainingBudget.Description);
+                    // if TrainingBudget.Get("Expense Code") then begin
                     "G/L Account" := TrainingBudget."No.";
                     "Expense name" := TrainingBudget.Description;
                     "Budget Line" := TrainingBudget."Source of Funds";
