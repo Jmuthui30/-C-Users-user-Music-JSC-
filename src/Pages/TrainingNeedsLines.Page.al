@@ -75,7 +75,7 @@ page 52986 "Training Needs Line"
                         TrainingNeedLines.SetRange("Start Date", BudgetStartDate, Rec."Start Date");
                         TrainingNeedLines.SetRange("Dimension Set ID", Rec."Dimension Set ID");
                         TrainingNeedLines.SetFilter(Status, '<>%1', TrainingNeedLines.Status::Open);
-                        Page.Run(Page::"Training Needs Lines", TrainingNeedLines);
+                        Page.Run(Page::"Training Needs Line", TrainingNeedLines);
                     end;
                 }
                 field(BudgetAvailable; BudgetAvailable)

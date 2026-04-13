@@ -37,6 +37,7 @@ table 52362 "Training Budget"
                 GLBudget.SetRange(GLBudget.Date, GLSetup."Current Budget Start Date", GLSetup."Current Budget End Date");
                 GLBudget.CalcSums(Amount);
                 BudgetAmount := GLBudget.Amount;
+                Message('Budget amount for A/C no %1 is %2', "Source of Funds", GLBudget.Amount);
                 "Approved Budget" := BudgetAmount;
 
                 TrainingPlan.SetCurrentKey("Training Year", "Source of Funds");
@@ -44,6 +45,7 @@ table 52362 "Training Budget"
                 TrainingPlan.SetRange(TrainingPlan."Source of Funds", "Source of Funds");
                 TrainingPlan.CalcSums("Estimated Cost");
                 TrainingPlanAmount := TrainingPlan."Estimated Cost";
+                Message('Total budgeted amount for A/C no %1 in training plan is %2', "Source of Funds", TrainingPlan."Estimated Cost");
 
 
                 if "Estimated Cost" > (BudgetAmount - TrainingPlanAmount) then

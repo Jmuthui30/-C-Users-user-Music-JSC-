@@ -26,6 +26,7 @@ table 52361 "Training Needs Lines"
                     "G/L Account" := TrainingBudget."No.";
                     "Expense name" := TrainingBudget.Description;
                     "Budget Line" := TrainingBudget."Source of Funds";
+
                 end;
 
             end;
