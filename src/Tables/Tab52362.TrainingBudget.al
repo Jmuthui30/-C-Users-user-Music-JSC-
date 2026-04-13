@@ -152,6 +152,78 @@ table 52362 "Training Budget"
         {
             Caption = 'No. Series';
         }
+        field(100; "DSA Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(101; "Air Ticket Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(102; "Conference Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(103; "Ground Transport Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(104; "Accomodation Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(105; "Cordination Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(106; "Facilitator Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+
+        field(107; "Secretariat Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(108; "Out ofPocket Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(109; "Rapporteur Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(110; "Driver Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+
+        field(111; "Retreat Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(112; "Expert Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+
+        field(113; "Tuition Fee Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+
+        field(114; "Mileage Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(115; "Quarter Per Diem Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(116; "Other Costs Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

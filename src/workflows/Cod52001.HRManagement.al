@@ -2101,6 +2101,64 @@ codeunit 52001 "HR Management"
         EmpSeparation.Modify();
     end;
 
+    procedure NotifyTrainingRequest(ApplicationNo: Code[20])
+    var
+        CompanyInfo: Record "Company Information";
+        Employee: Record Employee;
+        HRSetup: Record "Human Resources Setup";
+        TrainingRequest: Record "Training Request";
+
+        UserSetup: Record "User Setup";
+        Email: Codeunit Email;
+        EmailMessage: Codeunit "Email Message";
+        i: Integer;
+        ApplicantMsg: Label '<p style="font-family:Verdana,Arial;font-size:10pt">Dear %1,<br><br></p><p style="font-family:Verdana,Arial;font-size:10pt"> Your training application <Strong>%2</Strong> for <Strong>%3</Strong> has been Approved. You can proceed from <Strong>%4</Strong> to <Strong>%5</Strong> and you are to resume work after Training.<br><br>Thank you.<br><br>Kind regards,<br><br><Strong>%9<Strong></p>', Comment = '%1 = Employee Name, %2 = Application No, %3 = Leave Type, %4 = Start Date, %5 = End Date, %6 = Resumption Date, %7 = Reliever Name, %8 = Reliever Position, %9 = Company Name';
+        SpaceLbl: Label '  ';
+        Receipient: List of [Text];
+        RecipientCC: List of [Text];
+        RecipientBCC: List of [Text];
+        FormattedApplicantBody: Text;
+        FormattedHODBody: Text;
+        FormattedRelieverBody: Text;
+        Relievers: Text;
+        SenderAddress: Text;
+        SenderName: Text;
+        Subject: Text;
+        TimeNow: Text;
+    begin
+        HRSetup.Get();
+        //Notify Employee
+        if TrainingRequest.Get(ApplicationNo) then begin
+            Employee.Reset();
+            if Employee.Get(TrainingRequest."Employee No") then
+                if Employee."Company E-Mail" <> '' then begin
+                    CompanyInfo.Get();
+                    CompanyInfo.TestField(Name);
+                    SenderAddress := CompanyInfo."E-Mail";
+                    SenderName := CompanyInfo.Name;
+                    Clear(Receipient);
+                    Receipient.Add(Employee."Company E-Mail");
+                    // Build CC list
+                    Employee.Reset();
+                    Employee.SetRange(Notify, true);
+                    if Employee.FindSet() then
+                        repeat
+                            if Employee."Company E-Mail" <> '' then
+                                RecipientCC.Add(Employee."Company E-Mail");
+                        until Employee.Next() = 0;
+
+                    Subject := ('Training Request - ' + SpaceLbl + TrainingRequest."Request No.");
+                    TimeNow := Format(Time);
+                    FormattedApplicantBody := StrSubstNo(ApplicantMsg, TrainingRequest."Employee Name", TrainingRequest."Request No.",
+                     TrainingRequest."Training Need", TrainingRequest."Planned Start Date", TrainingRequest."Planned End Date", Relievers, CompanyInfo.Name);
+                    EmailMessage.Create(Receipient, Subject, FormattedApplicantBody, true, RecipientCC, RecipientBCC);
+                    Email.Send(EmailMessage);
+                end;
+        end;
+
+
+
+    end;
 
 
 }

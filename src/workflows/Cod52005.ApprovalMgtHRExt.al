@@ -8,23 +8,7 @@ codeunit 52005 "Approval Mgt HR Ext"
         WorkFlowManagement: Codeunit "Workflow Management";
         NoWorkflowEnabledErr: Label 'No approval workflow for this record type is enabled.';
 
-    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnAfterCreateApprovalRequestForApproverChain', '', false, false)]
-    // local procedure OnAfterCreateApprovalRequestForApproverChain(var ApprovalEntryArgument: Record "Approval Entry"; var ApproverId: Code[50]; var WorkflowStepArgument: Record "Workflow Step Argument"; var UserSetup: Record "User Setup"; var SufficientApproverOnly: Boolean)
-    // var
-    //     HRMgmt: Codeunit "HR Management";
-    // begin
-    //     if ApprovalEntryArgument.Status <> ApprovalEntryArgument.Status::Open then
-    //         exit;
 
-    //     if ApproverId = '' then
-    //         exit;
-    //     // Notify approver of approval request
-    //     // if SufficientApproverOnly then
-    //     //     exit;
-
-    //     HRMgmt.NotifyApproverByEmail(ApprovalEntryArgument);
-
-    // end;
 
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnPopulateApprovalEntryArgument', '', false, false)]
@@ -202,20 +186,7 @@ codeunit 52005 "Approval Mgt HR Ext"
                     IsHandled := true;
                 end;
             //New Employee Appraisal
-            // Database::"Employee Appraisal":
-            //     begin
-            //         RecRef.SetTable(NewEmployeeAppraisal);
-            //          if NewEmployeeAppraisal.Status = NewEmployeeAppraisal.Status::Open then
-            //             NewEmployeeAppraisal.Validate(Status, NewEmployeeAppraisal.Status::"Pending Approval");
-            //         // if NewEmployeeAppraisal.Status = NewEmployeeAppraisal.Status::Open then
-            //         //     NewEmployeeAppraisal.Validate(Status, NewEmployeeAppraisal.Status::"Pending Approval")
-            //         // else
-            //         //     NewEmployeeAppraisal.Validate(Status, NewEmployeeAppraisal.Status::"Mid-Year Approved");
-            //         // NewEmployeeAppraisal.Validate("Appraisal Status", NewEmployeeAppraisal."Appraisal Status"::Set);
-            //         // NewEmployeeAppraisal.Modify(true);
-            //         Variant := NewEmployeeAppraisal;
-            //         IsHandled := true;
-            //     end;
+
             Database::"Employee Appraisal":
                 begin
                     RecRef.SetTable(NewEmployeeAppraisal);
@@ -244,7 +215,7 @@ codeunit 52005 "Approval Mgt HR Ext"
 
         Leave: Record "Leave Application";
         HRMgt: Codeunit "HR Management";
-    // Employee: Record Employee;
+
     begin
 
         //Leave
@@ -252,11 +223,7 @@ codeunit 52005 "Approval Mgt HR Ext"
             if Confirm('Do you want to notify Leave Applicant that you have rejected their leave?', false) then
                 HRMgt.NotifyLeaveApplicantOnRejection(Leave);
         end;
-        // New Employee Approval
-        // if Employee.Get(Employee."No.") then begin
-        //     Employee.Validate("Approval Status", Employee."Approval Status"::Rejected);
-        //     Employee.Modify();
-        // end;
+
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnBeforeApprovalEntryInsert', '', false, false)]

@@ -84,6 +84,86 @@ page 52986 "Training Needs Line"
                     Editable = false;
                     ToolTip = 'Specifies the value of the Budget Available field';
                 }
+                field("DSA Amount"; "DSA Amount")
+                {
+                    ToolTip = 'Specifies the value of the DSA Amount field';
+                }
+                //"Air Ticket Amount"
+                field("Air Ticket Amount"; "Air Ticket Amount")
+                {
+                    ToolTip = 'Specifies the value of the Air Ticket Amount field';
+                }
+                //"Conference Amount"
+                field("Conference Amount"; "Conference Amount")
+                {
+                    ToolTip = 'Specifies the value of the Conference Amount field';
+                }
+                // "Ground Transport Amount"
+                field("Ground Transport Amount"; "Ground Transport Amount")
+                {
+                    ToolTip = 'Specifies the value of the Ground Transport Amount field';
+                }
+                // "Accomodation Amount"
+                field("Accomodation Amount"; "Accomodation Amount")
+                {
+                    ToolTip = 'Specifies the value of the Accomodation Amount field';
+                }
+                //"Cordination Allowance Amount"
+                field("Cordination Allowance Amount"; "Cordination Allowance Amount")
+                {
+                    ToolTip = 'Specifies the value of the Cordination Allowance Amount field';
+                }
+                //"Facilitator Allowance Amount"
+                field("Facilitator Allowance Amount"; "Facilitator Allowance Amount")
+                {
+                    ToolTip = 'Specifies the value of the Facilitator Allowance Amount field';
+                }
+                //"Secretariat Allowance Amount"
+                field("Secretariat Allowance Amount"; "Secretariat Allowance Amount")
+                {
+                    ToolTip = 'Specifies the value of the Secretariat Allowance Amount field';
+                }
+
+                //"Rapporteur Allowance Amount"
+                field("Rapporteur Allowance Amount"; "Rapporteur Allowance Amount")
+                {
+                    ToolTip = 'Specifies the value of the Rapporteur Allowance Amount field';
+                }
+                //"Driver Allowance Amount"
+                field("Driver Allowance Amount"; "Driver Allowance Amount")
+                {
+                    ToolTip = 'Specifies the value of the Driver Allowance Amount field';
+                }
+                //"Retreat Allowance Amount"
+                field("Retreat Allowance Amount"; "Retreat Allowance Amount")
+                {
+                    ToolTip = 'Specifies the value of the Retreat Allowance Amount field';
+                }
+                //"Expert Allowance Amount"
+                field("Expert Allowance Amount"; "Expert Allowance Amount")
+                {
+                    ToolTip = 'Specifies the value of the Expert Allowance Amount field';
+                }
+                //"Tuition Fee Amount"
+                field("Tuition Fee Amount"; "Tuition Fee Amount")
+                {
+                    ToolTip = 'Specifies the value of the Tuition Fee Amount field';
+                }
+                //"Mileage Allowance Amount"
+                field("Mileage Allowance Amount"; "Mileage Allowance Amount")
+                {
+                    ToolTip = 'Specifies the value of the Mileage Allowance Amount field';
+                }
+                //"Quarter Per Diem Amount"
+                field("Quarter Per Diem Amount"; "Quarter Per Diem Amount")
+                {
+                    ToolTip = 'Specifies the value of the Quarter Per Diem Amount field';
+                }
+                //"Other Costs Amount"
+                field("Other Costs Amount"; "Other Costs Amount")
+                {
+                    ToolTip = 'Specifies the value of the Other Costs Amount field';
+                }
             }
         }
     }
