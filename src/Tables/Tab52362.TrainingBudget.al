@@ -4,13 +4,13 @@ table 52362 "Training Budget"
     Caption = 'Training Budget';
     fields
     {
-        field(1; "Training Year"; Code[10])
+        field(1; "Training Year"; Code[100])
         {
             Caption = 'Training Year';
         }
-        field(2; "Budget Item No"; Code[20])
+        field(2; "Budget Item No"; Code[200])
         {
-            NotBlank = true;
+            //NotBlank = true;
             Caption = 'Budget Item No';
         }
         field(3; "Source of Funds"; Code[15])
@@ -37,6 +37,7 @@ table 52362 "Training Budget"
                 GLBudget.SetRange(GLBudget.Date, GLSetup."Current Budget Start Date", GLSetup."Current Budget End Date");
                 GLBudget.CalcSums(Amount);
                 BudgetAmount := GLBudget.Amount;
+                Message('Budget amount for A/C no %1 is %2', "Source of Funds", GLBudget.Amount);
                 "Approved Budget" := BudgetAmount;
 
                 TrainingPlan.SetCurrentKey("Training Year", "Source of Funds");
@@ -44,10 +45,11 @@ table 52362 "Training Budget"
                 TrainingPlan.SetRange(TrainingPlan."Source of Funds", "Source of Funds");
                 TrainingPlan.CalcSums("Estimated Cost");
                 TrainingPlanAmount := TrainingPlan."Estimated Cost";
+                Message('Total budgeted amount for A/C no %1 in training plan is %2', "Source of Funds", TrainingPlan."Estimated Cost");
 
 
                 if "Estimated Cost" > (BudgetAmount - TrainingPlanAmount) then
-                    Error('Overall budget amount for A/C no %1 has been exceeded by %2. Total Budgeted amount = %3', "Source of Funds",
+                    Message('Overall budget amount for A/C no %1 has been exceeded by %2. Total Budgeted amount = %3', "Source of Funds",
                     ("Estimated Cost" - (BudgetAmount - TrainingPlanAmount)), BudgetAmount);
             end;
         }
@@ -105,11 +107,11 @@ table 52362 "Training Budget"
                 HRSetup.TestField("Training Budget Item Nos");
                 if "Budget Item No" = '' then
                     // NoSeriesMgt.InitSeries(HRSetup."Training Budget Item Nos", xRec."No. Series", 0D, "Budget Item No", "No. Series");
-                    if NoSeriesMgt.AreRelated(HRSetup."Training Budget Item Nos",xRec."No. Series") then
-            "No. Series":=xRec."No. Series"
-            else
-            "No. Series":=HRSetup."Training Budget Item Nos";
-            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
+                    if NoSeriesMgt.AreRelated(HRSetup."Training Budget Item Nos", xRec."No. Series") then
+                        "No. Series" := xRec."No. Series"
+                    else
+                        "No. Series" := HRSetup."Training Budget Item Nos";
+                "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
             end;
         }
         field(12; "Date Filter"; Date)
@@ -146,9 +148,81 @@ table 52362 "Training Budget"
             TableRelation = "Dimension Set Entry";
             Caption = 'Dimension Set ID';
         }
-        field(16; "No. Series"; code[10])
+        field(16; "No. Series"; code[100])
         {
             Caption = 'No. Series';
+        }
+        field(100; "DSA Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(101; "Air Ticket Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(102; "Conference Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(103; "Ground Transport Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(104; "Accomodation Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(105; "Cordination Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(106; "Facilitator Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+
+        field(107; "Secretariat Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(108; "Out ofPocket Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(109; "Rapporteur Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(110; "Driver Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+
+        field(111; "Retreat Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(112; "Expert Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+
+        field(113; "Tuition Fee Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+
+        field(114; "Mileage Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(115; "Quarter Per Diem Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(116; "Other Costs Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
         }
     }
 

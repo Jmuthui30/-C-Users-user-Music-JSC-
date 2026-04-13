@@ -28,6 +28,8 @@ report 51476 "Client Master Roll Report2"
             column(Logo; CompInfo.Picture)
             {
             }
+            column(Next_Date_Increment;"Next Date Increment"){}
+            column(PIN_Number;"PIN Number"){}
             column(USERID; UserId)
             {
             }

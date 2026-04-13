@@ -4,12 +4,12 @@ table 52361 "Training Needs Lines"
     Caption = 'Training Needs Lines';
     fields
     {
-        field(1; "Document No."; Code[20])
+        field(1; "Document No."; Code[200])
         {
             TableRelation = "Training Need";
             Caption = 'Document No.';
         }
-        field(3; "Expense Code"; Code[20])
+        field(3; "Expense Code"; Code[200])
         {
             TableRelation = "Training Budget"."Budget Item No";
             Caption = 'Expense Code';
@@ -18,15 +18,20 @@ table 52361 "Training Needs Lines"
             var
                 TrainingBudget: Record "Training Budget";
             begin
-                if TrainingBudget.Get("Expense Code") then begin
+                TrainingBudget.Reset();
+                TrainingBudget.SetRange("Budget Item No", "Expense Code");
+                if TrainingBudget.Find('-') then begin
+                    Message('Budget Item: %1, Description: %2', TrainingBudget."No.", TrainingBudget.Description);
+                    // if TrainingBudget.Get("Expense Code") then begin
                     "G/L Account" := TrainingBudget."No.";
                     "Expense name" := TrainingBudget.Description;
                     "Budget Line" := TrainingBudget."Source of Funds";
+
                 end;
 
             end;
         }
-        field(4; "G/L Account"; Code[20])
+        field(4; "G/L Account"; Code[200])
         {
             TableRelation = "G/L Account"."No.";
             Caption = 'G/L Account';
@@ -52,7 +57,7 @@ table 52361 "Training Needs Lines"
         {
             Caption = 'Amount (LCY)';
         }
-        field(7; "Currency Code"; Code[10])
+        field(7; "Currency Code"; Code[100])
         {
             TableRelation = Currency;
             Caption = 'Currency Code';
@@ -115,14 +120,86 @@ table 52361 "Training Needs Lines"
             OptionMembers = Open,Closed,Application;
             Caption = 'Status';
         }
-        field(15; "Expense name"; Text[30])
+        field(15; "Expense name"; Text[300])
         {
             Caption = 'Expense name';
         }
-        field(16; "Budget Line"; Code[20])
+        field(16; "Budget Line"; Code[200])
         {
             TableRelation = "G/L Account";
             Caption = 'Budget Line';
+        }
+        field(100; "DSA Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(101; "Air Ticket Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(102; "Conference Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(103; "Ground Transport Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(104; "Accomodation Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(105; "Cordination Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(106; "Facilitator Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+
+        field(107; "Secretariat Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(108; "Out ofPocket Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(109; "Rapporteur Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(110; "Driver Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+
+        field(111; "Retreat Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(112; "Expert Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+
+        field(113; "Tuition Fee Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+
+        field(114; "Mileage Allowance Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(115; "Quarter Per Diem Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(116; "Other Costs Amount"; Decimal)
+        {
+            DataClassification = CustomerContent;
         }
     }
 

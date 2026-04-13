@@ -11,7 +11,7 @@
       <am:Name>MSRB</am:Name>
       <am:Version>15.1.30001.02</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-04-09T08:32:18.8263919Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-04-09T20:10:09.5203604Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -1163,7 +1163,7 @@
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value>=Fields!Payroll_Period_.Value</Value>
+                      <Value>=Fields!PayrollMonth.Value</Value>
                       <Style>
                         <FontWeight>Bold</FontWeight>
                         <Format>d</Format>
@@ -1186,6 +1186,36 @@
               <Height>0.6cm</Height>
               <Width>20.27221cm</Width>
               <ZIndex>1</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox16">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=First(Fields!PayrollMonth.Value, "DataSet_Result")</Value>
+                      <Style />
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox16</rd:DefaultName>
+              <Top>0.55778in</Top>
+              <Left>5.74528in</Left>
+              <Height>0.25in</Height>
+              <Width>1.57639in</Width>
+              <ZIndex>2</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>

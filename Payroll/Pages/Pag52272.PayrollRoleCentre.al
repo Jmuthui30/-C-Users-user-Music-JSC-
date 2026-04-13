@@ -158,6 +158,12 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                     ToolTip = 'Executes the Institution setup action';
                     Caption = 'Institutions';
                 }
+                action("Salary Increment Details")
+                {
+                    RunObject=page "Salary Increment Details";
+                    ApplicationArea=all;
+                    
+                }
             }
             group("Payroll Approval")
             {
@@ -354,7 +360,7 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                 Caption = 'Payroll Reports';
                 group("Bank Details")
                 {
-                    Caption = 'Bank Details';
+                    Caption = 'Bank Transfer';
                     action("Employee Bank Details")
                     {
                         Image = "Report";
@@ -362,7 +368,7 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                         RunObject = report "Client Bank Instruction";
                         ApplicationArea = All;
                         ToolTip = 'Executes the Employee Bank Details action';
-                        Caption = 'Bank Instruction';
+                        Caption = 'Bank Transfer file';
                     }
 
                 }
