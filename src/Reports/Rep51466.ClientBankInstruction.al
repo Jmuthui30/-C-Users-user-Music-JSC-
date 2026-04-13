@@ -158,6 +158,14 @@ report 51466 "Client Bank Instruction"
         Counter := 0;  // Reset counter
     end;
 
+    local procedure LeftPadText(InputText: Text; TotalLength: Integer; PadCharacter: Text[1]): Text
+    begin
+        if StrLen(InputText) >= TotalLength then
+            exit(CopyStr(InputText, 1, TotalLength));
+
+        exit(PadStr('', TotalLength - StrLen(InputText), PadCharacter[1]) + InputText);
+    end;
+
     local procedure CleanText(InputText: Text): Text
     var
         OutputText: Text;
@@ -174,6 +182,43 @@ report 51466 "Client Bank Instruction"
         exit(OutputText);
     end;
 
+    local procedure StripNameTitles(InputText: Text): Text
+    begin
+        InputText := DelChr(InputText, '<>', ' ');
+
+        if StrPos(UpperCase(InputText), 'HON. ') = 1 then
+            exit(CopyStr(InputText, 6))
+        else
+            if StrPos(UpperCase(InputText), 'HON ') = 1 then
+                exit(CopyStr(InputText, 5))
+            else
+                if StrPos(UpperCase(InputText), 'DR. ') = 1 then
+                    exit(CopyStr(InputText, 5))
+                else
+                    if StrPos(UpperCase(InputText), 'DR ') = 1 then
+                        exit(CopyStr(InputText, 4))
+                    else
+                        if StrPos(UpperCase(InputText), 'MR. ') = 1 then
+                            exit(CopyStr(InputText, 5))
+                        else
+                            if StrPos(UpperCase(InputText), 'MR ') = 1 then
+                                exit(CopyStr(InputText, 4))
+                            else
+                                if StrPos(UpperCase(InputText), 'MRS. ') = 1 then
+                                    exit(CopyStr(InputText, 6))
+                                else
+                                    if StrPos(UpperCase(InputText), 'MRS ') = 1 then
+                                        exit(CopyStr(InputText, 5))
+                                    else
+                                        if StrPos(UpperCase(InputText), 'MS. ') = 1 then
+                                            exit(CopyStr(InputText, 5))
+                                        else
+                                            if StrPos(UpperCase(InputText), 'MS ') = 1 then
+                                                exit(CopyStr(InputText, 4));
+
+        exit(InputText);
+    end;
+
     local procedure WriteLineToTXT()
     var
         LineText: Text;
@@ -186,6 +231,7 @@ report 51466 "Client Bank Instruction"
         // Build and clean employee name
         EmployeeName := NAVEmp."First Name" + ' ' + NAVEmp."Last Name" + ' ' + NAVEmp."Middle Name";
         EmployeeName := CleanText(EmployeeName);  // Remove special/non-printable characters
+        EmployeeName := StripNameTitles(EmployeeName);
         EmployeeName := DelChr(EmployeeName, '>', ' ');  // Remove trailing spaces
 
         // Get employee number and bank details
@@ -199,16 +245,16 @@ report 51466 "Client Bank Instruction"
 
         // Build the line
         LineText :=
-            // '26100000' +
-            CopyStr(PadStr(EmployeeNo, 5, '0'), 1, 5) +
-            CopyStr(PadStr(BranchCode, 3, '0'), 1, 3) +
-            CopyStr(PadStr(AccountNo, 13, '0'), 1, 13) +
+            '26100000' +
+            LeftPadText(EmployeeNo, 5, '0') +
+            LeftPadText(BranchCode, 3, '0') +
+            LeftPadText(AccountNo, 17, '0') +
             'P' +
             AmountText +
             '0' +
             EmployeeName;
 
-        TxtFile.Write(LineText);
+        TxtFile.WriteText(LineText);
     end;
 
     local procedure WriteFooterToTXT()
