@@ -90,6 +90,12 @@ report 51244 "Expenditure Requisition Form"
             column(Authorizer_Signature; UserSetup3.Signature)
             {
             }
+            column(Budget_Sub_Head_Code; "Budget Sub-Head Code")
+            {
+            }
+            column(Work_Plan_Activity_Description; "Work Plan Activity Description")
+            {
+            }
 
             //Imprest Budget Analysis
             dataitem("Imprest Budget Analysis"; "Imprest Budget Analysis")
