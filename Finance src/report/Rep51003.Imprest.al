@@ -3,7 +3,7 @@ report 51003 Imprest
     ApplicationArea = All;
     Caption = 'Imprest';
     DefaultLayout = RDLC;
-    RDLCLayout = './src/report_layout/Imprest.rdl';
+    RDLCLayout = './src/report_layout/ImprestJsc.rdl';
     dataset
     {
         dataitem(Payments; Payments)
