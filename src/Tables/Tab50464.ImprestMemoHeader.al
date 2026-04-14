@@ -465,6 +465,12 @@ table 50464 "Imprest Memo Header"
         {
             DataClassification = ToBeClassified;
         }
+        // Budget Sub-Head Code
+        field(120; "Budget Sub-Head Code"; Code[100])
+        { }
+        //Work Plan Activity Description
+        field(121; "Work Plan Activity Description"; Text[100])
+        { }
     }
     keys
     {

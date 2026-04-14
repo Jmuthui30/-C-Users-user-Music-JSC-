@@ -949,7 +949,7 @@ codeunit 50006 "Commitment Management"
         BudgetAnalysis2: Record "Imprest Budget Analysis";
         ImprestSetup: Record "Advanced Finance Setup";
         ExpenseCodes: Record "Expense Codes";
-        CMSetup: Record "Cash Management Setup";
+        CMSetup: Record "Cash Management Setups";
         GLAccount: Record "G/L Account";
         TotalBudget: Decimal;
         InsufficientExists: Boolean;
