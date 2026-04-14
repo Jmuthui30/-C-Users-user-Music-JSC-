@@ -384,7 +384,7 @@ report 51003 Imprest
                             else
                                 MultiDonor_Theme := MultiDonor_Theme + ', ' + DimValueName[2];
                     end;
-
+//
                     DimSetEntry.Reset();
                     DimSetEntry.SetRange("Dimension Set ID", "Payment Lines"."Dimension Set ID");
                     DimSetEntry.SetRange("Dimension Code", GLSetup."Shortcut Dimension 3 Code");
