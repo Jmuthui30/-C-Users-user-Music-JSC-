@@ -194,13 +194,15 @@ report 52215 "KRA ITAX P10 Report"
                 TotalPaye := TotalPaye + Employee."Cumm. PAYE";
                 TotalTaxable := TotalTaxable + Employee."Taxable Allowance";
                 BasicSalary := Employee."Basic Pay";
-                OtherAllowances := (Employee."Taxable Allowance") - ((BasicSalary) + ("Benefits-Non Cash"));
+                // OtherAllowances := (Employee."Taxable Allowance") - ((BasicSalary) + ("Benefits-Non Cash"));
+                ResetCsvValues();
                 TypeofHousing := 'Benefit not given';
                 ActualContribution := Employee.Retirement;
                 "SHIF+InsuranceRelief" := Employee."SHIF+InsuranceRelief";
                 InsuranceRelief := Employee.Insurance;
                 RecordNo := RecordNo + 1;
                 if NAVEmp.Get(Employee."No.") then EmployeeName := NAVEmp."First Name" + ' ' + NAVEmp."Middle Name" + ' ' + NAVEmp."Last Name";
+                LoadCsvValues();
                 //Message('relief%1,Relieftwo%2,Relieftwo%3', "SHIF+InsuranceRelief", InsuranceRelief);
                 begin
                     Earn.Reset;
@@ -212,7 +214,8 @@ report 52215 "KRA ITAX P10 Report"
                         AssMatrix.SetRange(AssMatrix."Employee No", Employee."No.");
                         AssMatrix.SetRange(AssMatrix."Payroll Period", Employee."Pay Period Filter");
                         AssMatrix.SetRange(Code, Earn.Code);
-                        if AssMatrix.Find('-') then PersonalRelief := AssMatrix.Amount;
+                        if (AssMatrix.Find('-')) and (PersonalRelief = 0) then
+                            PersonalRelief := AssMatrix.Amount;
                         //Message('type%1,no%2,date%3', Earn."Earning Type", Employee."No.", Employee."Pay Period Filter");
                         if ExportCSV then begin
                             LineNo := LineNo + 1;
@@ -228,38 +231,41 @@ report 52215 "KRA ITAX P10 Report"
                             CSVBuffer.InsertEntry(LineNo, 10, format(DirectorsFee, 0, 2));
                             CSVBuffer.InsertEntry(LineNo, 11, Format(Lumpsum, 0, 2));
                             CSVBuffer.InsertEntry(LineNo, 12, Format(OtherAllowances, 0, 2));
-                            CSVBuffer.InsertEntry(LineNo, 13, '');
+                            CSVBuffer.InsertEntry(LineNo, 13, Format(GrossPay, 0, 2));
                             CSVBuffer.InsertEntry(LineNo, 14, Format("Benefits-Non Cash", 0, 2));
                             CSVBuffer.InsertEntry(LineNo, 15, Format(0.00, 0, 2));
-                            CSVBuffer.InsertEntry(LineNo, 16, '');
+                            CSVBuffer.InsertEntry(LineNo, 16, Format(TotalNonCash, 0, 2));
                             CSVBuffer.InsertEntry(LineNo, 17, Format(GlobalIncome, 0, 2));
                             CSVBuffer.InsertEntry(LineNo, 18, 'Benefit not given');
-                            CSVBuffer.InsertEntry(LineNo, 19, '');
-                            CSVBuffer.InsertEntry(LineNo, 20, '');
-                            CSVBuffer.InsertEntry(LineNo, 21, '');
-                            CSVBuffer.InsertEntry(LineNo, 22, '');
-                            CSVBuffer.InsertEntry(LineNo, 23, '');
-                            CSVBuffer.InsertEntry(LineNo, 24, '');
+                            CSVBuffer.InsertEntry(LineNo, 19, Format(RentOfHouse, 0, 2));
+                            CSVBuffer.InsertEntry(LineNo, 20, Format(ComputedRent, 0, 2));
+                            CSVBuffer.InsertEntry(LineNo, 21, Format(RentRecovered, 0, 2));
+                            CSVBuffer.InsertEntry(LineNo, 22, Format(NetValue, 0, 2));
+                            CSVBuffer.InsertEntry(LineNo, 23, Format(TotalGross, 0, 2));
+                            CSVBuffer.InsertEntry(LineNo, 24, Format(ThirtyPCash, 0, 2));
                             if Employee."Secondary Employee" then
                                 CSVBuffer.InsertEntry(LineNo, 25, '')
                             else
                                 CSVBuffer.InsertEntry(LineNo, 25, Format((ActualContribution * -1), 0, 2));
                             // CSVBuffer.InsertEntry(LineNo, 25, Format((Retirement * -1), 0, 2));
-                            CSVBuffer.InsertEntry(LineNo, 26, '');
+                            if Employee."Secondary Employee" then
+                                CSVBuffer.InsertEntry(LineNo, 26, '')
+                            else
+                                CSVBuffer.InsertEntry(LineNo, 26, Format(PermissibleLimit, 0, 2));
                             if Employee."Secondary Employee" then
                                 CSVBuffer.InsertEntry(LineNo, 27, '')
                             else
                                 CSVBuffer.InsertEntry(LineNo, 27, Format(MortgageIntrest, 0, 2));
-                            CSVBuffer.InsertEntry(LineNo, 28, '');
-                            CSVBuffer.InsertEntry(LineNo, 29, '');
-                            CSVBuffer.InsertEntry(LineNo, 30, '');
-                            CSVBuffer.InsertEntry(LineNo, 31, '');
+                            CSVBuffer.InsertEntry(LineNo, 28, Format(HOSP, 0, 2));
+                            CSVBuffer.InsertEntry(LineNo, 29, Format(AmountOfBenefit, 0, 2));
+                            CSVBuffer.InsertEntry(LineNo, 30, Format(TaxablePay, 0, 2));
+                            CSVBuffer.InsertEntry(LineNo, 31, Format(IncomeTax, 0, 2));
                             if Employee."Secondary Employee" then
                                 CSVBuffer.InsertEntry(LineNo, 32, '')
                             else
                                 CSVBuffer.InsertEntry(LineNo, 32, Format(PersonalRelief, 0, 2));
                             CSVBuffer.InsertEntry(LineNo, 33, Format("SHIF+InsuranceRelief", 0, 2));
-                            CSVBuffer.InsertEntry(LineNo, 34, '');
+                            CSVBuffer.InsertEntry(LineNo, 34, Format(0.00, 0, 2));
                             CSVBuffer.InsertEntry(LineNo, 35, Format(Abs(Employee."Cumm. PAYE"), 0, 2));
                         end;
                         if "Total Allowances" = 0 then CurrReport.Skip();
@@ -544,5 +550,102 @@ report 52215 "KRA ITAX P10 Report"
         if HRsetup."Payroll Rounding Type" = HRsetup."Payroll Rounding Type"::Up then PayrollRounding := Round(Amount, HRsetup."Payroll Rounding Precision", '>');
         if HRsetup."Payroll Rounding Type" = HRsetup."Payroll Rounding Type"::Down then PayrollRounding := Round(Amount, HRsetup."Payroll Rounding Precision", '<');
     end;
-    
+
+    local procedure ResetCsvValues()
+    begin
+        BasicSalary := Employee."Basic Pay";
+        HouseAllowance := 0;
+        TransportAllowance := 0;
+        LeaveAllowance := 0;
+        OvertimeAllowance := 0;
+        DirectorsFee := 0;
+        Lumpsum := 0;
+        OtherAllowances := 0;
+        GlobalIncome := 0;
+        MortgageIntrest := 0;
+        HOSP := 0;
+        PermissibleLimit := 0;
+        AmountOfBenefit := 0;
+        RentOfHouse := 0;
+        ComputedRent := 0;
+        RentRecovered := 0;
+        NetValue := 0;
+        GrossPay := 0;
+        TotalNonCash := 0;
+        TotalGross := 0;
+        ThirtyPCash := 0;
+        TaxablePay := 0;
+        IncomeTax := 0;
+        PersonalRelief := 0;
+        InsuranceRelief := 0;
+    end;
+
+    local procedure LoadCsvValues()
+    var
+        PayrollSetup: Record "Human Resources Setup";
+        EarningRec: Record Earnings;
+        PaymentAmount: Decimal;
+    begin
+        if PayrollSetup.Get() then
+            PermissibleLimit := PayrollSetup."Pension Limit Amount";
+
+        Transactions.Reset();
+        Transactions.SetRange("Employee No", Employee."No.");
+        Transactions.SetRange("Payroll Period", DateSpecified);
+        Transactions.SetRange(Type, Transactions.Type::Earning);
+        if Transactions.FindSet() then
+            repeat
+                PaymentAmount := Transactions.Amount;
+                if not EarningRec.Get(Transactions.Code) then
+                    Clear(EarningRec);
+
+                if EarningRec."Earning Type" = EarningRec."Earning Type"::"Tax Relief" then
+                    PersonalRelief += PaymentAmount
+                else if EarningRec."Earning Type" = EarningRec."Earning Type"::"Insurance Relief" then
+                    InsuranceRelief += PaymentAmount
+                else if (PayrollSetup."Owner occupier interest" <> '') and (Transactions.Code = PayrollSetup."Owner occupier interest") then
+                    MortgageIntrest += PaymentAmount
+                else if EarningRec."Earning Type" = EarningRec."Earning Type"::"Home Savings" then
+                    HOSP += PaymentAmount
+                else if EarningRec."Basic Salary Code" then
+                    BasicSalary := PaymentAmount
+                else if EarningRec."House Allowance Code" then
+                    HouseAllowance += PaymentAmount
+                else if EarningRec."Commuter Allowance Code" then
+                    TransportAllowance += PaymentAmount
+                else if (PayrollSetup."Leave Allowance Code" <> '') and (Transactions.Code = PayrollSetup."Leave Allowance Code") then
+                    LeaveAllowance += PaymentAmount
+                else if EarningRec.OverTime then
+                    OvertimeAllowance += PaymentAmount
+                else if IsDirectorFee(EarningRec.Description) then
+                    DirectorsFee += PaymentAmount
+                else if IsLumpSum(EarningRec.Description) then
+                    Lumpsum += PaymentAmount
+                else if EarningRec."Non-Cash Benefit" then
+                    GlobalIncome += 0
+                else if EarningRec.Taxable then
+                    OtherAllowances += PaymentAmount;
+            until Transactions.Next() = 0;
+
+        InsuranceRelief := Employee."SHIF+InsuranceRelief";
+        GrossPay := BasicSalary + HouseAllowance + TransportAllowance + LeaveAllowance + OvertimeAllowance + DirectorsFee + Lumpsum + OtherAllowances;
+        // TotalNonCash := "Benefits-Non Cash";
+        TotalNonCash := Employee."Benefits-Non Cash";
+        TotalGross := GrossPay + TotalNonCash + GlobalIncome + NetValue;
+        ThirtyPCash := GrossPay * 0.3;
+        TaxablePay := TotalGross - AmountOfBenefit;
+        IncomeTax := Abs(Employee."Cumm. PAYE") + PersonalRelief + InsuranceRelief;
+    end;
+
+    local procedure IsDirectorFee(EarningDescription: Text): Boolean
+    begin
+        EarningDescription := LowerCase(EarningDescription);
+        exit((StrPos(EarningDescription, 'director') > 0) or (StrPos(EarningDescription, 'board fee') > 0));
+    end;
+
+    local procedure IsLumpSum(EarningDescription: Text): Boolean
+    begin
+        EarningDescription := LowerCase(EarningDescription);
+        exit((StrPos(EarningDescription, 'lump') > 0) or (StrPos(EarningDescription, 'gratuity') > 0));
+    end;
 }
