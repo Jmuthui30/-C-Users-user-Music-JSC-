@@ -166,6 +166,32 @@ report 51466 "Client Bank Instruction"
         exit(PadStr('', TotalLength - StrLen(InputText), PadCharacter[1]) + InputText);
     end;
 
+    local procedure KeepDigitsOnly(InputText: Text): Text
+    var
+        OutputText: Text;
+        i: Integer;
+        CurrentChar: Char;
+    begin
+        OutputText := '';
+        for i := 1 to StrLen(InputText) do begin
+            CurrentChar := InputText[i];
+            if (CurrentChar >= 48) and (CurrentChar <= 57) then
+                OutputText := OutputText + Format(CurrentChar);
+        end;
+
+        exit(OutputText);
+    end;
+
+    local procedure FormatNumericField(InputText: Text; TotalLength: Integer): Text
+    begin
+        InputText := KeepDigitsOnly(InputText);
+
+        if StrLen(InputText) > TotalLength then
+            InputText := CopyStr(InputText, StrLen(InputText) - TotalLength + 1, TotalLength);
+
+        exit(LeftPadText(InputText, TotalLength, '0'));
+    end;
+
     local procedure CleanText(InputText: Text): Text
     var
         OutputText: Text;
@@ -235,9 +261,9 @@ report 51466 "Client Bank Instruction"
         EmployeeName := DelChr(EmployeeName, '>', ' ');  // Remove trailing spaces
 
         // Get employee number and bank details
-        EmployeeNo := NAVEmp."No.";
-        BranchCode := NAVEmp."Bank Branch";
-        AccountNo := NAVEmp."Bank Account Number";
+        EmployeeNo := FormatNumericField(NAVEmp."No.", 5);
+        BranchCode := FormatNumericField(NAVEmp."Bank Branch", 3);
+        AccountNo := FormatNumericField(NAVEmp."Bank Account Number", 17);
 
         // Format amount
         AmountText := Format(Round(Amount * 100, 1), 0, '<Integer>');
@@ -246,15 +272,16 @@ report 51466 "Client Bank Instruction"
         // Build the line
         LineText :=
             '26100000' +
-            LeftPadText(EmployeeNo, 5, '0') +
-            LeftPadText(BranchCode, 3, '0') +
-            LeftPadText(AccountNo, 17, '0') +
+            EmployeeNo +
+            BranchCode +
+            AccountNo +
             'P' +
             AmountText +
             '0' +
             EmployeeName;
 
         TxtFile.WriteText(LineText);
+        TxtFile.WriteText();
     end;
 
     local procedure WriteFooterToTXT()
