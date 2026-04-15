@@ -22,6 +22,11 @@ page 52986 "Training Needs Line"
                 {
                     ToolTip = 'Specifies the value of the Approval Amount field';
                 }
+                field("Approved Budget"; "Approved Budget")
+                {
+                    ToolTip = 'Specifies the value of the Approved Budget field';
+                    Editable = false;
+                }
                 field("Budget Available Amount"; "Budget Available Amount")
                 {
                     Caption = 'Budget Available';

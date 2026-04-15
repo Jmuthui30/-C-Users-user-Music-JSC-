@@ -21,12 +21,10 @@ table 52361 "Training Needs Lines"
                 TrainingBudget.Reset();
                 TrainingBudget.SetRange(TrainingBudget."No.", "Expense Code");
                 if TrainingBudget.Find('-') then begin
-                    Message('Budget Item: %1, Description: %2', TrainingBudget."No.", TrainingBudget.Description);
-                    // if TrainingBudget.Get("Expense Code") then begin
-                    // "G/L Account" := TrainingBudget."No.";
-
+                    "Approved Budget" := TrainingBudget."Approved Budget";
                     "Expense name" := TrainingBudget.Description;
                     "Budget Line" := TrainingBudget."Source of Funds";
+
 
                 end;
 
@@ -138,6 +136,13 @@ table 52361 "Training Needs Lines"
         field(117; "Approval Amount"; Decimal)
         {
             DataClassification = CustomerContent;
+            Caption = 'Approval Amount';
+        }
+        //"Approved Budget"
+        field(118; "Approved Budget"; Decimal)
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Approved Budget';
         }
         field(300; "Source of Funds DSA"; Code[15])
         {

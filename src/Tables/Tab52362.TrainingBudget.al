@@ -68,16 +68,18 @@ table 52362 "Training Budget"
         }
         field(8; "No."; Code[20])
         {
-            TableRelation = "G/L Account";
             Caption = 'No.';
+
 
             trigger OnValidate()
             begin
-                if GLAcc.Get("No.") then begin
-                    "Source of Funds" := "No.";
-                    "Description" := GLAcc.Name;
+                if "No." <> xRec."No." then begin
+                    HRSetup.Get();
+                    HRSetup.TestField("Training Budget Item Nos");
+                    NoSeriesManagement.TestManual(HRSetup."Training Budget Item Nos");
                 end;
             end;
+
         }
         field(9; Actual; Decimal)
         {
@@ -105,12 +107,12 @@ table 52362 "Training Budget"
             begin
                 HRSetup.Get();
                 HRSetup.TestField("Training Budget Item Nos");
-                if "Budget Item No" = '' then
-                    // NoSeriesMgt.InitSeries(HRSetup."Training Budget Item Nos", xRec."No. Series", 0D, "Budget Item No", "No. Series");
-                    if NoSeriesMgt.AreRelated(HRSetup."Training Budget Item Nos", xRec."No. Series") then
-                        "No. Series" := xRec."No. Series"
-                    else
-                        "No. Series" := HRSetup."Training Budget Item Nos";
+                // if "Budget Item No" = '' then
+                // NoSeriesMgt.InitSeries(HRSetup."Training Budget Item Nos", xRec."No. Series", 0D, "Budget Item No", "No. Series");
+                // if NoSeriesMgt.AreRelated(HRSetup."Training Budget Item Nos", xRec."No. Series") then
+                //     "No. Series" := xRec."No. Series"
+                // else
+                "No. Series" := HRSetup."Training Budget Item Nos";
                 "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
             end;
         }
@@ -418,7 +420,19 @@ table 52362 "Training Budget"
         if "Plan Item No" = '' then begin
             NoSeriesMgt.InitSeries(PurchasesPayablesSetup."Procurement Plan Item Nos", xRec."No. Series", 0D, "Plan Item No", "No. Series");
         end; */
+        if "No." = '' then begin
+            HRSetup.Get();
+            HRSetup.TestField("Training Budget Item Nos");
+            if NoSeriesManagement.AreRelated(HRSetup."Training Budget Item Nos", xRec."No. Series") then
+                "No. Series" := xRec."No. Series"
+            else
+                "No. Series" := HRSetup."Training Budget Item Nos";
+            "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
+        end;
     end;
+
+
+
 
     var
         GLAcc: Record "G/L Account";
@@ -430,6 +444,7 @@ table 52362 "Training Budget"
         NoSeriesMgt: Codeunit "No. Series";
         BudgetAmount: Decimal;
         TrainingPlanAmount: Decimal;
+        NoSeriesManagement: Codeunit "No. Series";
 
     procedure GetQuarters()
     var
