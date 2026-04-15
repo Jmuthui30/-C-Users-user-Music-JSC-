@@ -18,6 +18,207 @@ page 52986 "Training Needs Line"
                 {
                     ToolTip = 'Specifies the value of the Expense name field';
                 }
+                field("Approval Amount"; "Approval Amount")
+                {
+                    ToolTip = 'Specifies the value of the Approval Amount field';
+                }
+                field("Budget Available Amount"; "Budget Available Amount")
+                {
+                    Caption = 'Budget Available';
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Budget Available field';
+                }
+
+                field("Source of Funds DSA"; "Source of Funds DSA")
+                {
+                    ToolTip = 'Specifies the value of the Source of Funds DSA field';
+                }
+                field("DSA Amount"; "DSA Amount")
+                {
+                    ToolTip = 'Specifies the value of the DSA Amount field';
+                }
+
+                //"Air Ticket Amount"
+                field("Source of Funds Air Ticket"; "Source of Funds Air Ticket")
+                {
+                    TableRelation = "G/L Account";
+                    Caption = 'Source of Funds Air Ticket';
+                    ToolTip = 'Specifies the value of the Source of Funds field';
+                }
+                field("Air Ticket Amount"; "Air Ticket Amount")
+                {
+                    ToolTip = 'Specifies the value of the Air Ticket Amount field';
+                }
+
+                //"Conference Amount"
+                field("Source of Funds Conference"; "Source of Funds Conference")
+                {
+                    TableRelation = "G/L Account";
+                    Caption = 'Source of Funds Conference';
+                    ToolTip = 'Specifies the value of the Source of Funds field';
+                }
+                field("Conference Amount"; "Conference Amount")
+                {
+                    ToolTip = 'Specifies the value of the Conference Amount field';
+                }
+
+                // "Ground Transport Amount"
+                field("Source of Funds GTransport"; "Source of Funds GTransport")
+                {
+                    TableRelation = "G/L Account";
+                    Caption = 'Source of Funds GTransport';
+                    ToolTip = 'Specifies the value of the Source of Funds field';
+                }
+                field("Ground Transport Amount"; "Ground Transport Amount")
+                {
+                    ToolTip = 'Specifies the value of the Ground Transport Amount field';
+                }
+
+                // "Accomodation Amount"
+                field("Source of Funds Accomodation"; "Source of Funds Accommodation")
+                {
+                    TableRelation = "G/L Account";
+                    Caption = 'Source of Funds Accomodation';
+                    ToolTip = 'Specifies the value of the Source of Funds field';
+                }
+                field("Accomodation Amount"; "Accomodation Amount")
+                {
+                    ToolTip = 'Specifies the value of the Accomodation Amount field';
+                }
+
+                //"Cordination Allowance Amount"
+                field("Source of Funds Coordination"; "Source of Funds Coordination")
+                {
+                    TableRelation = "G/L Account";
+                    Caption = 'Source of Funds Coordination';
+                    ToolTip = 'Specifies the value of the Source of Funds field';
+                }
+                field("Cordination Allowance Amount"; "Cordination Allowance Amount")
+                {
+                    ToolTip = 'Specifies the value of the Cordination Allowance Amount field';
+                }
+
+                //"Facilitator Allowance Amount"
+                field("Source of Funds Facilitator"; "Source of Funds Facilitator")
+                {
+                    TableRelation = "G/L Account";
+                    Caption = 'Source of Funds Facilitator';
+                    ToolTip = 'Specifies the value of the Source of Funds field';
+                }
+                field("Facilitator Allowance Amount"; "Facilitator Allowance Amount")
+                {
+                    ToolTip = 'Specifies the value of the Facilitator Allowance Amount field';
+                }
+
+                //"Secretariat Allowance Amount"
+                field("Source of Funds Secretariat"; "Source of Funds Secretariat")
+                {
+                    TableRelation = "G/L Account";
+                    Caption = 'Source of Funds Secretariat';
+                    ToolTip = 'Specifies the value of the Source of Funds field';
+                }
+                field("Secretariat Allowance Amount"; "Secretariat Allowance Amount")
+                {
+                    ToolTip = 'Specifies the value of the Secretariat Allowance Amount field';
+                }
+
+
+                //"Rapporteur Allowance Amount"
+                field("Source of Funds Rapporteur"; "Source of Funds Rapporteur")
+                {
+                    TableRelation = "G/L Account";
+                    Caption = 'Source of Funds Rapporteur';
+                    ToolTip = 'Specifies the value of the Source of Funds field';
+                }
+                field("Rapporteur Allowance Amount"; "Rapporteur Allowance Amount")
+                {
+                    ToolTip = 'Specifies the value of the Rapporteur Allowance Amount field';
+                }
+
+                //"Driver Allowance Amount"
+                field("Source of Funds Driver Allowance"; "Source of Funds Driver")
+                {
+                    TableRelation = "G/L Account";
+                    Caption = 'Source of Funds Driver Allowance';
+                    ToolTip = 'Specifies the value of the Source of Funds field';
+                }
+                field("Driver Allowance Amount"; "Driver Allowance Amount")
+                {
+                    ToolTip = 'Specifies the value of the Driver Allowance Amount field';
+                }
+
+                //"Retreat Allowance Amount"
+                field("Source of Funds Retreat"; "Source of Funds Retreat")
+                {
+                    TableRelation = "G/L Account";
+                    Caption = 'Source of Funds Retreat';
+                    ToolTip = 'Specifies the value of the Source of Funds field';
+                }
+                field("Retreat Allowance Amount"; "Retreat Allowance Amount")
+                {
+                    ToolTip = 'Specifies the value of the Retreat Allowance Amount field';
+                }
+
+                //"Expert Allowance Amount"
+                field("Source of Funds Expert"; "Source of Funds Expert")
+                {
+                    TableRelation = "G/L Account";
+                    Caption = 'Source of Funds Expert';
+                    ToolTip = 'Specifies the value of the Source of Funds field';
+                }
+                field("Expert Allowance Amount"; "Expert Allowance Amount")
+                {
+                    ToolTip = 'Specifies the value of the Expert Allowance Amount field';
+                }
+
+                //"Tuition Fee Amount"
+                field("Source of Funds Tuition"; "Source of Funds Tuition")
+                {
+                    TableRelation = "G/L Account";
+                    Caption = 'Source of Funds Tuition';
+                    ToolTip = 'Specifies the value of the Source of Funds field';
+                }
+                field("Tuition Fee Amount"; "Tuition Fee Amount")
+                {
+                    ToolTip = 'Specifies the value of the Tuition Fee Amount field';
+                }
+
+                //"Mileage Allowance Amount"
+                field("Source of Funds Mileage"; "Source of Funds Mileage")
+                {
+                    TableRelation = "G/L Account";
+                    Caption = 'Source of Funds Mileage';
+                    ToolTip = 'Specifies the value of the Source of Funds field';
+                }
+                field("Mileage Allowance Amount"; "Mileage Allowance Amount")
+                {
+                    ToolTip = 'Specifies the value of the Mileage Allowance Amount field';
+                }
+
+                //"Quarter Per Diem Amount"
+                field("Source of Funds QPer Diem"; "Source of Funds QPer Diem")
+                {
+                    TableRelation = "G/L Account";
+                    Caption = 'Source of Funds QPer Diem';
+                    ToolTip = 'Specifies the value of the Source of Funds field';
+                }
+                field("Quarter Per Diem Amount"; "Quarter Per Diem Amount")
+                {
+                    ToolTip = 'Specifies the value of the Quarter Per Diem Amount field';
+                }
+
+                //"Other Costs Amount"
+                field("Source of Funds Other Costs"; "Source of Funds Other Costs")
+                {
+                    TableRelation = "G/L Account";
+                    Caption = 'Source of Funds Other Costs';
+                    ToolTip = 'Specifies the value of the Source of Funds field';
+                }
+
+                field("Other Costs Amount"; "Other Costs Amount")
+                {
+                    ToolTip = 'Specifies the value of the Other Costs Amount field';
+                }
                 field(Amount; Rec.Amount)
                 {
                     ToolTip = 'Specifies the value of the Amount field';
@@ -40,11 +241,11 @@ page 52986 "Training Needs Line"
                     trigger OnDrillDown()
                     begin
 
-                        GLBudgetEntry.Reset();
-                        GLBudgetEntry.SetFilter("G/L Account No.", Rec."G/L Account");
-                        GLBudgetEntry.SetRange("Dimension Set ID", Rec."Dimension Set ID");
-                        GLBudgetEntry.SetRange(Date, BudgetStartDate, Rec."Start Date");
-                        Page.Run(Page::"G/L Budget Entries", GLBudgetEntry);
+                        // GLBudgetEntry.Reset();
+                        // GLBudgetEntry.SetFilter("G/L Account No.", Rec."G/L Account");
+                        // GLBudgetEntry.SetRange("Dimension Set ID", Rec."Dimension Set ID");
+                        // GLBudgetEntry.SetRange(Date, BudgetStartDate, Rec."Start Date");
+                        // Page.Run(Page::"G/L Budget Entries", GLBudgetEntry);
                     end;
                 }
                 field(Expenses; Expenses)
@@ -55,11 +256,11 @@ page 52986 "Training Needs Line"
 
                     trigger OnDrillDown()
                     begin
-                        GLEntry.Reset();
-                        GLEntry.SetFilter("G/L Account No.", Rec."G/L Account");
-                        GLEntry.SetRange("Dimension Set ID", Rec."Dimension Set ID");
-                        GLEntry.SetRange("Posting Date", BudgetStartDate, Rec."Start Date");
-                        Page.Run(Page::"General Ledger Entries", GLEntry);
+                        // GLEntry.Reset();
+                        // GLEntry.SetFilter("G/L Account No.", Rec."G/L Account");
+                        // GLEntry.SetRange("Dimension Set ID", Rec."Dimension Set ID");
+                        // GLEntry.SetRange("Posting Date", BudgetStartDate, Rec."Start Date");
+                        // Page.Run(Page::"General Ledger Entries", GLEntry);
                     end;
                 }
                 field(TrainingAmount; TrainingAmount)
@@ -70,100 +271,15 @@ page 52986 "Training Needs Line"
 
                     trigger OnDrillDown()
                     begin
-                        TrainingNeedLines.Reset();
-                        TrainingNeedLines.SetRange("G/L Account", Rec."G/L Account");
-                        TrainingNeedLines.SetRange("Start Date", BudgetStartDate, Rec."Start Date");
-                        TrainingNeedLines.SetRange("Dimension Set ID", Rec."Dimension Set ID");
-                        TrainingNeedLines.SetFilter(Status, '<>%1', TrainingNeedLines.Status::Open);
-                        Page.Run(Page::"Training Needs Line", TrainingNeedLines);
+                        // TrainingNeedLines.Reset();
+                        // TrainingNeedLines.SetRange("G/L Account", Rec."G/L Account");
+                        // TrainingNeedLines.SetRange("Start Date", BudgetStartDate, Rec."Start Date");
+                        // TrainingNeedLines.SetRange("Dimension Set ID", Rec."Dimension Set ID");
+                        // TrainingNeedLines.SetFilter(Status, '<>%1', TrainingNeedLines.Status::Open);
+                        // Page.Run(Page::"Training Needs Line", TrainingNeedLines);
                     end;
                 }
-                field(BudgetAvailable; BudgetAvailable)
-                {
-                    Caption = 'Budget Available';
-                    Editable = false;
-                    ToolTip = 'Specifies the value of the Budget Available field';
-                }
-                field("DSA Amount"; "DSA Amount")
-                {
-                    ToolTip = 'Specifies the value of the DSA Amount field';
-                }
-                //"Air Ticket Amount"
-                field("Air Ticket Amount"; "Air Ticket Amount")
-                {
-                    ToolTip = 'Specifies the value of the Air Ticket Amount field';
-                }
-                //"Conference Amount"
-                field("Conference Amount"; "Conference Amount")
-                {
-                    ToolTip = 'Specifies the value of the Conference Amount field';
-                }
-                // "Ground Transport Amount"
-                field("Ground Transport Amount"; "Ground Transport Amount")
-                {
-                    ToolTip = 'Specifies the value of the Ground Transport Amount field';
-                }
-                // "Accomodation Amount"
-                field("Accomodation Amount"; "Accomodation Amount")
-                {
-                    ToolTip = 'Specifies the value of the Accomodation Amount field';
-                }
-                //"Cordination Allowance Amount"
-                field("Cordination Allowance Amount"; "Cordination Allowance Amount")
-                {
-                    ToolTip = 'Specifies the value of the Cordination Allowance Amount field';
-                }
-                //"Facilitator Allowance Amount"
-                field("Facilitator Allowance Amount"; "Facilitator Allowance Amount")
-                {
-                    ToolTip = 'Specifies the value of the Facilitator Allowance Amount field';
-                }
-                //"Secretariat Allowance Amount"
-                field("Secretariat Allowance Amount"; "Secretariat Allowance Amount")
-                {
-                    ToolTip = 'Specifies the value of the Secretariat Allowance Amount field';
-                }
 
-                //"Rapporteur Allowance Amount"
-                field("Rapporteur Allowance Amount"; "Rapporteur Allowance Amount")
-                {
-                    ToolTip = 'Specifies the value of the Rapporteur Allowance Amount field';
-                }
-                //"Driver Allowance Amount"
-                field("Driver Allowance Amount"; "Driver Allowance Amount")
-                {
-                    ToolTip = 'Specifies the value of the Driver Allowance Amount field';
-                }
-                //"Retreat Allowance Amount"
-                field("Retreat Allowance Amount"; "Retreat Allowance Amount")
-                {
-                    ToolTip = 'Specifies the value of the Retreat Allowance Amount field';
-                }
-                //"Expert Allowance Amount"
-                field("Expert Allowance Amount"; "Expert Allowance Amount")
-                {
-                    ToolTip = 'Specifies the value of the Expert Allowance Amount field';
-                }
-                //"Tuition Fee Amount"
-                field("Tuition Fee Amount"; "Tuition Fee Amount")
-                {
-                    ToolTip = 'Specifies the value of the Tuition Fee Amount field';
-                }
-                //"Mileage Allowance Amount"
-                field("Mileage Allowance Amount"; "Mileage Allowance Amount")
-                {
-                    ToolTip = 'Specifies the value of the Mileage Allowance Amount field';
-                }
-                //"Quarter Per Diem Amount"
-                field("Quarter Per Diem Amount"; "Quarter Per Diem Amount")
-                {
-                    ToolTip = 'Specifies the value of the Quarter Per Diem Amount field';
-                }
-                //"Other Costs Amount"
-                field("Other Costs Amount"; "Other Costs Amount")
-                {
-                    ToolTip = 'Specifies the value of the Other Costs Amount field';
-                }
             }
         }
     }
@@ -228,47 +344,6 @@ page 52986 "Training Needs Line"
         end;
 
         BudgetAvailable := BudgetAmount - (Expenses + TrainingAmount);
-
-
-        // TrainingNeedsLines.RESET;
-        // TrainingNeedsLines.SETCURRENTKEY("G/L Account");
-        // TrainingNeedsLines.SETRANGE("Document No.",Code);
-        // IF TrainingNeedsLines.FINDFIRST THEN
-        //  REPEAT
-        //    IF TrainingNeedsLines."G/L Account"<>'' THEN
-        //      IF AccountNoFilter<>'' THEN
-        //        BEGIN
-        //          IF TrainingNeedsLines."G/L Account"<>AccountNo THEN
-        //            AccountNoFilter+='|'+TrainingNeedsLines."G/L Account";
-        //          AccountNo:=TrainingNeedsLines."G/L Account";
-        //        END ELSE
-        //          BEGIN
-        //            AccountNoFilter:=TrainingNeedsLines."G/L Account";
-        //            AccountNo:=TrainingNeedsLines."G/L Account";
-        //          END;
-        //  UNTIL TrainingNeedsLines.NEXT=0;
-        //
-        // GLBudgetEntry.RESET;
-        // GLBudgetEntry.SETFILTER("G/L Account No.",AccountNoFilter);
-        // GLBudgetEntry.SETRANGE("Dimension Set ID","Dimension Set ID");
-        // GLBudgetEntry.SETRANGE(Date,BudgetStartDate,TODAY);
-        // IF GLBudgetEntry.FINDFIRST THEN
-        //  BEGIN
-        //    GLBudgetEntry.CALCSUMS(Amount);
-        //    BudgetAmount:=GLBudgetEntry.Amount;
-        //  END;
-        //
-        // GLEntry.RESET;
-        // GLEntry.SETFILTER("G/L Account No.",AccountNoFilter);
-        // GLEntry.SETRANGE("Dimension Set ID","Dimension Set ID");
-        // GLEntry.SETRANGE("Posting Date",BudgetStartDate,TODAY);
-        // IF GLEntry.FINDFIRST THEN
-        //  BEGIN
-        //    GLEntry.CALCSUMS(Amount);
-        //    Expenses:=GLEntry.Amount;
-        //  END;
-        //
-        // BudgetAvailable:=BudgetAmount-Expenses;
     end;
 }
 

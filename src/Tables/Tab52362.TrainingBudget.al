@@ -38,7 +38,7 @@ table 52362 "Training Budget"
                 GLBudget.CalcSums(Amount);
                 BudgetAmount := GLBudget.Amount;
                 Message('Budget amount for A/C no %1 is %2', "Source of Funds", GLBudget.Amount);
-                "Approved Budget" := BudgetAmount;
+                // "Approved Budget" := BudgetAmount;
 
                 TrainingPlan.SetCurrentKey("Training Year", "Source of Funds");
                 TrainingPlan.SetRange(TrainingPlan."Training Year", "Training Year");
@@ -152,83 +152,240 @@ table 52362 "Training Budget"
         {
             Caption = 'No. Series';
         }
+
+        field(300; "Source of Funds DSA"; Code[15])
+        {
+            TableRelation = "G/L Account";
+            Caption = 'Source of Funds';
+        }
         field(100; "DSA Amount"; Decimal)
         {
-            DataClassification = CustomerContent;
+            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds DSA"),
+                                                        "Posting Date" = field("Date Filter")));
+            Caption = 'DSA Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+        field(301; "Source of Funds Air Ticket"; Code[15])
+        {
+            TableRelation = "G/L Account";
+            Caption = 'Source of Funds';
         }
         field(101; "Air Ticket Amount"; Decimal)
         {
-            DataClassification = CustomerContent;
+            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Air Ticket"),
+                                                        "Posting Date" = field("Date Filter")));
+            Caption = 'Air Ticket Amount';
+            Editable = false;
+            FieldClass = FlowField;
         }
+
         field(102; "Conference Amount"; Decimal)
         {
-            DataClassification = CustomerContent;
+            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Conference"),
+                                                        "Posting Date" = field("Date Filter")));
+            Caption = 'Conference Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(302; "Source of Funds Conference"; Code[15])
+        {
+            TableRelation = "G/L Account";
+            Caption = 'Source of Funds';
         }
         field(103; "Ground Transport Amount"; Decimal)
         {
-            DataClassification = CustomerContent;
+            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds GTransport"),
+                                                        "Posting Date" = field("Date Filter")));
+            Caption = 'Ground Transport Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(303; "Source of Funds GTransport"; Code[15])
+        {
+            TableRelation = "G/L Account";
+            Caption = 'Source of Funds';
         }
         field(104; "Accomodation Amount"; Decimal)
         {
-            DataClassification = CustomerContent;
+            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Accommodation"),
+                                                        "Posting Date" = field("Date Filter")));
+            Caption = 'Accommodation Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(304; "Source of Funds Accommodation"; Code[15])
+        {
+            TableRelation = "G/L Account";
+            Caption = 'Source of Funds';
         }
         field(105; "Cordination Allowance Amount"; Decimal)
         {
-            DataClassification = CustomerContent;
+            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Coordination"),
+                                                        "Posting Date" = field("Date Filter")));
+            Caption = 'Coordination Allowance Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(305; "Source of Funds Coordination"; Code[15])
+        {
+            TableRelation = "G/L Account";
+            Caption = 'Source of Funds';
         }
         field(106; "Facilitator Allowance Amount"; Decimal)
         {
-            DataClassification = CustomerContent;
+            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Facilitator"),
+                                                        "Posting Date" = field("Date Filter")));
+            Caption = 'Facilitator Allowance Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(306; "Source of Funds Facilitator"; Code[15])
+        {
+            TableRelation = "G/L Account";
+            Caption = 'Source of Funds';
         }
 
         field(107; "Secretariat Allowance Amount"; Decimal)
         {
-            DataClassification = CustomerContent;
+            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Secretariat"),
+                                                        "Posting Date" = field("Date Filter")));
+            Caption = 'Secretariat Allowance Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(307; "Source of Funds Secretariat"; Code[15])
+        {
+            TableRelation = "G/L Account";
+            Caption = 'Source of Funds';
         }
         field(108; "Out ofPocket Allowance Amount"; Decimal)
         {
-            DataClassification = CustomerContent;
+            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Out of Pocket"),
+                                                        "Posting Date" = field("Date Filter")));
+            Caption = 'Out of Pocket Allowance Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(308; "Source of Funds Out of Pocket"; Code[15])
+        {
+            TableRelation = "G/L Account";
+            Caption = 'Source of Funds';
         }
         field(109; "Rapporteur Allowance Amount"; Decimal)
         {
-            DataClassification = CustomerContent;
+            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Rapporteur"),
+                                                        "Posting Date" = field("Date Filter")));
+            Caption = 'Rapporteur Allowance Amount';
+            Editable = false;
+            FieldClass = FlowField;
         }
+        field(309; "Source of Funds Rapporteur"; Code[15])
+        {
+            TableRelation = "G/L Account";
+            Caption = 'Source of Funds';
+        }
+
         field(110; "Driver Allowance Amount"; Decimal)
         {
-            DataClassification = CustomerContent;
+            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Driver"),
+                                                        "Posting Date" = field("Date Filter")));
+            Caption = 'Driver Allowance Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(310; "Source of Funds Driver"; Code[15])
+        {
+            TableRelation = "G/L Account";
+            Caption = 'Source of Funds';
         }
 
         field(111; "Retreat Allowance Amount"; Decimal)
         {
-            DataClassification = CustomerContent;
+            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Retreat"),
+                                                        "Posting Date" = field("Date Filter")));
+            Caption = 'Retreat Allowance Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(311; "Source of Funds Retreat"; Code[15])
+        {
+            TableRelation = "G/L Account";
+            Caption = 'Source of Funds';
         }
         field(112; "Expert Allowance Amount"; Decimal)
         {
-            DataClassification = CustomerContent;
+            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Expert"),
+                                                        "Posting Date" = field("Date Filter")));
+            Caption = 'Expert Allowance Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(312; "Source of Funds Expert"; Code[15])
+        {
+            TableRelation = "G/L Account";
+            Caption = 'Source of Funds';
         }
 
         field(113; "Tuition Fee Amount"; Decimal)
         {
-            DataClassification = CustomerContent;
+            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Tuition"),
+                                                        "Posting Date" = field("Date Filter")));
+            Caption = 'Tuition Fee Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(313; "Source of Funds Tuition"; Code[15])
+        {
+            TableRelation = "G/L Account";
+            Caption = 'Source of Funds';
         }
 
         field(114; "Mileage Allowance Amount"; Decimal)
         {
-            DataClassification = CustomerContent;
+            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Mileage"),
+                                                        "Posting Date" = field("Date Filter")));
+            Caption = 'Mileage Allowance Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(314; "Source of Funds Mileage"; Code[15])
+        {
+            TableRelation = "G/L Account";
+            Caption = 'Source of Funds';
         }
         field(115; "Quarter Per Diem Amount"; Decimal)
         {
-            DataClassification = CustomerContent;
+            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds QPer Diem"),
+                                                        "Posting Date" = field("Date Filter")));
+            Caption = 'Quarter Per Diem Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(315; "Source of Funds QPer Diem"; Code[15])
+        {
+            TableRelation = "G/L Account";
+            Caption = 'Source of Funds';
         }
         field(116; "Other Costs Amount"; Decimal)
         {
-            DataClassification = CustomerContent;
+            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Other Costs"),
+                                                        "Posting Date" = field("Date Filter")));
+            Caption = 'Other Costs Amount';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(316; "Source of Funds Other Costs"; Code[15])
+        {
+            TableRelation = "G/L Account";
+            Caption = 'Source of Funds';
         }
     }
 
     keys
     {
-        key(Key1; "Training Year", "Shortcut Dimension 1 Code", "Shortcut Dimension 2 Code", "Budget Item No")
+        key(Key1; "Training Year", "Shortcut Dimension 1 Code", "Shortcut Dimension 2 Code", "Budget Item No", "No.")
         {
             Clustered = true;
             SumIndexFields = "Estimated Cost";
@@ -249,7 +406,7 @@ table 52362 "Training Budget"
 
     fieldgroups
     {
-        fieldgroup(DropDown; "Budget Item No", Description)
+        fieldgroup(DropDown; "Budget Item No", Description, "No.")
         {
         }
     }
