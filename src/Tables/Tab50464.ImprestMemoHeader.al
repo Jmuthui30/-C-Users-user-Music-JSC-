@@ -168,7 +168,8 @@ table 50464 "Imprest Memo Header"
 
             trigger OnValidate()
             begin
-                if "Total Days in the Field" <> 0 then "End Date" := "Start Date" + "Total Days in the Field" - 1;
+                if "Total Days in the Field" <> 0 then
+                    "End Date" := "Start Date" + "Total Days in the Field" - 1;
             end;
         }
         field(27; "End Date"; Date)

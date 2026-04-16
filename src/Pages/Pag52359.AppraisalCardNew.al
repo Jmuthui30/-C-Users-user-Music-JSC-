@@ -283,6 +283,8 @@ page 52359 "Appraisal Card-New"
                     Rec."Appraisal Status" := Rec."Appraisal Status"::Set;
                     Commit();
                     Rec.Modify();
+                    Message('Appraisal sent for review successfully');
+                    CurrPage.Close();
                 end;
 
             }
