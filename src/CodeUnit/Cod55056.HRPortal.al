@@ -746,6 +746,7 @@ codeunit 55056 HRPortal
     var
         glsetup: Record "General Ledger Setup";
         Staff: Record Employee;
+        Staff2: Record Employee;
     begin
         CashMgt.Get();
         Staff.Get(employeeNumber);
@@ -754,6 +755,7 @@ codeunit 55056 HRPortal
             memo.Date := Today;
             memo.From := Staff."Job Id";
             memo."To" := ToWho;
+            memo.Validate("To");
             memo.Subject := subject;
             memo."Message body" := memoDescription;
             memo.Memo := memoDescription;
@@ -766,7 +768,7 @@ codeunit 55056 HRPortal
             memo."Return Location" := returnlocation;
             memo."Return Date" := DT2Date(returnDate);
             memo."Start Date" := DT2Date(startDate);
-            memo."Total Days in the Field" := noOfDaysInField;
+            //memo."Total Days in the Field" := noOfDaysInField;
             memo.International := international;
             memo.DSA := DSA;
             memo."Cordination Allowance" := CordinationAllowance;
@@ -792,6 +794,14 @@ codeunit 55056 HRPortal
             memo."Global Dimension 2 Code" := department;
             memo.Status := memo.Status::Open;
             if memo.modify(true) then begin
+                Staff2.Get(ToWho);
+                memo.From := Staff."Job Id";
+                memo."To" := ToWho;
+                memo.Validate("To");
+                memo."Sender Name" := Staff."Job Title";
+                memo."Sender Email" := Staff."Company E-Mail";
+                memo."Recipient Name" := Staff2."Job Title";
+                memo."Recipient Email" := Staff2."Company E-Mail";
                 status := 'success*Memo has been modified succesfully*' + memo."No.";
             end else begin
                 status := 'danger*An error occured while modifying your memo';
@@ -814,7 +824,7 @@ codeunit 55056 HRPortal
             memo."Return Location" := returnlocation;
             memo."Return Date" := DT2Date(returnDate);
             memo."Start Date" := DT2Date(startDate);
-            memo."Total Days in the Field" := noOfDaysInField;
+            //memo."Total Days in the Field" := noOfDaysInField;
             memo.International := international;
             memo.DSA := DSA;
             memo."Cordination Allowance" := CordinationAllowance;
@@ -836,11 +846,14 @@ codeunit 55056 HRPortal
             memo."Global Dimension 2 Code" := department;
             memo.Status := memo.Status::Open;
             If memo.Insert(true) then begin
-                // Staff.Get(employeeNumber);
+                Staff2.Get(ToWho);
                 memo.From := Staff."Job Id";
                 memo."To" := ToWho;
+                memo.Validate("To");
                 memo."Sender Name" := Staff."Job Title";
                 memo."Sender Email" := Staff."Company E-Mail";
+                memo."Recipient Name" := Staff2."Job Title";
+                memo."Recipient Email" := Staff2."Company E-Mail";
                 memo.modify(true);
                 status := 'success*Memo has been created succesfully*' + memo."No.";
             end else begin
@@ -2157,7 +2170,7 @@ codeunit 55056 HRPortal
 
     procedure FAWEgenerateImprestMemoExpenditure(employeeNumber: Code[20]; docNo: Text) BaseImage: Text
     var
-        ImprestMemo: Record Payments;
+        ImprestMemo: Record "Imprest Memo Header";
     begin
 
         Employee.RESET;
