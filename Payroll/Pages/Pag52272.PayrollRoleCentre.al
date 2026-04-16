@@ -158,6 +158,12 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                     ToolTip = 'Executes the Institution setup action';
                     Caption = 'Institutions';
                 }
+                action("Salary Increment Details")
+                {
+                    RunObject=page "Salary Increment Details";
+                    ApplicationArea=all;
+                    
+                }
             }
             group("Payroll Approval")
             {
@@ -354,7 +360,7 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                 Caption = 'Payroll Reports';
                 group("Bank Details")
                 {
-                    Caption = 'Bank Details';
+                    Caption = 'Bank Transfer';
                     action("Employee Bank Details")
                     {
                         Image = "Report";
@@ -362,7 +368,7 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                         RunObject = report "Client Bank Instruction";
                         ApplicationArea = All;
                         ToolTip = 'Executes the Employee Bank Details action';
-                        Caption = 'Bank Instruction';
+                        Caption = 'Bank Transfer file';
                     }
 
                 }
@@ -409,6 +415,37 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                         RunObject = report "Client Deduction-Institution";
                         ApplicationArea = All;
                         ToolTip = 'Executes the Deductions Report action';
+                    }
+
+                    action("Third Parties Deductions Report")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Third Parties Deductions Report';
+                        Image = "Report";
+                        Promoted = true;
+                        PromotedCategory = "Report";
+                        PromotedIsBig = true;
+                        RunObject = Report "Client Deduction-Institution";
+                    }
+                    action("Total Deductions Only Per Employee")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Total Deductions Only Per Employee';
+                        Image = "Report";
+                        Promoted = true;
+                        PromotedCategory = "Report";
+                        PromotedIsBig = true;
+                        RunObject = Report "Total Deductions/Employee";
+                    }
+                    action("Total Earnings Only Per Employee")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Total Earnings Only Per Employee';
+                        Image = "Report";
+                        Promoted = true;
+                        PromotedCategory = "Report";
+                        PromotedIsBig = true;
+                        RunObject = Report "Total Earnings/Employee";
                     }
                     action("Net Pay Report")
                     {
@@ -578,7 +615,8 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                     action("P9A Report ")
                     {
                         Image = ResourcePlanning;
-                        RunObject = report "P9A Report";
+                        // RunObject = report "P9A Report";
+                        RunObject = report "Client P9A";
                         ApplicationArea = All;
                         ToolTip = 'Executes the P9A Report  action';
                         Caption = 'P9A Report ';
@@ -587,7 +625,7 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                     {
                         Caption = 'P10 Report';
                         Image = "Report";
-                        RunObject = report P10;
+                        RunObject = report "KRA ITAX P10 Report";
                         ApplicationArea = All;
                         ToolTip = 'Executes the P10 Report action';
                     }

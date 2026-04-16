@@ -3,7 +3,7 @@ page 51488 "HR Officer Role Center"
     Caption = 'HR Officer Role Center';
     PageType = RoleCenter;
     ApplicationArea = All;
-    
+
 
     //SourceTable = "";
     layout
@@ -1103,73 +1103,197 @@ page 51488 "HR Officer Role Center"
                     }
                 }
             }
-            group("Training & Development")
+
+            group("Training Management")
             {
-                Caption = 'Training & Development';
-                Image = Marketing;
-                ToolTip = 'Track Employee Training & Development';
+                Image = Capacities;
+                Caption = 'Training Management';
 
-                action(Coaching)
+                group("Training Budget ")
                 {
-                    ApplicationArea = All;
-                    Caption = 'Coaching';
-                    RunObject = Page "Coaching List";
+                    Caption = 'Training Budget';
+                    action("Training Budget")
+                    {
+                        RunObject = page "Training Plan";
+                        ToolTip = 'Executes the Training Budget action';
+                        Caption = 'Training Budget';
+                    }
                 }
-                action("Training Needs Assesment")
+                group("Training Needs")
                 {
-                    ApplicationArea = All;
-                    Caption = 'Training Needs Assesment';
-                    RunObject = Page "New Training Needs Assesment";
+                    Caption = 'Training Needs';
+
+                    action("New Training Needs")
+                    {
+                        RunObject = page "Training Needs Open";
+                        ToolTip = 'Executes the New Training Needs action';
+                        Caption = 'New Training Needs';
+                    }
+
+                    action("On-Going Training Needs")
+                    {
+                        RunObject = page "Training Needs Application";
+                        RunPageLink = Status = filter(Application);
+                        ToolTip = 'Executes the On-Going Training Needs action';
+                        Caption = 'On-Going Training Needs';
+                    }
+                    action("Closed Training Needs")
+                    {
+                        RunObject = page "Training Needs Application";
+                        RunPageLink = Status = filter(Closed);
+                        ToolTip = 'Executes the Closed Training Needs action';
+                        Caption = 'Closed Training Needs';
+                    }
+                    action("Cancelled Training Needs")
+                    {
+                        RunObject = page "Training Needs Application";
+                        RunPageLink = Status = filter(Cancelled);
+                        ToolTip = 'Executes the Closed Training Needs action';
+                        Caption = 'Cancelled Training Needs';
+                    }
                 }
-                action("Training Needs Under Review")
+                group("Training Needs Requisitions")
                 {
-                    ApplicationArea = All;
-                    Caption = 'Training Needs Under Review';
-                    RunObject = Page "Training Needs List-Approval";
+                    action("Open Training Needs Requisitions")
+                    {
+                        RunObject = page "Training Needs Requisitions";
+                        RunPageLink = Status = filter(New);
+                        ToolTip = 'Executes the Open Training Needs Requisitions action';
+                        Caption = 'Open Training Needs Requisitions';
+                    }
+                    action("Applied Training Needs Requisitions")
+                    {
+                        RunObject = page "Training Needs Requisitions";
+                        RunPageLink = Status = filter(Created);
+                        ToolTip = 'Executes the Applied Training Needs Requisitions action';
+                        Caption = 'Applied Training Needs Requisitions';
+                    }
+                    action("Rejected Training Needs Requisitions")
+                    {
+                        RunObject = page "Training Needs Requisitions";
+                        RunPageLink = Status = filter(Rejected);
+                        ToolTip = 'Executes the Rejected Training Needs Requisitions action';
+                        Caption = 'Rejected Training Needs Requisitions';
+                    }
                 }
-                action("Training Nomination")
+                group("Training Applications")
                 {
-                    ApplicationArea = All;
-                    Caption = 'Training Nomination';
-                    RunObject = Page "Training Nomination List";
+                    Caption = 'Training Applications';
+                    action("Training Request List ")
+                    {
+                        RunObject = page "Training Request List";
+                        ToolTip = 'Executes the Training Request List  action';
+                        Caption = 'Training Request List ';
+                    }
+                    action("Approved Training Request List ")
+                    {
+                        RunObject = page "Approved Training Request List";
+                        ToolTip = 'Executes the Approved Training Request List  action';
+                        Caption = 'Approved Training Request List ';
+                    }
                 }
-                action("Training Pending Approval")
+                group("Training Evaluation")
                 {
-                    ApplicationArea = All;
-                    Caption = 'Training Pending Approval';
-                    Image = PersonInCharge;
-                    RunObject = Page "Training List - Approval";
-                }
-                action("Approved Training")
-                {
-                    ApplicationArea = Suite;
-                    Caption = 'Approved Training';
-                    RunObject = Page "Training List - Approved";
-                }
-                action("Training Evaluation")
-                {
-                    ApplicationArea = All;
                     Caption = 'Training Evaluation';
-                    RunObject = Page "Training Evaluation List";
+                    action("Training Evaluations")
+                    {
+                        RunObject = page "Training Evaluation List";
+                        ToolTip = 'Executes the Training Evaluations action';
+                        Caption = 'Training Evaluations';
+                    }
                 }
-                group("Training Administration")
+                group("Training Reports")
                 {
-                    Caption = 'Administration';
-
-                    action("Performance Issues")
+                    Caption = 'Training Reports';
+                    action("Training Needs ")
                     {
-                        ApplicationArea = All;
-                        Caption = 'Performance Issues';
-                        RunObject = Page "Performance Issues";
+                        RunObject = report "Training Need";
+                        Caption = 'Training Needs ';
                     }
-                    action("Training Needs")
+                    action("Approved Training Requests")
                     {
-                        ApplicationArea = All;
-                        Caption = 'Training Needs';
-                        RunObject = Page "Training Needs";
+                        RunObject = report "Approved Training Requests";
+                        Caption = 'Approved Training Requests';
                     }
+                    //                     action("Training Evaluation Report")
+                    //                     {
+                    // //RunObject = report "Training Evaluation Report";
+                    //                         Caption = 'Training Evaluation Report';
+                    //                     }
                 }
             }
+
+            /*
+              group("Training & Development")
+              {
+                  Caption = 'Training & Development';
+                  Image = Marketing;
+                  ToolTip = 'Track Employee Training & Development';
+
+                  action(Coaching)
+                  {
+                      ApplicationArea = All;
+                      Caption = 'Coaching';
+                      RunObject = Page "Coaching List";
+                  }
+                  action("Training Needs Assesment")
+                  {
+                      ApplicationArea = All;
+                      Caption = 'Training Needs Assesment';
+                      RunObject = Page "New Training Needs Assesment";
+                  }
+                  action("Training Needs Under Review")
+                  {
+                      ApplicationArea = All;
+                      Caption = 'Training Needs Under Review';
+                      RunObject = Page "Training Needs List-Approval";
+                  }
+                  action("Training Nomination")
+                  {
+                      ApplicationArea = All;
+                      Caption = 'Training Nomination';
+                      RunObject = Page "Training Nomination List";
+                  }
+                  action("Training Pending Approval")
+                  {
+                      ApplicationArea = All;
+                      Caption = 'Training Pending Approval';
+                      Image = PersonInCharge;
+                      RunObject = Page "Training List - Approval";
+                  }
+                  action("Approved Training")
+                  {
+                      ApplicationArea = Suite;
+                      Caption = 'Approved Training';
+                      RunObject = Page "Training List - Approved";
+                  }
+                  action("Training Evaluation")
+                  {
+                      ApplicationArea = All;
+                      Caption = 'Training Evaluation';
+                      RunObject = Page "Training Evaluation List";
+                  }
+                  group("Training Administration")
+                  {
+                      Caption = 'Administration';
+
+                      action("Performance Issues")
+                      {
+                          ApplicationArea = All;
+                          Caption = 'Performance Issues';
+                          RunObject = Page "Performance Issues";
+                      }
+                      action("Training Needs")
+                      {
+                          ApplicationArea = All;
+                          Caption = 'Training Needs';
+                          RunObject = Page "Training Needs";
+                      }
+                  }
+              }
+             */
+
+
             group(HSE)
             {
                 Caption = 'Incidence & Grievances';

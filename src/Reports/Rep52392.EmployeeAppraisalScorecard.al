@@ -3,12 +3,15 @@ report 52392 "Employee Appraisal Scorecard"
     ApplicationArea = All;
     Caption = 'Employee Appraisal Scorecard';
     DefaultLayout = RDLC;
-    RDLCLayout = './src/report_layout/EmployeeAppraisalNew.rdl';
+    // EmployeeAppraisalScorecard
+    // RDLCLayout = './src/report_layout/EmployeeAppraisalNew.rdl';
+    RDLCLayout = './src/report_layout/EmployeeAppraisalScorecard.rdl';
 
     dataset
     {
         dataitem(EmployeeAppraisal; "Employee Appraisal")
         {
+            RequestFilterFields = "Appraisal No";
             // Company Info
             column(CompPic; CompanyInfo.Picture) { }
             column(CompName; CompanyInfo.Name) { }

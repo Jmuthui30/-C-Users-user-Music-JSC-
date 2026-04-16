@@ -95,6 +95,21 @@ pageextension 51804 "ExtHuman Resources Setup" extends "Human Resources Setup"
             {
                 ApplicationArea = All;
             }
+            // Training Needs Nos
+            // "Training Budget Item Nos"
+            field("Training Budget Item Nos"; "Training Budget Item Nos")
+            {
+                ApplicationArea = All;
+            }
+            field("Training Needs Nos."; Rec."Training Needs Nos")
+            {
+                ApplicationArea = All;
+            }
+            field("Training Request Nos"; Rec."Training Request Nos")
+            {
+                ApplicationArea = All;
+            }
+
             field("Training Needs Request Nos."; "Training Needs Request Nos.")
             {
                 ApplicationArea = All;
@@ -122,6 +137,10 @@ pageextension 51804 "ExtHuman Resources Setup" extends "Human Resources Setup"
             field("Human Resource Emails"; "Human Resource Emails")
             {
                 ApplicationArea = all;
+            }
+            field("Owner occupier interest"; Rec."Owner occupier interest")
+            {
+                ApplicationArea = All;
             }
             field("Exit Nos"; Rec."Exit Nos")
             {

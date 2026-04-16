@@ -76,6 +76,8 @@ table 53003 "Assignment Matrix"
 
                         if Payments."Earning Type" = Payments."Earning Type"::"Tax Relief" then
                             "Tax Relief" := true;
+                            if Payments."Earning Type" = Payments."Earning Type"::"Insurance Relief" then
+                            "Insurance Relief":=true;
 
                         "Non-Cash Benefit" := Payments."Non-Cash Benefit";
                         Quarters := Payments.Quarters;
@@ -262,6 +264,21 @@ Amount:=PayrollRounding(Amount);
                                     end;
                                 end;
                             end;
+                            //insurance relief
+                                Payments."Calculation Method" ::"% of Insurance Amount":
+                                    if Employee.Get("Employee No") then begin
+                                        Employee.SetRange(Employee."Pay Period Filter", "Payroll Period");
+                                        Employee.CalcFields(Employee.Insurance);
+                                        //MESSAGE('%1', Employee.Insurance);                                        
+                                        Amount := Abs((Payments.Percentage / 100) * (Employee.Insurance));
+                                        // MESSAGE('%1',Amount);
+                                        //Check For Limits
+                                        if Payments."Minimum Limit" <> 0 then if Amount < Payments."Minimum Limit" then Amount := Payments."Minimum Limit";
+                                        if Payments."Maximum Limit" <> 0 then if Amount > Payments."Maximum Limit" then Amount := Payments."Maximum Limit";
+                                        //if Amount > (5000 - 255) then Amount := (5000 - 255);
+                                        Amount := PayrollRounding(Amount); //round
+                                                                           // MESSAGE('%1',Amount);
+                                end;
 
                         Payments."Calculation Method"::"% of Annual Basic":
                             begin
@@ -1226,6 +1243,15 @@ Amount:=PayrollRounding(Amount);
         {
 
         }
+        field(113; "Insurance Relief"; Boolean)
+        {
+        }
+        field(114; "Pay Period Filter"; Date)
+        {
+            FieldClass = FlowFilter;
+            TableRelation = "Payroll Period"."Starting Date";
+            ValidateTableRelation = false;
+        }
 
     }
 
@@ -1295,7 +1321,7 @@ Amount:=PayrollRounding(Amount);
         {
             SumIndexFields = "Employer Amount", "Interest Amount", "Period Repayment", "No. of Units", "Opening Balance", Amount, "Taxable amount";
         }
-        key(Key17; "Employee No", "Payroll Period", Type, "Non-Cash Benefit", "Normal Earnings")
+        key(Key17; "Employee No", "Payroll Period", Type, "Non-Cash Benefit", "Normal Earnings","Insurance Relief")
         {
             SumIndexFields = "Employer Amount", "Interest Amount", "No. of Units", "Opening Balance", Amount, "Taxable amount";
         }

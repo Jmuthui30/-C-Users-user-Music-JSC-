@@ -197,24 +197,32 @@ page 51984 "Applicant Card-All"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the employee''s initials.';
                     Caption = 'National ID No.';
-                    ShowMandatory = true;
-                    // Visible = Rec.Nationality = Rec.Nationality::Kenyan;
-                    // Enabled = Rec.Nationality = Rec.Nationality::Kenyan;
+                    trigger OnValidate()
+                    begin
+                        if Rec.Nationality = Rec.Nationality::Kenyan then begin
+                            if Rec."National ID" = '' then
+                                Error('National ID is mandatory for Kenyan applicants.');
+                        end;
+                    end;
                 }
                 field("Home County"; Rec."Home County")
                 {
                     ApplicationArea = All;
-                    ShowMandatory = true;
-                    // Visible = Rec.Nationality = Rec.Nationality::Kenyan;
-                    // Enabled = Rec.Nationality = Rec.Nationality::Kenyan;
                 }
                 field("Ethnic Group"; Rec."Ethnic Group")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the employee''s initials.';
-                    ShowMandatory = true;
-                    // Visible = Rec.Nationality = Rec.Nationality::Kenyan;
-                    // Enabled = Rec.Nationality = Rec.Nationality::Kenyan;
+                    trigger OnValidate()
+                    begin
+                        if Rec.Nationality = Rec.Nationality::Kenyan then begin
+                            if Rec."Ethnic Group" = '' then
+                                Error('Ethnic Group is mandatory for Kenyan applicants.');
+                        end;
+
+                    end;
+
+
                 }
                 field("Sub Ethnic Group"; "Sub Ethnic Group")
                 {

@@ -184,8 +184,8 @@ report 54458 "Bank Transfer"
     begin
         // Build and clean employee name
         EmployeeName := NAVEmp."First Name" + ' ' + NAVEmp."Last Name" + ' ' + NAVEmp."Middle Name";
-        EmployeeName := CleanText(EmployeeName);  // Remove special/non-printable characters
-        EmployeeName := DelChr(EmployeeName, '>', ' ');  // Remove trailing spaces
+        EmployeeName := CleanText(EmployeeName);  
+        EmployeeName := DelChr(EmployeeName, '>', ' ');  
 
         // Get employee number and bank details
         EmployeeNo := NAVEmp."No.";

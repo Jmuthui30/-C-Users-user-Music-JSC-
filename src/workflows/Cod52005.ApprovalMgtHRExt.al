@@ -8,23 +8,7 @@ codeunit 52005 "Approval Mgt HR Ext"
         WorkFlowManagement: Codeunit "Workflow Management";
         NoWorkflowEnabledErr: Label 'No approval workflow for this record type is enabled.';
 
-    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnAfterCreateApprovalRequestForApproverChain', '', false, false)]
-    // local procedure OnAfterCreateApprovalRequestForApproverChain(var ApprovalEntryArgument: Record "Approval Entry"; var ApproverId: Code[50]; var WorkflowStepArgument: Record "Workflow Step Argument"; var UserSetup: Record "User Setup"; var SufficientApproverOnly: Boolean)
-    // var
-    //     HRMgmt: Codeunit "HR Management";
-    // begin
-    //     if ApprovalEntryArgument.Status <> ApprovalEntryArgument.Status::Open then
-    //         exit;
 
-    //     if ApproverId = '' then
-    //         exit;
-    //     // Notify approver of approval request
-    //     // if SufficientApproverOnly then
-    //     //     exit;
-
-    //     HRMgmt.NotifyApproverByEmail(ApprovalEntryArgument);
-
-    // end;
 
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnPopulateApprovalEntryArgument', '', false, false)]
@@ -40,6 +24,7 @@ codeunit 52005 "Approval Mgt HR Ext"
 
         Employee: Record Employee;
         NewEmployeeAppraisal: Record "Employee Appraisal";
+        TrainingRequest: Record "Training Request";
         StaffAppraisalApprovalLbl: Label 'Staff Appraisal-%1 for the Period between %2 - %3', Comment = '%1 = Employee Name, %2 = Period Start, %3 = Period End';
     begin
         case RecRef.Number of
@@ -91,6 +76,14 @@ codeunit 52005 "Approval Mgt HR Ext"
                     ApprovalEntryArgument."Document No." := NewEmployeeAppraisal."Appraisal No";
                     ApprovalEntryArgument.Description := StrSubstNo(StaffAppraisalApprovalLbl, NewEmployeeAppraisal."Appraisee Name", NewEmployeeAppraisal."Period Start", NewEmployeeAppraisal."Period End");
                 end;
+            // "Training Request"
+            Database::"Training Request":
+                begin
+                    RecRef.SetTable(TrainingRequest);
+                    ApprovalEntryArgument."Document Type" := ApprovalEntryArgument."Document Type"::TrainingRequest;
+                    ApprovalEntryArgument."Document No." := TrainingRequest."Request No.";
+                end;
+
         end;
     end;
 
@@ -149,6 +142,7 @@ codeunit 52005 "Approval Mgt HR Ext"
         NewEmployeeAppraisal: Record "Employee Appraisal";
         RecruitmentRequest: Record "Recruitment Needs";
         Employee: Record Employee;
+        TrainingRequest: Record "Training Request";
     begin
         case RecRef.Number of
 
@@ -192,20 +186,7 @@ codeunit 52005 "Approval Mgt HR Ext"
                     IsHandled := true;
                 end;
             //New Employee Appraisal
-            // Database::"Employee Appraisal":
-            //     begin
-            //         RecRef.SetTable(NewEmployeeAppraisal);
-            //          if NewEmployeeAppraisal.Status = NewEmployeeAppraisal.Status::Open then
-            //             NewEmployeeAppraisal.Validate(Status, NewEmployeeAppraisal.Status::"Pending Approval");
-            //         // if NewEmployeeAppraisal.Status = NewEmployeeAppraisal.Status::Open then
-            //         //     NewEmployeeAppraisal.Validate(Status, NewEmployeeAppraisal.Status::"Pending Approval")
-            //         // else
-            //         //     NewEmployeeAppraisal.Validate(Status, NewEmployeeAppraisal.Status::"Mid-Year Approved");
-            //         // NewEmployeeAppraisal.Validate("Appraisal Status", NewEmployeeAppraisal."Appraisal Status"::Set);
-            //         // NewEmployeeAppraisal.Modify(true);
-            //         Variant := NewEmployeeAppraisal;
-            //         IsHandled := true;
-            //     end;
+
             Database::"Employee Appraisal":
                 begin
                     RecRef.SetTable(NewEmployeeAppraisal);
@@ -215,10 +196,18 @@ codeunit 52005 "Approval Mgt HR Ext"
                     end;
                     IsHandled := true;
                 end;
+            Database::"Training Request":
+                begin
+                    RecRef.SetTable(TrainingRequest);
+                    TrainingRequest.Validate(Status, TrainingRequest.Status::"Pending Approval");
+                    TrainingRequest.Modify(true);
+                    Variant := TrainingRequest;
+                    IsHandled := true;
+                end;
 
         end;
     end;
-  
+
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnRejectApprovalRequest', '', false, false)]
     local procedure PerformActionsOnRejectApprovalRequest(var ApprovalEntry: Record "Approval Entry")
@@ -226,7 +215,7 @@ codeunit 52005 "Approval Mgt HR Ext"
 
         Leave: Record "Leave Application";
         HRMgt: Codeunit "HR Management";
-    // Employee: Record Employee;
+
     begin
 
         //Leave
@@ -234,11 +223,7 @@ codeunit 52005 "Approval Mgt HR Ext"
             if Confirm('Do you want to notify Leave Applicant that you have rejected their leave?', false) then
                 HRMgt.NotifyLeaveApplicantOnRejection(Leave);
         end;
-        // New Employee Approval
-        // if Employee.Get(Employee."No.") then begin
-        //     Employee.Validate("Approval Status", Employee."Approval Status"::Rejected);
-        //     Employee.Modify();
-        // end;
+
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnBeforeApprovalEntryInsert', '', false, false)]
@@ -261,82 +246,82 @@ codeunit 52005 "Approval Mgt HR Ext"
     end;
 
 
-//    [EventSubscriber(ObjectType::Table, Database::"Approval Entry", 'OnAfterModifyEvent', '', false, false)]
-//     local procedure OnAfterModifyApprovalEntry(var Rec: Record "Approval Entry"; var xRec: Record "Approval Entry"; RunTrigger: Boolean)
-//     var
-//         LeaveApplication: Record "Leave Application";
-//         OpenEntries: Record "Approval Entry";
-//     begin
-//         if Rec.IsTemporary then
-//             exit;
+    //    [EventSubscriber(ObjectType::Table, Database::"Approval Entry", 'OnAfterModifyEvent', '', false, false)]
+    //     local procedure OnAfterModifyApprovalEntry(var Rec: Record "Approval Entry"; var xRec: Record "Approval Entry"; RunTrigger: Boolean)
+    //     var
+    //         LeaveApplication: Record "Leave Application";
+    //         OpenEntries: Record "Approval Entry";
+    //     begin
+    //         if Rec.IsTemporary then
+    //             exit;
 
-//         // Only care about Leave Application entries
-//         if Rec."Table ID" <> Database::"Leave Application" then
-//             exit;
+    //         // Only care about Leave Application entries
+    //         if Rec."Table ID" <> Database::"Leave Application" then
+    //             exit;
 
-//         // Only fire when this entry just became Approved
-//         if Rec.Status <> Rec.Status::Approved then
-//             exit;
+    //         // Only fire when this entry just became Approved
+    //         if Rec.Status <> Rec.Status::Approved then
+    //             exit;
 
-//         if xRec.Status = xRec.Status::Approved then
-//             exit; // Already was approved, not a new transition
+    //         if xRec.Status = xRec.Status::Approved then
+    //             exit; // Already was approved, not a new transition
 
-//         // Check no other open or created entries remain for this document
-//         OpenEntries.SetRange("Table ID", Database::"Leave Application");
-//         OpenEntries.SetRange("Document No.", Rec."Document No.");
-//         OpenEntries.SetFilter(Status, '%1|%2', OpenEntries.Status::Open, OpenEntries.Status::Created);
-//         if not OpenEntries.IsEmpty() then
-//             exit;
+    //         // Check no other open or created entries remain for this document
+    //         OpenEntries.SetRange("Table ID", Database::"Leave Application");
+    //         OpenEntries.SetRange("Document No.", Rec."Document No.");
+    //         OpenEntries.SetFilter(Status, '%1|%2', OpenEntries.Status::Open, OpenEntries.Status::Created);
+    //         if not OpenEntries.IsEmpty() then
+    //             exit;
 
-//         // Fetch the Leave Application and confirm it is Released
-//         if not LeaveApplication.Get(Rec."Document No.") then
-//             exit;
+    //         // Fetch the Leave Application and confirm it is Released
+    //         if not LeaveApplication.Get(Rec."Document No.") then
+    //             exit;
 
-//         if LeaveApplication.Status <> LeaveApplication.Status::Released then
-//             exit;
+    //         if LeaveApplication.Status <> LeaveApplication.Status::Released then
+    //             exit;
 
-//         SendLeaveNotification(LeaveApplication);
-//     end;
+    //         SendLeaveNotification(LeaveApplication);
+    //     end;
 
-//     local procedure SendLeaveNotification(LeaveApplication: Record "Leave Application")
-//     var
-//         Employee: Record Employee;
-//         EmailMessage: Codeunit "Email Message";
-//         Email: Codeunit Email;
-//         Subject: Text;
-//         Body: Text;
-//     begin
-//         Subject := StrSubstNo('Leave Approved: %1 - %2',
-//             LeaveApplication."Application No",
-//             LeaveApplication."Employee Name");
+    //     local procedure SendLeaveNotification(LeaveApplication: Record "Leave Application")
+    //     var
+    //         Employee: Record Employee;
+    //         EmailMessage: Codeunit "Email Message";
+    //         Email: Codeunit Email;
+    //         Subject: Text;
+    //         Body: Text;
+    //     begin
+    //         Subject := StrSubstNo('Leave Approved: %1 - %2',
+    //             LeaveApplication."Application No",
+    //             LeaveApplication."Employee Name");
 
-//         Body := StrSubstNo(
-//             '<p>Dear Team,</p><p>Leave Application <b>%1</b> has been fully approved.</p>' +
-//             '<p><b>Employee:</b> %2<br/>' +
-//             '<b>Leave Type:</b> %3<br/>' +
-//             '<b>From:</b> %4<br/>' +
-//             '<b>To:</b> %5<br/>' +
-//             '<b>Days Applied:</b> %6</p>' +
-//             '<p>Regards,<br/>HR System</p>',
-//             LeaveApplication."Application No",
-//             LeaveApplication."Employee Name",
-//             LeaveApplication."Leave Code",
-//             LeaveApplication."Start Date",
-//             LeaveApplication."End Date",
-//             LeaveApplication."Days Applied");
+    //         Body := StrSubstNo(
+    //             '<p>Dear Team,</p><p>Leave Application <b>%1</b> has been fully approved.</p>' +
+    //             '<p><b>Employee:</b> %2<br/>' +
+    //             '<b>Leave Type:</b> %3<br/>' +
+    //             '<b>From:</b> %4<br/>' +
+    //             '<b>To:</b> %5<br/>' +
+    //             '<b>Days Applied:</b> %6</p>' +
+    //             '<p>Regards,<br/>HR System</p>',
+    //             LeaveApplication."Application No",
+    //             LeaveApplication."Employee Name",
+    //             LeaveApplication."Leave Code",
+    //             LeaveApplication."Start Date",
+    //             LeaveApplication."End Date",
+    //             LeaveApplication."Days Applied");
 
-//         Employee.Reset();
-//         Employee.SetRange(Notify, true);
-//         if Employee.FindSet() then
-//             repeat
-//                 if Employee."Company E-Mail" <> '' then begin
-//                     Clear(EmailMessage);
-//                     Clear(Email);
-//                     EmailMessage.Create(Employee."Company E-Mail", Subject, Body, true);
-//                     Email.Send(EmailMessage, Enum::"Email Scenario"::Default);
-//                 end;
-//             until Employee.Next() = 0;
-//     end;
+    //         Employee.Reset();
+    //         Employee.SetRange(Notify, true);
+    //         if Employee.FindSet() then
+    //             repeat
+    //                 if Employee."Company E-Mail" <> '' then begin
+    //                     Clear(EmailMessage);
+    //                     Clear(Email);
+    //                     EmailMessage.Create(Employee."Company E-Mail", Subject, Body, true);
+    //                     Email.Send(EmailMessage, Enum::"Email Scenario"::Default);
+    //                 end;
+    //             until Employee.Next() = 0;
+    //     end;
 
 
     procedure CheckLeaveRequestWorkflowEnabled(var LeaveRequest: Record "Leave Application"): Boolean
@@ -519,6 +504,35 @@ codeunit 52005 "Approval Mgt HR Ext"
     begin
 
     end;
+    // Training Request
+    procedure CheckTrainingRequestWorkflowEnabled(var TrainingRequest: Record "Training Request"): Boolean
+    begin
+        if not IsTrainingRequestWorkflowEnabled(TrainingRequest) then
+            Error(NoWorkflowEnabledErr);
+        exit(true);
+    end;
+
+    procedure IsTrainingRequestWorkflowEnabled(var TrainingRequest: Record "Training Request"): Boolean
+    begin
+        exit(WorkflowManagement.CanExecuteWorkflow(TrainingRequest, WorkflowEventHandling.RunworkflowOnSendTrainingRequestforApprovalCode()));
+    end;
+
+    [IntegrationEvent(false, false)]
+    procedure OnSendTrainingRequestforApproval(var TrainingRequest: Record "Training Request")
+    begin
+
+    end;
+
+    [IntegrationEvent(false, false)]
+    procedure OnCancelTrainingRequestApproval(var TrainingRequest: Record "Training Request")
+    begin
+
+    end;
+
+
+
+
+
 }
 
 

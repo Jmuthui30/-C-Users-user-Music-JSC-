@@ -361,7 +361,7 @@ table 52025 "Training Request"
             var
                 Participants: Record "Training Participants";
             begin
-
+                "Cost of Training" := 0;
                 TrainingRequest.SetRange("Employee No", "Employee No");
                 TrainingRequest.SetRange("Training Need", "Training Need");
                 if TrainingRequest.FindFirst() then
@@ -381,6 +381,7 @@ table 52025 "Training Request"
                         Venue := TrainingNeeds.Venue;
                         "Country Code" := TrainingNeeds."Country Code";
                         "Cost of Training" := TrainingNeeds."Cost Of Training";
+                        Message('Cost of Training for %1 is %2', "Training Need", "Cost of Training");
                         "Cost of Training (LCY)" := TrainingNeeds."Cost Of Training (LCY)";
                     end else begin
                         Participants.SetRange("Employee No", "Employee No");
@@ -397,14 +398,15 @@ table 52025 "Training Request"
         }
         field(51; "Cost of Training"; Decimal)
         {
-            CalcFormula = sum("Training Request Lines".Amount where("Document No." = field("Request No.")));
-            FieldClass = FlowField;
+            // CalcFormula = sum("Training Request Lines".Amount where("Document No." = field("Request No.")));
+            // CalcFormula =  sum("Training Needs Lines".Amount where("Document No." = field(Code)));
+            // FieldClass = FlowField;
             Caption = 'Cost of Training';
         }
         field(52; "Cost of Training (LCY)"; Decimal)
         {
-            CalcFormula = sum("Training Request Lines"."Amount (LCY)" where("Document No." = field("Request No.")));
-            FieldClass = FlowField;
+            // CalcFormula = sum("Training Request Lines"."Amount (LCY)" where("Document No." = field("Request No.")));
+            // FieldClass = FlowField;
             Caption = 'Cost of Training (LCY)';
         }
         field(53; "Salary Scale"; Code[30])
@@ -445,12 +447,12 @@ table 52025 "Training Request"
         if "Request No." = '' then begin
             HRSetup.Get();
             HRSetup.TestField("Training Request Nos");
-            // NoSeriesMgt.InitSeries(HRSetup."Training Request Nos", xRec."No. Series", 0D, "Request No.", "No. Series");
-            if NoSeriesMgt.AreRelated(HRSetup."Training Request Nos",xRec."No. Series") then
-            "No. Series":=xRec."No. Series"
+            //NoSeriesMgt.InitSeries(HRSetup."Training Request Nos", xRec."No. Series", 0D, "Request No.", "No. Series");
+            if NoSeriesMgt.AreRelated(HRSetup."Training Request Nos", xRec."No. Series") then
+                "No. Series" := xRec."No. Series"
             else
-            "No. Series":=HRSetup."Training Request Nos";
-           "Request No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
+                "No. Series" := HRSetup."Training Request Nos";
+            "Request No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
             "GL Account" := HRSetup."Account No (Training)";
         end;
 

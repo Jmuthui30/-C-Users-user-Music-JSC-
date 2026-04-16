@@ -51,6 +51,9 @@ page 50059 "Imprest Memo Header"
                 field(Purpose; Rec.Purpose)
                 {
                 }
+                field("Work Plan Activity Description"; "Work Plan Activity Description")
+                {
+                }
 
                 field("Activity Location"; Rec."Activity Location")
                 {
@@ -192,6 +195,9 @@ page 50059 "Imprest Memo Header"
                 {
                 }
                 field(Committed; Rec.Committed)
+                {
+                }
+                field("Budget Sub-Head Code"; "Budget Sub-Head Code")
                 {
                 }
             }

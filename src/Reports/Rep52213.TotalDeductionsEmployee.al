@@ -8,7 +8,7 @@ report 52213 "Total Deductions/Employee"
 
     dataset
     {
-        dataitem("PR Transaction Codes"; "Client Deductions")
+        dataitem("PR Transaction Codes"; Deduction)
         {
             DataItemTableView = SORTING(Code) ORDER(Descending);
             RequestFilterFields = Code;
@@ -49,7 +49,7 @@ report 52213 "Total Deductions/Employee"
             column(ReportTitle; ReportTitle)
             {
             }
-            dataitem("PR Period Transactions"; "Client Payroll Matrix")
+            dataitem("PR Period Transactions"; "Assignment Matrix")
             {
                 DataItemLink = "Code" = FIELD(Code);
                 //DataItemTableView = SORTING()
@@ -83,14 +83,14 @@ report 52213 "Total Deductions/Employee"
                 column(ReferenceNo_PRPeriodTransactions; "PR Period Transactions"."Reference No")
                 {
                 }
-                dataitem(Employee; "Client Employee Master")
+                dataitem(Employee; Employee)
                 {
                     DataItemLink = "No." = field("Employee No");
 
-                    column(ID_Number; "ID Number")
+                    column(ID_Number;"ID No.")
                     {
                     }
-                    column(Full_Name; "Full Name")
+                    column(Full_Name;FullName)
                     {
                     }
                 }
@@ -108,7 +108,7 @@ report 52213 "Total Deductions/Employee"
                     PREmpTrans.RESET;
                     PREmpTrans.SETRANGE(PREmpTrans."Payroll Period", SelectedPeriod);
                     PREmpTrans.SETRANGE(PREmpTrans."Code", "PR Period Transactions"."Code");
-                    PREmpTrans.SetRange(PREmpTrans.Company, "PR Period Transactions".Company);
+                    // PREmpTrans.SetRange(PREmpTrans.Company, "PR Period Transactions".Company);
                     IF PREmpTrans.FIND('-') THEN BEGIN
                         BLN_No := PREmpTrans."Reference No";
                     END;
@@ -150,7 +150,7 @@ report 52213 "Total Deductions/Employee"
                 {
                     Caption = 'Payroll Period';
                     ApplicationArea = all;
-                    TableRelation = "Client Payroll Period"."Starting Date";
+                    TableRelation = "Payroll Period II"."Starting Date";
                 }
                 field(PostingGrp_TxtFilter; PostingGrp_TxtFilter)
                 {
@@ -183,11 +183,11 @@ report 52213 "Total Deductions/Employee"
         CompInfo: Record "Company Information";
         PeriodName: Text[30];
         AppliedFilters: Text;
-        PRPayrollPeriods: Record "Client Payroll Period";
+        PRPayrollPeriods: Record "Payroll Period II";
         EmpName: Text;
         HREmp: Record "Employee";
         IDNumber: Text;
-        PREmpTrans: Record "Client Payroll Matrix";
+        PREmpTrans: Record "Assignment Matrix";
         BLN_No: Text;
         ReportTitle: Text;
 

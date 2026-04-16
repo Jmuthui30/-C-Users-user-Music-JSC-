@@ -6,15 +6,15 @@ report 51478 "Payroll Reconciliation"
 
     dataset
     {
-        dataitem("Assignment Matrix-X"; "Client Payroll Matrix")
+        dataitem("Assignment Matrix-X"; "Assignment Matrix")
         {
             DataItemTableView = SORTING(Type, Code) ORDER(Ascending);
-            RequestFilterFields = "Payroll Period", Company;
+            RequestFilterFields = "Payroll Period";
 
             column(FORMAT_TODAY_0_4_; Format(Today, 0, 4)) { }
             column(COMPANYNAME; CompanyName) { }
             column(USERID; UserId) { }
-            column(PayrollMonth; StrSubstNo('%1', Format(Thismonth, 0, ' '))) { }
+            column(PayrollMonth; StrSubstNo('PERIOD: %1', Format(Thismonth, 0, '<Month Text> <Year4>'))) { }
             column(EarningCode; Code) { }
             column(EarningDescription; Desc) { }
             column(PAYROLL_RECONCILIATIONCaption; PAYROLL_RECONCILIATIONCaptionLbl) { }
@@ -23,16 +23,25 @@ report 51478 "Payroll Reconciliation"
             column(Current_PeriodCaption; Current_PeriodCaptionLbl) { }
             column(Last_PeriodCaption; Last_PeriodCaptionLbl) { }
             column(DifferenceCaption; DifferenceCaptionLbl) { }
-            column(Pay_Period_Filter; "Pay Period Filter") { }
+            column(Pay_Period_Filter; "Pay Period") { }
             column(EarningEmployeeNo; "Employee No") { }
             column(EarningAmount; CurrentMonthVal) { }  // Changed from Amount
             column(EarningEmpName; EmpName) { }
             column(EarningLastMonthVal; LastMonthVal) { }
             column(EarningDifference; Difference) { }
             column(Type; Type) { }
+            column(Payroll_Period; "Payroll Period") { }
             column(EanEarningCode; Code) { }
             column(EarningPayrollPeriod; "Payroll Period") { }
             column(EarningRefNo; "Reference No") { }
+            column(Payroll_Period_; "Payroll Period")
+            {
+
+            }
+            column(CompanyInfo; CompanyInfo.Picture)
+            {
+
+            }
 
             trigger OnAfterGetRecord()
             begin
@@ -47,15 +56,15 @@ report 51478 "Payroll Reconciliation"
                 Desc := '';
 
                 // Get description based on type
-                if "Assignment Matrix-X".Type = "Assignment Matrix-X".Type::Payment then begin
-                    if ClientEarnings.Get("Assignment Matrix-X".Company, "Assignment Matrix-X".Code) then begin
+                if "Assignment Matrix-X".Type = "Assignment Matrix-X".Type::Earning then begin
+                    if ClientEarnings.Get("Assignment Matrix-X".Code) then begin
                         Desc := ClientEarnings.Description;
                         if (ClientEarnings."Earning Type" = ClientEarnings."Earning Type"::"Tax Relief") or
                            (ClientEarnings."Earning Type" = ClientEarnings."Earning Type"::"Insurance Relief") then
                             CurrReport.Skip;
                     end;
                 end else if "Assignment Matrix-X".Type = "Assignment Matrix-X".Type::Deduction then begin
-                    if ClientDeductions.Get("Assignment Matrix-X".Company, "Assignment Matrix-X".Code) then
+                    if ClientDeductions.Get("Assignment Matrix-X".Code) then
                         Desc := ClientDeductions.Description;
                 end;
 
@@ -103,9 +112,17 @@ report 51478 "Payroll Reconciliation"
 
             trigger OnPreDataItem()
             begin
-                // Set filter to include BOTH current and last month
+                if "Assignment Matrix-X".GetFilter("Payroll Period") = '' then
+                    Error('No Payroll Period filter set. Please set one on the request page.');
+
+                Thismonth := "Assignment Matrix-X".GetRangeMin("Payroll Period");
+                Lastmonth := CalcDate('-1M', Thismonth);
+
+                // Message('ThisMonth: %1, LastMonth: %2', Thismonth, Lastmonth);  
+
                 SetRange("Payroll Period", Lastmonth, Thismonth);
             end;
+
         }
     }
 
@@ -121,12 +138,15 @@ report 51478 "Payroll Reconciliation"
     begin
         Thismonth := "Assignment Matrix-X".GetRangeMin("Payroll Period");
         Lastmonth := CalcDate('-1M', Thismonth);
+        CompanyInfo.Get();
+        CompanyInfo.CalcFields(Picture);
     end;
 
     var
         EmpName: Text[230];
-        Emp: Record "Client Employee Master";
-        Assignmat: Record "Client Payroll Matrix";
+        Emp: Record Employee;
+        Assignmat: Record "Assignment Matrix";
+        CompanyInfo: Record "Company Information";
         Thismonth: Date;
         Lastmonth: Date;
         CurrentMonthVal: Decimal;
@@ -138,9 +158,9 @@ report 51478 "Payroll Reconciliation"
         Current_PeriodCaptionLbl: Label 'Current Period';
         Last_PeriodCaptionLbl: Label 'Last Period';
         DifferenceCaptionLbl: Label 'Difference';
-        ClientEarnings: Record "Client Earnings";
+        ClientEarnings: Record Earning;
         Desc: Text;
-        ClientDeductions: Record "Client Deductions";
+        ClientDeductions: Record Deduction;
 }
 
 

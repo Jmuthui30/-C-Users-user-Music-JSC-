@@ -192,6 +192,7 @@ codeunit 52007 "Wkflw Event Response HR Ext"
         WorkflowResponses: Codeunit "Workflow Responses HR";
         Emp: Record "Employee";
         VarVariant: Variant;
+        trainingRequest: Record "Training Request";
     begin
         VarVariant := RecRef;
         case RecRef.Number of
@@ -202,7 +203,7 @@ codeunit 52007 "Wkflw Event Response HR Ext"
                     Handled := true;
                     WorkflowResponses.ReleaseLeave(VarVariant);
                     // if LeaveApp.FindFirst() then
-                        // HRMgnt.NotifyLeaveReliever(LeaveApp."Application No");
+                    // HRMgnt.NotifyLeaveReliever(LeaveApp."Application No");
                 end;
             //Recruitment
             Database::"Recruitment Needs":
@@ -242,6 +243,14 @@ codeunit 52007 "Wkflw Event Response HR Ext"
                     Handled := true;
                     WorkflowResponses.ReleaseEmployeeAppraisalRequest(VarVariant);
                 end;
+            //Training Request
+            Database::"Training Request":
+                begin
+                    trainingRequest.SetView(RecRef.GetView());
+                    Handled := true;
+                    WorkflowResponses.ReleaseTrainingRequest(VarVariant);
+                end;
+
         end;
     end;
 
@@ -256,6 +265,7 @@ codeunit 52007 "Wkflw Event Response HR Ext"
         Emp: Record "Employee";
         NewEmployeeAppraisal: Record "Employee Appraisal";
         WorkflowResponses: Codeunit "Workflow Responses HR";
+        TrainingRequest: Record "Training Request";
         VarVariant: Variant;
     begin
         VarVariant := RecRef;
@@ -306,6 +316,13 @@ codeunit 52007 "Wkflw Event Response HR Ext"
                     NewEmployeeAppraisal.SetView(RecRef.GetView());
                     Handled := true;
                     WorkflowResponses.ReopenEmployeeAppraisalRequest(VarVariant);
+                end;
+            //Training Request
+            Database::"Training Request":
+                begin
+                    TrainingRequest.SetView(RecRef.GetView());
+                    Handled := true;
+                    WorkflowResponses.ReopenTrainingRequest(VarVariant);
                 end;
         end;
     end;

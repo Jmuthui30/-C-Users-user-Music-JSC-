@@ -557,21 +557,21 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox27">
+                        <Textbox Name="Budget_Sub_Head_Code">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!Budget_Sub_Head_Code.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox27</rd:DefaultName>
+                          <rd:DefaultName>Budget_Sub_Head_Code</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -617,21 +617,21 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox29">
+                        <Textbox Name="Work_Plan_Activity_Description">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!Work_Plan_Activity_Description.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox29</rd:DefaultName>
+                          <rd:DefaultName>Work_Plan_Activity_Description</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -704,7 +704,7 @@
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>0.7905cm</Height>
+                  <Height>0.83755cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -750,7 +750,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.64233cm</Height>
+                  <Height>0.68938cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -979,7 +979,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.6cm</Height>
+                  <Height>0.64705cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -1237,10 +1237,10 @@
                 </FilterValues>
               </Filter>
             </Filters>
-            <Top>8.27882cm</Top>
+            <Top>8.13768cm</Top>
             <Left>0.85937cm</Left>
-            <Height>2.03283cm</Height>
-            <Width>18.65093cm</Width>
+            <Height>2.17397cm</Height>
+            <Width>18.65094cm</Width>
             <ZIndex>5</ZIndex>
             <Style>
               <Border>
@@ -1252,24 +1252,24 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>1.03794cm</Width>
+                  <Width>1.03371cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.49483cm</Width>
+                  <Width>3.4906cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>7.0485cm</Width>
+                  <Width>7.04427cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.17733cm</Width>
+                  <Width>3.1731cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.9135cm</Width>
+                  <Width>3.90927cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>0.81167cm</Height>
+                  <Height>0.82369cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -1315,7 +1315,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.6cm</Height>
+                  <Height>0.60941cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -1480,7 +1480,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.6cm</Height>
+                  <Height>0.61202cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -1637,7 +1637,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.6cm</Height>
+                  <Height>0.60941cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -1711,7 +1711,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.6cm</Height>
+                  <Height>0.61202cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -1752,7 +1752,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.6cm</Height>
+                  <Height>0.60941cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -1793,7 +1793,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.6cm</Height>
+                  <Height>0.61202cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -1838,7 +1838,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.83283cm</Height>
+                  <Height>0.84224cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -1879,7 +1879,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.6cm</Height>
+                  <Height>0.61202cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -1920,7 +1920,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>4.918cm</Height>
+                  <Height>4.92741cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2120,7 +2120,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.6cm</Height>
+                  <Height>0.61202cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2162,7 +2162,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.6cm</Height>
+                  <Height>0.60941cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2207,7 +2207,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>1.53133cm</Height>
+                  <Height>1.54335cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2267,7 +2267,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>1.59483cm</Height>
+                  <Height>1.60424cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2327,7 +2327,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>1.54517cm</Height>
+                  <Height>1.55719cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2387,7 +2387,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.6cm</Height>
+                  <Height>0.60941cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2432,7 +2432,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.6cm</Height>
+                  <Height>0.61202cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2467,17 +2467,85 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <ColSpan>5</ColSpan>
+                        <ColSpan>3</ColSpan>
                       </CellContents>
                     </TablixCell>
                     <TablixCell />
                     <TablixCell />
-                    <TablixCell />
-                    <TablixCell />
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox3">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Signature:</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Book Antiqua</FontFamily>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox3</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox4">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Date:</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Book Antiqua</FontFamily>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox4</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.64233cm</Height>
+                  <Height>1.07507cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2518,14 +2586,14 @@
                     <TablixCell />
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox138">
+                        <Textbox Name="PreparedBy">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!PreparedBy.Value</Value>
                                   <Style>
                                     <FontStyle>Italic</FontStyle>
                                     <FontFamily>Book Antiqua</FontFamily>
@@ -2538,7 +2606,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox138</rd:DefaultName>
+                          <rd:DefaultName>PreparedBy</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -2553,37 +2621,17 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox186">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>Signature:</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Book Antiqua</FontFamily>
-                                    <FontSize>11pt</FontSize>
-                                    <FontWeight>Normal</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox186</rd:DefaultName>
+                        <Image Name="Image1">
+                          <Source>Database</Source>
+                          <Value>=Fields!PreparedBy_Signature.Value</Value>
+                          <MIMEType>image/png</MIMEType>
+                          <Sizing>FitProportional</Sizing>
                           <Style>
                             <Border>
                               <Style>None</Style>
                             </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
                           </Style>
-                        </Textbox>
+                        </Image>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -2595,12 +2643,13 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Date:</Value>
+                                  <Value>=Fields!DatePrepared.Value</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>MM/dd/yyyy</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -2624,7 +2673,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.89633cm</Height>
+                  <Height>0.61202cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2700,7 +2749,7 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox144">
+                        <Textbox Name="PreparedBy_Signature">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -2720,7 +2769,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox144</rd:DefaultName>
+                          <rd:DefaultName>PreparedBy_Signature</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -2771,7 +2820,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.64234cm</Height>
+                  <Height>0.65175cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2816,7 +2865,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.81167cm</Height>
+                  <Height>1.12002cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2857,14 +2906,14 @@
                     <TablixCell />
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox153">
+                        <Textbox Name="ExaminedBy">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!ExaminedBy.Value</Value>
                                   <Style>
                                     <FontStyle>Italic</FontStyle>
                                     <FontFamily>Book Antiqua</FontFamily>
@@ -2877,7 +2926,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox153</rd:DefaultName>
+                          <rd:DefaultName>ExaminedBy</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -2892,54 +2941,35 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox188">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value />
-                                  <Style>
-                                    <FontStyle>Italic</FontStyle>
-                                    <FontFamily>Book Antiqua</FontFamily>
-                                    <FontSize>11pt</FontSize>
-                                    <FontWeight>Normal</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox188</rd:DefaultName>
+                        <Image Name="Image2">
+                          <Source>Database</Source>
+                          <Value>=Fields!ExaminedBy_Signature.Value</Value>
+                          <MIMEType>image/png</MIMEType>
+                          <Sizing>FitProportional</Sizing>
                           <Style>
                             <Border>
                               <Style>None</Style>
                             </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
                           </Style>
-                        </Textbox>
+                        </Image>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox189">
+                        <Textbox Name="DateApproved">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!DateApproved.Value</Value>
                                   <Style>
-                                    <FontStyle>Italic</FontStyle>
+                                    <FontStyle>Normal</FontStyle>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>g</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -2947,7 +2977,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox189</rd:DefaultName>
+                          <rd:DefaultName>DateApproved</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -2963,7 +2993,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.74816cm</Height>
+                  <Height>0.75757cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3110,7 +3140,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.7905cm</Height>
+                  <Height>0.80252cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3155,7 +3185,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.64234cm</Height>
+                  <Height>0.92692cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3196,14 +3226,14 @@
                     <TablixCell />
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox168">
+                        <Textbox Name="VBC">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!VBC.Value</Value>
                                   <Style>
                                     <FontStyle>Italic</FontStyle>
                                     <FontFamily>Book Antiqua</FontFamily>
@@ -3216,7 +3246,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox168</rd:DefaultName>
+                          <rd:DefaultName>VBC</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -3231,54 +3261,34 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox169">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value />
-                                  <Style>
-                                    <FontStyle>Italic</FontStyle>
-                                    <FontFamily>Book Antiqua</FontFamily>
-                                    <FontSize>11pt</FontSize>
-                                    <FontWeight>Normal</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox169</rd:DefaultName>
+                        <Image Name="Image3">
+                          <Source>Database</Source>
+                          <Value>=Fields!VBC_Signature.Value</Value>
+                          <MIMEType>image/png</MIMEType>
+                          <Sizing>FitProportional</Sizing>
                           <Style>
                             <Border>
                               <Style>None</Style>
                             </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
                           </Style>
-                        </Textbox>
+                        </Image>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox170">
+                        <Textbox Name="VBCDate">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!VBCDate.Value</Value>
                                   <Style>
-                                    <FontStyle>Italic</FontStyle>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>g</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -3286,7 +3296,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox170</rd:DefaultName>
+                          <rd:DefaultName>VBCDate</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -3302,7 +3312,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.6cm</Height>
+                  <Height>0.61202cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3449,7 +3459,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.6cm</Height>
+                  <Height>0.60941cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3494,7 +3504,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.6cm</Height>
+                  <Height>0.61202cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3644,10 +3654,10 @@
                 </FilterValues>
               </Filter>
             </Filters>
-            <Top>10.44571cm</Top>
-            <Left>0.8382cm</Left>
-            <Height>24.8075cm</Height>
-            <Width>18.6721cm</Width>
+            <Top>10.34693cm</Top>
+            <Left>0.85937cm</Left>
+            <Height>25.79528cm</Height>
+            <Width>18.65093cm</Width>
             <ZIndex>6</ZIndex>
             <Style>
               <Border>
@@ -3656,7 +3666,7 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>35.63087cm</Height>
+        <Height>36.14221cm</Height>
         <Style />
       </Body>
       <Width>20.8915cm</Width>
@@ -3764,6 +3774,48 @@ End Function
         </Field>
         <Field Name="RunLine">
           <DataField>RunLine</DataField>
+        </Field>
+        <Field Name="PreparedBy">
+          <DataField>PreparedBy</DataField>
+        </Field>
+        <Field Name="DatePrepared">
+          <DataField>DatePrepared</DataField>
+        </Field>
+        <Field Name="PreparedBy_Signature">
+          <DataField>PreparedBy_Signature</DataField>
+        </Field>
+        <Field Name="ExaminedBy">
+          <DataField>ExaminedBy</DataField>
+        </Field>
+        <Field Name="DateApproved">
+          <DataField>DateApproved</DataField>
+        </Field>
+        <Field Name="ExaminedBy_Signature">
+          <DataField>ExaminedBy_Signature</DataField>
+        </Field>
+        <Field Name="VBC">
+          <DataField>VBC</DataField>
+        </Field>
+        <Field Name="VBCDate">
+          <DataField>VBCDate</DataField>
+        </Field>
+        <Field Name="VBC_Signature">
+          <DataField>VBC_Signature</DataField>
+        </Field>
+        <Field Name="Authorizer">
+          <DataField>Authorizer</DataField>
+        </Field>
+        <Field Name="DateAuthorized">
+          <DataField>DateAuthorized</DataField>
+        </Field>
+        <Field Name="Authorizer_Signature">
+          <DataField>Authorizer_Signature</DataField>
+        </Field>
+        <Field Name="Budget_Sub_Head_Code">
+          <DataField>Budget_Sub_Head_Code</DataField>
+        </Field>
+        <Field Name="Work_Plan_Activity_Description">
+          <DataField>Work_Plan_Activity_Description</DataField>
         </Field>
         <Field Name="Memo_No_">
           <DataField>Memo_No_</DataField>

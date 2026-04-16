@@ -1,21 +1,22 @@
 report 52215 "KRA ITAX P10 Report"
 {
     // version THL- Client Payroll 1.0
-    DefaultLayout = RDLC;
-    RDLCLayout = './Reports/SSRS/KRA ITAX P10 Report.rdlc';
+    // DefaultLayout = RDLC;
+    // RDLCLayout = './Reports/SSRS/KRA ITAX P10 Report.rdlc';
+    DefaultRenderingLayout = "KRA ITAX P10 Report";
     UsageCategory = ReportsAndAnalysis;
 
     dataset
     {
-        dataitem(Employee; "Client Employee Master")
+        dataitem(Employee; Employee)
         {
             DataItemTableView = SORTING("No.");
-            RequestFilterFields = "Company Code", "Pay Period Filter", "No.";
+            RequestFilterFields = /*"Company Code",*/ "Pay Period Filter", "No.";
 
             column(UPPERCASE_FORMAT_DateSpecified_0___month_text____year4____; UpperCase(Format(DateSpecified, 0, '<month text>  <year4>')))
             {
             }
-            column(Logo; Company.Picture)
+            column(Logo; CompanyRec.Picture)
             {
             }
             column(CoName; CoName)
@@ -90,7 +91,7 @@ report 52215 "KRA ITAX P10 Report"
             column(ABS_TotalPaye_; Abs(TotalPaye))
             {
             }
-            column(Basic; Basic)
+            column(Basic; "Basic Pay")
             {
             }
             column(ActualContribution; ActualContribution)
@@ -179,7 +180,7 @@ report 52215 "KRA ITAX P10 Report"
             }
             trigger OnAfterGetRecord()
             begin
-                CfMpr:=0;
+                CfMpr := 0;
                 /*
                  IF EmpBank.GET("Employee's Bank","Bank Branch") THEN
                     BankName:=EmpBank.Name; */
@@ -187,35 +188,36 @@ report 52215 "KRA ITAX P10 Report"
                 Employee.CalcFields(Employee."Total Allowances", Employee."Total Deductions", Employee."Taxable Allowance");
                 Employee.CalcFields("Benefits-Non Cash", Insurance, "Personal+Insurance+SHIF-Relief", "SHIF+InsuranceRelief", Retirement);
                 if Employee."Total Allowances" = 0 then begin
-                    CurrReport.Skip()end;
+                    CurrReport.Skip()
+                end;
                 SetRange(Employee."PIN Number");
-                TotalPaye:=TotalPaye + Employee."Cumm. PAYE";
-                TotalTaxable:=TotalTaxable + Employee."Taxable Allowance";
-                BasicSalary:=Employee.Basic;
-                OtherAllowances:=(Employee."Taxable Allowance") - ((BasicSalary) + ("Benefits-Non Cash"));
-                TypeofHousing:='Benefit not given';
-                ActualContribution:=Employee.Retirement;
-                "SHIF+InsuranceRelief":=Employee."SHIF+InsuranceRelief";
-                InsuranceRelief:=Employee.Insurance;
-                RecordNo:=RecordNo + 1;
-                if NAVEmp.Get(Employee."No.")then EmployeeName:=NAVEmp."First Name" + ' ' + NAVEmp."Middle Name" + ' ' + NAVEmp."Last Name";
+                TotalPaye := TotalPaye + Employee."Cumm. PAYE";
+                TotalTaxable := TotalTaxable + Employee."Taxable Allowance";
+                BasicSalary := Employee."Basic Pay";
+                OtherAllowances := (Employee."Taxable Allowance") - ((BasicSalary) + ("Benefits-Non Cash"));
+                TypeofHousing := 'Benefit not given';
+                ActualContribution := Employee.Retirement;
+                "SHIF+InsuranceRelief" := Employee."SHIF+InsuranceRelief";
+                InsuranceRelief := Employee.Insurance;
+                RecordNo := RecordNo + 1;
+                if NAVEmp.Get(Employee."No.") then EmployeeName := NAVEmp."First Name" + ' ' + NAVEmp."Middle Name" + ' ' + NAVEmp."Last Name";
                 //Message('relief%1,Relieftwo%2,Relieftwo%3', "SHIF+InsuranceRelief", InsuranceRelief);
                 begin
                     Earn.Reset;
                     Earn.SetCurrentKey(Earn."Earning Type");
                     Earn.SetRange(Earn."Earning Type", Earn."Earning Type"::"Tax Relief");
-                    if Earn.Find('-')then begin
+                    if Earn.Find('-') then begin
                         AssMatrix.Reset;
-                        AssMatrix.SetRange(AssMatrix.Type, AssMatrix.Type::Payment);
+                        AssMatrix.SetRange(AssMatrix.Type, AssMatrix.Type::Earning);
                         AssMatrix.SetRange(AssMatrix."Employee No", Employee."No.");
-                        AssMatrix.SetRange(AssMatrix."Pay Period Filter", Employee."Pay Period Filter");
+                        AssMatrix.SetRange(AssMatrix."Payroll Period", Employee."Pay Period Filter");
                         AssMatrix.SetRange(Code, Earn.Code);
-                        if AssMatrix.Find('-')then PersonalRelief:=AssMatrix.Amount;
+                        if AssMatrix.Find('-') then PersonalRelief := AssMatrix.Amount;
                         //Message('type%1,no%2,date%3', Earn."Earning Type", Employee."No.", Employee."Pay Period Filter");
                         if ExportCSV then begin
-                            LineNo:=LineNo + 1;
+                            LineNo := LineNo + 1;
                             CSVBuffer.InsertEntry(LineNo, 1, Employee."PIN Number");
-                            CSVBuffer.InsertEntry(LineNo, 2, format(Employee."Full Name"));
+                            CSVBuffer.InsertEntry(LineNo, 2, format(Employee.FullName()));
                             CSVBuffer.InsertEntry(LineNo, 3, format(Employee."Residential Status"));
                             CSVBuffer.InsertEntry(LineNo, 4, format(Employee."Employee Type"));
                             CSVBuffer.InsertEntry(LineNo, 5, format(BasicSalary, 0, 2));
@@ -238,19 +240,22 @@ report 52215 "KRA ITAX P10 Report"
                             CSVBuffer.InsertEntry(LineNo, 22, '');
                             CSVBuffer.InsertEntry(LineNo, 23, '');
                             CSVBuffer.InsertEntry(LineNo, 24, '');
-                            if Employee."Employee Type" = Employee."Employee Type"::"Secondary Employee" then CSVBuffer.InsertEntry(LineNo, 25, '')
+                            if Employee."Secondary Employee" then
+                                CSVBuffer.InsertEntry(LineNo, 25, '')
                             else
                                 CSVBuffer.InsertEntry(LineNo, 25, Format((ActualContribution * -1), 0, 2));
                             // CSVBuffer.InsertEntry(LineNo, 25, Format((Retirement * -1), 0, 2));
                             CSVBuffer.InsertEntry(LineNo, 26, '');
-                            if Employee."Employee Type" = Employee."Employee Type"::"Secondary Employee" then CSVBuffer.InsertEntry(LineNo, 27, '')
+                            if Employee."Secondary Employee" then
+                                CSVBuffer.InsertEntry(LineNo, 27, '')
                             else
                                 CSVBuffer.InsertEntry(LineNo, 27, Format(MortgageIntrest, 0, 2));
                             CSVBuffer.InsertEntry(LineNo, 28, '');
                             CSVBuffer.InsertEntry(LineNo, 29, '');
                             CSVBuffer.InsertEntry(LineNo, 30, '');
                             CSVBuffer.InsertEntry(LineNo, 31, '');
-                            if Employee."Employee Type" = Employee."Employee Type"::"Secondary Employee" then CSVBuffer.InsertEntry(LineNo, 32, '')
+                            if Employee."Secondary Employee" then
+                                CSVBuffer.InsertEntry(LineNo, 32, '')
                             else
                                 CSVBuffer.InsertEntry(LineNo, 32, Format(PersonalRelief, 0, 2));
                             CSVBuffer.InsertEntry(LineNo, 33, Format("SHIF+InsuranceRelief", 0, 2));
@@ -261,25 +266,26 @@ report 52215 "KRA ITAX P10 Report"
                     end;
                 end;
             end;
+
             trigger OnPreDataItem()
             begin
-                Company.Get(Employee.GetFilter("Company Code"));
-                CoName:=Company.Name;
-                if not NoLogo then Company.CalcFields(Picture);
+                // Company.Get(Employee.GetFilter("Company Code"));
+                CoName := CompanyRec.Name;
+                if not NoLogo then CompanyRec.CalcFields(Picture);
                 if BeginDate = DateSpecified then Employee.SETRANGE(Status, Employee.Status::Active);
-                NoOfRecords:=Count;
-                DeptFilter:='';
-                ProjFilter:='';
-                SecLocFilter:='';
-                NoFilter:='';
-                if Employee.GetFilter("Global Dimension 1 Code") <> '' then DeptFilter:='Dept ' + Employee.GetFilter("Global Dimension 1 Code");
-                if Employee.GetFilter("No.") <> '' then NoFilter:='No ' + Employee.GetFilter("No.");
-                if Employee.GetFilter("Global Dimension 2 Code") <> '' then ProjFilter:='Proj ' + Employee.GetFilter("Global Dimension 2 Code");
-                if Employee.GetFilter("Global Dimension 3 Code") <> '' then SecLocFilter:='Sec/Loc ' + Employee.GetFilter("Global Dimension 3 Code");
-                SortBy:=NoFilter + DeptFilter + ProjFilter + SecLocFilter;
-            /*CUser:=USERID;
-                GetGroup.GetUserGroup(CUser,GroupCode);
-                SETRANGE(Employee."Payroll Group",GroupCode);*/
+                NoOfRecords := Count;
+                DeptFilter := '';
+                ProjFilter := '';
+                SecLocFilter := '';
+                NoFilter := '';
+                if Employee.GetFilter("Global Dimension 1 Code") <> '' then DeptFilter := 'Dept ' + Employee.GetFilter("Global Dimension 1 Code");
+                if Employee.GetFilter("No.") <> '' then NoFilter := 'No ' + Employee.GetFilter("No.");
+                if Employee.GetFilter("Global Dimension 2 Code") <> '' then ProjFilter := 'Proj ' + Employee.GetFilter("Global Dimension 2 Code");
+                if Employee.GetFilter("Global Dimension 3 Code") <> '' then SecLocFilter := 'Sec/Loc ' + Employee.GetFilter("Global Dimension 3 Code");
+                SortBy := NoFilter + DeptFilter + ProjFilter + SecLocFilter;
+                /*CUser:=USERID;
+                    GetGroup.GetUserGroup(CUser,GroupCode);
+                    SETRANGE(Employee."Payroll Group",GroupCode);*/
             end;
         }
     }
@@ -307,203 +313,236 @@ report 52215 "KRA ITAX P10 Report"
         {
         }
     }
+    rendering
+    {
+        layout(P10A)
+        {
+            Type = RDLC;
+            LayoutFile = './Reports/SSRS/P10 A.rdlc';
+        }
+        layout(P10B)
+        {
+            Type = RDLC;
+            LayoutFile = './Reports/SSRS/P10 B.rdlc';
+        }
+        layout(P10Monthly)
+        {
+            Type = RDLC;
+            LayoutFile = './Reports/SSRS/P10Monthly.rdlc';
+
+        }
+        layout("KRA ITAX P10 Report")
+        {
+            Type = RDLC;
+            LayoutFile = './Reports/SSRS/KRA ITAX P10 Report.rdlc';
+        }
+    }
     labels
     {
     }
     trigger OnPreReport()
     begin
         GetPayPeriod;
-        PayPeriodtext:=Employee.GetFilter("Pay Period Filter");
+        PayPeriodtext := Employee.GetFilter("Pay Period Filter");
         if PayPeriodtext = '' then Error('Pay period must be specified for this report');
-        DateSpecified:=Employee.GetRangeMin("Pay Period Filter");
-        HoldDate:=Employee.GetRangeMin("Pay Period Filter");
-        if PayPeriod.Get(DateSpecified)then PayPeriodtext:=PayPeriod.Name;
-        Year:=Date2DMY(HoldDate, 3);
-        PayPeriodtext:=PayPeriodtext + '-' + Format(Year);
-        EndDate:=CalcDate('1M', DateSpecified - 1);
+        DateSpecified := Employee.GetRangeMin("Pay Period Filter");
+        HoldDate := Employee.GetRangeMin("Pay Period Filter");
+        if PayPeriod.Get(DateSpecified) then PayPeriodtext := PayPeriod.Name;
+        Year := Date2DMY(HoldDate, 3);
+        PayPeriodtext := PayPeriodtext + '-' + Format(Year);
+        EndDate := CalcDate('1M', DateSpecified - 1);
         begin
             if PayPeriodtext = '' then Error('Please select payroll period');
-            if ExportCSV then LineNo:=1;
+            if ExportCSV then LineNo := 1;
         end;
     end;
+
     trigger OnPostReport()
     begin
         if ExportCSV then begin
-            FileName:='B_Employees_Dtls.csv';
+            FileName := 'B_Employees_Dtls.csv';
             CSVBuffer.SaveDataToBlob(TempBlob, ',');
             TempBlob.CreateInStream(InStr);
             DownloadFromStream(InStr, '', '', '', FileName);
         end;
     end;
-    var FileName: Text;
-    LineNo: Integer;
-    InStr: InStream;
-    TempBlob: Codeunit "Temp Blob";
-    Addr: array[10, 30]of Text[250];
-    NoOfRecords: Integer;
-    TypeofHousing: Text;
-    RecordNo: Integer;
-    NoOfColumns: Integer;
-    ColumnNo: Integer;
-    i: Integer;
-    HouseAllowance: Decimal;
-    TransportAllowance: Decimal;
-    LeaveAllowance: Decimal;
-    OvertimeAllowance: Decimal;
-    DirectorsFee: Decimal;
-    Lumpsum: Decimal;
-    OtherNonCash: Decimal;
-    TotalNonCash: Decimal;
-    GlobalIncome: Decimal;
-    PermissibleLimit: Decimal;
-    MortgageIntrest: Decimal;
-    HOSP: Decimal;
-    InsuranceRelief: Decimal;
-    AmountOfBenefit: Decimal;
-    RentOfHouse: Decimal;
-    ComputedRent: Decimal;
-    RentRecovered: Decimal;
-    NetValue: Decimal;
-    TotalGross: Decimal;
-    ThirtyPCash: Decimal;
-    Transactions: Record "Client Payroll Matrix";
-    AmountRemaining: Decimal;
-    IncomeTax: Decimal;
-    PayPeriod: Record "Client Payroll Period";
-    PayPeriodtext: Text[30];
-    BeginDate: Date;
-    DateSpecified: Date;
-    AssMatrix: Record "Client Payroll Matrix";
-    EndDate: Date;
-    ActualContribution: Decimal;
-    EmpBank: Record "Commercial Banks";
-    BankName: Text[30];
-    BasicSalary: Decimal;
-    TaxableAmt: Decimal;
-    RightBracket: Boolean;
-    NetPay: Decimal;
-    PayPeriodRec: Record "Commercial Banks";
-    PayDeduct: Record "Client Payroll Matrix";
-    EmpRec: Record "Client Employee Master";
-    EmpNo: Code[10];
-    TaxableAmount: Decimal;
-    PAYE: Decimal;
-    ArrEarnings: array[10, 50]of Text[250];
-    ArrDeductions: array[10, 50]of Text[250];
-    Earn: Record "Client Earnings";
-    Index: Integer;
-    Index1: Integer;
-    j: Integer;
-    ArrEarningsAmt: array[10, 50]of Text[250];
-    ArrDeductionsAmt: array[10, 50]of Text[250];
-    Year: Integer;
-    EmpArray: array[10, 15]of Decimal;
-    HoldDate: Date;
-    DenomArray: array[3, 11]of Text[50];
-    NoOfUnitsArray: array[3, 11]of Integer;
-    AmountArray: array[3, 11]of Decimal;
-    PayModeArray: array[3]of Text[30];
-    HoursArray: array[10, 50]of Decimal;
-    CompRec: Record "Human Resources Setup";
-    HseLimit: Decimal;
-    CSVBuffer: Record "CSV Buffer" temporary;
-    ExportCSV: Boolean;
-    ExcessRetirement: Decimal;
-    CfMpr: Decimal;
-    PersonalRelief: Decimal;
-    Company: Record "Client Company Information";
-    CoName: Text[80];
-    TotalTaxable: Decimal;
-    OtherAllowances: Decimal;
-    TotalPaye: Decimal;
-    TaxCode: Code[10];
-    SortBy: Text[30];
-    NoFilter: Text[40];
-    DeptFilter: Text[30];
-    ProjFilter: Text[30];
-    SecLocFilter: Text[30];
-    GrossPay: Decimal;
-    RetireCont: Decimal;
-    retirecontribution: Decimal;
-    TotalBenefits: Decimal;
-    TaxablePay: Decimal;
-    TotalQuarters: Decimal;
-    GetGroup: Codeunit "Client Payroll Calculator";
-    GroupCode: Code[20];
-    CUser: Code[50];
-    Employee_NamesCaptionLbl: Label 'Employee Names';
-    FilterCaptionLbl: Label 'Filter';
-    PIN_NumberCaptionLbl: Label 'PIN Number';
-    USERCaptionLbl: Label 'USER';
-    PAYE_KshsCaptionLbl: Label 'PAYE Kshs';
-    CurrReport_PAGENOCaptionLbl: Label 'Page';
-    MONTHLY_PAYE_REPORT_CaptionLbl: Label 'MONTHLY PAYE REPORT ';
-    PERIODCaptionLbl: Label 'PERIOD';
-    Pay_NumberCaptionLbl: Label 'Pay Number';
-    TAXABLE_PAYCaptionLbl: Label 'TAXABLE PAY';
-    PERIODCaption_Control27Lbl: Label 'PERIOD';
-    Employee_NamesCaption_Control12Lbl: Label 'Employee Names';
-    Pay_NumberCaption_Control7Lbl: Label 'Pay Number';
-    PIN_NumberCaption_Control13Lbl: Label 'PIN Number';
-    PAYE_KshsCaption_Control15Lbl: Label 'PAYE Kshs';
-    USERCaption_Control26Lbl: Label 'USER';
-    CurrReport_PAGENO_Control23CaptionLbl: Label 'Page';
-    FilterCaption_Control30Lbl: Label 'Filter';
-    MONTHLY_PAYE_REPORT_Caption_Control47Lbl: Label 'MONTHLY PAYE REPORT ';
-    TAXABLE_PAYCaption_Control1000000001Lbl: Label 'TAXABLE PAY';
-    TOTALSCaptionLbl: Label 'TOTALS';
-    NAVEmp: Record "Client Employee Master";
-    EmployeeName: Text;
-    NoLogo: Boolean;
+
+    var
+        FileName: Text;
+        LineNo: Integer;
+        InStr: InStream;
+        TempBlob: Codeunit "Temp Blob";
+        Addr: array[10, 30] of Text[250];
+        NoOfRecords: Integer;
+        TypeofHousing: Text;
+        RecordNo: Integer;
+        NoOfColumns: Integer;
+        ColumnNo: Integer;
+        i: Integer;
+        HouseAllowance: Decimal;
+        TransportAllowance: Decimal;
+        LeaveAllowance: Decimal;
+        OvertimeAllowance: Decimal;
+        DirectorsFee: Decimal;
+        Lumpsum: Decimal;
+        OtherNonCash: Decimal;
+        TotalNonCash: Decimal;
+        GlobalIncome: Decimal;
+        PermissibleLimit: Decimal;
+        MortgageIntrest: Decimal;
+        HOSP: Decimal;
+        InsuranceRelief: Decimal;
+        AmountOfBenefit: Decimal;
+        RentOfHouse: Decimal;
+        ComputedRent: Decimal;
+        RentRecovered: Decimal;
+        NetValue: Decimal;
+        TotalGross: Decimal;
+        ThirtyPCash: Decimal;
+        Transactions: Record "Assignment Matrix";
+        AmountRemaining: Decimal;
+        IncomeTax: Decimal;
+        PayPeriod: Record "Payroll Period";
+        PayPeriodtext: Text[30];
+        BeginDate: Date;
+        DateSpecified: Date;
+        AssMatrix: Record "Assignment Matrix";
+        EndDate: Date;
+        ActualContribution: Decimal;
+        EmpBank: Record Banks;
+        BankName: Text[30];
+        BasicSalary: Decimal;
+        TaxableAmt: Decimal;
+        RightBracket: Boolean;
+        NetPay: Decimal;
+        PayPeriodRec: Record Banks;
+        PayDeduct: Record "Assignment Matrix";
+        EmpRec: Record Employee;
+        EmpNo: Code[10];
+        TaxableAmount: Decimal;
+        PAYE: Decimal;
+        ArrEarnings: array[10, 50] of Text[250];
+        ArrDeductions: array[10, 50] of Text[250];
+        Earn: Record Earning;
+        Index: Integer;
+        Index1: Integer;
+        j: Integer;
+        ArrEarningsAmt: array[10, 50] of Text[250];
+        ArrDeductionsAmt: array[10, 50] of Text[250];
+        Year: Integer;
+        EmpArray: array[10, 15] of Decimal;
+        HoldDate: Date;
+        DenomArray: array[3, 11] of Text[50];
+        NoOfUnitsArray: array[3, 11] of Integer;
+        AmountArray: array[3, 11] of Decimal;
+        PayModeArray: array[3] of Text[30];
+        HoursArray: array[10, 50] of Decimal;
+        CompRec: Record "Human Resources Setup";
+        HseLimit: Decimal;
+        CSVBuffer: Record "CSV Buffer" temporary;
+        ExportCSV: Boolean;
+        ExcessRetirement: Decimal;
+        CfMpr: Decimal;
+        PersonalRelief: Decimal;
+        CompanyRec: Record "Company Information";
+        CoName: Text[80];
+        TotalTaxable: Decimal;
+        OtherAllowances: Decimal;
+        TotalPaye: Decimal;
+        TaxCode: Code[10];
+        SortBy: Text[30];
+        NoFilter: Text[40];
+        DeptFilter: Text[30];
+        ProjFilter: Text[30];
+        SecLocFilter: Text[30];
+        GrossPay: Decimal;
+        RetireCont: Decimal;
+        retirecontribution: Decimal;
+        TotalBenefits: Decimal;
+        TaxablePay: Decimal;
+        TotalQuarters: Decimal;
+        GetGroup: Codeunit "Payroll Calculator";
+        GroupCode: Code[20];
+        CUser: Code[50];
+        Employee_NamesCaptionLbl: Label 'Employee Names';
+        FilterCaptionLbl: Label 'Filter';
+        PIN_NumberCaptionLbl: Label 'PIN Number';
+        USERCaptionLbl: Label 'USER';
+        PAYE_KshsCaptionLbl: Label 'PAYE Kshs';
+        CurrReport_PAGENOCaptionLbl: Label 'Page';
+        MONTHLY_PAYE_REPORT_CaptionLbl: Label 'MONTHLY PAYE REPORT ';
+        PERIODCaptionLbl: Label 'PERIOD';
+        Pay_NumberCaptionLbl: Label 'Pay Number';
+        TAXABLE_PAYCaptionLbl: Label 'TAXABLE PAY';
+        PERIODCaption_Control27Lbl: Label 'PERIOD';
+        Employee_NamesCaption_Control12Lbl: Label 'Employee Names';
+        Pay_NumberCaption_Control7Lbl: Label 'Pay Number';
+        PIN_NumberCaption_Control13Lbl: Label 'PIN Number';
+        PAYE_KshsCaption_Control15Lbl: Label 'PAYE Kshs';
+        USERCaption_Control26Lbl: Label 'USER';
+        CurrReport_PAGENO_Control23CaptionLbl: Label 'Page';
+        FilterCaption_Control30Lbl: Label 'Filter';
+        MONTHLY_PAYE_REPORT_Caption_Control47Lbl: Label 'MONTHLY PAYE REPORT ';
+        TAXABLE_PAYCaption_Control1000000001Lbl: Label 'TAXABLE PAY';
+        TOTALSCaptionLbl: Label 'TOTALS';
+        NAVEmp: Record Employee;
+        EmployeeName: Text;
+        NoLogo: Boolean;
+
     procedure GetTaxBracket(var TaxableAmount: Decimal)
     var
-        TaxTable: Record "Client Bracket";
+        TaxTable: Record Bracket;
         TotalTax: Decimal;
         Tax: Decimal;
         EndTax: Boolean;
     begin
-        AmountRemaining:=TaxableAmount;
-        AmountRemaining:=Round(AmountRemaining, 0.01);
-        EndTax:=false;
+        AmountRemaining := TaxableAmount;
+        AmountRemaining := Round(AmountRemaining, 0.01);
+        EndTax := false;
         TaxTable.SetRange("Table Code", TaxCode);
-        if TaxTable.Find('-')then begin
-            repeat if AmountRemaining <= 0 then EndTax:=true
-                else
-                begin
-                    if Round((TaxableAmount), 0.01) > TaxTable."Upper Limit" then Tax:=TaxTable."Taxable Amount" * TaxTable.Percentage / 100
-                    else
-                    begin
-                        Tax:=AmountRemaining * TaxTable.Percentage / 100;
-                        TotalTax:=TotalTax + Tax;
-                        EndTax:=true;
+        if TaxTable.Find('-') then begin
+            repeat
+                if AmountRemaining <= 0 then
+                    EndTax := true
+                else begin
+                    if Round((TaxableAmount), 0.01) > TaxTable."Upper Limit" then
+                        Tax := TaxTable."Taxable Amount" * TaxTable.Percentage / 100
+                    else begin
+                        Tax := AmountRemaining * TaxTable.Percentage / 100;
+                        TotalTax := TotalTax + Tax;
+                        EndTax := true;
                     end;
                     if not EndTax then begin
-                        AmountRemaining:=AmountRemaining - TaxTable."Taxable Amount";
-                        TotalTax:=TotalTax + Tax;
+                        AmountRemaining := AmountRemaining - TaxTable."Taxable Amount";
+                        TotalTax := TotalTax + Tax;
                     end;
                 end;
-            until(TaxTable.Next = 0) or EndTax = true;
+            until (TaxTable.Next = 0) or EndTax = true;
         end;
-        TotalTax:=TotalTax;
-        TotalTax:=PayrollRounding(TotalTax);
-        IncomeTax:=-TotalTax;
-        if not Employee."Pays Tax" then IncomeTax:=0;
+        TotalTax := TotalTax;
+        TotalTax := PayrollRounding(TotalTax);
+        IncomeTax := -TotalTax;
+        if not Employee."Pays tax?" then IncomeTax := 0;
     end;
+
     procedure GetPayPeriod()
     begin
         PayPeriod.SetRange(PayPeriod."Close Pay", false);
-        if PayPeriod.Find('-')then begin
-            PayPeriodtext:=PayPeriod.Name;
-            BeginDate:=PayPeriod."Starting Date";
+        if PayPeriod.Find('-') then begin
+            PayPeriodtext := PayPeriod.Name;
+            BeginDate := PayPeriod."Starting Date";
         end;
     end;
-    procedure PayrollRounding(var Amount: Decimal)PayrollRounding: Decimal var
-        HRsetup: Record "QuantumJumps HR Setup";
+
+    procedure PayrollRounding(var Amount: Decimal) PayrollRounding: Decimal
+    var
+        HRsetup: Record "Human Resources Setup";
     begin
         HRsetup.Get;
         if HRsetup."Payroll Rounding Precision" = 0 then Error('You must specify the rounding precision under HR setup');
-        if HRsetup."Payroll Rounding Type" = HRsetup."Payroll Rounding Type"::Nearest then PayrollRounding:=Round(Amount, HRsetup."Payroll Rounding Precision", '=');
-        if HRsetup."Payroll Rounding Type" = HRsetup."Payroll Rounding Type"::Up then PayrollRounding:=Round(Amount, HRsetup."Payroll Rounding Precision", '>');
-        if HRsetup."Payroll Rounding Type" = HRsetup."Payroll Rounding Type"::Down then PayrollRounding:=Round(Amount, HRsetup."Payroll Rounding Precision", '<');
+        if HRsetup."Payroll Rounding Type" = HRsetup."Payroll Rounding Type"::Nearest then PayrollRounding := Round(Amount, HRsetup."Payroll Rounding Precision", '=');
+        if HRsetup."Payroll Rounding Type" = HRsetup."Payroll Rounding Type"::Up then PayrollRounding := Round(Amount, HRsetup."Payroll Rounding Precision", '>');
+        if HRsetup."Payroll Rounding Type" = HRsetup."Payroll Rounding Type"::Down then PayrollRounding := Round(Amount, HRsetup."Payroll Rounding Precision", '<');
     end;
+    
 }

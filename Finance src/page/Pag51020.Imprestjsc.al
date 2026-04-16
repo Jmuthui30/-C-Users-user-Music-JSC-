@@ -484,7 +484,6 @@ page 51020 "Imprestjsc Card"
                     trigger OnAction()
                     begin
                         //DocPrint.PrintPurchHeader(Rec);
-
                         Payments.Reset();
                         Payments.SetRange("No.", Rec."No.");
                         Report.Run(Report::Imprest, true, false, Payments);
@@ -497,14 +496,13 @@ page 51020 "Imprestjsc Card"
                     Image = Print;
                     ToolTip = 'Executes the &Print Payment Voucher action';
                     Visible = false;
-
                     trigger OnAction()
                     begin
                         //DocPrint.PrintPurchHeader(Rec);
-
                         Payments.Reset();
                         Payments.SetRange("No.", Rec."No.");
                         Report.Run(Report::"Login Management", true, true, Payments);
+
                     end;
                 }
             }
