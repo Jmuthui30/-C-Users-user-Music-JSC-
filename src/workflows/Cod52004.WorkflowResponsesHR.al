@@ -45,11 +45,7 @@ codeunit 52004 "Workflow Responses HR"
             Leave.Modify(true);
             Commit();
             HRMgnt.NotifyLeaveReliever(Leave."Application No");
-            // HRMgnt.LeaveApplication(Leave."Application No");
-            // // if guiAllowed then begin
-            // //     if Confirm('Do you want to notify the leave applicant and their reliever(s)', false) then
-            // HRMgnt.NotifyLeaveReliever(Leave."Application No");
-            //     end else
+
 
         end;
     end;
@@ -90,14 +86,7 @@ codeunit 52004 "Workflow Responses HR"
             RecruitmentReq.Status := RecruitmentReq.Status::Released;
             RecruitmentReq.Modify(true);
         end;
-        /*
-        RecruitmentReq.Reset();
-        RecruitmentReq.SetRange("No.",Recruitment."No.");
-          if RecruitmentReq.FindFirst() then begin
-            RecruitmentReq.Status:=RecruitmentReq.Status::Released;
-            RecruitmentReq.Modify(true);
-            end;
-        */
+
 
     end;
 
@@ -171,15 +160,7 @@ codeunit 52004 "Workflow Responses HR"
         EmployeeApp.Reset();
         EmployeeApp.SetRange("Appraisal No", Appraisal."Appraisal No");
         if EmployeeApp.FindFirst() then begin
-            /*if (EmployeeApp.Type = EmployeeApp.Type::"Mid-Year") and (EmployeeApp.Status <> EmployeeApp.Status::"Mid-Year Approved") then
-                EmployeeApp.Status := EmployeeApp.Status::"Mid-Year Approved";
 
-            if (EmployeeApp.Type = EmployeeApp.Type::"Mid-Year") and (EmployeeApp.Status = EmployeeApp.Status::"Mid-Year Approved") then
-                HRMgnt.SendToFinalYearAppraisal(EmployeeApp);
-            Commit();
-
-            if (EmployeeApp.Type <> EmployeeApp.Type::"Mid-Year") and (EmployeeApp.Status <> EmployeeApp.Status::"Mid-Year Approved") then
-                EmployeeApp.Status := EmployeeApp.Status::Released;*/
 
             EmployeeApp.Status := EmployeeApp.Status::Released;
             EmployeeApp."Appraisal Status" := EmployeeApp."Appraisal Status"::Review;
@@ -222,6 +203,7 @@ codeunit 52004 "Workflow Responses HR"
             TrainingRequest.Status := TrainingRequest.Status::Released;
             TrainingRequest.Modify(true);
         end;
+        HRMgnt.NotifyTrainingRequest(TrainingRequest."Request No.");
     end;
 
 }

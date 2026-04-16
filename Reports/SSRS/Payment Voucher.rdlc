@@ -1368,9 +1368,9 @@ Dat.........................Signature.....................................</Valu
             </Paragraphs>
             <rd:DefaultName>Textbox62</rd:DefaultName>
             <Top>10.78003cm</Top>
-            <Left>0.62653cm</Left>
+            <Left>0.59126cm</Left>
             <Height>8.23863cm</Height>
-            <Width>9.01962cm</Width>
+            <Width>9.05489cm</Width>
             <ZIndex>14</ZIndex>
             <Style>
               <Border>
@@ -4440,6 +4440,15 @@ End Function
         </Field>
         <Field Name="ChequeNo">
           <DataField>ChequeNo</DataField>
+        </Field>
+        <Field Name="PreparedBy">
+          <DataField>PreparedBy</DataField>
+        </Field>
+        <Field Name="DatePrepared">
+          <DataField>DatePrepared</DataField>
+        </Field>
+        <Field Name="PreparedBy_Signature">
+          <DataField>PreparedBy_Signature</DataField>
         </Field>
         <Field Name="FirstApprover">
           <DataField>FirstApprover</DataField>

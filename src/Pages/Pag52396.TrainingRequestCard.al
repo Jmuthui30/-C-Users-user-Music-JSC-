@@ -138,11 +138,10 @@ page 52396 "Training Request Card"
                 Visible = NeedRequest;
                 SubPageLink = "Source Document No" = field("Request No."), "Employee No" = field("Employee No"), "Need Source" = const(Adhoc);
             }
-            part(TrainingRequestLines; "Training Request Lines")
+            part(TrainingRequestLines; "Training Needs Line")
             {
                 Visible = false;
-                SubPageLink = "Document No." = field("Request No."),
-                              "Training Need No" = field("Training Need");
+                SubPageLink = "Document No." = field("Training Need");
             }
             // part("Travelling Employees"; "Travelling Employees List")
             // {

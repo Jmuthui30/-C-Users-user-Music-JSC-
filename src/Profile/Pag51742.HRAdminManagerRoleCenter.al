@@ -1,7 +1,6 @@
 page 51742 "HR & Admin Manager Role Center"
 {
-    // version THL- HRM 1.0 51742
-    // CurrPage."Help And Setup List".ShowFeatured;
+
     Caption = 'HR & Payroll Manager Role Center';
     PageType = RoleCenter;
     ApplicationArea = All;

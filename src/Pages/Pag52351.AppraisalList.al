@@ -6,7 +6,7 @@ page 52351 "Appraisal List"
     PageType = List;
     SourceTable = "Employee Appraisal";
     Caption = 'Appraisal List';
-    //SourceTableView = where(Status = const(Open));
+    SourceTableView = where(Status = const(Open));
 
     layout
     {

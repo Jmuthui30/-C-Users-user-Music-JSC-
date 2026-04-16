@@ -60,6 +60,15 @@ report 50002 "Payment Voucher"
             column(ChequeNo; Payments."Property Expense Doc. No")
             {
             }
+            column(PreparedBy; GetUserName(Approver[1]))
+            {
+            }
+            column(DatePrepared; ApproverDate[1])
+            {
+            }
+            column(PreparedBy_Signature; UserSetup.Signature)
+            {
+            }
             column(FirstApprover; "1stapprover")
             {
             }
@@ -161,6 +170,11 @@ report 50002 "Payment Voucher"
                 Payments.CALCFIELDS("Total Amount");
                 InitTextVariable;
                 FormatNoText(NumberText, "Total Amount", CurrencyCodeText);
+                //Get dimensions
+                Approver[1] := "Created By";
+                ApproverDate[1] := CreateDateTime(Date, Time);
+                if UserSetup.Get(Approver[1]) then
+                    UserSetup.CalcFields(Signature);
                 //Approvers
                 ApprovalEntries.RESET;
                 ApprovalEntries.SETRANGE(ApprovalEntries."Table ID", 50000);
@@ -238,6 +252,8 @@ report 50002 "Payment Voucher"
     end;
 
     var
+        ApproverDate: array[10] of DateTime;
+        Approver: array[10] of Code[50];
         CompInfo: Record "Company Information";
         DimValues: Record "Dimension Value";
         CompName: Text[100];
@@ -477,5 +493,10 @@ report 50002 "Payment Voucher"
         ExponentText[2] := Text059;
         ExponentText[3] := Text060;
         ExponentText[4] := Text061;
+    end;
+
+    local procedure GetUserName(UserCode: Code[50]): Text
+    begin
+        exit(UserCode);
     end;
 }
