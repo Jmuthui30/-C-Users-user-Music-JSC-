@@ -681,13 +681,13 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>1.44009cm</Width>
+                  <Width>1.01676cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.9445cm</Width>
+                  <Width>2.5cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.05033cm</Width>
+                  <Width>3.91819cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>2.9445cm</Width>
@@ -983,21 +983,21 @@
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Budget_Line1">
+                        <Textbox Name="BudgetLine">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!Budget_Line.Value</Value>
+                                  <Value>=Fields!BudgetLine.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Budget_Line1</rd:DefaultName>
+                          <rd:DefaultName>BudgetLine</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -1228,10 +1228,19 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
+            <Filters>
+              <Filter>
+                <FilterExpression>=Fields!Budget_Line.Value</FilterExpression>
+                <Operator>GreaterThan</Operator>
+                <FilterValues>
+                  <FilterValue>0</FilterValue>
+                </FilterValues>
+              </Filter>
+            </Filters>
             <Top>8.27882cm</Top>
             <Left>0.85937cm</Left>
             <Height>2.03283cm</Height>
-            <Width>18.65091cm</Width>
+            <Width>18.65093cm</Width>
             <ZIndex>5</ZIndex>
             <Style>
               <Border>
@@ -1243,13 +1252,13 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>1.44009cm</Width>
+                  <Width>1.03794cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>3.49483cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>6.62517cm</Width>
+                  <Width>7.0485cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>3.17733cm</Width>
@@ -3626,10 +3635,19 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
+            <Filters>
+              <Filter>
+                <FilterExpression>=Fields!No_Line.Value</FilterExpression>
+                <Operator>GreaterThan</Operator>
+                <FilterValues>
+                  <FilterValue>0</FilterValue>
+                </FilterValues>
+              </Filter>
+            </Filters>
             <Top>10.44571cm</Top>
             <Left>0.8382cm</Left>
             <Height>24.8075cm</Height>
-            <Width>18.65092cm</Width>
+            <Width>18.6721cm</Width>
             <ZIndex>6</ZIndex>
             <Style>
               <Border>
