@@ -65,7 +65,7 @@ table 50464 "Imprest Memo Header"
             //         Rec.Validate("To");  // triggers OnValidate to populate Recipient fields
             //     end;
             // end;
-            TableRelation = Employee;
+            TableRelation = Employee where("User ID" = filter(<> ''), Status = const(Active));
 
             trigger OnValidate()
             var

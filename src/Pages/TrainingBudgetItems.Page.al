@@ -56,197 +56,246 @@ page 52286 "Training Budget Items"
                 {
                     ToolTip = 'Specifies the value of the Commitments field';
                 }
-                field("Source of Funds DSA"; "Source of Funds DSA")
+                field("Source of Funds DSA Allocated"; "Source of Funds DSA Allocated")
                 {
-                    TableRelation = "G/L Account";
-                    Caption = 'Source of Funds DSA';
-                    ToolTip = 'Specifies the value of the Source of Funds field';
+                    ToolTip = 'Specifies whether the DSA amount is allocated or not';
                 }
+
                 field("DSA Amount"; "DSA Amount")
                 {
                     ToolTip = 'Specifies the value of the DSA Amount field';
+                    Editable = false;
+
+                }
+                field("DSA Amount allocated"; "DSA Amount allocated")
+                {
+                    ToolTip = 'Specifies the value of the DSA Amount allocated field';
                 }
                 //"Air Ticket Amount"
-                field("Source of Funds Air Ticket"; "Source of Funds Air Ticket")
+                field("Air Ticket allocated"; "Air Ticket allocated")
                 {
-                    TableRelation = "G/L Account";
-                    Caption = 'Source of Funds Air Ticket';
-                    ToolTip = 'Specifies the value of the Source of Funds field';
+                    ToolTip = 'Specifies whether the Air Ticket amount is allocated or not';
                 }
                 field("Air Ticket Amount"; "Air Ticket Amount")
                 {
                     ToolTip = 'Specifies the value of the Air Ticket Amount field';
+                    Editable = false;
+                }
+                field("Air Ticket allocated Amount"; "Air Ticket allocated Amount")
+                {
+                    ToolTip = 'Specifies the value of the Air Ticket allocated Amount field';
                 }
 
                 //"Conference Amount"
-                field("Source of Funds Conference"; "Source of Funds Conference")
+                field("Conference allocated"; "Conference allocated")
                 {
-                    TableRelation = "G/L Account";
-                    Caption = 'Source of Funds Conference';
-                    ToolTip = 'Specifies the value of the Source of Funds field';
+                    ToolTip = 'Specifies whether the Conference amount is allocated or not';
                 }
                 field("Conference Amount"; "Conference Amount")
                 {
                     ToolTip = 'Specifies the value of the Conference Amount field';
+                    Editable = false;
+                }
+                field("Conference allocated Amount"; "Conference allocated Amount")
+                {
+                    ToolTip = 'Specifies the value of the Conference allocated Amount field';
                 }
 
                 // "Ground Transport Amount"
-                field("Source of Funds GTransport"; "Source of Funds GTransport")
+                field("Ground Transport allocated"; "Source of Funds GTransport")
                 {
-                    TableRelation = "G/L Account";
-                    Caption = 'Source of Funds GTransport';
-                    ToolTip = 'Specifies the value of the Source of Funds field';
+                    ToolTip = 'Specifies whether the Ground Transport amount is allocated or not';
                 }
                 field("Ground Transport Amount"; "Ground Transport Amount")
                 {
                     ToolTip = 'Specifies the value of the Ground Transport Amount field';
+                    Editable = false;
+                }
+                field("Ground Transport allocated Amount"; "GroundT allocated Amount")
+                {
+                    ToolTip = 'Specifies the value of the Ground Transport allocated Amount field';
                 }
 
                 // "Accomodation Amount"
-                field("Source of Funds Accomodation"; "Source of Funds Accommodation")
+                field("Source of Funds Accommodation"; "Source of Funds Accommodation")
                 {
-                    TableRelation = "G/L Account";
-                    Caption = 'Source of Funds Accomodation';
-                    ToolTip = 'Specifies the value of the Source of Funds field';
+                    ToolTip = 'Specifies whether the Accomodation amount is allocated or not';
                 }
                 field("Accomodation Amount"; "Accomodation Amount")
                 {
                     ToolTip = 'Specifies the value of the Accomodation Amount field';
+                    Editable = false;
+                }
+                field("Accomodation allocated Amount"; "Accomodation allocated Amount")
+                {
+                    ToolTip = 'Specifies the value of the Accomodation allocated Amount field';
                 }
 
+
                 //"Cordination Allowance Amount"
-                field("Source of Funds Coordination"; "Source of Funds Coordination")
+                field("Cordination Allowance allocated"; "Source of Funds Coordination")
                 {
-                    TableRelation = "G/L Account";
-                    Caption = 'Source of Funds Coordination';
-                    ToolTip = 'Specifies the value of the Source of Funds field';
+                    ToolTip = 'Specifies whether the Coordination Allowance amount is allocated or not';
                 }
                 field("Cordination Allowance Amount"; "Cordination Allowance Amount")
                 {
-                    ToolTip = 'Specifies the value of the Cordination Allowance Amount field';
+                    ToolTip = 'Specifies the value of the Coordination Allowance Amount field';
+                    Editable = false;
+                }
+                field("Coordination allocated Amount"; "Coordination allocated Amount")
+                {
+                    ToolTip = 'Specifies the value of the Coordination Allowance allocated Amount field';
                 }
 
                 //"Facilitator Allowance Amount"
-                field("Source of Funds Facilitator"; "Source of Funds Facilitator")
+                field("Facilitator Allowance allocated"; "Source of Funds Facilitator")
                 {
-                    TableRelation = "G/L Account";
-                    Caption = 'Source of Funds Facilitator';
-                    ToolTip = 'Specifies the value of the Source of Funds field';
+                    ToolTip = 'Specifies whether the Facilitator Allowance amount is allocated or not';
                 }
                 field("Facilitator Allowance Amount"; "Facilitator Allowance Amount")
                 {
                     ToolTip = 'Specifies the value of the Facilitator Allowance Amount field';
+                    Editable = false;
+                }
+                field("Facilitator allocated Amount"; "Facilitator allocated Amount")
+                {
+                    ToolTip = 'Specifies the value of the Facilitator Allowance allocated Amount field';
                 }
 
+
                 //"Secretariat Allowance Amount"
-                field("Source of Funds Secretariat"; "Source of Funds Secretariat")
+                field("Secretariat Allowance allocated"; "Source of Funds Secretariat")
                 {
-                    TableRelation = "G/L Account";
-                    Caption = 'Source of Funds Secretariat';
-                    ToolTip = 'Specifies the value of the Source of Funds field';
+                    ToolTip = 'Specifies whether the Secretariat Allowance amount is allocated or not';
                 }
                 field("Secretariat Allowance Amount"; "Secretariat Allowance Amount")
                 {
                     ToolTip = 'Specifies the value of the Secretariat Allowance Amount field';
+                    Editable = false;
+                }
+                field("Secretariat allocated Amount"; "Secretariat allocated Amount")
+                {
+                    ToolTip = 'Specifies the value of the Secretariat Allowance allocated Amount field';
                 }
 
 
                 //"Rapporteur Allowance Amount"
-                field("Source of Funds Rapporteur"; "Source of Funds Rapporteur")
+                field("Rapporteur Allowance allocated"; "Source of Funds Rapporteur")
                 {
-                    TableRelation = "G/L Account";
-                    Caption = 'Source of Funds Rapporteur';
-                    ToolTip = 'Specifies the value of the Source of Funds field';
+                    ToolTip = 'Specifies whether the Rapporteur Allowance amount is allocated or not';
                 }
                 field("Rapporteur Allowance Amount"; "Rapporteur Allowance Amount")
                 {
                     ToolTip = 'Specifies the value of the Rapporteur Allowance Amount field';
+                    Editable = false;
+                }
+                field("Rapporteur allocated Amount"; "Rapporteur allocated Amount")
+                {
+                    ToolTip = 'Specifies the value of the Rapporteur Allowance allocated Amount field';
                 }
 
+
                 //"Driver Allowance Amount"
-                field("Source of Funds Driver Allowance"; "Source of Funds Driver")
+                field("Driver Allowance allocated"; "Source of Funds Driver")
                 {
-                    TableRelation = "G/L Account";
-                    Caption = 'Source of Funds Driver Allowance';
-                    ToolTip = 'Specifies the value of the Source of Funds field';
+                    ToolTip = 'Specifies whether the Driver Allowance amount is allocated or not';
                 }
                 field("Driver Allowance Amount"; "Driver Allowance Amount")
                 {
                     ToolTip = 'Specifies the value of the Driver Allowance Amount field';
+                    Editable = false;
+                }
+                field("Driver allocated Amount"; "Driver allocated Amount")
+                {
+                    ToolTip = 'Specifies the value of the Driver Allowance allocated Amount field';
                 }
 
+
                 //"Retreat Allowance Amount"
-                field("Source of Funds Retreat"; "Source of Funds Retreat")
+                field("Retreat Allowance allocated"; "Source of Funds Retreat")
                 {
-                    TableRelation = "G/L Account";
-                    Caption = 'Source of Funds Retreat';
-                    ToolTip = 'Specifies the value of the Source of Funds field';
+                    ToolTip = 'Specifies whether the Retreat Allowance amount is allocated or not';
                 }
                 field("Retreat Allowance Amount"; "Retreat Allowance Amount")
                 {
                     ToolTip = 'Specifies the value of the Retreat Allowance Amount field';
+                    Editable = false;
+                }
+                field("Retreat allocated Amount"; "Retreat allocated Amount")
+                {
+                    ToolTip = 'Specifies the value of the Retreat Allowance allocated Amount field';
                 }
 
+
+
                 //"Expert Allowance Amount"
-                field("Source of Funds Expert"; "Source of Funds Expert")
+                field("Expert Allowance allocated"; "Source of Funds Expert")
                 {
-                    TableRelation = "G/L Account";
-                    Caption = 'Source of Funds Expert';
-                    ToolTip = 'Specifies the value of the Source of Funds field';
+                    ToolTip = 'Specifies whether the Expert Allowance amount is allocated or not';
                 }
                 field("Expert Allowance Amount"; "Expert Allowance Amount")
                 {
                     ToolTip = 'Specifies the value of the Expert Allowance Amount field';
+                    Editable = false;
+                }
+                field("Expert allocated Amount"; "Expert allocated Amount")
+                {
+                    ToolTip = 'Specifies the value of the Expert Allowance allocated Amount field';
                 }
 
                 //"Tuition Fee Amount"
-                field("Source of Funds Tuition"; "Source of Funds Tuition")
+                field("Tuition Fee allocated"; "Source of Funds Tuition")
                 {
-                    TableRelation = "G/L Account";
-                    Caption = 'Source of Funds Tuition';
-                    ToolTip = 'Specifies the value of the Source of Funds field';
+                    ToolTip = 'Specifies whether the Tuition Fee amount is allocated or not';
                 }
                 field("Tuition Fee Amount"; "Tuition Fee Amount")
                 {
                     ToolTip = 'Specifies the value of the Tuition Fee Amount field';
+                    Editable = false;
+                }
+                field("Tuition allocated Amount"; "Tuition allocated Amount")
+                {
+                    ToolTip = 'Specifies the value of the Tuition Fee allocated Amount field';
                 }
 
                 //"Mileage Allowance Amount"
-                field("Source of Funds Mileage"; "Source of Funds Mileage")
+                field("Mileage Allowance allocated"; "Source of Funds Mileage")
                 {
-                    TableRelation = "G/L Account";
-                    Caption = 'Source of Funds Mileage';
-                    ToolTip = 'Specifies the value of the Source of Funds field';
+                    ToolTip = 'Specifies whether the Mileage Allowance amount is allocated or not';
                 }
                 field("Mileage Allowance Amount"; "Mileage Allowance Amount")
                 {
                     ToolTip = 'Specifies the value of the Mileage Allowance Amount field';
+                    Editable = false;
+                }
+                field("Mileage allocated Amount"; "Mileage allocated Amount")
+                {
+                    ToolTip = 'Specifies the value of the Mileage Allowance allocated Amount field';
                 }
 
                 //"Quarter Per Diem Amount"
-                field("Source of Funds QPer Diem"; "Source of Funds QPer Diem")
+
+                field("Quarter Per Diem allocated"; "Source of Funds QPer Diem")
                 {
-                    TableRelation = "G/L Account";
-                    Caption = 'Source of Funds QPer Diem';
-                    ToolTip = 'Specifies the value of the Source of Funds field';
+                    ToolTip = 'Specifies whether the Quarter Per Diem amount is allocated or not';
                 }
                 field("Quarter Per Diem Amount"; "Quarter Per Diem Amount")
                 {
                     ToolTip = 'Specifies the value of the Quarter Per Diem Amount field';
+                    Editable = false;
+                }
+                field("Quarter Per Diem allocated Amount"; "Quarter Per Diem allocated Amount")
+                {
+                    ToolTip = 'Specifies the value of the Quarter Per Diem allocated Amount field';
                 }
 
                 //"Other Costs Amount"
-                field("Source of Funds Other Costs"; "Source of Funds Other Costs")
-                {
-                    TableRelation = "G/L Account";
-                    Caption = 'Source of Funds Other Costs';
-                    ToolTip = 'Specifies the value of the Source of Funds field';
-                }
 
                 field("Other Costs Amount"; "Other Costs Amount")
                 {
                     ToolTip = 'Specifies the value of the Other Costs Amount field';
                 }
+
 
 
                 field("1stQuarter"; "1stQuarter")

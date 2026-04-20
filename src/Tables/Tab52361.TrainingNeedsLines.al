@@ -24,8 +24,7 @@ table 52361 "Training Needs Lines"
                     "Approved Budget" := TrainingBudget."Approved Budget";
                     "Expense name" := TrainingBudget.Description;
                     "Budget Line" := TrainingBudget."Source of Funds";
-
-
+                    "Training Year" := TrainingBudget."Training Year";
                 end;
 
             end;
@@ -144,652 +143,972 @@ table 52361 "Training Needs Lines"
             DataClassification = CustomerContent;
             Caption = 'Approved Budget';
         }
-        field(300; "Source of Funds DSA"; Code[15])
+        field(300; "Source of Funds DSA"; Boolean)
         {
-            TableRelation = "G/L Account";
-            Caption = 'Source of Funds';
+            Caption = 'Source of Funds DSA';
+            trigger OnValidate()
+            begin
+                ImprestSetup.Get();
+                IF "Source of Funds DSA" = true then begin
+                    if ExpenseCodes.Get(ImprestSetup."DSA Expense Code") then begin
+                        GLBudget.Reset();
+                        GLBudget.SetRange("G/L Account No.", ExpenseCodes."Account No");
+                        GLBudget.SetRange("Budget Name", "Training Year");
+                        IF GLBudget.Find('-') then
+                            repeat
+                                //Message('Air Ticket amount allocated for A/C no %1 is %2', ExpenseCodes."Account No", GLBudget.Amount);
+                                "DSA Available Budget" := GLBudget.Amount;
+                            UNTIL GLBudget.Next() = 0
+                        else
+                            Message('No budget amount found for DSA Expense Code %1', ImprestSetup."DSA Expense Code");
+                    end
+                    else
+                        Message('No record found in Expense Codes for DSA Expense Code %1', ImprestSetup."DSA Expense Code");
+
+                end;
+            end;
+        }
+        field(1000; "DSA Available Budget"; Decimal)
+        {
+            Caption = 'DSA Available Budget';
+            Editable = false;
+            trigger OnValidate()
+            begin
+                "Budget Available Amount" := "DSA Available Budget" +
+                                                         "Air Ticket Available Budget" +
+                                                         "Conference Available Budget" +
+                                                         "GTransport Available Budget" +
+                                                         "Accommodation Available Budget" +
+                                                         "Coordination Allowance Available Budget" +
+                                                         "Facilitator Allowance Available Budget" +
+                                                         "Secretariat Allowance Available Budget" +
+                                                         "Out of Pocket Allowance Available Budget" +
+                                                         "Rapporteur Allowance Available Budget" +
+                                                         "Driver Allowance Available Budget" +
+                                                         "Retreat Allowance Available Budget" +
+                                                         "Expert Allowance Available Budget" +
+                                                         "Tuition Fee Available Budget" +
+                                                         "Mileage Allowance Available Budget" +
+                                                         "Quarter Per Diem Available Budget" +
+                                                         "Other Costs Amount";
+            end;
         }
         field(100; "DSA Amount"; Decimal)
         {
-            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds DSA"),
-                                                        "Posting Date" = field("Date Filter")));
             Caption = 'DSA Amount';
-            Editable = false;
-            FieldClass = FlowField;
             trigger OnValidate()
             begin
-                CalcFields("DSA Amount", "Air Ticket Amount", "Conference Amount", "Ground Transport Amount", "Accomodation Amount",
-                    "Cordination Allowance Amount", "Facilitator Allowance Amount", "Secretariat Allowance Amount",
-                    "Out ofPocket Allowance Amount", "Rapporteur Allowance Amount", "Driver Allowance Amount",
-                    "Retreat Allowance Amount", "Expert Allowance Amount", "Tuition Fee Amount", "Mileage Allowance Amount",
-                    "Quarter Per Diem Amount", "Other Costs Amount");
-                "Budget Available Amount" := "DSA Amount" +
-                                            "Air Ticket Amount" +
-                                            "Conference Amount" +
-                                            "Ground Transport Amount" +
-                                            "Accomodation Amount" +
-                                            "Cordination Allowance Amount" +
-                                            "Facilitator Allowance Amount" +
-                                            "Secretariat Allowance Amount" +
-                                            "Out ofPocket Allowance Amount" +
-                                            "Rapporteur Allowance Amount" +
-                                            "Driver Allowance Amount" +
-                                            "Retreat Allowance Amount" +
-                                            "Expert Allowance Amount" +
-                                            "Tuition Fee Amount" +
-                                            "Mileage Allowance Amount" +
-                                            "Quarter Per Diem Amount" +
-                                            "Other Costs Amount";
+                if "DSA Available Budget" > "DSA Amount" then
+                    Message('Allocated amount for DSA has exceeded the available budget by %1. Available budget = %2', ("DSA Available Budget" - "DSA Amount"), "DSA Amount");
             end;
         }
 
-        field(301; "Source of Funds Air Ticket"; Code[15])
+        field(301; "Source of Funds Air Ticket"; Boolean)
         {
-            TableRelation = "G/L Account";
-            Caption = 'Source of Funds';
+            Caption = 'Source of Funds Air Ticket';
+            trigger OnValidate()
+            begin
+                ImprestSetup.Get();
+                IF "Source of Funds Air Ticket" = true then begin
+                    if ExpenseCodes.Get(ImprestSetup."Air Ticket Expense Code") then begin
+                        GLBudget.Reset();
+                        GLBudget.SetRange("G/L Account No.", ExpenseCodes."Account No");
+                        GLBudget.SetRange("Budget Name", "Training Year");
+                        IF GLBudget.Find('-') then
+                            repeat
+                                //Message('Air Ticket amount allocated for A/C no %1 is %2', ExpenseCodes."Account No", GLBudget.Amount);
+                                "DSA Available Budget" := GLBudget.Amount;
+                            UNTIL GLBudget.Next() = 0
+                        else
+                            Message('No budget amount found for Air Ticket Expense Code %1', ImprestSetup."Air Ticket Expense Code");
+                    end
+                    else
+                        Message('No record found in Expense Codes for Air Ticket Expense Code %1', ImprestSetup."Air Ticket Expense Code");
+
+                end;
+            end;
+        }
+        field(1001; "Air Ticket Available Budget"; Decimal)
+        {
+            Caption = 'Air Ticket Available Budget';
+            Editable = false;
+            trigger OnValidate()
+            begin
+                "Budget Available Amount" := "DSA Available Budget" +
+                                                         "Air Ticket Available Budget" +
+                                                         "Conference Available Budget" +
+                                                         "GTransport Available Budget" +
+                                                         "Accommodation Available Budget" +
+                                                         "Coordination Allowance Available Budget" +
+                                                         "Facilitator Allowance Available Budget" +
+                                                         "Secretariat Allowance Available Budget" +
+                                                         "Out of Pocket Allowance Available Budget" +
+                                                         "Rapporteur Allowance Available Budget" +
+                                                         "Driver Allowance Available Budget" +
+                                                         "Retreat Allowance Available Budget" +
+                                                         "Expert Allowance Available Budget" +
+                                                         "Tuition Fee Available Budget" +
+                                                         "Mileage Allowance Available Budget" +
+                                                         "Quarter Per Diem Available Budget" +
+                                                         "Other Costs Amount";
+            end;
         }
         field(101; "Air Ticket Amount"; Decimal)
         {
-            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Air Ticket"),
-                                                        "Posting Date" = field("Date Filter")));
+
             Caption = 'Air Ticket Amount';
-            Editable = false;
-            FieldClass = FlowField;
+
             trigger OnValidate()
             begin
-                CalcFields("DSA Amount", "Air Ticket Amount", "Conference Amount", "Ground Transport Amount", "Accomodation Amount",
-                    "Cordination Allowance Amount", "Facilitator Allowance Amount", "Secretariat Allowance Amount",
-                    "Out ofPocket Allowance Amount", "Rapporteur Allowance Amount", "Driver Allowance Amount",
-                    "Retreat Allowance Amount", "Expert Allowance Amount", "Tuition Fee Amount", "Mileage Allowance Amount",
-                    "Quarter Per Diem Amount", "Other Costs Amount");
-                "Budget Available Amount" := "DSA Amount" +
-                                            "Air Ticket Amount" +
-                                            "Conference Amount" +
-                                            "Ground Transport Amount" +
-                                            "Accomodation Amount" +
-                                            "Cordination Allowance Amount" +
-                                            "Facilitator Allowance Amount" +
-                                            "Secretariat Allowance Amount" +
-                                            "Out ofPocket Allowance Amount" +
-                                            "Rapporteur Allowance Amount" +
-                                            "Driver Allowance Amount" +
-                                            "Retreat Allowance Amount" +
-                                            "Expert Allowance Amount" +
-                                            "Tuition Fee Amount" +
-                                            "Mileage Allowance Amount" +
-                                            "Quarter Per Diem Amount" +
-                                            "Other Costs Amount";
+                if "Air Ticket Available Budget" > "Air Ticket Amount" then
+                    Message('Allocated amount for Air Ticket has exceeded the available budget by %1. Available budget = %2', ("Air Ticket Available Budget" - "Air Ticket Amount"), "Air Ticket Amount");
             end;
         }
 
         field(102; "Conference Amount"; Decimal)
         {
-            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Conference"),
-                                                        "Posting Date" = field("Date Filter")));
+
             Caption = 'Conference Amount';
-            Editable = false;
-            FieldClass = FlowField;
             trigger OnValidate()
             begin
-                CalcFields("DSA Amount", "Air Ticket Amount", "Conference Amount", "Ground Transport Amount", "Accomodation Amount",
-                    "Cordination Allowance Amount", "Facilitator Allowance Amount", "Secretariat Allowance Amount",
-                    "Out ofPocket Allowance Amount", "Rapporteur Allowance Amount", "Driver Allowance Amount",
-                    "Retreat Allowance Amount", "Expert Allowance Amount", "Tuition Fee Amount", "Mileage Allowance Amount",
-                    "Quarter Per Diem Amount", "Other Costs Amount");
-                "Budget Available Amount" := "DSA Amount" +
-                                            "Air Ticket Amount" +
-                                            "Conference Amount" +
-                                            "Ground Transport Amount" +
-                                            "Accomodation Amount" +
-                                            "Cordination Allowance Amount" +
-                                            "Facilitator Allowance Amount" +
-                                            "Secretariat Allowance Amount" +
-                                            "Out ofPocket Allowance Amount" +
-                                            "Rapporteur Allowance Amount" +
-                                            "Driver Allowance Amount" +
-                                            "Retreat Allowance Amount" +
-                                            "Expert Allowance Amount" +
-                                            "Tuition Fee Amount" +
-                                            "Mileage Allowance Amount" +
-                                            "Quarter Per Diem Amount" +
-                                            "Other Costs Amount";
+                if "Conference Available Budget" > "Conference Amount" then
+                    Message('Allocated amount for Conference has exceeded the available budget by %1. Available budget = %2', ("Conference Available Budget" - "Conference Amount"), "Conference Amount");
             end;
         }
-        field(302; "Source of Funds Conference"; Code[15])
+        field(302; "Source of Funds Conference"; Boolean)
         {
-            TableRelation = "G/L Account";
-            Caption = 'Source of Funds';
+            Caption = 'Source of Funds Conference';
+            trigger OnValidate()
+            begin
+                ImprestSetup.Get();
+                IF "Source of Funds Conference" = true then begin
+                    if ExpenseCodes.Get(ImprestSetup."Conference Expense Code") then begin
+                        GLBudget.Reset();
+                        GLBudget.SetRange("G/L Account No.", ExpenseCodes."Account No");
+                        GLBudget.SetRange("Budget Name", "Training Year");
+                        IF GLBudget.Find('-') then
+                            repeat
+                                //Message('Conference amount allocated for A/C no %1 is %2', ExpenseCodes."Account No", GLBudget.Amount);
+                                "Conference Available Budget" := GLBudget.Amount;
+                            UNTIL GLBudget.Next() = 0
+                        else
+                            Message('No budget amount found for Conference Expense Code %1', ImprestSetup."Conference Expense Code");
+                    end
+                    else
+                        Message('No record found in Expense Codes for Conference Expense Code %1', ImprestSetup."Conference Expense Code");
+
+                end;
+            end;
+        }
+        field(1002; "Conference Available Budget"; Decimal)
+        {
+            Caption = 'Conference Available Budget';
+            Editable = false;
+            trigger OnValidate()
+            begin
+                "Budget Available Amount" := "DSA Available Budget" +
+                                                         "Air Ticket Available Budget" +
+                                                         "Conference Available Budget" +
+                                                         "GTransport Available Budget" +
+                                                         "Accommodation Available Budget" +
+                                                         "Coordination Allowance Available Budget" +
+                                                         "Facilitator Allowance Available Budget" +
+                                                         "Secretariat Allowance Available Budget" +
+                                                         "Out of Pocket Allowance Available Budget" +
+                                                         "Rapporteur Allowance Available Budget" +
+                                                         "Driver Allowance Available Budget" +
+                                                         "Retreat Allowance Available Budget" +
+                                                         "Expert Allowance Available Budget" +
+                                                         "Tuition Fee Available Budget" +
+                                                         "Mileage Allowance Available Budget" +
+                                                         "Quarter Per Diem Available Budget" +
+                                                         "Other Costs Amount";
+            end;
         }
         field(103; "Ground Transport Amount"; Decimal)
         {
-            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds GTransport"),
-                                                        "Posting Date" = field("Date Filter")));
             Caption = 'Ground Transport Amount';
-            Editable = false;
-            FieldClass = FlowField;
             trigger OnValidate()
             begin
-                CalcFields("DSA Amount", "Air Ticket Amount", "Conference Amount", "Ground Transport Amount", "Accomodation Amount",
-                    "Cordination Allowance Amount", "Facilitator Allowance Amount", "Secretariat Allowance Amount",
-                    "Out ofPocket Allowance Amount", "Rapporteur Allowance Amount", "Driver Allowance Amount",
-                    "Retreat Allowance Amount", "Expert Allowance Amount", "Tuition Fee Amount", "Mileage Allowance Amount",
-                    "Quarter Per Diem Amount", "Other Costs Amount");
-                "Budget Available Amount" := "DSA Amount" +
-                                            "Air Ticket Amount" +
-                                            "Conference Amount" +
-                                            "Ground Transport Amount" +
-                                            "Accomodation Amount" +
-                                            "Cordination Allowance Amount" +
-                                            "Facilitator Allowance Amount" +
-                                            "Secretariat Allowance Amount" +
-                                            "Out ofPocket Allowance Amount" +
-                                            "Rapporteur Allowance Amount" +
-                                            "Driver Allowance Amount" +
-                                            "Retreat Allowance Amount" +
-                                            "Expert Allowance Amount" +
-                                            "Tuition Fee Amount" +
-                                            "Mileage Allowance Amount" +
-                                            "Quarter Per Diem Amount" +
-                                            "Other Costs Amount";
+                if "GTransport Available Budget" > "Ground Transport Amount" then
+                    Message('Allocated amount for Ground Transport has exceeded the available budget by %1. Available budget = %2', ("GTransport Available Budget" - "Ground Transport Amount"), "Ground Transport Amount");
             end;
         }
-        field(303; "Source of Funds GTransport"; Code[15])
+        field(303; "Source of Funds GTransport"; Boolean)
         {
-            TableRelation = "G/L Account";
-            Caption = 'Source of Funds';
+            Caption = 'Source of Funds GTransport';
+            trigger OnValidate()
+            begin
+
+                ImprestSetup.Get();
+                IF "Source of Funds Conference" = true then begin
+                    if ExpenseCodes.Get(ImprestSetup."G.Transport Expense Code") then begin
+                        GLBudget.Reset();
+                        GLBudget.SetRange("G/L Account No.", ExpenseCodes."Account No");
+                        GLBudget.SetRange("Budget Name", "Training Year");
+                        IF GLBudget.Find('-') then
+                            repeat
+                                //Message('Conference amount allocated for A/C no %1 is %2', ExpenseCodes."Account No", GLBudget.Amount);
+                                "GTransport Available Budget" := GLBudget.Amount;
+                            UNTIL GLBudget.Next() = 0
+                        else
+                            Message('No budget amount found for G.Transport Expense Code %1', ImprestSetup."G.Transport Expense Code");
+                    end
+                    else
+                        Message('No record found in Expense Codes for G.Transport Expense Code %1', ImprestSetup."G.Transport Expense Code");
+
+                end;
+            end;
+        }
+        field(1003; "GTransport Available Budget"; Decimal)
+        {
+            Caption = 'Ground Transport Available Budget';
+            Editable = false;
+            trigger OnValidate()
+            begin
+                "Budget Available Amount" := "DSA Available Budget" +
+                                         "Air Ticket Available Budget" +
+                                         "Conference Available Budget" +
+                                         "GTransport Available Budget" +
+                                         "Accommodation Available Budget" +
+                                         "Coordination Allowance Available Budget" +
+                                         "Facilitator Allowance Available Budget" +
+                                         "Secretariat Allowance Available Budget" +
+                                         "Out of Pocket Allowance Available Budget" +
+                                         "Rapporteur Allowance Available Budget" +
+                                         "Driver Allowance Available Budget" +
+                                         "Retreat Allowance Available Budget" +
+                                         "Expert Allowance Available Budget" +
+                                         "Tuition Fee Available Budget" +
+                                         "Mileage Allowance Available Budget" +
+                                         "Quarter Per Diem Available Budget" +
+                                         "Other Costs Amount";
+            end;
         }
         field(104; "Accomodation Amount"; Decimal)
         {
-            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Accommodation"),
-                                                        "Posting Date" = field("Date Filter")));
+
             Caption = 'Accommodation Amount';
-            Editable = false;
-            FieldClass = FlowField;
+
             trigger OnValidate()
             begin
-                CalcFields("DSA Amount", "Air Ticket Amount", "Conference Amount", "Ground Transport Amount", "Accomodation Amount",
-                    "Cordination Allowance Amount", "Facilitator Allowance Amount", "Secretariat Allowance Amount",
-                    "Out ofPocket Allowance Amount", "Rapporteur Allowance Amount", "Driver Allowance Amount",
-                    "Retreat Allowance Amount", "Expert Allowance Amount", "Tuition Fee Amount", "Mileage Allowance Amount",
-                    "Quarter Per Diem Amount", "Other Costs Amount");
-                "Budget Available Amount" := "DSA Amount" +
-                                            "Air Ticket Amount" +
-                                            "Conference Amount" +
-                                            "Ground Transport Amount" +
-                                            "Accomodation Amount" +
-                                            "Cordination Allowance Amount" +
-                                            "Facilitator Allowance Amount" +
-                                            "Secretariat Allowance Amount" +
-                                            "Out ofPocket Allowance Amount" +
-                                            "Rapporteur Allowance Amount" +
-                                            "Driver Allowance Amount" +
-                                            "Retreat Allowance Amount" +
-                                            "Expert Allowance Amount" +
-                                            "Tuition Fee Amount" +
-                                            "Mileage Allowance Amount" +
-                                            "Quarter Per Diem Amount" +
-                                            "Other Costs Amount";
+                if "Accommodation Available Budget" > "Accomodation Amount" then
+                    Message('Allocated amount for Accommodation has exceeded the available budget by %1. Available budget = %2', ("Accommodation Available Budget" - "Accomodation Amount"), "Accomodation Amount");
             end;
         }
-        field(304; "Source of Funds Accommodation"; Code[15])
+        field(304; "Source of Funds Accommodation"; Boolean)
         {
-            TableRelation = "G/L Account";
-            Caption = 'Source of Funds';
+            Caption = 'Source of Funds Accommodation';
+            trigger OnValidate()
+            begin
+                ImprestSetup.Get();
+                IF "Source of Funds Accommodation" = true then begin
+                    if ExpenseCodes.Get(ImprestSetup."Accomodation Expense Code") then begin
+                        GLBudget.Reset();
+                        GLBudget.SetRange("G/L Account No.", ExpenseCodes."Account No");
+                        GLBudget.SetRange("Budget Name", "Training Year");
+                        IF GLBudget.Find('-') then
+                            repeat
+                                //Message('Accommodation amount allocated for A/C no %1 is %2', ExpenseCodes."Account No", GLBudget.Amount);
+                                "Accommodation Available Budget" := GLBudget.Amount;
+                            UNTIL GLBudget.Next() = 0
+                        else
+                            Message('No budget amount found for Accommodation Expense Code %1', ImprestSetup."Accomodation Expense Code");
+                    end
+                    else
+                        Message('No record found in Expense Codes for Accommodation Expense Code %1', ImprestSetup."Accomodation Expense Code");
+
+                end;
+            end;
+        }
+        field(1004; "Accommodation Available Budget"; Decimal)
+        {
+            Caption = 'Accommodation Available Budget';
+            Editable = false;
+            trigger OnValidate()
+            begin
+                "Budget Available Amount" := "DSA Available Budget" +
+                                                         "Air Ticket Available Budget" +
+                                                         "Conference Available Budget" +
+                                                         "GTransport Available Budget" +
+                                                         "Accommodation Available Budget" +
+                                                         "Coordination Allowance Available Budget" +
+                                                         "Facilitator Allowance Available Budget" +
+                                                         "Secretariat Allowance Available Budget" +
+                                                         "Out of Pocket Allowance Available Budget" +
+                                                         "Rapporteur Allowance Available Budget" +
+                                                         "Driver Allowance Available Budget" +
+                                                         "Retreat Allowance Available Budget" +
+                                                         "Expert Allowance Available Budget" +
+                                                         "Tuition Fee Available Budget" +
+                                                         "Mileage Allowance Available Budget" +
+                                                         "Quarter Per Diem Available Budget" +
+                                                         "Other Costs Amount";
+            end;
         }
         field(105; "Cordination Allowance Amount"; Decimal)
         {
-            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Coordination"),
-                                                        "Posting Date" = field("Date Filter")));
             Caption = 'Coordination Allowance Amount';
-            Editable = false;
-            FieldClass = FlowField;
+
             trigger OnValidate()
             begin
-                CalcFields("DSA Amount", "Air Ticket Amount", "Conference Amount", "Ground Transport Amount", "Accomodation Amount",
-                    "Cordination Allowance Amount", "Facilitator Allowance Amount", "Secretariat Allowance Amount",
-                    "Out ofPocket Allowance Amount", "Rapporteur Allowance Amount", "Driver Allowance Amount",
-                    "Retreat Allowance Amount", "Expert Allowance Amount", "Tuition Fee Amount", "Mileage Allowance Amount",
-                    "Quarter Per Diem Amount", "Other Costs Amount");
-                "Budget Available Amount" := "DSA Amount" +
-                                            "Air Ticket Amount" +
-                                            "Conference Amount" +
-                                            "Ground Transport Amount" +
-                                            "Accomodation Amount" +
-                                            "Cordination Allowance Amount" +
-                                            "Facilitator Allowance Amount" +
-                                            "Secretariat Allowance Amount" +
-                                            "Out ofPocket Allowance Amount" +
-                                            "Rapporteur Allowance Amount" +
-                                            "Driver Allowance Amount" +
-                                            "Retreat Allowance Amount" +
-                                            "Expert Allowance Amount" +
-                                            "Tuition Fee Amount" +
-                                            "Mileage Allowance Amount" +
-                                            "Quarter Per Diem Amount" +
-                                            "Other Costs Amount";
+                if "Coordination Allowance Available Budget" > "Cordination Allowance Amount" then
+                    Message('Allocated amount for Coordination Allowance has exceeded the available budget by %1. Available budget = %2', ("Coordination Allowance Available Budget" - "Cordination Allowance Amount"), "Cordination Allowance Amount");
             end;
         }
-        field(305; "Source of Funds Coordination"; Code[15])
+        field(305; "Source of Funds Coordination"; Boolean)
         {
-            TableRelation = "G/L Account";
-            Caption = 'Source of Funds';
+            Caption = 'Source of Funds Coordination';
+            trigger OnValidate()
+            begin
+                ImprestSetup.Get();
+                IF "Source of Funds Coordination" = true then begin
+                    if ExpenseCodes.Get(ImprestSetup."Cord. Allow Expense Code") then begin
+                        GLBudget.Reset();
+                        GLBudget.SetRange("G/L Account No.", ExpenseCodes."Account No");
+                        GLBudget.SetRange("Budget Name", "Training Year");
+                        IF GLBudget.Find('-') then
+                            repeat
+                                //Message('Coordination amount allocated for A/C no %1 is %2', ExpenseCodes."Account No", GLBudget.Amount);
+                                "Coordination Allowance Available Budget" := GLBudget.Amount;
+                            UNTIL GLBudget.Next() = 0
+                        else
+                            Message('No budget amount found for Coordination Expense Code %1', ImprestSetup."Cord. Allow Expense Code");
+                    end
+                    else
+                        Message('No record found in Expense Codes for Coordination Expense Code %1', ImprestSetup."Cord. Allow Expense Code");
+
+                end;
+            end;
+
+        }
+        field(1005; "Coordination Allowance Available Budget"; Decimal)
+        {
+            Caption = 'Coordination Allowance Available Budget';
+            Editable = false;
+            trigger OnValidate()
+            begin
+                "Budget Available Amount" := "DSA Available Budget" +
+                                                         "Air Ticket Available Budget" +
+                                                         "Conference Available Budget" +
+                                                         "GTransport Available Budget" +
+                                                         "Accommodation Available Budget" +
+                                                         "Coordination Allowance Available Budget" +
+                                                         "Facilitator Allowance Available Budget" +
+                                                         "Secretariat Allowance Available Budget" +
+                                                         "Out of Pocket Allowance Available Budget" +
+                                                         "Rapporteur Allowance Available Budget" +
+                                                         "Driver Allowance Available Budget" +
+                                                         "Retreat Allowance Available Budget" +
+                                                         "Expert Allowance Available Budget" +
+                                                         "Tuition Fee Available Budget" +
+                                                         "Mileage Allowance Available Budget" +
+                                                         "Quarter Per Diem Available Budget" +
+                                                         "Other Costs Amount";
+            end;
         }
         field(106; "Facilitator Allowance Amount"; Decimal)
         {
-            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Facilitator"),
-                                                        "Posting Date" = field("Date Filter")));
             Caption = 'Facilitator Allowance Amount';
-            Editable = false;
-            FieldClass = FlowField;
             trigger OnValidate()
             begin
-                CalcFields("DSA Amount", "Air Ticket Amount", "Conference Amount", "Ground Transport Amount", "Accomodation Amount",
-                    "Cordination Allowance Amount", "Facilitator Allowance Amount", "Secretariat Allowance Amount",
-                    "Out ofPocket Allowance Amount", "Rapporteur Allowance Amount", "Driver Allowance Amount",
-                    "Retreat Allowance Amount", "Expert Allowance Amount", "Tuition Fee Amount", "Mileage Allowance Amount",
-                    "Quarter Per Diem Amount", "Other Costs Amount");
-                "Budget Available Amount" := "DSA Amount" +
-                                            "Air Ticket Amount" +
-                                            "Conference Amount" +
-                                            "Ground Transport Amount" +
-                                            "Accomodation Amount" +
-                                            "Cordination Allowance Amount" +
-                                            "Facilitator Allowance Amount" +
-                                            "Secretariat Allowance Amount" +
-                                            "Out ofPocket Allowance Amount" +
-                                            "Rapporteur Allowance Amount" +
-                                            "Driver Allowance Amount" +
-                                            "Retreat Allowance Amount" +
-                                            "Expert Allowance Amount" +
-                                            "Tuition Fee Amount" +
-                                            "Mileage Allowance Amount" +
-                                            "Quarter Per Diem Amount" +
-                                            "Other Costs Amount";
+                if "Facilitator Allowance Available Budget" > "Facilitator Allowance Amount" then
+                    Message('Allocated amount for Facilitator Allowance has exceeded the available budget by %1. Available budget = %2', ("Facilitator Allowance Available Budget" - "Facilitator Allowance Amount"), "Facilitator Allowance Amount");
             end;
         }
-        field(306; "Source of Funds Facilitator"; Code[15])
+        field(306; "Source of Funds Facilitator"; Boolean)
         {
-            TableRelation = "G/L Account";
-            Caption = 'Source of Funds';
+            Caption = 'Source of Funds Facilitator';
+            trigger OnValidate()
+            begin
+                ImprestSetup.Get();
+                IF "Source of Funds Facilitator" = true then begin
+                    if ExpenseCodes.Get(ImprestSetup."Facilitator Allow Expense Code") then begin
+                        GLBudget.Reset();
+                        GLBudget.SetRange("G/L Account No.", ExpenseCodes."Account No");
+                        GLBudget.SetRange("Budget Name", "Training Year");
+                        IF GLBudget.Find('-') then
+                            repeat
+                                //Message('Facilitator amount allocated for A/C no %1 is %2', ExpenseCodes."Account No", GLBudget.Amount);
+                                "Facilitator Allowance Available Budget" := GLBudget.Amount;
+                            UNTIL GLBudget.Next() = 0
+                        else
+                            Message('No budget amount found for Facilitator Allowance Expense Code %1', ImprestSetup."Facilitator Allow Expense Code");
+                    end
+                    else
+                        Message('No record found in Expense Codes for Facilitator Allowance Expense Code %1', ImprestSetup."Facilitator Allow Expense Code");
+
+                end;
+            end;
+        }
+        field(1006; "Facilitator Allowance Available Budget"; Decimal)
+        {
+            Caption = 'Facilitator Allowance Available Budget';
+            Editable = false;
+            trigger OnValidate()
+            begin
+                "Budget Available Amount" := "DSA Available Budget" +
+                                                         "Air Ticket Available Budget" +
+                                                         "Conference Available Budget" +
+                                                         "GTransport Available Budget" +
+                                                         "Accommodation Available Budget" +
+                                                         "Coordination Allowance Available Budget" +
+                                                         "Facilitator Allowance Available Budget" +
+                                                         "Secretariat Allowance Available Budget" +
+                                                         "Out of Pocket Allowance Available Budget" +
+                                                         "Rapporteur Allowance Available Budget" +
+                                                         "Driver Allowance Available Budget" +
+                                                         "Retreat Allowance Available Budget" +
+                                                         "Expert Allowance Available Budget" +
+                                                         "Tuition Fee Available Budget" +
+                                                         "Mileage Allowance Available Budget" +
+                                                         "Quarter Per Diem Available Budget" +
+                                                         "Other Costs Amount";
+            end;
         }
 
         field(107; "Secretariat Allowance Amount"; Decimal)
         {
-            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Secretariat"),
-                                                        "Posting Date" = field("Date Filter")));
             Caption = 'Secretariat Allowance Amount';
-            Editable = false;
-            FieldClass = FlowField;
             trigger OnValidate()
             begin
-                CalcFields("DSA Amount", "Air Ticket Amount", "Conference Amount", "Ground Transport Amount", "Accomodation Amount",
-                    "Cordination Allowance Amount", "Facilitator Allowance Amount", "Secretariat Allowance Amount",
-                    "Out ofPocket Allowance Amount", "Rapporteur Allowance Amount", "Driver Allowance Amount",
-                    "Retreat Allowance Amount", "Expert Allowance Amount", "Tuition Fee Amount", "Mileage Allowance Amount",
-                    "Quarter Per Diem Amount", "Other Costs Amount");
-                "Budget Available Amount" := "DSA Amount" +
-                                            "Air Ticket Amount" +
-                                            "Conference Amount" +
-                                            "Ground Transport Amount" +
-                                            "Accomodation Amount" +
-                                            "Cordination Allowance Amount" +
-                                            "Facilitator Allowance Amount" +
-                                            "Secretariat Allowance Amount" +
-                                            "Out ofPocket Allowance Amount" +
-                                            "Rapporteur Allowance Amount" +
-                                            "Driver Allowance Amount" +
-                                            "Retreat Allowance Amount" +
-                                            "Expert Allowance Amount" +
-                                            "Tuition Fee Amount" +
-                                            "Mileage Allowance Amount" +
-                                            "Quarter Per Diem Amount" +
-                                            "Other Costs Amount";
+                if "Secretariat Allowance Available Budget" > "Secretariat Allowance Amount" then
+                    Message('Allocated amount for Secretariat Allowance has exceeded the available budget by %1. Available budget = %2', ("Secretariat Allowance Available Budget" - "Secretariat Allowance Amount"), "Secretariat Allowance Amount");
             end;
         }
-        field(307; "Source of Funds Secretariat"; Code[15])
+        field(307; "Source of Funds Secretariat"; Boolean)
         {
-            TableRelation = "G/L Account";
-            Caption = 'Source of Funds';
+            Caption = 'Source of Funds Secretariat';
+            trigger OnValidate()
+            begin
+                ImprestSetup.Get();
+                IF "Source of Funds Secretariat" = true then begin
+                    if ExpenseCodes.Get(ImprestSetup."Secretariat Allow Expense Code") then begin
+                        GLBudget.Reset();
+                        GLBudget.SetRange("G/L Account No.", ExpenseCodes."Account No");
+                        GLBudget.SetRange("Budget Name", "Training Year");
+                        IF GLBudget.Find('-') then
+                            repeat
+                                //Message('Secretariat amount allocated for A/C no %1 is %2', ExpenseCodes."Account No", GLBudget.Amount);
+                                "Secretariat Allowance Available Budget" := GLBudget.Amount;
+                            UNTIL GLBudget.Next() = 0
+                        else
+                            Message('No budget amount found for Secretariat Allowance Expense Code %1', ImprestSetup."Secretariat Allow Expense Code");
+                    end
+                    else
+                        Message('No record found in Expense Codes for Secretariat Allowance Expense Code %1', ImprestSetup."Secretariat Allow Expense Code");
+                end;
+            end;
+        }
+        field(1007; "Secretariat Allowance Available Budget"; Decimal)
+        {
+            Caption = 'Secretariat Allowance Available Budget';
+            Editable = false;
+            trigger OnValidate()
+            begin
+                "Budget Available Amount" := "DSA Available Budget" +
+                                                         "Air Ticket Available Budget" +
+                                                         "Conference Available Budget" +
+                                                         "GTransport Available Budget" +
+                                                         "Accommodation Available Budget" +
+                                                         "Coordination Allowance Available Budget" +
+                                                         "Facilitator Allowance Available Budget" +
+                                                         "Secretariat Allowance Available Budget" +
+                                                         "Out of Pocket Allowance Available Budget" +
+                                                         "Rapporteur Allowance Available Budget" +
+                                                         "Driver Allowance Available Budget" +
+                                                         "Retreat Allowance Available Budget" +
+                                                         "Expert Allowance Available Budget" +
+                                                         "Tuition Fee Available Budget" +
+                                                         "Mileage Allowance Available Budget" +
+                                                         "Quarter Per Diem Available Budget" +
+                                                         "Other Costs Amount";
+            end;
         }
         field(108; "Out ofPocket Allowance Amount"; Decimal)
         {
-            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Out of Pocket"),
-                                                        "Posting Date" = field("Date Filter")));
             Caption = 'Out of Pocket Allowance Amount';
-            Editable = false;
-            FieldClass = FlowField;
             trigger OnValidate()
             begin
-                CalcFields("DSA Amount", "Air Ticket Amount", "Conference Amount", "Ground Transport Amount", "Accomodation Amount",
-                    "Cordination Allowance Amount", "Facilitator Allowance Amount", "Secretariat Allowance Amount",
-                    "Out ofPocket Allowance Amount", "Rapporteur Allowance Amount", "Driver Allowance Amount",
-                    "Retreat Allowance Amount", "Expert Allowance Amount", "Tuition Fee Amount", "Mileage Allowance Amount",
-                    "Quarter Per Diem Amount", "Other Costs Amount");
-                "Budget Available Amount" := "DSA Amount" +
-                                            "Air Ticket Amount" +
-                                            "Conference Amount" +
-                                            "Ground Transport Amount" +
-                                            "Accomodation Amount" +
-                                            "Cordination Allowance Amount" +
-                                            "Facilitator Allowance Amount" +
-                                            "Secretariat Allowance Amount" +
-                                            "Out ofPocket Allowance Amount" +
-                                            "Rapporteur Allowance Amount" +
-                                            "Driver Allowance Amount" +
-                                            "Retreat Allowance Amount" +
-                                            "Expert Allowance Amount" +
-                                            "Tuition Fee Amount" +
-                                            "Mileage Allowance Amount" +
-                                            "Quarter Per Diem Amount" +
-                                            "Other Costs Amount";
+                if "Out of Pocket Allowance Available Budget" > "Out ofPocket Allowance Amount" then
+                    Message('Allocated amount for Out of Pocket Allowance has exceeded the available budget by %1. Available budget = %2', ("Out of Pocket Allowance Available Budget" - "Out ofPocket Allowance Amount"), "Out ofPocket Allowance Amount");
             end;
         }
-        field(308; "Source of Funds Out of Pocket"; Code[15])
+        field(308; "Source of Funds Out of Pocket"; Boolean)
         {
-            TableRelation = "G/L Account";
-            Caption = 'Source of Funds';
+            Caption = 'Source of Funds Out of Pocket Allowance';
+            trigger OnValidate()
+            begin
+                ImprestSetup.Get();
+                IF "Source of Funds Out of Pocket" = true then begin
+                    if ExpenseCodes.Get(ImprestSetup."Out of Pocket Expense Code") then begin
+                        GLBudget.Reset();
+                        GLBudget.SetRange("G/L Account No.", ExpenseCodes."Account No");
+                        GLBudget.SetRange("Budget Name", "Training Year");
+                        IF GLBudget.Find('-') then
+                            repeat
+                                //Message('Out of Pocket amount allocated for A/C no %1 is %2', ExpenseCodes."Account No", GLBudget.Amount);
+                                "Out of Pocket Allowance Available Budget" := GLBudget.Amount;
+                            UNTIL GLBudget.Next() = 0
+                        else
+                            Message('No budget amount found for Out of Pocket Allowance Expense Code %1', ImprestSetup."Out of Pocket Expense Code");
+                    end
+                    else
+                        Message('No record found in Expense Codes for Out of Pocket Allowance Expense Code %1', ImprestSetup."Out of Pocket Expense Code");
+
+                end;
+            end;
+        }
+        field(1008; "Out of Pocket Allowance Available Budget"; Decimal)
+        {
+            Caption = 'Out of Pocket Allowance Available Budget';
+            Editable = false;
+            trigger OnValidate()
+            begin
+                "Budget Available Amount" := "DSA Available Budget" +
+                                                         "Air Ticket Available Budget" +
+                                                         "Conference Available Budget" +
+                                                         "GTransport Available Budget" +
+                                                         "Accommodation Available Budget" +
+                                                         "Coordination Allowance Available Budget" +
+                                                         "Facilitator Allowance Available Budget" +
+                                                         "Secretariat Allowance Available Budget" +
+                                                         "Out of Pocket Allowance Available Budget" +
+                                                         "Rapporteur Allowance Available Budget" +
+                                                         "Driver Allowance Available Budget" +
+                                                         "Retreat Allowance Available Budget" +
+                                                         "Expert Allowance Available Budget" +
+                                                         "Tuition Fee Available Budget" +
+                                                         "Mileage Allowance Available Budget" +
+                                                         "Quarter Per Diem Available Budget" +
+                                                         "Other Costs Amount";
+            end;
         }
         field(109; "Rapporteur Allowance Amount"; Decimal)
         {
-            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Rapporteur"),
-                                                        "Posting Date" = field("Date Filter")));
             Caption = 'Rapporteur Allowance Amount';
-            Editable = false;
-            FieldClass = FlowField;
             trigger OnValidate()
             begin
-                CalcFields("DSA Amount", "Air Ticket Amount", "Conference Amount", "Ground Transport Amount", "Accomodation Amount",
-                    "Cordination Allowance Amount", "Facilitator Allowance Amount", "Secretariat Allowance Amount",
-                    "Out ofPocket Allowance Amount", "Rapporteur Allowance Amount", "Driver Allowance Amount",
-                    "Retreat Allowance Amount", "Expert Allowance Amount", "Tuition Fee Amount", "Mileage Allowance Amount",
-                    "Quarter Per Diem Amount", "Other Costs Amount");
-                "Budget Available Amount" := "DSA Amount" +
-                                            "Air Ticket Amount" +
-                                            "Conference Amount" +
-                                            "Ground Transport Amount" +
-                                            "Accomodation Amount" +
-                                            "Cordination Allowance Amount" +
-                                            "Facilitator Allowance Amount" +
-                                            "Secretariat Allowance Amount" +
-                                            "Out ofPocket Allowance Amount" +
-                                            "Rapporteur Allowance Amount" +
-                                            "Driver Allowance Amount" +
-                                            "Retreat Allowance Amount" +
-                                            "Expert Allowance Amount" +
-                                            "Tuition Fee Amount" +
-                                            "Mileage Allowance Amount" +
-                                            "Quarter Per Diem Amount" +
-                                            "Other Costs Amount";
+                if "Rapporteur Allowance Available Budget" > "Rapporteur Allowance Amount" then
+                    Message('Allocated amount for Rapporteur Allowance has exceeded the available budget by %1. Available budget = %2', ("Rapporteur Allowance Available Budget" - "Rapporteur Allowance Amount"), "Rapporteur Allowance Amount");
             end;
         }
-        field(309; "Source of Funds Rapporteur"; Code[15])
+        field(309; "Source of Funds Rapporteur"; Boolean)
         {
-            TableRelation = "G/L Account";
-            Caption = 'Source of Funds';
+            Caption = 'Source of Funds Rapporteur Allowance';
+            trigger OnValidate()
+            begin
+                ImprestSetup.Get();
+                IF "Source of Funds Rapporteur" = true then begin
+                    if ExpenseCodes.Get(ImprestSetup."Rapporteur Allow Expense Code") then begin
+                        GLBudget.Reset();
+                        GLBudget.SetRange("G/L Account No.", ExpenseCodes."Account No");
+                        GLBudget.SetRange("Budget Name", "Training Year");
+                        IF GLBudget.Find('-') then
+                            repeat
+                                //Message('Rapporteur amount allocated for A/C no %1 is %2', ExpenseCodes."Account No", GLBudget.Amount);
+                                "Rapporteur Allowance Available Budget" := GLBudget.Amount;
+                            UNTIL GLBudget.Next() = 0
+                        else
+                            Message('No budget amount found for Rapporteur Allowance Expense Code %1', ImprestSetup."Rapporteur Allow Expense Code");
+                    end
+                    else
+                        Message('No record found in Expense Codes for Rapporteur Allowance Expense Code %1', ImprestSetup."Rapporteur Allow Expense Code");
+
+                end;
+            end;
+        }
+        field(1009; "Rapporteur Allowance Available Budget"; Decimal)
+        {
+            Caption = 'Rapporteur Allowance Available Budget';
+            Editable = false;
+            trigger OnValidate()
+            begin
+                "Budget Available Amount" := "DSA Available Budget" +
+                                                         "Air Ticket Available Budget" +
+                                                         "Conference Available Budget" +
+                                                         "GTransport Available Budget" +
+                                                         "Accommodation Available Budget" +
+                                                         "Coordination Allowance Available Budget" +
+                                                         "Facilitator Allowance Available Budget" +
+                                                         "Secretariat Allowance Available Budget" +
+                                                         "Out of Pocket Allowance Available Budget" +
+                                                         "Rapporteur Allowance Available Budget" +
+                                                         "Driver Allowance Available Budget" +
+                                                         "Retreat Allowance Available Budget" +
+                                                         "Expert Allowance Available Budget" +
+                                                         "Tuition Fee Available Budget" +
+                                                         "Mileage Allowance Available Budget" +
+                                                         "Quarter Per Diem Available Budget" +
+                                                         "Other Costs Amount";
+            end;
         }
 
         field(110; "Driver Allowance Amount"; Decimal)
         {
-            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Driver"),
-                                                        "Posting Date" = field("Date Filter")));
             Caption = 'Driver Allowance Amount';
-            Editable = false;
-            FieldClass = FlowField;
             trigger OnValidate()
             begin
-                CalcFields("DSA Amount", "Air Ticket Amount", "Conference Amount", "Ground Transport Amount", "Accomodation Amount",
-                    "Cordination Allowance Amount", "Facilitator Allowance Amount", "Secretariat Allowance Amount",
-                    "Out ofPocket Allowance Amount", "Rapporteur Allowance Amount", "Driver Allowance Amount",
-                    "Retreat Allowance Amount", "Expert Allowance Amount", "Tuition Fee Amount", "Mileage Allowance Amount",
-                    "Quarter Per Diem Amount", "Other Costs Amount");
-                "Budget Available Amount" := "DSA Amount" +
-                                            "Air Ticket Amount" +
-                                            "Conference Amount" +
-                                            "Ground Transport Amount" +
-                                            "Accomodation Amount" +
-                                            "Cordination Allowance Amount" +
-                                            "Facilitator Allowance Amount" +
-                                            "Secretariat Allowance Amount" +
-                                            "Out ofPocket Allowance Amount" +
-                                            "Rapporteur Allowance Amount" +
-                                            "Driver Allowance Amount" +
-                                            "Retreat Allowance Amount" +
-                                            "Expert Allowance Amount" +
-                                            "Tuition Fee Amount" +
-                                            "Mileage Allowance Amount" +
-                                            "Quarter Per Diem Amount" +
-                                            "Other Costs Amount";
+                if "Driver Allowance Available Budget" > "Driver Allowance Amount" then
+                    Message('Allocated amount for Driver Allowance has exceeded the available budget by %1. Available budget = %2', ("Driver Allowance Available Budget" - "Driver Allowance Amount"), "Driver Allowance Amount");
             end;
         }
-        field(310; "Source of Funds Driver"; Code[15])
+        field(310; "Source of Funds Driver"; Boolean)
         {
-            TableRelation = "G/L Account";
-            Caption = 'Source of Funds';
+            Caption = 'Source of Funds Driver Allowance';
+            trigger OnValidate()
+            begin
+                ImprestSetup.Get();
+                IF "Source of Funds Driver" = true then begin
+                    if ExpenseCodes.Get(ImprestSetup."Driver Allow Expense Code") then begin
+                        GLBudget.Reset();
+                        GLBudget.SetRange("G/L Account No.", ExpenseCodes."Account No");
+                        GLBudget.SetRange("Budget Name", "Training Year");
+                        IF GLBudget.Find('-') then
+                            repeat
+                                //Message('Driver amount allocated for A/C no %1 is %2', ExpenseCodes."Account No", GLBudget.Amount);
+                                "Driver Allowance Available Budget" := GLBudget.Amount;
+                            UNTIL GLBudget.Next() = 0
+                        else
+                            Message('No budget amount found for Driver Allowance Expense Code %1', ImprestSetup."Driver Allow Expense Code");
+                    end
+                    else
+                        Message('No record found in Expense Codes for Driver Allowance Expense Code %1', ImprestSetup."Driver Allow Expense Code");
+
+                end;
+            end;
+        }
+        field(1010; "Driver Allowance Available Budget"; Decimal)
+        {
+            Caption = 'Driver Allowance Available Budget';
+            Editable = false;
+            trigger OnValidate()
+            begin
+                "Budget Available Amount" := "DSA Available Budget" +
+                                                         "Air Ticket Available Budget" +
+                                                         "Conference Available Budget" +
+                                                         "GTransport Available Budget" +
+                                                         "Accommodation Available Budget" +
+                                                         "Coordination Allowance Available Budget" +
+                                                         "Facilitator Allowance Available Budget" +
+                                                         "Secretariat Allowance Available Budget" +
+                                                         "Out of Pocket Allowance Available Budget" +
+                                                         "Rapporteur Allowance Available Budget" +
+                                                         "Driver Allowance Available Budget" +
+                                                         "Retreat Allowance Available Budget" +
+                                                         "Expert Allowance Available Budget" +
+                                                         "Tuition Fee Available Budget" +
+                                                         "Mileage Allowance Available Budget" +
+                                                         "Quarter Per Diem Available Budget" +
+                                                         "Other Costs Amount";
+            end;
         }
 
         field(111; "Retreat Allowance Amount"; Decimal)
         {
-            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Retreat"),
-                                                        "Posting Date" = field("Date Filter")));
             Caption = 'Retreat Allowance Amount';
-            Editable = false;
-            FieldClass = FlowField;
             trigger OnValidate()
             begin
-                CalcFields("DSA Amount", "Air Ticket Amount", "Conference Amount", "Ground Transport Amount", "Accomodation Amount",
-                    "Cordination Allowance Amount", "Facilitator Allowance Amount", "Secretariat Allowance Amount",
-                    "Out ofPocket Allowance Amount", "Rapporteur Allowance Amount", "Driver Allowance Amount",
-                    "Retreat Allowance Amount", "Expert Allowance Amount", "Tuition Fee Amount", "Mileage Allowance Amount",
-                    "Quarter Per Diem Amount", "Other Costs Amount");
-                "Budget Available Amount" := "DSA Amount" +
-                                            "Air Ticket Amount" +
-                                            "Conference Amount" +
-                                            "Ground Transport Amount" +
-                                            "Accomodation Amount" +
-                                            "Cordination Allowance Amount" +
-                                            "Facilitator Allowance Amount" +
-                                            "Secretariat Allowance Amount" +
-                                            "Out ofPocket Allowance Amount" +
-                                            "Rapporteur Allowance Amount" +
-                                            "Driver Allowance Amount" +
-                                            "Retreat Allowance Amount" +
-                                            "Expert Allowance Amount" +
-                                            "Tuition Fee Amount" +
-                                            "Mileage Allowance Amount" +
-                                            "Quarter Per Diem Amount" +
-                                            "Other Costs Amount";
+                if "Retreat Allowance Available Budget" > "Retreat Allowance Amount" then
+                    Message('Allocated amount for Retreat Allowance has exceeded the available budget by %1. Available budget = %2', ("Retreat Allowance Available Budget" - "Retreat Allowance Amount"), "Retreat Allowance Amount");
             end;
         }
-        field(311; "Source of Funds Retreat"; Code[15])
+        field(311; "Source of Funds Retreat"; Boolean)
         {
-            TableRelation = "G/L Account";
-            Caption = 'Source of Funds';
+            Caption = 'Source of Funds Retreat Allowance';
+            trigger OnValidate()
+            begin
+                ImprestSetup.Get();
+                IF "Source of Funds Retreat" = true then begin
+                    if ExpenseCodes.Get(ImprestSetup."Retreat Allow Expense Code") then begin
+                        GLBudget.Reset();
+                        GLBudget.SetRange("G/L Account No.", ExpenseCodes."Account No");
+                        GLBudget.SetRange("Budget Name", "Training Year");
+                        IF GLBudget.Find('-') then
+                            repeat
+                                //Message('Retreat amount allocated for A/C no %1 is %2', ExpenseCodes."Account No", GLBudget.Amount);
+                                "Retreat Allowance Available Budget" := GLBudget.Amount;
+                            UNTIL GLBudget.Next() = 0
+                        else
+                            Message('No budget amount found for Retreat Allowance Expense Code %1', ImprestSetup."Retreat Allow Expense Code");
+                    end
+                    else
+                        Message('No record found in Expense Codes for Retreat Allowance Expense Code %1', ImprestSetup."Retreat Allow Expense Code");
+
+                end;
+            end;
+        }
+        field(1011; "Retreat Allowance Available Budget"; Decimal)
+        {
+            Caption = 'Retreat Allowance Available Budget';
+            Editable = false;
+            trigger OnValidate()
+            begin
+                "Budget Available Amount" := "DSA Available Budget" +
+                                                         "Air Ticket Available Budget" +
+                                                         "Conference Available Budget" +
+                                                         "GTransport Available Budget" +
+                                                         "Accommodation Available Budget" +
+                                                         "Coordination Allowance Available Budget" +
+                                                         "Facilitator Allowance Available Budget" +
+                                                         "Secretariat Allowance Available Budget" +
+                                                         "Out of Pocket Allowance Available Budget" +
+                                                         "Rapporteur Allowance Available Budget" +
+                                                         "Driver Allowance Available Budget" +
+                                                         "Retreat Allowance Available Budget" +
+                                                         "Expert Allowance Available Budget" +
+                                                         "Tuition Fee Available Budget" +
+                                                         "Mileage Allowance Available Budget" +
+                                                         "Quarter Per Diem Available Budget" +
+                                                         "Other Costs Amount";
+            end;
         }
         field(112; "Expert Allowance Amount"; Decimal)
         {
-            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Expert"),
-                                                        "Posting Date" = field("Date Filter")));
             Caption = 'Expert Allowance Amount';
-            Editable = false;
-            FieldClass = FlowField;
             trigger OnValidate()
             begin
-                CalcFields("DSA Amount", "Air Ticket Amount", "Conference Amount", "Ground Transport Amount", "Accomodation Amount",
-                    "Cordination Allowance Amount", "Facilitator Allowance Amount", "Secretariat Allowance Amount",
-                    "Out ofPocket Allowance Amount", "Rapporteur Allowance Amount", "Driver Allowance Amount",
-                    "Retreat Allowance Amount", "Expert Allowance Amount", "Tuition Fee Amount", "Mileage Allowance Amount",
-                    "Quarter Per Diem Amount", "Other Costs Amount");
-                "Budget Available Amount" := "DSA Amount" +
-                                            "Air Ticket Amount" +
-                                            "Conference Amount" +
-                                            "Ground Transport Amount" +
-                                            "Accomodation Amount" +
-                                            "Cordination Allowance Amount" +
-                                            "Facilitator Allowance Amount" +
-                                            "Secretariat Allowance Amount" +
-                                            "Out ofPocket Allowance Amount" +
-                                            "Rapporteur Allowance Amount" +
-                                            "Driver Allowance Amount" +
-                                            "Retreat Allowance Amount" +
-                                            "Expert Allowance Amount" +
-                                            "Tuition Fee Amount" +
-                                            "Mileage Allowance Amount" +
-                                            "Quarter Per Diem Amount" +
-                                            "Other Costs Amount";
+                if "Expert Allowance Available Budget" > "Expert Allowance Amount" then
+                    Message('Allocated amount for Expert Allowance has exceeded the available budget by %1. Available budget = %2', ("Expert Allowance Available Budget" - "Expert Allowance Amount"), "Expert Allowance Amount");
             end;
         }
-        field(312; "Source of Funds Expert"; Code[15])
+        field(312; "Source of Funds Expert"; Boolean)
         {
-            TableRelation = "G/L Account";
-            Caption = 'Source of Funds';
+            Caption = 'Source of Funds Expert Allowance';
+            trigger OnValidate()
+            begin
+                ImprestSetup.Get();
+                IF "Source of Funds Expert" = true then begin
+                    if ExpenseCodes.Get(ImprestSetup."Expert Allow Expense Code") then begin
+                        GLBudget.Reset();
+                        GLBudget.SetRange("G/L Account No.", ExpenseCodes."Account No");
+                        GLBudget.SetRange("Budget Name", "Training Year");
+                        IF GLBudget.Find('-') then
+                            repeat
+                                //Message('Expert amount allocated for A/C no %1 is %2', ExpenseCodes."Account No", GLBudget.Amount);
+                                "Expert Allowance Available Budget" := GLBudget.Amount;
+                            UNTIL GLBudget.Next() = 0
+                        else
+                            Message('No budget amount found for Expert Allowance Expense Code %1', ImprestSetup."Expert Allow Expense Code");
+                    end
+                    else
+                        Message('No record found in Expense Codes for Expert Allowance Expense Code %1', ImprestSetup."Expert Allow Expense Code");
+
+                end;
+            end;
+        }
+        field(1012; "Expert Allowance Available Budget"; Decimal)
+        {
+            Caption = 'Expert Allowance Available Budget';
+            Editable = false;
+            trigger OnValidate()
+            begin
+                "Budget Available Amount" := "DSA Available Budget" +
+                                                         "Air Ticket Available Budget" +
+                                                         "Conference Available Budget" +
+                                                         "GTransport Available Budget" +
+                                                         "Accommodation Available Budget" +
+                                                         "Coordination Allowance Available Budget" +
+                                                         "Facilitator Allowance Available Budget" +
+                                                         "Secretariat Allowance Available Budget" +
+                                                         "Out of Pocket Allowance Available Budget" +
+                                                         "Rapporteur Allowance Available Budget" +
+                                                         "Driver Allowance Available Budget" +
+                                                         "Retreat Allowance Available Budget" +
+                                                         "Expert Allowance Available Budget" +
+                                                         "Tuition Fee Available Budget" +
+                                                         "Mileage Allowance Available Budget" +
+                                                         "Quarter Per Diem Available Budget" +
+                                                         "Other Costs Amount";
+            end;
         }
 
         field(113; "Tuition Fee Amount"; Decimal)
         {
-            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Tuition"),
-                                                        "Posting Date" = field("Date Filter")));
             Caption = 'Tuition Fee Amount';
-            Editable = false;
-            FieldClass = FlowField;
             trigger OnValidate()
             begin
-                CalcFields("DSA Amount", "Air Ticket Amount", "Conference Amount", "Ground Transport Amount", "Accomodation Amount",
-                    "Cordination Allowance Amount", "Facilitator Allowance Amount", "Secretariat Allowance Amount",
-                    "Out ofPocket Allowance Amount", "Rapporteur Allowance Amount", "Driver Allowance Amount",
-                    "Retreat Allowance Amount", "Expert Allowance Amount", "Tuition Fee Amount", "Mileage Allowance Amount",
-                    "Quarter Per Diem Amount", "Other Costs Amount");
-                "Budget Available Amount" := "DSA Amount" +
-                                            "Air Ticket Amount" +
-                                            "Conference Amount" +
-                                            "Ground Transport Amount" +
-                                            "Accomodation Amount" +
-                                            "Cordination Allowance Amount" +
-                                            "Facilitator Allowance Amount" +
-                                            "Secretariat Allowance Amount" +
-                                            "Out ofPocket Allowance Amount" +
-                                            "Rapporteur Allowance Amount" +
-                                            "Driver Allowance Amount" +
-                                            "Retreat Allowance Amount" +
-                                            "Expert Allowance Amount" +
-                                            "Tuition Fee Amount" +
-                                            "Mileage Allowance Amount" +
-                                            "Quarter Per Diem Amount" +
-                                            "Other Costs Amount";
+                if "Tuition Fee Available Budget" > "Tuition Fee Amount" then
+                    Message('Allocated amount for Tuition Fee has exceeded the available budget by %1. Available budget = %2', ("Tuition Fee Available Budget" - "Tuition Fee Amount"), "Tuition Fee Amount");
             end;
         }
-        field(313; "Source of Funds Tuition"; Code[15])
+        field(313; "Source of Funds Tuition"; Boolean)
         {
-            TableRelation = "G/L Account";
-            Caption = 'Source of Funds';
-        }
+            Caption = 'Source of Funds Tuition Fee';
+            trigger OnValidate()
+            begin
+                ImprestSetup.Get();
+                IF "Source of Funds Expert" = true then begin
+                    if ExpenseCodes.Get(ImprestSetup."Expert Allow Expense Code") then begin
+                        GLBudget.Reset();
+                        GLBudget.SetRange("G/L Account No.", ExpenseCodes."Account No");
+                        GLBudget.SetRange("Budget Name", "Training Year");
+                        IF GLBudget.Find('-') then
+                            repeat
+                                //Message('Expert amount allocated for A/C no %1 is %2', ExpenseCodes."Account No", GLBudget.Amount);
+                                "Tuition Fee Available Budget" := GLBudget.Amount;
+                            UNTIL GLBudget.Next() = 0
+                        else
+                            Message('No budget amount found for Expert Allowance Expense Code %1', ImprestSetup."Expert Allow Expense Code");
+                    end
+                    else
+                        Message('No record found in Expense Codes for Expert Allowance Expense Code %1', ImprestSetup."Expert Allow Expense Code");
 
+                end;
+            end;
+
+        }
+        field(1013; "Tuition Fee Available Budget"; Decimal)
+        {
+            Caption = 'Tuition Fee Available Budget';
+            Editable = false;
+            trigger OnValidate()
+            begin
+                "Budget Available Amount" := "DSA Available Budget" +
+                                                         "Air Ticket Available Budget" +
+                                                         "Conference Available Budget" +
+                                                         "GTransport Available Budget" +
+                                                         "Accommodation Available Budget" +
+                                                         "Coordination Allowance Available Budget" +
+                                                         "Facilitator Allowance Available Budget" +
+                                                         "Secretariat Allowance Available Budget" +
+                                                         "Out of Pocket Allowance Available Budget" +
+                                                         "Rapporteur Allowance Available Budget" +
+                                                         "Driver Allowance Available Budget" +
+                                                         "Retreat Allowance Available Budget" +
+                                                         "Expert Allowance Available Budget" +
+                                                         "Tuition Fee Available Budget" +
+                                                         "Mileage Allowance Available Budget" +
+                                                         "Quarter Per Diem Available Budget" +
+                                                         "Other Costs Amount";
+            end;
+        }
         field(114; "Mileage Allowance Amount"; Decimal)
         {
-            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Mileage"),
-                                                        "Posting Date" = field("Date Filter")));
             Caption = 'Mileage Allowance Amount';
-            Editable = false;
-            FieldClass = FlowField;
+
             trigger OnValidate()
             begin
-                CalcFields("DSA Amount", "Air Ticket Amount", "Conference Amount", "Ground Transport Amount", "Accomodation Amount",
-                    "Cordination Allowance Amount", "Facilitator Allowance Amount", "Secretariat Allowance Amount",
-                    "Out ofPocket Allowance Amount", "Rapporteur Allowance Amount", "Driver Allowance Amount",
-                    "Retreat Allowance Amount", "Expert Allowance Amount", "Tuition Fee Amount", "Mileage Allowance Amount",
-                    "Quarter Per Diem Amount", "Other Costs Amount");
-                "Budget Available Amount" := "DSA Amount" +
-                                            "Air Ticket Amount" +
-                                            "Conference Amount" +
-                                            "Ground Transport Amount" +
-                                            "Accomodation Amount" +
-                                            "Cordination Allowance Amount" +
-                                            "Facilitator Allowance Amount" +
-                                            "Secretariat Allowance Amount" +
-                                            "Out ofPocket Allowance Amount" +
-                                            "Rapporteur Allowance Amount" +
-                                            "Driver Allowance Amount" +
-                                            "Retreat Allowance Amount" +
-                                            "Expert Allowance Amount" +
-                                            "Tuition Fee Amount" +
-                                            "Mileage Allowance Amount" +
-                                            "Quarter Per Diem Amount" +
-                                            "Other Costs Amount";
+                if "Mileage Allowance Available Budget" > "Mileage Allowance Amount" then
+                    Message('Allocated amount for Mileage Allowance has exceeded the available budget by %1. Available budget = %2', ("Mileage Allowance Available Budget" - "Mileage Allowance Amount"), "Mileage Allowance Amount");
             end;
         }
-        field(314; "Source of Funds Mileage"; Code[15])
+        field(314; "Source of Funds Mileage"; Boolean)
         {
-            TableRelation = "G/L Account";
-            Caption = 'Source of Funds';
+            Caption = 'Source of Funds Mileage Allowance';
+            trigger OnValidate()
+            begin
+                ImprestSetup.Get();
+                IF "Source of Funds Mileage" = true then begin
+                    if ExpenseCodes.Get(ImprestSetup."Mileage Expense Code") then begin
+                        GLBudget.Reset();
+                        GLBudget.SetRange("G/L Account No.", ExpenseCodes."Account No");
+                        GLBudget.SetRange("Budget Name", "Training Year");
+                        IF GLBudget.Find('-') then
+                            repeat
+                                //Message('Mileage amount allocated for A/C no %1 is %2', ExpenseCodes."Account No", GLBudget.Amount);
+                                "Mileage Allowance Available Budget" := GLBudget.Amount;
+                            UNTIL GLBudget.Next() = 0
+                        else
+                            Message('No budget amount found for Mileage Allowance Expense Code %1', ImprestSetup."Mileage Expense Code");
+                    end
+                    else
+                        Message('No record found in Expense Codes for Mileage Allowance Expense Code %1', ImprestSetup."Mileage Expense Code");
+
+                end;
+            end;
+        }
+        field(1014; "Mileage Allowance Available Budget"; Decimal)
+        {
+            Caption = 'Mileage Allowance Available Budget';
+            Editable = false;
+            trigger OnValidate()
+            begin
+                "Budget Available Amount" := "DSA Available Budget" +
+                                                         "Air Ticket Available Budget" +
+                                                         "Conference Available Budget" +
+                                                         "GTransport Available Budget" +
+                                                         "Accommodation Available Budget" +
+                                                         "Coordination Allowance Available Budget" +
+                                                         "Facilitator Allowance Available Budget" +
+                                                         "Secretariat Allowance Available Budget" +
+                                                         "Out of Pocket Allowance Available Budget" +
+                                                         "Rapporteur Allowance Available Budget" +
+                                                         "Driver Allowance Available Budget" +
+                                                         "Retreat Allowance Available Budget" +
+                                                         "Expert Allowance Available Budget" +
+                                                         "Tuition Fee Available Budget" +
+                                                         "Mileage Allowance Available Budget" +
+                                                         "Quarter Per Diem Available Budget" +
+                                                         "Other Costs Amount";
+            end;
         }
         field(115; "Quarter Per Diem Amount"; Decimal)
         {
-            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds QPer Diem"),
-                                                        "Posting Date" = field("Date Filter")));
             Caption = 'Quarter Per Diem Amount';
-            Editable = false;
-            FieldClass = FlowField;
             trigger OnValidate()
             begin
-                CalcFields("DSA Amount", "Air Ticket Amount", "Conference Amount", "Ground Transport Amount", "Accomodation Amount",
-                    "Cordination Allowance Amount", "Facilitator Allowance Amount", "Secretariat Allowance Amount",
-                    "Out ofPocket Allowance Amount", "Rapporteur Allowance Amount", "Driver Allowance Amount",
-                    "Retreat Allowance Amount", "Expert Allowance Amount", "Tuition Fee Amount", "Mileage Allowance Amount",
-                    "Quarter Per Diem Amount", "Other Costs Amount");
-                "Budget Available Amount" := "DSA Amount" +
-                                            "Air Ticket Amount" +
-                                            "Conference Amount" +
-                                            "Ground Transport Amount" +
-                                            "Accomodation Amount" +
-                                            "Cordination Allowance Amount" +
-                                            "Facilitator Allowance Amount" +
-                                            "Secretariat Allowance Amount" +
-                                            "Out ofPocket Allowance Amount" +
-                                            "Rapporteur Allowance Amount" +
-                                            "Driver Allowance Amount" +
-                                            "Retreat Allowance Amount" +
-                                            "Expert Allowance Amount" +
-                                            "Tuition Fee Amount" +
-                                            "Mileage Allowance Amount" +
-                                            "Quarter Per Diem Amount" +
-                                            "Other Costs Amount";
+                if "Quarter Per Diem Available Budget" > "Quarter Per Diem Amount" then
+                    Message('Allocated amount for Quarter Per Diem has exceeded the available budget by %1. Available budget = %2', ("Quarter Per Diem Available Budget" - "Quarter Per Diem Amount"), "Quarter Per Diem Amount");
             end;
         }
-        field(315; "Source of Funds QPer Diem"; Code[15])
+        field(315; "Source of Funds QPer Diem"; Boolean)
         {
-            TableRelation = "G/L Account";
-            Caption = 'Source of Funds';
+            Caption = 'Source of Funds Quarter Per Diem';
+            trigger OnValidate()
+            begin
+                ImprestSetup.Get();
+                IF "Source of Funds QPer Diem" = true then begin
+                    if ExpenseCodes.Get(ImprestSetup."Qtr. Per Diem Expense Code") then begin
+                        GLBudget.Reset();
+                        GLBudget.SetRange("G/L Account No.", ExpenseCodes."Account No");
+                        GLBudget.SetRange("Budget Name", "Training Year");
+                        IF GLBudget.Find('-') then
+                            repeat
+                                //Message('Quarter Per Diem amount allocated for A/C no %1 is %2', ExpenseCodes."Account No", GLBudget.Amount);
+                                "Quarter Per Diem Available Budget" := GLBudget.Amount;
+                            UNTIL GLBudget.Next() = 0
+                        else
+                            Message('No budget amount found for Quarter Per Diem Expense Code %1', ImprestSetup."Qtr. Per Diem Expense Code");
+                    end
+                    else
+                        Message('No record found in Expense Codes for Quarter Per Diem Expense Code %1', ImprestSetup."Qtr. Per Diem Expense Code");
+
+                end;
+            end;
+        }
+        field(1015; "Quarter Per Diem Available Budget"; Decimal)
+        {
+            Caption = 'Quarter Per Diem Available Budget';
+            Editable = false;
+            trigger OnValidate()
+            begin
+                "Budget Available Amount" := "DSA Available Budget" +
+                                           "Air Ticket Available Budget" +
+                                           "Conference Available Budget" +
+                                           "GTransport Available Budget" +
+                                           "Accommodation Available Budget" +
+                                           "Coordination Allowance Available Budget" +
+                                           "Facilitator Allowance Available Budget" +
+                                           "Secretariat Allowance Available Budget" +
+                                           "Out of Pocket Allowance Available Budget" +
+                                           "Rapporteur Allowance Available Budget" +
+                                           "Driver Allowance Available Budget" +
+                                           "Retreat Allowance Available Budget" +
+                                           "Expert Allowance Available Budget" +
+                                           "Tuition Fee Available Budget" +
+                                           "Mileage Allowance Available Budget" +
+                                           "Quarter Per Diem Available Budget" +
+                                           "Other Costs Amount";
+            end;
         }
         field(116; "Other Costs Amount"; Decimal)
         {
-            CalcFormula = sum("G/L Entry".Amount where("G/L Account No." = field("Source of Funds Other Costs"),
-                                                        "Posting Date" = field("Date Filter")));
             Caption = 'Other Costs Amount';
-            Editable = false;
-            FieldClass = FlowField;
+
             trigger OnValidate()
             begin
-                CalcFields("DSA Amount", "Air Ticket Amount", "Conference Amount", "Ground Transport Amount", "Accomodation Amount",
-                    "Cordination Allowance Amount", "Facilitator Allowance Amount", "Secretariat Allowance Amount",
-                    "Out ofPocket Allowance Amount", "Rapporteur Allowance Amount", "Driver Allowance Amount",
-                    "Retreat Allowance Amount", "Expert Allowance Amount", "Tuition Fee Amount", "Mileage Allowance Amount",
-                    "Quarter Per Diem Amount", "Other Costs Amount");
-                "Budget Available Amount" := "DSA Amount" +
-                                            "Air Ticket Amount" +
-                                            "Conference Amount" +
-                                            "Ground Transport Amount" +
-                                            "Accomodation Amount" +
-                                            "Cordination Allowance Amount" +
-                                            "Facilitator Allowance Amount" +
-                                            "Secretariat Allowance Amount" +
-                                            "Out ofPocket Allowance Amount" +
-                                            "Rapporteur Allowance Amount" +
-                                            "Driver Allowance Amount" +
-                                            "Retreat Allowance Amount" +
-                                            "Expert Allowance Amount" +
-                                            "Tuition Fee Amount" +
-                                            "Mileage Allowance Amount" +
-                                            "Quarter Per Diem Amount" +
-                                            "Other Costs Amount";
+
             end;
         }
         field(316; "Source of Funds Other Costs"; Code[15])
@@ -803,6 +1122,10 @@ table 52361 "Training Needs Lines"
 
             Caption = 'Budget Available Amount';
 
+        }
+        field(391; "Training Year"; Code[100])
+        {
+            Caption = 'Training Year';
         }
     }
 
@@ -836,6 +1159,9 @@ table 52361 "Training Needs Lines"
         CurrencyExchangeRate: Record "Currency Exchange Rate";
         TrainingNeed: Record "Training Need";
         DimMgt: Codeunit DimensionManagement;
+        ImprestSetup: Record "Advanced Finance Setup";
+        ExpenseCodes: Record "Expense Codes";
+        GLBudget: Record "G/L Budget Entry";
 
     procedure ShowDocDim()
     var
