@@ -6,7 +6,7 @@ report 51600 "Leave Application"
 
     dataset
     {
-        dataitem("Employee Leave Application"; "Employee Leave Application")
+        dataitem("Employee Leave Application"; "Leave Application")
         {
             column(Logo; CompanyInfo.Picture)
             {
@@ -14,7 +14,7 @@ report 51600 "Leave Application"
             column(CompName; CompanyInfo.Name)
             {
             }
-            column(DeptName; "Employee Leave Application"."Global Dimension 1 Code")
+            column(DeptName; "Employee Leave Application"."Shortcut Dimension 1 Code")
             {
             }
             column(Grade; Grade)
@@ -113,7 +113,7 @@ report 51600 "Leave Application"
             column(NoDaysApplied; "Employee Leave Application"."Days Applied")
             {
             }
-            column(DutiesTakenBy; UpperCase("Employee Leave Application"."Reliever Name"))
+            column(DutiesTakenBy; UpperCase("Employee Leave Application"."Relieving Name"))
             {
             }
             column(PhoneNo; "Employee Leave Application"."Mobile No")
@@ -242,4 +242,5 @@ report 51600 "Leave Application"
     "3rdApproverName": Text;
     UsersRec: Record User;
     EmpRec: Record "Employee Master";
+
 }

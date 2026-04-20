@@ -57,7 +57,7 @@ codeunit 51428 "Page Management Ext"
         //End: Ibrahim Wasiu
         //**********************THL - HR MODULE CUSTOMIZATIONS***********************
         //1. Leave Application
-        DATABASE::"Employee Leave Application": exit(PAGE::"Leave Application-Approval");
+        DATABASE::"Leave Application": exit(PAGE::"Leave Application-Approval");
         //
         //2. Appraisal
         DATABASE::"Performance Appraisal": exit(PAGE::"Appraisal Card - Approval");

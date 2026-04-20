@@ -704,7 +704,7 @@ codeunit 51429 "Workflow Event Handling Ext"
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt. Ext", 'OnSendLeaveForApproval', '', false, false)]
-    procedure RunWorkflowOnSendLeaveForApproval(var Leave: Record "Employee Leave Application")
+    procedure RunWorkflowOnSendLeaveForApproval(var Leave: Record "Leave Application")
     begin
         WorkflowManagement.HandleEvent(RunWorkflowOnSendLeaveForApprovalCode, Leave);
     end;
@@ -715,7 +715,7 @@ codeunit 51429 "Workflow Event Handling Ext"
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt. Ext", 'OnCancelLeaveApprovalRequest', '', false, false)]
-    procedure RunWorkflowOnCancelLeaveApprovalRequest(var Leave: Record "Employee Leave Application")
+    procedure RunWorkflowOnCancelLeaveApprovalRequest(var Leave: Record "Leave Application")
     begin
         WorkflowManagement.HandleEvent(RunWorkflowOnCancelLeaveApprovalRequestCode, Leave);
     end;
@@ -726,7 +726,7 @@ codeunit 51429 "Workflow Event Handling Ext"
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Release Leave Application", 'OnAfterReleaseLeave', '', false, false)]
-    procedure RunWorkflowOnAfterReleaseLeave(var Leave: Record "Employee Leave Application")
+    procedure RunWorkflowOnAfterReleaseLeave(var Leave: Record "Leave Application")
     begin
         WorkflowManagement.HandleEvent(RunWorkflowOnAfterReleaseLeaveCode, Leave);
     end;
@@ -1434,9 +1434,9 @@ codeunit 51429 "Workflow Event Handling Ext"
         //End: Ibrahim Wasiu
         //************************THL - HR MODULE CUSTOMIZATIONS***************************
         //1. Leave Application:
-        WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnSendLeaveForApprovalCode, DATABASE::"Employee Leave Application", LeaveSendForApprovalEventDescTxt, 0, false);
-        WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnCancelLeaveApprovalRequestCode, DATABASE::"Employee Leave Application", CancelLeaveApprovalRequestEventDescTxt, 0, false);
-        WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnAfterReleaseLeaveCode, DATABASE::"Employee Leave Application", LeaveReleasedEventDescTxt, 0, false);
+        WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnSendLeaveForApprovalCode, DATABASE::"Leave Application", LeaveSendForApprovalEventDescTxt, 0, false);
+        WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnCancelLeaveApprovalRequestCode, DATABASE::"Leave Application", CancelLeaveApprovalRequestEventDescTxt, 0, false);
+        WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnAfterReleaseLeaveCode, DATABASE::"Leave Application", LeaveReleasedEventDescTxt, 0, false);
         //
         //2. Appraisal:
         WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnSendAppraisalForApprovalCode, DATABASE::"Performance Appraisal", AppraisalSendForApprovalEventDescTxt, 0, false);

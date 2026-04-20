@@ -242,7 +242,7 @@ table 51868 "Employee Leave Plan"
         }
         field(29; "Total Leave Days Taken"; Decimal)
         {
-            CalcFormula = Sum("Employee Leave Application"."Days Applied" WHERE(Status = CONST(Released), "Employee No" = FIELD("Employee No"), "Leave Code" = FIELD("Leave Code"), "Maturity Date" = FIELD("Maturity Date")));
+            CalcFormula = Sum("Leave Application"."Days Applied" WHERE(Status = CONST(Released), "Employee No" = FIELD("Employee No"), "Leave Code" = FIELD("Leave Code"), "Maturity Date" = FIELD("Maturity Date")));
             FieldClass = FlowField;
         }
         field(30; "Duties Taken Over By"; Code[20])
@@ -398,7 +398,7 @@ table 51868 "Employee Leave Plan"
         DimVal: Record "Dimension Value";
         QuantumJumpsUserSetup: Record "User Setup";
 
-    procedure CreateLeaveAllowance(var LeaveApp: Record "Employee Leave Application")
+    procedure CreateLeaveAllowance(var LeaveApp: Record "Leave Application")
     var
         HRSetup: Record "QuantumJumps HR Setup";
         AccPeriod: Record "Payroll Period";
@@ -406,7 +406,7 @@ table 51868 "Employee Leave Plan"
         FiscalEnd: Date;
         ScaleBenefits: Record "Scale Benefits";
     begin
-        if LeaveApp."Leave Allowance Payable" = LeaveApp."Leave Allowance Payable"::Yes then begin
+        if LeaveApp."Leave Allowance Payable" = true then begin
             AccPeriod.Reset;
             AccPeriod.SetRange(AccPeriod."Starting Date", 0D, Today);
             AccPeriod.SetRange(AccPeriod."New Fiscal Year", true);

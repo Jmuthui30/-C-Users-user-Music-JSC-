@@ -242,12 +242,12 @@ codeunit 51427 "Approvals Mgmt. Ext"
     end;
 
     [IntegrationEvent(false, false)]
-    procedure OnSendLeaveForApproval(var Leave: Record "Employee Leave Application")
+    procedure OnSendLeaveForApproval(var Leave: Record "Leave Application")
     begin
     end;
 
     [IntegrationEvent(false, false)]
-    procedure OnCancelLeaveApprovalRequest(var Leave: Record "Employee Leave Application")
+    procedure OnCancelLeaveApprovalRequest(var Leave: Record "Leave Application")
     begin
     end;
 
@@ -568,7 +568,7 @@ codeunit 51427 "Approvals Mgmt. Ext"
         RFQ: Record "RFQ Header";
         WorkT: Record "Work Ticket Header";
         BalScoreCard: Record "Bal Score Card Header";
-        Leave: Record "Employee Leave Application";
+        Leave: Record "Leave Application";
         LeaveAdjust: Record "Leave Adjustment Header";
         Appraisal: Record "Performance Appraisal";
         Orientation: Record "Staff Orientation Header";
@@ -732,7 +732,7 @@ codeunit 51427 "Approvals Mgmt. Ext"
             //End: Ibrahim Wasiu
             //***********************THL - HR MODULE CUSTOMIZATIONS***************************
             //1. Leave
-            DATABASE::"Employee Leave Application":
+            DATABASE::"Leave Application":
                 begin
                     RecRef.SetTable(Leave);
                     Leave.Validate(Status, Leave.Status::"Pending Approval");
@@ -887,7 +887,7 @@ codeunit 51427 "Approvals Mgmt. Ext"
                     Variant := TrainingReq;
                     IsHandled := true;
                 end;
-                 //Payroll Approval
+            //Payroll Approval
             Database::"Payroll Approval":
                 begin
                     RecRef.SetTable(PayrollApproval);
@@ -940,7 +940,7 @@ codeunit 51427 "Approvals Mgmt. Ext"
         RecruitmentPlan: Record "Recruitment Plan";
         WorkT: Record "Work Ticket Header";
         BalScoreCard: Record "Bal Score Card Header";
-        Leave: Record "Employee Leave Application";
+        Leave: Record "Leave Application";
         LeaveAdjust: Record "Leave Adjustment Header";
         Appraisal: Record "Performance Appraisal";
         Orientation: Record "Staff Orientation Header";
@@ -1104,7 +1104,7 @@ codeunit 51427 "Approvals Mgmt. Ext"
             //End: Ibrahim Wasiu
             //***********************THL - HR MODULE CUSTOMIZATIONS***************************
             //1. Leave
-            DATABASE::"Employee Leave Application":
+            DATABASE::"Leave Application":
                 begin
                     RecRef.SETTABLE(Leave);
                     ApprovalEntryArgument."Document No." := Leave."Application No";
@@ -1200,7 +1200,7 @@ codeunit 51427 "Approvals Mgmt. Ext"
                     ApprovalEntryArgument."Document No." := TrainingReq."Request No.";
                     ApprovalEntryArgument."Salespers./Purch. Code" := '';
                 end;
-                //Payroll Approval
+            //Payroll Approval
             Database::"Payroll Approval":
                 begin
                     RecRef.SetTable(PayrollApproval);
@@ -1379,7 +1379,7 @@ codeunit 51427 "Approvals Mgmt. Ext"
             //End: Ibrahim Wasiu
             //****************THL - HR MODULE CUSTOMIZATIONS**************************
             //1. Leave Application
-            DATABASE::"Employee Leave Application":
+            DATABASE::"Leave Application":
                 begin
                     ApprovalCommentLine.SetRange("Table ID", RecRef.Number);
                     ApprovalCommentLine.SetRange("Record ID to Approve", RecRef.RecordId);
@@ -1387,7 +1387,7 @@ codeunit 51427 "Approvals Mgmt. Ext"
                 end;
             //
             // //1. Leave Application
-            // DATABASE::"Employee Leave Application":
+            // DATABASE::"Leave Application":
             //     begin
             //         ApprovalCommentLine.SetRange("Table ID", RecRef.Number);
             //         ApprovalCommentLine.SetRange("Record ID to Approve", RecRef.RecordId);

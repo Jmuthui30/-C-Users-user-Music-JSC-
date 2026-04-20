@@ -415,7 +415,7 @@ table 50465 "Imprest Memo Lines"
     var
         // Emp: Record "Client Employee Master";
         Emp: Record Employee;
-        Leave: Record "Employee Leave Application";
+        Leave: Record "Leave Application";
         // Imprest: Record "Imprest Header";
         Header: Record "Imprest Memo Header";
         DSARates: Record "AEA Listing";
