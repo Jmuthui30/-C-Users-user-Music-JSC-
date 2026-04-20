@@ -449,6 +449,7 @@ page 52358 "Appraisal Card-Review"
                     EmployeeObjectives.SetTableView(EmployeeApp);
                     Commit();
                     EmployeeObjectives.RunModal();
+                    //mjk
                 end;
             }
             action("Print Appraisal Report")
