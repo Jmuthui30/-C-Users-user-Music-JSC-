@@ -97,9 +97,6 @@ End Function
         <Field Name="Casualleave">
           <DataField>Casualleave</DataField>
         </Field>
-        <Field Name="CasualleaveFormat">
-          <DataField>CasualleaveFormat</DataField>
-        </Field>
       </Fields>
       <Query>
         <DataSourceName>DataSource</DataSourceName>
