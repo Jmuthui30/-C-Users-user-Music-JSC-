@@ -148,7 +148,11 @@ table 52361 "Training Needs Lines"
             Caption = 'Source of Funds DSA';
             trigger OnValidate()
             begin
+
+
                 ImprestSetup.Get();
+                ImprestSetup.TestField("DSA Expense Code");
+
                 IF "Source of Funds DSA" = true then begin
                     if ExpenseCodes.Get(ImprestSetup."DSA Expense Code") then begin
                         GLBudget.Reset();
@@ -156,16 +160,14 @@ table 52361 "Training Needs Lines"
                         GLBudget.SetRange("Budget Name", "Training Year");
                         IF GLBudget.Find('-') then
                             repeat
-                                //Message('Air Ticket amount allocated for A/C no %1 is %2', ExpenseCodes."Account No", GLBudget.Amount);
-                                "DSA Available Budget" := GLBudget.Amount;
-                            UNTIL GLBudget.Next() = 0
-                        else
-                            Message('No budget amount found for DSA Expense Code %1', ImprestSetup."DSA Expense Code");
+                                Message('DSA amount allocated for A/C no %1 is %2', ExpenseCodes."Account No", GLBudget.Amount);
+                                "DSA Amount" := GLBudget.Amount;
+                            UNTIL GLBudget.Next() = 0;
                     end
                     else
-                        Message('No record found in Expense Codes for DSA Expense Code %1', ImprestSetup."DSA Expense Code");
-
+                        Message('No record found in Expense Codes for Air Ticket Expense Code %1', ImprestSetup."Air Ticket Expense Code");
                 end;
+
             end;
         }
         field(1000; "DSA Available Budget"; Decimal)

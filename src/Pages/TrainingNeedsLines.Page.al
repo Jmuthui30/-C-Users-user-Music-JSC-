@@ -38,6 +38,12 @@ page 52986 "Training Needs Line"
                 {
                     ToolTip = 'Specifies the value of the Source of Funds DSA field';
                 }
+                field("DSA Available Budget"; "DSA Available Budget")
+                {
+                    Caption = 'DSA Available Budget';
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the DSA Available Budget field';
+                }
                 field("DSA Amount"; "DSA Amount")
                 {
                     ToolTip = 'Specifies the value of the DSA Amount field';
@@ -49,6 +55,12 @@ page 52986 "Training Needs Line"
                     TableRelation = "G/L Account";
                     Caption = 'Source of Funds Air Ticket';
                     ToolTip = 'Specifies the value of the Source of Funds field';
+                }
+                field("Air Ticket Available Budget"; "Air Ticket Available Budget")
+                {
+                    Caption = 'Air Ticket Available Budget';
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Air Ticket Available Budget field';
                 }
                 field("Air Ticket Amount"; "Air Ticket Amount")
                 {
@@ -62,6 +74,12 @@ page 52986 "Training Needs Line"
                     Caption = 'Source of Funds Conference';
                     ToolTip = 'Specifies the value of the Source of Funds field';
                 }
+                field("Conference Available Budget"; "Conference Available Budget")
+                {
+                    Caption = 'Conference Available Budget';
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Conference Available Budget field';
+                }
                 field("Conference Amount"; "Conference Amount")
                 {
                     ToolTip = 'Specifies the value of the Conference Amount field';
@@ -73,6 +91,12 @@ page 52986 "Training Needs Line"
                     TableRelation = "G/L Account";
                     Caption = 'Source of Funds GTransport';
                     ToolTip = 'Specifies the value of the Source of Funds field';
+                }
+                field("GTransport Available Budget"; "GTransport Available Budget")
+                {
+                    Caption = 'GTransport Available Budget';
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the GTransport Available Budget field';
                 }
                 field("Ground Transport Amount"; "Ground Transport Amount")
                 {
@@ -86,6 +110,12 @@ page 52986 "Training Needs Line"
                     Caption = 'Source of Funds Accomodation';
                     ToolTip = 'Specifies the value of the Source of Funds field';
                 }
+                field("Accommodation Available Budget"; "Accommodation Available Budget")
+                {
+                    Caption = 'Accomodation Available Budget';
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Accomodation Available Budget field';
+                }
                 field("Accomodation Amount"; "Accomodation Amount")
                 {
                     ToolTip = 'Specifies the value of the Accomodation Amount field';
@@ -97,6 +127,12 @@ page 52986 "Training Needs Line"
                     TableRelation = "G/L Account";
                     Caption = 'Source of Funds Coordination';
                     ToolTip = 'Specifies the value of the Source of Funds field';
+                }
+                field("Coordination Allowance Available Budget"; "Coordination Allowance Available Budget")
+                {
+                    Caption = 'Coordination Available Budget';
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Coordination Available Budget field';
                 }
                 field("Cordination Allowance Amount"; "Cordination Allowance Amount")
                 {
@@ -110,6 +146,12 @@ page 52986 "Training Needs Line"
                     Caption = 'Source of Funds Facilitator';
                     ToolTip = 'Specifies the value of the Source of Funds field';
                 }
+                field("Facilitator Allowance Available Budget"; "Facilitator Allowance Available Budget")
+                {
+                    Caption = 'Facilitator Allowance Available Budget';
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Facilitator Allowance Available Budget field';
+                }
                 field("Facilitator Allowance Amount"; "Facilitator Allowance Amount")
                 {
                     ToolTip = 'Specifies the value of the Facilitator Allowance Amount field';
@@ -121,6 +163,12 @@ page 52986 "Training Needs Line"
                     TableRelation = "G/L Account";
                     Caption = 'Source of Funds Secretariat';
                     ToolTip = 'Specifies the value of the Source of Funds field';
+                }
+                field("Secretariat Allowance Available Budget"; "Secretariat Allowance Available Budget")
+                {
+                    Caption = 'Secretariat Allowance Available Budget';
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Secretariat Allowance Available Budget field';
                 }
                 field("Secretariat Allowance Amount"; "Secretariat Allowance Amount")
                 {
@@ -135,6 +183,12 @@ page 52986 "Training Needs Line"
                     Caption = 'Source of Funds Rapporteur';
                     ToolTip = 'Specifies the value of the Source of Funds field';
                 }
+                field("Rapporteur Allowance Available Budget"; "Rapporteur Allowance Available Budget")
+                {
+                    Caption = 'Rapporteur Allowance Available Budget';
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Rapporteur Allowance Available Budget field';
+                }
                 field("Rapporteur Allowance Amount"; "Rapporteur Allowance Amount")
                 {
                     ToolTip = 'Specifies the value of the Rapporteur Allowance Amount field';
@@ -146,6 +200,12 @@ page 52986 "Training Needs Line"
                     TableRelation = "G/L Account";
                     Caption = 'Source of Funds Driver Allowance';
                     ToolTip = 'Specifies the value of the Source of Funds field';
+                }
+                field("Driver Allowance Available Budget"; "Driver Allowance Available Budget")
+                {
+                    Caption = 'Driver Allowance Available Budget';
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Driver Allowance Available Budget field';
                 }
                 field("Driver Allowance Amount"; "Driver Allowance Amount")
                 {
@@ -159,6 +219,12 @@ page 52986 "Training Needs Line"
                     Caption = 'Source of Funds Retreat';
                     ToolTip = 'Specifies the value of the Source of Funds field';
                 }
+                field("Retreat Allowance Available Budget"; "Retreat Allowance Available Budget")
+                {
+                    Caption = 'Retreat Allowance Available Budget';
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Retreat Allowance Available Budget field';
+                }
                 field("Retreat Allowance Amount"; "Retreat Allowance Amount")
                 {
                     ToolTip = 'Specifies the value of the Retreat Allowance Amount field';
@@ -170,6 +236,12 @@ page 52986 "Training Needs Line"
                     TableRelation = "G/L Account";
                     Caption = 'Source of Funds Expert';
                     ToolTip = 'Specifies the value of the Source of Funds field';
+                }
+                field("Expert Allowance Available Budget"; "Expert Allowance Available Budget")
+                {
+                    Caption = 'Expert Allowance Available Budget';
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Expert Allowance Available Budget field';
                 }
                 field("Expert Allowance Amount"; "Expert Allowance Amount")
                 {
@@ -183,6 +255,12 @@ page 52986 "Training Needs Line"
                     Caption = 'Source of Funds Tuition';
                     ToolTip = 'Specifies the value of the Source of Funds field';
                 }
+                field("Tuition Fee Available Budget"; "Tuition Fee Available Budget")
+                {
+                    Caption = 'Tuition Fee Available Budget';
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Tuition Fee Available Budget field';
+                }
                 field("Tuition Fee Amount"; "Tuition Fee Amount")
                 {
                     ToolTip = 'Specifies the value of the Tuition Fee Amount field';
@@ -194,6 +272,12 @@ page 52986 "Training Needs Line"
                     TableRelation = "G/L Account";
                     Caption = 'Source of Funds Mileage';
                     ToolTip = 'Specifies the value of the Source of Funds field';
+                }
+                field("Mileage Allowance Available Budget"; "Mileage Allowance Available Budget")
+                {
+                    Caption = 'Mileage Allowance Available Budget';
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Mileage Allowance Available Budget field';
                 }
                 field("Mileage Allowance Amount"; "Mileage Allowance Amount")
                 {
@@ -207,18 +291,19 @@ page 52986 "Training Needs Line"
                     Caption = 'Source of Funds QPer Diem';
                     ToolTip = 'Specifies the value of the Source of Funds field';
                 }
+                field("Quarter Per Diem Available Budget"; "Quarter Per Diem Available Budget")
+                {
+                    Caption = 'Quarter Per Diem Available Budget';
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Quarter Per Diem Available Budget field';
+                }
                 field("Quarter Per Diem Amount"; "Quarter Per Diem Amount")
                 {
                     ToolTip = 'Specifies the value of the Quarter Per Diem Amount field';
                 }
 
                 //"Other Costs Amount"
-                field("Source of Funds Other Costs"; "Source of Funds Other Costs")
-                {
-                    TableRelation = "G/L Account";
-                    Caption = 'Source of Funds Other Costs';
-                    ToolTip = 'Specifies the value of the Source of Funds field';
-                }
+
 
                 field("Other Costs Amount"; "Other Costs Amount")
                 {
