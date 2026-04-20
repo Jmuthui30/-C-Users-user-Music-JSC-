@@ -559,7 +559,7 @@ codeunit 51430 "Workflow Response Handling Ext"
         RFQ: Record "RFQ Header";
         WorkT: Record "Work Ticket Header";
         BalScoreCard: Record "Bal Score Card Header";
-        Leave: Record "Employee Leave Application";
+        Leave: Record "Leave Application";
         LeaveAdjust: Record "Leave Adjustment Header";
         Appraisal: Record "Performance Appraisal";
         Orientation: Record "Staff Orientation Header";
@@ -721,7 +721,7 @@ codeunit 51430 "Workflow Response Handling Ext"
             //End: Ibrahim Wasiu
             //*******************THL - HR MODULE CUSTOMIZATIONS**********************
             //1. Leave Application
-            DATABASE::"Employee Leave Application":
+            DATABASE::"Leave Application":
                 begin
                     RecRef.SetTable(Leave);
                     Leave.Validate(Status, Leave.Status::Released);
@@ -912,7 +912,7 @@ codeunit 51430 "Workflow Response Handling Ext"
         RFQ: Record "RFQ Header";
         WorkT: Record "Work Ticket Header";
         BalScoreCard: Record "Bal Score Card Header";
-        Leave: Record "Employee Leave Application";
+        Leave: Record "Leave Application";
         LeaveAdjust: Record "Leave Adjustment Header";
         Appraisal: Record "Performance Appraisal";
         Orientation: Record "Staff Orientation Header";
@@ -1071,7 +1071,7 @@ codeunit 51430 "Workflow Response Handling Ext"
             //End: Ibrahim Wasiu
             //***********THL - HR MODULE CUSTOMIZATIONS*************
             //1. Leave Application
-            DATABASE::"Employee Leave Application":
+            DATABASE::"Leave Application":
                 begin
                     RecRef.SetTable(Leave);
                     Leave.Validate(Status, Leave.Status::Open);

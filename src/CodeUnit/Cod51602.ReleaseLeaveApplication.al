@@ -20,103 +20,121 @@ codeunit 51602 "Release Leave Application"
     // Insurance: 61423 - 61622 = 199
     // Sacco:   61623 - 62422 = ***
     // ***********************
-    TableNo = "Employee Leave Application";
+    TableNo = "Leave Application";
 
     trigger OnRun()
     begin
         if Rec.Status = Rec.Status::Released then exit;
-        if Rec.Status in[Rec.Status::Open, Rec.Status::Rejected]then Error(StrSubstNo(CanReleasedIfStatusErr, Rec.Status::"Pending Approval"));
-        Rec.Status:=Rec.Status::Released;
+        if Rec.Status in [Rec.Status::Open, Rec.Status::Rejected] then Error(StrSubstNo(CanReleasedIfStatusErr, Rec.Status::"Pending Approval"));
+        Rec.Status := Rec.Status::Released;
         Rec.Modify(true);
         OnAfterReleaseLeave(Rec);
         LeaveRelieverNotification(Rec);
         LeaveEmployeeNotification(Rec);
         HRLeaveNotification(Rec);
     end;
-    var NothingToReleaseErr: Label 'There is nothing to release for the incoming document number %1.', Comment = '%1 = Incoming Document Entry No';
-    DocReleasedWhenApprovedErr: Label 'This document can only be released when the approval process is complete.';
-    CancelOrCompleteToReopenDocErr: Label 'The approval process must be cancelled or completed to reopen this document.';
-    CanReleasedIfStatusErr: Label 'It is only possible to release the record when the status is %1.', Comment = '%1 = status released, %2 = status pending approval';
-    procedure Reopen(var Leave: Record "Employee Leave Application")
+
+    var
+        NothingToReleaseErr: Label 'There is nothing to release for the incoming document number %1.', Comment = '%1 = Incoming Document Entry No';
+        DocReleasedWhenApprovedErr: Label 'This document can only be released when the approval process is complete.';
+        CancelOrCompleteToReopenDocErr: Label 'The approval process must be cancelled or completed to reopen this document.';
+        CanReleasedIfStatusErr: Label 'It is only possible to release the record when the status is %1.', Comment = '%1 = status released, %2 = status pending approval';
+
+    procedure Reopen(var Leave: Record "Leave Application")
     begin
         if Leave.Status = Leave.Status::Open then exit;
         ClearReleaseFields(Leave);
-        Leave.Status:=Leave.Status::Open;
+        Leave.Status := Leave.Status::Open;
         Leave.Modify(true);
     end;
+
     procedure ReopenLeaveAdjustment(var LeaveAdjust: Record "Leave Adjustment Header")
     begin
         if LeaveAdjust.Status = LeaveAdjust.Status::New then exit;
         //ClearReleaseFields(LeaveAdjust);
-        LeaveAdjust.Status:=LeaveAdjust.Status::New;
+        LeaveAdjust.Status := LeaveAdjust.Status::New;
         LeaveAdjust.Modify(true);
     end;
-    procedure Reject(var Leave: Record "Employee Leave Application")
+
+    procedure Reject(var Leave: Record "Leave Application")
     begin
         ClearReleaseFields(Leave);
-        Leave.Status:=Leave.Status::Open;
+        Leave.Status := Leave.Status::Open;
         Leave.Modify(true);
     end;
+
     procedure RejectLeaveAdjust(var LeaveAdjust: Record "Leave Adjustment Header")
     begin
         //ClearReleaseFields(LeaveAdjust);
-        LeaveAdjust.Status:=LeaveAdjust.Status::New;
+        LeaveAdjust.Status := LeaveAdjust.Status::New;
         LeaveAdjust.Modify(true);
     end;
-    procedure PerformManualRelease(var Leave: Record "Employee Leave Application")
+
+    procedure PerformManualRelease(var Leave: Record "Leave Application")
     var
         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
     begin
         CODEUNIT.Run(CODEUNIT::"Release Leave Application", Leave);
     end;
+
     procedure PerformManualReleaseLeaveAdjust(var LeaveAdjust: Record "Leave Adjustment Header")
     var
         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
     begin
         CODEUNIT.Run(CODEUNIT::"Release Leave Application", LeaveAdjust);
     end;
-    procedure PerformManualReopen(var Leave: Record "Employee Leave Application")
+
+    procedure PerformManualReopen(var Leave: Record "Leave Application")
     begin
         if Leave.Status = Leave.Status::"Pending Approval" then Error(CancelOrCompleteToReopenDocErr);
         Reopen(Leave);
     end;
+
     procedure PerformManualReopenLeaveAdjust(var LeaveAdjust: Record "Leave Adjustment Header")
     begin
         if LeaveAdjust.Status = LeaveAdjust.Status::"Pending Approval" then Error(CancelOrCompleteToReopenDocErr);
         ReopenLeaveAdjustment(LeaveAdjust);
     end;
-    procedure PerformManualReject(var Leave: Record "Employee Leave Application")
+
+    procedure PerformManualReject(var Leave: Record "Leave Application")
     begin
         if Leave.Status = Leave.Status::"Pending Approval" then Error(CancelOrCompleteToReopenDocErr);
         Reject(Leave);
     end;
+
     procedure PerformManualRejectLeaveAdjsut(var LeaveAdjust: Record "Leave Adjustment Header")
     begin
         if LeaveAdjust.Status = LeaveAdjust.Status::"Pending Approval" then Error(CancelOrCompleteToReopenDocErr);
         RejectLeaveAdjust(LeaveAdjust);
     end;
-    local procedure ClearReleaseFields(var Leave: Record "Employee Leave Application")
+
+    local procedure ClearReleaseFields(var Leave: Record "Leave Application")
     begin
-    /*IncomingDocument.Released := FALSE;
-        IncomingDocument."Released Date-Time" := 0DT;
-        CLEAR(IncomingDocument."Released By User ID");*/
+        /*IncomingDocument.Released := FALSE;
+            IncomingDocument."Released Date-Time" := 0DT;
+            CLEAR(IncomingDocument."Released By User ID");*/
     end;
+
     [IntegrationEvent(false, false)]
-    procedure OnAfterReleaseLeave(var Leave: Record "Employee Leave Application")
+    procedure OnAfterReleaseLeave(var Leave: Record "Leave Application")
     begin
     end;
+
     [IntegrationEvent(false, false)]
-    procedure LeaveRelieverNotification(var Leave: Record "Employee Leave Application")
+    procedure LeaveRelieverNotification(var Leave: Record "Leave Application")
     begin
     end;
+
     [IntegrationEvent(false, false)]
-    procedure HRLeaveNotification(var Leave: Record "Employee Leave Application")
+    procedure HRLeaveNotification(var Leave: Record "Leave Application")
     begin
     end;
+
     [IntegrationEvent(false, false)]
-    procedure LeaveEmployeeNotification(var Leave: Record "Employee Leave Application")
+    procedure LeaveEmployeeNotification(var Leave: Record "Leave Application")
     begin
     end;
+
     [IntegrationEvent(false, false)]
     procedure OnAfterReleaseLeaveAdjust(var LeaveAdjust: Record "Leave Adjustment Header")
     begin

@@ -7,9 +7,9 @@ report 51614 "Leave Grant Paid"
 
     dataset
     {
-        dataitem("Employee Leave Application"; "Employee Leave Application")
+        dataitem("Employee Leave Application"; "Leave Application")
         {
-            DataItemTableView = WHERE(Status=CONST(Released), "Leave Allowance Payable"=CONST(Yes));
+            DataItemTableView = WHERE(Status=CONST(Released)/*, "Leave Allowance Payable"=CONST(Yes)*/);
             RequestFilterFields = "Start Date", "End Date", "Application Date", "Leave Code", "Resumption Date";
 
             column(Logo; CompInfo.Picture)

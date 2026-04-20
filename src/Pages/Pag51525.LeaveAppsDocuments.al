@@ -51,7 +51,7 @@ page 51525 "Leave Apps Documents"
 
                 trigger OnAction()
                 begin
-                //Rec.ImportAttachment;
+                    //Rec.ImportAttachment;
                 end;
             }
             action(Open)
@@ -86,15 +86,17 @@ page 51525 "Leave Apps Documents"
     }
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        Rec."Table ID":=DATABASE::"Employee Leave Application";
+        Rec."Table ID" := DATABASE::"Leave Application";
     end;
-    var ContractVersionNo: Integer;
+
+    var
+        ContractVersionNo: Integer;
     /// <summary>
     /// SetContractVersionNo.
     /// </summary>
     /// <param name="VersionNo">Integer.</param>
     procedure SetContractVersionNo(VersionNo: Integer)
     begin
-        ContractVersionNo:=VersionNo;
+        ContractVersionNo := VersionNo;
     end;
 }

@@ -4,6 +4,7 @@ table 51602 "Employee Leave Application"
     DataCaptionFields = "Application No", Name, "Leave Code";
     DrillDownPageID = "All Emp Leave Applications";
     LookupPageID = "All Emp Leave Applications";
+    ObsoleteState=Removed;
 
     fields
     {
@@ -482,7 +483,7 @@ table 51602 "Employee Leave Application"
                     leaveapp.SetRange(leaveapp."Employee No", "Employee No");
                     leaveapp.SetRange(leaveapp."Maturity Date", "Maturity Date");
                     leaveapp.SetRange(leaveapp.Status, leaveapp.Status::Released);
-                    leaveapp.SetRange(leaveapp."Leave Allowance Payable", leaveapp."Leave Allowance Payable"::Yes);
+                    // leaveapp.SetRange(leaveapp."Leave Allowance Payable", leaveapp."Leave Allowance Payable"::Yes);
                     if leaveapp.Find('-') then Error('Leave allowance has already been paid in leave application %1. Please contact FINCON if your account has not been credited.', leaveapp."Application No");
                     AccPeriod.Reset;
                     AccPeriod.SetRange(AccPeriod."Starting Date", 0D, Today);
@@ -526,21 +527,21 @@ table 51602 "Employee Leave Application"
         {
             Editable = false;
 
-            trigger OnValidate()
-            begin
-                if Rec.Status = Rec.Status::Released then begin
-                    HRCommunicationMngt.LeaveRelieverNotification(Rec);
-                    HRCommunicationMngt.LeaveEmployeeNotification(Rec);
-                    HRCommunicationMngt.HRLeaveNotification(Rec);
-                end;
-            end;
+            // trigger OnValidate()
+            // begin
+            //     if Rec.Status = Rec.Status::Released then begin
+            //         HRCommunicationMngt.LeaveRelieverNotification(Rec);
+            //         HRCommunicationMngt.LeaveEmployeeNotification(Rec);
+            //         HRCommunicationMngt.HRLeaveNotification(Rec);
+            //     end;
+            // end;
         }
         field(28; "Leave Entitlment"; Decimal)
         {
         }
         field(29; "Total Leave Days Taken"; Decimal)
         {
-            CalcFormula = Sum("Employee Leave Application"."Days Applied" WHERE(Status = CONST(Released), "Employee No" = FIELD("Employee No"), "Leave Code" = FIELD("Leave Code"), "Maturity Date" = FIELD("Maturity Date")));
+            CalcFormula = Sum("Leave Application"."Days Applied" WHERE(Status = CONST(Released), "Employee No" = FIELD("Employee No"), "Leave Code" = FIELD("Leave Code"), "Maturity Date" = FIELD("Maturity Date")));
             FieldClass = FlowField;
         }
         field(30; "Duties Taken Over By"; Code[30])
@@ -795,11 +796,11 @@ table 51602 "Employee Leave Application"
             HumanResSetup.Get;
             HumanResSetup.TestField("Leave Application Nos");
             // NoSeriesMgt.InitSeries(HumanResSetup."Leave Application Nos", xRec."No. series", 0D, "Application No", "No. series");
-            if NoSeriesMgt.AreRelated(HumanResSetup."Leave Application Nos",xRec."No. Series") then
-            "No. Series":=xRec."No. Series"
+            if NoSeriesMgt.AreRelated(HumanResSetup."Leave Application Nos", xRec."No. Series") then
+                "No. Series" := xRec."No. Series"
             else
-            "No. Series":=HumanResSetup."Leave Application Nos";
-            "Application No":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
+                "No. Series" := HumanResSetup."Leave Application Nos";
+            "Application No" := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
         end;
         "Application Date" := Today;
         if ((not "HR Created") and (not "HOD Created") and (not "SSP Created")) then begin
@@ -859,7 +860,7 @@ table 51602 "Employee Leave Application"
         Dsptn: Text[30];
         BeginDate: Date;
         "Employee Leaves": Record "Employee Leaves";
-        leaveapp: Record "Employee Leave Application";
+        leaveapp: Record "Leave Application";
         AccPeriod: Record "Accounting Period";
         FiscalStart: Date;
         FiscalEnd: Date;

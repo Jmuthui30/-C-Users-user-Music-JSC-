@@ -21,7 +21,7 @@ table 51677 "Leave Adjustment Details"
         }
         field(8; "Leave Code"; Code[20])
         {
-            TableRelation = "Employee Leave Application";
+            TableRelation = "Leave Application";
         }
         field(9; "No. Of Leaves"; Decimal)
         {
