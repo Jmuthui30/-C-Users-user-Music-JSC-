@@ -160,8 +160,8 @@ table 52361 "Training Needs Lines"
                         GLBudget.SetRange("Budget Name", "Training Year");
                         IF GLBudget.Find('-') then
                             repeat
-                                Message('DSA amount allocated for A/C no %1 is %2', ExpenseCodes."Account No", GLBudget.Amount);
-                                "DSA Amount" := GLBudget.Amount;
+                                // Message('DSA amount allocated for A/C no %1 is %2', ExpenseCodes."Account No", GLBudget.Amount);
+                                "DSA Available Budget" := GLBudget.Amount;
                             UNTIL GLBudget.Next() = 0;
                     end
                     else
@@ -219,7 +219,7 @@ table 52361 "Training Needs Lines"
                         IF GLBudget.Find('-') then
                             repeat
                                 //Message('Air Ticket amount allocated for A/C no %1 is %2', ExpenseCodes."Account No", GLBudget.Amount);
-                                "DSA Available Budget" := GLBudget.Amount;
+                                "Air Ticket Available Budget" := GLBudget.Amount;
                             UNTIL GLBudget.Next() = 0
                         else
                             Message('No budget amount found for Air Ticket Expense Code %1', ImprestSetup."Air Ticket Expense Code");

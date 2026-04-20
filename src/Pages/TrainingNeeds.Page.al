@@ -190,7 +190,7 @@ page 52170 "Training Need"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 ToolTip = 'Executes the Set As Ready For Application action';
-                Visible = false;
+                // Visible = false;
 
                 trigger OnAction()
                 var
