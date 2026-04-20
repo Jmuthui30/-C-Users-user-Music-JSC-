@@ -63,7 +63,7 @@ codeunit 50002 "Release Leave Adjustment"
         if LeaveAdjust.Status = LeaveAdjust.Status::"Pending Approval" then Error(CancelOrCompleteToReopenDocErr);
         RejectLeaveAdjust(LeaveAdjust);
     end;
-    local procedure ClearReleaseFields(var Leave: Record "Employee Leave Application")
+    local procedure ClearReleaseFields(var Leave: Record "Leave Application")
     begin
     /*IncomingDocument.Released := FALSE;
         IncomingDocument."Released Date-Time" := 0DT;

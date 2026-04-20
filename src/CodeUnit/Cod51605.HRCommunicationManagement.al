@@ -136,7 +136,7 @@ codeunit 51605 "HR Communication Management"
         end;
     end;
 
-    procedure HRLeaveNotification(var LeaveApp: Record "Employee Leave Application")
+    procedure HRLeaveNotification(var LeaveApp: Record "Leave Application")
     begin
         if LeaveSetup.Get(LeaveApp."Leave Code") then begin
             if LeaveSetup."Notify on Application" then begin
@@ -164,7 +164,7 @@ codeunit 51605 "HR Communication Management"
         end;
     end;
 
-    procedure LeaveRelieverNotification(var LeaveApp: Record "Employee Leave Application")
+    procedure LeaveRelieverNotification(var LeaveApp: Record "Leave Application")
     begin
         LeaveApp.TestField(LeaveApp."Duties Taken Over By");
         CompInfo.Get;
@@ -191,7 +191,7 @@ codeunit 51605 "HR Communication Management"
         end;
     end;
 
-    procedure LeaveEmployeeNotification(var LeaveApp: Record "Employee Leave Application")
+    procedure LeaveEmployeeNotification(var LeaveApp: Record "Leave Application")
     begin
         LeaveApp.TestField(LeaveApp."Duties Taken Over By");
         CompInfo.Get;

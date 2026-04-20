@@ -55,7 +55,7 @@ table 51601 "Employee Leaves"
         }
         field(6; "Total Days Taken"; Decimal)
         {
-            CalcFormula = Sum("Employee Leave Application"."Days Applied" WHERE("Employee No"=FIELD("Employee No"), "Leave Code"=FIELD("Leave Code"), "Maturity Date"=FIELD("Maturity Date"), Status=CONST(Released)));
+            CalcFormula = Sum("Leave Application"."Days Applied" WHERE("Employee No"=FIELD("Employee No"), "Leave Code"=FIELD("Leave Code"), "Maturity Date"=FIELD("Maturity Date"), Status=CONST(Released)));
             FieldClass = FlowField;
         }
         field(7; Entitlement; Decimal)

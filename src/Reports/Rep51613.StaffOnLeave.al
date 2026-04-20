@@ -7,7 +7,7 @@ report 51613 "Staff On Leave"
 
     dataset
     {
-        dataitem("Employee Leave Application"; "Employee Leave Application")
+        dataitem("Employee Leave Application"; "Leave Application")
         {
             DataItemTableView = WHERE(Status=CONST(Released));
             RequestFilterFields = "Start Date", "End Date", "Application Date", "Leave Code", "Resumption Date";

@@ -11,19 +11,19 @@ report 50012 "Leave Opening Balances"
             trigger OnAfterGetRecord()
             begin
                 if "Employee Information_Data"."Remaining Leave Days" <> 24 then begin
-                    if Emp.Get("Employee Information_Data"."Payroll No.")then begin
+                    if Emp.Get("Employee Information_Data"."Payroll No.") then begin
                         if Emp."Employment Date" <> 0D then begin
                             Leave.Init;
-                            Leave."HR Created":=true;
+                            // Leave."HR Created" := true;
                             Leave.Insert(true);
                             //IF Leave2.GET(Leave."Application No") THEN BEGIN
                             Leave.Validate("Employee No", "Employee Information_Data"."Payroll No.");
                             Leave.Validate("Leave Code", 'ANNUAL');
                             Leave.Validate("Days Applied", 24 - "Employee Information_Data"."Remaining Leave Days");
                             Leave.Validate("Start Date", Today);
-                            Leave.Status:=Leave.Status::Released;
+                            Leave.Status := Leave.Status::Released;
                             Leave.Modify;
-                        //END;
+                            //END;
                         end;
                     end;
                 end;
@@ -46,7 +46,9 @@ report 50012 "Leave Opening Balances"
     begin
         Message('Complete');
     end;
-    var Leave: Record "Employee Leave Application";
-    Emp: Record Employee;
-    Leave2: Record "Employee Leave Application";
+
+    var
+        Leave: Record "Leave Application";
+        Emp: Record Employee;
+        Leave2: Record "Leave Application";
 }

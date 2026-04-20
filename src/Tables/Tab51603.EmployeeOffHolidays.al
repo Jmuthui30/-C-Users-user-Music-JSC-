@@ -56,7 +56,7 @@ table 51603 "Employee Off/Holidays"
         }
         field(5; "Leave Application"; Code[20])
         {
-            TableRelation = "Employee Leave Application" WHERE(Status = CONST(Released), "Leave Code" = CONST('ANNUAL'), Recalled = CONST(false));
+            TableRelation = "Leave Application" WHERE(Status = CONST(Released), "Leave Code" = CONST('ANNUAL')/*, Recalled = CONST(false)*/);
 
             trigger OnValidate()
             begin
@@ -87,16 +87,15 @@ table 51603 "Employee Off/Holidays"
                     "Leave Ending Date" := LeaveApplication."End Date";
                     "Employee No" := LeaveApplication."Employee No";
                     "Employee Name" := LeaveApplication.Name;
-                    "Directorate Code" := LeaveApplication."Global Dimension 1 Code";
+                    "Directorate Code" := LeaveApplication."Shortcut Dimension 1 Code";
                     "Leave Code" := LeaveApplication."Leave Code";
                     LStDate := LeaveApplication."Start Date";
                     DimensionsValue.Reset;
                     DimensionsValue.SetRange(DimensionsValue."Dimension Code", 'DEPARTMENT');
-                    DimensionsValue.SetRange(DimensionsValue.Code, LeaveApplication."Global Dimension 1 Code");
+                    DimensionsValue.SetRange(DimensionsValue.Code, LeaveApplication."Shortcut Dimension 1 Code");
                     if DimensionsValue.Find('-') then "Department Name" := DimensionsValue.Name;
                     DimensionsValue.Reset;
                     DimensionsValue.SetRange(DimensionsValue."Dimension Code", 'DIRECTORATE');
-                    DimensionsValue.SetRange(DimensionsValue.Code, LeaveApplication."Global Dimension 1 Code");
                     if DimensionsValue.Find('-') then "Directorate Name" := DimensionsValue.Name;
                 end;
             end;
@@ -334,11 +333,11 @@ table 51603 "Employee Off/Holidays"
             HumanResSetup.Get;
             HumanResSetup.TestField(HumanResSetup."Leave Recall Nos");
             // NoSeriesMgt.InitSeries(HumanResSetup."Leave Recall Nos", xRec."No. Series", 0D, "No.", "No. Series");
-            if NoSeriesMgt.AreRelated(HumanResSetup."Leave Recall Nos",xRec."No. Series") then
-            "No. Series":=xRec."No. Series"
+            if NoSeriesMgt.AreRelated(HumanResSetup."Leave Recall Nos", xRec."No. Series") then
+                "No. Series" := xRec."No. Series"
             else
-            "No. Series":=HumanResSetup."Leave Recall Nos";
-            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
+                "No. Series" := HumanResSetup."Leave Recall Nos";
+            "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
         end;
         Date := Today;
         Status := Status::Open;
@@ -358,7 +357,7 @@ table 51603 "Employee Off/Holidays"
         Emp: Record "Employee Master";
         "Leave Types": Record "Leave Setup";
         "Employee Leave": Record "Employee Leaves";
-        LeaveApplication: Record "Employee Leave Application";
+        LeaveApplication: Record "Leave Application";
         DimensionsValue: Record "Dimension Value";
         GeneralOptions: Record "QuantumJumps HR Setup";
         d: Date;
