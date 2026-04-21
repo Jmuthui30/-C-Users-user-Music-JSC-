@@ -160,9 +160,9 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                 }
                 action("Salary Increment Details")
                 {
-                    RunObject=page "Salary Increment Details";
-                    ApplicationArea=all;
-                    
+                    RunObject = page "Salary Increment Details";
+                    ApplicationArea = all;
+
                 }
             }
             group("Payroll Approval")
@@ -378,7 +378,7 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                     action("Master Roll Reports")
                     {
                         // RunObject = report "Master Roll Report II";
-                        RunObject = report "Client Master Roll Report2";
+                        RunObject = report "Master Roll Report New";
                         ApplicationArea = All;
                         ToolTip = 'Executes the Master Roll Report action';
                         Caption = 'Master Roll Report';

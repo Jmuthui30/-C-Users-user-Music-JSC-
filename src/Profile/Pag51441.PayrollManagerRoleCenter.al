@@ -5,7 +5,7 @@ page 51441 "Payroll Manager Role Center"
     Caption = 'Payroll Manager Role Center';
     PageType = RoleCenter;
     ApplicationArea = All;
-    
+
 
     layout
     {
@@ -283,6 +283,7 @@ page 51441 "Payroll Manager Role Center"
                         PromotedCategory = "Report";
                         PromotedIsBig = true;
                         RunObject = Report "Client Deduction-Institution";
+                        // RunObject = report "Deduction-Institution";
                     }
                     action("Total Deductions Only Per Employee")
                     {
@@ -293,6 +294,7 @@ page 51441 "Payroll Manager Role Center"
                         PromotedCategory = "Report";
                         PromotedIsBig = true;
                         RunObject = Report "Total Deductions/Employee";
+                        // RunObject = report "Total Deductions for Employee";
                     }
                     action("Total Earnings Only Per Employee")
                     {
@@ -303,6 +305,7 @@ page 51441 "Payroll Manager Role Center"
                         PromotedCategory = "Report";
                         PromotedIsBig = true;
                         RunObject = Report "Total Earnings/Employee";
+                        // RunObject=report "Total Earnings Only Per Employee";
                     }
                     action("Bank List")
                     {
@@ -367,7 +370,8 @@ page 51441 "Payroll Manager Role Center"
                         Promoted = true;
                         PromotedCategory = "Report";
                         PromotedIsBig = true;
-                        RunObject = Report "PRMS Report";
+                        // RunObject = Report "PRMS Report";
+                        RunObject = report "Client Provident Fund";
                         ToolTip = 'View PRMS Report';
                     }
                     action("Company Totals")

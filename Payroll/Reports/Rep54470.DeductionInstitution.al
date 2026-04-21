@@ -1,24 +1,30 @@
-report 52214 "Total Earnings/Employee"
+report 54470 "Deduction-Institution"
 {
     // version THL- Client Payroll 1.0
     DefaultLayout = RDLC;
-    RDLCLayout = './Reports/SSRS/Total Earnings Only Per Employee.rdlc';
-    Caption = 'Client Total Earnings Only Per Employee';
+    RDLCLayout = './Reports/SSRS/Client Deduction Per Institution.rdlc';
+    Caption = 'Third Parties Deductions Report';
     UsageCategory = ReportsAndAnalysis;
 
     dataset
     {
-        dataitem("PR Transaction Codes"; "Client Earnings")
+        dataitem("PR Transaction Codes"; Deduction)
         {
-            DataItemTableView = SORTING(Code)ORDER(Descending);
-            RequestFilterFields = Code;
+            DataItemTableView = SORTING(Code)ORDER(Descending)WHERE("Institution Code"=FILTER(<>''));
+            RequestFilterFields = "Institution Code", Code;
 
+            column(GroupCode_PRTransactionCodes; "PR Transaction Codes"."Institution Code")
+            {
+            }
             column(GroupDescription_PRTransactionCodes; "PR Transaction Codes".Description)
             {
             }
             column(CompInfoName; CompInfo.Name)
             {
             }
+            // column(Company; Company)
+            // {
+            // }
             column(CompInfoAddress; CompInfo.Address)
             {
             }
@@ -46,7 +52,7 @@ report 52214 "Total Earnings/Employee"
             column(ReportTitle; ReportTitle)
             {
             }
-            dataitem("PR Period Transactions"; "Client Payroll Matrix")
+            dataitem("PR Period Transactions";"Assignment Matrix")
             {
                 DataItemLink = "Code"=FIELD(Code);
                 //DataItemTableView = SORTING()
@@ -56,6 +62,9 @@ report 52214 "Total Earnings/Employee"
                 {
                 }
                 column(TransactionCode_PRPeriodTransactions; "PR Period Transactions"."Code")
+                {
+                }
+                column(Employer_Amount; "Employer Amount")
                 {
                 }
                 column(EmployeeCode_PRPeriodTransactions; "PR Period Transactions"."Employee No")
@@ -73,22 +82,29 @@ report 52214 "Total Earnings/Employee"
                 column(IDNumber; IDNumber)
                 {
                 }
+                column(Payroll_Period; "Payroll Period")
+                {
+                }
                 column(BLN_No; BLN_No)
                 {
                 }
                 column(ReferenceNo_PRPeriodTransactions; "PR Period Transactions"."Reference No")
                 {
                 }
-                dataitem(Employee; "Client Employee Master")
+                dataitem(Employee; Employee)
                 {
                     DataItemLink = "No."=field("Employee No");
+                    // RequestFilterFields = "Company Code";
 
-                    column(ID_Number; "ID Number")
+                    column(ID_Number; "ID No.")
                     {
                     }
-                    column(Full_Name; "Full Name")
+                    column(Full_Name;FullName)
                     {
                     }
+                    // column(Company_Code; "Company Code")
+                    // {
+                    // }
                 }
                 trigger OnAfterGetRecord();
                 begin
@@ -96,10 +112,7 @@ report 52214 "Total Earnings/Employee"
                     IDNumber:='';
                     CLEAR(HREmp);
                     IF HREmp.GET("PR Period Transactions"."Employee No")THEN BEGIN
-                        EmpName:=UPPERCASE(HREmp."Search Name");
-                        begin
-                            if("PR Transaction Codes"."Earning Type" = "PR Transaction Codes"."Earning Type"::"Tax Relief") or ("PR Transaction Codes"."Earning Type" = "PR Transaction Codes"."Earning Type"::"Insurance Relief") or ("PR Transaction Codes"."Earning Type" = "PR Transaction Codes"."Earning Type"::"Owner Occupier")then CurrReport.Skip;
-                        end;
+                        EmpName:=UPPERCASE(Employee.FullName());
                     //IDNumber := HREmp."ID Number";
                     END;
                     BLN_No:='';
@@ -107,10 +120,18 @@ report 52214 "Total Earnings/Employee"
                     PREmpTrans.RESET;
                     PREmpTrans.SETRANGE(PREmpTrans."Payroll Period", SelectedPeriod);
                     PREmpTrans.SETRANGE(PREmpTrans."Code", "PR Period Transactions"."Code");
-                    PREmpTrans.SetRange(PREmpTrans.Company, "PR Period Transactions".Company);
+                    // PREmpTrans.SetRange(PREmpTrans.Company, Employee."Company Code");
                     IF PREmpTrans.FIND('-')THEN BEGIN
                         BLN_No:=PREmpTrans."Reference No";
                     END;
+                    begin
+                        PREmpTrans.Reset;
+                        PREmpTrans.SetRange(PREmpTrans."Employee No", "PR Period Transactions"."Employee No");
+                        PREmpTrans.SetRange(PREmpTrans.Type, "PR Period Transactions".Type);
+                        PREmpTrans.SetRange(PREmpTrans.Code, "PR Period Transactions".Code);
+                        // PREmpTrans.SetRange(PREmpTrans.Company, "PR Period Transactions".Company);
+                        PREmpTrans.SetRange(PREmpTrans.Amount, "PR Period Transactions".Amount);
+                    end;
                 end;
                 trigger OnPreDataItem();
                 begin
@@ -148,7 +169,12 @@ report 52214 "Total Earnings/Employee"
                 {
                     Caption = 'Payroll Period';
                     ApplicationArea = all;
-                    TableRelation = "Client Payroll Period"."Starting Date";
+                    TableRelation = "Payroll Period II"."Starting Date";
+                }
+                field(ReportTitle; ReportTitle)
+                {
+                    Caption = 'Report Title';
+                    ApplicationArea = all;
                 }
                 field(PostingGrp_TxtFilter; PostingGrp_TxtFilter)
                 {
@@ -179,11 +205,12 @@ report 52214 "Total Earnings/Employee"
     CompInfo: Record "Company Information";
     PeriodName: Text[30];
     AppliedFilters: Text;
-    PRPayrollPeriods: Record "Client Payroll Period";
+    PRPayrollPeriods: Record "Payroll Period II";
     EmpName: Text;
+    Client: Record "Company Information";
     HREmp: Record "Employee";
     IDNumber: Text;
-    PREmpTrans: Record "Client Payroll Matrix";
+    PREmpTrans: Record "Assignment Matrix";
     BLN_No: Text;
     ReportTitle: Text;
     procedure fnCompanyInfo();

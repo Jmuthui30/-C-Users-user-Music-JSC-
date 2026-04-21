@@ -135,70 +135,69 @@ codeunit 52005 "Approval Mgt HR Ext"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnSetStatusToPendingApproval', '', false, false)]
     local procedure OnSetStatusToPendingApproval(RecRef: RecordRef; var Variant: Variant; var IsHandled: Boolean)
     var
-
         LeaveRecall: Record "Employee Off/Holiday";
         LeaveRequest: Record "Leave Application";
         LeaveAdj: Record "Leave Bal Adjustment Header";
         NewEmployeeAppraisal: Record "Employee Appraisal";
         RecruitmentRequest: Record "Recruitment Needs";
-        Employee: Record Employee;
         TrainingRequest: Record "Training Request";
     begin
         case RecRef.Number of
 
-
-            //Leave Application
             Database::"Leave Application":
                 begin
                     RecRef.SetTable(LeaveRequest);
+                    LeaveRequest.Get(LeaveRequest."Application No");  // ← ADD THIS
                     LeaveRequest.Validate(Status, LeaveRequest.Status::"Pending Approval");
                     LeaveRequest.Modify(true);
                     Variant := LeaveRequest;
                     IsHandled := true;
                 end;
-            //Recruitment Needs
+
             Database::"Recruitment Needs":
                 begin
                     RecRef.SetTable(RecruitmentRequest);
+                    RecruitmentRequest.Get(RecruitmentRequest."No.");  // ← ADD THIS
                     RecruitmentRequest.Validate(Status, RecruitmentRequest.Status::"Pending Approval");
                     RecruitmentRequest.Modify(true);
                     Variant := RecruitmentRequest;
                     IsHandled := true;
                 end;
 
-            //Leave Recall
             Database::"Employee Off/Holiday":
                 begin
                     RecRef.SetTable(LeaveRecall);
+                    LeaveRecall.Get(LeaveRecall."No.");  // ← ADD THIS
                     LeaveRecall.Validate(Status, LeaveRecall.Status::"Pending Approval");
                     LeaveRecall.Modify(true);
                     Variant := LeaveRecall;
                     IsHandled := true;
                 end;
 
-            //Leave Adj
             Database::"Leave Bal Adjustment Header":
                 begin
                     RecRef.SetTable(LeaveAdj);
+                    LeaveAdj.Get(LeaveAdj.Code);  // ← ADD THIS
                     LeaveAdj.Validate(Status, LeaveAdj.Status::"Pending Approval");
                     LeaveAdj.Modify(true);
                     Variant := LeaveAdj;
                     IsHandled := true;
                 end;
-            //New Employee Appraisal
 
             Database::"Employee Appraisal":
                 begin
                     RecRef.SetTable(NewEmployeeAppraisal);
-                    if NewEmployeeAppraisal.Get(NewEmployeeAppraisal."Appraisal No") then begin
+                    if NewEmployeeAppraisal.Get(NewEmployeeAppraisal."Appraisal No") then begin  // already uses Get ✓
                         NewEmployeeAppraisal.Validate(Status, NewEmployeeAppraisal.Status::"Pending Approval");
                         NewEmployeeAppraisal.Modify(true);
                     end;
                     IsHandled := true;
                 end;
+
             Database::"Training Request":
                 begin
                     RecRef.SetTable(TrainingRequest);
+                    TrainingRequest.Get(TrainingRequest."Request No.");  // ← ADD THIS
                     TrainingRequest.Validate(Status, TrainingRequest.Status::"Pending Approval");
                     TrainingRequest.Modify(true);
                     Variant := TrainingRequest;
@@ -207,7 +206,6 @@ codeunit 52005 "Approval Mgt HR Ext"
 
         end;
     end;
-
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnRejectApprovalRequest', '', false, false)]
     local procedure PerformActionsOnRejectApprovalRequest(var ApprovalEntry: Record "Approval Entry")
