@@ -1,4 +1,4 @@
-report 52214 "Total Earnings/Employee"
+report 54461 "Total Earning per Employee"
 {
     // version THL- Client Payroll 1.0
     DefaultLayout = RDLC;
@@ -8,9 +8,9 @@ report 52214 "Total Earnings/Employee"
 
     dataset
     {
-        dataitem("PR Transaction Codes"; "Client Earnings")
+        dataitem("PR Transaction Codes"; Earning)
         {
-            DataItemTableView = SORTING(Code)ORDER(Descending);
+            DataItemTableView = SORTING(Code) ORDER(Descending);
             RequestFilterFields = Code;
 
             column(GroupDescription_PRTransactionCodes; "PR Transaction Codes".Description)
@@ -46,9 +46,9 @@ report 52214 "Total Earnings/Employee"
             column(ReportTitle; ReportTitle)
             {
             }
-            dataitem("PR Period Transactions"; "Client Payroll Matrix")
+            dataitem("PR Period Transactions"; "Assignment Matrix")
             {
-                DataItemLink = "Code"=FIELD(Code);
+                DataItemLink = "Code" = FIELD(Code);
                 //DataItemTableView = SORTING()
                 RequestFilterFields = "Payroll Period", "Payroll Group";
 
@@ -79,39 +79,40 @@ report 52214 "Total Earnings/Employee"
                 column(ReferenceNo_PRPeriodTransactions; "PR Period Transactions"."Reference No")
                 {
                 }
-                dataitem(Employee; "Client Employee Master")
+                dataitem(Employee; Employee)
                 {
-                    DataItemLink = "No."=field("Employee No");
+                    DataItemLink = "No." = field("Employee No");
 
-                    column(ID_Number; "ID Number")
+                    column(ID_Number; "ID No.")
                     {
                     }
-                    column(Full_Name; "Full Name")
+                    column(Full_Name; FullName)
                     {
                     }
                 }
                 trigger OnAfterGetRecord();
                 begin
-                    EmpName:='';
-                    IDNumber:='';
+                    EmpName := '';
+                    IDNumber := '';
                     CLEAR(HREmp);
-                    IF HREmp.GET("PR Period Transactions"."Employee No")THEN BEGIN
-                        EmpName:=UPPERCASE(HREmp."Search Name");
+                    IF HREmp.GET("PR Period Transactions"."Employee No") THEN BEGIN
+                        EmpName := UPPERCASE(HREmp."Search Name");
                         begin
-                            if("PR Transaction Codes"."Earning Type" = "PR Transaction Codes"."Earning Type"::"Tax Relief") or ("PR Transaction Codes"."Earning Type" = "PR Transaction Codes"."Earning Type"::"Insurance Relief") or ("PR Transaction Codes"."Earning Type" = "PR Transaction Codes"."Earning Type"::"Owner Occupier")then CurrReport.Skip;
+                            if ("PR Transaction Codes"."Earning Type" = "PR Transaction Codes"."Earning Type"::"Tax Relief") or ("PR Transaction Codes"."Earning Type" = "PR Transaction Codes"."Earning Type"::"Insurance Relief") or ("PR Transaction Codes"."Earning Type" = "PR Transaction Codes"."Earning Type"::"Owner Occupier") then CurrReport.Skip;
                         end;
-                    //IDNumber := HREmp."ID Number";
+                        //IDNumber := HREmp."ID Number";
                     END;
-                    BLN_No:='';
+                    BLN_No := '';
                     //Get Reference No
                     PREmpTrans.RESET;
                     PREmpTrans.SETRANGE(PREmpTrans."Payroll Period", SelectedPeriod);
                     PREmpTrans.SETRANGE(PREmpTrans."Code", "PR Period Transactions"."Code");
-                    PREmpTrans.SetRange(PREmpTrans.Company, "PR Period Transactions".Company);
-                    IF PREmpTrans.FIND('-')THEN BEGIN
-                        BLN_No:=PREmpTrans."Reference No";
+                    // PREmpTrans.SetRange(PREmpTrans.Company, "PR Period Transactions".Company);
+                    IF PREmpTrans.FIND('-') THEN BEGIN
+                        BLN_No := PREmpTrans."Reference No";
                     END;
                 end;
+
                 trigger OnPreDataItem();
                 begin
                     "PR Period Transactions".SETRANGE("PR Period Transactions"."Payroll Period", SelectedPeriod);
@@ -148,7 +149,7 @@ report 52214 "Total Earnings/Employee"
                 {
                     Caption = 'Payroll Period';
                     ApplicationArea = all;
-                    TableRelation = "Client Payroll Period"."Starting Date";
+                    TableRelation = "Payroll Period II"."Starting Date";
                 }
                 field(PostingGrp_TxtFilter; PostingGrp_TxtFilter)
                 {
@@ -172,20 +173,23 @@ report 52214 "Total Earnings/Employee"
         //Period Name
         PRPayrollPeriods.RESET;
         PRPayrollPeriods.SETRANGE(PRPayrollPeriods."Starting Date", SelectedPeriod);
-        IF PRPayrollPeriods.FIND('-')THEN PeriodName:=PRPayrollPeriods.Name;
+        IF PRPayrollPeriods.FIND('-') THEN PeriodName := PRPayrollPeriods.Name;
     end;
-    var PostingGrp_TxtFilter: Option "ALL", "JSC", "KJA", "BOARD", "JSC & KJA", "CASUALS";
-    SelectedPeriod: Date;
-    CompInfo: Record "Company Information";
-    PeriodName: Text[30];
-    AppliedFilters: Text;
-    PRPayrollPeriods: Record "Client Payroll Period";
-    EmpName: Text;
-    HREmp: Record "Employee";
-    IDNumber: Text;
-    PREmpTrans: Record "Client Payroll Matrix";
-    BLN_No: Text;
-    ReportTitle: Text;
+
+    var
+        PostingGrp_TxtFilter: Option "ALL","JSC","KJA","BOARD","JSC & KJA","CASUALS";
+        SelectedPeriod: Date;
+        CompInfo: Record "Company Information";
+        PeriodName: Text[30];
+        AppliedFilters: Text;
+        PRPayrollPeriods: Record "Payroll Period II";
+        EmpName: Text;
+        HREmp: Record "Employee";
+        IDNumber: Text;
+        PREmpTrans: Record "Assignment Matrix";
+        BLN_No: Text;
+        ReportTitle: Text;
+
     procedure fnCompanyInfo();
     begin
         CompInfo.RESET;
