@@ -912,6 +912,11 @@ codeunit 55056 HRPortal
         memo.Get(DocNo);
 
         ApprovalsMngt.OnSendImprestMemoForApproval(memo);
+        UserSetup.SetRange("Employee No.", memo."Employee No.");
+        if UserSetup.FindFirst() then begin
+            UpdateApprovalEntries(DocNo, UserSetup."User ID");
+        end;
+
         status := 'success*Imprest memo has been has been succesfully sent for approval.';
     end;
 
