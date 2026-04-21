@@ -8,9 +8,9 @@ report 52212 "Client Deduction-Institution"
 
     dataset
     {
-        dataitem("PR Transaction Codes"; Deduction)
+        dataitem("PR Transaction Codes"; "Client Deductions")
         {
-            DataItemTableView = SORTING(Code)ORDER(Descending)WHERE("Institution Code"=FILTER(<>''));
+            DataItemTableView = SORTING(Code) ORDER(Descending) WHERE("Institution Code" = FILTER(<> ''));
             RequestFilterFields = "Institution Code", Code;
 
             column(GroupCode_PRTransactionCodes; "PR Transaction Codes"."Institution Code")
@@ -22,9 +22,9 @@ report 52212 "Client Deduction-Institution"
             column(CompInfoName; CompInfo.Name)
             {
             }
-            // column(Company; Company)
-            // {
-            // }
+            column(Company; Company)
+            {
+            }
             column(CompInfoAddress; CompInfo.Address)
             {
             }
@@ -52,11 +52,11 @@ report 52212 "Client Deduction-Institution"
             column(ReportTitle; ReportTitle)
             {
             }
-            dataitem("PR Period Transactions";"Assignment Matrix")
+            dataitem("PR Period Transactions"; "Client Payroll Matrix")
             {
-                DataItemLink = "Code"=FIELD(Code);
+                DataItemLink = "Code" = FIELD(Code);
                 //DataItemTableView = SORTING()
-                RequestFilterFields = "Payroll Period", "Payroll Group";
+                RequestFilterFields = "Payroll Period", Company, "Payroll Group";
 
                 column(TransactionName_PRPeriodTransactions; "PR Period Transactions".Description)
                 {
@@ -91,48 +91,49 @@ report 52212 "Client Deduction-Institution"
                 column(ReferenceNo_PRPeriodTransactions; "PR Period Transactions"."Reference No")
                 {
                 }
-                dataitem(Employee; Employee)
+                dataitem(Employee; "Client Employee Master")
                 {
-                    DataItemLink = "No."=field("Employee No");
-                    // RequestFilterFields = "Company Code";
+                    DataItemLink = "No." = field("Employee No");
+                    RequestFilterFields = "Company Code";
 
-                    column(ID_Number; "ID No.")
+                    column(ID_Number; "ID Number")
                     {
                     }
-                    column(Full_Name;FullName)
+                    column(Full_Name; "Full Name")
                     {
                     }
-                    // column(Company_Code; "Company Code")
-                    // {
-                    // }
+                    column(Company_Code; "Company Code")
+                    {
+                    }
                 }
                 trigger OnAfterGetRecord();
                 begin
-                    EmpName:='';
-                    IDNumber:='';
+                    EmpName := '';
+                    IDNumber := '';
                     CLEAR(HREmp);
-                    IF HREmp.GET("PR Period Transactions"."Employee No")THEN BEGIN
-                        EmpName:=UPPERCASE(Employee.FullName());
-                    //IDNumber := HREmp."ID Number";
+                    IF HREmp.GET("PR Period Transactions"."Employee No") THEN BEGIN
+                        EmpName := UPPERCASE(Employee."Full Name");
+                        //IDNumber := HREmp."ID Number";
                     END;
-                    BLN_No:='';
+                    BLN_No := '';
                     //Get Reference No
                     PREmpTrans.RESET;
                     PREmpTrans.SETRANGE(PREmpTrans."Payroll Period", SelectedPeriod);
                     PREmpTrans.SETRANGE(PREmpTrans."Code", "PR Period Transactions"."Code");
-                    // PREmpTrans.SetRange(PREmpTrans.Company, Employee."Company Code");
-                    IF PREmpTrans.FIND('-')THEN BEGIN
-                        BLN_No:=PREmpTrans."Reference No";
+                    PREmpTrans.SetRange(PREmpTrans.Company, Employee."Company Code");
+                    IF PREmpTrans.FIND('-') THEN BEGIN
+                        BLN_No := PREmpTrans."Reference No";
                     END;
                     begin
                         PREmpTrans.Reset;
                         PREmpTrans.SetRange(PREmpTrans."Employee No", "PR Period Transactions"."Employee No");
                         PREmpTrans.SetRange(PREmpTrans.Type, "PR Period Transactions".Type);
                         PREmpTrans.SetRange(PREmpTrans.Code, "PR Period Transactions".Code);
-                        // PREmpTrans.SetRange(PREmpTrans.Company, "PR Period Transactions".Company);
+                        PREmpTrans.SetRange(PREmpTrans.Company, "PR Period Transactions".Company);
                         PREmpTrans.SetRange(PREmpTrans.Amount, "PR Period Transactions".Amount);
                     end;
                 end;
+
                 trigger OnPreDataItem();
                 begin
                     "PR Period Transactions".SETRANGE("PR Period Transactions"."Payroll Period", SelectedPeriod);
@@ -169,7 +170,7 @@ report 52212 "Client Deduction-Institution"
                 {
                     Caption = 'Payroll Period';
                     ApplicationArea = all;
-                    TableRelation = "Payroll Period II"."Starting Date";
+                    TableRelation = "Client Payroll Period"."Starting Date";
                 }
                 field(ReportTitle; ReportTitle)
                 {
@@ -198,21 +199,24 @@ report 52212 "Client Deduction-Institution"
         //Period Name
         PRPayrollPeriods.RESET;
         PRPayrollPeriods.SETRANGE(PRPayrollPeriods."Starting Date", SelectedPeriod);
-        IF PRPayrollPeriods.FIND('-')THEN PeriodName:=PRPayrollPeriods.Name;
+        IF PRPayrollPeriods.FIND('-') THEN PeriodName := PRPayrollPeriods.Name;
     end;
-    var PostingGrp_TxtFilter: Option "ALL", "JSC", "KJA", "BOARD", "JSC & KJA", "CASUALS";
-    SelectedPeriod: Date;
-    CompInfo: Record "Company Information";
-    PeriodName: Text[30];
-    AppliedFilters: Text;
-    PRPayrollPeriods: Record "Payroll Period II";
-    EmpName: Text;
-    Client: Record "Company Information";
-    HREmp: Record "Employee";
-    IDNumber: Text;
-    PREmpTrans: Record "Assignment Matrix";
-    BLN_No: Text;
-    ReportTitle: Text;
+
+    var
+        PostingGrp_TxtFilter: Option "ALL","JSC","KJA","BOARD","JSC & KJA","CASUALS";
+        SelectedPeriod: Date;
+        CompInfo: Record "Company Information";
+        PeriodName: Text[30];
+        AppliedFilters: Text;
+        PRPayrollPeriods: Record "Client Payroll Period";
+        EmpName: Text;
+        Client: Record "Client Company Information";
+        HREmp: Record "Employee";
+        IDNumber: Text;
+        PREmpTrans: Record "Client Payroll Matrix";
+        BLN_No: Text;
+        ReportTitle: Text;
+
     procedure fnCompanyInfo();
     begin
         CompInfo.RESET;
