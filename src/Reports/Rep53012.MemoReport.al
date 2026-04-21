@@ -19,6 +19,9 @@ report 53012 "Memo Report"
             }
             column(To; "To")
             { }
+            column(From_Title; "From Title")
+            { }
+            column(Recipient_Title; "Recipient Title") { }
             column(From; From) { }
             column(Date; Date) { }
             column(Subject; Subject) { }
@@ -29,7 +32,7 @@ report 53012 "Memo Report"
             dataitem("Imprest Memo Lines"; "Imprest Memo Lines")
             {
                 DataItemLink = "No." = field("No.");
-                column(Account_No_;"Account No."){}
+                column(Account_No_; "Account No.") { }
                 column(Name; Name) { }
                 column(Title; Title) { }
                 column(Amount; Amount) { }
