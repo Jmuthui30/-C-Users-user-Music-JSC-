@@ -520,14 +520,14 @@ table 50464 "Imprest Memo Header"
             else
                 Error(Text001);
         //Automatic Fields
-        Rec.DSA := true;
-        Rec."Cordination Allowance" := true;
-        Rec."Facilitator Allowance" := true;
-        Rec."Secretariat Allowance" := true;
-        Rec."Rapporteur Allowance" := true;
-        Rec."Driver Allowance" := true;
-        Rec."Retreat Allowance" := true;
-        Rec."Expert Allowance" := true;
+        // Rec.DSA := true;
+        // Rec."Cordination Allowance" := true;
+        // Rec."Facilitator Allowance" := true;
+        // Rec."Secretariat Allowance" := true;
+        // Rec."Rapporteur Allowance" := true;
+        // Rec."Driver Allowance" := true;
+        // Rec."Retreat Allowance" := true;
+        // Rec."Expert Allowance" := true;
         CommitmentMgt.InsertImprestBudgetAnalysis(Rec);
     end;
 

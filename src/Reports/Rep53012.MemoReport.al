@@ -29,6 +29,7 @@ report 53012 "Memo Report"
             column(Message_body_1; "Message body 1") { }
             column(Recipient_Name; "Recipient Name") { }
             column(Sender_Name; "Sender Name") { }
+            column(Total_Days_in_the_Field; "Total Days in the Field") { }
             dataitem("Imprest Memo Lines"; "Imprest Memo Lines")
             {
                 DataItemLink = "No." = field("No.");
@@ -36,6 +37,7 @@ report 53012 "Memo Report"
                 column(Name; Name) { }
                 column(Title; Title) { }
                 column(Amount; Amount) { }
+                column(Other_Costs; "Other Costs") { }
 
             }
         }
