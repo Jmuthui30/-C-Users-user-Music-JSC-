@@ -862,7 +862,7 @@ codeunit 55056 HRPortal
         end;
     end;
 
-    procedure CreateImprestMemoLines(imprestno: Code[30]; type: Integer; accountNo: code[50]) status: Text
+    procedure CreateImprestMemoLines(imprestno: Code[30]; type: Integer; accountNo: code[50]; otherCosts: Decimal) status: Text
     var
         memolines1: Record "Imprest Memo Lines";
         prevLineNo: Integer;
@@ -881,6 +881,7 @@ codeunit 55056 HRPortal
             memoLines."Account No." := accountNo;
             memoLines.Validate("Account No.");
             memoLines.Validate("Account No.");
+            memoLines."Other Costs" := otherCosts;
             if memoLines.Insert(true) then begin
                 status := 'success*Memo Line has been added succesfully' + Format(memolines."Line No.");
             end else begin
@@ -912,6 +913,11 @@ codeunit 55056 HRPortal
         memo.Get(DocNo);
 
         ApprovalsMngt.OnSendImprestMemoForApproval(memo);
+        UserSetup.SetRange("Employee No.", memo."Employee No.");
+        if UserSetup.FindFirst() then begin
+            UpdateApprovalEntries(DocNo, UserSetup."User ID");
+        end;
+
         status := 'success*Imprest memo has been has been succesfully sent for approval.';
     end;
 
