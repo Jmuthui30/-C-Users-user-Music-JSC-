@@ -754,6 +754,7 @@ codeunit 55056 HRPortal
             memo.Get(No);
             memo.Date := Today;
             memo.From := Staff."Job Id";
+            memo.Validate(From);
             memo."To" := ToWho;
             memo.Validate("To");
             memo.Subject := subject;
@@ -812,6 +813,7 @@ codeunit 55056 HRPortal
             //memo."Memo No" := NoSeriesMgt.DoGetNextNo(glsetup."ERC Memo Nos", Today, true, true);
             memo.Date := Today;
             memo.From := Staff."Job Id";
+            memo.Validate(From);
             //memo.To := From;
             memo.Subject := subject;
             memo."Message body" := memoDescription;
@@ -862,7 +864,7 @@ codeunit 55056 HRPortal
         end;
     end;
 
-    procedure CreateImprestMemoLines(imprestno: Code[30]; type: Integer; accountNo: code[50]; otherCosts: Decimal) status: Text
+    procedure CreateImprestMemoLines(imprestno: Code[30]; type: Integer; accountNo: code[50]; otherCosts: Decimal; expertName: Text) status: Text
     var
         memolines1: Record "Imprest Memo Lines";
         prevLineNo: Integer;
@@ -878,9 +880,13 @@ codeunit 55056 HRPortal
             memolines."No." := imprestno;
             memoLines."Line No." := prevLineNo;
             memoLines.Type := type;
-            memoLines."Account No." := accountNo;
-            memoLines.Validate("Account No.");
-            memoLines.Validate("Account No.");
+            if (type = 0) then begin
+                memoLines."Account No." := accountNo;
+                memoLines.Validate("Account No.");
+            end else begin
+                memoLines.Name := expertName;
+            end;
+
             memoLines."Other Costs" := otherCosts;
             if memoLines.Insert(true) then begin
                 status := 'success*Memo Line has been added succesfully' + Format(memolines."Line No.");
