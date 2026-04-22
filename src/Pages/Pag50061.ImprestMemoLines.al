@@ -17,6 +17,7 @@ page 50061 "Imprest Memo Lines"
                 }
                 field("Account No."; Rec."Account No.")
                 {
+                    //Visible = "Type" = "Type"::Staff;
                 }
                 field(Name; Rec.Name)
                 {
