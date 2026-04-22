@@ -754,6 +754,7 @@ codeunit 55056 HRPortal
             memo.Get(No);
             memo.Date := Today;
             memo.From := Staff."Job Id";
+            memo.Validate(From);
             memo."To" := ToWho;
             memo.Validate("To");
             memo.Subject := subject;
@@ -812,6 +813,7 @@ codeunit 55056 HRPortal
             //memo."Memo No" := NoSeriesMgt.DoGetNextNo(glsetup."ERC Memo Nos", Today, true, true);
             memo.Date := Today;
             memo.From := Staff."Job Id";
+            memo.Validate(From);
             //memo.To := From;
             memo.Subject := subject;
             memo."Message body" := memoDescription;
