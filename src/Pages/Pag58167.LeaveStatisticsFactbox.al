@@ -64,7 +64,9 @@ page 58167 "Leave Statistics Factbox"
 
     procedure GetLeaveEarnedToDate(LeaveTypeCode: Code[20])
     begin
-        LeaveEarnedToDate := 20;//HRManagement.GetLeaveDaysEarnedToDate(Rec, LeaveTypeCode);
+        // LeaveEarnedToDate := 20;//HRManagement.GetLeaveDaysEarnedToDate(Rec, LeaveTypeCode);
+        LeaveEarnedToDate := HRManagement.GetLeaveDaysEarnedToDate(Rec, LeaveTypeCode);
+
     end;
 }
 
