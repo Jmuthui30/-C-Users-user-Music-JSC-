@@ -742,7 +742,7 @@ codeunit 55056 HRPortal
             exit(HrEmployees."No.");
     end;
 
-    procedure CreateImprestMemo(No: Code[30]; ToWho: Code[50]; employeeNumber: code[10]; subject: Text[250]; memoDescription: Text; Purpose: Text[2048]; location: Text; deaprturelocation: Text; departureDate: DateTime; returnlocation: Text; returnDate: DateTime; startDate: DateTime; noOfDaysInField: Integer; international: Boolean; DSA: Boolean; CordinationAllowance: Boolean; FacilitatorAllowance: Boolean; SecritariateAllowance: Boolean; RapporteurAllowance: Boolean; DriverAllowance: Boolean; retreatAllowance: Boolean; expertAllowance: Boolean; AirTicket: Boolean; conference: Boolean; groundTransport: Boolean; accommodation: Boolean; outOfPocket: Boolean; tutorialFee: Boolean; mileageAllowance: Boolean; quarterPerDiem: Boolean; directorate: code[50]; department: code[50]) status: Text
+    procedure CreateImprestMemo(No: Code[30]; ToWho: Code[50]; employeeNumber: code[10]; subject: Text[250]; memoBody1: Text; memoBody2: Text; Purpose: Text[2048]; location: Text; deaprturelocation: Text; departureDate: DateTime; returnlocation: Text; returnDate: DateTime; startDate: DateTime; noOfDaysInField: Integer; international: Boolean; DSA: Boolean; CordinationAllowance: Boolean; FacilitatorAllowance: Boolean; SecritariateAllowance: Boolean; RapporteurAllowance: Boolean; DriverAllowance: Boolean; retreatAllowance: Boolean; expertAllowance: Boolean; AirTicket: Boolean; conference: Boolean; groundTransport: Boolean; accommodation: Boolean; outOfPocket: Boolean; tutorialFee: Boolean; mileageAllowance: Boolean; quarterPerDiem: Boolean; directorate: code[50]; department: code[50]) status: Text
     var
         glsetup: Record "General Ledger Setup";
         Staff: Record Employee;
@@ -758,10 +758,11 @@ codeunit 55056 HRPortal
             memo."To" := ToWho;
             memo.Validate("To");
             memo.Subject := subject;
-            memo."Message body" := memoDescription;
-            memo.Memo := memoDescription;
+            memo."Message body" := memoBody1;
+            memo."Message body 1" := memoBody2;
+            memo.Memo := memoBody1;
             memo."Employee No." := employeeNumber;
-            memo.Purpose := memoDescription;
+            memo.Purpose := Purpose;
             memo."Activity Location" := location;
             memo."Created By" := 'ADMINCLOUD';
             memo."Departure Location" := deaprturelocation;
@@ -816,9 +817,9 @@ codeunit 55056 HRPortal
             memo.Validate(From);
             //memo.To := From;
             memo.Subject := subject;
-            memo."Message body" := memoDescription;
+            memo."Message body" := memoBody1;
             memo."Employee No." := employeeNumber;
-            memo.Purpose := memoDescription;
+            memo.Purpose := Purpose;
             memo."Activity Location" := location;
             memo."Created By" := 'ADMINCLOUD';
             memo."Departure Location" := deaprturelocation;
