@@ -742,7 +742,7 @@ codeunit 55056 HRPortal
             exit(HrEmployees."No.");
     end;
 
-    procedure CreateImprestMemo(No: Code[30]; ToWho: Code[50]; employeeNumber: code[10]; subject: Text[250]; memoBody1: Text; memoBody2: Text; Purpose: Text[2048]; location: Text; deaprturelocation: Text; departureDate: DateTime; returnlocation: Text; returnDate: DateTime; startDate: DateTime; noOfDaysInField: Integer; international: Boolean; DSA: Boolean; CordinationAllowance: Boolean; FacilitatorAllowance: Boolean; SecritariateAllowance: Boolean; RapporteurAllowance: Boolean; DriverAllowance: Boolean; retreatAllowance: Boolean; expertAllowance: Boolean; AirTicket: Boolean; conference: Boolean; groundTransport: Boolean; accommodation: Boolean; outOfPocket: Boolean; tutorialFee: Boolean; mileageAllowance: Boolean; quarterPerDiem: Boolean; directorate: code[50]; department: code[50]) status: Text
+    procedure CreateImprestMemo(No: Code[30]; ToWho: Code[50]; employeeNumber: code[10]; subject: Text[250]; memoBody1: Text[2048]; memoBody2: Text[2048]; Purpose: Text[2048]; location: Text[2048]; deaprturelocation: Text[2048]; departureDate: DateTime; returnlocation: Text[2048]; returnDate: DateTime; startDate: DateTime; totaldays: Integer; noOfDaysInField: Integer; international: Boolean; DSA: Boolean; CordinationAllowance: Boolean; FacilitatorAllowance: Boolean; SecritariateAllowance: Boolean; RapporteurAllowance: Boolean; DriverAllowance: Boolean; retreatAllowance: Boolean; expertAllowance: Boolean; AirTicket: Boolean; conference: Boolean; groundTransport: Boolean; accommodation: Boolean; outOfPocket: Boolean; tutorialFee: Boolean; mileageAllowance: Boolean; quarterPerDiem: Boolean; directorate: code[50]; department: code[50]) status: Text
     var
         glsetup: Record "General Ledger Setup";
         Staff: Record Employee;
@@ -773,6 +773,8 @@ codeunit 55056 HRPortal
             memo.Validate("Start Date");
             memo."Return Date" := DT2Date(returnDate);
             memo.Validate("Return Date");
+            memo."Total Days in the Field" := totaldays;
+            memo.Validate("Total Days in the Field");
             //memo."Total Days in the Field" := noOfDaysInField;
             memo.International := international;
             memo.DSA := DSA;
@@ -835,6 +837,8 @@ codeunit 55056 HRPortal
             memo.Validate("Start Date");
             memo."Return Date" := DT2Date(returnDate);
             memo.Validate("Return Date");
+            memo."Total Days in the Field" := totaldays;
+            memo.Validate("Total Days in the Field");
             //memo."Total Days in the Field" := noOfDaysInField;
             memo.International := international;
             memo.DSA := DSA;
