@@ -742,7 +742,7 @@ codeunit 55056 HRPortal
             exit(HrEmployees."No.");
     end;
 
-    procedure CreateImprestMemo(No: Code[30]; ToWho: Code[50]; employeeNumber: code[10]; subject: Text[250]; memoBody1: Text[2048]; memoBody2: Text[2048]; Purpose: Text[2048]; location: Text[2048]; deaprturelocation: Text[2048]; departureDate: DateTime; returnlocation: Text[2048]; returnDate: DateTime; startDate: DateTime; totaldays: Integer; noOfDaysInField: Integer; international: Boolean; DSA: Boolean; CordinationAllowance: Boolean; FacilitatorAllowance: Boolean; SecritariateAllowance: Boolean; RapporteurAllowance: Boolean; DriverAllowance: Boolean; retreatAllowance: Boolean; expertAllowance: Boolean; AirTicket: Boolean; conference: Boolean; groundTransport: Boolean; accommodation: Boolean; outOfPocket: Boolean; tutorialFee: Boolean; mileageAllowance: Boolean; quarterPerDiem: Boolean; directorate: code[50]; department: code[50]) status: Text
+    procedure CreateImprestMemo(No: Code[30]; ToWho: Code[50]; employeeNumber: code[10]; subject: Text[2048]; memoBody1: Text[2048]; memoBody2: Text[2048]; Purpose: Text[2048]; location: Text[2048]; deaprturelocation: Text[2048]; departureDate: DateTime; returnlocation: Text[2048]; returnDate: DateTime; startDate: DateTime; totaldays: Integer; noOfDaysInField: Integer; international: Boolean; DSA: Boolean; CordinationAllowance: Boolean; FacilitatorAllowance: Boolean; SecritariateAllowance: Boolean; RapporteurAllowance: Boolean; DriverAllowance: Boolean; retreatAllowance: Boolean; expertAllowance: Boolean; AirTicket: Boolean; conference: Boolean; groundTransport: Boolean; accommodation: Boolean; outOfPocket: Boolean; tutorialFee: Boolean; mileageAllowance: Boolean; quarterPerDiem: Boolean; directorate: code[50]; department: code[50]) status: Text
     var
         glsetup: Record "General Ledger Setup";
         Staff: Record Employee;
@@ -931,7 +931,7 @@ codeunit 55056 HRPortal
 
             memoLines."Mileage Allowance" :=millageAllowance;
 
-            memoLines."Quarter Per Diem" :=qua;
+            memoLines."Quarter Per Diem" :=quarterperDiem;
             if memoLines.Insert(true) then begin
                 status := 'success*Memo Line has been added succesfully' + Format(memolines."Line No.");
             end else begin
