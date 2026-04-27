@@ -932,6 +932,7 @@ codeunit 55056 HRPortal
             memoLines."Mileage Allowance" := millageAllowance;
 
             memoLines."Quarter Per Diem" := quarterperDiem;
+
             if memoLines.Insert(true) then begin
                 status := 'success*Memo Line has been added succesfully' + Format(memolines."Line No.");
             end else begin
