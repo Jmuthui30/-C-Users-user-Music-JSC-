@@ -932,6 +932,8 @@ codeunit 55056 HRPortal
             memoLines."Mileage Allowance" := millageAllowance;
 
             memoLines."Quarter Per Diem" := quarterperDiem;
+            //compute totals
+            memoLines.Amount := memoLines.DSA + memoLines."Air Ticket" + memoLines.Conference + memoLines."Ground Transport" + memoLines.Accomodation + memoLines."Cordination Allowance" + memoLines."Facilitator Allowance" + memoLines."Secretariat Allowance" + memoLines."Out of Pocket Allowance" + memoLines."Rapporteur Allowance" + memoLines."Driver Allowance" + memoLines."Retreat Allowance" + memoLines."Expert Allowance" + memoLines."Tuition Fee" + memoLines."Mileage Allowance" + memoLines."Quarter Per Diem";
             if memoLines.Insert(true) then begin
                 status := 'success*Memo Line has been added succesfully' + Format(memolines."Line No.");
             end else begin
