@@ -929,7 +929,7 @@ codeunit 55056 HRPortal
 
             memoLines."Tuition Fee" := tuitionFee;
 
-            memoLines."Mileage Allowance" :=millageAllowance;
+            memoLines."Mileage Allowance" := millageAllowance;
 
             memoLines."Quarter Per Diem" :=quarterperDiem;
             if memoLines.Insert(true) then begin
