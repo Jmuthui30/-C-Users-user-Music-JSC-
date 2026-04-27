@@ -439,6 +439,25 @@ codeunit 55057 HRPortalQueries
 
         end;
 
+    end;
+
+    procedure fnDSAAmounts(empNo: Code[20]) data: Text
+    var
+        employeeAppraisal: Record "Employee Appraisal";
+        GradesScale: Record "DSA Rates";
+    begin
+        Employee.Reset();
+        Employee.SetRange("No.", empNo);
+        if Employee.FindFirst() then begin
+            GradesScale.Reset();
+            GradesScale.SetRange("Job Group", Employee."Salary Scale");
+            if GradesScale.FindFirst() then begin
+                repeat
+                    data += Format(GradesScale.DSA) + '*' + Format(GradesScale."Air Ticket") + '*' + Format(GradesScale.Conference) + '*' + Format(GradesScale."Ground Transport") + '*' + Format(GradesScale.Accomodation) + '*' + Format(GradesScale."Cordination Allowance") + '*' + Format(GradesScale."Facilitator Allowance") + '*' + Format(GradesScale."Secretariat Allowance") + '*' + Format(GradesScale."Out of Pocket Allowance") + '*' + Format(GradesScale."Rapporteur Allowance") + Format(GradesScale."Driver Allowance") + '*' + Format(GradesScale."Retreat Allowance") + '*' + Format(GradesScale."Expert Allowance") + '*' + Format(GradesScale."Tuition Fee") + '*' + Format(GradesScale."Mileage Allowance") + '*' + Format(GradesScale."Quarter Per Diem") + '::::';
+                until Employee.Next = 0;
+            end;
+
+        end;
 
     end;
 }

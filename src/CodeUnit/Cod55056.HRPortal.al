@@ -877,7 +877,7 @@ codeunit 55056 HRPortal
         end;
     end;
 
-    procedure CreateImprestMemoLines(imprestno: Code[30]; type: Integer; accountNo: code[50]; otherCosts: Decimal; expertName: Text) status: Text
+    procedure CreateImprestMemoLines(imprestno: Code[30]; type: Integer; accountNo: code[50]; otherCosts: Decimal; expertName: Text; DSA: Decimal; airTicket: Decimal; conference: Decimal; groundTransport: Decimal; accommodation: Decimal; coordinationAllowance: Decimal; facillitatorAllowance: Decimal; secretarioteAllowance: Decimal; outOfPocketAllowance: Decimal; rapparteurAllowance: Decimal; driverAllowance: Decimal; retreatAllowance: Decimal; expertAllowance: Decimal; tuitionFee: Decimal; millageAllowance: Decimal; quarterperDiem: Decimal) status: Text
     var
         memolines1: Record "Imprest Memo Lines";
         prevLineNo: Integer;
@@ -899,8 +899,39 @@ codeunit 55056 HRPortal
             end else begin
                 memoLines.Name := expertName;
             end;
-
             memoLines."Other Costs" := otherCosts;
+
+            memoLines.DSA := DSA;
+
+            memoLines."Air Ticket" := airTicket;
+
+            memoLines.Conference := conference;
+
+            memoLines."Ground Transport" := groundTransport;
+
+            memoLines.Accomodation := accommodation;
+
+            memoLines."Cordination Allowance" := coordinationAllowance;
+
+            memoLines."Facilitator Allowance" := facillitatorAllowance;
+
+            memoLines."Secretariat Allowance" := secretarioteAllowance;
+
+            memoLines."Out of Pocket Allowance" := outOfPocketAllowance;
+
+            memoLines."Rapporteur Allowance" := rapparteurAllowance;
+
+            memoLines."Driver Allowance" := driverAllowance;
+
+            memoLines."Retreat Allowance" := retreatAllowance;
+
+            memoLines."Expert Allowance" := expertAllowance;
+
+            memoLines."Tuition Fee" := tuitionFee;
+
+            memoLines."Mileage Allowance" :=millageAllowance;
+
+            memoLines."Quarter Per Diem" :=qua;
             if memoLines.Insert(true) then begin
                 status := 'success*Memo Line has been added succesfully' + Format(memolines."Line No.");
             end else begin
