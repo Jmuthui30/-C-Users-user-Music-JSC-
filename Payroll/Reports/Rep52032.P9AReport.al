@@ -2,7 +2,9 @@ report 52032 "P9A Report"
 {
     ApplicationArea = All;
     DefaultLayout = RDLC;
-    RDLCLayout = './Payroll/Report Layouts/P9AReport.rdl';
+    // RDLCLayout = './Payroll/Report Layouts/P9AReport.rdl';
+    RDLCLayout=  './Reports/SSRS/Client P9A.rdl';
+
     UseRequestPage = true;
     Caption = 'P9A Report';
     dataset
