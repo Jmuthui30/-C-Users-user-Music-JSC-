@@ -45,7 +45,8 @@ codeunit 52004 "Workflow Responses HR"
             Leave.Modify(true);
             Commit();
             HRMgnt.NotifyLeaveReliever(Leave."Application No");
-
+            if Leave.FindFirst() then
+                HRMgnt.LeaveApplication(Leave."Application No");
 
         end;
     end;

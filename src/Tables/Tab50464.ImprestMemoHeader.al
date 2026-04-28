@@ -25,7 +25,10 @@ table 50464 "Imprest Memo Header"
                     if Staff.FindLast() then begin
                         Rec."Recipient Name" := Staff."Job Title";
                         Rec."Recipient Email" := Staff."Company E-Mail";
+                        Rec."From Title" := Staff."Job Title";
+
                         if Rec."Recipient Email" = '' then Error(Text000);
+
                     end;
                 end;
             end;
@@ -74,6 +77,7 @@ table 50464 "Imprest Memo Header"
                 if Empl.Get("To") then
                     Rec."Recipient Name" := Empl.FullName();
                 Rec."Recipient Email" := Empl."E-Mail";
+                Rec."Recipient Title" := Empl."Job Title";
 
                 // if Rec."To" <> '' then begin
                 //     Staff.Reset();
@@ -90,7 +94,7 @@ table 50464 "Imprest Memo Header"
                 // end;
             end;
         }
-        field(6; Subject; Text[50])
+        field(6; Subject; Text[500])
         {
         }
         field(7; Memo; Text[250])
@@ -472,6 +476,14 @@ table 50464 "Imprest Memo Header"
         //Work Plan Activity Description
         field(121; "Work Plan Activity Description"; Text[100])
         { }
+        //"Recipient Title"
+        field(122; "Recipient Title"; Text[100])
+        {
+        }
+        field(123; "From Title"; Text[100])
+        {
+        }
+
     }
     keys
     {
@@ -508,14 +520,14 @@ table 50464 "Imprest Memo Header"
             else
                 Error(Text001);
         //Automatic Fields
-        Rec.DSA := true;
-        Rec."Cordination Allowance" := true;
-        Rec."Facilitator Allowance" := true;
-        Rec."Secretariat Allowance" := true;
-        Rec."Rapporteur Allowance" := true;
-        Rec."Driver Allowance" := true;
-        Rec."Retreat Allowance" := true;
-        Rec."Expert Allowance" := true;
+        // Rec.DSA := true;
+        // Rec."Cordination Allowance" := true;
+        // Rec."Facilitator Allowance" := true;
+        // Rec."Secretariat Allowance" := true;
+        // Rec."Rapporteur Allowance" := true;
+        // Rec."Driver Allowance" := true;
+        // Rec."Retreat Allowance" := true;
+        // Rec."Expert Allowance" := true;
         CommitmentMgt.InsertImprestBudgetAnalysis(Rec);
     end;
 

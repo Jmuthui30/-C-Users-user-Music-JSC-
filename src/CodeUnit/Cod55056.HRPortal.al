@@ -742,7 +742,7 @@ codeunit 55056 HRPortal
             exit(HrEmployees."No.");
     end;
 
-    procedure CreateImprestMemo(No: Code[30]; ToWho: Code[50]; employeeNumber: code[10]; subject: Text[250]; memoDescription: Text; Purpose: Text[2048]; location: Text; deaprturelocation: Text; departureDate: DateTime; returnlocation: Text; returnDate: DateTime; startDate: DateTime; noOfDaysInField: Integer; international: Boolean; DSA: Boolean; CordinationAllowance: Boolean; FacilitatorAllowance: Boolean; SecritariateAllowance: Boolean; RapporteurAllowance: Boolean; DriverAllowance: Boolean; retreatAllowance: Boolean; expertAllowance: Boolean; AirTicket: Boolean; conference: Boolean; groundTransport: Boolean; accommodation: Boolean; outOfPocket: Boolean; tutorialFee: Boolean; mileageAllowance: Boolean; quarterPerDiem: Boolean; directorate: code[50]; department: code[50]) status: Text
+    procedure CreateImprestMemo(No: Code[30]; ToWho: Code[50]; employeeNumber: code[10]; subject: Text[2048]; memoBody1: Text[2048]; memoBody2: Text[2048]; Purpose: Text[2048]; location: Text[2048]; deaprturelocation: Text[2048]; departureDate: DateTime; returnlocation: Text[2048]; returnDate: DateTime; startDate: DateTime; totaldays: Integer; noOfDaysInField: Integer; international: Boolean; DSA: Boolean; CordinationAllowance: Boolean; FacilitatorAllowance: Boolean; SecritariateAllowance: Boolean; RapporteurAllowance: Boolean; DriverAllowance: Boolean; retreatAllowance: Boolean; expertAllowance: Boolean; AirTicket: Boolean; conference: Boolean; groundTransport: Boolean; accommodation: Boolean; outOfPocket: Boolean; tutorialFee: Boolean; mileageAllowance: Boolean; quarterPerDiem: Boolean; directorate: code[50]; department: code[50]) status: Text
     var
         glsetup: Record "General Ledger Setup";
         Staff: Record Employee;
@@ -754,20 +754,27 @@ codeunit 55056 HRPortal
             memo.Get(No);
             memo.Date := Today;
             memo.From := Staff."Job Id";
+            memo.Validate(From);
             memo."To" := ToWho;
             memo.Validate("To");
             memo.Subject := subject;
-            memo."Message body" := memoDescription;
-            memo.Memo := memoDescription;
+            memo."Message body" := memoBody1;
+            memo."Message body 1" := memoBody2;
+            // memo.Memo := memoBody1;
             memo."Employee No." := employeeNumber;
-            memo.Purpose := memoDescription;
+            memo.Purpose := Purpose;
             memo."Activity Location" := location;
             memo."Created By" := 'ADMINCLOUD';
             memo."Departure Location" := deaprturelocation;
-            memo."Departure Date" := DT2Date(departureDate);
             memo."Return Location" := returnlocation;
-            memo."Return Date" := DT2Date(returnDate);
+            memo."Departure Date" := DT2Date(departureDate);
+            memo.Validate("Departure Date");
             memo."Start Date" := DT2Date(startDate);
+            memo.Validate("Start Date");
+            memo."Return Date" := DT2Date(returnDate);
+            memo.Validate("Return Date");
+            memo."Total Days in the Field" := totaldays;
+            memo.Validate("Total Days in the Field");
             //memo."Total Days in the Field" := noOfDaysInField;
             memo.International := international;
             memo.DSA := DSA;
@@ -812,18 +819,26 @@ codeunit 55056 HRPortal
             //memo."Memo No" := NoSeriesMgt.DoGetNextNo(glsetup."ERC Memo Nos", Today, true, true);
             memo.Date := Today;
             memo.From := Staff."Job Id";
+            memo.Validate(From);
             //memo.To := From;
             memo.Subject := subject;
-            memo."Message body" := memoDescription;
+            memo."Message body" := memoBody1;
+            memo."Message body 1" := memoBody2;
+            // memo.Memo := memoBody1;
             memo."Employee No." := employeeNumber;
-            memo.Purpose := memoDescription;
+            memo.Purpose := Purpose;
             memo."Activity Location" := location;
             memo."Created By" := 'ADMINCLOUD';
             memo."Departure Location" := deaprturelocation;
-            memo."Departure Date" := DT2Date(departureDate);
             memo."Return Location" := returnlocation;
-            memo."Return Date" := DT2Date(returnDate);
+            memo."Departure Date" := DT2Date(departureDate);
+            memo.Validate("Departure Date");
             memo."Start Date" := DT2Date(startDate);
+            memo.Validate("Start Date");
+            memo."Return Date" := DT2Date(returnDate);
+            memo.Validate("Return Date");
+            memo."Total Days in the Field" := totaldays;
+            memo.Validate("Total Days in the Field");
             //memo."Total Days in the Field" := noOfDaysInField;
             memo.International := international;
             memo.DSA := DSA;
@@ -862,7 +877,7 @@ codeunit 55056 HRPortal
         end;
     end;
 
-    procedure CreateImprestMemoLines(imprestno: Code[30]; type: Integer; accountNo: code[50]) status: Text
+    procedure CreateImprestMemoLines(imprestno: Code[30]; type: Integer; accountNo: code[50]; otherCosts: Decimal; expertName: Text; DSA: Decimal; airTicket: Decimal; conference: Decimal; groundTransport: Decimal; accommodation: Decimal; coordinationAllowance: Decimal; facillitatorAllowance: Decimal; secretarioteAllowance: Decimal; outOfPocketAllowance: Decimal; rapparteurAllowance: Decimal; driverAllowance: Decimal; retreatAllowance: Decimal; expertAllowance: Decimal; tuitionFee: Decimal; millageAllowance: Decimal; quarterperDiem: Decimal) status: Text
     var
         memolines1: Record "Imprest Memo Lines";
         prevLineNo: Integer;
@@ -878,9 +893,48 @@ codeunit 55056 HRPortal
             memolines."No." := imprestno;
             memoLines."Line No." := prevLineNo;
             memoLines.Type := type;
-            memoLines."Account No." := accountNo;
-            memoLines.Validate("Account No.");
-            memoLines.Validate("Account No.");
+            if (type = 0) then begin
+                memoLines."Account No." := accountNo;
+                memoLines.Validate("Account No.");
+            end else begin
+                memoLines.Name := expertName;
+            end;
+            memoLines."Other Costs" := otherCosts;
+
+            memoLines.DSA := DSA;
+
+            memoLines."Air Ticket" := airTicket;
+
+            memoLines.Conference := conference;
+
+            memoLines."Ground Transport" := groundTransport;
+
+            memoLines.Accomodation := accommodation;
+
+            memoLines."Cordination Allowance" := coordinationAllowance;
+
+            memoLines."Facilitator Allowance" := facillitatorAllowance;
+
+            memoLines."Secretariat Allowance" := secretarioteAllowance;
+
+            memoLines."Out of Pocket Allowance" := outOfPocketAllowance;
+
+            memoLines."Rapporteur Allowance" := rapparteurAllowance;
+
+            memoLines."Driver Allowance" := driverAllowance;
+
+            memoLines."Retreat Allowance" := retreatAllowance;
+
+            memoLines."Expert Allowance" := expertAllowance;
+
+            memoLines."Tuition Fee" := tuitionFee;
+
+            memoLines."Mileage Allowance" := millageAllowance;
+
+            memoLines."Quarter Per Diem" := quarterperDiem;
+            //compute totals
+            memoLines.Amount := memoLines.DSA + memoLines."Air Ticket" + memoLines.Conference + memoLines."Ground Transport" + memoLines.Accomodation + memoLines."Cordination Allowance" + memoLines."Facilitator Allowance" + memoLines."Secretariat Allowance" + memoLines."Out of Pocket Allowance" + memoLines."Rapporteur Allowance" + memoLines."Driver Allowance" + memoLines."Retreat Allowance" + memoLines."Expert Allowance" + memoLines."Tuition Fee" + memoLines."Mileage Allowance" + memoLines."Quarter Per Diem";
+
             if memoLines.Insert(true) then begin
                 status := 'success*Memo Line has been added succesfully' + Format(memolines."Line No.");
             end else begin
@@ -912,6 +966,11 @@ codeunit 55056 HRPortal
         memo.Get(DocNo);
 
         ApprovalsMngt.OnSendImprestMemoForApproval(memo);
+        UserSetup.SetRange("Employee No.", memo."Employee No.");
+        if UserSetup.FindFirst() then begin
+            UpdateApprovalEntries(DocNo, UserSetup."User ID");
+        end;
+
         status := 'success*Imprest memo has been has been succesfully sent for approval.';
     end;
 

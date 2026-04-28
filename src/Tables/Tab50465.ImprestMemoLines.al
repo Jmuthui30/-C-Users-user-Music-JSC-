@@ -482,7 +482,7 @@ table 50465 "Imprest Memo Lines"
             end;
         end;
 
-        Amount := Rec.DSA + Rec."Air Ticket" + Rec.Conference + Rec."Ground Transport" + Rec.Accomodation + Rec."Cordination Allowance" + Rec."Facilitator Allowance" + Rec."Secretariat Allowance" + Rec."Out of Pocket Allowance" + Rec."Rapporteur Allowance" + Rec."Driver Allowance" + Rec."Retreat Allowance" + Rec."Expert Allowance" + Rec."Tuition Fee" + Rec."Mileage Allowance" + Rec."Quarter Per Diem" + Rec."Other Costs";
+        Amount := Rec.DSA + Rec."Air Ticket" + Rec.Conference + Rec."Ground Transport" + Rec.Accomodation + Rec."Cordination Allowance" + Rec."Facilitator Allowance" + Rec."Secretariat Allowance" + Rec."Out of Pocket Allowance" + Rec."Rapporteur Allowance" + Rec."Driver Allowance" + Rec."Retreat Allowance" + Rec."Expert Allowance" + Rec."Tuition Fee" + Rec."Mileage Allowance" + Rec."Quarter Per Diem";
         Rec."Amount LCY" := Rec.Amount * Rec."Exchange Rate";
         GetHeader();
         //Check Employee On Leave
@@ -590,7 +590,7 @@ table 50465 "Imprest Memo Lines"
 
     local procedure GetTotals()
     begin
-        Rec.Amount := Rec.DSA + Rec."Air Ticket" + Rec.Conference + Rec."Ground Transport" + Rec.Accomodation + Rec."Cordination Allowance" + Rec."Facilitator Allowance" + Rec."Secretariat Allowance" + Rec."Out of Pocket Allowance" + Rec."Rapporteur Allowance" + Rec."Driver Allowance" + Rec."Retreat Allowance" + Rec."Expert Allowance" + Rec."Tuition Fee" + Rec."Mileage Allowance" + Rec."Quarter Per Diem" + Rec."Other Costs";
+        Rec.Amount := Rec.DSA + Rec."Air Ticket" + Rec.Conference + Rec."Ground Transport" + Rec.Accomodation + Rec."Cordination Allowance" + Rec."Facilitator Allowance" + Rec."Secretariat Allowance" + Rec."Out of Pocket Allowance" + Rec."Rapporteur Allowance" + Rec."Driver Allowance" + Rec."Retreat Allowance" + Rec."Expert Allowance" + Rec."Tuition Fee" + Rec."Mileage Allowance" + Rec."Quarter Per Diem";
         if Rec."Exchange Rate" = 0 then Rec."Exchange Rate" := 1;
         Rec."Amount LCY" := Rec.Amount * Rec."Exchange Rate";
     end;

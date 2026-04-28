@@ -22,6 +22,10 @@ page 50059 "Imprest Memo Header"
                 field(From; Rec.From)
                 {
                 }
+                field("From Title"; "From Title")
+                {
+                    Caption = 'From Title';
+                }
                 field("To"; Rec."To")
                 {
                 }
@@ -45,6 +49,10 @@ page 50059 "Imprest Memo Header"
                     Importance = Additional;
                 }
                 field("Recipient Email"; Rec."Recipient Email")
+                {
+                    Importance = Additional;
+                }
+                field("Recipient Title"; "Recipient Title")
                 {
                     Importance = Additional;
                 }
@@ -90,6 +98,7 @@ page 50059 "Imprest Memo Header"
                 field(Approvers; Rec.Approvers)
                 {
                 }
+
 
             }
 

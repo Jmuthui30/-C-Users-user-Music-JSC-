@@ -2,6 +2,7 @@ report 51476 "Client Master Roll Report2"
 {
     // version THL- Client Payroll 1.0
     DefaultLayout = RDLC;
+    //RDLCLayout = './Reports/SSRS/Client Master Roll Report2.rdlc';
     RDLCLayout = './Reports/SSRS/Client Master Roll Report.rdlc';
     Caption = 'Master Roll Report';
     UsageCategory = ReportsAndAnalysis;

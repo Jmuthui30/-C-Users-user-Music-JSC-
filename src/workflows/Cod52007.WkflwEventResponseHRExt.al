@@ -204,6 +204,7 @@ codeunit 52007 "Wkflw Event Response HR Ext"
                     WorkflowResponses.ReleaseLeave(VarVariant);
                     // if LeaveApp.FindFirst() then
                     // HRMgnt.NotifyLeaveReliever(LeaveApp."Application No");
+
                 end;
             //Recruitment
             Database::"Recruitment Needs":
