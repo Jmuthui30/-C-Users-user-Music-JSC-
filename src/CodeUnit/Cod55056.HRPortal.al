@@ -2235,6 +2235,28 @@ codeunit 55056 HRPortal
 
     end;
 
+    procedure FAWEgenerateMemoReport(employeeNumber: Code[20]; docNo: Text) BaseImage: Text
+    var
+        ImprestMemo: Record "Imprest Memo Header";
+    begin
+
+        Employee.RESET;
+        Employee.SETRANGE(Employee."No.", employeeNumber);
+        IF Employee.FINDSET THEN BEGIN
+            TempBlob_lRec.CreateOutStream(OutStr, TEXTENCODING::UTF8);
+            ImprestMemo.Reset;
+            ImprestMemo.SetRange("No.", docNo);
+            if ImprestMemo.FindSet then begin
+                RecRef.GetTable(ImprestMemo);
+                Report.SaveAs(Report::"Imprest Memo", '', ReportFormat::Pdf, OutStr, RecRef);
+                FileManagement_lCdu.BLOBExport(TempBlob_lRec, STRSUBSTNO('ImprestMemo_%1.Pdf', ImprestMemo."No."), TRUE);
+                TempBlob_lRec.CreateInstream(InStr, TEXTENCODING::UTF8);
+                BaseImage := Base64Convert.ToBase64(InStr);
+            end;
+        END;
+
+    end;
+
     procedure FAWEgenerateImprestMemoExpenditure(employeeNumber: Code[20]; docNo: Text) BaseImage: Text
     var
         ImprestMemo: Record "Imprest Memo Header";
