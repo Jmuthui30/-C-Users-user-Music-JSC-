@@ -29,6 +29,11 @@ page 40001 ImprestMemoHeaderPortal
                 field("Departure Date"; Rec."Departure Date") { ApplicationArea = All; }
                 field("Start Date"; Rec."Start Date") { ApplicationArea = All; }
                 field("Return Date"; Rec."Return Date") { ApplicationArea = All; }
+                field("End Date"; Rec."End Date")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the End Date field.', Comment = '%';
+                }
 
                 field("Total Days in the Field"; Rec."Total Days in the Field") { ApplicationArea = All; }
 
