@@ -457,6 +457,7 @@ page 50059 "Imprest Memo Header"
                     var
                         Expenses: Record "Imprest Procurement Decision";
                     begin
+                        //mjk
                         CommitmentMgt.InsertImprestExpenses(Rec);
                         CommitmentMgt.ImprestMemoExpenseCheck(Rec);
                         Commit();
