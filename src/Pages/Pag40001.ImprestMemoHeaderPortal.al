@@ -13,6 +13,7 @@ page 56801 ImprestMemoHeaderPortal
             {
                 field("Date"; Rec.Date) { ApplicationArea = All; }
                 field("From"; Rec."From") { ApplicationArea = All; }
+                field(To; Rec."To") { ApplicationArea = All; }
                 field("Subject"; Rec.Subject) { ApplicationArea = All; }
                 field("Message body"; Rec."Message body") { ApplicationArea = All; }
                 field("Message body 1"; Rec."Message body 1") { ApplicationArea = All; }
@@ -28,6 +29,11 @@ page 56801 ImprestMemoHeaderPortal
                 field("Departure Date"; Rec."Departure Date") { ApplicationArea = All; }
                 field("Start Date"; Rec."Start Date") { ApplicationArea = All; }
                 field("Return Date"; Rec."Return Date") { ApplicationArea = All; }
+                field("End Date"; Rec."End Date")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the End Date field.', Comment = '%';
+                }
 
                 field("Total Days in the Field"; Rec."Total Days in the Field") { ApplicationArea = All; }
 
