@@ -615,8 +615,8 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                     action("P9A Report ")
                     {
                         Image = ResourcePlanning;
-                        // RunObject = report "P9A Report";
-                        RunObject = report "Client P9A";
+                        RunObject = report "P9A Report";
+                        // RunObject = report "Client P9A";
                         ApplicationArea = All;
                         ToolTip = 'Executes the P9A Report  action';
                         Caption = 'P9A Report ';
@@ -625,7 +625,8 @@ page 52272 "Payroll Role Centre" //Replaced 51441
                     {
                         Caption = 'P10 Report';
                         Image = "Report";
-                        RunObject = report "KRA ITAX P10 Report";
+                        // RunObject = report "KRA ITAX P10 Report";
+                        RunObject = report "ITAX P10 Report";
                         ApplicationArea = All;
                         ToolTip = 'Executes the P10 Report action';
                     }

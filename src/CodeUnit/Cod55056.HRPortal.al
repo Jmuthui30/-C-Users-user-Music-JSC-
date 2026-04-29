@@ -593,13 +593,21 @@ codeunit 55056 HRPortal
         Employee: Record "Client Employee Master";
         DateFilter: Date;
         DateFilterTxt: Text;
+        VarPayPeriod: Record "Payroll Period II";
     begin
+
+        //    VarPayPeriod.Reset();
+        //     VarPayPeriod.SetRange(Closed, false);
+        //     if VarPayPeriod.Find('-') then
+        //       payPeriod := VarPayPeriod."Starting Date";
+
         DateFilterTxt := Format(payPeriod);
         TempBlob_lRec.CreateOutStream(OutStr, TEXTENCODING::UTF8);
         Employee.Reset;
         //Employee.SetRange(Employee."No.", employeeNumber);
         Employee.SetRange(Employee."No.", employeeNumber);
         Employee.SetRange("Pay Period Filter", Dt2Date(payPeriod));
+        // Employee.SetRange("Pay Period Filter", payPeriod);
         Employee.SetRange(Status, Employee.Status::Active);
         if Employee.FindFirst() then begin
             //PaySlipReport.InitPayrollFilter(DateFilterTxt);
