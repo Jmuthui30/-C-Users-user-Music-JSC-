@@ -1721,7 +1721,7 @@ page 51742 "HR & Admin Manager Role Center"
                 Caption = 'Training & Development';
                 Image = Marketing;
                 ToolTip = 'Track Employee Training & Development';
-                Visible = false;
+                // Visible = false;
                 action("Competency and Qualifications Catalogue")
                 {
                     ApplicationArea = All;
