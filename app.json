@@ -4,7 +4,7 @@
   "publisher": "ALTAIR RETRO LTD",
 
 
-  "version": "1.0.1.774",
+  "version": "1.0.1.789",
 
   
   "brief": "",
@@ -23,7 +23,7 @@
   
   "idRanges": [
     {
-      "from": 40000,
+      "from": 50000,
       "to": 59999
     }
   ],
