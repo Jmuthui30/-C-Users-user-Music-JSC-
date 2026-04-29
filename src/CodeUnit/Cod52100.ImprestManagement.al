@@ -1,6 +1,6 @@
 codeunit 52100 "Imprest Management"
 {
-    
+
     // version THL- ADV.FIN 1.0
     // Author     : Vincent Okoth
     // Upgraded By : Henry Ngari
@@ -24,46 +24,48 @@ codeunit 52100 "Imprest Management"
     trigger OnRun()
     begin
     end;
-    var ImprestDetails: Record "Imprest Details";
-    Text000: Label 'Are you sure you want to post the document?';
-    Text001: Label 'The Document No %1 has not been fully approved.';
-    EmployeeCustomerMapping: Record "Employee Customer Mapping";
-    Text002: Label 'The customer account number for %1 has not been created.';
-    Text003: Label 'The request amount cannot be zero.';
-    Text004: Label 'The document %1 has been posted.';
-    AdvancedFinanceSetup: Record "Advanced Finance Setup";
-    CMSetup: Record "Cash Management Setup";
-    GenJnLine: Record "Gen. Journal Line";
-    Batch: Record "Gen. Journal Batch";
-    LineNo: Integer;
-    GLEntry: Record "G/L Entry";
-    GLSetup: Record "General Ledger Setup";
-    Text005: Label 'Kindly capture the actual amount spent on this document';
-    Text006: Label 'Surrender Submitted.';
-    Text007: Label 'This surrender has been posted.';
-    Text008: Label 'Are you sure you want to post the Surrender?';
-    Text009: Label 'The Surrender No %1 has not been submitted.';
-    Text010: Label 'The surrender amount cannot be zero.';
-    Text011: Label 'The surrender %1 has been posted.';
-    RefundSelectionString: Label 'Receive Now,Deduct from Payroll';
-    ClaimSelectionString: Label 'Pay Now,Pay from Payroll';
-    Text012: Label 'You should receive a refund of %1 from %2. Kindly choose the desired option.';
-    Selection: Integer;
-    Text013: Label 'You should pay a claim of %1 to %2. Kindly choose the desired option.';
-    PayrollCalc: Codeunit "Payroll Calculator";
-    Text014: Label 'Are you sure you want to create a Payment Voucher?';
-    PV: Record "PV Header";
-    PVLines: Record "PV Lines";
-    Text015: Label 'Are you sure you want to create a Purchase Orders?';
-    Request: Record "Request for Payment";
-    RequestLines: Record "Request for Payment Lines";
-    Text016: Label 'Are you sure you want to create a Request for Payment?';
-    Text017: Label 'This Staff Claim has been posted.';
-    ReceiptsHeader: Record "Receipts Header";
-    ReceiptLines: Record "Receipt Lines";
-    FinMgt: Codeunit "Finance Management";
-    Emp: Record "Employee Master";
-    BankAccount: Record "Bank Account";
+
+    var
+        ImprestDetails: Record "Imprest Details";
+        Text000: Label 'Are you sure you want to post the document?';
+        Text001: Label 'The Document No %1 has not been fully approved.';
+        EmployeeCustomerMapping: Record "Employee Customer Mapping";
+        Text002: Label 'The customer account number for %1 has not been created.';
+        Text003: Label 'The request amount cannot be zero.';
+        Text004: Label 'The document %1 has been posted.';
+        AdvancedFinanceSetup: Record "Advanced Finance Setup";
+        CMSetup: Record "Cash Management Setup";
+        GenJnLine: Record "Gen. Journal Line";
+        Batch: Record "Gen. Journal Batch";
+        LineNo: Integer;
+        GLEntry: Record "G/L Entry";
+        GLSetup: Record "General Ledger Setup";
+        Text005: Label 'Kindly capture the actual amount spent on this document';
+        Text006: Label 'Surrender Submitted.';
+        Text007: Label 'This surrender has been posted.';
+        Text008: Label 'Are you sure you want to post the Surrender?';
+        Text009: Label 'The Surrender No %1 has not been submitted.';
+        Text010: Label 'The surrender amount cannot be zero.';
+        Text011: Label 'The surrender %1 has been posted.';
+        RefundSelectionString: Label 'Receive Now,Deduct from Payroll';
+        ClaimSelectionString: Label 'Pay Now,Pay from Payroll';
+        Text012: Label 'You should receive a refund of %1 from %2. Kindly choose the desired option.';
+        Selection: Integer;
+        Text013: Label 'You should pay a claim of %1 to %2. Kindly choose the desired option.';
+        PayrollCalc: Codeunit "Payroll Calculator";
+        Text014: Label 'Are you sure you want to create a Payment Voucher?';
+        PV: Record "PV Header";
+        PVLines: Record "PV Lines";
+        Text015: Label 'Are you sure you want to create a Purchase Orders?';
+        Request: Record "Request for Payment";
+        RequestLines: Record "Request for Payment Lines";
+        Text016: Label 'Are you sure you want to create a Request for Payment?';
+        Text017: Label 'This Staff Claim has been posted.';
+        ReceiptsHeader: Record "Receipts Header";
+        ReceiptLines: Record "Receipt Lines";
+        FinMgt: Codeunit "Finance Management";
+        Emp: Record "Employee Master";
+        BankAccount: Record "Bank Account";
     // procedure PostImprestRequest(var ImprestHeader: Record "Imprest Header")
     // begin
     //     if Confirm(Text000, false) = true then begin
@@ -752,50 +754,126 @@ codeunit 52100 "Imprest Management"
         if Memo."PR No." <> '' then if Confirm('A Purchase Requisition ' + Memo."PR No." + 'was already created for this Memo. Do you still wish to create another Requisition?', true) = false then exit;
         UserSetup.Get(UserId);
         UserSetup.TestField("Employee No.");
-        Counter:=0;
+        Counter := 0;
         PRHeader.Init();
-        PRHeader."Document Type":=PRHeader."Document Type"::"Purchase Requisition";
-        PRHeader."Requisition Type":=PRHeader."Requisition Type"::"Purchase Requisition";
-        PRHeader."Raised by":=UserId;
+        PRHeader."Document Type" := PRHeader."Document Type"::"Purchase Requisition";
+        PRHeader."Requisition Type" := PRHeader."Requisition Type"::"Purchase Requisition";
+        PRHeader."Raised by" := UserId;
         PRHeader.Insert(true);
-        PRHeader."PR Created":=false;
-        PRHeader.Status:=PRHeader.Status::Open;
-        PRHeader."Employee Code":=UserSetup."Employee No.";
+        PRHeader."PR Created" := false;
+        PRHeader.Status := PRHeader.Status::Open;
+        PRHeader."Employee Code" := UserSetup."Employee No.";
         PRHeader.Validate("Employee Code");
-        PRHeader.Reason:=CopyStr(Memo.Purpose, 1, 100);
+        PRHeader.Reason := CopyStr(Memo.Purpose, 1, 100);
         PRHeader.Modify();
         Lines.Reset();
         Lines.SetRange("Memo No.", Memo."No.");
         Lines.SetRange(Decision, Lines.Decision::"Order from Service Provider");
-        if Lines.FindFirst()then begin
-            repeat if Lines.Amount <> 0 then begin
-                    Counter:=Counter + 1;
+        if Lines.FindFirst() then begin
+            repeat
+                if Lines.Amount <> 0 then begin
+                    Counter := Counter + 1;
                     PRLines.Init();
-                    PRLines.Status:=PRLines.Status::Open;
-                    PRLines.Type:=PRLines.Type::Expense;
-                    PRLines."Requisition No":=PRHeader."No.";
-                    PRLines."Requisition Type":=PRLines."Requisition Type"::"Purchase Requisition";
-                    PRLines."Line No":=Counter;
-                    PRLines.No:=Lines."Expense Code";
+                    PRLines.Status := PRLines.Status::Open;
+                    PRLines.Type := PRLines.Type::Expense;
+                    PRLines."Requisition No" := PRHeader."No.";
+                    PRLines."Requisition Type" := PRLines."Requisition Type"::"Purchase Requisition";
+                    PRLines."Line No" := Counter;
+                    PRLines.No := Lines."Expense Code";
                     PRLines.Validate(No);
-                    PRLines."Unit of Measure":='EACH';
-                    PRLines.Quantity:=1;
-                    PRLines."Unit Price":=Lines.Amount;
+                    PRLines."Unit of Measure" := 'EACH';
+                    PRLines.Quantity := 1;
+                    PRLines."Unit Price" := Lines.Amount;
                     PRLines.Validate("Unit Price");
-                    PRLines.Amount:=Lines.Amount;
-                    PRLines."Global Dimension 1 Code":=Lines."Global Dimension 1 Code";
-                    PRLines."Global Dimension 2 Code":=Lines."Global Dimension 2 Code";
+                    PRLines.Amount := Lines.Amount;
+                    PRLines."Global Dimension 1 Code" := Lines."Global Dimension 1 Code";
+                    PRLines."Global Dimension 2 Code" := Lines."Global Dimension 2 Code";
                     PRLines.Insert();
                 end;
             until Lines.Next() = 0;
         end;
-        Memo."PR No.":=PRHeader."No.";
+        Memo."PR No." := PRHeader."No.";
         Memo.Modify();
         if PRHeader."No." <> '' then begin
             Message('Purchase Requisition ' + PRHeader."No." + ' has been created');
             Page.Run(Page::"SS Purch Requisition Header-Op", PRHeader);
         end;
     end;
+
+    procedure CreateImprestMemoPay(var Memo: Record "Imprest Memo Header")
+    var
+        Lines: Record "Imprest Memo Lines";
+        PRHeader: Record Payments;
+        PRLines: Record "Payment Lines";
+        UserSetup: Record "User Setup";
+        Counter: Integer;
+    begin
+        if Memo."PR No." <> '' then if Confirm('A Purchase Requisition ' + Memo."PR No." + 'was already created for this Memo. Do you still wish to create another Requisition?', true) = false then exit;
+        UserSetup.Get(UserId);
+        UserSetup.TestField("Employee No.");
+        Counter := 0;
+        PRHeader.Init();
+
+
+
+        // No.
+        // Date
+        // Time
+        // Apply on behalf
+        // Account No.
+        // Account Name
+        // Responsibility Center
+        // Dimensions
+        // Directorate Code
+        // Department Code
+        // Travel Type
+        // Local
+        // Currency
+        // Imprest Payee
+        // Purpose
+        // Destination
+        // Travel Date
+        // Return Date
+        // No of Days
+        // Due Date
+        // Created By
+        // Status
+        // Open
+        // Imprest Amount
+
+        PRHeader."Payment Type" := PRHeader."Payment Type"::Imprest;
+        PRHeader."No." := PRHeader."No.";
+        PRHeader.Date := Today;
+        PRHeader."Time Inserted" := Time;
+        PRHeader."Apply on behalf" := false;
+        PRHeader."Account No." := UserId;
+        PRHeader."Account Name" := UserId;
+        PRHeader.Status := PRHeader.Status::Open;
+        PRHeader."Travel Date" := Memo."Departure Date";
+        PRHeader."Created By" := UserId;
+        PRHeader."No of Days" := Memo."Total Days in the Field";
+        PRHeader.Insert();
+        Lines.Reset();
+        Lines.SetRange(Lines."No.", Memo."No.");
+        if Lines.FindFirst() then begin
+            repeat
+                if Lines.Amount <> 0 then begin
+                    Counter := Counter + 1;
+                    PRLines.Init();
+                    PRLines."Imprest Payment" := true;
+
+                    PRLines.Insert();
+                end;
+            until Lines.Next() = 0;
+        end;
+        Memo."PR No." := PRHeader."No.";
+        Memo.Modify();
+        if PRHeader."No." <> '' then begin
+            Message('Purchase Requisition ' + PRHeader."No." + ' has been created');
+            Page.Run(Page::"SS Purch Requisition Header-Op", PRHeader);
+        end;
+    end;
+
     procedure CreateImprestPayrollClaims(var Memo: Record "Imprest Memo Header")
     var
         ClaimHeader: Record "Imprest Payroll Claims Header";
@@ -803,19 +881,20 @@ codeunit 52100 "Imprest Management"
         if Memo."Payroll Claim No." <> '' then if Confirm('A Payroll Claim ' + Memo."Payroll Claim No." + 'was already created for this Memo. Do you still wish to create another Imprest Payroll Claim?', true) = false then exit;
         ClaimHeader.Init();
         ClaimHeader.TransferFields(Memo);
-        ClaimHeader."No.":='';
-        ClaimHeader.Date:=Today;
-        ClaimHeader."Imprest Memo":=Memo."No.";
-        ClaimHeader.Status:=ClaimHeader.Status::Open;
+        ClaimHeader."No." := '';
+        ClaimHeader.Date := Today;
+        ClaimHeader."Imprest Memo" := Memo."No.";
+        ClaimHeader.Status := ClaimHeader.Status::Open;
         ClaimHeader.Insert(true);
         ClaimHeader.Validate("Imprest Memo", Memo."No.");
-        Memo."Payroll Claim No.":=ClaimHeader."No.";
+        Memo."Payroll Claim No." := ClaimHeader."No.";
         Memo.Modify();
         if ClaimHeader."No." <> '' then begin
             Message('Imprest Payroll Claim ' + ClaimHeader."No." + ' has been created');
             Page.Run(Page::"Imprest Payroll Claim Header", ClaimHeader);
         end;
     end;
+
     procedure ProcessImprestClaimsToPayroll(var PayrollClaim: Record "Imprest Payroll Claims Header")
     var
         PayrollMgt: Codeunit "Client Payroll Calculator";
@@ -824,8 +903,9 @@ codeunit 52100 "Imprest Management"
         if PayrollClaim.Status <> PayrollClaim.Status::Released then Error('The payroll claims are not yet approved');
         Lines.Reset();
         Lines.SetRange("No.", PayrollClaim."No.");
-        if Lines.FindFirst()then begin
-            repeat Lines.TestField("Payroll Code");
+        if Lines.FindFirst() then begin
+            repeat
+                Lines.TestField("Payroll Code");
                 Lines.TestField("Employee No");
                 Lines.TestField("Payroll Earning Code");
                 if Lines.Amount > 0 then PayrollMgt.InsertEarningPayrollEntry(Lines."Payroll Code", Lines."Employee No", Lines."Payroll Earning Code", Lines.Amount);

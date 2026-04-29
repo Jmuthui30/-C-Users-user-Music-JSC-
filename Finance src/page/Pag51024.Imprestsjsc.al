@@ -147,7 +147,7 @@ page 51024 Imprestsjsc
                 Rec.SetRange("Created By", UserId);
             end;
         end else
-            Error('%1 does not exist in the Users Setup', UserId);
+            Message('%1 does not exist in the Users Setup', UserId);
     end;
 
     trigger OnAfterGetRecord()
