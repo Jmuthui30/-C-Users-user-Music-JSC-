@@ -60,6 +60,7 @@ codeunit 55056 HRPortal
         tbl_approvalEntry: Record "Approval Entry";
         RecRef: RecordRef;
         memo: Record "Imprest Memo Header";
+        memo1: Record "Imprest Memo Header";
         memoLines: Record "Imprest Memo Lines";
         employeeAppraisal: Record "Employee Appraisal";
         employeeAppraisal1: Record "Employee Appraisal";
@@ -978,6 +979,10 @@ codeunit 55056 HRPortal
         if UserSetup.FindFirst() then begin
             UpdateApprovalEntries(DocNo, UserSetup."User ID");
         end;
+        Commit();
+        memo1.Get(DocNo);
+        memo1.Status := memo1.Status::"Pending Approval";
+        memo1.Modify(true);
 
         status := 'success*Imprest memo has been has been succesfully sent for approval.';
     end;
@@ -990,6 +995,10 @@ codeunit 55056 HRPortal
         memo.Get(DocNo);
 
         ApprovalsMngt.OnCancelImprestMemoApprovalRequest(memo);
+        Commit();
+        memo1.Get(DocNo);
+        memo1.Status := memo1.Status::Open;
+        memo1.Modify(true);
         status := 'success*Imprest Memo Request approval request has been successfully cancelled.';
     end;
 
@@ -2238,24 +2247,57 @@ codeunit 55056 HRPortal
     procedure FAWEgenerateMemoReport(employeeNumber: Code[20]; docNo: Text) BaseImage: Text
     var
         ImprestMemo: Record "Imprest Memo Header";
+        ImprestMemoReport: Report "Memo Report";
+        // ImprestMemoReport1: Report "Imprest Memo";
+        RecRef: RecordRef;
+        Filename: Text[100];
+        TempBlob: Codeunit "Temp Blob";
+        StatementOutstream: OutStream;
+        StatementInstream: InStream;
+        Base64Convert: Codeunit "Base64 Convert";
     begin
 
-        Employee.RESET;
-        Employee.SETRANGE(Employee."No.", employeeNumber);
-        IF Employee.FINDSET THEN BEGIN
-            TempBlob_lRec.CreateOutStream(OutStr, TEXTENCODING::UTF8);
-            ImprestMemo.Reset;
-            ImprestMemo.SetRange("No.", docNo);
-            if ImprestMemo.FindSet then begin
-                RecRef.GetTable(ImprestMemo);
-                Report.SaveAs(Report::"Imprest Memo", '', ReportFormat::Pdf, OutStr, RecRef);
-                FileManagement_lCdu.BLOBExport(TempBlob_lRec, STRSUBSTNO('ImprestMemo_%1.Pdf', ImprestMemo."No."), TRUE);
-                TempBlob_lRec.CreateInstream(InStr, TEXTENCODING::UTF8);
-                BaseImage := Base64Convert.ToBase64(InStr);
-            end;
-        END;
+        // Employee.RESET;
+        // Employee.SETRANGE(Employee."No.", employeeNumber);
+        // IF Employee.FINDSET THEN BEGIN
+        //     TempBlob_lRec.CreateOutStream(OutStr, TEXTENCODING::UTF8);
+        //     ImprestMemo.Reset;
+        //     ImprestMemo.SetRange("No.", docNo);
+        //     if ImprestMemo.FindFirst() then begin
+        //         RecRef.GetTable(ImprestMemo);
+        //         Report.SaveAs(Report::"Imprest Memo", '', ReportFormat::Pdf, OutStr, RecRef);
+        //         FileManagement_lCdu.BLOBExport(TempBlob_lRec, STRSUBSTNO('ImprestMemo_%1.Pdf', ImprestMemo."No."), TRUE);
+        //         TempBlob_lRec.CreateInstream(InStr, TEXTENCODING::UTF8);
+        //         BaseImage := Base64Convert.ToBase64(InStr);
+        //     end;
+        // END;
 
+        ImprestMemo.Reset();
+        ImprestMemo.SetRange("No.", docNo);
+
+        if ImprestMemo.FindFirst() then begin
+            ImprestMemoReport.SetTableView(ImprestMemo);
+            TempBlob.CreateOutStream(StatementOutstream);
+            if ImprestMemoReport.SaveAs('', ReportFormat::Pdf, StatementOutstream) then begin
+                TempBlob.CreateInStream(StatementInstream);
+                BaseImage := Base64Convert.ToBase64(StatementInstream);
+                exit(BaseImage);
+            end;
+
+        end;
     end;
+
+    //     FileManagement_lCdu.BLOBExport(
+    //         TempBlob_lRec,
+    //         StrSubstNo('ImprestMemo_%1.pdf', ImprestMemo."No."),
+    //         true
+    //     );
+
+    //     TempBlob_lRec.CreateInStream(InStr, TEXTENCODING::UTF8);
+    //     BaseImage := Base64Convert.ToBase64(InStr);
+    // end;
+
+    // end;
 
     procedure FAWEgenerateImprestMemoExpenditure(employeeNumber: Code[20]; docNo: Text) BaseImage: Text
     var
