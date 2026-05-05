@@ -289,8 +289,16 @@ page 50059 "Imprest Memo Header"
 
                     trigger OnAction()
                     begin
+                        CommitmentMgt.InsertImprestBudgetAnalysis(Rec);
+                        Commit();
+
+                        CommitmentMgt.ImprestMemoBudgetCheck(Rec);
+                        Message('Check the budget before sending approval request.');
+
                         ApprovalsMngt.OnSendImprestMemoForApproval(Rec);
+                        Message('Approval Request Sent');
                         CurrPage.Close();
+
                     end;
                 }
                 action("Cancel Approval Request")
@@ -476,7 +484,7 @@ page 50059 "Imprest Memo Header"
                     PromotedIsBig = true;
                     PromotedOnly = true;
 
-                    //Visible = Rec.Status = Rec.Status::Released;
+                    Visible = false;//Rec.Status = Rec.Status::Released;
                     trigger OnAction()
                     var
                         ImprestMgt: Codeunit "Imprest Management";
@@ -484,6 +492,26 @@ page 50059 "Imprest Memo Header"
                         CommitmentMgt.ImprestMemoExpenseCheck(Rec);
                         Commit();
                         ImprestMgt.CreateImprestMemoPR(Rec);
+                    end;
+                }
+                action(ImprestRequest)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Request for Imprest';
+                    Image = GetOrder;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    PromotedIsBig = true;
+                    PromotedOnly = true;
+
+                    Visible = Rec.Status = Rec.Status::Released;
+                    trigger OnAction()
+                    var
+                        ImprestMgt: Codeunit "Imprest Management";
+                    begin
+                        // CommitmentMgt.ImprestMemoExpenseCheck(Rec);
+                        // Commit();
+                        ImprestMgt.CreateImprestMemoPay(Rec);
                     end;
                 }
                 action(Budget)

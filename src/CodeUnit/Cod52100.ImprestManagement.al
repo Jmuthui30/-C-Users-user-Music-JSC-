@@ -807,61 +807,48 @@ codeunit 52100 "Imprest Management"
         PRLines: Record "Payment Lines";
         UserSetup: Record "User Setup";
         Counter: Integer;
+        LineNo: Code[20];
+        NoSeriesMgt: Codeunit "No. Series";
+        CashMgt: Record "Cash Management Setups";
     begin
         if Memo."PR No." <> '' then if Confirm('A Purchase Requisition ' + Memo."PR No." + 'was already created for this Memo. Do you still wish to create another Requisition?', true) = false then exit;
         UserSetup.Get(UserId);
         UserSetup.TestField("Employee No.");
         Counter := 0;
+        LineNo := NoSeriesMgt.GetNextNo(CashMgt."Imprest Nos", Today, true);
+
+
         PRHeader.Init();
-
-
-
-        // No.
-        // Date
-        // Time
-        // Apply on behalf
-        // Account No.
-        // Account Name
-        // Responsibility Center
-        // Dimensions
-        // Directorate Code
-        // Department Code
-        // Travel Type
-        // Local
-        // Currency
-        // Imprest Payee
-        // Purpose
-        // Destination
-        // Travel Date
-        // Return Date
-        // No of Days
-        // Due Date
-        // Created By
-        // Status
-        // Open
-        // Imprest Amount
-
-        PRHeader."Payment Type" := PRHeader."Payment Type"::Imprest;
-        PRHeader."No." := PRHeader."No.";
-        PRHeader.Date := Today;
-        PRHeader."Time Inserted" := Time;
-        PRHeader."Apply on behalf" := false;
-        PRHeader."Account No." := UserId;
-        PRHeader."Account Name" := UserId;
-        PRHeader.Status := PRHeader.Status::Open;
-        PRHeader."Travel Date" := Memo."Departure Date";
-        PRHeader."Created By" := UserId;
-        PRHeader."No of Days" := Memo."Total Days in the Field";
-        PRHeader.Insert();
         Lines.Reset();
         Lines.SetRange(Lines."No.", Memo."No.");
         if Lines.FindFirst() then begin
             repeat
                 if Lines.Amount <> 0 then begin
                     Counter := Counter + 1;
+                    PRHeader.Init();
+                    PRHeader."Payment Type" := PRHeader."Payment Type"::Imprest;
+                    PRHeader."No." := LineNo;
+                    PRHeader.Date := Today;
+                    PRHeader."Time Inserted" := Time;
+                    PRHeader."Apply on behalf" := false;
+                    PRHeader."Account No." := UserId;
+                    PRHeader."Account Name" := UserId;
+                    PRHeader.Status := PRHeader.Status::Open;
+                    PRHeader."Travel Date" := Memo."Departure Date";
+                    PRHeader."Created By" := UserId;
+                    PRHeader.Destination := Memo."Activity Location";
+                    PRHeader."No of Days" := Memo."Total Days in the Field";
+                    PRHeader.Insert();
+                    //Payment Lines
                     PRLines.Init();
                     PRLines."Imprest Payment" := true;
-
+                    PRLines.No := PRHeader."No.";
+                    PRLines."Line No" := Counter;
+                    PRLines."Date" := Today;
+                    PRLines."Account Type" := PRLines."Account Type"::"G/L Account";
+                    PRLines.Description := PRHeader."Payment Narration";
+                    PRLines.Amount := Lines.Amount;
+                    PRLines."Posted Date" := Today;
                     PRLines.Insert();
                 end;
             until Lines.Next() = 0;
