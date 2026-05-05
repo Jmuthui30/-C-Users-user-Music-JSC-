@@ -160,8 +160,7 @@ page 52396 "Training Request Card"
             part("Attached Documents"; "Document Attachment Factbox")
             {
                 Caption = 'Attachments';
-                SubPageLink = "Table ID" = CONST(52146446),
-                              "No." = FIELD("Request No.");
+                SubPageLink = "No." = field("Request No.");
             }
         }
 
