@@ -460,7 +460,7 @@ page 50059 "Imprest Memo Header"
                     PromotedIsBig = true;
                     PromotedOnly = true;
 
-                    //Visible = Rec.Status = Rec.Status::Released;
+                    Visible = false; //Rec.Status = Rec.Status::Released;
                     trigger OnAction()
                     var
                         Expenses: Record "Imprest Procurement Decision";

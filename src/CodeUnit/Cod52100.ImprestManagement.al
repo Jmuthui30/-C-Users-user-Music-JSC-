@@ -805,46 +805,64 @@ codeunit 52100 "Imprest Management"
         Lines: Record "Imprest Memo Lines";
         PRHeader: Record Payments;
         PRLines: Record "Payment Lines";
-        UserSetup: Record "User Setup";
         Counter: Integer;
         LineNo: Code[20];
-        NoSeriesMgt: Codeunit "No. Series";
+        NoSeries: Codeunit "No. Series";
         CashMgt: Record "Cash Management Setups";
     begin
-        if Memo."PR No." <> '' then if Confirm('A Purchase Requisition ' + Memo."PR No." + 'was already created for this Memo. Do you still wish to create another Requisition?', true) = false then exit;
-        UserSetup.Get(UserId);
-        UserSetup.TestField("Employee No.");
+        if not Confirm('An Imprest Requisition %1 was already created for this Memo. Do you still wish to create another?', true, Memo."PR No.") then
+            exit;
+
+        // Fetch setup record first
+        CashMgt.Get();
+        CashMgt.TestField("Imprest Nos");
+
         Counter := 0;
-        LineNo := NoSeriesMgt.GetNextNo(CashMgt."Imprest Nos", Today, true);
 
-
-        PRHeader.Init();
         Lines.Reset();
-        Lines.SetRange(Lines."No.", Memo."No.");
-        if Lines.FindFirst() then begin
+        Lines.SetRange("No.", Memo."No.");
+        if Lines.FindSet() then begin
             repeat
                 if Lines.Amount <> 0 then begin
                     Counter := Counter + 1;
+                    LineNo := NoSeries.GetNextNo(CashMgt."Imprest Nos");
+                    Message('Generated Line No: %1', LineNo);
                     PRHeader.Init();
-                    PRHeader."Payment Type" := PRHeader."Payment Type"::Imprest;
                     PRHeader."No." := LineNo;
+                    PRHeader."Payment Type" := PRHeader."Payment Type"::Imprest;
                     PRHeader.Date := Today;
                     PRHeader."Time Inserted" := Time;
                     PRHeader."Apply on behalf" := false;
-                    PRHeader."Account No." := UserId;
-                    PRHeader."Account Name" := UserId;
+                    if Lines.Type = Lines.Type::Expert then begin
+                        PRHeader."On behalf of" := Lines.Name;
+                        PRHeader."Account No." := UserId;
+                        PRHeader."Account Name" := UserId;
+                        PRHeader."Staff No." := Lines."Account No.";
+                        PRHeader."Payment Narration" := CopyStr(Memo.Purpose + Lines.Name, 1, 100);
+                    end else
+                        PRHeader."Account No." := Lines."Account No.";
+                    PRHeader."Account Name" := Lines.Name;
+                    PRHeader."Staff No." := Lines."Account No.";
+                    PRHeader."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+                    PRHeader."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+                    PRHeader."Payment Narration" := CopyStr(Memo.Purpose, 1, 100);
                     PRHeader.Status := PRHeader.Status::Open;
+                    PRHeader."Date of Project" := Memo."Departure Date";
                     PRHeader."Travel Date" := Memo."Departure Date";
+                    PRHeader."Due Date" := Today;
+                    PRHeader."Salary Scale" := Lines."Job Group";
+                    PRHeader."Date of Completion" := Memo."Return Date";
                     PRHeader."Created By" := UserId;
                     PRHeader.Destination := Memo."Activity Location";
                     PRHeader."No of Days" := Memo."Total Days in the Field";
+                    PRHeader."Total Amount" := Lines.Amount;
                     PRHeader.Insert();
-                    //Payment Lines
+
                     PRLines.Init();
                     PRLines."Imprest Payment" := true;
                     PRLines.No := PRHeader."No.";
                     PRLines."Line No" := Counter;
-                    PRLines."Date" := Today;
+                    PRLines.Date := Today;
                     PRLines."Account Type" := PRLines."Account Type"::"G/L Account";
                     PRLines.Description := PRHeader."Payment Narration";
                     PRLines.Amount := Lines.Amount;
@@ -853,12 +871,9 @@ codeunit 52100 "Imprest Management"
                 end;
             until Lines.Next() = 0;
         end;
-        Memo."PR No." := PRHeader."No.";
-        Memo.Modify();
-        if PRHeader."No." <> '' then begin
-            Message('Purchase Requisition ' + PRHeader."No." + ' has been created');
-            Page.Run(Page::"SS Purch Requisition Header-Op", PRHeader);
-        end;
+
+        if Counter > 0 then
+            Message('%1 Imprest Payment line(s) created successfully.', Counter);
     end;
 
     procedure CreateImprestPayrollClaims(var Memo: Record "Imprest Memo Header")
