@@ -96,7 +96,7 @@ page 52477 "Employee Separtion Card"
         }
         area(factboxes)
         {
-            part("Attached Documents"; "Document Attachment Factbox")
+            part(Attachment; "Doc. Attachment List Factbox")
             {
                 Caption = 'Attachments';
                 SubPageLink = "Table ID" = CONST(52146746),

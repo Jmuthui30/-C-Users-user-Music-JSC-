@@ -182,7 +182,7 @@ page 52043 "Leave Application Card"
             {
                 SubPageLink = "Document No." = field("Application No");
             }
-            part("Attached Documents"; "Document Attachment Factbox")
+            part(Attachment; "Doc. Attachment List Factbox")
             {
                 Caption = 'Attachments';
                 SubPageLink = "Table ID" = CONST(52146523),

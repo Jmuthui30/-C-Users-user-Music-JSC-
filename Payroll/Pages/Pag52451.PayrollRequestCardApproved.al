@@ -246,7 +246,7 @@ page 52451 "Payroll Request Card-Approved"
         }
         area(FactBoxes)
         {
-            part("Attached Documents"; "Document Attachment Factbox")
+            part(Attachments; "Doc. Attachment List Factbox")
             {
                 Caption = 'Attachments';
                 SubPageLink = "Table ID" = CONST(52146446),

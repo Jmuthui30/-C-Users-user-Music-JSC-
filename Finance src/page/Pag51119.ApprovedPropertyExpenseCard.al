@@ -203,7 +203,7 @@ page 51119 "Approved Property Expense Card"
         }
         area(FactBoxes)
         {
-            part("Attached Documents"; "Document Attachment Factbox")
+            part(Attachments; "Doc. Attachment List Factbox")
             {
                 Caption = 'Attachments';
                 SubPageLink = "Table ID" = const(Database::Payments),

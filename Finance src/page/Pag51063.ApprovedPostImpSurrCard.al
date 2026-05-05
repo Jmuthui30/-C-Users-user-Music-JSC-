@@ -7,7 +7,7 @@ page 51063 "Approved/Post Imp Surr. Card"
     PageType = Card;
     SourceTable = Payments;
     UsageCategory = None;
-   
+
     layout
     {
         area(Content)
@@ -223,7 +223,7 @@ page 51063 "Approved/Post Imp Surr. Card"
         }
         area(FactBoxes)
         {
-            part("Attached Documents"; "Document Attachment Factbox")
+            part(Attachments; "Doc. Attachment List Factbox")
             {
                 Caption = 'Attachments';
                 SubPageLink = "Table ID" = const(Database::Payments),

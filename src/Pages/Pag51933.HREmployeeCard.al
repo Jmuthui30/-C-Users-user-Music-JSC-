@@ -521,7 +521,7 @@ page 51933 "HR Employee Card"
                 ApplicationArea = BasicHR;
                 SubPageLink = "No." = FIELD("No.");
             }
-            part("Attached Documents"; "Document Attachment Factbox")
+            part(Attachment; "Doc. Attachment List Factbox")
             {
                 ApplicationArea = All;
                 Caption = 'Attachments';

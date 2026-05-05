@@ -8,7 +8,7 @@ page 51919 "Service Quotes - Rejected"
     PageType = List;
     ApplicationArea = All;
     SourceTable = "Service Header";
-    SourceTableView = WHERE("Document Type"=CONST(Quote));
+    SourceTableView = WHERE("Document Type" = CONST(Quote));
     UsageCategory = Lists;
 
     layout
@@ -242,11 +242,13 @@ page 51919 "Service Quotes - Rejected"
 
                 trigger OnAction()
                 var
-                    DocPrint: Codeunit 229;
+                    DocPrint: Codeunit "Document-Print";
+
                 begin
                     CurrPage.UPDATE(TRUE);
-                    DocPrint.PrintServiceHeader(Rec);
+                    // DocPrint.PrintServiceHeader(Rec);
                 end;
+
             }
         }
     }

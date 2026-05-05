@@ -157,7 +157,7 @@ page 52396 "Training Request Card"
             {
                 SubPageLink = "Document No." = field("Request No.");
             }
-            part(Attachments; "Document Attachment Factbox")
+            part(Attachments; "Doc. Attachment List Factbox")
             {
                 Caption = 'Attachments';
                 ApplicationArea = All;

@@ -75,7 +75,7 @@ page 51914 "Service Worksheet Subform -App"
                     var
                         Item: Record Item;
                     begin
-                        IF(Rec."Location Code" <> '') AND (Rec.Type = Rec.Type::Item)THEN IF Item.GET(Rec."No.")THEN Item.TESTFIELD(Type, Item.Type::Inventory);
+                        IF (Rec."Location Code" <> '') AND (Rec.Type = Rec.Type::Item) THEN IF Item.GET(Rec."No.") THEN Item.TESTFIELD(Type, Item.Type::Inventory);
                         LocationCodeOnAfterValidate;
                     end;
                 }
@@ -279,7 +279,7 @@ page 51914 "Service Worksheet Subform -App"
                 {
                     ApplicationArea = All;
                     CaptionClass = '1,2,3';
-                    TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(3), "Dimension Value Type"=CONST(Standard), Blocked=filter('No'));
+                    TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(3), "Dimension Value Type" = CONST(Standard), Blocked = filter('No'));
                     Visible = false;
 
                     trigger OnValidate()
@@ -291,7 +291,7 @@ page 51914 "Service Worksheet Subform -App"
                 {
                     ApplicationArea = All;
                     CaptionClass = '1,2,4';
-                    TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(4), "Dimension Value Type"=CONST(Standard), Blocked=filter('No'));
+                    TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(4), "Dimension Value Type" = CONST(Standard), Blocked = filter('No'));
                     Visible = false;
 
                     trigger OnValidate()
@@ -303,7 +303,7 @@ page 51914 "Service Worksheet Subform -App"
                 {
                     ApplicationArea = All;
                     CaptionClass = '1,2,5';
-                    TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(5), "Dimension Value Type"=CONST(Standard), Blocked=FILTER('No'));
+                    TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(5), "Dimension Value Type" = CONST(Standard), Blocked = FILTER('No'));
                     Visible = false;
 
                     trigger OnValidate()
@@ -315,7 +315,7 @@ page 51914 "Service Worksheet Subform -App"
                 {
                     ApplicationArea = All;
                     CaptionClass = '1,2,6';
-                    TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(6), "Dimension Value Type"=CONST(Standard), Blocked=FILTER('No'));
+                    TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(6), "Dimension Value Type" = CONST(Standard), Blocked = FILTER('No'));
                     Visible = false;
 
                     trigger OnValidate()
@@ -327,7 +327,7 @@ page 51914 "Service Worksheet Subform -App"
                 {
                     ApplicationArea = All;
                     CaptionClass = '1,2,7';
-                    TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(7), "Dimension Value Type"=CONST(Standard));
+                    TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(7), "Dimension Value Type" = CONST(Standard));
                     Visible = false;
 
                     trigger OnValidate()
@@ -339,7 +339,7 @@ page 51914 "Service Worksheet Subform -App"
                 {
                     ApplicationArea = All;
                     CaptionClass = '1,2,8';
-                    TableRelation = "Dimension Value".Code WHERE("Global Dimension No."=CONST(8), "Dimension Value Type"=CONST(Standard));
+                    TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(8), "Dimension Value Type" = CONST(Standard));
                     Visible = false;
 
                     trigger OnValidate()
@@ -423,7 +423,7 @@ page 51914 "Service Worksheet Subform -App"
                     Promoted = true;
                     PromotedCategory = Category4;
                     RunObject = Page "Approval Comments";
-                    RunPageLink = "Document No."=FIELD("No.");
+                    RunPageLink = "Document No." = FIELD("No.");
                     Visible = OpenApprovalEntriesExistForCurrUser;
 
                     trigger OnAction()
@@ -435,7 +435,7 @@ page 51914 "Service Worksheet Subform -App"
                 }
                 action("Insert Ext. Texts")
                 {
-                    AccessByPermission = TableData "Extended Text Header"=R;
+                    AccessByPermission = TableData "Extended Text Header" = R;
                     ApplicationArea = All;
                     Caption = 'Insert &Ext. Texts';
                     Image = Text;
@@ -498,7 +498,7 @@ page 51914 "Service Worksheet Subform -App"
                 }
                 action("&Catalog Items")
                 {
-                    AccessByPermission = TableData "Nonstock Item"=R;
+                    AccessByPermission = TableData "Nonstock Item" = R;
                     ApplicationArea = All;
                     Caption = '&Catalog Items';
                     Image = NonStockItem;
@@ -529,7 +529,8 @@ page 51914 "Service Worksheet Subform -App"
 
                         trigger OnAction()
                         begin
-                            ItemAvailFormsMgt.ShowItemAvailFromServLine(Rec, ItemAvailFormsMgt.ByEvent);
+                            // ItemAvailFormsMgt.ShowItemAvailFromServLine(Rec, ItemAvailFormsMgt.ByEvent);
+                            ServAvailabilityMgt.ShowItemAvailabilityFromServLine(Rec, "Item Availability Type"::"Event");
                         end;
                     }
                     action(Period)
@@ -541,7 +542,8 @@ page 51914 "Service Worksheet Subform -App"
 
                         trigger OnAction()
                         begin
-                            ItemAvailFormsMgt.ShowItemAvailFromServLine(Rec, ItemAvailFormsMgt.ByPeriod);
+                            // ItemAvailFormsMgt.ShowItemAvailFromServLine(Rec, ItemAvailFormsMgt.ByPeriod);
+                            ServAvailabilityMgt.ShowItemAvailabilityFromServLine(Rec, "Item Availability Type"::Period);
                         end;
                     }
                     action(Variant)
@@ -553,12 +555,13 @@ page 51914 "Service Worksheet Subform -App"
 
                         trigger OnAction()
                         begin
-                            ItemAvailFormsMgt.ShowItemAvailFromServLine(Rec, ItemAvailFormsMgt.ByVariant);
+                            //ItemAvailFormsMgt.ShowItemAvailFromServLine(Rec, ItemAvailFormsMgt.ByVariant);
+                            ServAvailabilityMgt.ShowItemAvailabilityFromServLine(Rec, "Item Availability Type"::Variant);
                         end;
                     }
                     action(Location)
                     {
-                        AccessByPermission = TableData Location=R;
+                        AccessByPermission = TableData Location = R;
                         ApplicationArea = All;
                         Caption = 'Location';
                         Image = Warehouse;
@@ -566,7 +569,8 @@ page 51914 "Service Worksheet Subform -App"
 
                         trigger OnAction()
                         begin
-                            ItemAvailFormsMgt.ShowItemAvailFromServLine(Rec, ItemAvailFormsMgt.ByLocation);
+                            //ItemAvailFormsMgt.ShowItemAvailFromServLine(Rec, ItemAvailFormsMgt.ByLocation);
+                            ServAvailabilityMgt.ShowItemAvailabilityFromServLine(Rec, "Item Availability Type"::Location);
                         end;
                     }
                     action("BOM Level")
@@ -578,13 +582,14 @@ page 51914 "Service Worksheet Subform -App"
 
                         trigger OnAction()
                         begin
-                            ItemAvailFormsMgt.ShowItemAvailFromServLine(Rec, ItemAvailFormsMgt.ByBOM);
+                            // ItemAvailFormsMgt.ShowItemAvailFromServLine(Rec, ItemAvailFormsMgt.ByBOM);
+                            ServAvailabilityMgt.ShowItemAvailabilityFromServLine(Rec, "Item Availability Type"::BOM);
                         end;
                     }
                 }
                 action(Dimensions)
                 {
-                    AccessByPermission = TableData Dimension=R;
+                    AccessByPermission = TableData Dimension = R;
                     ApplicationArea = All;
                     Caption = 'Dimensions';
                     Image = Dimensions;
@@ -598,7 +603,7 @@ page 51914 "Service Worksheet Subform -App"
                 }
                 action("Select Item Substitution")
                 {
-                    AccessByPermission = TableData "Item Substitution"=R;
+                    AccessByPermission = TableData "Item Substitution" = R;
                     ApplicationArea = All;
                     Caption = 'Select Item Substitution';
                     Image = SelectItemSubstitution;
@@ -636,7 +641,7 @@ page 51914 "Service Worksheet Subform -App"
                 }
                 action("Order &Promising Line")
                 {
-                    AccessByPermission = TableData "Order Promising Line"=R;
+                    AccessByPermission = TableData "Order Promising Line" = R;
                     ApplicationArea = All;
                     Caption = 'Order &Promising Line';
                     ToolTip = 'View the calculated delivery date.';
@@ -653,80 +658,97 @@ page 51914 "Service Worksheet Subform -App"
     begin
         Rec.ShowShortcutDimCode(ShortcutDimCode);
     end;
-    trigger OnDeleteRecord(): Boolean var
+
+    trigger OnDeleteRecord(): Boolean
+    var
         ReserveServLine: Codeunit "Service Line-Reserve";
     begin
-        IF(Rec.Quantity <> 0) AND Rec.ItemExists(Rec."No.")THEN BEGIN
+        IF (Rec.Quantity <> 0) AND Rec.ItemExists(Rec."No.") THEN BEGIN
             COMMIT;
-            IF NOT ReserveServLine.DeleteLineConfirm(Rec)THEN EXIT(FALSE);
+            IF NOT ReserveServLine.DeleteLineConfirm(Rec) THEN EXIT(FALSE);
             ReserveServLine.DeleteLine(Rec);
         END;
     end;
-    trigger OnInsertRecord(BelowxRec: Boolean): Boolean begin
-        Rec."Line No.":=Rec.GetNextLineNo(xRec, BelowxRec);
+
+    trigger OnInsertRecord(BelowxRec: Boolean): Boolean
+    begin
+        Rec."Line No." := Rec.GetNextLineNo(xRec, BelowxRec);
     end;
+
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        Rec.Type:=xRec.Type;
+        Rec.Type := xRec.Type;
         CLEAR(ShortcutDimCode);
         Rec.VALIDATE("Service Item Line No.", ServItemLineNo);
     end;
-    var Text000: Label 'You cannot open the window because %1 is %2 in the %3 table.';
-    ServMgtSetup: Record "Service Mgt. Setup";
-    ItemAvailFormsMgt: Codeunit "Item Availability Forms Mgt";
-    ServItemLineNo: Integer;
-    ShortcutDimCode: array[8]of Code[20];
-    OEE_Requisitions: Codeunit 51805;
-    ServHeader: Record "Service Header";
-    ServiceLine: Record "Service Line";
-    OpenApprovalEntriesExistForCurrUser: Boolean;
-    OpenApprovalEntriesExist: Boolean;
-    ShowWorkflowStatus: Boolean;
-    CanCancelApprovalForRecord: Boolean;
-    DocumentIsPosted: Boolean;
-    ApprovalsMgt: Codeunit "Approvals Mgmt.";
+
+    var
+        Text000: Label 'You cannot open the window because %1 is %2 in the %3 table.';
+        ServMgtSetup: Record "Service Mgt. Setup";
+        ItemAvailFormsMgt: Codeunit "Item Availability Forms Mgt";
+        ServAvailabilityMgt: Codeunit "Serv. Availability Mgt.";
+        ServItemLineNo: Integer;
+        ShortcutDimCode: array[8] of Code[20];
+        OEE_Requisitions: Codeunit 51805;
+        ServHeader: Record "Service Header";
+        ServiceLine: Record "Service Line";
+        OpenApprovalEntriesExistForCurrUser: Boolean;
+        OpenApprovalEntriesExist: Boolean;
+        ShowWorkflowStatus: Boolean;
+        CanCancelApprovalForRecord: Boolean;
+        DocumentIsPosted: Boolean;
+        ApprovalsMgt: Codeunit "Approvals Mgmt.";
+
     [Scope('Cloud')]
     procedure SetValues(TempServItemLineNo: Integer)
     begin
-        ServItemLineNo:=TempServItemLineNo;
+        ServItemLineNo := TempServItemLineNo;
         Rec.SETFILTER("Service Item Line No.", '=%1|=%2', 0, ServItemLineNo);
     end;
+
     local procedure InsertStartFee()
     var
         ServOrderMgt: Codeunit ServOrderManagement;
     begin
         CLEAR(ServOrderMgt);
-        IF ServOrderMgt.InsertServCost(Rec, 1, TRUE)THEN CurrPage.UPDATE;
+        IF ServOrderMgt.InsertServCost(Rec, 1, TRUE) THEN CurrPage.UPDATE;
     end;
+
     local procedure InsertTravelFee()
     var
         ServOrderMgt: Codeunit ServOrderManagement;
     begin
         CLEAR(ServOrderMgt);
-        IF ServOrderMgt.InsertServCost(Rec, 0, TRUE)THEN CurrPage.UPDATE;
+        IF ServOrderMgt.InsertServCost(Rec, 0, TRUE) THEN CurrPage.UPDATE;
     end;
+
     local procedure InsertExtendedText(Unconditionally: Boolean)
     var
-        TransferExtendedText: Codeunit "Transfer Extended Text";
+        // TransferExtendedText: Codeunit "Transfer Extended Text";
+        ServiceTransferExtText: Codeunit "Service Transfer Ext. Text";
     begin
         OnBeforeInsertExtendedText(Rec);
-        IF TransferExtendedText.ServCheckIfAnyExtText(Rec, Unconditionally)THEN BEGIN
+        IF ServiceTransferExtText.ServCheckIfAnyExtText(Rec, Unconditionally) THEN BEGIN
             CurrPage.SAVERECORD;
-            TransferExtendedText.InsertServExtText(Rec);
+            ServiceTransferExtText.InsertServExtText(Rec);
         END;
-        IF TransferExtendedText.MakeUpdate THEN CurrPage.UPDATE;
+        IF ServiceTransferExtText.MakeUpdate THEN CurrPage.UPDATE;
     end;
+
     local procedure ShowReservationEntries()
     begin
         Rec.ShowReservationEntries(TRUE);
     end;
+
     local procedure SelectFaultResolutionCode()
     var
         ServItemLine: Record "Service Item Line";
         FaultResolutionRelation: Page "Fault/Resol. Cod. Relationship";
     begin
         ServMgtSetup.GET;
-        CASE ServMgtSetup."Fault Reporting Level" OF ServMgtSetup."Fault Reporting Level"::None: ERROR(Text000, ServMgtSetup.FIELDCAPTION("Fault Reporting Level"), ServMgtSetup."Fault Reporting Level", ServMgtSetup.TABLECAPTION);
+        CASE ServMgtSetup."Fault Reporting Level" OF
+            ServMgtSetup."Fault Reporting Level"::None:
+                ERROR(Text000, ServMgtSetup.FIELDCAPTION("Fault Reporting Level"), ServMgtSetup."Fault Reporting Level", ServMgtSetup.TABLECAPTION);
         END;
         ServItemLine.GET(Rec."Document Type", Rec."Document No.", Rec."Service Item Line No.");
         CLEAR(FaultResolutionRelation);
@@ -735,59 +757,70 @@ page 51914 "Service Worksheet Subform -App"
         FaultResolutionRelation.RUNMODAL;
         CurrPage.UPDATE(FALSE);
     end;
+
     local procedure SelectItemSubstitution()
     begin
         Rec.ShowItemSub;
         Rec.MODIFY;
     end;
+
     local procedure NoOnAfterValidate()
     begin
         InsertExtendedText(FALSE);
-        IF(Rec.Reserve = Rec.Reserve::Always) AND (Rec."Outstanding Qty. (Base)" <> 0) AND (Rec."No." <> xRec."No.")THEN BEGIN
+        IF (Rec.Reserve = Rec.Reserve::Always) AND (Rec."Outstanding Qty. (Base)" <> 0) AND (Rec."No." <> xRec."No.") THEN BEGIN
             CurrPage.SAVERECORD;
             Rec.AutoReserve;
             CurrPage.UPDATE(FALSE);
         END;
     end;
+
     local procedure LocationCodeOnAfterValidate()
     begin
-        IF(Rec.Reserve = Rec.Reserve::Always) AND (Rec."Outstanding Qty. (Base)" <> 0) AND (Rec."Location Code" <> xRec."Location Code")THEN BEGIN
+        IF (Rec.Reserve = Rec.Reserve::Always) AND (Rec."Outstanding Qty. (Base)" <> 0) AND (Rec."Location Code" <> xRec."Location Code") THEN BEGIN
             CurrPage.SAVERECORD;
             Rec.AutoReserve;
             CurrPage.UPDATE(FALSE);
         END;
     end;
+
     local procedure QuantityOnAfterValidate()
     begin
-        IF Rec.Type = Rec.Type::Item THEN CASE Rec.Reserve OF Rec.Reserve::Always: BEGIN
-                CurrPage.SAVERECORD;
-                Rec.AutoReserve;
-                CurrPage.UPDATE(FALSE);
-            END;
-            Rec.Reserve::Optional: IF(Rec.Quantity < xRec.Quantity) AND (xRec.Quantity > 0)THEN BEGIN
-                    CurrPage.SAVERECORD;
-                    CurrPage.UPDATE(FALSE);
-                END;
+        IF Rec.Type = Rec.Type::Item THEN
+            CASE Rec.Reserve OF
+                Rec.Reserve::Always:
+                    BEGIN
+                        CurrPage.SAVERECORD;
+                        Rec.AutoReserve;
+                        CurrPage.UPDATE(FALSE);
+                    END;
+                Rec.Reserve::Optional:
+                    IF (Rec.Quantity < xRec.Quantity) AND (xRec.Quantity > 0) THEN BEGIN
+                        CurrPage.SAVERECORD;
+                        CurrPage.UPDATE(FALSE);
+                    END;
             END;
     end;
+
     local procedure PostingDateOnAfterValidate()
     begin
-        IF(Rec.Reserve = Rec.Reserve::Always) AND (Rec."Outstanding Qty. (Base)" <> 0) AND (Rec."Posting Date" <> xRec."Posting Date")THEN BEGIN
+        IF (Rec.Reserve = Rec.Reserve::Always) AND (Rec."Outstanding Qty. (Base)" <> 0) AND (Rec."Posting Date" <> xRec."Posting Date") THEN BEGIN
             CurrPage.SAVERECORD;
             Rec.AutoReserve;
             CurrPage.UPDATE(FALSE);
         END;
     end;
+
     [IntegrationEvent(false, false)]
     local procedure OnBeforeInsertExtendedText(var ServiceLine: Record "Service Line")
     begin
     end;
+
     local procedure SetControlAppearance()
     var
         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
     begin
-        OpenApprovalEntriesExistForCurrUser:=ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(Rec.RecordId);
-        OpenApprovalEntriesExist:=ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
-        CanCancelApprovalForRecord:=ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
+        OpenApprovalEntriesExistForCurrUser := ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(Rec.RecordId);
+        OpenApprovalEntriesExist := ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
+        CanCancelApprovalForRecord := ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
     end;
 }

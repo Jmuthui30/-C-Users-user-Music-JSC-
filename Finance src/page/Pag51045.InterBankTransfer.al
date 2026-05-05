@@ -218,7 +218,7 @@ page 51045 "InterBank Transfer"
         }
         area(FactBoxes)
         {
-            part("Attached Documents"; "Document Attachment Factbox")
+            part(Attachment; "Doc. Attachment List Factbox")
             {
                 Caption = 'Attachments';
                 SubPageLink = "Table ID" = const(Database::Payments),

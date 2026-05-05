@@ -61,7 +61,7 @@ page 50050 "Recruitment Plans"
         }
         area(factboxes)
         {
-            part("Attached Documents"; "Document Attachment Factbox")
+            part(Attachments; "Doc. Attachment List Factbox")
             {
                 ApplicationArea = All;
                 Caption = 'Attachments';

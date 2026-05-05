@@ -182,7 +182,7 @@ page 51065 "Approved/Post Staff Claim Card"
         }
         area(FactBoxes)
         {
-            part("Attached Documents"; "Document Attachment Factbox")
+            part(Attachments; "Doc. Attachment List Factbox")
             {
                 Caption = 'Attachments';
                 SubPageLink = "Table ID" = const(Database::Payments),

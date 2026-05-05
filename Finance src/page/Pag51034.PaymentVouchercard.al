@@ -319,7 +319,7 @@ page 51034 "Payment Voucher card"
                 Caption = 'Payment Amounts';
                 SubPageLink = "No." = field("No.");
             }
-            part("Attached Documents"; "Document Attachment Factbox")
+            part(Attachment; "Doc. Attachment List Factbox")
             {
                 Caption = 'Attachments';
                 SubPageLink = "Table ID" = const(Database::Payments),

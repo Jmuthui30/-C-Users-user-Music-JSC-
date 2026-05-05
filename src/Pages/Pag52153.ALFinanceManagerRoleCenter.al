@@ -381,7 +381,7 @@ page 52153 "AL Finance Manager Role Center"
                         ApplicationArea = Basic, Suite;
                         Caption = 'Trial Balance';
                         Image = "Report";
-                        RunObject = Codeunit "Run Template Trial Balance";
+                        RunObject = Codeunit "Trial Balance Cache Mgt.";
                         ToolTip = 'Open a spreadsheet that shows a summary trial balance by account.';
                     }
                     action(ExcelTemplateAgedAccPay)
@@ -389,7 +389,7 @@ page 52153 "AL Finance Manager Role Center"
                         ApplicationArea = Basic, Suite;
                         Caption = 'Aged Accounts Payable';
                         Image = "Report";
-                        RunObject = Codeunit "Run Template Aged Acc. Pay.";
+                        RunObject = Codeunit "Aged Acc. Payable";
                         ToolTip = 'Open a spreadsheet that shows a list of aged remaining balances for each vendor by period.';
                     }
                     action(ExcelTemplateAgedAccRec)
@@ -397,7 +397,7 @@ page 52153 "AL Finance Manager Role Center"
                         ApplicationArea = Basic, Suite;
                         Caption = 'Aged Accounts Receivable';
                         Image = "Report";
-                        RunObject = Codeunit "Run Template Aged Acc. Rec.";
+                        RunObject = Codeunit "Aged Acc. Receivable";
                         ToolTip = 'Open a spreadsheet that shows when customer payments are due or overdue by period.';
                     }
                 }

@@ -66,7 +66,7 @@ page 51070 "App/Posted InterBank Transfer"
                     Caption = 'Posting Date';
                     ToolTip = 'Specifies the value of the Posting Date field';
                 }
-                field("Cheque No";Rec."Cheque No")
+                field("Cheque No"; Rec."Cheque No")
                 {
                     Caption = 'Cheque No';
                     Editable = not Rec.Posted;
@@ -223,7 +223,7 @@ page 51070 "App/Posted InterBank Transfer"
         }
         area(FactBoxes)
         {
-            part("Attached Documents"; "Document Attachment Factbox")
+            part(Attachment; "Doc. Attachment List Factbox")
             {
                 Caption = 'Attachments';
                 SubPageLink = "Table ID" = const(Database::Payments),
