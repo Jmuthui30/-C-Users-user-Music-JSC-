@@ -261,7 +261,7 @@ page 52391 "Appraisal Card"
             part("Attached Documents"; "Document Attachment Factbox")
             {
                 Caption = 'Attachments';
-                SubPageLink = "Table ID" = CONST(52146446),
+                SubPageLink = "Table ID" = CONST(Database::"Employee Appraisals"),
                               "No." = FIELD("Appraisal No");
             }
         }

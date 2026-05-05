@@ -157,10 +157,11 @@ page 52396 "Training Request Card"
             {
                 SubPageLink = "Document No." = field("Request No.");
             }
-            part("Attached Documents"; "Document Attachment Factbox")
+            part(Attachments; "Document Attachment Factbox")
             {
                 Caption = 'Attachments';
-                SubPageLink = "No." = field("Request No.");
+                ApplicationArea = All;
+                SubPageLink = "Table ID" = const(DATABASE::"Training Request"), "No." = field("Request No.");
             }
         }
 
