@@ -1189,12 +1189,12 @@ codeunit 52116 "Portal Integration"
         PortalUploads: Record "SharePoint Intergrations";
         FileContent: InStream;
         OutStream: OutStream;
+        HttpContent: HttpContent;
     begin
         // 1. Get OAuth token
         AuthToken := GetOAuthToken();
         if AuthToken.IsEmpty() then
             Error('Failed to obtain access token.');
-
         // 2. Select file
         if not UploadIntoStream('Select a File to Import', '', '', FileName, FileContent) then
             Error('No file selected.');
@@ -1227,11 +1227,22 @@ codeunit 52116 "Portal Integration"
         HttpRequestMessage.GetHeaders(HttpHeaders);
         HttpHeaders.Add('Authorization', SecretStrSubstNo('Bearer %1', AuthToken));
 
-        // 9. Write file content to request
-        HttpRequestMessage.Content().WriteFrom(FileContent);
-        HttpRequestMessage.Content().GetHeaders(ContentHeaders);
-        ContentHeaders.Clear();
+        // // 9. Write file content to request
+        // HttpRequestMessage.Content().WriteFrom(FileContent);
+        // HttpRequestMessage.Content().GetHeaders(ContentHeaders);
+        // ContentHeaders.Clear();
+        // ContentHeaders.Add('Content-Type', MimeType);
+
+
+        HttpContent.WriteFrom(FileContent);
+        HttpContent.GetHeaders(ContentHeaders);
+
+        // ✅ Remove default Content-Type before adding yours
+        if ContentHeaders.Contains('Content-Type') then
+            ContentHeaders.Remove('Content-Type');
         ContentHeaders.Add('Content-Type', MimeType);
+
+        HttpRequestMessage.Content := HttpContent;
 
         // 10. Send request
         if HttpClient.Send(HttpRequestMessage, HttpResponseMessage) then begin
@@ -1269,7 +1280,7 @@ codeunit 52116 "Portal Integration"
         EncodedText: Text;
     begin
         EncodedText := Value;
-        EncodedText := EncodedText.Replace('%', '%25');   
+        EncodedText := EncodedText.Replace('%', '%25');
         EncodedText := EncodedText.Replace(' ', '%20');
         EncodedText := EncodedText.Replace('#', '%23');
         EncodedText := EncodedText.Replace('&', '%26');
@@ -1319,20 +1330,33 @@ codeunit 52116 "Portal Integration"
     begin
         TenantID := '07ec9f79-420c-41b8-9ce9-bbb984ac7c87';
         ClientID := '7ab09a0d-1749-45f7-ad91-1e129ed141cd';
-        ClientSecretRaw := 'BHS8Q~9VYRbspq.F1mAI4pIaGTw5tRo53Pf_Ba23';
+        ClientSecretRaw := 'GdR8Q~Z5GoNhMM2vk24WAdcR6e8xjGdTPbctrdn_';
         ClientSecret := ClientSecretRaw;
 
-        // Authority URL (omit the /token suffix)
-        OAuthAuthorityUrl := 'https://login.microsoftonline.com/' + TenantID;
+        // // Authority URL (omit the /token suffix)
+        // OAuthAuthorityUrl := 'https://login.microsoftonline.com/' + TenantID;
 
-        // Scope for Microsoft Graph application permissions
+        // // Scope for Microsoft Graph application permissions
+        // Scopes.Add('https://graph.microsoft.com/.default');
+
+        // // Acquire token using client credentials flow
+        // if not OAuth2.AcquireTokenWithClientCredentials(ClientID, ClientSecret, OAuthAuthorityUrl, '', Scopes, AuthToken) then
+        //     Error('Failed to acquire access token: %1', GetLastErrorText());
+
+
+        OAuthAuthorityUrl := 'https://login.microsoftonline.com/' + TenantID + '/oauth2/v2.0/token';
+
         Scopes.Add('https://graph.microsoft.com/.default');
 
-        // Acquire token using client credentials flow
         if not OAuth2.AcquireTokenWithClientCredentials(ClientID, ClientSecret, OAuthAuthorityUrl, '', Scopes, AuthToken) then
             Error('Failed to acquire access token: %1', GetLastErrorText());
 
+        if AuthToken.IsEmpty() then
+            Error('Access token returned empty.');
+
         exit(AuthToken);
+
+        // exit(AuthToken);
     end;
 
     local procedure ExtractCleanDownloadUrl(var JsonObject: JsonObject; var CleanUrl: Text)
