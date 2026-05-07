@@ -1107,6 +1107,7 @@ codeunit 52116 "Portal Integration"
         ContentHeader: HttpHeaders;
         RequestContent: HttpContent;
         DownloadUrl: Text;
+        WebUrl: Text;
         PortalUploads: Record "SharePoint Intergration";
     begin
         AuthToken := GetOAuthToken();
@@ -1145,11 +1146,14 @@ codeunit 52116 "Portal Integration"
                 HttpResponseMessage.Content.ReadAs(ResponseText);
                 JsonResponse.ReadFrom(ResponseText);
                 ExtractCleanDownloadUrl(JsonResponse, DownloadUrl);
+                ExtractJsonValueAsText(JsonResponse, 'webUrl', WebUrl);
+                if WebUrl = '' then
+                    WebUrl := DownloadUrl;
                 PortalUploads.Init();
                 PortalUploads."Document No" := DocNo;
                 PortalUploads.Description := FileName;
                 PortalUploads.LocalUrl := DownloadUrl;
-                PortalUploads.SP_URL_Returned := DownloadUrl;
+                PortalUploads.SP_URL_Returned := WebUrl;
                 PortalUploads.Uploaded := true;
                 PortalUploads.Fetch_To_Sharepoint := true;
                 PortalUploads.Polled := true;
@@ -1175,6 +1179,8 @@ codeunit 52116 "Portal Integration"
         JsonResponse: JsonObject;
         AuthToken: SecretText;
         SharePointFileUrl: Text;
+        DownloadUrl: Text;
+        WebUrl: Text;
         ResponseText: Text;
         TempBlob: Codeunit "Temp Blob";
         FileName: Text;
@@ -1232,13 +1238,17 @@ codeunit 52116 "Portal Integration"
             if HttpResponseMessage.IsSuccessStatusCode() then begin
                 HttpResponseMessage.Content.ReadAs(ResponseText);
                 JsonResponse.ReadFrom(ResponseText);
+                ExtractCleanDownloadUrl(JsonResponse, DownloadUrl);
+                ExtractJsonValueAsText(JsonResponse, 'webUrl', WebUrl);
+                if WebUrl = '' then
+                    WebUrl := DownloadUrl;
 
                 // Save to portal uploads
                 PortalUploads.Init();
                 PortalUploads."Application No" := DocNo;
                 PortalUploads.Description := FileName;
-                PortalUploads.LocalUrl := SharePointFileUrl;
-                PortalUploads.SP_URL_Returned := SharePointFileUrl;
+                PortalUploads.LocalUrl := DownloadUrl;
+                PortalUploads.SP_URL_Returned := WebUrl;
                 PortalUploads.Uploaded := true;
                 PortalUploads.Fetch_To_Sharepoint := true;
                 PortalUploads.Polled := true;
