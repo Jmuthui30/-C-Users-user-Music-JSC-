@@ -886,7 +886,7 @@ codeunit 55056 HRPortal
         end;
     end;
 
-    procedure CreateImprestMemoLines(imprestno: Code[30]; type: Integer; accountNo: code[50]; otherCosts: Decimal; expertName: Text; expertEmail: Text; DSA: Decimal; airTicket: Decimal; conference: Decimal; groundTransport: Decimal; accommodation: Decimal; coordinationAllowance: Decimal; facillitatorAllowance: Decimal; secretarioteAllowance: Decimal; outOfPocketAllowance: Decimal; rapparteurAllowance: Decimal; driverAllowance: Decimal; retreatAllowance: Decimal; expertAllowance: Decimal; tuitionFee: Decimal; millageAllowance: Decimal; quarterperDiem: Decimal) status: Text
+    procedure CreateImprestMemoLines(imprestno: Code[30]; type: Integer; accountNo: code[50]; otherCosts: Decimal; expertName: Text; expertEmail: Text; DSA: Decimal; airTicket: Decimal; conference: Decimal; groundTransport: Decimal; accommodation: Decimal; coordinationAllowance: Decimal; facillitatorAllowance: Decimal; secretarioteAllowance: Decimal; outOfPocketAllowance: Decimal; rapparteurAllowance: Decimal; driverAllowance: Decimal; retreatAllowance: Decimal; expertAllowance: Decimal; tuitionFee: Decimal; millageAllowance: Decimal; quarterperDiem: Decimal; description: Text) status: Text
     var
         memolines1: Record "Imprest Memo Lines";
         prevLineNo: Integer;
@@ -910,6 +910,7 @@ codeunit 55056 HRPortal
                 memoLines.Email := expertEmail;
             end;
             memoLines."Other Costs" := otherCosts;
+            memoLines.Description := description;
 
             memoLines.DSA := DSA;
 
