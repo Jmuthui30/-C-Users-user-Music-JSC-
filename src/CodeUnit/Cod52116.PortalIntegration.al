@@ -1237,7 +1237,7 @@ codeunit 52116 "Portal Integration"
         HttpContent.WriteFrom(FileContent);
         HttpContent.GetHeaders(ContentHeaders);
 
-        // ✅ Remove default Content-Type before adding yours
+        // Remove default Content-Type before adding yours
         if ContentHeaders.Contains('Content-Type') then
             ContentHeaders.Remove('Content-Type');
         ContentHeaders.Add('Content-Type', MimeType);
