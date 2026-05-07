@@ -404,6 +404,10 @@ table 50465 "Imprest Memo Lines"
         {
             DataClassification = ToBeClassified;
         }
+        field(54; Description; Text[250])
+        {
+            DataClassification = ToBeClassified;
+        }
     }
     keys
     {

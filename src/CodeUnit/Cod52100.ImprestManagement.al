@@ -800,22 +800,254 @@ codeunit 52100 "Imprest Management"
         end;
     end;
 
+    // procedure CreateImprestMemoPay(var Memo: Record "Imprest Memo Header")
+    // var
+    //     Lines: Record "Imprest Memo Lines";
+    //     PRHeader: Record Payments;
+    //     PRLines: Record "Payment Lines";
+    //     Counter: Integer;
+    //     LineNo: Code[20];
+    //     NoSeries: Codeunit "No. Series";
+    //     CashMgt: Record "Cash Management Setups";
+    //     // Expense Codes (52103)
+    //     ExpenseCodes: Record "Expense Codes";
+    //     // Advanced Finance Setup (52102)
+    //     AdvancedFinanceSetup: Record "Advanced Finance Setup";
+    //     ReceiptsandPaymentTypes: Record "Receipts and Payment Types";
+    // begin
+    //     if not Confirm('An Imprest Requisition %1 was already created for this Memo. Do you still wish to create another?', true, Memo."PR No.") then
+    //         exit;
+
+    //     // Fetch setup record first
+    //     CashMgt.Get();
+    //     CashMgt.TestField("Imprest Nos");
+
+    //     Counter := 0;
+
+    //     Lines.Reset();
+    //     Lines.SetRange("No.", Memo."No.");
+    //     if Lines.FindSet() then begin
+    //         repeat
+    //             if Lines.Amount <> 0 then begin
+    //                 Counter := Counter + 1;
+    //                 LineNo := NoSeries.GetNextNo(CashMgt."Imprest Nos");
+    //                 Message('Generated Line No: %1', LineNo);
+    //                 PRHeader.Init();
+    //                 PRHeader."No." := LineNo;
+    //                 PRHeader."Payment Type" := PRHeader."Payment Type"::Imprest;
+    //                 PRHeader.Date := Today;
+    //                 PRHeader."Time Inserted" := Time;
+    //                 PRHeader."Apply on behalf" := false;
+    //                 if Lines.Type = Lines.Type::Expert then begin
+    //                     PRHeader."On behalf of" := Lines.Name;
+    //                     PRHeader."Account No." := UserId;
+    //                     PRHeader."Account Name" := UserId;
+    //                     PRHeader."Staff No." := Lines."Account No.";
+    //                     PRHeader."Payment Narration" := CopyStr(Memo.Purpose + Lines.Name, 1, 100);
+    //                 end else
+    //                     PRHeader."Account No." := Lines."Account No.";
+    //                 PRHeader."Account Name" := Lines.Name;
+    //                 PRHeader."Staff No." := Lines."Account No.";
+    //                 PRHeader."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+    //                 PRHeader."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+    //                 PRHeader."Payment Narration" := CopyStr(Memo.Purpose, 1, 100);
+    //                 PRHeader.Status := PRHeader.Status::Open;
+    //                 PRHeader."Date of Project" := Memo."Departure Date";
+    //                 PRHeader."Travel Date" := Memo."Departure Date";
+    //                 PRHeader."Due Date" := Today;
+    //                 PRHeader."Salary Scale" := Lines."Job Group";
+    //                 PRHeader."Date of Completion" := Memo."Return Date";
+    //                 PRHeader."Created By" := UserId;
+    //                 PRHeader.Destination := Memo."Activity Location";
+    //                 PRHeader."No of Days" := Memo."Total Days in the Field";
+    //                 PRHeader."Total Amount" := Lines.Amount;
+    //                 PRHeader.Insert();
+    //                 Counter := Counter + 1;
+
+
+    //                 if Lines.DSA > 0 then begin
+    //                     AdvancedFinanceSetup.Get();
+    //                     AdvancedFinanceSetup.TestField("DSA Expense Code");
+    //                     if ExpenseCodes.Get(AdvancedFinanceSetup."DSA Expense Code") then
+    //                         ExpenseCodes.TestField("Account No");
+    //                     Message('DSA Expense Code is: %1', ExpenseCodes."Account No");
+    //                     ReceiptsandPaymentTypes.Get();
+    //                     ReceiptsandPaymentTypes.SetCurrentKey("Account No.");
+    //                     ReceiptsandPaymentTypes.SetRange("Account No.", ExpenseCodes."Account No");
+    //                     if ReceiptsandPaymentTypes.FindFirst() then
+    //                         Message('Receipt and Payment Type for DSA is: %1', ReceiptsandPaymentTypes.Code);
+    //                     PRLines.Init();
+    //                     PRLines."Expenditure Type" := ReceiptsandPaymentTypes.Code;
+    //                     PRLines.Validate("Expenditure Type");
+    //                     PRLines.No := PRHeader."No.";
+    //                     PRLines."Line No" := 1;
+    //                     PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+    //                     PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+    //                     PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
+    //                     PRLines.Amount := Lines.DSA;
+    //                     PRLines."Posted Date" := Today;
+    //                     PRLines.Insert();
+    //                 end;
+    //                 if Lines.Conference > 0 then begin
+    //                     AdvancedFinanceSetup.Get();
+    //                     AdvancedFinanceSetup.TestField("Conference Expense Code");
+    //                     if ExpenseCodes.Get(AdvancedFinanceSetup."Conference Expense Code") then
+    //                         ExpenseCodes.TestField("Account No");
+    //                     Message('Conference Expense Code is: %1', ExpenseCodes."Account No");
+    //                     ReceiptsandPaymentTypes.Get();
+    //                     ReceiptsandPaymentTypes.SetRange("Account No.", ExpenseCodes."Account No");
+    //                     if ReceiptsandPaymentTypes.FindFirst() then
+    //                         Message('Receipt and Payment Type for Conference is: %1', ReceiptsandPaymentTypes.Code);
+    //                     PRLines.Init();
+    //                     PRLines."Expenditure Type" := ReceiptsandPaymentTypes.Code;
+    //                     PRLines.Validate("Expenditure Type");
+    //                     PRLines.No := PRHeader."No.";
+    //                     PRLines."Line No" := 2;
+    //                     PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+    //                     PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+    //                     PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
+    //                     PRLines.Amount := Lines.Conference;
+    //                     PRLines."Posted Date" := Today;
+    //                     PRLines.Insert();
+    //                 end;
+
+
+
+
+
+    //             end;
+    //         until Lines.Next() = 0;
+    //     end;
+
+    //     if Counter > 0 then
+    //         Message('%1 Imprest Payment line(s) created successfully.', Counter);
+    // end;
     procedure CreateImprestMemoPay(var Memo: Record "Imprest Memo Header")
     var
         Lines: Record "Imprest Memo Lines";
         PRHeader: Record Payments;
         PRLines: Record "Payment Lines";
         Counter: Integer;
+        LineCounter: Integer;
         LineNo: Code[20];
         NoSeries: Codeunit "No. Series";
         CashMgt: Record "Cash Management Setups";
+        ExpenseCodes: Record "Expense Codes";
+        AdvancedFinanceSetup: Record "Advanced Finance Setup";
+        ReceiptsandPaymentTypes: Record "Receipts and Payment Types";
+        DSAExpenseAcc: Code[20];
+        AirTicketExpenseAcc: Code[20];
+        ConferenceExpenseAcc: Code[20];
+        GTransportExpenseAcc: Code[20];
+        CordAllowExpenseAcc: Code[20];
+        FacilitatorAllowExpenseAcc: Code[20];
+        SecretariatAllowExpenseAcc: Code[20];
+        OutOfPocketExpenseAcc: Code[20];
+        RapporteurAllowExpenseAcc: Code[20];
+        DriverAllowExpenseAcc: Code[20];
+        RetreatAllowExpenseAcc: Code[20];
+        ExpertAllowExpenseAcc: Code[20];
+        AccommodationExpenseAcc: Code[20];
+        TuitionExpenseAcc: Code[20];
+        MileageExpenseAcc: Code[20];
+        QtrPerDiemExpenseAcc: Code[20];
+
     begin
-        if not Confirm('An Imprest Requisition %1 was already created for this Memo. Do you still wish to create another?', true, Memo."PR No.") then
+        if not Confirm(
+            'An Imprest Requisition %1 was already created for this Memo. Do you still wish to create another?',
+            true, Memo."PR No.") then
             exit;
 
-        // Fetch setup record first
+        // Fetch all setup records once before the loop
         CashMgt.Get();
         CashMgt.TestField("Imprest Nos");
+
+        AdvancedFinanceSetup.Get();
+        AdvancedFinanceSetup.TestField("DSA Expense Code");
+        AdvancedFinanceSetup.TestField("Air Ticket Expense Code");
+        AdvancedFinanceSetup.TestField("Conference Expense Code");
+        AdvancedFinanceSetup.TestField("G.Transport Expense Code");
+        AdvancedFinanceSetup.TestField("Cord. Allow Expense Code");
+        AdvancedFinanceSetup.TestField("Facilitator Allow Expense Code");
+        AdvancedFinanceSetup.TestField("Secretariat Allow Expense Code");
+        AdvancedFinanceSetup.TestField("Out of Pocket Expense Code");
+        AdvancedFinanceSetup.TestField("Rapporteur Allow Expense Code");
+        AdvancedFinanceSetup.TestField("Driver Allow Expense Code");
+        AdvancedFinanceSetup.TestField("Retreat Allow Expense Code");
+        AdvancedFinanceSetup.TestField("Expert Allow Expense Code");
+        AdvancedFinanceSetup.TestField("Accomodation Expense Code");
+        AdvancedFinanceSetup.TestField("Tuition Expense Code");
+        AdvancedFinanceSetup.TestField("Mileage Expense Code");
+        AdvancedFinanceSetup.TestField("Qtr. Per Diem Expense Code");
+
+        // Resolve DSA GL Account
+        ExpenseCodes.Get(AdvancedFinanceSetup."DSA Expense Code");
+        ExpenseCodes.TestField("Account No");
+        DSAExpenseAcc := ExpenseCodes."Account No";
+        //  Message('DSA Expense Account resolved to: %1', DSAExpenseAcc);
+
+        // Resolve Conference GL Account
+        ExpenseCodes.Get(AdvancedFinanceSetup."Conference Expense Code");
+        ExpenseCodes.TestField("Account No");
+        ConferenceExpenseAcc := ExpenseCodes."Account No";
+        //  Message('Conference Expense Account resolved to: %1', ConferenceExpenseAcc);
+        ExpenseCodes.Get(AdvancedFinanceSetup."Air Ticket Expense Code");
+        ExpenseCodes.TestField("Account No");
+        AirTicketExpenseAcc := ExpenseCodes."Account No";
+        //  Message('Air Ticket Expense Account resolved to: %1', AirTicketExpenseAcc);
+        ExpenseCodes.Get(AdvancedFinanceSetup."G.Transport Expense Code");
+        ExpenseCodes.TestField("Account No");
+        GTransportExpenseAcc := ExpenseCodes."Account No";
+        //  Message('G. Transport Expense Account resolved to: %1', GTransportExpenseAcc);  
+        ExpenseCodes.Get(AdvancedFinanceSetup."Cord. Allow Expense Code");
+        ExpenseCodes.TestField("Account No");
+        CordAllowExpenseAcc := ExpenseCodes."Account No";
+        //  Message('Cord. Allow Expense Account resolved to: %1', CordAllowExpenseAcc);    
+        ExpenseCodes.Get(AdvancedFinanceSetup."Facilitator Allow Expense Code");
+        ExpenseCodes.TestField("Account No");
+        FacilitatorAllowExpenseAcc := ExpenseCodes."Account No";
+        //  Message('Facilitator Allow Expense Account resolved to: %1', FacilitatoratorAllowExpenseAcc);
+        ExpenseCodes.Get(AdvancedFinanceSetup."Secretariat Allow Expense Code");
+        ExpenseCodes.TestField("Account No");
+        SecretariatAllowExpenseAcc := ExpenseCodes."Account No";
+        //  Message('Secretariat Allow Expense Account resolved to: %1', SecretariatAllowExpenseAcc);
+        ExpenseCodes.Get(AdvancedFinanceSetup."Out of Pocket Expense Code");
+        ExpenseCodes.TestField("Account No");
+        OutOfPocketExpenseAcc := ExpenseCodes."Account No";
+        //  Message('Out of Pocket Expense Account resolved to: %1', OutOfPocketExpenseAcc);
+        ExpenseCodes.Get(AdvancedFinanceSetup."Rapporteur Allow Expense Code");
+        ExpenseCodes.TestField("Account No");
+        RapporteurAllowExpenseAcc := ExpenseCodes."Account No";
+        //  Message('Rapporteur Allow Expense Account resolved to: %1', RapporteurAllowExpenseAcc);
+        ExpenseCodes.Get(AdvancedFinanceSetup."Driver Allow Expense Code");
+        ExpenseCodes.TestField("Account No");
+        DriverAllowExpenseAcc := ExpenseCodes."Account No";
+        //  Message('Driver Allow Expense Account resolved to: %1', DriverAllowExpenseAcc);
+        ExpenseCodes.Get(AdvancedFinanceSetup."Retreat Allow Expense Code");
+        ExpenseCodes.TestField("Account No");
+        RetreatAllowExpenseAcc := ExpenseCodes."Account No";
+        //  Message('Retreat Allow Expense Account resolved to: %1', RetreatAllowExpenseAcc);
+        ExpenseCodes.Get(AdvancedFinanceSetup."Expert Allow Expense Code");
+        ExpenseCodes.TestField("Account No");
+        ExpertAllowExpenseAcc := ExpenseCodes."Account No";
+        //  Message('Expert Allow Expense Account resolved to: %1', ExpertAllowExpenseAcc);
+        ExpenseCodes.Get(AdvancedFinanceSetup."Accomodation Expense Code");
+        ExpenseCodes.TestField("Account No");
+        AccommodationExpenseAcc := ExpenseCodes."Account No";
+        //  Message('Accommodation Expense Account resolved to: %1', AccommodationExpenseAcc);
+        ExpenseCodes.Get(AdvancedFinanceSetup."Tuition Expense Code");
+        ExpenseCodes.TestField("Account No");
+        TuitionExpenseAcc := ExpenseCodes."Account No";
+        //  Message('Tuition Expense Account resolved to: %1', TuitionExpenseAcc);  
+        ExpenseCodes.Get(AdvancedFinanceSetup."Mileage Expense Code");
+        ExpenseCodes.TestField("Account No");
+        MileageExpenseAcc := ExpenseCodes."Account No";
+        //  Message('Mileage Expense Account resolved to: %1', MileageExpenseAcc);
+        ExpenseCodes.Get(AdvancedFinanceSetup."Qtr. Per Diem Expense Code");
+        ExpenseCodes.TestField("Account No");
+        QtrPerDiemExpenseAcc := ExpenseCodes."Account No";
+        //  Message('Qtr. Per Diem Expense Account resolved to: %1', QtrPerDiemExpenseAcc);
+
 
         Counter := 0;
 
@@ -824,23 +1056,15 @@ codeunit 52100 "Imprest Management"
         if Lines.FindSet() then begin
             repeat
                 if Lines.Amount <> 0 then begin
-                    Counter := Counter + 1;
+                    Counter += 1;
                     LineNo := NoSeries.GetNextNo(CashMgt."Imprest Nos");
-                    Message('Generated Line No: %1', LineNo);
+
                     PRHeader.Init();
                     PRHeader."No." := LineNo;
                     PRHeader."Payment Type" := PRHeader."Payment Type"::Imprest;
                     PRHeader.Date := Today;
                     PRHeader."Time Inserted" := Time;
                     PRHeader."Apply on behalf" := false;
-                    if Lines.Type = Lines.Type::Expert then begin
-                        PRHeader."On behalf of" := Lines.Name;
-                        PRHeader."Account No." := UserId;
-                        PRHeader."Account Name" := UserId;
-                        PRHeader."Staff No." := Lines."Account No.";
-                        PRHeader."Payment Narration" := CopyStr(Memo.Purpose + Lines.Name, 1, 100);
-                    end else
-                        PRHeader."Account No." := Lines."Account No.";
                     PRHeader."Account Name" := Lines.Name;
                     PRHeader."Staff No." := Lines."Account No.";
                     PRHeader."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
@@ -856,24 +1080,427 @@ codeunit 52100 "Imprest Management"
                     PRHeader.Destination := Memo."Activity Location";
                     PRHeader."No of Days" := Memo."Total Days in the Field";
                     PRHeader."Total Amount" := Lines.Amount;
+
+                    if Lines.Type = Lines.Type::Expert then begin
+                        PRHeader."Apply on behalf" := true;
+                        PRHeader."On behalf of" := Lines.Name;
+                        PRHeader."Account No." := UserId;
+                        PRHeader."Account Name" := UserId;
+                        PRHeader.Payee := Lines.Name;
+                        PRHeader."Staff No." := Lines."Account No.";
+                        PRHeader."Payment Narration" := CopyStr(Memo.Purpose, 1, 100);
+                    end else
+                        PRHeader."Account No." := Lines."Account No.";
+
                     PRHeader.Insert();
 
-                    PRLines.Init();
-                    PRLines."Imprest Payment" := true;
-                    PRLines.No := PRHeader."No.";
-                    PRLines."Line No" := Counter;
-                    PRLines.Date := Today;
-                    PRLines."Account Type" := PRLines."Account Type"::"G/L Account";
-                    PRLines.Description := PRHeader."Payment Narration";
-                    PRLines.Amount := Lines.Amount;
-                    PRLines."Posted Date" := Today;
-                    PRLines.Insert();
+                    LineCounter := 0;
+
+                    // DSA Line
+                    if Lines.DSA > 0 then begin
+                        ReceiptsandPaymentTypes.Reset();
+                        ReceiptsandPaymentTypes.SetRange("Account No.", DSAExpenseAcc);
+                        if not ReceiptsandPaymentTypes.FindFirst() then
+                            Error('No Receipt and Payment Type found for DSA Account %1', DSAExpenseAcc);
+
+                        LineCounter += 1;
+                        PRLines.Init();
+                        PRLines."Expenditure Type" := ReceiptsandPaymentTypes.Code;
+                        PRLines.Validate("Expenditure Type");
+                        PRLines."Account Name" := ReceiptsandPaymentTypes.Description;
+                        PRLines."Account No" := DSAExpenseAcc;
+                        PRLines.Validate("Account No");
+                        PRLines."No of Days" := Memo."Total Days in the Field";
+                        PRLines.No := PRHeader."No.";
+                        PRLines."Line No" := LineCounter;
+                        PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+                        PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+                        PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
+                        PRLines."Daily Rate" := Lines.DSA;
+                        PRLines.Amount := Lines.DSA * Memo."Total Days in the Field";
+                        PRLines."Posted Date" := Today;
+                        PRLines.Insert();
+                    end;
+                    //air ticket line
+                    if Lines."Air Ticket" > 0 then begin
+                        ReceiptsandPaymentTypes.Reset();
+                        ReceiptsandPaymentTypes.SetRange("Account No.", AirTicketExpenseAcc);
+                        if not ReceiptsandPaymentTypes.FindFirst() then
+                            Error('No Receipt and Payment Type found for Air Ticket Account %1', AirTicketExpenseAcc);
+
+                        LineCounter += 1;
+                        PRLines.Init();
+                        PRLines."Expenditure Type" := ReceiptsandPaymentTypes.Code;
+                        PRLines.Validate("Expenditure Type");
+                        PRLines."Account Name" := ReceiptsandPaymentTypes.Description;
+                        PRLines."Account No" := AirTicketExpenseAcc;
+                        PRLines.Validate("Account No");
+                        PRLines."No of Days" := Memo."Total Days in the Field";
+                        PRLines.No := PRHeader."No.";
+                        PRLines."Line No" := LineCounter;
+                        PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+                        PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+                        PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
+                        PRLines.Amount := Lines."Air Ticket" * Memo."Total Days in the Field";
+                        PRLines."Daily Rate" := Lines."Air Ticket";
+                        PRLines."Posted Date" := Today;
+                        PRLines.Insert();
+                    end;
+                    // Conference Line
+                    if Lines.Conference > 0 then begin
+                        ReceiptsandPaymentTypes.Reset();
+                        ReceiptsandPaymentTypes.SetRange("Account No.", ConferenceExpenseAcc);
+                        if not ReceiptsandPaymentTypes.FindFirst() then
+                            Error('No Receipt and Payment Type found for Conference Account %1', ConferenceExpenseAcc);
+
+                        LineCounter += 1;
+                        PRLines.Init();
+                        PRLines."Expenditure Type" := ReceiptsandPaymentTypes.Code;
+                        PRLines.Validate("Expenditure Type");
+                        PRLines."Account Name" := ReceiptsandPaymentTypes.Description;
+                        PRLines."Account No" := ConferenceExpenseAcc;
+                        PRLines.Validate("Account No");
+                        PRLines."No of Days" := Memo."Total Days in the Field";
+                        PRLines.No := PRHeader."No.";
+
+                        PRLines."Line No" := LineCounter;
+                        PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+                        PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+                        PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
+                        PRLines.Amount := Lines.Conference * Memo."Total Days in the Field";
+                        PRLines."Daily Rate" := Lines.Conference;
+                        PRLines."Posted Date" := Today;
+                        PRLines.Insert();
+                    end;
+                    //G.Transport Expense Code"
+                    if Lines."Ground Transport" > 0 then begin
+                        ReceiptsandPaymentTypes.Reset();
+                        ReceiptsandPaymentTypes.SetRange("Account No.", GTransportExpenseAcc);
+                        if not ReceiptsandPaymentTypes.FindFirst() then
+                            Error('No Receipt and Payment Type found for G. Transport Account %1', GTransportExpenseAcc);
+
+                        LineCounter += 1;
+                        PRLines.Init();
+                        PRLines."Expenditure Type" := ReceiptsandPaymentTypes.Code;
+                        PRLines.Validate("Expenditure Type");
+                        PRLines."Account Name" := ReceiptsandPaymentTypes.Description;
+                        PRLines."Account No" := GTransportExpenseAcc;
+                        PRLines.Validate("Account No");
+                        PRLines."No of Days" := Memo."Total Days in the Field";
+                        PRLines.No := PRHeader."No.";
+                        PRLines."Line No" := LineCounter;
+                        PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+                        PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+                        PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
+                        PRLines.Amount := Lines."Ground Transport" * Memo."Total Days in the Field";
+                        PRLines."Daily Rate" := Lines."Ground Transport";
+                        PRLines."Posted Date" := Today;
+                        PRLines.Insert();
+                    end;
+                    // Cord. Allow Expense Code
+                    if Lines."Cordination Allowance" > 0 then begin
+                        ReceiptsandPaymentTypes.Reset();
+                        ReceiptsandPaymentTypes.SetRange("Account No.", CordAllowExpenseAcc);
+                        if not ReceiptsandPaymentTypes.FindFirst() then
+                            Error('No Receipt and Payment Type found for Cord. Allow Account %1', CordAllowExpenseAcc);
+
+                        LineCounter += 1;
+                        PRLines.Init();
+                        PRLines."Expenditure Type" := ReceiptsandPaymentTypes.Code;
+                        PRLines.Validate("Expenditure Type");
+                        PRLines."Account Name" := ReceiptsandPaymentTypes.Description;
+                        PRLines."Account No" := CordAllowExpenseAcc;
+                        PRLines.Validate("Account No");
+                        PRLines.No := PRHeader."No.";
+                        PRLines."Line No" := LineCounter;
+                        PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+                        PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+                        PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
+                        PRLines.Amount := Lines."Cordination Allowance" * Memo."Total Days in the Field";
+                        PRLines."Daily Rate" := Lines."Cordination Allowance";
+                        PRLines."Posted Date" := Today;
+                        PRLines.Insert();
+                    end;
+                    // Facilitator Allow Expense Code
+                    if Lines."Facilitator Allowance" > 0 then begin
+                        ReceiptsandPaymentTypes.Reset();
+                        ReceiptsandPaymentTypes.SetRange("Account No.", FacilitatorAllowExpenseAcc);
+                        if not ReceiptsandPaymentTypes.FindFirst() then
+                            Error('No Receipt and Payment Type found for Facilitator Allow Account %1', FacilitatorAllowExpenseAcc);
+
+                        LineCounter += 1;
+                        PRLines.Init();
+                        PRLines."Expenditure Type" := ReceiptsandPaymentTypes.Code;
+                        PRLines.Validate("Expenditure Type");
+                        PRLines."Account Name" := ReceiptsandPaymentTypes.Description;
+                        PRLines."Account No" := FacilitatorAllowExpenseAcc;
+                        PRLines.Validate("Account No");
+                        PRLines.No := PRHeader."No.";
+                        PRLines."Line No" := LineCounter;
+                        PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+                        PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+                        PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
+                        PRLines.Amount := Lines."Facilitator Allowance" * Memo."Total Days in the Field";
+                        PRLines."Posted Date" := Today;
+                        PRLines."Daily Rate" := Lines."Facilitator Allowance";
+                        PRLines.Insert();
+                    end;
+                    // Secretariat Allow Expense Code
+                    if Lines."Secretariat Allowance" > 0 then begin
+                        ReceiptsandPaymentTypes.Reset();
+                        ReceiptsandPaymentTypes.SetRange("Account No.", SecretariatAllowExpenseAcc);
+                        if not ReceiptsandPaymentTypes.FindFirst() then
+                            Error('No Receipt and Payment Type found for Secretariat Allow Account %1', SecretariatAllowExpenseAcc);
+
+                        LineCounter += 1;
+                        PRLines.Init();
+                        PRLines."Expenditure Type" := ReceiptsandPaymentTypes.Code;
+                        PRLines.Validate("Expenditure Type");
+                        PRLines."Account Name" := ReceiptsandPaymentTypes.Description;
+                        PRLines."Account No" := SecretariatAllowExpenseAcc;
+                        PRLines.Validate("Account No");
+                        PRLines.No := PRHeader."No.";
+                        PRLines."Line No" := LineCounter;
+                        PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+                        PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+                        PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
+                        PRLines.Amount := Lines."Secretariat Allowance" * Memo."Total Days in the Field";
+                        PRLines."Posted Date" := Today;
+                        PRLines."Daily Rate" := Lines."Secretariat Allowance";
+                        PRLines.Insert();
+                    end;
+                    // Out of Pocket Expense Code
+                    if Lines."Out of Pocket Allowance" > 0 then begin
+                        ReceiptsandPaymentTypes.Reset();
+                        ReceiptsandPaymentTypes.SetRange("Account No.", OutOfPocketExpenseAcc);
+                        if not ReceiptsandPaymentTypes.FindFirst() then
+                            Error('No Receipt and Payment Type found for Out of Pocket Allow Account %1', OutOfPocketExpenseAcc);
+
+                        LineCounter += 1;
+                        PRLines.Init();
+                        PRLines."Expenditure Type" := ReceiptsandPaymentTypes.Code;
+                        PRLines.Validate("Expenditure Type");
+                        PRLines."Account Name" := ReceiptsandPaymentTypes.Description;
+                        PRLines."Account No" := OutOfPocketExpenseAcc;
+                        PRLines.Validate("Account No");
+                        PRLines."No of Days" := Memo."Total Days in the Field";
+                        PRLines.No := PRHeader."No.";
+                        PRLines."Line No" := LineCounter;
+                        PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+                        PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+                        PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
+                        PRLines.Amount := Lines."Out of Pocket Allowance" * Memo."Total Days in the Field";
+                        PRLines."Posted Date" := Today;
+                        PRLines."Daily Rate" := Lines."Out of Pocket Allowance";
+                        PRLines.Insert();
+                    end;
+                    // Rapporteur Allow Expense Code
+                    if Lines."Rapporteur Allowance" > 0 then begin
+                        ReceiptsandPaymentTypes.Reset();
+                        ReceiptsandPaymentTypes.SetRange("Account No.", RapporteurAllowExpenseAcc);
+                        if not ReceiptsandPaymentTypes.FindFirst() then
+                            Error('No Receipt and Payment Type found for Rapporteur Allow Account %1', RapporteurAllowExpenseAcc);
+
+                        LineCounter += 1;
+                        PRLines.Init();
+                        PRLines."Expenditure Type" := ReceiptsandPaymentTypes.Code;
+                        PRLines.Validate("Expenditure Type");
+                        PRLines."Account Name" := ReceiptsandPaymentTypes.Description;
+                        PRLines."Account No" := RapporteurAllowExpenseAcc;
+                        PRLines.Validate("Account No");
+                        PRLines."No of Days" := Memo."Total Days in the Field";
+                        PRLines.No := PRHeader."No.";
+                        PRLines."Line No" := LineCounter;
+                        PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+                        PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+                        PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
+                        PRLines.Amount := Lines."Rapporteur Allowance" * Memo."Total Days in the Field";
+                        PRLines."Posted Date" := Today;
+                        PRLines."Daily Rate" := Lines."Rapporteur Allowance";
+                        PRLines.Insert();
+                    end;
+                    // Driver Allow Expense Code
+                    if Lines."Driver Allowance" > 0 then begin
+                        ReceiptsandPaymentTypes.Reset();
+                        ReceiptsandPaymentTypes.SetRange("Account No.", DriverAllowExpenseAcc);
+                        if not ReceiptsandPaymentTypes.FindFirst() then
+                            Error('No Receipt and Payment Type found for Driver Allow Account %1', DriverAllowExpenseAcc);
+
+                        LineCounter += 1;
+                        PRLines.Init();
+                        PRLines."Expenditure Type" := ReceiptsandPaymentTypes.Code;
+                        PRLines.Validate("Expenditure Type");
+                        PRLines."Account Name" := ReceiptsandPaymentTypes.Description;
+                        PRLines."Account No" := DriverAllowExpenseAcc;
+                        PRLines.Validate("Account No");
+                        PRLines."No of Days" := Memo."Total Days in the Field";
+                        PRLines.No := PRHeader."No.";
+                        PRLines."Line No" := LineCounter;
+                        PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+                        PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+                        PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
+                        PRLines.Amount := Lines."Driver Allowance" * Memo."Total Days in the Field";
+                        PRLines."Posted Date" := Today;
+                        PRLines."Daily Rate" := Lines."Driver Allowance";
+                        PRLines.Insert();
+                    end;
+                    // Retreat Allow Expense Code
+                    if Lines."Retreat Allowance" > 0 then begin
+                        ReceiptsandPaymentTypes.Reset();
+                        ReceiptsandPaymentTypes.SetRange("Account No.", RetreatAllowExpenseAcc);
+                        if not ReceiptsandPaymentTypes.FindFirst() then
+                            Error('No Receipt and Payment Type found for Retreat Allow Account %1', RetreatAllowExpenseAcc);
+
+                        LineCounter += 1;
+                        PRLines.Init();
+                        PRLines."Expenditure Type" := ReceiptsandPaymentTypes.Code;
+                        PRLines.Validate("Expenditure Type");
+                        PRLines."Account Name" := ReceiptsandPaymentTypes.Description;
+                        PRLines."Account No" := RetreatAllowExpenseAcc;
+                        PRLines.Validate("Account No");
+                        PRLines."No of Days" := Memo."Total Days in the Field";
+                        PRLines.No := PRHeader."No.";
+                        PRLines."Line No" := LineCounter;
+                        PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+                        PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+                        PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
+                        PRLines.Amount := Lines."Retreat Allowance" * Memo."Total Days in the Field";
+                        PRLines."Posted Date" := Today;
+                        PRLines."Daily Rate" := Lines."Retreat Allowance";
+                        PRLines.Insert();
+                    end;
+                    // Expert Allow Expense Code
+                    if Lines."Expert Allowance" > 0 then begin
+                        ReceiptsandPaymentTypes.Reset();
+                        ReceiptsandPaymentTypes.SetRange("Account No.", ExpertAllowExpenseAcc);
+                        if not ReceiptsandPaymentTypes.FindFirst() then
+                            Error('No Receipt and Payment Type found for Expert Allow Account %1', ExpertAllowExpenseAcc);
+
+                        LineCounter += 1;
+                        PRLines.Init();
+                        PRLines."Expenditure Type" := ReceiptsandPaymentTypes.Code;
+                        PRLines.Validate("Expenditure Type");
+                        PRLines."Account Name" := ReceiptsandPaymentTypes.Description;
+                        PRLines."Account No" := ExpertAllowExpenseAcc;
+                        PRLines.Validate("Account No");
+                        PRLines."No of Days" := Memo."Total Days in the Field";
+                        PRLines.No := PRHeader."No.";
+                        PRLines."Line No" := LineCounter;
+                        PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+                        PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+                        PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
+                        PRLines.Amount := Lines."Expert Allowance" * Memo."Total Days in the Field";
+                        PRLines."Posted Date" := Today;
+                        PRLines."Daily Rate" := Lines."Expert Allowance";
+                        PRLines.Insert();
+                    end;
+                    // Accommodation Expense Code
+                    if Lines.Accomodation > 0 then begin
+                        ReceiptsandPaymentTypes.Reset();
+                        ReceiptsandPaymentTypes.SetRange("Account No.", AccommodationExpenseAcc);
+                        if not ReceiptsandPaymentTypes.FindFirst() then
+                            Error('No Receipt and Payment Type found for Accommodation Account %1', AccommodationExpenseAcc);
+
+                        LineCounter += 1;
+                        PRLines.Init();
+                        PRLines."Expenditure Type" := ReceiptsandPaymentTypes.Code;
+                        PRLines.Validate("Expenditure Type");
+                        PRLines."Account Name" := ReceiptsandPaymentTypes.Description;
+                        PRLines."Account No" := AccommodationExpenseAcc;
+                        PRLines.Validate("Account No");
+                        PRLines."No of Days" := Memo."Total Days in the Field";
+                        PRLines.No := PRHeader."No.";
+                        PRLines."Line No" := LineCounter;
+                        PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+                        PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+                        PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
+                        PRLines.Amount := Lines.Accomodation * Memo."Total Days in the Field";
+                        PRLines."Posted Date" := Today;
+                        PRLines."Daily Rate" := Lines.Accomodation;
+                        PRLines.Insert();
+                    end;
+                    // Tuition Expense Code
+                    if Lines."Tuition Fee" > 0 then begin
+                        ReceiptsandPaymentTypes.Reset();
+                        ReceiptsandPaymentTypes.SetRange("Account No.", TuitionExpenseAcc);
+                        if not ReceiptsandPaymentTypes.FindFirst() then
+                            Error('No Receipt and Payment Type found for Tuition Account %1', TuitionExpenseAcc);
+
+                        LineCounter += 1;
+                        PRLines.Init();
+                        PRLines."Expenditure Type" := ReceiptsandPaymentTypes.Code;
+                        PRLines.Validate("Expenditure Type");
+                        PRLines."Account Name" := ReceiptsandPaymentTypes.Description;
+                        PRLines."Account No" := TuitionExpenseAcc;
+                        PRLines.Validate("Account No");
+                        PRLines."No of Days" := Memo."Total Days in the Field";
+                        PRLines.No := PRHeader."No.";
+                        PRLines."Line No" := LineCounter;
+                        PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+                        PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+                        PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
+                        PRLines.Amount := Lines."Tuition Fee" * Memo."Total Days in the Field";
+                        PRLines."Posted Date" := Today;
+                        PRLines."Daily Rate" := Lines."Tuition Fee";
+                        PRLines.Insert();
+                    end;
+                    // Mileage Expense Code
+                    if Lines."Mileage Allowance" > 0 then begin
+                        ReceiptsandPaymentTypes.Reset();
+                        ReceiptsandPaymentTypes.SetRange("Account No.", MileageExpenseAcc);
+                        if not ReceiptsandPaymentTypes.FindFirst() then
+                            Error('No Receipt and Payment Type found for Mileage Account %1', MileageExpenseAcc);
+
+                        LineCounter += 1;
+                        PRLines.Init();
+                        PRLines."Expenditure Type" := ReceiptsandPaymentTypes.Code;
+                        PRLines.Validate("Expenditure Type");
+                        PRLines."Account Name" := ReceiptsandPaymentTypes.Description;
+                        PRLines."Account No" := MileageExpenseAcc;
+                        PRLines.Validate("Account No");
+                        PRLines."No of Days" := Memo."Total Days in the Field";
+                        PRLines.No := PRHeader."No.";
+                        PRLines."Line No" := LineCounter;
+                        PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+                        PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+                        PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
+                        PRLines.Amount := Lines."Mileage Allowance" * Memo."Total Days in the Field";
+                        PRLines."Posted Date" := Today;
+                        PRLines."Daily Rate" := Lines."Mileage Allowance";
+                        PRLines.Insert();
+                    end;
+                    // Qtr. Per Diem Expense Code
+                    if Lines."Quarter Per Diem" > 0 then begin
+                        ReceiptsandPaymentTypes.Reset();
+                        ReceiptsandPaymentTypes.SetRange("Account No.", QtrPerDiemExpenseAcc);
+                        if not ReceiptsandPaymentTypes.FindFirst() then
+                            Error('No Receipt and Payment Type found for Qtr. Per Diem Account %1', QtrPerDiemExpenseAcc);
+
+                        LineCounter += 1;
+                        PRLines.Init();
+                        PRLines."Expenditure Type" := ReceiptsandPaymentTypes.Code;
+                        PRLines.Validate("Expenditure Type");
+                        PRLines."Account Name" := ReceiptsandPaymentTypes.Description;
+                        PRLines."Account No" := QtrPerDiemExpenseAcc;
+                        PRLines.Validate("Account No");
+                        PRLines."No of Days" := Memo."Total Days in the Field";
+                        PRLines.No := PRHeader."No.";
+                        PRLines."Line No" := LineCounter;
+                        PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+                        PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+                        PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
+                        PRLines.Amount := Lines."Quarter Per Diem" * Memo."Total Days in the Field";
+                        PRLines."Posted Date" := Today;
+                        PRLines."Daily Rate" := Lines."Quarter Per Diem";
+                        PRLines.Insert();
+                    end;
+
                 end;
             until Lines.Next() = 0;
         end;
 
         if Counter > 0 then
-            Message('%1 Imprest Payment line(s) created successfully.', Counter);
+            Message('%1 Imprest Payment header(s) created successfully.', Counter);
     end;
 
     procedure CreateImprestPayrollClaims(var Memo: Record "Imprest Memo Header")

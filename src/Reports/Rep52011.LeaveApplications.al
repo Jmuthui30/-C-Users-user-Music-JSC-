@@ -9,7 +9,7 @@ report 52011 "Leave Applications"
         dataitem("Leave Application"; "Leave Application")
         {
             DataItemTableView = where(Status = filter(Released));
-            RequestFilterFields = "Employee No", "Leave Code", "Responsibility Center", "Application Date", "Leave Status";
+            RequestFilterFields = "Employee No", "Leave Code", "Responsibility Center", "Application Date", "Leave Status", Status;
 
             column(Company_Name; CompanyInfo.Name)
             {
@@ -77,6 +77,15 @@ report 52011 "Leave Applications"
             column(ReportFilters; ReportFilters)
             {
             }
+            column(Leave_Balancenew; "Leave Balance")
+            {
+            }
+            column(Leave_Entitlment; Entitlement)
+            {
+            }
+            // "Leave Entitlement"
+            // column()
+
 
             trigger OnAfterGetRecord()
             begin
@@ -87,7 +96,14 @@ report 52011 "Leave Applications"
                 if HrLeaveledger.FindFirst() then begin
                     //  HrLeaveledger.CalcSums("No. of days");
                     LeaveBal := HrLeaveledger."No. of days";
+                    //Entitlement := HrLeaveledger."Leave Entitlement";
                 end;
+                Entitlement := 0;
+                Employ.Reset();
+                Employ.SetRange(Employ."No.", "Leave Application"."Employee No");
+                if Employ.FindFirst() then
+                    Employ.CalcFields("Leave Entitlement");
+                Entitlement := Employ."Leave Entitlement";
             end;
 
             trigger OnPreDataItem()
@@ -128,6 +144,8 @@ report 52011 "Leave Applications"
         HrLeaveledger: Record "HR Leave Ledger Entries";
         LeaveBal: Decimal;
         ReportFilters: Text;
+        Entitlement: Decimal;
+        Employ: Record "Employee";
 
     procedure GetLeaveName("Code": Code[20]): Text[250]
     var
