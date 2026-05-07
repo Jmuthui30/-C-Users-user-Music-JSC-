@@ -38,6 +38,7 @@ report 53012 "Memo Report"
                 column(Title; Title) { }
                 column(Amount; Amount) { }
                 column(Other_Costs; "Other Costs") { }
+                column(Description; Description) { }
 
             }
         }

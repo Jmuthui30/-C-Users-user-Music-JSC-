@@ -220,7 +220,7 @@ page 52297 "Submitted Applicant Card"
             {
                 SubPageLink = "No." = field("No.");
             }
-            part("Attached Documents"; "Document Attachment Factbox")
+            part(Attachment; "Doc. Attachment List Factbox")
             {
                 Caption = 'Attachments';
                 SubPageLink = "Table ID" = CONST(52146603),

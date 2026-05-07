@@ -1069,7 +1069,7 @@ page 51742 "HR & Admin Manager Role Center"
                         RunObject = report "Leave Applications";
                         ApplicationArea = All;
                         ToolTip = 'Executes the Leave Balances action';
-                        Caption = 'Leave Applications';
+                        Caption = 'Leave Applied';
                     }
                     action("Leave Balances")
                     {

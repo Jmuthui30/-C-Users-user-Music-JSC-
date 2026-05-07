@@ -293,7 +293,7 @@ page 51062 "Approved/Posted PV Card"
                 Caption = 'Payment Amounts';
                 SubPageLink = "No." = field("No.");
             }
-            part("Attached Documents"; "Document Attachment Factbox")
+            part(Attachments; "Doc. Attachment List Factbox")
             {
                 Caption = 'Attachments';
                 SubPageLink = "Table ID" = const(Database::Payments),

@@ -205,7 +205,7 @@ page 51954 "Company Jobs"
         }
         area(factboxes)
         {
-            part("Attached Documents"; "Document Attachment Factbox")
+            part(Attachment; "Doc. Attachment List Factbox")
             {
                 Editable = Rec.Status = Rec.Status::Open;
                 ApplicationArea = All;

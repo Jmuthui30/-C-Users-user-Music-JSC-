@@ -303,7 +303,7 @@ codeunit 55056 HRPortal
                 Leave."Application Date" := today;
                 Leave."Leave Code" := CopyStr(LeaveType, 1, MaxStrLen(Leave."Leave Code"));
                 Leave.Validate("Leave Code");
-                Leave."User ID" := 'ADMINCLOUD';
+                Leave."User ID" := UserId;
                 Leave."Start Date" := DT2Date(StartDate);
                 Leave."Days Applied" := Days;
                 Leave.Validate("Start Date");
@@ -773,7 +773,7 @@ codeunit 55056 HRPortal
             memo."Employee No." := employeeNumber;
             memo.Purpose := Purpose;
             memo."Activity Location" := location;
-            memo."Created By" := 'ADMINCLOUD';
+            memo."Created By" := Employee."User ID";
             memo."Departure Location" := deaprturelocation;
             memo."Return Location" := returnlocation;
             memo."Departure Date" := DT2Date(departureDate);
@@ -837,7 +837,7 @@ codeunit 55056 HRPortal
             memo."Employee No." := employeeNumber;
             memo.Purpose := Purpose;
             memo."Activity Location" := location;
-            memo."Created By" := 'ADMINCLOUD';
+            memo."Created By" := Employee."User ID";
             memo."Departure Location" := deaprturelocation;
             memo."Return Location" := returnlocation;
             memo."Departure Date" := DT2Date(departureDate);
@@ -1013,7 +1013,7 @@ codeunit 55056 HRPortal
             ImprestHeader."Time Inserted" := Time;
             ImprestHeader.Cashier := Cashier;
             ImprestHeader."Created By" := Cashier;
-            ImprestHeader."User Id" := 'ADMINCLOUD';
+            ImprestHeader."User Id" := ImprestHeader."User Id";
             ImprestHeader."Payment Type" := ImprestHeader."Payment Type"::Imprest;
             ImprestHeader."Account Type" := ImprestHeader."Account Type"::Customer;
             ImprestHeader."Account No." := CopyStr(AccountNo, 1, MaxStrLen(ImprestHeader."Account No."));
@@ -1042,7 +1042,7 @@ codeunit 55056 HRPortal
             ImprestHeader."Time Inserted" := Time;
             ImprestHeader.Cashier := Cashier;
             ImprestHeader."Created By" := Cashier;
-            ImprestHeader."User Id" := 'ADMINCLOUD';
+            ImprestHeader."User Id" := ImprestHeader."User Id";
             ImprestHeader."Payment Type" := ImprestHeader."Payment Type"::Imprest;
             ImprestHeader."Account Type" := ImprestHeader."Account Type"::Customer;
             ImprestHeader."Account No." := CopyStr(AccountNo, 1, MaxStrLen(ImprestHeader."Account No."));
@@ -1448,7 +1448,7 @@ codeunit 55056 HRPortal
             ImprestHeader."Time Inserted" := Time;
             ImprestHeader.Cashier := Cashier;
             ImprestHeader."Created By" := Cashier;
-            ImprestHeader."User Id" := 'ADMINCLOUD';
+            ImprestHeader."User Id" := UserId;
             // ImprestHeader."Pay Mode" := paymode;
             ImprestHeader."Payment Type" := ImprestHeader."Payment Type"::"Petty Cash";
             ImprestHeader."Account Type" := ImprestHeader."Account Type"::Customer;
@@ -1474,7 +1474,7 @@ codeunit 55056 HRPortal
             ImprestHeader."Time Inserted" := Time;
             ImprestHeader.Cashier := Cashier;
             ImprestHeader."Created By" := Cashier;
-            ImprestHeader."User Id" := 'ADMINCLOUD';
+            ImprestHeader."User Id" := UserId;
             // ImprestHeader."Pay Mode" := paymode;
             ImprestHeader."Payment Type" := ImprestHeader."Payment Type"::"Petty Cash";
             ImprestHeader."Account Type" := ImprestHeader."Account Type"::Customer;
@@ -1698,7 +1698,7 @@ codeunit 55056 HRPortal
             ImprestHeader."Time Inserted" := Time;
             ImprestHeader.Cashier := Cashier;
             ImprestHeader."Created By" := Cashier;
-            ImprestHeader."User Id" := 'ADMINCLOUD';
+            ImprestHeader."User Id" := UserId;
             // ImprestHeader."Pay Mode" := paymode;
             ImprestHeader."Payment Type" := ImprestHeader."Payment Type"::"Staff Claim";
             ImprestHeader."Account Type" := ImprestHeader."Account Type"::Customer;
@@ -1725,7 +1725,7 @@ codeunit 55056 HRPortal
             ImprestHeader."Time Inserted" := Time;
             ImprestHeader.Cashier := Cashier;
             ImprestHeader."Created By" := Cashier;
-            ImprestHeader."User Id" := 'ADMINCLOUD';
+            ImprestHeader."User Id" := UserId;
             // ImprestHeader."Pay Mode" := paymode;
             ImprestHeader."Payment Type" := ImprestHeader."Payment Type"::"Staff Claim";
             ImprestHeader."Account Type" := ImprestHeader."Account Type"::Customer;

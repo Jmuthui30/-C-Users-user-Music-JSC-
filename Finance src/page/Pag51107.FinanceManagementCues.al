@@ -43,7 +43,7 @@ page 51107 "Finance Management Cues"
                     DrillDownPageId = "Imprest Surrenderss";
                     ToolTip = 'Specifies the value of the Imprest Surrenders field';
                 }
-                 field("Imprest Memo"; Rec."Imprest Memo")
+                field("Imprest Memo"; Rec."Imprest Memo")
                 {
                     Caption = 'Imprest Memo';
                     DrillDownPageId = "Imprest Memo List";

@@ -233,7 +233,7 @@ page 51064 "Approved/Post Imprest Card"
                     Visible = DocPosted;
                 }
                 field("Surrender Status"; "Surrender Status") { ApplicationArea = all; Visible = false; }
-                field(Surrendered;Surrendered) { ApplicationArea = all; Visible = false; }
+                field(Surrendered; Surrendered) { ApplicationArea = all; Visible = false; }
             }
             part(ImprestLines; "Imprest Lines")
             {
@@ -244,7 +244,7 @@ page 51064 "Approved/Post Imprest Card"
         }
         area(FactBoxes)
         {
-            part("Attached Documents"; "Document Attachment Factbox")
+            part(Attachments; "Doc. Attachment List Factbox")
             {
                 Caption = 'Attachments';
                 SubPageLink = "Table ID" = const(Database::Payments),

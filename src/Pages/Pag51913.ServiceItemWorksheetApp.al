@@ -105,7 +105,7 @@ page 51913 "Service Item Worksheet - App"
             part(ServInvLines; "Service Worksheet Subform -App")
             {
                 ApplicationArea = Service;
-                SubPageLink = "Document No."=FIELD("Document No."), "Service Item No."=FIELD("Service Item No.");
+                SubPageLink = "Document No." = FIELD("Document No."), "Service Item No." = FIELD("Service Item No.");
             }
             group(Customer)
             {
@@ -173,7 +173,7 @@ page 51913 "Service Item Worksheet - App"
 
                         trigger OnValidate()
                         begin
-                            IsSellToCountyVisible:=FormatAddress.UseCounty(ServHeader."Country/Region Code");
+                            IsSellToCountyVisible := FormatAddress.UseCounty(ServHeader."Country/Region Code");
                         end;
                     }
                     field("ServHeader.""Contact Name"""; ServHeader."Contact Name")
@@ -266,7 +266,7 @@ page 51913 "Service Item Worksheet - App"
 
                         trigger OnValidate()
                         begin
-                            IsShipToCountyVisible:=FormatAddress.UseCounty(ShiptoCountryRegion);
+                            IsShipToCountyVisible := FormatAddress.UseCounty(ShiptoCountryRegion);
                         end;
                     }
                     field("ServHeader.""Ship-to Contact"""; ServHeader."Ship-to Contact")
@@ -383,14 +383,14 @@ page 51913 "Service Item Worksheet - App"
                         ApplicationArea = Service;
                         Caption = 'Faults';
                         Image = Error;
-                    /*RunObject = Page "Service Comment Sheet";
-                        RunPageLink = "Table Name"=CONST("Service Header"),
-                                      "Table Subtype"=FIELD("Document Type"),
-                                      "No."=FIELD("Document No."),
-                                      "Table Line No."=FIELD("Line No."),
-                                      Type=CONST(Fault);
-                        ToolTip = 'View or edit the different fault codes that you can assign to service items. You can use fault codes to identify the different service item faults or the actions taken on service items for each combination of fault area and symptom codes.';
-                    */
+                        /*RunObject = Page "Service Comment Sheet";
+                            RunPageLink = "Table Name"=CONST("Service Header"),
+                                          "Table Subtype"=FIELD("Document Type"),
+                                          "No."=FIELD("Document No."),
+                                          "Table Line No."=FIELD("Line No."),
+                                          Type=CONST(Fault);
+                            ToolTip = 'View or edit the different fault codes that you can assign to service items. You can use fault codes to identify the different service item faults or the actions taken on service items for each combination of fault area and symptom codes.';
+                        */
                     }
                     action(Resolutions)
                     {
@@ -460,7 +460,7 @@ page 51913 "Service Item Worksheet - App"
                         Caption = 'Card';
                         Image = EditLines;
                         RunObject = Page "Service Item Card";
-                        RunPageLink = "No."=FIELD("Service Item No.");
+                        RunPageLink = "No." = FIELD("Service Item No.");
                         ShortCutKey = 'Shift+F7';
                         ToolTip = 'View or change detailed information about the record on the document or journal line.';
                     }
@@ -470,7 +470,7 @@ page 51913 "Service Item Worksheet - App"
                         Caption = '&Log';
                         Image = Approve;
                         RunObject = Page "Service Item Log";
-                        RunPageLink = "Service Item No."=FIELD("Service Item No.");
+                        RunPageLink = "Service Item No." = FIELD("Service Item No.");
                         ToolTip = 'View a list of the service item changes that have been logged, for example, when the warranty has changed or a component has been added. This window displays the field that was changed, the old value and the new value, and the date and time that the field was changed.';
                     }
                 }
@@ -504,14 +504,23 @@ page 51913 "Service Item Worksheet - App"
                     Caption = 'Demand Overview';
                     Image = Forecast;
                     ToolTip = 'Get an overview of demand for your items when planning sales, production, jobs, or service management and when they will be available.';
-
                     trigger OnAction()
                     var
                         DemandOverview: Page "Demand Overview";
+                        ServLine: Record "Service Line";
                     begin
-                        DemandOverview.SetCalculationParameter(true);
-                        DemandOverview.Initialize(0D, 4, Rec."Document No.", '', '');
-                        DemandOverview.RunModal end;
+                        ServLine.Copy(Rec);
+                        DemandOverview.SetTableView(ServLine);
+                        DemandOverview.RunModal();
+                    end;
+                    // trigger OnAction()
+                    // var
+                    //     DemandOverview: Page "Demand Overview";
+                    // begin
+                    //     DemandOverview.SetCalculationParameter(true);
+                    //     DemandOverview.Initialize(0D, 4, Rec."Document No.", '', '');
+                    //     DemandOverview.RunModal
+                    // end;
                 }
             }
         }
@@ -562,50 +571,59 @@ page 51913 "Service Item Worksheet - App"
     begin
         ServHeader.Get(Rec."Document Type", Rec."Document No.");
         UpdateShiptoCode;
-        if Rec."Serial No." = '' then Rec."No. of Previous Services":=0;
+        if Rec."Serial No." = '' then Rec."No. of Previous Services" := 0;
     end;
+
     trigger OnAfterGetRecord()
     begin
         ServHeader.Get(Rec."Document Type", Rec."Document No.");
         UpdateShiptoCode;
         Rec.SetRange("Line No.");
-        if not ServItem.Get(Rec."Service Item No.")then Clear(ServItem);
-        if Rec."Serial No." = '' then Rec."No. of Previous Services":=0;
-    //CurrPage.ServInvLines.PAGE.SetValues("Line No.");
+        if not ServItem.Get(Rec."Service Item No.") then Clear(ServItem);
+        if Rec."Serial No." = '' then Rec."No. of Previous Services" := 0;
+        //CurrPage.ServInvLines.PAGE.SetValues("Line No.");
     end;
+
     trigger OnOpenPage()
     begin
-        IsSellToCountyVisible:=FormatAddress.UseCounty(ServHeader."Country/Region Code");
-        IsShipToCountyVisible:=FormatAddress.UseCounty(ServHeader."Ship-to Country/Region Code");
+        IsSellToCountyVisible := FormatAddress.UseCounty(ServHeader."Country/Region Code");
+        IsShipToCountyVisible := FormatAddress.UseCounty(ServHeader."Ship-to Country/Region Code");
     end;
-    var CannotOpenWindowErr: Label 'You cannot open the window because %1 is %2 in the %3 table.';
-    ServHeader: Record "Service Header";
-    ShiptoAddr: Record "Ship-to Address";
-    ServItemLine: Record "Service Item Line";
-    ServItem: Record "Service Item";
-    TblshtgHeader: Record "Troubleshooting Header";
-    FormatAddress: Codeunit 365;
-    ShiptoName: Text[50];
-    ShiptoAddress: Text[50];
-    ShiptoAddress2: Text[50];
-    ShiptoPostCode: Code[20];
-    ShiptoCity: Text[30];
-    ShiptoCounty: Text[30];
-    ShiptoCountryRegion: Code[10];
-    IsSellToCountyVisible: Boolean;
-    IsShipToCountyVisible: Boolean;
-    local procedure Caption(): Text[80]begin
+
+    var
+        CannotOpenWindowErr: Label 'You cannot open the window because %1 is %2 in the %3 table.';
+        ServHeader: Record "Service Header";
+        ShiptoAddr: Record "Ship-to Address";
+        ServItemLine: Record "Service Item Line";
+        ServItem: Record "Service Item";
+        TblshtgHeader: Record "Troubleshooting Header";
+        FormatAddress: Codeunit 365;
+        ShiptoName: Text[50];
+        ShiptoAddress: Text[50];
+        ShiptoAddress2: Text[50];
+        ShiptoPostCode: Code[20];
+        ShiptoCity: Text[30];
+        ShiptoCounty: Text[30];
+        ShiptoCountryRegion: Code[10];
+        IsSellToCountyVisible: Boolean;
+        IsShipToCountyVisible: Boolean;
+
+    local procedure Caption(): Text[80]
+    begin
         if Rec."Service Item No." <> '' then exit(StrSubstNo('%1 %2', Rec."Service Item No.", Rec.Description));
         if Rec."Item No." <> '' then exit(StrSubstNo('%1 %2', Rec."Item No.", Rec.Description));
         exit(StrSubstNo('%1 %2', Rec."Serial No.", Rec.Description));
     end;
+
     local procedure SelectFaultResolutionCode()
     var
         ServSetup: Record "Service Mgt. Setup";
         FaultResolutionRelation: Page 5930;
     begin
         ServSetup.Get;
-        case ServSetup."Fault Reporting Level" of ServSetup."Fault Reporting Level"::None: Error(CannotOpenWindowErr, ServSetup.FieldCaption("Fault Reporting Level"), ServSetup."Fault Reporting Level", ServSetup.TableCaption);
+        case ServSetup."Fault Reporting Level" of
+            ServSetup."Fault Reporting Level"::None:
+                Error(CannotOpenWindowErr, ServSetup.FieldCaption("Fault Reporting Level"), ServSetup."Fault Reporting Level", ServSetup.TableCaption);
         end;
         Clear(FaultResolutionRelation);
         FaultResolutionRelation.SetDocument(DATABASE::"Service Item Line", Rec."Document Type", Rec."Document No.", Rec."Line No.");
@@ -613,28 +631,28 @@ page 51913 "Service Item Worksheet - App"
         FaultResolutionRelation.RunModal;
         CurrPage.Update(false);
     end;
+
     local procedure UpdateShiptoCode()
     begin
         ServHeader.Get(Rec."Document Type", Rec."Document No.");
         if Rec."Ship-to Code" = '' then begin
-            ShiptoName:=ServHeader.Name;
-            ShiptoAddress:=ServHeader.Address;
-            ShiptoAddress2:=ServHeader."Address 2";
-            ShiptoPostCode:=ServHeader."Post Code";
-            ShiptoCity:=ServHeader.City;
-            ShiptoCounty:=ServHeader.County;
-            ShiptoCountryRegion:=ServHeader."Country/Region Code";
+            ShiptoName := ServHeader.Name;
+            ShiptoAddress := ServHeader.Address;
+            ShiptoAddress2 := ServHeader."Address 2";
+            ShiptoPostCode := ServHeader."Post Code";
+            ShiptoCity := ServHeader.City;
+            ShiptoCounty := ServHeader.County;
+            ShiptoCountryRegion := ServHeader."Country/Region Code";
         end
-        else
-        begin
+        else begin
             ShiptoAddr.Get(Rec."Customer No.", Rec."Ship-to Code");
-            ShiptoName:=ShiptoAddr.Name;
-            ShiptoAddress:=ShiptoAddr.Address;
-            ShiptoAddress2:=ShiptoAddr."Address 2";
-            ShiptoPostCode:=ShiptoAddr."Post Code";
-            ShiptoCity:=ShiptoAddr.City;
-            ShiptoCounty:=ShiptoAddr.County;
-            ShiptoCountryRegion:=ShiptoAddr."Country/Region Code";
+            ShiptoName := ShiptoAddr.Name;
+            ShiptoAddress := ShiptoAddr.Address;
+            ShiptoAddress2 := ShiptoAddr."Address 2";
+            ShiptoPostCode := ShiptoAddr."Post Code";
+            ShiptoCity := ShiptoAddr.City;
+            ShiptoCounty := ShiptoAddr.County;
+            ShiptoCountryRegion := ShiptoAddr."Country/Region Code";
         end;
     end;
 }
