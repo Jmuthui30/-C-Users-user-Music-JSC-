@@ -219,6 +219,13 @@ page 50061 "Imprest Memo Lines"
                         CurrPage.Update(false);
                     end;
                 }
+                field(Description; Description)
+                {
+                    trigger OnValidate()
+                    begin
+                        CurrPage.Update(false);
+                    end;
+                }
                 field("Other Costs"; Rec."Other Costs")
                 {
                     trigger OnValidate()
