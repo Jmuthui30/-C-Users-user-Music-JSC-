@@ -818,6 +818,10 @@ codeunit 55056 HRPortal
                 memo."Sender Email" := Staff."Company E-Mail";
                 memo."Recipient Name" := Staff2."Job Title";
                 memo."Recipient Email" := Staff2."Company E-Mail";
+                UserSetup.SetRange("Employee No.", employeeNumber);
+                if UserSetup.FindLast() then begin
+                    memo."Created By" := UserSetup."User ID";
+                end;
                 status := 'success*Memo has been modified succesfully*' + memo."No.";
             end else begin
                 status := 'danger*An error occured while modifying your memo';
@@ -878,6 +882,10 @@ codeunit 55056 HRPortal
                 memo."Sender Email" := Staff."Company E-Mail";
                 memo."Recipient Name" := Staff2."Job Title";
                 memo."Recipient Email" := Staff2."Company E-Mail";
+                UserSetup.SetRange("Employee No.", employeeNumber);
+                if UserSetup.FindLast() then begin
+                    memo."Created By" := UserSetup."User ID";
+                end;
                 memo.modify(true);
                 status := 'success*Memo has been created succesfully*' + memo."No.";
             end else begin
