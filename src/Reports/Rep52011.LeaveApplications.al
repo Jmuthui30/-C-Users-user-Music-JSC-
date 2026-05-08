@@ -8,7 +8,7 @@ report 52011 "Leave Applications"
     {
         dataitem("Leave Application"; "Leave Application")
         {
-            DataItemTableView = where(Status = filter(Released));
+            // DataItemTableView = where(Status = filter(Rele));
             RequestFilterFields = "Employee No", "Leave Code", "Responsibility Center", "Application Date", "Leave Status", Status;
 
             column(Company_Name; CompanyInfo.Name)

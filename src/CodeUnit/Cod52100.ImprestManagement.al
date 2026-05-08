@@ -1062,6 +1062,7 @@ codeunit 52100 "Imprest Management"
                     PRHeader.Init();
                     PRHeader."No." := LineNo;
                     PRHeader."Payment Type" := PRHeader."Payment Type"::Imprest;
+                    PRHeader."Account Type" := PRHeader."Account Type"::Customer;
                     PRHeader.Date := Today;
                     PRHeader."Time Inserted" := Time;
                     PRHeader."Apply on behalf" := false;
