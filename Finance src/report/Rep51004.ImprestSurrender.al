@@ -401,9 +401,9 @@ report 51004 "Imprest Surrender"
                     //IF TransType.GET("Payment Lines"."Expenditure Type") THEN;
                 end;
             }
-            dataitem("SharePoint Intergration"; "SharePoint Intergration")
+            dataitem("SharePoint Intergration"; "SharePoint Intergrations")
             {
-                DataItemLink = "Document No" = field("No.");
+                DataItemLink = "Application No" = field("No.");
                 column(Description; Description) { }
             }
 
