@@ -1085,7 +1085,7 @@ codeunit 52100 "Imprest Management"
                     PRHeader.Destination := Memo."Activity Location";
                     PRHeader."No of Days" := Memo."Total Days in the Field";
                     PRHeader."Total Amount" := Lines.Amount;
-
+                    PRHeader.Payee := Lines.Name;
                     if Lines.Type = Lines.Type::Expert then begin
                         PRHeader."Apply on behalf" := true;
                         PRHeader."On behalf of" := Lines.Name;
@@ -1517,7 +1517,7 @@ codeunit 52100 "Imprest Management"
                         PRLines."Line No" := LineCounter;
                         PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
                         PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
-                        PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
+                        PRLines.Description := Memo.Purpose + ' - ' + Lines.Description;
                         PRLines.Amount := Lines."Other Costs" * Memo."Total Days in the Field";
                         PRLines."Posted Date" := Today;
                         PRLines."Daily Rate" := Lines."Other Costs";

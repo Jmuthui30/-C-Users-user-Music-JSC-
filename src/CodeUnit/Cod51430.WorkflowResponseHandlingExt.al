@@ -613,7 +613,7 @@ codeunit 51430 "Workflow Response Handling Ext"
             DATABASE::"Imprest Memo Header":
                 begin
                     RecRef.SetTable(ImprestMemo);
-                    ImprestMemo.Validate(Status, Imprest.Status::Released);
+                    ImprestMemo.Validate(Status, ImprestMemo.Status::Released);
                     ImprestMemo.Modify;
                     Handled := true;
                 end;
@@ -622,7 +622,7 @@ codeunit 51430 "Workflow Response Handling Ext"
             DATABASE::"Imprest Payroll Claims Header":
                 begin
                     RecRef.SetTable(ImprestPayrollClaim);
-                    ImprestPayrollClaim.Validate(Status, Imprest.Status::Released);
+                    ImprestPayrollClaim.Validate(Status, ImprestPayrollClaim.Status::Released);
                     ImprestPayrollClaim.Modify;
                     Handled := true;
                 end;
