@@ -951,6 +951,7 @@ codeunit 52100 "Imprest Management"
         TuitionExpenseAcc: Code[20];
         MileageExpenseAcc: Code[20];
         QtrPerDiemExpenseAcc: Code[20];
+        othersExpenseAcc: Code[20];
 
     begin
         if not Confirm(
@@ -1047,6 +1048,9 @@ codeunit 52100 "Imprest Management"
         ExpenseCodes.TestField("Account No");
         QtrPerDiemExpenseAcc := ExpenseCodes."Account No";
         //  Message('Qtr. Per Diem Expense Account resolved to: %1', QtrPerDiemExpenseAcc);
+        ExpenseCodes.Get(AdvancedFinanceSetup."Others Expense Code");
+        ExpenseCodes.TestField("Account No");
+        OthersExpenseAcc := ExpenseCodes."Account No";
 
 
         Counter := 0;
@@ -1493,6 +1497,30 @@ codeunit 52100 "Imprest Management"
                         PRLines.Amount := Lines."Quarter Per Diem" * Memo."Total Days in the Field";
                         PRLines."Posted Date" := Today;
                         PRLines."Daily Rate" := Lines."Quarter Per Diem";
+                        PRLines.Insert();
+                    end;
+                    if Lines."Other Costs" > 0 then begin
+                        ReceiptsandPaymentTypes.Reset();
+                        ReceiptsandPaymentTypes.SetRange("Account No.", OthersExpenseAcc);
+                        if not ReceiptsandPaymentTypes.FindFirst() then
+                            Error('No Receipt and Payment Type found for Others Expense Account %1', OthersExpenseAcc);
+
+                        LineCounter += 1;
+                        PRLines.Init();
+                        PRLines."Expenditure Type" := ReceiptsandPaymentTypes.Code;
+                        PRLines.Validate("Expenditure Type");
+                        PRLines."Account Name" := ReceiptsandPaymentTypes.Description;
+                        PRLines."Account No" := OthersExpenseAcc;
+                        PRLines.Validate("Account No");
+                        PRLines."No of Days" := Memo."Total Days in the Field";
+                        PRLines.No := PRHeader."No.";
+                        PRLines."Line No" := LineCounter;
+                        PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+                        PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+                        PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
+                        PRLines.Amount := Lines."Other Costs" * Memo."Total Days in the Field";
+                        PRLines."Posted Date" := Today;
+                        PRLines."Daily Rate" := Lines."Other Costs";
                         PRLines.Insert();
                     end;
 

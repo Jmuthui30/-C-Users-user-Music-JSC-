@@ -238,6 +238,12 @@ report 51004 "Imprest Surrender"
             column(HeaderDimValueName_8; HeaderDimValueCode[8])
             {
             }
+            column(Date_of_Project; "Date of Project")
+            {
+            }
+            column(Date_of_Completion; "Date of Completion")
+            {
+            }
             dataitem("Payment Lines"; "Payment Lines")
             {
                 DataItemLink = No = field("No.");
