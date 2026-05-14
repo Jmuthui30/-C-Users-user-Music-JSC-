@@ -2130,7 +2130,7 @@ codeunit 55056 HRPortal
             RecordLink.Created := CreateDatetime(Today, Time);
             Payments.Reset;
             Payments.SetRange("No.", staffclaimnumber);
-            if Payments.Find('=') then
+            if Payments.FindFirst() then
                 RecordIDNumber := Payments.RecordId;
             RecordLink."Record ID" := RecordIDNumber;
             if RecordLink.Insert(true) then begin
