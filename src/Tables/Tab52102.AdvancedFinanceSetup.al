@@ -19,8 +19,8 @@ table 52102 "Advanced Finance Setup"
             begin
                 if xRec."Emp Travels Cust Posting Group" <> "Emp Travels Cust Posting Group" then begin
                     CustPG.Init;
-                    CustPG.Code:="Emp Travels Cust Posting Group";
-                    if not CustPG2.Get("Emp Travels Cust Posting Group")then CustPG.Insert;
+                    CustPG.Code := "Emp Travels Cust Posting Group";
+                    if not CustPG2.Get("Emp Travels Cust Posting Group") then CustPG.Insert;
                 end;
             end;
         }
@@ -31,7 +31,7 @@ table 52102 "Advanced Finance Setup"
             trigger OnValidate()
             begin
                 if "Emp Travels Cust Posting Group" = '' then Error(Text000);
-                if CustPG.Get("Emp Travels Cust Posting Group")then begin
+                if CustPG.Get("Emp Travels Cust Posting Group") then begin
                     CustPG.Validate("Receivables Account", "Emp Travel Receivables Account");
                     CustPG.Modify;
                 end;
@@ -91,8 +91,8 @@ table 52102 "Advanced Finance Setup"
             begin
                 if xRec."Emp Travels Cust Posting Group" <> "Emp Travels Cust Posting Group" then begin
                     CustPG.Init;
-                    CustPG.Code:="Emp Travels Cust Posting Group";
-                    if not CustPG2.Get("Emp Travels Cust Posting Group")then CustPG.Insert;
+                    CustPG.Code := "Emp Travels Cust Posting Group";
+                    if not CustPG2.Get("Emp Travels Cust Posting Group") then CustPG.Insert;
                 end;
             end;
         }
@@ -103,7 +103,7 @@ table 52102 "Advanced Finance Setup"
             trigger OnValidate()
             begin
                 if "Emp Travels Cust Posting Group" = '' then Error(Text000);
-                if CustPG.Get("Emp Travels Cust Posting Group")then begin
+                if CustPG.Get("Emp Travels Cust Posting Group") then begin
                     CustPG.Validate("Receivables Account", "Emp Travel Receivables Account");
                     CustPG.Modify;
                 end;
@@ -304,6 +304,20 @@ table 52102 "Advanced Finance Setup"
         {
             DataClassification = ToBeClassified;
         }
+        //"Others Expense Code"
+        field(85; "Others Expense Code"; Code[50])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Expense Codes";
+            Caption = 'Others Expense Code';
+        }
+        //Others Expense allowance
+        field(86; "Others Allowance"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        //Limits    
+
     }
     keys
     {
@@ -314,7 +328,8 @@ table 52102 "Advanced Finance Setup"
     fieldgroups
     {
     }
-    var CustPG: Record "Customer Posting Group";
-    CustPG2: Record "Customer Posting Group";
-    Text000: Label 'You cannot insert the Receivables Account before the Posting Group Code.';
+    var
+        CustPG: Record "Customer Posting Group";
+        CustPG2: Record "Customer Posting Group";
+        Text000: Label 'You cannot insert the Receivables Account before the Posting Group Code.';
 }

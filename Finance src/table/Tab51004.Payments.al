@@ -322,7 +322,7 @@ table 51004 Payments
                                     Customer.CalcFields("Balance (LCY)");
                                     if "Payment Type" = "Payment Type"::Imprest then
                                         if Customer."Balance (LCY)" > 0 then
-                                            Error('You cannot apply for a new imprest because you have an outstanding balance of KES %1', Customer."Balance (LCY)");
+                                            Message('You cannot apply for a new imprest because you have an outstanding balance of KES %1', Customer."Balance (LCY)");
 
                                 end;
                                 UserSetup.TestField("Employee No.");
