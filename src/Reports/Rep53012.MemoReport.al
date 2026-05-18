@@ -39,6 +39,7 @@ report 53012 "Memo Report"
                 column(Amount; Amount) { }
                 column(Other_Costs; "Other Costs") { }
                 column(Description; Description) { }
+                column(No_of_Days; "Total Days in the Field") { }
 
             }
         }

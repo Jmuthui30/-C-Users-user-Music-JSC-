@@ -1338,21 +1338,21 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Total_Days_in_the_Field1">
+                        <Textbox Name="No_of_Days">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!Total_Days_in_the_Field.Value</Value>
+                                  <Value>=Fields!No_of_Days.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Total_Days_in_the_Field1</rd:DefaultName>
+                          <rd:DefaultName>No_of_Days</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -1375,7 +1375,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!Total_Days_in_the_Field.Value*Fields!Amount.Value</Value>
+                                  <Value>=Fields!Amount.Value*Fields!No_of_Days.Value</Value>
                                   <Style>
                                     <Format>n2</Format>
                                   </Style>
@@ -2138,6 +2138,9 @@ End Function
         </Field>
         <Field Name="Description">
           <DataField>Description</DataField>
+        </Field>
+        <Field Name="No_of_Days">
+          <DataField>No_of_Days</DataField>
         </Field>
       </Fields>
       <Query>
