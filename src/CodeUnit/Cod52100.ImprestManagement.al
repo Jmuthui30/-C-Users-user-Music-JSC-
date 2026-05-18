@@ -1146,37 +1146,37 @@ codeunit 52100 "Imprest Management"
                         PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
                         PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
                         PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
-                        PRLines.Amount := Lines."Air Ticket" * Memo."Total Days in the Field";
+                        PRLines.Amount := Lines."Air Ticket";
                         PRLines."Daily Rate" := Lines."Air Ticket";
                         PRLines."Posted Date" := Today;
                         PRLines.Insert();
                     end;
-                    // Conference Line
-                    if Lines.Conference > 0 then begin
-                        ReceiptsandPaymentTypes.Reset();
-                        ReceiptsandPaymentTypes.SetRange("Account No.", ConferenceExpenseAcc);
-                        if not ReceiptsandPaymentTypes.FindFirst() then
-                            Error('No Receipt and Payment Type found for Conference Account %1', ConferenceExpenseAcc);
+                    // // Conference Line
+                    // if Lines.Conference > 0 then begin
+                    //     ReceiptsandPaymentTypes.Reset();
+                    //     ReceiptsandPaymentTypes.SetRange("Account No.", ConferenceExpenseAcc);
+                    //     if not ReceiptsandPaymentTypes.FindFirst() then
+                    //         Error('No Receipt and Payment Type found for Conference Account %1', ConferenceExpenseAcc);
 
-                        LineCounter += 1;
-                        PRLines.Init();
-                        PRLines."Expenditure Type" := ReceiptsandPaymentTypes.Code;
-                        PRLines.Validate("Expenditure Type");
-                        PRLines."Account Name" := ReceiptsandPaymentTypes.Description;
-                        PRLines."Account No" := ConferenceExpenseAcc;
-                        PRLines.Validate("Account No");
-                        PRLines."No of Days" := Memo."Total Days in the Field";
-                        PRLines.No := PRHeader."No.";
+                    //     LineCounter += 1;
+                    //     PRLines.Init();
+                    //     PRLines."Expenditure Type" := ReceiptsandPaymentTypes.Code;
+                    //     PRLines.Validate("Expenditure Type");
+                    //     PRLines."Account Name" := ReceiptsandPaymentTypes.Description;
+                    //     PRLines."Account No" := ConferenceExpenseAcc;
+                    //     PRLines.Validate("Account No");
+                    //     PRLines."No of Days" := Memo."Total Days in the Field";
+                    //     PRLines.No := PRHeader."No.";
 
-                        PRLines."Line No" := LineCounter;
-                        PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
-                        PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
-                        PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
-                        PRLines.Amount := Lines.Conference * Memo."Total Days in the Field";
-                        PRLines."Daily Rate" := Lines.Conference;
-                        PRLines."Posted Date" := Today;
-                        PRLines.Insert();
-                    end;
+                    //     PRLines."Line No" := LineCounter;
+                    //     PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+                    //     PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+                    //     PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
+                    //     PRLines.Amount := Lines.Conference * Memo."Total Days in the Field";
+                    //     PRLines."Daily Rate" := Lines.Conference;
+                    //     PRLines."Posted Date" := Today;
+                    //     PRLines.Insert();
+                    // end;
                     //G.Transport Expense Code"
                     if Lines."Ground Transport" > 0 then begin
                         ReceiptsandPaymentTypes.Reset();
@@ -1197,7 +1197,7 @@ codeunit 52100 "Imprest Management"
                         PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
                         PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
                         PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
-                        PRLines.Amount := Lines."Ground Transport" * Memo."Total Days in the Field";
+                        PRLines.Amount := Lines."Ground Transport";
                         PRLines."Daily Rate" := Lines."Ground Transport";
                         PRLines."Posted Date" := Today;
                         PRLines.Insert();
@@ -1518,7 +1518,7 @@ codeunit 52100 "Imprest Management"
                         PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
                         PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
                         PRLines.Description := Memo.Purpose + ' - ' + Lines.Description;
-                        PRLines.Amount := Lines."Other Costs" * Memo."Total Days in the Field";
+                        PRLines.Amount := Lines."Other Costs";
                         PRLines."Posted Date" := Today;
                         PRLines."Daily Rate" := Lines."Other Costs";
                         PRLines.Insert();

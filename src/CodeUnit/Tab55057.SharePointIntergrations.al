@@ -44,6 +44,16 @@ table 55057 "SharePoint Intergrations"
         {
             ExtendedDatatype = URL;
         }
+        field(11; "Document Title"; Text[2048])
+        {
+
+        }
+        field(12; "Document Type"; Option)
+        {
+            OptionCaption = ',Payment Voucher,Imprest,Imprest surrender,Memo,Others';
+            OptionMembers = ,"Payment Voucher",Imprest,"Imprest Surrender",Memo,Others;
+            ;
+        }
     }
 
     keys

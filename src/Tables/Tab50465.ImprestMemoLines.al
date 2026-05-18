@@ -408,6 +408,15 @@ table 50465 "Imprest Memo Lines"
         {
             DataClassification = ToBeClassified;
         }
+        field(55; "Total Days in the Field"; Integer)
+        {
+            NotBlank = true;
+
+            trigger OnValidate()
+            begin
+
+            end;
+        }
     }
     keys
     {

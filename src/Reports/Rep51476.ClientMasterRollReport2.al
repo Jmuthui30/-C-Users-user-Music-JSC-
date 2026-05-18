@@ -880,6 +880,45 @@ report 51476 "Client Master Roll Report2"
             column(Allowances_40_; Allowances[40])
             {
             }
+            column(Allowances_41_; Allowances[41])
+            {
+            }
+            column(Allowances_42_; Allowances[42])
+            {
+            }
+            column(Allowances_43_; Allowances[43])
+            {
+            }
+            column(Allowances_44_; Allowances[44])
+            {
+            }
+            column(Allowances_45_; Allowances[45])
+            {
+            }
+            column(Allowances_46_; Allowances[46])
+            {
+            }
+            column(Allowances_47_; Allowances[47])
+            {
+            }
+            column(Allowances_48_; Allowances[48])
+            {
+            }
+            column(Allowances_49_; Allowances[49])
+            {
+            }
+            column(Allowances_50_; Allowances[50])
+            {
+            }
+            column(Allowances_51_; Allowances[51])
+            {
+            }
+            column(Allowances_52_; Allowances[52])
+            {
+            }
+            column(Allowances_53_; Allowances[53])
+            {
+            }
             column(OtherEarn; OtherEarn)
             {
             }

@@ -1020,7 +1020,10 @@ codeunit 55056 HRPortal
             ImprestHeader.Date := Today;
             ImprestHeader."Time Inserted" := Time;
             ImprestHeader.Cashier := Cashier;
-            ImprestHeader."Created By" := Cashier;
+            if UserSetup.FindLast() then begin
+                ImprestHeader."Created By" := UserSetup."User ID";
+            end;
+            // ImprestHeader."Created By" := Cashier;
             ImprestHeader."User Id" := ImprestHeader."User Id";
             ImprestHeader."Payment Type" := ImprestHeader."Payment Type"::Imprest;
             ImprestHeader."Account Type" := ImprestHeader."Account Type"::Customer;
@@ -1049,7 +1052,9 @@ codeunit 55056 HRPortal
             ImprestHeader.Date := Today;
             ImprestHeader."Time Inserted" := Time;
             ImprestHeader.Cashier := Cashier;
-            ImprestHeader."Created By" := Cashier;
+            if UserSetup.FindLast() then begin
+                ImprestHeader."Created By" := UserSetup."User ID";
+            end;
             ImprestHeader."User Id" := ImprestHeader."User Id";
             ImprestHeader."Payment Type" := ImprestHeader."Payment Type"::Imprest;
             ImprestHeader."Account Type" := ImprestHeader."Account Type"::Customer;
