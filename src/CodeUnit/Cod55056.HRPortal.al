@@ -921,36 +921,37 @@ codeunit 55056 HRPortal
             memoLines.Description := description;
 
             memoLines.DSA := DSA;
-
+            memoLines.Validate(DSA);
             memoLines."Air Ticket" := airTicket;
-
+            memoLines.Validate("Air Ticket");
             memoLines.Conference := conference;
-
+            memoLines.Validate(Conference);
             memoLines."Ground Transport" := groundTransport;
-
+            memoLines.Validate("Ground Transport");
             memoLines.Accomodation := accommodation;
-
+            memoLines.Validate(Accomodation);
             memoLines."Cordination Allowance" := coordinationAllowance;
-
+            memoLines.Validate("Cordination Allowance");
             memoLines."Facilitator Allowance" := facillitatorAllowance;
-
+            memoLines.Validate("Facilitator Allowance");
             memoLines."Secretariat Allowance" := secretarioteAllowance;
-
+            memoLines.Validate("Secretariat Allowance");
             memoLines."Out of Pocket Allowance" := outOfPocketAllowance;
-
+            memoLines.Validate("Out of Pocket Allowance");
             memoLines."Rapporteur Allowance" := rapparteurAllowance;
-
+            memoLines.Validate("Rapporteur Allowance");
             memoLines."Driver Allowance" := driverAllowance;
-
+            memoLines.Validate("Driver Allowance");
             memoLines."Retreat Allowance" := retreatAllowance;
-
+            memoLines.Validate("Retreat Allowance");
             memoLines."Expert Allowance" := expertAllowance;
-
+            memoLines.Validate("Expert Allowance");
             memoLines."Tuition Fee" := tuitionFee;
-
+            memoLines.Validate("Tuition Fee");
             memoLines."Mileage Allowance" := millageAllowance;
-
+            memoLines.Validate("Mileage Allowance");
             memoLines."Quarter Per Diem" := quarterperDiem;
+            memoLines.Validate("Quarter Per Diem");
             //compute totals
             memoLines.Amount := memoLines.DSA + memoLines."Air Ticket" + memoLines.Conference + memoLines."Ground Transport" + memoLines.Accomodation + memoLines."Cordination Allowance" + memoLines."Facilitator Allowance" + memoLines."Secretariat Allowance" + memoLines."Out of Pocket Allowance" + memoLines."Rapporteur Allowance" + memoLines."Driver Allowance" + memoLines."Retreat Allowance" + memoLines."Expert Allowance" + memoLines."Tuition Fee" + memoLines."Mileage Allowance" + memoLines."Quarter Per Diem";
 
@@ -2135,7 +2136,7 @@ codeunit 55056 HRPortal
             RecordLink.Created := CreateDatetime(Today, Time);
             Payments.Reset;
             Payments.SetRange("No.", staffclaimnumber);
-            if Payments.Find('=') then
+            if Payments.FindFirst() then
                 RecordIDNumber := Payments.RecordId;
             RecordLink."Record ID" := RecordIDNumber;
             if RecordLink.Insert(true) then begin
