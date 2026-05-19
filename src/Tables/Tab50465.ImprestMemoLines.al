@@ -306,8 +306,8 @@ table 50465 "Imprest Memo Lines"
                 // Header.TestField("Driver Allowance", true);
                 GetTotals();
                 if (Rec.Title <> 'Driver I') and (Rec.Title <> 'Driver II') and (Rec.Title <> 'Driver III') then begin
-                    Error('Only participants with the title of Driver can be paid Driver Allowance, therefore Driver Allowance for this participant has been reset to 0.');
-                    Rec."Driver Allowance" := 0;
+                    Message('Only participants with the title of Driver can be paid Driver Allowance, therefore Driver Allowance for this participant has been reset to 0.');
+                    // Rec."Driver Allowance" := 0;
                 end;
             end;
         }
