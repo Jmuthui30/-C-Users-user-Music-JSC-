@@ -104,11 +104,7 @@ page 50061 "Imprest Memo Lines"
                         imprestMemoHeader: Record "Imprest Memo Header";
                         imprestMemoline: Record "Imprest Memo Lines";
                     begin
-                        imprestMemoline.Reset();
-                        imprestMemoline.SetRange(imprestMemoline."No.", Rec."No.");
-                        if imprestMemoline.Find() then begin
-                            "Ground Transport" := DSA * 0.8;
-                        end;
+
                         CurrPage.Update(false);
                     end;
                 }
@@ -173,6 +169,7 @@ page 50061 "Imprest Memo Lines"
                 field("Driver Allowance"; Rec."Driver Allowance")
                 {
                     // Visible = VarDriverAllowance;
+
                     trigger OnValidate()
                     begin
                         CurrPage.Update(false);
@@ -182,17 +179,9 @@ page 50061 "Imprest Memo Lines"
                 {
                     // Visible = VarRetreatAllowance;
                     trigger OnValidate()
-                    var
-                        imprestMemoHeader: Record "Imprest Memo Header";
-                        imprestMemoline: Record "Imprest Memo Lines";
-                        countRun: Integer;
+
                     begin
-                        imprestMemoline.Reset();
-                        imprestMemoline.SetRange(imprestMemoline."No.", Rec."No.");
-                        if imprestMemoline.Count() > 10 then begin
-                            Rec."Retreat Allowance" := 0;
-                            Message('Retreat Allowance has been reset: line count exceeds 10.');
-                        end;
+
                         CurrPage.Update(false);
                     end;
                 }

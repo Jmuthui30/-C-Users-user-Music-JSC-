@@ -205,10 +205,18 @@ table 50465 "Imprest Memo Lines"
             Caption = 'Air Ticket';
 
             trigger OnValidate()
+            var
+                imprestMemoHeader: Record "Imprest Memo Header";
+                imprestMemoline: Record "Imprest Memo Lines";
             begin
                 GetHeader();
                 Header.TestField("Air Ticket", true);
                 GetTotals();
+                imprestMemoline.Reset();
+                imprestMemoline.SetRange(imprestMemoline."No.", Rec."No.");
+                if imprestMemoline.Find() then begin
+                    "Ground Transport" := DSA * 0.8;
+                end;
             end;
         }
         field(32; Conference; Decimal)
@@ -297,6 +305,10 @@ table 50465 "Imprest Memo Lines"
                 GetHeader();
                 Header.TestField("Driver Allowance", true);
                 GetTotals();
+                if (Rec.Title <> 'Driver I') and (Rec.Title <> 'Driver II') and (Rec.Title <> 'Driver III') then begin
+                    Error('Only participants with the title of Driver can be paid Driver Allowance, therefore Driver Allowance for this participant has been reset to 0.');
+                    Rec."Driver Allowance" := 0;
+                end;
             end;
         }
         field(40; "Retreat Allowance"; Decimal)
@@ -304,10 +316,20 @@ table 50465 "Imprest Memo Lines"
             Caption = 'Retreat Allowance';
 
             trigger OnValidate()
+            var
+                imprestMemoHeader: Record "Imprest Memo Header";
+                imprestMemoline: Record "Imprest Memo Lines";
+                countRun: Integer;
             begin
                 GetHeader();
                 Header.TestField("Retreat Allowance", true);
                 GetTotals();
+                imprestMemoline.Reset();
+                imprestMemoline.SetRange(imprestMemoline."No.", Rec."No.");
+                if imprestMemoline.Count() > 10 then begin
+                    Rec."Retreat Allowance" := 0;
+                    Message('Retreat Allowance has been reset: line count exceeds 10.');
+                end;
             end;
         }
         field(41; "Expert Allowance"; Decimal)
@@ -444,7 +466,7 @@ table 50465 "Imprest Memo Lines"
     begin
         Rec.TestField("Account No.");
         Emp.Get(Rec."Account No.");
-        Emp.TestField("Salary Scale");
+        // Emp.TestField("Salary Scale");
         Rec."Job Group" := Emp."Salary Scale";
         // ExpenseCodes.Get(Rec."Expense Code");
         if Rec.Type = Rec.Type::Staff then begin
