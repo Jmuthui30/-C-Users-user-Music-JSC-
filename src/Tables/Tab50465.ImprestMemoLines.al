@@ -196,7 +196,7 @@ table 50465 "Imprest Memo Lines"
             trigger OnValidate()
             begin
                 GetHeader();
-                Header.TestField(DSA, true);
+                // Header.TestField(DSA, true);
                 GetTotals();
             end;
         }
@@ -210,7 +210,7 @@ table 50465 "Imprest Memo Lines"
                 imprestMemoline: Record "Imprest Memo Lines";
             begin
                 GetHeader();
-                Header.TestField("Air Ticket", true);
+                // Header.TestField("Air Ticket", true);
                 GetTotals();
                 imprestMemoline.Reset();
                 imprestMemoline.SetRange(imprestMemoline."No.", Rec."No.");
@@ -226,7 +226,7 @@ table 50465 "Imprest Memo Lines"
             trigger OnValidate()
             begin
                 GetHeader();
-                Header.TestField(Conference, true);
+                // Header.TestField(Conference, true);
                 GetTotals();
             end;
         }
@@ -237,7 +237,7 @@ table 50465 "Imprest Memo Lines"
             trigger OnValidate()
             begin
                 GetHeader();
-                Header.TestField("Ground Transport", true);
+                // Header.TestField("Ground Transport", true);
                 GetTotals();
             end;
         }
@@ -248,7 +248,7 @@ table 50465 "Imprest Memo Lines"
             trigger OnValidate()
             begin
                 GetHeader();
-                Header.TestField("Cordination Allowance", true);
+                // Header.TestField("Cordination Allowance", true);
                 GetTotals();
             end;
         }
@@ -259,7 +259,7 @@ table 50465 "Imprest Memo Lines"
             trigger OnValidate()
             begin
                 GetHeader();
-                Header.TestField("Facilitator Allowance", true);
+                // Header.TestField("Facilitator Allowance", true);
                 GetTotals();
             end;
         }
@@ -270,7 +270,7 @@ table 50465 "Imprest Memo Lines"
             trigger OnValidate()
             begin
                 GetHeader();
-                Header.TestField("Secretariat Allowance", true);
+                // Header.TestField("Secretariat Allowance", true);
                 GetTotals();
             end;
         }
@@ -281,7 +281,7 @@ table 50465 "Imprest Memo Lines"
             trigger OnValidate()
             begin
                 GetHeader();
-                Header.TestField(Accomodation, true);
+                // Header.TestField(Accomodation, true);
                 GetTotals();
             end;
         }
@@ -292,7 +292,7 @@ table 50465 "Imprest Memo Lines"
             trigger OnValidate()
             begin
                 GetHeader();
-                Header.TestField("Rapporteur Allowance", true);
+                // Header.TestField("Rapporteur Allowance", true);
                 GetTotals();
             end;
         }
@@ -303,7 +303,7 @@ table 50465 "Imprest Memo Lines"
             trigger OnValidate()
             begin
                 GetHeader();
-                Header.TestField("Driver Allowance", true);
+                // Header.TestField("Driver Allowance", true);
                 GetTotals();
                 if (Rec.Title <> 'Driver I') and (Rec.Title <> 'Driver II') and (Rec.Title <> 'Driver III') then begin
                     Error('Only participants with the title of Driver can be paid Driver Allowance, therefore Driver Allowance for this participant has been reset to 0.');
@@ -322,7 +322,7 @@ table 50465 "Imprest Memo Lines"
                 countRun: Integer;
             begin
                 GetHeader();
-                Header.TestField("Retreat Allowance", true);
+                // Header.TestField("Retreat Allowance", true);
                 GetTotals();
                 imprestMemoline.Reset();
                 imprestMemoline.SetRange(imprestMemoline."No.", Rec."No.");
@@ -339,7 +339,7 @@ table 50465 "Imprest Memo Lines"
             trigger OnValidate()
             begin
                 GetHeader();
-                Header.TestField("Expert Allowance", true);
+                // Header.TestField("Expert Allowance", true);
                 GetTotals();
             end;
         }
@@ -350,7 +350,7 @@ table 50465 "Imprest Memo Lines"
             trigger OnValidate()
             begin
                 GetHeader();
-                Header.TestField(Accomodation, true);
+                // Header.TestField(Accomodation, true);
                 GetTotals();
             end;
         }
@@ -361,7 +361,7 @@ table 50465 "Imprest Memo Lines"
             trigger OnValidate()
             begin
                 GetHeader();
-                Header.TestField("Tuition Fee", true);
+                // Header.TestField("Tuition Fee", true);
                 GetTotals();
             end;
         }
@@ -372,7 +372,7 @@ table 50465 "Imprest Memo Lines"
             trigger OnValidate()
             begin
                 GetHeader();
-                Header.TestField("Mileage Allowance", true);
+                // Header.TestField("Mileage Allowance", true);
                 GetTotals();
             end;
         }
@@ -383,7 +383,7 @@ table 50465 "Imprest Memo Lines"
             trigger OnValidate()
             begin
                 GetHeader();
-                Header.TestField("Quarter Per Diem", true);
+                // Header.TestField("Quarter Per Diem", true);
                 GetTotals();
             end;
         }
