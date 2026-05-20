@@ -818,6 +818,7 @@ codeunit 55056 HRPortal
                 memo."Sender Email" := Staff."Company E-Mail";
                 memo."Recipient Name" := Staff2."Job Title";
                 memo."Recipient Email" := Staff2."Company E-Mail";
+                UserSetup.Reset();
                 UserSetup.SetRange("Employee No.", employeeNumber);
                 if UserSetup.FindLast() then begin
                     memo."Created By" := UserSetup."User ID";
@@ -919,7 +920,6 @@ codeunit 55056 HRPortal
             end;
             memoLines."Other Costs" := otherCosts;
             memoLines.Description := description;
-            memoLines."Total Days in the Field" := noOfDays;
             memoLines.DSA := DSA;
             memoLines.Validate(DSA);
             memoLines."Air Ticket" := airTicket;
@@ -952,6 +952,8 @@ codeunit 55056 HRPortal
             memoLines.Validate("Mileage Allowance");
             memoLines."Quarter Per Diem" := quarterperDiem;
             memoLines.Validate("Quarter Per Diem");
+            memoLines."Total Days in the Field" := noOfDays;
+            memoLines.Validate("Total Days in the Field");
             //compute totals
             memoLines.Amount := memoLines.DSA + memoLines."Air Ticket" + memoLines.Conference + memoLines."Ground Transport" + memoLines.Accomodation + memoLines."Cordination Allowance" + memoLines."Facilitator Allowance" + memoLines."Secretariat Allowance" + memoLines."Out of Pocket Allowance" + memoLines."Rapporteur Allowance" + memoLines."Driver Allowance" + memoLines."Retreat Allowance" + memoLines."Expert Allowance" + memoLines."Tuition Fee" + memoLines."Mileage Allowance" + memoLines."Quarter Per Diem";
 
@@ -1305,8 +1307,14 @@ codeunit 55056 HRPortal
         PaymentRec: Record Payments;
         PaymentLine: Record "Payment Lines";
         ImpSurrLines: Record "Payment Lines";
+        employeeNo: Text;
         ImprestFullySurrenderedLbl: Label 'The imprest %1 has been fully surrendered', Comment = '%1 = Imprest Issue Doc. No';
     begin
+        employeeNo := '';
+        Employee.Reset();
+        Employee.SetRange("Imprest Account", ImprestNo);
+        If Employee.FindFirst() then
+            employeeNo := Employee."No.";
         CashMgt.Get();
         ImprestHeader.Reset();
         ImprestHeader.SetRange("No.", No);
@@ -1351,6 +1359,12 @@ codeunit 55056 HRPortal
                     //ImprestHeader.Validate("Shortcut Dimension 3 Code");
                     //ImprestHeader.Validate("Dimension Set ID");
                     ImprestHeader.Status := ImprestHeader.Status::Open;
+                    UserSetup.Reset();
+                    UserSetup.SetRange("Employee No.", employeeNo);
+                    if UserSetup.FindLast() then begin
+                        ImprestHeader."Created By" := UserSetup."User ID";
+                        ImprestHeader."User Id" := UserSetup."User ID";
+                    end;
                     if ImprestHeader.Insert(true) then begin
                         status := 'success*Imprest Surrender has been modified succesfully*' + ImprestHeader."No.";
                     end else begin
@@ -1400,6 +1414,12 @@ codeunit 55056 HRPortal
                     //ImprestHeader.Validate("Shortcut Dimension 3 Code");
                     // ImprestHeader.Validate("Dimension Set ID");
                     ImprestHeader.Status := ImprestHeader.Status::Open;
+                    UserSetup.Reset();
+                    UserSetup.SetRange("Employee No.", employeeNo);
+                    if UserSetup.FindLast() then begin
+                        ImprestHeader."Created By" := UserSetup."User ID";
+                        ImprestHeader."User Id" := UserSetup."User ID";
+                    end;
                     if ImprestHeader.Insert(true) then
                         PaymentLine.Reset();
                     PaymentLine.SetRange(No, PaymentRec."No.");
