@@ -242,6 +242,18 @@ page 51441 "Payroll Manager Role Center"
                         RunObject = Report "Client Master Roll Report2";
                         ToolTip = 'View Master Roll Report';
                     }
+                    action("Master Roll B")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Master Roll PAYROLLB';
+                        Image = "Report";
+                        Promoted = true;
+                        PromotedCategory = "Report";
+                        PromotedIsBig = true;
+                        // RunObject = Report "Client Master Roll Report";
+                        RunObject = Report "Client Master Roll ReportB";
+                        ToolTip = 'View Master Roll Report';
+                    }
                     action("Monthly PAYE Report")
                     {
                         ApplicationArea = All;
