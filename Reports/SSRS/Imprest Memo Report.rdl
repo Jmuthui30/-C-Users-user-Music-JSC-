@@ -11,6 +11,124 @@
       <rd:DataSourceID>733db0c6-de59-43cd-9bc5-1f7e49c75cc2</rd:DataSourceID>
     </DataSource>
   </DataSources>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+      <Fields>
+        <Field Name="CompInfoLogo">
+          <DataField>CompInfoLogo</DataField>
+        </Field>
+        <Field Name="CompInfoName">
+          <DataField>CompInfoName</DataField>
+        </Field>
+        <Field Name="CompInfoAddress">
+          <DataField>CompInfoAddress</DataField>
+        </Field>
+        <Field Name="No_">
+          <DataField>No_</DataField>
+        </Field>
+        <Field Name="To">
+          <DataField>To</DataField>
+        </Field>
+        <Field Name="From_Title">
+          <DataField>From_Title</DataField>
+        </Field>
+        <Field Name="Recipient_Title">
+          <DataField>Recipient_Title</DataField>
+        </Field>
+        <Field Name="From">
+          <DataField>From</DataField>
+        </Field>
+        <Field Name="Date">
+          <DataField>Date</DataField>
+        </Field>
+        <Field Name="Subject">
+          <DataField>Subject</DataField>
+        </Field>
+        <Field Name="Message_body">
+          <DataField>Message_body</DataField>
+        </Field>
+        <Field Name="Message_body_1">
+          <DataField>Message_body_1</DataField>
+        </Field>
+        <Field Name="Recipient_Name">
+          <DataField>Recipient_Name</DataField>
+        </Field>
+        <Field Name="Sender_Name">
+          <DataField>Sender_Name</DataField>
+        </Field>
+        <Field Name="Total_Days_in_the_Field">
+          <DataField>Total_Days_in_the_Field</DataField>
+        </Field>
+        <Field Name="PreparedBy">
+          <DataField>PreparedBy</DataField>
+        </Field>
+        <Field Name="DatePrepared">
+          <DataField>DatePrepared</DataField>
+        </Field>
+        <Field Name="PreparedBy_Signature">
+          <DataField>PreparedBy_Signature</DataField>
+        </Field>
+        <Field Name="ExaminedBy">
+          <DataField>ExaminedBy</DataField>
+        </Field>
+        <Field Name="DateApproved">
+          <DataField>DateApproved</DataField>
+        </Field>
+        <Field Name="ExaminedBy_Signature">
+          <DataField>ExaminedBy_Signature</DataField>
+        </Field>
+        <Field Name="VBC">
+          <DataField>VBC</DataField>
+        </Field>
+        <Field Name="VBCDate">
+          <DataField>VBCDate</DataField>
+        </Field>
+        <Field Name="VBC_Signature">
+          <DataField>VBC_Signature</DataField>
+        </Field>
+        <Field Name="Authorizer">
+          <DataField>Authorizer</DataField>
+        </Field>
+        <Field Name="DateAuthorized">
+          <DataField>DateAuthorized</DataField>
+        </Field>
+        <Field Name="Authorizer_Signature">
+          <DataField>Authorizer_Signature</DataField>
+        </Field>
+        <Field Name="Account_No_">
+          <DataField>Account_No_</DataField>
+        </Field>
+        <Field Name="Name">
+          <DataField>Name</DataField>
+        </Field>
+        <Field Name="Title">
+          <DataField>Title</DataField>
+        </Field>
+        <Field Name="Amount">
+          <DataField>Amount</DataField>
+        </Field>
+        <Field Name="AmountFormat">
+          <DataField>AmountFormat</DataField>
+        </Field>
+        <Field Name="Other_Costs">
+          <DataField>Other_Costs</DataField>
+        </Field>
+        <Field Name="Other_CostsFormat">
+          <DataField>Other_CostsFormat</DataField>
+        </Field>
+        <Field Name="Description">
+          <DataField>Description</DataField>
+        </Field>
+        <Field Name="No_of_Days">
+          <DataField>No_of_Days</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -1970,7 +2088,9 @@
                                 </TextRun>
                                 <TextRun>
                                   <Value>=Fields!DatePrepared.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Format>MM/dd/yyyy</Format>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -2149,7 +2269,9 @@
                                 </TextRun>
                                 <TextRun>
                                   <Value>=Fields!DateApproved.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Format>MM/dd/yyyy</Format>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -2328,7 +2450,9 @@
                                 </TextRun>
                                 <TextRun>
                                   <Value>=Fields!DateAuthorized.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Format>MM/dd/yyyy</Format>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -2466,7 +2590,7 @@
             <DataSetName>DataSet_Result</DataSetName>
             <Top>1.99722in</Top>
             <Left>0.17167in</Left>
-            <Height>3.18055in</Height>
+            <Height>3.18056in</Height>
             <Width>7.74166in</Width>
             <ZIndex>1</ZIndex>
             <Visibility>
@@ -2618,6 +2742,12 @@
       </Page>
     </ReportSection>
   </ReportSections>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>4</NumberOfColumns>
+      <NumberOfRows>2</NumberOfRows>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -2657,122 +2787,4 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
   <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Fields>
-        <Field Name="CompInfoLogo">
-          <DataField>CompInfoLogo</DataField>
-        </Field>
-        <Field Name="CompInfoName">
-          <DataField>CompInfoName</DataField>
-        </Field>
-        <Field Name="CompInfoAddress">
-          <DataField>CompInfoAddress</DataField>
-        </Field>
-        <Field Name="No_">
-          <DataField>No_</DataField>
-        </Field>
-        <Field Name="To">
-          <DataField>To</DataField>
-        </Field>
-        <Field Name="From_Title">
-          <DataField>From_Title</DataField>
-        </Field>
-        <Field Name="Recipient_Title">
-          <DataField>Recipient_Title</DataField>
-        </Field>
-        <Field Name="From">
-          <DataField>From</DataField>
-        </Field>
-        <Field Name="Date">
-          <DataField>Date</DataField>
-        </Field>
-        <Field Name="Subject">
-          <DataField>Subject</DataField>
-        </Field>
-        <Field Name="Message_body">
-          <DataField>Message_body</DataField>
-        </Field>
-        <Field Name="Message_body_1">
-          <DataField>Message_body_1</DataField>
-        </Field>
-        <Field Name="Recipient_Name">
-          <DataField>Recipient_Name</DataField>
-        </Field>
-        <Field Name="Sender_Name">
-          <DataField>Sender_Name</DataField>
-        </Field>
-        <Field Name="Total_Days_in_the_Field">
-          <DataField>Total_Days_in_the_Field</DataField>
-        </Field>
-        <Field Name="PreparedBy">
-          <DataField>PreparedBy</DataField>
-        </Field>
-        <Field Name="DatePrepared">
-          <DataField>DatePrepared</DataField>
-        </Field>
-        <Field Name="PreparedBy_Signature">
-          <DataField>PreparedBy_Signature</DataField>
-        </Field>
-        <Field Name="ExaminedBy">
-          <DataField>ExaminedBy</DataField>
-        </Field>
-        <Field Name="DateApproved">
-          <DataField>DateApproved</DataField>
-        </Field>
-        <Field Name="ExaminedBy_Signature">
-          <DataField>ExaminedBy_Signature</DataField>
-        </Field>
-        <Field Name="VBC">
-          <DataField>VBC</DataField>
-        </Field>
-        <Field Name="VBCDate">
-          <DataField>VBCDate</DataField>
-        </Field>
-        <Field Name="VBC_Signature">
-          <DataField>VBC_Signature</DataField>
-        </Field>
-        <Field Name="Authorizer">
-          <DataField>Authorizer</DataField>
-        </Field>
-        <Field Name="DateAuthorized">
-          <DataField>DateAuthorized</DataField>
-        </Field>
-        <Field Name="Authorizer_Signature">
-          <DataField>Authorizer_Signature</DataField>
-        </Field>
-        <Field Name="Account_No_">
-          <DataField>Account_No_</DataField>
-        </Field>
-        <Field Name="Name">
-          <DataField>Name</DataField>
-        </Field>
-        <Field Name="Title">
-          <DataField>Title</DataField>
-        </Field>
-        <Field Name="Amount">
-          <DataField>Amount</DataField>
-        </Field>
-        <Field Name="AmountFormat">
-          <DataField>AmountFormat</DataField>
-        </Field>
-        <Field Name="Other_Costs">
-          <DataField>Other_Costs</DataField>
-        </Field>
-        <Field Name="Other_CostsFormat">
-          <DataField>Other_CostsFormat</DataField>
-        </Field>
-        <Field Name="Description">
-          <DataField>Description</DataField>
-        </Field>
-        <Field Name="No_of_Days">
-          <DataField>No_of_Days</DataField>
-        </Field>
-      </Fields>
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-    </DataSet>
-  </DataSets>
 </Report>

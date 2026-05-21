@@ -11,6 +11,169 @@
       <rd:DataSourceID>24668e4d-34be-4b50-959e-e11e6145b316</rd:DataSourceID>
     </DataSource>
   </DataSources>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+      <Fields>
+        <Field Name="CompanyLogo">
+          <DataField>CompanyLogo</DataField>
+        </Field>
+        <Field Name="CompanyName">
+          <DataField>CompanyName</DataField>
+        </Field>
+        <Field Name="CompanyAddress">
+          <DataField>CompanyAddress</DataField>
+        </Field>
+        <Field Name="CompanyAddress2">
+          <DataField>CompanyAddress2</DataField>
+        </Field>
+        <Field Name="CompanyPostCode">
+          <DataField>CompanyPostCode</DataField>
+        </Field>
+        <Field Name="CompanyCity">
+          <DataField>CompanyCity</DataField>
+        </Field>
+        <Field Name="CompanyPhone">
+          <DataField>CompanyPhone</DataField>
+        </Field>
+        <Field Name="CompanyFax">
+          <DataField>CompanyFax</DataField>
+        </Field>
+        <Field Name="CompanyEmail">
+          <DataField>CompanyEmail</DataField>
+        </Field>
+        <Field Name="CompanyWebsite">
+          <DataField>CompanyWebsite</DataField>
+        </Field>
+        <Field Name="No_">
+          <DataField>No_</DataField>
+        </Field>
+        <Field Name="Date">
+          <DataField>Date</DataField>
+        </Field>
+        <Field Name="From">
+          <DataField>From</DataField>
+        </Field>
+        <Field Name="To">
+          <DataField>To</DataField>
+        </Field>
+        <Field Name="Purpose">
+          <DataField>Purpose</DataField>
+        </Field>
+        <Field Name="Created_By">
+          <DataField>Created_By</DataField>
+        </Field>
+        <Field Name="RunLine">
+          <DataField>RunLine</DataField>
+        </Field>
+        <Field Name="PreparedBy">
+          <DataField>PreparedBy</DataField>
+        </Field>
+        <Field Name="DatePrepared">
+          <DataField>DatePrepared</DataField>
+        </Field>
+        <Field Name="PreparedBy_Signature">
+          <DataField>PreparedBy_Signature</DataField>
+        </Field>
+        <Field Name="ExaminedBy">
+          <DataField>ExaminedBy</DataField>
+        </Field>
+        <Field Name="DateApproved">
+          <DataField>DateApproved</DataField>
+        </Field>
+        <Field Name="ExaminedBy_Signature">
+          <DataField>ExaminedBy_Signature</DataField>
+        </Field>
+        <Field Name="VBC">
+          <DataField>VBC</DataField>
+        </Field>
+        <Field Name="VBCDate">
+          <DataField>VBCDate</DataField>
+        </Field>
+        <Field Name="VBC_Signature">
+          <DataField>VBC_Signature</DataField>
+        </Field>
+        <Field Name="Authorizer">
+          <DataField>Authorizer</DataField>
+        </Field>
+        <Field Name="DateAuthorized">
+          <DataField>DateAuthorized</DataField>
+        </Field>
+        <Field Name="Authorizer_Signature">
+          <DataField>Authorizer_Signature</DataField>
+        </Field>
+        <Field Name="Budget_Sub_Head_Code">
+          <DataField>Budget_Sub_Head_Code</DataField>
+        </Field>
+        <Field Name="Work_Plan_Activity_Description">
+          <DataField>Work_Plan_Activity_Description</DataField>
+        </Field>
+        <Field Name="Memo_No_">
+          <DataField>Memo_No_</DataField>
+        </Field>
+        <Field Name="Budget_Line">
+          <DataField>Budget_Line</DataField>
+        </Field>
+        <Field Name="Description">
+          <DataField>Description</DataField>
+        </Field>
+        <Field Name="Amount_on_Budget">
+          <DataField>Amount_on_Budget</DataField>
+        </Field>
+        <Field Name="Amount_on_BudgetFormat">
+          <DataField>Amount_on_BudgetFormat</DataField>
+        </Field>
+        <Field Name="Committed_Amount">
+          <DataField>Committed_Amount</DataField>
+        </Field>
+        <Field Name="Committed_AmountFormat">
+          <DataField>Committed_AmountFormat</DataField>
+        </Field>
+        <Field Name="Amount_Required">
+          <DataField>Amount_Required</DataField>
+        </Field>
+        <Field Name="Amount_RequiredFormat">
+          <DataField>Amount_RequiredFormat</DataField>
+        </Field>
+        <Field Name="Available_Balance">
+          <DataField>Available_Balance</DataField>
+        </Field>
+        <Field Name="Available_BalanceFormat">
+          <DataField>Available_BalanceFormat</DataField>
+        </Field>
+        <Field Name="Budget_Availability">
+          <DataField>Budget_Availability</DataField>
+        </Field>
+        <Field Name="BudgetLine">
+          <DataField>BudgetLine</DataField>
+        </Field>
+        <Field Name="No_Line">
+          <DataField>No_Line</DataField>
+        </Field>
+        <Field Name="Type">
+          <DataField>Type</DataField>
+        </Field>
+        <Field Name="Account_No_">
+          <DataField>Account_No_</DataField>
+        </Field>
+        <Field Name="Name">
+          <DataField>Name</DataField>
+        </Field>
+        <Field Name="Amount">
+          <DataField>Amount</DataField>
+        </Field>
+        <Field Name="AmountFormat">
+          <DataField>AmountFormat</DataField>
+        </Field>
+        <Field Name="MemoLine">
+          <DataField>MemoLine</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -1239,7 +1402,7 @@
             </Filters>
             <Top>8.13768cm</Top>
             <Left>0.85937cm</Left>
-            <Height>2.17397cm</Height>
+            <Height>2.17398cm</Height>
             <Width>18.65094cm</Width>
             <ZIndex>5</ZIndex>
             <Style>
@@ -2649,7 +2812,7 @@
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
-                                    <Format>MM/dd/yyyy</Format>
+                                    <Format>d MMM yyyy</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -2969,7 +3132,7 @@
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
-                                    <Format>g</Format>
+                                    <Format>d MMM yyyy</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -3288,7 +3451,7 @@
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
-                                    <Format>g</Format>
+                                    <Format>d MMM yyyy</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -3656,8 +3819,8 @@
             </Filters>
             <Top>10.34693cm</Top>
             <Left>0.85937cm</Left>
-            <Height>25.79528cm</Height>
-            <Width>18.65093cm</Width>
+            <Height>25.79661cm</Height>
+            <Width>18.65095cm</Width>
             <ZIndex>6</ZIndex>
             <Style>
               <Border>
@@ -3666,7 +3829,7 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>36.14221cm</Height>
+        <Height>36.14354cm</Height>
         <Style />
       </Body>
       <Width>20.8915cm</Width>
@@ -3682,6 +3845,12 @@
       </Page>
     </ReportSection>
   </ReportSections>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>4</NumberOfColumns>
+      <NumberOfRows>2</NumberOfRows>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -3721,167 +3890,4 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
   <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Fields>
-        <Field Name="CompanyLogo">
-          <DataField>CompanyLogo</DataField>
-        </Field>
-        <Field Name="CompanyName">
-          <DataField>CompanyName</DataField>
-        </Field>
-        <Field Name="CompanyAddress">
-          <DataField>CompanyAddress</DataField>
-        </Field>
-        <Field Name="CompanyAddress2">
-          <DataField>CompanyAddress2</DataField>
-        </Field>
-        <Field Name="CompanyPostCode">
-          <DataField>CompanyPostCode</DataField>
-        </Field>
-        <Field Name="CompanyCity">
-          <DataField>CompanyCity</DataField>
-        </Field>
-        <Field Name="CompanyPhone">
-          <DataField>CompanyPhone</DataField>
-        </Field>
-        <Field Name="CompanyFax">
-          <DataField>CompanyFax</DataField>
-        </Field>
-        <Field Name="CompanyEmail">
-          <DataField>CompanyEmail</DataField>
-        </Field>
-        <Field Name="CompanyWebsite">
-          <DataField>CompanyWebsite</DataField>
-        </Field>
-        <Field Name="No_">
-          <DataField>No_</DataField>
-        </Field>
-        <Field Name="Date">
-          <DataField>Date</DataField>
-        </Field>
-        <Field Name="From">
-          <DataField>From</DataField>
-        </Field>
-        <Field Name="To">
-          <DataField>To</DataField>
-        </Field>
-        <Field Name="Purpose">
-          <DataField>Purpose</DataField>
-        </Field>
-        <Field Name="Created_By">
-          <DataField>Created_By</DataField>
-        </Field>
-        <Field Name="RunLine">
-          <DataField>RunLine</DataField>
-        </Field>
-        <Field Name="PreparedBy">
-          <DataField>PreparedBy</DataField>
-        </Field>
-        <Field Name="DatePrepared">
-          <DataField>DatePrepared</DataField>
-        </Field>
-        <Field Name="PreparedBy_Signature">
-          <DataField>PreparedBy_Signature</DataField>
-        </Field>
-        <Field Name="ExaminedBy">
-          <DataField>ExaminedBy</DataField>
-        </Field>
-        <Field Name="DateApproved">
-          <DataField>DateApproved</DataField>
-        </Field>
-        <Field Name="ExaminedBy_Signature">
-          <DataField>ExaminedBy_Signature</DataField>
-        </Field>
-        <Field Name="VBC">
-          <DataField>VBC</DataField>
-        </Field>
-        <Field Name="VBCDate">
-          <DataField>VBCDate</DataField>
-        </Field>
-        <Field Name="VBC_Signature">
-          <DataField>VBC_Signature</DataField>
-        </Field>
-        <Field Name="Authorizer">
-          <DataField>Authorizer</DataField>
-        </Field>
-        <Field Name="DateAuthorized">
-          <DataField>DateAuthorized</DataField>
-        </Field>
-        <Field Name="Authorizer_Signature">
-          <DataField>Authorizer_Signature</DataField>
-        </Field>
-        <Field Name="Budget_Sub_Head_Code">
-          <DataField>Budget_Sub_Head_Code</DataField>
-        </Field>
-        <Field Name="Work_Plan_Activity_Description">
-          <DataField>Work_Plan_Activity_Description</DataField>
-        </Field>
-        <Field Name="Memo_No_">
-          <DataField>Memo_No_</DataField>
-        </Field>
-        <Field Name="Budget_Line">
-          <DataField>Budget_Line</DataField>
-        </Field>
-        <Field Name="Description">
-          <DataField>Description</DataField>
-        </Field>
-        <Field Name="Amount_on_Budget">
-          <DataField>Amount_on_Budget</DataField>
-        </Field>
-        <Field Name="Amount_on_BudgetFormat">
-          <DataField>Amount_on_BudgetFormat</DataField>
-        </Field>
-        <Field Name="Committed_Amount">
-          <DataField>Committed_Amount</DataField>
-        </Field>
-        <Field Name="Committed_AmountFormat">
-          <DataField>Committed_AmountFormat</DataField>
-        </Field>
-        <Field Name="Amount_Required">
-          <DataField>Amount_Required</DataField>
-        </Field>
-        <Field Name="Amount_RequiredFormat">
-          <DataField>Amount_RequiredFormat</DataField>
-        </Field>
-        <Field Name="Available_Balance">
-          <DataField>Available_Balance</DataField>
-        </Field>
-        <Field Name="Available_BalanceFormat">
-          <DataField>Available_BalanceFormat</DataField>
-        </Field>
-        <Field Name="Budget_Availability">
-          <DataField>Budget_Availability</DataField>
-        </Field>
-        <Field Name="BudgetLine">
-          <DataField>BudgetLine</DataField>
-        </Field>
-        <Field Name="No_Line">
-          <DataField>No_Line</DataField>
-        </Field>
-        <Field Name="Type">
-          <DataField>Type</DataField>
-        </Field>
-        <Field Name="Account_No_">
-          <DataField>Account_No_</DataField>
-        </Field>
-        <Field Name="Name">
-          <DataField>Name</DataField>
-        </Field>
-        <Field Name="Amount">
-          <DataField>Amount</DataField>
-        </Field>
-        <Field Name="AmountFormat">
-          <DataField>AmountFormat</DataField>
-        </Field>
-        <Field Name="MemoLine">
-          <DataField>MemoLine</DataField>
-        </Field>
-      </Fields>
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-    </DataSet>
-  </DataSets>
 </Report>

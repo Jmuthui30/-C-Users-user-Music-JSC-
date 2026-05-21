@@ -465,7 +465,6 @@ report 51003 Imprest
 
                 ApprovalEntries.Reset();
                 ApprovalEntries.SetCurrentKey("Sequence No.");
-                ApprovalEntries.SetRange("Table ID", Database::Payments);
                 ApprovalEntries.SetRange("Document No.", Payments."No.");
                 ApprovalEntries.SetRange(Status, ApprovalEntries.Status::Approved);
                 if ApprovalEntries.Find('-') then
