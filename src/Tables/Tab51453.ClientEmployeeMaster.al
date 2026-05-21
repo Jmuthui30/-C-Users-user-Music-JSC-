@@ -530,6 +530,14 @@ table 51453 "Client Employee Master"
         field(104; "Last Salary Review Date"; Date)
         {
         }
+        // Current Employment Date
+        field(105; "Current Employment Date"; Date)
+        {
+        }
+        //Increment Date
+        field(106; "Increment Date"; Date)
+        {
+        }
     }
     keys
     {
@@ -562,11 +570,11 @@ table 51453 "Client Employee Master"
             OutsourcingSetup.Get;
             OutsourcingSetup.TestField("Employee Import Nos.");
             // NoSeriesMgt.InitSeries(OutsourcingSetup."Employee Import Nos.", xRec."No. Series", 0D, "No.", "No. Series");
-            if NoSeriesMgt.AreRelated(OutsourcingSetup."Employee Import Nos.",xRec."No. Series") then
-            "No. Series":=xRec."No. Series"
+            if NoSeriesMgt.AreRelated(OutsourcingSetup."Employee Import Nos.", xRec."No. Series") then
+                "No. Series" := xRec."No. Series"
             else
-            "No. Series":=OutsourcingSetup."Employee Import Nos.";
-            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
+                "No. Series" := OutsourcingSetup."Employee Import Nos.";
+            "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
         end;
     end;
 
@@ -596,7 +604,7 @@ table 51453 "Client Employee Master"
     //         exit(true);
     //     end;
     // end;
-  procedure AssistEdit(): Boolean
+    procedure AssistEdit(): Boolean
     var
         NoSeries: Codeunit "No. Series";
         NoSeriesCode: Code[20];
@@ -610,6 +618,7 @@ table 51453 "Client Employee Master"
             exit(true);
         end;
     end;
+
     procedure GetPayPeriod(): Date
     var
         PayPeriod: Record "Client Payroll Period";

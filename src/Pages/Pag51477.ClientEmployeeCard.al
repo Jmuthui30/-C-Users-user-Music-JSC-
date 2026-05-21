@@ -171,6 +171,11 @@ page 51477 "Client Employee Card"
                     Importance = Promoted;
                     ToolTip = 'Specifies the date when the employee began to work for the company.';
                 }
+                field("Current Employment Date"; "Current Employment Date")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the date when the employee started current employment. This field is used to calculate seniority of the employee.';
+                }
                 field("Last Salary Review Date"; Rec."Last Salary Review Date")
                 {
                     ApplicationArea = All;

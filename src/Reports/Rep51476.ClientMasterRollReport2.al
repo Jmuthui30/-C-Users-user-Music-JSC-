@@ -1354,6 +1354,9 @@ report 51476 "Client Master Roll Report2"
             column(Pay_Period_Filter; "Pay Period Filter")
             {
             }
+            column(Current_Employment_Date; "Current Employment Date")
+            {
+            }
             trigger OnAfterGetRecord()
             begin
                 Employee.CalcFields(Employee."Total Allowances", Employee."Total Deductions");
