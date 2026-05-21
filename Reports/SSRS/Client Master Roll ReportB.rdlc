@@ -64,32 +64,6 @@
               <VerticalAlign>Middle</VerticalAlign>
             </Style>
           </Textbox>
-          <Textbox Name="CurrReport_PAGENOCaption1">
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=ReportItems!CurrReport_PAGENOCaption.Value</Value>
-                    <Style>
-                      <FontSize>7pt</FontSize>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <Top>0.45961cm</Top>
-            <Left>43.32326cm</Left>
-            <Height>0.423cm</Height>
-            <Width>2.77938cm</Width>
-            <ZIndex>2</ZIndex>
-            <Style>
-              <VerticalAlign>Middle</VerticalAlign>
-            </Style>
-          </Textbox>
           <Textbox Name="MASTER_ROLLCaption1">
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -110,7 +84,7 @@
             <Left>0.62357cm</Left>
             <Height>0.423cm</Height>
             <Width>7.5cm</Width>
-            <ZIndex>3</ZIndex>
+            <ZIndex>2</ZIndex>
             <Style>
               <VerticalAlign>Middle</VerticalAlign>
             </Style>
@@ -136,33 +110,7 @@
             <Left>43.32326cm</Left>
             <Height>0.423cm</Height>
             <Width>4.39354cm</Width>
-            <ZIndex>4</ZIndex>
-            <Style>
-              <VerticalAlign>Middle</VerticalAlign>
-            </Style>
-          </Textbox>
-          <Textbox Name="PageNumberTextBox">
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=Globals!PageNumber</Value>
-                    <Style>
-                      <FontSize>7pt</FontSize>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <Top>0.45961cm</Top>
-            <Left>46.24374cm</Left>
-            <Height>0.423cm</Height>
-            <Width>1.47306cm</Width>
-            <ZIndex>5</ZIndex>
+            <ZIndex>3</ZIndex>
             <Style>
               <VerticalAlign>Middle</VerticalAlign>
             </Style>
@@ -186,7 +134,7 @@
             <Left>0.62357cm</Left>
             <Height>0.423cm</Height>
             <Width>7.5cm</Width>
-            <ZIndex>6</ZIndex>
+            <ZIndex>4</ZIndex>
             <Style>
               <VerticalAlign>Middle</VerticalAlign>
             </Style>
@@ -213,7 +161,7 @@
             <Left>43.32326cm</Left>
             <Height>0.423cm</Height>
             <Width>4.39354cm</Width>
-            <ZIndex>7</ZIndex>
+            <ZIndex>5</ZIndex>
             <Style>
               <VerticalAlign>Middle</VerticalAlign>
             </Style>
@@ -227,7 +175,7 @@
             <Left>14.27289cm</Left>
             <Height>3.31478cm</Height>
             <Width>9.95818cm</Width>
-            <ZIndex>8</ZIndex>
+            <ZIndex>6</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -5775,14 +5723,14 @@
             <Left>0.09167in</Left>
             <Height>2.90878cm</Height>
             <Width>57.66649cm</Width>
-            <ZIndex>9</ZIndex>
+            <ZIndex>7</ZIndex>
             <Style />
           </Tablix>
         </ReportItems>
         <Height>7.40222cm</Height>
         <Style />
       </Body>
-      <Width>57.89932cm</Width>
+      <Width>57.89933cm</Width>
       <Page>
         <PageHeight>29.7cm</PageHeight>
         <PageWidth>42cm</PageWidth>
