@@ -90,7 +90,6 @@ report 53012 "Memo Report"
                     UserSetup.CalcFields(Signature);
                 ApprovalEntries.Reset();
                 ApprovalEntries.SetCurrentKey("Sequence No.");
-                ApprovalEntries.SetRange("Table ID", Database::Payments);
                 ApprovalEntries.SetRange("Document No.", "No.");
                 ApprovalEntries.SetRange(Status, ApprovalEntries.Status::Approved);
                 if ApprovalEntries.Find('-') then
