@@ -163,12 +163,12 @@ report 51244 "Expenditure Requisition Form"
                             if UserSetup2.Get(Approver[3]) then
                                 UserSetup2.CalcFields(Signature);
                         end;
-                    /*if ApprovalEntries."Sequence No." = 3 then begin
-                        Approver[4] := ApprovalEntries."Last Modified By User ID";
-                        ApproverDate[4] := ApprovalEntries."Last Date-Time Modified";
-                        if UserSetup3.Get(Approver[4]) then
-                            UserSetup3.CalcFields(Signature);
-                    end;*/
+                    // if ApprovalEntries."Sequence No." = 3 then begin
+                    //     Approver[4] := ApprovalEntries."Last Modified By User ID";
+                    //     ApproverDate[4] := ApprovalEntries."Last Date-Time Modified";
+                    //     if UserSetup3.Get(Approver[4]) then
+                    //         UserSetup3.CalcFields(Signature);
+                    // end;
                     until ApprovalEntries.Next() = 0;
 
                 if Posted then begin
