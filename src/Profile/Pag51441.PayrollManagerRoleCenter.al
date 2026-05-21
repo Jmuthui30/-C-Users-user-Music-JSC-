@@ -131,6 +131,25 @@ page 51441 "Payroll Manager Role Center"
                     RunPageMode = Edit;
                     ToolTip = 'Manage or Create new clients';
                 }
+                //"Client Scale Benefits"
+                action("Client Scale Benefits")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Client Scale Benefits';
+                    Image = Database;
+                    RunObject = Page "Client Scale Benefits";
+                    RunPageMode = Edit;
+                    ToolTip = 'Manage or Create new clients';
+                }
+                action("Client Salary Scales")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Client Salary Scales';
+                    Image = Database;
+                    RunObject = Page "Client Salary Scales";
+                    RunPageMode = Edit;
+                    ToolTip = 'Manage or Create new clients';
+                }
             }
             group(Payments)
             {
