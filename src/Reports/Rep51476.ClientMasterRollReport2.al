@@ -1347,6 +1347,13 @@ report 51476 "Client Master Roll Report2"
             column(Designation; Designation)
             {
             }
+            column(Level; Level)
+            {
+            }
+            //Pay Period Filter
+            column(Pay_Period_Filter; "Pay Period Filter")
+            {
+            }
             trigger OnAfterGetRecord()
             begin
                 Employee.CalcFields(Employee."Total Allowances", Employee."Total Deductions");
