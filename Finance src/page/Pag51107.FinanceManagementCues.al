@@ -101,6 +101,12 @@ page 51107 "Finance Management Cues"
                     DrillDownPageId = "Approved Imprest Surrenders";
                     ToolTip = 'Specifies the value of the Imprest Surrender-Approved field';
                 }
+                field("Imprest Memo Approved"; Rec."Imprest Memo")
+                {
+                    Caption = 'Imprest Memo - Approved';
+                    DrillDownPageId = "Imprest Memo List";
+                    ToolTip = 'Specifies the value of the Imprest Memo field';
+                }
                 field("PCash Surrender-Approved"; Rec."PCash Surrender-Approved")
                 {
                     Caption = 'PCash Surrender-Approved';

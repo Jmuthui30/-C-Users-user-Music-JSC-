@@ -516,6 +516,11 @@ page 50059 "Imprest Memo Header"
                         // CommitmentMgt.ImprestMemoExpenseCheck(Rec);
                         // Commit();
                         ImprestMgt.CreateImprestMemoPay(Rec);
+                        Posted := true;
+                        "Posted By" := USERID();
+                        Modify();
+                        Message('Imprest Request Created');
+                        CurrPage.Close();
                     end;
                 }
                 action(Budget)

@@ -140,6 +140,7 @@ page 51441 "Payroll Manager Role Center"
                     RunObject = Page "Client Scale Benefits";
                     RunPageMode = Edit;
                     ToolTip = 'Manage or Create new clients';
+                    Visible = false;
                 }
                 action("Client Salary Scales")
                 {
@@ -149,6 +150,7 @@ page 51441 "Payroll Manager Role Center"
                     RunObject = Page "Client Salary Scales";
                     RunPageMode = Edit;
                     ToolTip = 'Manage or Create new clients';
+                    Visible = false;
                 }
             }
             group(Payments)

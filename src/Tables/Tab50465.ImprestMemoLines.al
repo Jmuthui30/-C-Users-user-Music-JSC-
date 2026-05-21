@@ -62,7 +62,8 @@ table 50465 "Imprest Memo Lines"
                     MemoLines.Reset();
                     MemoLines.SetRange("No.", Header."No.");
                     MemoLines.SetRange(Cordinator, true);
-                    if MemoLines.Count > ImprestSetup."Max. No. of Cordinators" - 1 then Error('Maximum Number of Cordinators per event cannot be more than ' + Format(ImprestSetup."Max. No. of Cordinators"));
+                    if MemoLines.Count > ImprestSetup."Max. No. of Cordinators" then
+                        Error('Maximum Number of Cordinators per event cannot be more than ' + Format(ImprestSetup."Max. No. of Cordinators"));
                 end;
                 GetDefaultAllowances(Rec);
             end;
@@ -80,7 +81,7 @@ table 50465 "Imprest Memo Lines"
                     MemoLines.Reset();
                     MemoLines.SetRange("No.", Header."No.");
                     MemoLines.SetRange(Facilitator, true);
-                    if MemoLines.Count > ImprestSetup."Max. No. of Facilitators" - 1 then Error('Maximum Number of Facilitators per event cannot be more than ' + Format(ImprestSetup."Max. No. of Facilitators"));
+                    if MemoLines.Count > ImprestSetup."Max. No. of Facilitators" then Error('Maximum Number of Facilitators per event cannot be more than ' + Format(ImprestSetup."Max. No. of Facilitators"));
                 end;
                 GetDefaultAllowances(Rec);
             end;
@@ -99,7 +100,7 @@ table 50465 "Imprest Memo Lines"
                     MemoLines.Reset();
                     MemoLines.SetRange("No.", Header."No.");
                     MemoLines.SetRange(Secretary, true);
-                    if MemoLines.Count > ImprestSetup."Max. No. of Secretaries" - 1 then Error('Maximum Number of Secretaries per event cannot be more than ' + Format(ImprestSetup."Max. No. of Secretaries"));
+                    if MemoLines.Count > ImprestSetup."Max. No. of Secretaries" then Error('Maximum Number of Secretaries per event cannot be more than ' + Format(ImprestSetup."Max. No. of Secretaries"));
                 end;
                 GetDefaultAllowances(Rec);
             end;
@@ -117,7 +118,7 @@ table 50465 "Imprest Memo Lines"
                     MemoLines.Reset();
                     MemoLines.SetRange("No.", Header."No.");
                     MemoLines.SetRange(Rapporteur, true);
-                    if MemoLines.Count > ImprestSetup."Max. No. of Rapporteurs" - 1 then Error('Maximum Number of Rapporteurs per event cannot be more than ' + Format(ImprestSetup."Max. No. of Rapporteurs"));
+                    if MemoLines.Count > ImprestSetup."Max. No. of Rapporteurs" then Error('Maximum Number of Rapporteurs per event cannot be more than ' + Format(ImprestSetup."Max. No. of Rapporteurs"));
                 end;
                 GetDefaultAllowances(Rec);
             end;
@@ -135,7 +136,7 @@ table 50465 "Imprest Memo Lines"
                     MemoLines.Reset();
                     MemoLines.SetRange("No.", Header."No.");
                     MemoLines.SetRange(Driver, true);
-                    if MemoLines.Count > ImprestSetup."Max. No. of Drivers" - 1 then Error('Maximum Number of Drivers per event cannot be more than ' + Format(ImprestSetup."Max. No. of Drivers"));
+                    if MemoLines.Count > ImprestSetup."Max. No. of Drivers" then Error('Maximum Number of Drivers per event cannot be more than ' + Format(ImprestSetup."Max. No. of Drivers"));
                 end;
                 GetDefaultAllowances(Rec);
             end;
