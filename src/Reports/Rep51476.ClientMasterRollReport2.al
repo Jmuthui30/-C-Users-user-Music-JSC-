@@ -1357,6 +1357,9 @@ report 51476 "Client Master Roll Report2"
             column(Current_Employment_Date; "Current Employment Date")
             {
             }
+            column(PIN_Number; "PIN Number")
+            {
+            }
             trigger OnAfterGetRecord()
             begin
                 Employee.CalcFields(Employee."Total Allowances", Employee."Total Deductions");
