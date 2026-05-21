@@ -98,6 +98,10 @@ page 50059 "Imprest Memo Header"
                 field(Approvers; Rec.Approvers)
                 {
                 }
+                field("Created By"; "Created By")
+                {
+                }
+
 
 
             }
