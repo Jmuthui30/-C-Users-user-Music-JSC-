@@ -538,6 +538,10 @@ table 51453 "Client Employee Master"
         field(106; "Increment Date"; Date)
         {
         }
+        //increment Month
+        field(107; "Increment Month"; Integer)
+        {
+        }
     }
     keys
     {

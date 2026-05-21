@@ -39,10 +39,7 @@ report 58190 "Client Empl. Master Update"
         {
             area(processing)
             {
-                action(LayoutName)
-                {
 
-                }
             }
         }
     }

@@ -176,6 +176,11 @@ page 51477 "Client Employee Card"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the date when the employee started current employment. This field is used to calculate seniority of the employee.';
                 }
+                field("Increment Month"; "Increment Month")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the month when employee is eligible for salary increment.';
+                }
                 field("Last Salary Review Date"; Rec."Last Salary Review Date")
                 {
                     ApplicationArea = All;
