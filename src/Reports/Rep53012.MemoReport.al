@@ -70,14 +70,303 @@ report 53012 "Memo Report"
             dataitem("Imprest Memo Lines"; "Imprest Memo Lines")
             {
                 DataItemLink = "No." = field("No.");
+                DataItemTableView = sorting("No.") where(DSA = filter(> 0));
+
                 column(Account_No_; "Account No.") { }
                 column(Name; Name) { }
                 column(Title; Title) { }
-                column(Amount; Amount) { }
+                column(Amount; dsa) { }
                 column(Other_Costs; "Other Costs") { }
                 column(Description; Description) { }
                 column(No_of_Days; "Total Days in the Field") { }
 
+            }
+            // Cordiantion Allowance
+            dataitem(Cordiantion; "Imprest Memo Lines")
+            {
+                DataItemLink = "No." = field("No.");
+                DataItemTableView = sorting("No.") where("Cordination Allowance" = filter(> 0));
+                column(Cordiantion_Description; Description) { }
+                column(Cordination_Allowance; "Cordination Allowance") { }
+                column(Cordiantion_Days; "Total Days in the Field") { }
+                column(Cordiantion_Name; Name) { }
+                column(Cordiantion_Account_No_; "Account No.") { }
+                column(CordiantionLine; CordiantionLine)
+                {
+                }
+                trigger OnAfterGetRecord()
+                begin
+                    CordiantionLine := CordiantionLine + 1;
+
+                end;
+            }
+            // Facilitator Allowance
+            dataitem(Facilitator; "Imprest Memo Lines")
+            {
+                DataItemLink = "No." = field("No.");
+                DataItemTableView = sorting("No.") where("Facilitator Allowance" = filter(> 0));
+                column(Facilitator_Description; Description) { }
+                column(Facilitator_Amount; "Facilitator Allowance") { }
+                column(Facilitator_Days; "Total Days in the Field") { }
+                column(Facilitator_Name; Name) { }
+                column(Facilitator_Account_No_; "Account No.") { }
+                column(FacilitatorLine; FacilitatorLine)
+                {
+                }
+                trigger OnAfterGetRecord()
+                begin
+                    FacilitatorLine := FacilitatorLine + 1;
+
+                end;
+            }
+            //Secretariat Allowance
+            dataitem(Secretariat; "Imprest Memo Lines")
+            {
+                DataItemLink = "No." = field("No.");
+                DataItemTableView = sorting("No.") where("Secretariat Allowance" = filter(> 0));
+                column(Secretariat_Description; Description) { }
+                column(Secretariat_Amount; "Secretariat Allowance") { }
+                column(Secretariat_Days; "Total Days in the Field") { }
+                column(Secretariat_Name; Name) { }
+                column(Secretariat_Account_No_; "Account No.") { }
+                column(SecretariatLine; SecretariatLine)
+                {
+                }
+                trigger OnAfterGetRecord()
+                begin
+                    SecretariatLine := SecretariatLine + 1;
+
+                end;
+            }
+            // Rapporteur Allowance
+            dataitem(Rapporteur; "Imprest Memo Lines")
+            {
+                DataItemLink = "No." = field("No.");
+                DataItemTableView = sorting("No.") where("Rapporteur Allowance" = filter(> 0));
+                column(Rapporteur_Description; Description) { }
+                column(Rapporteur_Amount; "Rapporteur Allowance") { }
+                column(Rapporteur_Days; "Total Days in the Field") { }
+                column(Rapporteur_Name; Name) { }
+                column(Rapporteur_Account_No_; "Account No.") { }
+                column(RapporteurLine; RapporteurLine)
+                {
+                }
+                trigger OnAfterGetRecord()
+                begin
+                    RapporteurLine := RapporteurLine + 1;
+
+                end;
+            }
+            // Driver Allowance
+            dataitem(Driver; "Imprest Memo Lines")
+            {
+                DataItemLink = "No." = field("No.");
+                DataItemTableView = sorting("No.") where("Driver Allowance" = filter(> 0));
+                column(Driver_Description; Description) { }
+                column(Driver_Amount; "Driver Allowance") { }
+                column(Driver_Days; "Total Days in the Field") { }
+                column(Driver_Name; Name) { }
+                column(Driver_Account_No_; "Account No.") { }
+                column(DriverLine; DriverLine)
+                {
+                }
+                trigger OnAfterGetRecord()
+                begin
+                    DriverLine := DriverLine + 1;
+
+                end;
+            }
+            // Retreat Allowance
+            dataitem(Retreat; "Imprest Memo Lines")
+            {
+                DataItemLink = "No." = field("No.");
+                DataItemTableView = sorting("No.") where("Retreat Allowance" = filter(> 0));
+                column(Retreat_Description; Description) { }
+                column(Retreat_Amount; "Retreat Allowance") { }
+                column(Retreat_Days; "Total Days in the Field") { }
+                column(Retreat_Name; Name) { }
+                column(Retreat_Account_No_; "Account No.") { }
+                column(RetreatLine; RetreatLine)
+                {
+                }
+                trigger OnAfterGetRecord()
+                begin
+                    RetreatLine := RetreatLine + 1;
+
+                end;
+            }
+            // Expert Allowance
+            dataitem(Expert; "Imprest Memo Lines")
+            {
+                DataItemLink = "No." = field("No.");
+                DataItemTableView = sorting("No.") where("Expert Allowance" = filter(> 0));
+                column(Expert_Description; Description) { }
+                column(Expert_Amount; "Expert Allowance") { }
+                column(Expert_Days; "Total Days in the Field") { }
+                column(Expert_Name; Name) { }
+                column(Expert_Account_No_; "Account No.") { }
+                column(ExpertLine; ExpertLine)
+                {
+                }
+                trigger OnAfterGetRecord()
+                begin
+                    ExpertLine := ExpertLine + 1;
+
+                end;
+            }
+            // Air Ticket Allowance
+            dataitem(AirTicket; "Imprest Memo Lines")
+            {
+                DataItemLink = "No." = field("No.");
+                DataItemTableView = sorting("No.") where("Air Ticket" = filter(> 0));
+                column(AirTicket_Description; Description) { }
+                column(AirTicket_Amount; "Air Ticket") { }
+
+                column(AirTicket_Name; Name) { }
+                column(AirTicket_Account_No_; "Account No.") { }
+                column(AirTicketLine; AirTicketLine)
+                {
+                }
+                trigger OnAfterGetRecord()
+                begin
+                    AirTicketLine := AirTicketLine + 1;
+
+                end;
+            }
+            // Air Ticket
+
+            // Conference
+            dataitem(Conference; "Imprest Memo Lines")
+            {
+                DataItemLink = "No." = field("No.");
+                DataItemTableView = sorting("No.") where("Conference" = filter(> 0));
+                column(Conference_Description; Description) { }
+                column(Conference_Amount; "Conference") { }
+
+                column(Conference_Name; Name) { }
+                column(Conference_Account_No_; "Account No.") { }
+                column(ConferenceLine; ConferenceLine)
+                {
+                }
+                trigger OnAfterGetRecord()
+                begin
+                    ConferenceLine := ConferenceLine + 1;
+
+                end;
+            }
+            // Ground Transport
+            dataitem(GroundTransport; "Imprest Memo Lines")
+            {
+                DataItemLink = "No." = field("No.");
+                DataItemTableView = sorting("No.") where("Ground Transport" = filter(> 0));
+                column(GroundTransport_Description; Description) { }
+                column(GroundTransport_Amount; "Ground Transport") { }
+
+                column(GroundTransport_Name; Name) { }
+                column(GroundTransport_Account_No_; "Account No.") { }
+                column(GroundTransportLine; GroundTransportLine)
+                {
+                }
+                trigger OnAfterGetRecord()
+                begin
+                    GroundTransportLine := GroundTransportLine + 1;
+
+                end;
+            }
+            // Accomodation
+            dataitem(Accomodation; "Imprest Memo Lines")
+            {
+                DataItemLink = "No." = field("No.");
+                DataItemTableView = sorting("No.") where("Accomodation" = filter(> 0));
+                column(Accomodation_Description; Description) { }
+                column(Accomodation_Amount; "Accomodation") { }
+                column(Accomodation_Days; "Total Days in the Field") { }
+                column(Accomodation_Name; Name) { }
+                column(Accomodation_Account_No_; "Account No.") { }
+                column(AccomodationLine; AccomodationLine)
+                {
+                }
+                trigger OnAfterGetRecord()
+                begin
+                    AccomodationLine := AccomodationLine + 1;
+
+                end;
+            }
+            // Out of Pocket Allowanc
+            dataitem(OutOfPocketAllowance; "Imprest Memo Lines")
+            {
+                DataItemLink = "No." = field("No.");
+                DataItemTableView = sorting("No.") where("Out of Pocket Allowance" = filter(> 0));
+                column(OutOfPocketAllowance_Description; Description) { }
+                column(OutOfPocketAllowance_Amount; "Out of Pocket Allowance") { }
+                column(OutOfPocketAllowance_Days; "Total Days in the Field") { }
+                column(OutOfPocketAllowance_Name; Name) { }
+                column(OutOfPocketAllowance_Account_No_; "Account No.") { }
+                column(OutOfPocketAllowanceLine; OutOfPocketAllowanceLine)
+                {
+                }
+                trigger OnAfterGetRecord()
+                begin
+                    OutOfPocketAllowanceLine := OutOfPocketAllowanceLine + 1;
+
+                end;
+            }
+            // Tuition Fee
+            dataitem(TuitionFee; "Imprest Memo Lines")
+            {
+                DataItemLink = "No." = field("No.");
+                DataItemTableView = sorting("No.") where("Tuition Fee" = filter(> 0));
+                column(TuitionFee_Description; Description) { }
+                column(TuitionFee_Amount; "Tuition Fee") { }
+                column(TuitionFee_Days; "Total Days in the Field") { }
+                column(TuitionFee_Name; Name) { }
+                column(TuitionFee_Account_No_; "Account No.") { }
+                column(TuitionFeeLine; TuitionFeeLine)
+                {
+                }
+                trigger OnAfterGetRecord()
+                begin
+                    TuitionFeeLine := TuitionFeeLine + 1;
+
+                end;
+            }
+            // Mileage Allowance
+            dataitem(MileageAllowance; "Imprest Memo Lines")
+            {
+                DataItemLink = "No." = field("No.");
+                DataItemTableView = sorting("No.") where("Mileage Allowance" = filter(> 0));
+                column(MileageAllowance_Description; Description) { }
+                column(MileageAllowance_Amount; "Mileage Allowance") { }
+                column(MileageAllowance_Days; "Total Days in the Field") { }
+                column(MileageAllowance_Name; Name) { }
+                column(MileageAllowance_Account_No_; "Account No.") { }
+                column(MileageAllowanceLine; MileageAllowanceLine)
+                {
+                }
+                trigger OnAfterGetRecord()
+                begin
+                    MileageAllowanceLine := MileageAllowanceLine + 1;
+
+                end;
+            }
+            // Quarter Per Diem
+            dataitem(QuarterPerDiem; "Imprest Memo Lines")
+            {
+                DataItemLink = "No." = field("No.");
+                DataItemTableView = sorting("No.") where("Quarter Per Diem" = filter(> 0));
+                column(QuarterPerDiem_Description; Description) { }
+                column(QuarterPerDiem_Amount; "Quarter Per Diem") { }
+                column(QuarterPerDiem_Days; "Total Days in the Field") { }
+                column(QuarterPerDiem_Name; Name) { }
+                column(QuarterPerDiem_Account_No_; "Account No.") { }
+                column(QuarterPerDiemLine; QuarterPerDiemLine)
+                {
+                }
+                trigger OnAfterGetRecord()
+                begin
+                    QuarterPerDiemLine := QuarterPerDiemLine + 1;
+
+                end;
             }
 
             trigger OnAfterGetRecord()
@@ -174,6 +463,24 @@ report 53012 "Memo Report"
         ApproverDate: array[10] of DateTime;
         Approver: array[10] of Code[50];
         ApprovalEntries: Record "Approval Entry";
+        FacilitatorLine: Integer;
+        CordiantionLine: Integer;
+        SecretariatLine: Integer;
+        RapporteurLine: Integer;
+        DriverLine: Integer;
+        RetreatLine: Integer;
+        Expertline: Integer;
+        AirTicketLine: Integer;
+        ConferenceLine: Integer;
+        GroundTransportLine: Integer;
+        AccomodationLine: Integer;
+        OutOfPocketAllowanceLine: Integer;
+        TuitionFeeLine: Integer;
+        MileageAllowanceLine: Integer;
+        QuarterPerDiemLine: Integer;
+
+
+
 
 
 
