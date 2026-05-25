@@ -1041,6 +1041,7 @@ codeunit 55056 HRPortal
             ImprestHeader.Destination := CopyStr(Destination, 1, MaxStrLen(ImprestHeader.Destination));
             ImprestHeader."Date of Project" := DT2Date(TravelDate);
             ImprestHeader."Date of Completion" := DT2Date(ReturnDate);
+            //  ImprestHeader."No of Days" := ime;
             ImprestHeader.Validate("Date of Completion");
             ImprestHeader.Status := ImprestHeader.Status::Open;
             ImprestHeader."Staff No." := GetStaffNoFromCustNo(AccountNo);

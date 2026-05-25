@@ -70,7 +70,7 @@ report 53012 "Memo Report"
             dataitem("Imprest Memo Lines"; "Imprest Memo Lines")
             {
                 DataItemLink = "No." = field("No.");
-                DataItemTableView = sorting("No.") where(DSA = filter(> 0));
+                DataItemTableView = sorting("No.") where(DSA = filter(<> 0));
 
                 column(Account_No_; "Account No.") { }
                 column(Name; Name) { }
@@ -79,13 +79,25 @@ report 53012 "Memo Report"
                 column(Other_Costs; "Other Costs") { }
                 column(Description; Description) { }
                 column(No_of_Days; "Total Days in the Field") { }
+                column(DSALine; DSAline)
+                {
+                }
+                trigger OnAfterGetRecord()
+                begin
+                    DSAline := DSAline + 1;
+
+                end;
+
+
 
             }
             // Cordiantion Allowance
             dataitem(Cordiantion; "Imprest Memo Lines")
             {
                 DataItemLink = "No." = field("No.");
-                DataItemTableView = sorting("No.") where("Cordination Allowance" = filter(> 0));
+                DataItemTableView = sorting("No.") where("Cordination Allowance" = filter(<> 0), "Facilitator Allowance" = filter(<> 0), "Secretariat Allowance" = filter(<> 0),
+                "Rapporteur Allowance" = filter(<> 0), "Retreat Allowance" = filter(<> 0), "Expert Allowance" = filter(<> 0), "Out of Pocket Allowance" = filter(<> 0),
+                "Tuition Fee" = filter(<> 0), "Mileage Allowance" = filter(<> 0), "Quarter Per Diem" = filter(<> 0));
                 column(Cordiantion_Description; Description) { }
                 column(Cordination_Allowance; "Cordination Allowance") { }
                 column(Cordiantion_Days; "Total Days in the Field") { }
@@ -104,7 +116,7 @@ report 53012 "Memo Report"
             dataitem(Facilitator; "Imprest Memo Lines")
             {
                 DataItemLink = "No." = field("No.");
-                DataItemTableView = sorting("No.") where("Facilitator Allowance" = filter(> 0));
+                DataItemTableView = sorting("No.") where("Facilitator Allowance" = filter(<> 0));
                 column(Facilitator_Description; Description) { }
                 column(Facilitator_Amount; "Facilitator Allowance") { }
                 column(Facilitator_Days; "Total Days in the Field") { }
@@ -123,7 +135,7 @@ report 53012 "Memo Report"
             dataitem(Secretariat; "Imprest Memo Lines")
             {
                 DataItemLink = "No." = field("No.");
-                DataItemTableView = sorting("No.") where("Secretariat Allowance" = filter(> 0));
+                DataItemTableView = sorting("No.") where("Secretariat Allowance" = filter(<> 0));
                 column(Secretariat_Description; Description) { }
                 column(Secretariat_Amount; "Secretariat Allowance") { }
                 column(Secretariat_Days; "Total Days in the Field") { }
@@ -142,7 +154,7 @@ report 53012 "Memo Report"
             dataitem(Rapporteur; "Imprest Memo Lines")
             {
                 DataItemLink = "No." = field("No.");
-                DataItemTableView = sorting("No.") where("Rapporteur Allowance" = filter(> 0));
+                DataItemTableView = sorting("No.") where("Rapporteur Allowance" = filter(<> 0));
                 column(Rapporteur_Description; Description) { }
                 column(Rapporteur_Amount; "Rapporteur Allowance") { }
                 column(Rapporteur_Days; "Total Days in the Field") { }
@@ -161,7 +173,7 @@ report 53012 "Memo Report"
             dataitem(Driver; "Imprest Memo Lines")
             {
                 DataItemLink = "No." = field("No.");
-                DataItemTableView = sorting("No.") where("Driver Allowance" = filter(> 0));
+                DataItemTableView = sorting("No.") where("Driver Allowance" = filter(<> 0));
                 column(Driver_Description; Description) { }
                 column(Driver_Amount; "Driver Allowance") { }
                 column(Driver_Days; "Total Days in the Field") { }
@@ -180,7 +192,7 @@ report 53012 "Memo Report"
             dataitem(Retreat; "Imprest Memo Lines")
             {
                 DataItemLink = "No." = field("No.");
-                DataItemTableView = sorting("No.") where("Retreat Allowance" = filter(> 0));
+                DataItemTableView = sorting("No.") where("Retreat Allowance" = filter(<> 0));
                 column(Retreat_Description; Description) { }
                 column(Retreat_Amount; "Retreat Allowance") { }
                 column(Retreat_Days; "Total Days in the Field") { }
@@ -199,7 +211,7 @@ report 53012 "Memo Report"
             dataitem(Expert; "Imprest Memo Lines")
             {
                 DataItemLink = "No." = field("No.");
-                DataItemTableView = sorting("No.") where("Expert Allowance" = filter(> 0));
+                DataItemTableView = sorting("No.") where("Expert Allowance" = filter(<> 0));
                 column(Expert_Description; Description) { }
                 column(Expert_Amount; "Expert Allowance") { }
                 column(Expert_Days; "Total Days in the Field") { }
@@ -218,7 +230,7 @@ report 53012 "Memo Report"
             dataitem(AirTicket; "Imprest Memo Lines")
             {
                 DataItemLink = "No." = field("No.");
-                DataItemTableView = sorting("No.") where("Air Ticket" = filter(> 0));
+                DataItemTableView = sorting("No.") where("Air Ticket" = filter(<> 0));
                 column(AirTicket_Description; Description) { }
                 column(AirTicket_Amount; "Air Ticket") { }
 
@@ -239,7 +251,7 @@ report 53012 "Memo Report"
             dataitem(Conference; "Imprest Memo Lines")
             {
                 DataItemLink = "No." = field("No.");
-                DataItemTableView = sorting("No.") where("Conference" = filter(> 0));
+                DataItemTableView = sorting("No.") where("Conference" = filter(<> 0));
                 column(Conference_Description; Description) { }
                 column(Conference_Amount; "Conference") { }
 
@@ -258,7 +270,7 @@ report 53012 "Memo Report"
             dataitem(GroundTransport; "Imprest Memo Lines")
             {
                 DataItemLink = "No." = field("No.");
-                DataItemTableView = sorting("No.") where("Ground Transport" = filter(> 0));
+                DataItemTableView = sorting("No.") where("Ground Transport" = filter(<> 0));
                 column(GroundTransport_Description; Description) { }
                 column(GroundTransport_Amount; "Ground Transport") { }
 
@@ -369,6 +381,26 @@ report 53012 "Memo Report"
                 end;
             }
 
+
+            //other cost
+            dataitem(OtherCost; "Imprest Memo Lines")
+            {
+                DataItemLink = "No." = field("No.");
+                DataItemTableView = sorting("No.") where("Other Costs" = filter(<> 0));
+                column(OtherCost_Description; Description) { }
+                column(OtherCost_Amount; "Other Costs") { }
+                column(OtherCost_Days; "Total Days in the Field") { }
+                column(OtherCost_Name; Name) { }
+                column(OtherCost_Account_No_; "Account No.") { }
+                column(OtherCostLine; OtherCostLine)
+                {
+                }
+                trigger OnAfterGetRecord()
+                begin
+                    OtherCostLine := OtherCostLine + 1;
+
+                end;
+            }
             trigger OnAfterGetRecord()
             begin
                 RunLine := RunLine + 1;
@@ -450,6 +482,7 @@ report 53012 "Memo Report"
     end;
 
     var
+        OtherCostLine: Integer;
         myInt: Integer;
         CompInfo: Record "Company Information";
         CompanyInfo: Record "Company Information";
@@ -478,6 +511,7 @@ report 53012 "Memo Report"
         TuitionFeeLine: Integer;
         MileageAllowanceLine: Integer;
         QuarterPerDiemLine: Integer;
+        DSAline: Integer;
 
 
 

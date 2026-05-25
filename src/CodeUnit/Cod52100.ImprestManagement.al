@@ -1140,7 +1140,7 @@ codeunit 52100 "Imprest Management"
                         PRLines."Account Name" := ReceiptsandPaymentTypes.Description;
                         PRLines."Account No" := AirTicketExpenseAcc;
                         PRLines.Validate("Account No");
-                        PRLines."No of Days" := Memo."Total Days in the Field";
+                        // PRLines."No of Days" := Memo."Total Days in the Field";
                         PRLines.No := PRHeader."No.";
                         PRLines."Line No" := LineCounter;
                         PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
@@ -1191,7 +1191,7 @@ codeunit 52100 "Imprest Management"
                         PRLines."Account Name" := ReceiptsandPaymentTypes.Description;
                         PRLines."Account No" := GTransportExpenseAcc;
                         PRLines.Validate("Account No");
-                        PRLines."No of Days" := Memo."Total Days in the Field";
+                        // PRLines."No of Days" := Memo."Total Days in the Field";
                         PRLines.No := PRHeader."No.";
                         PRLines."Line No" := LineCounter;
                         PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";

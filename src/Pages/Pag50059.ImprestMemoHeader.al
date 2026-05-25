@@ -178,9 +178,11 @@ page 50059 "Imprest Memo Header"
 
                 field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code")
                 {
+                    caption = 'Receipt code';
                 }
                 field("Global Dimension 2 Code"; Rec."Global Dimension 2 Code")
                 {
+                    caption = 'originating code';
                 }
                 field("Budget Line"; Rec."Budget Line")
                 {
