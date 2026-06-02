@@ -5120,6 +5120,18 @@ End Function
         <Field Name="ProfessionalQualificationText">
           <DataField>ProfessionalQualificationText</DataField>
         </Field>
+        <Field Name="ObjectivesSummaryText">
+          <DataField>ObjectivesSummaryText</DataField>
+        </Field>
+        <Field Name="CurrentReviewObjectivesText">
+          <DataField>CurrentReviewObjectivesText</DataField>
+        </Field>
+        <Field Name="AppraiseeCommentsSummaryText">
+          <DataField>AppraiseeCommentsSummaryText</DataField>
+        </Field>
+        <Field Name="AppraiserCommentsSummaryText">
+          <DataField>AppraiserCommentsSummaryText</DataField>
+        </Field>
         <Field Name="MidYear">
           <DataField>MidYear</DataField>
         </Field>

@@ -2725,6 +2725,9 @@ End Function
         <Field Name="ProfessionalQualificationText">
           <DataField>ProfessionalQualificationText</DataField>
         </Field>
+        <Field Name="ObjectivePlanSummaryText">
+          <DataField>ObjectivePlanSummaryText</DataField>
+        </Field>
         <Field Name="CurrentReviewPeriod">
           <DataField>CurrentReviewPeriod</DataField>
         </Field>

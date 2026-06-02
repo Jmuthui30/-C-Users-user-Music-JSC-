@@ -1,8 +1,9 @@
 report 52023 "Employee Appraisal - New"
 {
     ApplicationArea = All;
-    DefaultLayout = RDLC;
+    DefaultLayout = Word;
     RDLCLayout = './src/report_layout/EmployeeAppraisalNew.rdl';
+    WordLayout = './src/report_layout/EmployeeAppraisalNew.docx';
     Caption = 'Employee Appraisal - New';
     dataset
     {
@@ -86,6 +87,18 @@ report 52023 "Employee Appraisal - New"
             {
             }
             column(ProfessionalQualificationText; GetQualificationDescription(Appraisal."Employee No", 'Professional'))
+            {
+            }
+            column(ObjectivesSummaryText; GetObjectivesSummary(Appraisal."Appraisal No", ''))
+            {
+            }
+            column(CurrentReviewObjectivesText; GetObjectivesSummary(Appraisal."Appraisal No", Appraisal."Current Review Period Code"))
+            {
+            }
+            column(AppraiseeCommentsSummaryText; GetCommentsSummary(Appraisal."Appraisal No", 'Appraisee'))
+            {
+            }
+            column(AppraiserCommentsSummaryText; GetCommentsSummary(Appraisal."Appraisal No", 'Appraiser'))
             {
             }
             column(MidYear; MidYear)
@@ -444,6 +457,75 @@ report 52023 "Employee Appraisal - New"
             until EmployeeQualification.Next() = 0;
 
         exit(SelectedDescription);
+    end;
+
+    local procedure GetObjectivesSummary(AppraisalNo: Code[20]; ReviewPeriodCode: Code[20]): Text
+    var
+        AppraisalLine: Record "Appraisal Lines";
+        Builder: TextBuilder;
+        LineIndex: Integer;
+    begin
+        AppraisalLine.Reset();
+        AppraisalLine.SetRange("Appraisal No", AppraisalNo);
+        AppraisalLine.SetFilter("Workplan Code", '<>%1', '');
+        if ReviewPeriodCode <> '' then
+            AppraisalLine.SetRange("Review Period Code", ReviewPeriodCode);
+
+        if AppraisalLine.FindSet() then
+            repeat
+                LineIndex += 1;
+                Builder.AppendLine(StrSubstNo('%1. %2', LineIndex, AppraisalLine."Workplan Description"));
+                Builder.AppendLine(StrSubstNo('   Review Period: %1 | Measure: %2 | Target: %3 | Actual: %4 | Achieved: %5% | Weighting: %6% | Self Rating: %7 | Appraiser Rating: %8 | Score: %9',
+                    AppraisalLine."Review Period Code",
+                    AppraisalLine."Performance Measure",
+                    AppraisalLine."FY Target",
+                    AppraisalLine.Actual,
+                    AppraisalLine."Achieved (%)",
+                    AppraisalLine.Weighting,
+                    AppraisalLine."Self Rating",
+                    AppraisalLine."Appraiser Rating",
+                    AppraisalLine."Quarter Score"));
+                if AppraisalLine."Appraisee's comments" <> '' then
+                    Builder.AppendLine(StrSubstNo('   Appraisee Comments: %1', AppraisalLine."Appraisee's comments"));
+                if AppraisalLine."Results Achieved Comments" <> '' then
+                    Builder.AppendLine(StrSubstNo('   Appraiser Comments: %1', AppraisalLine."Results Achieved Comments"));
+                if AppraisalLine."Corrective Action" <> '' then
+                    Builder.AppendLine(StrSubstNo('   Corrective Action: %1', AppraisalLine."Corrective Action"));
+                Builder.AppendLine('');
+            until AppraisalLine.Next() = 0;
+
+        if LineIndex = 0 then
+            exit('No objective lines have been captured for this appraisal.');
+
+        exit(Builder.ToText());
+    end;
+
+    local procedure GetCommentsSummary(AppraisalNo: Code[20]; PersonFilter: Text): Text
+    var
+        AppraisalComment: Record "Appraisal Comments";
+        Builder: TextBuilder;
+        HasComment: Boolean;
+    begin
+        AppraisalComment.Reset();
+        AppraisalComment.SetRange("Appraisal No.", AppraisalNo);
+        AppraisalComment.SetFilter(Person, PersonFilter);
+        if AppraisalComment.FindSet() then
+            repeat
+                HasComment := true;
+                if AppraisalComment."Comments on Performance" <> '' then
+                    Builder.AppendLine(StrSubstNo('Performance: %1', AppraisalComment."Comments on Performance"));
+                if AppraisalComment."Comments On Supervisor" <> '' then
+                    Builder.AppendLine(StrSubstNo('Supervisor: %1', AppraisalComment."Comments On Supervisor"));
+                if AppraisalComment."Performance Related Dicussions" then
+                    Builder.AppendLine('Performance Discussion: Yes');
+                Builder.AppendLine(StrSubstNo('Discussion Help: %1', Format(AppraisalComment."Extent of Discussion Help")));
+                Builder.AppendLine('');
+            until AppraisalComment.Next() = 0;
+
+        if not HasComment then
+            exit('No comments have been captured.');
+
+        exit(Builder.ToText());
     end;
 }
 

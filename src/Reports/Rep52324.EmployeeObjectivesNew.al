@@ -1,8 +1,9 @@
 report 52324 "Employee Objectives - New"
 {
     ApplicationArea = All;
-    DefaultLayout = RDLC;
+    DefaultLayout = Word;
     RDLCLayout = './src/report_layout/EmployeeObjectivesNew.rdl';
+    WordLayout = './src/report_layout/EmployeeObjectivesNew.docx';
     Caption = 'Employee Objectives - New';
     dataset
     {
@@ -83,6 +84,9 @@ report 52324 "Employee Objectives - New"
             {
             }
             column(ProfessionalQualificationText; GetQualificationDescription(Appraisal."Employee No", 'Professional'))
+            {
+            }
+            column(ObjectivePlanSummaryText; GetObjectivePlanSummary(Appraisal."Appraisal No", Appraisal."Current Review Period Code"))
             {
             }
             column(CurrentReviewPeriod; Appraisal."Current Review Period Code")
@@ -361,6 +365,38 @@ report 52324 "Employee Objectives - New"
             until EmployeeQualification.Next() = 0;
 
         exit(SelectedDescription);
+    end;
+
+    local procedure GetObjectivePlanSummary(AppraisalNo: Code[20]; ReviewPeriodCode: Code[20]): Text
+    var
+        AppraisalLine: Record "Appraisal Lines";
+        Builder: TextBuilder;
+        LineIndex: Integer;
+    begin
+        AppraisalLine.Reset();
+        AppraisalLine.SetRange("Appraisal No", AppraisalNo);
+        AppraisalLine.SetFilter("Workplan Code", '<>%1', '');
+        if ReviewPeriodCode <> '' then
+            AppraisalLine.SetRange("Review Period Code", ReviewPeriodCode);
+
+        if AppraisalLine.FindSet() then
+            repeat
+                LineIndex += 1;
+                Builder.AppendLine(StrSubstNo('%1. %2', LineIndex, AppraisalLine."Workplan Description"));
+                Builder.AppendLine(StrSubstNo('   Review Period: %1 | Measure: %2 | Target: %3 | Weighting: %4%',
+                    AppraisalLine."Review Period Code",
+                    AppraisalLine."Performance Measure",
+                    AppraisalLine."FY Target",
+                    AppraisalLine.Weighting));
+                if AppraisalLine."Appraisee's comments" <> '' then
+                    Builder.AppendLine(StrSubstNo('   Appraisee Planning Comments: %1', AppraisalLine."Appraisee's comments"));
+                Builder.AppendLine('');
+            until AppraisalLine.Next() = 0;
+
+        if LineIndex = 0 then
+            exit('No objective lines have been captured for this appraisal.');
+
+        exit(Builder.ToText());
     end;
 }
 
