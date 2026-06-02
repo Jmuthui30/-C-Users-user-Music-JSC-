@@ -2,7 +2,7 @@ page 51516 "Bal Score Plan Review Period"
 {
     PageType = List;
     ApplicationArea = All;
-    UsageCategory = Lists;
+    UsageCategory = None;
     SourceTable = "Bal Score Plan Review Period";
     Caption = 'Appraisal Planning Periods';
 

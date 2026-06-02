@@ -1,6 +1,33 @@
 codeunit 51500 "Bal Score Card Mngt."
 {
     procedure CreateEmployeeAppraisalPlanning()
+    begin
+        EnsureQuarterlyPreviewPeriods();
+        FindMaturityDate;
+        PlanReviewPeriod.Reset();
+        PlanReviewPeriod.SetRange(Active, true);
+        PlanReviewPeriod.SetRange(FiscalStart, FiscalStart);
+        PlanReviewPeriod.SetRange(MaturityDate, MaturityDate);
+        if PlanReviewPeriod.FindFirst() = false then
+            Error(Text004);
+
+        RunEmployeeAppraisalBatch(PlanReviewPeriod);
+    end;
+
+    procedure CreateEmployeeAppraisalsForAppraisalPeriod(AppraisalPeriodCode: Code[30])
+    var
+        AppraisalPeriod: Record "Appraisal Periods";
+        InternalPlanReviewPeriod: Record "Bal Score Plan Review Period";
+    begin
+        if AppraisalPeriodCode = '' then
+            Error('Select an appraisal period before generating employee appraisals.');
+
+        AppraisalPeriod.Get(AppraisalPeriodCode);
+        InternalPlanReviewPeriod := EnsureInternalPlanningPeriodForAppraisalPeriod(AppraisalPeriod);
+        RunEmployeeAppraisalBatch(InternalPlanReviewPeriod);
+    end;
+
+    local procedure RunEmployeeAppraisalBatch(var PlanReviewPeriodToRun: Record "Bal Score Plan Review Period")
     var
         ActiveEmployeeCount: Integer;
         ExistingAppraisalCount: Integer;
@@ -14,81 +41,156 @@ codeunit 51500 "Bal Score Card Mngt."
         ProcessedCount: Integer;
     begin
         EnsureQuarterlyPreviewPeriods();
-        FindMaturityDate;
-        PlanReviewPeriod.Reset();
-        PlanReviewPeriod.SetRange(Active, true);
-        PlanReviewPeriod.SetRange(FiscalStart, FiscalStart);
-        PlanReviewPeriod.SetRange(MaturityDate, MaturityDate);
-        if PlanReviewPeriod.FindFirst() = false then Error(Text004)
-        else
-        begin
-            SyncPlanReviewPeriodDates(PlanReviewPeriod);
-            CollectEmployeeAppraisalBatchStats(PlanReviewPeriod, ActiveEmployeeCount, NewAppraisalCount, ExistingAppraisalCount, MissingEmployeeCount, MissingSupervisorCount, MissingEmployeeNos, MissingSupervisorNos);
-            if ActiveEmployeeCount = 0 then
-                Error(Text006);
-            if MissingEmployeeCount = ActiveEmployeeCount then
-                Error('No employee appraisals can be created because none of the active Employee Master records exist in the standard Employee table.');
+        SyncPlanReviewPeriodDates(PlanReviewPeriodToRun);
+        CollectEmployeeAppraisalBatchStats(PlanReviewPeriodToRun, ActiveEmployeeCount, NewAppraisalCount, ExistingAppraisalCount, MissingEmployeeCount, MissingSupervisorCount, MissingEmployeeNos, MissingSupervisorNos);
+        if ActiveEmployeeCount = 0 then
+            Error(Text006);
+        if MissingEmployeeCount = ActiveEmployeeCount then
+            Error('No employee appraisals can be created because none of the active Employee Master records exist in the standard Employee table.');
 
-            // Legacy confirmation retained for reference.
-            // if Confirm(StrSubstNo(Text005, PlanReviewPeriod.Name), false) = true then begin
-            if Confirm(
-                StrSubstNo(
-                    'Create employee appraisals for %1?\New appraisals: %2\Existing appraisals to update: %3\Skipped employees not found in standard Employee: %4\Employees with missing appraiser records: %5\\Do you want to continue?',
-                    PlanReviewPeriod.Name,
-                    NewAppraisalCount,
-                    ExistingAppraisalCount,
-                    MissingEmployeeCount,
-                    MissingSupervisorCount),
-                false) = true
-            then begin
-                Emp.Reset();
-                // Legacy BSC gates retained for reference. Unified appraisals are created for active employees.
-                // Emp.SetRange(Appraisable, true);
-                // Emp.SetFilter("Bal Score Emp Categories", '<>%1', '');
-                // Emp.SetFilter("Appraisal Supervisor", '<>%1', '');
-                Emp.SetRange(Status, Emp.Status::Active);
-                if Emp.FindSet()then begin
-                    NoOfRecords:=ActiveEmployeeCount;
-                    Window.OPEN('#1################### @2@@@@@@@@@@@@@\');
-                    repeat LineCount:=LineCount + 1;
-                        // Legacy BSC planning creation retained for reference.
-                        // UpdateBalScorePlanningHeader(Emp, PlanReviewPeriod);
-                        if EnsureEmployeeAppraisalFromEmployee(Emp, PlanReviewPeriod) then
-                            ProcessedCount += 1;
-                        if NavEmp.Get(Emp."No.") then
-                            Window.UPDATE(1, NavEmp.FullName)
-                        else
-                            Window.UPDATE(1, StrSubstNo('%1 - skipped', Emp."No."));
-                        Window.UPDATE(2, ROUND(LineCount / NoOfRecords * 10000, 1));
-                        Sleep(100);
-                    until Emp.Next() = 0;
-                    Window.Close();
-
-                    if MissingEmployeeCount > 0 then
-                        Message('Skipped %1 active Employee Master record(s) because they do not exist in the standard Employee table. Sample: %2', MissingEmployeeCount, MissingEmployeeNos);
-                    if MissingSupervisorCount > 0 then
-                        Message('Created/updated appraisals, but %1 employee(s) have appraiser values that do not exist in the standard Employee table. Their appraiser was left blank or unchanged. Sample: %2', MissingSupervisorCount, MissingSupervisorNos);
-
-                    // Legacy BSC appraisal creation retained for reference.
-                    // CreateBatchAppraisals;
-                    if Confirm(StrSubstNo(Text007, Format(ProcessedCount)), false) = true then begin
-                        // Legacy BSC list retained for reference.
-                        // Page.Run(Page::"Bal Admin App. Score Card List");
-                        Page.Run(Page::"Appraisal List");
-                    end
+        // Legacy confirmation retained for reference.
+        // if Confirm(StrSubstNo(Text005, PlanReviewPeriod.Name), false) = true then begin
+        if Confirm(
+            StrSubstNo(
+                'Create employee appraisals for %1?\New appraisals: %2\Existing appraisals to update: %3\Skipped employees not found in standard Employee: %4\Employees with missing appraiser records: %5\\Do you want to continue?',
+                PlanReviewPeriodToRun.Name,
+                NewAppraisalCount,
+                ExistingAppraisalCount,
+                MissingEmployeeCount,
+                MissingSupervisorCount),
+            false) = true
+        then begin
+            Emp.Reset();
+            // Legacy BSC gates retained for reference. Unified appraisals are created for active employees.
+            // Emp.SetRange(Appraisable, true);
+            // Emp.SetFilter("Bal Score Emp Categories", '<>%1', '');
+            // Emp.SetFilter("Appraisal Supervisor", '<>%1', '');
+            Emp.SetRange(Status, Emp.Status::Active);
+            if Emp.FindSet()then begin
+                NoOfRecords:=ActiveEmployeeCount;
+                Window.OPEN('#1################### @2@@@@@@@@@@@@@\');
+                repeat LineCount:=LineCount + 1;
+                    // Legacy BSC planning creation retained for reference.
+                    // UpdateBalScorePlanningHeader(Emp, PlanReviewPeriodToRun);
+                    if EnsureEmployeeAppraisalFromEmployee(Emp, PlanReviewPeriodToRun) then
+                        ProcessedCount += 1;
+                    if NavEmp.Get(Emp."No.") then
+                        Window.UPDATE(1, NavEmp.FullName)
                     else
-                    begin
-                        exit;
-                    end;
+                        Window.UPDATE(1, StrSubstNo('%1 - skipped', Emp."No."));
+                    Window.UPDATE(2, ROUND(LineCount / NoOfRecords * 10000, 1));
+                    Sleep(100);
+                until Emp.Next() = 0;
+                Window.Close();
+
+                if MissingEmployeeCount > 0 then
+                    Message('Skipped %1 active Employee Master record(s) because they do not exist in the standard Employee table. Sample: %2', MissingEmployeeCount, MissingEmployeeNos);
+                if MissingSupervisorCount > 0 then
+                    Message('Created/updated appraisals, but %1 employee(s) have appraiser values that do not exist in the standard Employee table. Their appraiser was left blank or unchanged. Sample: %2', MissingSupervisorCount, MissingSupervisorNos);
+
+                // Legacy BSC appraisal creation retained for reference.
+                // CreateBatchAppraisals;
+                if Confirm(StrSubstNo(Text007, Format(ProcessedCount)), false) = true then begin
+                    // Legacy BSC list retained for reference.
+                    // Page.Run(Page::"Bal Admin App. Score Card List");
+                    Page.Run(Page::"Appraisal List");
                 end
                 else
-                    Error(Text006);
+                begin
+                    exit;
+                end;
             end
             else
-            begin
-                exit;
-            end;
+                Error(Text006);
+        end
+        else
+        begin
+            exit;
         end;
+    end;
+
+    local procedure EnsureInternalPlanningPeriodForAppraisalPeriod(AppraisalPeriod: Record "Appraisal Periods"): Record "Bal Score Plan Review Period"
+    var
+        InternalPlanReviewPeriod: Record "Bal Score Plan Review Period";
+        PeriodCode: Code[20];
+        NeedsModify: Boolean;
+    begin
+        AppraisalPeriod.TestField("Start Date");
+        AppraisalPeriod.TestField("End Date");
+
+        if StrLen(AppraisalPeriod.Period) > MaxStrLen(InternalPlanReviewPeriod."Appraisal Period") then
+            Error('Appraisal period %1 is too long for the internal appraisal planning period field.', AppraisalPeriod.Period);
+
+        PeriodCode := CopyStr(AppraisalPeriod.Period, 1, MaxStrLen(InternalPlanReviewPeriod."Appraisal Period"));
+
+        InternalPlanReviewPeriod.Reset();
+        InternalPlanReviewPeriod.SetRange("Appraisal Period", PeriodCode);
+        if not InternalPlanReviewPeriod.FindFirst() then begin
+            InternalPlanReviewPeriod.Init();
+            InternalPlanReviewPeriod.Code := GetInternalPlanningPeriodCode(PeriodCode);
+            InternalPlanReviewPeriod.Name := CopyStr(GetInternalPlanningPeriodName(AppraisalPeriod), 1, MaxStrLen(InternalPlanReviewPeriod.Name));
+            InternalPlanReviewPeriod."Appraisal Period" := PeriodCode;
+            InternalPlanReviewPeriod."Start Date" := AppraisalPeriod."Start Date";
+            InternalPlanReviewPeriod."End Date" := AppraisalPeriod."End Date";
+            InternalPlanReviewPeriod.FindMaturityDate();
+            InternalPlanReviewPeriod.Insert(true);
+            exit(InternalPlanReviewPeriod);
+        end;
+
+        if InternalPlanReviewPeriod.Name = '' then begin
+            InternalPlanReviewPeriod.Name := CopyStr(GetInternalPlanningPeriodName(AppraisalPeriod), 1, MaxStrLen(InternalPlanReviewPeriod.Name));
+            NeedsModify := true;
+        end;
+        if InternalPlanReviewPeriod."Start Date" <> AppraisalPeriod."Start Date" then begin
+            InternalPlanReviewPeriod."Start Date" := AppraisalPeriod."Start Date";
+            NeedsModify := true;
+        end;
+        if InternalPlanReviewPeriod."End Date" <> AppraisalPeriod."End Date" then begin
+            InternalPlanReviewPeriod."End Date" := AppraisalPeriod."End Date";
+            NeedsModify := true;
+        end;
+        if NeedsModify then
+            InternalPlanReviewPeriod.Modify(true);
+
+        exit(InternalPlanReviewPeriod);
+    end;
+
+    local procedure GetInternalPlanningPeriodCode(PeriodCode: Code[20]): Code[20]
+    var
+        ExistingPlanReviewPeriod: Record "Bal Score Plan Review Period";
+        CandidateCode: Code[20];
+        SuffixNo: Integer;
+    begin
+        CandidateCode := PeriodCode;
+        if not InternalPlanningPeriodCodeExists(CandidateCode) then
+            exit(CandidateCode);
+
+        SuffixNo := 1;
+        repeat
+            CandidateCode := CopyStr(StrSubstNo('%1-%2', CopyStr(PeriodCode, 1, MaxStrLen(CandidateCode) - 3), SuffixNo), 1, MaxStrLen(CandidateCode));
+            ExistingPlanReviewPeriod.Reset();
+            ExistingPlanReviewPeriod.SetRange(Code, CandidateCode);
+            SuffixNo += 1;
+        until ExistingPlanReviewPeriod.IsEmpty();
+
+        exit(CandidateCode);
+    end;
+
+    local procedure InternalPlanningPeriodCodeExists(PlanningPeriodCode: Code[20]): Boolean
+    var
+        ExistingPlanReviewPeriod: Record "Bal Score Plan Review Period";
+    begin
+        ExistingPlanReviewPeriod.Reset();
+        ExistingPlanReviewPeriod.SetRange(Code, PlanningPeriodCode);
+        exit(not ExistingPlanReviewPeriod.IsEmpty());
+    end;
+
+    local procedure GetInternalPlanningPeriodName(AppraisalPeriod: Record "Appraisal Periods"): Text
+    begin
+        if AppraisalPeriod.Description <> '' then
+            exit(AppraisalPeriod.Description);
+
+        exit(StrSubstNo('%1 Appraisal Period', AppraisalPeriod.Period));
     end;
 
     local procedure EnsureEmployeeAppraisalFromEmployee(var Employee: Record "Employee Master"; ReviewPeriod: Record "Bal Score Plan Review Period"): Boolean
@@ -497,14 +599,18 @@ codeunit 51500 "Bal Score Card Mngt."
 
     procedure SuggestReviewPeriodDatesFromActivePlan()
     var
-        ActivePlanReviewPeriod: Record "Bal Score Plan Review Period";
+        ActiveAppraisalPeriod: Record "Appraisal Periods";
+        InternalPlanReviewPeriod: Record "Bal Score Plan Review Period";
     begin
-        ActivePlanReviewPeriod.Reset();
-        ActivePlanReviewPeriod.SetRange(Active, true);
-        if not ActivePlanReviewPeriod.FindFirst() then
-            Error('Set one appraisal plan review period as active before suggesting review dates.');
+        ActiveAppraisalPeriod.Reset();
+        ActiveAppraisalPeriod.SetRange(Active, true);
+        if not ActiveAppraisalPeriod.FindFirst() then
+            Error('Set one appraisal period as active before suggesting review dates.');
+        if ActiveAppraisalPeriod.Count() > 1 then
+            Error('Only one appraisal period can be active when suggesting review dates.');
 
-        SuggestReviewPeriodDates(ActivePlanReviewPeriod);
+        InternalPlanReviewPeriod := EnsureInternalPlanningPeriodForAppraisalPeriod(ActiveAppraisalPeriod);
+        SuggestReviewPeriodDates(InternalPlanReviewPeriod);
     end;
 
     procedure SuggestReviewPeriodDates(PlanReviewPeriodRec: Record "Bal Score Plan Review Period")
@@ -678,6 +784,6 @@ codeunit 51500 "Bal Score Card Mngt."
     Text004: Label 'There is no active Balance Score Card Plan Review Period';
     Text005: Label 'You are about to create Employee Appraisals Planning for the Plan Review Period of %1, Do you wish to continue?';
     Text006: Label 'No active employees were found for appraisal creation.';
-    Text007: Label '%1 Employee Appraisal Plannings have been Created/Updated, Do you wish to Open the list?';
+    Text007: Label '%1 employee appraisals have been created/updated. Do you want to open the list?';
     Text008: Label 'Balance Scoring Setup have not been Completely done, Do the setup first or contact HR Admin';
 }

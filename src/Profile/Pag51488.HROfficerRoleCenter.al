@@ -941,11 +941,15 @@ page 51488 "HR Officer Role Center"
                 group("Quarterly Scorecard")
                 {
                     Caption = 'Appraisal Cycle';
+                    Visible = false;
+                    // Legacy planning-cycle group hidden. Appraisals are generated from Appraisal Periods.
                     action("Perf BSC Plan Review Periods")
                     {
                         ApplicationArea = All;
                         Caption = '1. Create Appraisal Planning';
                         RunObject = Page "Bal Score Plan Review Period";
+                        Visible = false;
+                        // Legacy planning-cycle page hidden from the unified appraisal process.
                         ToolTip = 'Open appraisal planning periods used to create employee appraisal records.';
                     }
                     action("Perf BSC Planning Documents")

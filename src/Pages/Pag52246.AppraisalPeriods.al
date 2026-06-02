@@ -46,6 +46,25 @@ page 52246 "Appraisal Periods"
 
     actions
     {
+        area(Processing)
+        {
+            action("Generate Employee Appraisals")
+            {
+                ApplicationArea = All;
+                Caption = 'Generate Employee Appraisals';
+                Image = CreateDocument;
+                Promoted = true;
+                PromotedCategory = Process;
+                ToolTip = 'Creates or updates employee appraisal cards for the selected appraisal period.';
+
+                trigger OnAction()
+                var
+                    BalScoreCardMgt: Codeunit "Bal Score Card Mngt.";
+                begin
+                    BalScoreCardMgt.CreateEmployeeAppraisalsForAppraisalPeriod(Rec.Period);
+                end;
+            }
+        }
     }
 }
 
