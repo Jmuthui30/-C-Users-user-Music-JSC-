@@ -82,6 +82,12 @@ report 52023 "Employee Appraisal - New"
             column(JobGroup; Employee."Salary Scale")
             {
             }
+            column(AcademicQualificationText; GetQualificationDescription(Appraisal."Employee No", 'Academic'))
+            {
+            }
+            column(ProfessionalQualificationText; GetQualificationDescription(Appraisal."Employee No", 'Professional'))
+            {
+            }
             column(MidYear; MidYear)
             {
             }
@@ -412,6 +418,32 @@ report 52023 "Employee Appraisal - New"
             exit(Format(Qualification."Qualification Type"));
 
         exit('');
+    end;
+
+    local procedure GetQualificationDescription(EmployeeNo: Code[20]; QualificationTypeFilter: Text): Text
+    var
+        EmployeeQualification: Record "Employee Qualification";
+        QualificationDate: Date;
+        SelectedDate: Date;
+        SelectedDescription: Text;
+    begin
+        EmployeeQualification.Reset();
+        EmployeeQualification.SetRange("Employee No.", EmployeeNo);
+        if EmployeeQualification.FindSet() then
+            repeat
+                if GetQualificationType(EmployeeQualification."Qualification Code") = QualificationTypeFilter then begin
+                    QualificationDate := EmployeeQualification."To Date";
+                    if QualificationDate = 0D then
+                        QualificationDate := EmployeeQualification."From Date";
+
+                    if (SelectedDescription = '') or (QualificationDate >= SelectedDate) then begin
+                        SelectedDate := QualificationDate;
+                        SelectedDescription := EmployeeQualification.Description;
+                    end;
+                end;
+            until EmployeeQualification.Next() = 0;
+
+        exit(SelectedDescription);
     end;
 }
 

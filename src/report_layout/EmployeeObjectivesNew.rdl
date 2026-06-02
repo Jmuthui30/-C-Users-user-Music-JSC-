@@ -873,7 +873,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Last(Fields!Description_EmployeeQualification.Value,"EmployeeNo_Appraisal")</Value>
+                                      <Value>=Fields!AcademicQualificationText.Value</Value>
                                       <Style>
                                         <FontFamily>Book Antiqua</FontFamily>
                                         <FontWeight>Bold</FontWeight>
@@ -956,7 +956,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Fields!Description_EmployeeQualification.Value</Value>
+                                      <Value>=Fields!ProfessionalQualificationText.Value</Value>
                                       <Style>
                                         <FontFamily>Book Antiqua</FontFamily>
                                         <FontWeight>Bold</FontWeight>
@@ -1091,17 +1091,7 @@
                     <TablixMember />
                     <TablixMember />
                     <TablixMember>
-                      <Group Name="EmployeeNo_Appraisal">
-                        <Filters>
-                          <Filter>
-                            <FilterExpression>=Fields!QualificationType_EmployeeQualification.Value</FilterExpression>
-                            <Operator>Equal</Operator>
-                            <FilterValues>
-                              <FilterValue>Academic</FilterValue>
-                            </FilterValues>
-                          </Filter>
-                        </Filters>
-                      </Group>
+                      <Group Name="EmployeeNo_Appraisal"></Group>
                       <SortExpressions>
                         <SortExpression>
                           <Value>=Fields!EmployeeNo_Appraisal.Value</Value>
@@ -1113,17 +1103,7 @@
                     </TablixMember>
                     <TablixMember />
                     <TablixMember>
-                      <Group Name="EmployeeNo_Appraisal1">
-                        <Filters>
-                          <Filter>
-                            <FilterExpression>=Fields!QualificationType_EmployeeQualification.Value</FilterExpression>
-                            <Operator>Equal</Operator>
-                            <FilterValues>
-                              <FilterValue>Professional</FilterValue>
-                            </FilterValues>
-                          </Filter>
-                        </Filters>
-                      </Group>
+                      <Group Name="EmployeeNo_Appraisal1"></Group>
                       <SortExpressions>
                         <SortExpression>
                           <Value>=Fields!EmployeeNo_Appraisal.Value</Value>
@@ -1135,17 +1115,7 @@
                     </TablixMember>
                     <TablixMember />
                     <TablixMember>
-                      <Group Name="EmployeeNo_Appraisal2">
-                        <Filters>
-                          <Filter>
-                            <FilterExpression>=Fields!EmployeeNo_TrainingRequest.Value</FilterExpression>
-                            <Operator>GreaterThan</Operator>
-                            <FilterValues>
-                              <FilterValue>0</FilterValue>
-                            </FilterValues>
-                          </Filter>
-                        </Filters>
-                      </Group>
+                      <Group Name="EmployeeNo_Appraisal2"></Group>
                       <SortExpressions>
                         <SortExpression>
                           <Value>=Fields!EmployeeNo_Appraisal.Value</Value>
@@ -2748,6 +2718,12 @@ End Function
         </Field>
         <Field Name="JobGroup">
           <DataField>JobGroup</DataField>
+        </Field>
+        <Field Name="AcademicQualificationText">
+          <DataField>AcademicQualificationText</DataField>
+        </Field>
+        <Field Name="ProfessionalQualificationText">
+          <DataField>ProfessionalQualificationText</DataField>
         </Field>
         <Field Name="CurrentReviewPeriod">
           <DataField>CurrentReviewPeriod</DataField>

@@ -55,7 +55,7 @@ page 52246 "Appraisal Periods"
                 Image = CreateDocument;
                 Promoted = true;
                 PromotedCategory = Process;
-                ToolTip = 'Creates or updates employee appraisal cards for the selected appraisal period.';
+                ToolTip = 'Creates missing employee appraisal cards for the selected appraisal period and skips employees who already have one.';
 
                 trigger OnAction()
                 var

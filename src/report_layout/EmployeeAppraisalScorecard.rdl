@@ -380,7 +380,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Department Mission</Value>
+                                  <Value>Review Focus</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -447,7 +447,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>To transform our business model and grow through innovative products, unparalleled customer service, aggressive resource mobilization, and expanded distribution channels.</Value>
+                                  <Value>="Appraisal period " &amp; Fields!AppraisalPeriod_Appraisal.Value &amp; " - review period " &amp; Fields!CurrentReviewPeriod.Value &amp; ". This scorecard summarizes agreed objectives, targets, ratings, comments, and corrective actions for the selected review period."</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Times New Roman</FontFamily>
@@ -3948,6 +3948,18 @@ End Function
         <Field Name="TotalReviewScoreFormat">
           <DataField>TotalReviewScoreFormat</DataField>
         </Field>
+        <Field Name="TotalWeighting">
+          <DataField>TotalWeighting</DataField>
+        </Field>
+        <Field Name="TotalWeightingFormat">
+          <DataField>TotalWeightingFormat</DataField>
+        </Field>
+        <Field Name="StatusText">
+          <DataField>StatusText</DataField>
+        </Field>
+        <Field Name="AppraisalStatusText">
+          <DataField>AppraisalStatusText</DataField>
+        </Field>
         <Field Name="UserDept">
           <DataField>UserDept</DataField>
         </Field>
@@ -4080,6 +4092,12 @@ End Function
         <Field Name="WorkplanCode">
           <DataField>WorkplanCode</DataField>
         </Field>
+        <Field Name="WorkplanCodeValue">
+          <DataField>WorkplanCodeValue</DataField>
+        </Field>
+        <Field Name="WorkplanDescription">
+          <DataField>WorkplanDescription</DataField>
+        </Field>
         <Field Name="PerformanceMeasure">
           <DataField>PerformanceMeasure</DataField>
         </Field>
@@ -4088,6 +4106,15 @@ End Function
         </Field>
         <Field Name="Initiativecode">
           <DataField>Initiativecode</DataField>
+        </Field>
+        <Field Name="InitiativeDescription">
+          <DataField>InitiativeDescription</DataField>
+        </Field>
+        <Field Name="ActualValue">
+          <DataField>ActualValue</DataField>
+        </Field>
+        <Field Name="ActualValueFormat">
+          <DataField>ActualValueFormat</DataField>
         </Field>
         <Field Name="Achieved">
           <DataField>Achieved</DataField>
@@ -4121,6 +4148,9 @@ End Function
         </Field>
         <Field Name="AppraiserRating_GoalsFormat">
           <DataField>AppraiserRating_GoalsFormat</DataField>
+        </Field>
+        <Field Name="AppraiserComments_Goals">
+          <DataField>AppraiserComments_Goals</DataField>
         </Field>
         <Field Name="QuarterScore_Goals">
           <DataField>QuarterScore_Goals</DataField>

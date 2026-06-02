@@ -1059,6 +1059,13 @@ page 51488 "HR Officer Role Center"
                         ToolTip = 'Executes the Appraisal Periods action';
                         Caption = 'Appraisal Periods';
                     }
+                    action("Appraisal Rating Scale")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Appraisal Rating Scale';
+                        RunObject = Page "Bal Score Card Rating";
+                        ToolTip = 'Set up the 1-5 rating scale used for appraisee and appraiser ratings.';
+                    }
                     action("Perf BSC Preview Periods")
                     {
                         ApplicationArea = All;

@@ -248,9 +248,11 @@ page 52359 "Appraisal Card-New"
 
                 trigger OnAction()
                 begin
-                    Clear(EmployeeAppraisals);
+                    Clear(EmployeeObjectives);
+                    EmployeeApp.Reset();
                     EmployeeApp.SetRange("Appraisal No", Rec."Appraisal No");
                     EmployeeObjectives.SetTableView(EmployeeApp);
+                    Commit();
                     EmployeeObjectives.RunModal();
                 end;
             }
@@ -264,6 +266,7 @@ page 52359 "Appraisal Card-New"
                 trigger OnAction()
                 begin
                     Clear(AppraisalScoreCard);
+                    EmployeeApp.Reset();
                     EmployeeApp.SetRange("Appraisal No", Rec."Appraisal No");
                     AppraisalScoreCard.SetTableView(EmployeeApp);
                     Commit();

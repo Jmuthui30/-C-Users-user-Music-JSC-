@@ -77,6 +77,7 @@ codeunit 52395 "Appraisal Process Mgt."
     var
         AppraisalLine: Record "Appraisal Lines";
         HasObjectiveLine: Boolean;
+        TotalWeighting: Decimal;
     begin
         AppraisalLine.Reset();
         AppraisalLine.SetRange("Appraisal No", EmployeeAppraisal."Appraisal No");
@@ -90,6 +91,7 @@ codeunit 52395 "Appraisal Process Mgt."
                 AppraisalLine.TestField("Performance Measure");
                 AppraisalLine.TestField("FY Target");
                 AppraisalLine.TestField(Weighting);
+                TotalWeighting += AppraisalLine.Weighting;
                 AppraisalLine.TestField("Self Rating");
                 AppraisalLine.TestField("Appraisee's comments");
 
@@ -103,6 +105,12 @@ codeunit 52395 "Appraisal Process Mgt."
 
         if not HasObjectiveLine then
             Error('Enter at least one appraisal objective line before submitting appraisal %1.', EmployeeAppraisal."Appraisal No");
+
+        if Round(TotalWeighting, 0.01) <> 100 then
+            Error('Total weighting for appraisal %1 review period %2 must be 100. Current total is %3.',
+                EmployeeAppraisal."Appraisal No",
+                EmployeeAppraisal."Current Review Period Code",
+                Round(TotalWeighting, 0.01));
     end;
 
     local procedure CopyCurrentReviewLinesToNext(EmployeeAppraisal: Record "Employee Appraisal"; CurrentReviewPeriod: Code[20]; NextReviewPeriod: Code[20])

@@ -11,7 +11,7 @@ report 52392 "Employee Appraisal Scorecard"
     {
         dataitem(EmployeeAppraisal; "Employee Appraisal")
         {
-            CalcFields = "Current Review Score", "Total Review Score";
+            CalcFields = "Current Review Score", "Total Review Score", "Total Weighting";
             RequestFilterFields = "Appraisal No";
             // Company Info
             column(CompPic; CompanyInfo.Picture) { }
@@ -42,6 +42,9 @@ report 52392 "Employee Appraisal Scorecard"
             column(CurrentReviewPeriod; "Current Review Period Code") { }
             column(CurrentReviewScore; "Current Review Score") { }
             column(TotalReviewScore; "Total Review Score") { }
+            column(TotalWeighting; "Total Weighting") { }
+            column(StatusText; Format(Status)) { }
+            column(AppraisalStatusText; Format("Appraisal Status")) { }
 
             // Responsibility Center (FlowField)
             column(UserDept; "Responsibilty Center") { }
@@ -95,19 +98,30 @@ report 52392 "Employee Appraisal Scorecard"
 
                 // Other existing columns
                 column(WorkplanCode; GetWorkplanName("Workplan Code")) { }
+                column(WorkplanCodeValue; "Workplan Code") { }
+                column(WorkplanDescription; "Workplan Description") { }
                 column(PerformanceMeasure; "Performance Measure") { }
                 column(Actualtargets; "Actual targets") { }
                 column(Initiativecode; "Initiative code") { }
+                column(InitiativeDescription; Description) { }
+                column(ActualValue; Actual) { }
                 column(Achieved; "Achieved (%)") { }
                 column(Rating; Rating) { }
                 column(WeightedRating; "Weighted Rating") { }
                 column(ReviewPeriodCode_Goals; "Review Period Code") { }
                 column(SelfRating_Goals; "Self Rating") { }
                 column(AppraiserRating_Goals; "Appraiser Rating") { }
+                column(AppraiserComments_Goals; "Results Achieved Comments") { }
                 column(QuarterScore_Goals; "Quarter Score") { }
                 column(AppraiseeComments_Goals; "Appraisee's comments") { }
                 column(AchievementNotes_Goals; "Achievement Notes") { }
                 column(CorrectiveAction_Goals; "Corrective Action") { }
+
+                trigger OnPreDataItem()
+                begin
+                    if EmployeeAppraisal."Current Review Period Code" <> '' then
+                        SetRange("Review Period Code", EmployeeAppraisal."Current Review Period Code");
+                end;
             }
 
             dataitem("Appraisee Comments"; "Appraisal Comments")
