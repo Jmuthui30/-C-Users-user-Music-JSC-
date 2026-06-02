@@ -95,9 +95,7 @@ report 53012 "Memo Report"
             dataitem(Cordiantion; "Imprest Memo Lines")
             {
                 DataItemLink = "No." = field("No.");
-                DataItemTableView = sorting("No.") where("Cordination Allowance" = filter(<> 0), "Facilitator Allowance" = filter(<> 0), "Secretariat Allowance" = filter(<> 0),
-                "Rapporteur Allowance" = filter(<> 0), "Retreat Allowance" = filter(<> 0), "Expert Allowance" = filter(<> 0), "Out of Pocket Allowance" = filter(<> 0),
-                "Tuition Fee" = filter(<> 0), "Mileage Allowance" = filter(<> 0), "Quarter Per Diem" = filter(<> 0));
+                DataItemTableView = sorting("No.");
                 column(Cordiantion_Description; Description) { }
                 column(Cordination_Allowance; "Cordination Allowance") { }
                 column(Cordiantion_Days; "Total Days in the Field") { }
@@ -108,6 +106,15 @@ report 53012 "Memo Report"
                 }
                 trigger OnAfterGetRecord()
                 begin
+                    // Skip records where ALL allowances are zero
+                    if ("Cordination Allowance" = 0) and ("Facilitator Allowance" = 0) and
+                       ("Secretariat Allowance" = 0) and ("Rapporteur Allowance" = 0) and
+                       ("Retreat Allowance" = 0) and ("Expert Allowance" = 0) and
+                       ("Out of Pocket Allowance" = 0) and ("Tuition Fee" = 0) and
+                       ("Mileage Allowance" = 0) and ("Quarter Per Diem" = 0)
+                    then
+                        CurrReport.Skip();
+
                     CordiantionLine := CordiantionLine + 1;
 
                 end;
@@ -437,6 +444,14 @@ report 53012 "Memo Report"
                         UserSetup3.CalcFields(Signature);
                 end;
 
+                //// For testing purpose only, to be removed later
+                MemoLineApp.SetRange("No.", "No.");
+                if MemoLineApp.Find('-') then begin
+                    repeat
+
+                    until MemoLineApp.Next() = 0;
+                end
+
             end;
 
 
@@ -482,6 +497,17 @@ report 53012 "Memo Report"
     end;
 
     var
+
+        CordinationAllowance: Decimal;
+        FacilitatorAllowance: Decimal;
+        SecretariatAllowance: Decimal;
+        RapporteurAllowance: Decimal;
+        RetreatAllowance: Decimal;
+        ExpertAllowance: Decimal;
+        OutOfPocketAllowanceDec: Decimal;
+        TuitionFeeDEC: Decimal;
+        MileageAllowanceDec: Decimal;
+        QuarterPerDiemDec: Decimal;
         OtherCostLine: Integer;
         myInt: Integer;
         CompInfo: Record "Company Information";
@@ -512,6 +538,7 @@ report 53012 "Memo Report"
         MileageAllowanceLine: Integer;
         QuarterPerDiemLine: Integer;
         DSAline: Integer;
+        MemoLineApp: record "Imprest Memo Lines";
 
 
 

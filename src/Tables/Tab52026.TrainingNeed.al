@@ -276,6 +276,12 @@ table 52026 "Training Need"
             Caption = 'Applicant Type';
             OptionMembers = " ","Individual","Organization","Board Members";
         }
+        // Source Training Need No
+        field(37; "Source Training Need No."; Code[20])
+        {
+            TableRelation = "Training Need".Code;
+            Caption = 'Source Training Need No.';
+        }
     }
 
     keys
@@ -298,11 +304,11 @@ table 52026 "Training Need"
             HRSetup.Get();
             HRSetup.TestField("Training Needs Nos");
             // NoSeriesManagement.InitSeries(HRSetup."Training Needs Nos", xRec."No. Series", 0D, Code, "No. Series");
-            if NoSeriesManagement.AreRelated(HRSetup."Training Needs Nos",xRec."No. Series") then
-            "No. Series":=xRec."No. Series"
+            if NoSeriesManagement.AreRelated(HRSetup."Training Needs Nos", xRec."No. Series") then
+                "No. Series" := xRec."No. Series"
             else
-            "No. Series":=HRSetup."Training Needs Nos";
-            Code:=NoSeriesManagement.GetNextNo("No. Series",WorkDate());
+                "No. Series" := HRSetup."Training Needs Nos";
+            Code := NoSeriesManagement.GetNextNo("No. Series", WorkDate());
         end;
     end;
 
