@@ -43,6 +43,11 @@ page 58082 "Recruitment Request New"
                     Enabled = false;
                     ToolTip = 'Specifies the value of the Appointment Type Description field';
                 }
+                field("Type Of Recruitment"; "Type Of Recruitment")
+                {
+                    Caption = 'Type Of Recruitment (true for internal, false for external)';
+                    ToolTip = 'Specifies the value of the Type Of Recruitment field';
+                }
                 field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code")
                 {
                     Visible = false;

@@ -516,6 +516,11 @@ table 51880 "Recruitment Needs"
             Caption = 'Mission Statement';
             DataClassification = ToBeClassified;
         }
+        field(237; "Type Of Recruitment"; Boolean)
+        {
+            Caption = 'Type Of Recruitment (true for internal, false for external)';
+            DataClassification = ToBeClassified;
+        }
 
 
 
@@ -536,11 +541,11 @@ table 51880 "Recruitment Needs"
             HumanResSetup.Get;
             HumanResSetup.TestField(HumanResSetup."Recruitment Needs Nos.");
             // NoSeriesMgt.InitSeries(HumanResSetup."Recruitment Needs Nos.", xRec."No. Series", 0D, "No.", "No. Series");
-            if NoSeriesMgt.AreRelated(HumanResSetup."Recruitment Needs Nos.",xRec."No. Series") then
-            "No. Series":=xRec."No. Series"
+            if NoSeriesMgt.AreRelated(HumanResSetup."Recruitment Needs Nos.", xRec."No. Series") then
+                "No. Series" := xRec."No. Series"
             else
-            "No. Series":=HumanResSetup."Recruitment Needs Nos.";
-            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
+                "No. Series" := HumanResSetup."Recruitment Needs Nos.";
+            "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
         end;
         Date := Today;
         "Requested By" := UserId;
