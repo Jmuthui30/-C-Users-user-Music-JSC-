@@ -67,6 +67,8 @@ report 53012 "Memo Report"
             column(Authorizer_Signature; UserSetup3.Signature)
             {
             }
+            //
+            column(Total_Grand_Total; TotalGrandTotal) { }
             dataitem("Imprest Memo Lines"; "Imprest Memo Lines")
             {
                 DataItemLink = "No." = field("No.");
@@ -96,8 +98,8 @@ report 53012 "Memo Report"
             {
                 DataItemLink = "No." = field("No.");
                 DataItemTableView = sorting("No.");
-                column(Cordiantion_Description; Description) { }
-                column(Cordination_Allowance; "Cordination Allowance") { }
+                column(Cordiantion_Description; OtherAllowanceDesc) { }
+                column(Cordination_Allowance; otherAmount) { }
                 column(Cordiantion_Days; "Total Days in the Field") { }
                 column(Cordiantion_Name; Name) { }
                 column(Cordiantion_Account_No_; "Account No.") { }
@@ -114,6 +116,47 @@ report 53012 "Memo Report"
                        ("Mileage Allowance" = 0) and ("Quarter Per Diem" = 0)
                     then
                         CurrReport.Skip();
+                    if "Cordination Allowance" > 0 then begin
+                        OtherAllowanceDesc := 'Cordiantion Allowance';
+                        otherAmount := "Cordination Allowance";
+                    end
+                    else if "Facilitator Allowance" > 0 then begin
+                        OtherAllowanceDesc := 'Facilitator Allowance';
+                        otherAmount := "Facilitator Allowance";
+                    end
+                    else if "Secretariat Allowance" > 0 then begin
+                        OtherAllowanceDesc := 'Secretariat Allowance';
+                        otherAmount := "Secretariat Allowance";
+                    end
+                    else if "Rapporteur Allowance" > 0 then begin
+                        OtherAllowanceDesc := 'Rapporteur Allowance';
+                        otherAmount := "Rapporteur Allowance";
+                    end
+                    else if "Retreat Allowance" > 0 then begin
+                        OtherAllowanceDesc := 'Retreat Allowance';
+                        otherAmount := "Retreat Allowance";
+                    end
+                    else if "Expert Allowance" > 0 then begin
+                        OtherAllowanceDesc := 'Expert Allowance';
+                        otherAmount := "Expert Allowance";
+                    end
+                    else if "Out of Pocket Allowance" > 0 then begin
+                        OtherAllowanceDesc := 'Out of Pocket Allowance';
+                        otherAmount := "Out of Pocket Allowance";
+                    end
+                    else if "Tuition Fee" > 0 then begin
+                        OtherAllowanceDesc := 'Tuition Fee';
+                        otherAmount := "Tuition Fee";
+                    end
+                    else if "Mileage Allowance" > 0 then begin
+                        OtherAllowanceDesc := 'Mileage Allowance';
+                        otherAmount := "Mileage Allowance";
+                    end
+                    else if "Quarter Per Diem" > 0 then begin
+                        OtherAllowanceDesc := 'Quarter Per Diem';
+                        otherAmount := "Quarter Per Diem";
+                    end;
+
 
                     CordiantionLine := CordiantionLine + 1;
 
@@ -448,8 +491,16 @@ report 53012 "Memo Report"
                 MemoLineApp.SetRange("No.", "No.");
                 if MemoLineApp.Find('-') then begin
                     repeat
+                        if (MemoLineApp.DSA > 0) or (MemoLineApp."Cordination Allowance" > 0) or (MemoLineApp."Facilitator Allowance" > 0) or (MemoLineApp."Secretariat Allowance" > 0) or (MemoLineApp."Rapporteur Allowance" > 0) or (MemoLineApp."Retreat Allowance" > 0) or (MemoLineApp."Expert Allowance" > 0)
+                         or (MemoLineApp."Out of Pocket Allowance" > 0) or (MemoLineApp."Tuition Fee" > 0) or (MemoLineApp."Mileage Allowance" > 0) or (MemoLineApp."Quarter Per Diem" > 0) then
+                            TotalGrandTwice += (MemoLineApp.DSA + MemoLineApp."Cordination Allowance" + MemoLineApp."Facilitator Allowance" + MemoLineApp."Secretariat Allowance" + MemoLineApp."Rapporteur Allowance" + MemoLineApp."Retreat Allowance" + MemoLineApp."Expert Allowance"
+                             + MemoLineApp."Out of Pocket Allowance" + MemoLineApp."Tuition Fee" + MemoLineApp."Mileage Allowance" + MemoLineApp."Quarter Per Diem") * memoLineApp."Total Days in the Field";
 
+
+                        if (MemoLineApp."Air Ticket" > 0) or (MemoLineApp."Conference" > 0) or (MemoLineApp."Ground Transport" > 0) or (MemoLineApp.Accomodation > 0) then
+                            TotalGrandonce += (MemoLineApp."Air Ticket" + MemoLineApp."Conference" + MemoLineApp."Ground Transport" + MemoLineApp.Accomodation);
                     until MemoLineApp.Next() = 0;
+                    totalGrandTotal := TotalGrandonce + TotalGrandTwice;
                 end
 
             end;
@@ -539,6 +590,12 @@ report 53012 "Memo Report"
         QuarterPerDiemLine: Integer;
         DSAline: Integer;
         MemoLineApp: record "Imprest Memo Lines";
+        OtherAllowanceDesc: Text[100];
+        OtherAmount: Decimal;
+
+        TotalGrandTotal: Decimal;
+        TotalGrandonce: Decimal;
+        TotalGrandTwice: Decimal;
 
 
 
