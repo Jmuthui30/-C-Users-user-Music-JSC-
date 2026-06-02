@@ -87,6 +87,11 @@ pageextension 51804 "ExtHuman Resources Setup" extends "Human Resources Setup"
             {
                 ApplicationArea = All;
             }
+            field("Appraisal Outcome Nos"; Rec."Appraisal Outcome Nos")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the number series used when creating appraisal outcome letters and memos.';
+            }
             field("Loan App No"; "Loan App No")
             {
                 ApplicationArea = All;

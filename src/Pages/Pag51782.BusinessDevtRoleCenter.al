@@ -310,7 +310,9 @@ page 51782 "Business Devt. Role Center"
                 {
                     ApplicationArea = All;
                     Caption = 'New Appraisal Form';
-                    RunObject = Page "SS Appraisal List - Open";
+                    // Legacy self-service appraisal route retained for reference.
+                    // RunObject = Page "SS Appraisal List - Open";
+                    RunObject = Page "Appraisal List";
                 }
                 action("Appraisal Forms Pending Approval")
                 {

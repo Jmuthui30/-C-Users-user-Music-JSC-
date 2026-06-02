@@ -25,6 +25,12 @@ page 52354 "Appraisal Goals"
                 {
                     ToolTip = 'Specifies the value of the Performance Measure field.';
                 }
+                field("Review Period Code"; Rec."Review Period Code")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Review Period';
+                    ToolTip = 'Specifies the quarterly review period for this objective line.';
+                }
                 field("Actual targets"; Rec."Actual targets")
                 {
                     ToolTip = 'Specifies the value of the Actual/achieved targets field';
@@ -49,7 +55,7 @@ page 52354 "Appraisal Goals"
                     ToolTip = 'Specifies the value of the Actual field';
                     trigger OnValidate()
                     begin
-                        if Rec.Actual <> 0 then begin
+                        if (Rec.Actual <> 0) and (Rec."FY Target" <> 0) then begin
                             Rec."Achieved (%)" := Round((Rec.Actual / Rec."FY Target") * 100, 0.01);
                             // Rec."Weighted Rating" := Round((Rec."Achieved (%)" * Rec.Weighting) / 100, 0.01);
                         end else begin
@@ -63,6 +69,19 @@ page 52354 "Appraisal Goals"
                 {
                     ToolTip = 'Specifies the value of the Achieved (%) field.';
                     //Editable = UnderReview;
+                }
+                field("Self Rating"; Rec."Self Rating")
+                {
+                    ApplicationArea = All;
+                    Editable = AppraiseeEditable;
+                    ToolTip = 'Specifies the appraisee self-rating for this review period.';
+                }
+                field("Appraisee's comments"; Rec."Appraisee's comments")
+                {
+                    ApplicationArea = All;
+                    Editable = AppraiseeEditable;
+                    Caption = 'Appraisee Comments';
+                    ToolTip = 'Specifies the appraisee comments for this objective.';
                 }
 
                 // field(Weighting; Rec.Weighting)
@@ -80,7 +99,7 @@ page 52354 "Appraisal Goals"
                 field("Weighted Rating"; Rec."Weighted Rating")
                 {
                     ToolTip = 'Specifies the value of the Weighted Rating field.';
-                    Editable = UnderReview;
+                    Editable = false;
                     trigger OnValidate()
                     begin
                         if Rec."Weighted Rating" <>0 then begin
@@ -92,6 +111,7 @@ page 52354 "Appraisal Goals"
                 {
                     Caption = 'Actual % score';
                     Visible = true;
+                    Editable = false;
                     ToolTip = 'Specifies the value of the Actual % score field';
                     //Editable = UnderReview;
 
@@ -121,7 +141,31 @@ page 52354 "Appraisal Goals"
                 {
                     Visible = FinalYearVisible;
                     Caption = 'Appraiser''s comments';
+                    Editable = AppraiserEditable;
                     ToolTip = 'Specifies the value of the Appraiser''s comments field';
+                }
+                field("Appraiser Rating"; Rec."Appraiser Rating")
+                {
+                    ApplicationArea = All;
+                    Editable = AppraiserEditable;
+                    ToolTip = 'Specifies the appraiser rating for this objective.';
+                }
+                field("Quarter Score"; Rec."Quarter Score")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the calculated score for this review period.';
+                }
+                field("Achievement Notes"; Rec."Achievement Notes")
+                {
+                    ApplicationArea = All;
+                    Editable = AppraiseeEditable;
+                    ToolTip = 'Specifies additional achievement notes for this review period.';
+                }
+                field("Corrective Action"; Rec."Corrective Action")
+                {
+                    ApplicationArea = All;
+                    Editable = AppraiserEditable;
+                    ToolTip = 'Specifies corrective action or emphasis for this objective.';
                 }
                 field("Appraisal No"; Rec."Appraisal No")
                 {
@@ -198,6 +242,9 @@ page 52354 "Appraisal Goals"
     begin
         GetHeader();
         Rec."Employee No" := EmployeeAppraisal."Employee No";
+        Rec."Appraisal Period" := EmployeeAppraisal."Appraisal Period";
+        Rec."Appraisal Type" := EmployeeAppraisal."Appraisal Type";
+        Rec."Review Period Code" := EmployeeAppraisal."Current Review Period Code";
         // NameEmphasize := "Appraisal Line Type" <> "Appraisal Line Type"::Objective;
     end;
 
@@ -214,6 +261,8 @@ page 52354 "Appraisal Goals"
 
     var
         EmployeeAppraisal: Record "Employee Appraisal";
+        AppraiseeEditable: Boolean;
+        AppraiserEditable: Boolean;
         Approved: Boolean;
         Completed: Boolean;
         FinalYearVisible: Boolean;
@@ -237,6 +286,10 @@ page 52354 "Appraisal Goals"
         else
             UnderReview := false;
 
+        AppraiseeEditable := (EmployeeAppraisal."Appraisal Status" = EmployeeAppraisal."Appraisal Status"::Setting) or
+            (EmployeeAppraisal."Appraisal Status" = EmployeeAppraisal."Appraisal Status"::Set);
+        AppraiserEditable := UnderReview;
+
         if EmployeeAppraisal."Appraisal Status" = EmployeeAppraisal."Appraisal Status"::Setting then
             Setting := true
         else
@@ -252,10 +305,12 @@ page 52354 "Appraisal Goals"
         // else
         //     MidYearVisible := false;
 
-        if EmployeeAppraisal."AppraisalType" = EmployeeAppraisal."AppraisalType"::"Final Year" then
-            FinalYearVisible := true
-        else
-            FinalYearVisible := false;
+        // Legacy Mid-Year/Final-Year visibility retained for reference. Quarterly review fields are always part of the unified appraisal.
+        // if EmployeeAppraisal."AppraisalType" = EmployeeAppraisal."AppraisalType"::"Final Year" then
+        //     FinalYearVisible := true
+        // else
+        //     FinalYearVisible := false;
+        FinalYearVisible := true;
 
 
         if EmployeeAppraisal.Status = EmployeeAppraisal.Status::Released then

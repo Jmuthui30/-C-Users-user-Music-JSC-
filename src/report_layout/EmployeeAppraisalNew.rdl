@@ -5150,6 +5150,102 @@ End Function
         <Field Name="FinalYear">
           <DataField>FinalYear</DataField>
         </Field>
+        <Field Name="CurrentReviewPeriod">
+          <DataField>CurrentReviewPeriod</DataField>
+        </Field>
+        <Field Name="CurrentReviewScore">
+          <DataField>CurrentReviewScore</DataField>
+        </Field>
+        <Field Name="CurrentReviewScoreFormat">
+          <DataField>CurrentReviewScoreFormat</DataField>
+        </Field>
+        <Field Name="TotalReviewScore">
+          <DataField>TotalReviewScore</DataField>
+        </Field>
+        <Field Name="TotalReviewScoreFormat">
+          <DataField>TotalReviewScoreFormat</DataField>
+        </Field>
+        <Field Name="BSCNo">
+          <DataField>BSCNo</DataField>
+        </Field>
+        <Field Name="BSCProgressReviewPeriod">
+          <DataField>BSCProgressReviewPeriod</DataField>
+        </Field>
+        <Field Name="BSCScore">
+          <DataField>BSCScore</DataField>
+        </Field>
+        <Field Name="BSCScoreFormat">
+          <DataField>BSCScoreFormat</DataField>
+        </Field>
+        <Field Name="BSCGlobalScore">
+          <DataField>BSCGlobalScore</DataField>
+        </Field>
+        <Field Name="BSCGlobalScoreFormat">
+          <DataField>BSCGlobalScoreFormat</DataField>
+        </Field>
+        <Field Name="BSCExpectedScore">
+          <DataField>BSCExpectedScore</DataField>
+        </Field>
+        <Field Name="BSCExpectedScoreFormat">
+          <DataField>BSCExpectedScoreFormat</DataField>
+        </Field>
+        <Field Name="BSCCombinedScore">
+          <DataField>BSCCombinedScore</DataField>
+        </Field>
+        <Field Name="BSCCombinedScoreFormat">
+          <DataField>BSCCombinedScoreFormat</DataField>
+        </Field>
+        <Field Name="BSCPerformanceRating">
+          <DataField>BSCPerformanceRating</DataField>
+        </Field>
+        <Field Name="BSCAppraiseeComment">
+          <DataField>BSCAppraiseeComment</DataField>
+        </Field>
+        <Field Name="BSCAppraiserRecommendations">
+          <DataField>BSCAppraiserRecommendations</DataField>
+        </Field>
+        <Field Name="BSCHRReview">
+          <DataField>BSCHRReview</DataField>
+        </Field>
+        <Field Name="BSCLinePerspective">
+          <DataField>BSCLinePerspective</DataField>
+        </Field>
+        <Field Name="BSCLineReviewPeriod">
+          <DataField>BSCLineReviewPeriod</DataField>
+        </Field>
+        <Field Name="BSCLineExpectedMaxScore">
+          <DataField>BSCLineExpectedMaxScore</DataField>
+        </Field>
+        <Field Name="BSCLineExpectedMaxScoreFormat">
+          <DataField>BSCLineExpectedMaxScoreFormat</DataField>
+        </Field>
+        <Field Name="BSCLineSelfRating">
+          <DataField>BSCLineSelfRating</DataField>
+        </Field>
+        <Field Name="BSCLineSelfRatingFormat">
+          <DataField>BSCLineSelfRatingFormat</DataField>
+        </Field>
+        <Field Name="BSCLineJointRating">
+          <DataField>BSCLineJointRating</DataField>
+        </Field>
+        <Field Name="BSCLineJointRatingFormat">
+          <DataField>BSCLineJointRatingFormat</DataField>
+        </Field>
+        <Field Name="BSCLineScore">
+          <DataField>BSCLineScore</DataField>
+        </Field>
+        <Field Name="BSCLineScoreFormat">
+          <DataField>BSCLineScoreFormat</DataField>
+        </Field>
+        <Field Name="BSCLineAchievementsToDate">
+          <DataField>BSCLineAchievementsToDate</DataField>
+        </Field>
+        <Field Name="BSCLineEmphasis">
+          <DataField>BSCLineEmphasis</DataField>
+        </Field>
+        <Field Name="BSCLineReviewed">
+          <DataField>BSCLineReviewed</DataField>
+        </Field>
         <Field Name="EmployeeNo_Goals">
           <DataField>EmployeeNo_Goals</DataField>
         </Field>
@@ -5215,6 +5311,36 @@ End Function
         </Field>
         <Field Name="LineTypeGoals">
           <DataField>LineTypeGoals</DataField>
+        </Field>
+        <Field Name="ReviewPeriodCode_Goals">
+          <DataField>ReviewPeriodCode_Goals</DataField>
+        </Field>
+        <Field Name="SelfRating_Goals">
+          <DataField>SelfRating_Goals</DataField>
+        </Field>
+        <Field Name="SelfRating_GoalsFormat">
+          <DataField>SelfRating_GoalsFormat</DataField>
+        </Field>
+        <Field Name="AppraiserRating_Goals">
+          <DataField>AppraiserRating_Goals</DataField>
+        </Field>
+        <Field Name="AppraiserRating_GoalsFormat">
+          <DataField>AppraiserRating_GoalsFormat</DataField>
+        </Field>
+        <Field Name="QuarterScore_Goals">
+          <DataField>QuarterScore_Goals</DataField>
+        </Field>
+        <Field Name="QuarterScore_GoalsFormat">
+          <DataField>QuarterScore_GoalsFormat</DataField>
+        </Field>
+        <Field Name="AppraiseeComments_Goals">
+          <DataField>AppraiseeComments_Goals</DataField>
+        </Field>
+        <Field Name="AchievementNotes_Goals">
+          <DataField>AchievementNotes_Goals</DataField>
+        </Field>
+        <Field Name="CorrectiveAction_Goals">
+          <DataField>CorrectiveAction_Goals</DataField>
         </Field>
         <Field Name="EmployeeNo_GoalsJD">
           <DataField>EmployeeNo_GoalsJD</DataField>
@@ -5299,6 +5425,9 @@ End Function
         </Field>
         <Field Name="Description_EmployeeQualification">
           <DataField>Description_EmployeeQualification</DataField>
+        </Field>
+        <Field Name="QualificationType_EmployeeQualification">
+          <DataField>QualificationType_EmployeeQualification</DataField>
         </Field>
       </Fields>
       <Query>

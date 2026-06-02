@@ -1308,6 +1308,7 @@ page 51742 "HR & Admin Manager Role Center"
  */
             group("Balanced Score Card")
             {
+                Visible = false;
                 action("Plan Review Period")
                 {
                     ApplicationArea = All;
@@ -1424,6 +1425,44 @@ page 51742 "HR & Admin Manager Role Center"
             group("Performance Appraisal Management")
             {
                 Caption = 'Performance Management';
+                group("Quarterly Scorecard")
+                {
+                    Caption = 'Appraisal Cycle';
+                    action("Perf BSC Plan Review Periods")
+                    {
+                        ApplicationArea = All;
+                        Caption = '1. Create Appraisal Planning';
+                        RunObject = Page "Bal Score Plan Review Period";
+                        ToolTip = 'Open appraisal planning periods used to create employee appraisal records.';
+                    }
+                    action("Perf BSC Planning Documents")
+                    {
+                        ApplicationArea = All;
+                        Caption = '2. BSC Planning Documents';
+                        RunObject = Page "Bal Planning Score Card List";
+                        Visible = false;
+                        // Legacy BSC planning list hidden from the unified appraisal process.
+                        ToolTip = 'Open employee BSC planning documents.';
+                    }
+                    action("Perf BSC Quarterly Reviews")
+                    {
+                        ApplicationArea = All;
+                        Caption = '3. Quarterly BSC Reviews';
+                        RunObject = Page "Bal Appraisal Score Card List";
+                        Visible = false;
+                        // Legacy BSC review list hidden from the unified appraisal process.
+                        ToolTip = 'Open quarterly BSC appraisal review documents.';
+                    }
+                    action("Perf BSC HR Admin Reviews")
+                    {
+                        ApplicationArea = All;
+                        Caption = '4. HR Admin BSC Reviews';
+                        RunObject = Page "Bal Admin App. Score Card List";
+                        Visible = false;
+                        // Legacy BSC admin review list hidden from the unified appraisal process.
+                        ToolTip = 'Open BSC appraisal documents for HR administration review.';
+                    }
+                }
                 action("Appraisal List")
                 {
                     RunObject = page "Appraisal List";
@@ -1472,23 +1511,80 @@ page 51742 "HR & Admin Manager Role Center"
                     ToolTip = 'Executes the Appraisal List - Completed action';
                     Caption = 'Appraisal List - Completed';
                 }
+                action("Appraisal Outcomes")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Appraisal Outcomes';
+                    RunObject = page "Appraisal Outcome List";
+                    ToolTip = 'Open appraisal commendation letters, warning letters, and outcome memos.';
+                }
                 group("Appriasal Reports")
                 {
-                    Caption = 'Appriasal Reports';
-                    action("Employee Appraisals")
+                    Caption = 'Reports';
+                    action("Employee Appraisal Evaluation")
                     {
-                        RunObject = report "Employee Appraisals";
-                        Caption = 'Employee Appraisals';
+                        RunObject = report "Employee Appraisal Evaluation";
+                        Caption = 'Employee Appraisal Evaluation';
                     }
                 }
                 group("Appraisal Setup")
                 {
                     Caption = 'Appraisal Setup';
+                    action("Perf HR Setup")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'HR Setup';
+                        RunObject = Page "QuantumJumps HR Setup";
+                        ToolTip = 'Open HR setup, including directorate dimension and appraisal numbering setup.';
+                    }
                     action("Appraisal Periods")
                     {
                         RunObject = page "Appraisal Periods";
                         ToolTip = 'Executes the Appraisal Periods action';
                         Caption = 'Appraisal Periods';
+                    }
+                    action("Perf BSC Preview Periods")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Quarterly Review Periods';
+                        RunObject = Page "Bal Score Preview Periods";
+                        ToolTip = 'Set up appraisal review sequence, final review period, and suggested review dates.';
+                    }
+                    action("Perf BSC Employee Categories")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'BSC Employee Categories';
+                        RunObject = Page "Bal Score Emp Categories";
+                        Visible = false;
+                        // Legacy BSC scoring setup hidden; unified appraisals use workplan objective lines.
+                        ToolTip = 'Set up BSC employee categories used when creating scorecard lines.';
+                    }
+                    action("Perf BSC Scoring Setup")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'BSC Scoring Setup';
+                        RunObject = Page "Bal Scoring Setup";
+                        Visible = false;
+                        // Legacy BSC scoring setup hidden; unified appraisals use objective weighting.
+                        ToolTip = 'Set up BSC perspectives and weighting by employee category.';
+                    }
+                    action("Perf BSC Perspectives")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'BSC Perspectives';
+                        RunObject = Page "Bal Score Percipectives";
+                        Visible = false;
+                        // Legacy BSC perspective setup hidden from the unified appraisal process.
+                        ToolTip = 'Set up BSC perspectives used by scorecard scoring setup.';
+                    }
+                    action("Perf BSC Ratings")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'BSC Ratings';
+                        RunObject = Page "Bal Score Card Rating";
+                        Visible = false;
+                        // Legacy BSC rating setup hidden from the unified appraisal process.
+                        ToolTip = 'Set up BSC rating values.';
                     }
                     action("Workplan Codes")
                     {
@@ -1592,11 +1688,12 @@ page 51742 "HR & Admin Manager Role Center"
             }
 
 
-            group("Training Management")
+            group("Training and Development")
             {
+                Caption = 'Training and Development';
                 Image = Capacities;
-                Caption = 'Training Management';
-
+                ToolTip = 'Track Employee Training and Development';
+                // Visible = false;
                 group("Training Budget ")
                 {
                     Caption = 'Training Budget';
@@ -1617,7 +1714,6 @@ page 51742 "HR & Admin Manager Role Center"
                         ToolTip = 'Executes the New Training Needs action';
                         Caption = 'New Training Needs';
                     }
-
                     action("On-Going Training Needs")
                     {
                         RunObject = page "Training Needs Application";
@@ -1711,17 +1807,6 @@ page 51742 "HR & Admin Manager Role Center"
                     //                         Caption = 'Training Evaluation Report';
                     //                     }
                 }
-            }
-
-
-
-
-            group("Training & Development")
-            {
-                Caption = 'Training & Development';
-                Image = Marketing;
-                ToolTip = 'Track Employee Training & Development';
-                // Visible = false;
                 action("Competency and Qualifications Catalogue")
                 {
                     ApplicationArea = All;
@@ -1933,24 +2018,28 @@ page 51742 "HR & Admin Manager Role Center"
                     ApplicationArea = All;
                     Caption = 'Bal Score Card Rating';
                     RunObject = Page "Bal Score Card Rating";
+                    Visible = false;
                 }
                 action("Bal  Emp Categories")
                 {
                     ApplicationArea = All;
                     Caption = 'Bal Score Emp Categories';
                     RunObject = Page "Bal Score Emp Categories";
+                    Visible = false;
                 }
                 action("Bal Score Percipectives")
                 {
                     ApplicationArea = All;
                     Caption = 'Bal Score Percipectives';
                     RunObject = Page "Bal Score Percipectives";
+                    Visible = false;
                 }
                 action("Bal Scoring Setup")
                 {
                     ApplicationArea = All;
                     Caption = 'Bal Scoring Setup';
                     RunObject = Page "Bal Scoring Setup";
+                    Visible = false;
                 }
                 action("Appraisal Set up")
                 {

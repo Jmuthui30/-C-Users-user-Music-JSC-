@@ -34,7 +34,13 @@ table 51501 "Bal Score Card Lines"
                 PreviewPeriod.Reset();
                 PreviewPeriod.SetRange(Code, "Progress Review Period");
                 PreviewPeriod.SetRange("Preview Period Type", PreviewPeriod."Preview Period Type"::"Full Period Appraisal");
-                if PreviewPeriod.FindFirst()then "Full Period Appraisal":=true;
+                if PreviewPeriod.FindFirst() then
+                    "Full Period Appraisal" := true
+                else
+                    if PreviewPeriod.Get("Progress Review Period") then
+                        // Legacy fixed final sequence retained for reference.
+                        // "Full Period Appraisal" := PreviewPeriod."Review Sequence" = 4;
+                        "Full Period Appraisal" := PreviewPeriod."Final Review Period";
             end;
         }
         field(7; "Document Type"; Option)

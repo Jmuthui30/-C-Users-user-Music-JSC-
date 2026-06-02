@@ -5,7 +5,7 @@ page 51513 "Bal Score Card Documents"
     DeleteAllowed = false;
     PageType = ListPart;
     ApplicationArea = All;
-    UsageCategory = Lists;
+    UsageCategory = None;
     PopulateAllFields = true;
     PromotedActionCategories = 'New,Process,Report,Document,Attachment';
     SourceTable = Document;

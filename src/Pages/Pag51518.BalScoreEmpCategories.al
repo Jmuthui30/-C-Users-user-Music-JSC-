@@ -2,7 +2,7 @@ page 51518 "Bal Score Emp Categories"
 {
     PageType = List;
     ApplicationArea = All;
-    UsageCategory = Lists;
+    UsageCategory = None;
     SourceTable = "Bal Score Emp Categories";
 
     layout

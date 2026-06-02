@@ -2,9 +2,18 @@ codeunit 51500 "Bal Score Card Mngt."
 {
     procedure CreateEmployeeAppraisalPlanning()
     var
+        ActiveEmployeeCount: Integer;
+        ExistingAppraisalCount: Integer;
         LineCount: Integer;
+        MissingEmployeeCount: Integer;
+        MissingEmployeeNos: Text;
+        MissingSupervisorCount: Integer;
+        MissingSupervisorNos: Text;
+        NewAppraisalCount: Integer;
         NoOfRecords: Integer;
+        ProcessedCount: Integer;
     begin
+        EnsureQuarterlyPreviewPeriods();
         FindMaturityDate;
         PlanReviewPeriod.Reset();
         PlanReviewPeriod.SetRange(Active, true);
@@ -13,25 +22,59 @@ codeunit 51500 "Bal Score Card Mngt."
         if PlanReviewPeriod.FindFirst() = false then Error(Text004)
         else
         begin
-            if Confirm(StrSubstNo(Text005, PlanReviewPeriod.Name), false) = true then begin
+            SyncPlanReviewPeriodDates(PlanReviewPeriod);
+            CollectEmployeeAppraisalBatchStats(PlanReviewPeriod, ActiveEmployeeCount, NewAppraisalCount, ExistingAppraisalCount, MissingEmployeeCount, MissingSupervisorCount, MissingEmployeeNos, MissingSupervisorNos);
+            if ActiveEmployeeCount = 0 then
+                Error(Text006);
+            if MissingEmployeeCount = ActiveEmployeeCount then
+                Error('No employee appraisals can be created because none of the active Employee Master records exist in the standard Employee table.');
+
+            // Legacy confirmation retained for reference.
+            // if Confirm(StrSubstNo(Text005, PlanReviewPeriod.Name), false) = true then begin
+            if Confirm(
+                StrSubstNo(
+                    'Create employee appraisals for %1?\New appraisals: %2\Existing appraisals to update: %3\Skipped employees not found in standard Employee: %4\Employees with missing appraiser records: %5\\Do you want to continue?',
+                    PlanReviewPeriod.Name,
+                    NewAppraisalCount,
+                    ExistingAppraisalCount,
+                    MissingEmployeeCount,
+                    MissingSupervisorCount),
+                false) = true
+            then begin
                 Emp.Reset();
-                Emp.SetRange(Appraisable, true);
-                Emp.SetFilter("Bal Score Emp Categories", '<>%1', '');
-                Emp.SetFilter("Appraisal Supervisor", '<>%1', '');
+                // Legacy BSC gates retained for reference. Unified appraisals are created for active employees.
+                // Emp.SetRange(Appraisable, true);
+                // Emp.SetFilter("Bal Score Emp Categories", '<>%1', '');
+                // Emp.SetFilter("Appraisal Supervisor", '<>%1', '');
+                Emp.SetRange(Status, Emp.Status::Active);
                 if Emp.FindSet()then begin
-                    NoOfRecords:=Emp.COUNT;
+                    NoOfRecords:=ActiveEmployeeCount;
                     Window.OPEN('#1################### @2@@@@@@@@@@@@@\');
                     repeat LineCount:=LineCount + 1;
-                        UpdateBalScorePlanningHeader(Emp, PlanReviewPeriod);
-                        NavEmp.Get(Emp."No.");
-                        Window.UPDATE(1, NavEmp.FullName);
+                        // Legacy BSC planning creation retained for reference.
+                        // UpdateBalScorePlanningHeader(Emp, PlanReviewPeriod);
+                        if EnsureEmployeeAppraisalFromEmployee(Emp, PlanReviewPeriod) then
+                            ProcessedCount += 1;
+                        if NavEmp.Get(Emp."No.") then
+                            Window.UPDATE(1, NavEmp.FullName)
+                        else
+                            Window.UPDATE(1, StrSubstNo('%1 - skipped', Emp."No."));
                         Window.UPDATE(2, ROUND(LineCount / NoOfRecords * 10000, 1));
                         Sleep(100);
                     until Emp.Next() = 0;
                     Window.Close();
-                    CreateBatchAppraisals;
-                    if Confirm(StrSubstNo(Text007, Format(Emp.count)), false) = true then begin
-                        Page.Run(Page::"Bal Admin App. Score Card List");
+
+                    if MissingEmployeeCount > 0 then
+                        Message('Skipped %1 active Employee Master record(s) because they do not exist in the standard Employee table. Sample: %2', MissingEmployeeCount, MissingEmployeeNos);
+                    if MissingSupervisorCount > 0 then
+                        Message('Created/updated appraisals, but %1 employee(s) have appraiser values that do not exist in the standard Employee table. Their appraiser was left blank or unchanged. Sample: %2', MissingSupervisorCount, MissingSupervisorNos);
+
+                    // Legacy BSC appraisal creation retained for reference.
+                    // CreateBatchAppraisals;
+                    if Confirm(StrSubstNo(Text007, Format(ProcessedCount)), false) = true then begin
+                        // Legacy BSC list retained for reference.
+                        // Page.Run(Page::"Bal Admin App. Score Card List");
+                        Page.Run(Page::"Appraisal List");
                     end
                     else
                     begin
@@ -47,23 +90,119 @@ codeunit 51500 "Bal Score Card Mngt."
             end;
         end;
     end;
+
+    local procedure EnsureEmployeeAppraisalFromEmployee(var Employee: Record "Employee Master"; ReviewPeriod: Record "Bal Score Plan Review Period"): Boolean
+    var
+        AppraiserEmployee: Record Employee;
+        BCEmployee: Record Employee;
+        EmployeeAppraisal: Record "Employee Appraisal";
+        FirstReviewPeriod: Record "Bal Score Preview Periods";
+    begin
+        ReviewPeriod.TestField("Appraisal Period");
+
+        if not BCEmployee.Get(Employee."No.") then
+            exit(false);
+
+        EmployeeAppraisal.Reset();
+        EmployeeAppraisal.SetRange("Employee No", Employee."No.");
+        EmployeeAppraisal.SetRange("Appraisal Period", ReviewPeriod."Appraisal Period");
+        if EmployeeAppraisal.FindFirst() then begin
+            if (EmployeeAppraisal."Appraiser No" = '') and (Employee."Appraisal Supervisor" <> '') then
+                if AppraiserEmployee.Get(Employee."Appraisal Supervisor") then
+                    EmployeeAppraisal.Validate("Appraiser No", Employee."Appraisal Supervisor");
+            if EmployeeAppraisal."Current Review Period Code" = '' then
+                if FindFirstProgressReviewPeriod(FirstReviewPeriod) then
+                    EmployeeAppraisal."Current Review Period Code" := FirstReviewPeriod.Code;
+            EmployeeAppraisal.Modify(true);
+            exit(true);
+        end;
+
+        EmployeeAppraisal.Init();
+        EmployeeAppraisal.Validate("Employee No", Employee."No.");
+        EmployeeAppraisal.Validate("Appraisal Period", ReviewPeriod."Appraisal Period");
+        if Employee."Appraisal Supervisor" <> '' then
+            if AppraiserEmployee.Get(Employee."Appraisal Supervisor") then
+                EmployeeAppraisal.Validate("Appraiser No", Employee."Appraisal Supervisor");
+        if FindFirstProgressReviewPeriod(FirstReviewPeriod) then
+            EmployeeAppraisal."Current Review Period Code" := FirstReviewPeriod.Code;
+        EmployeeAppraisal.Status := EmployeeAppraisal.Status::Open;
+        EmployeeAppraisal."Appraisal Status" := EmployeeAppraisal."Appraisal Status"::Setting;
+        EmployeeAppraisal.Insert(true);
+        exit(true);
+    end;
+
+    local procedure CollectEmployeeAppraisalBatchStats(ReviewPeriod: Record "Bal Score Plan Review Period"; var ActiveEmployeeCount: Integer; var NewAppraisalCount: Integer; var ExistingAppraisalCount: Integer; var MissingEmployeeCount: Integer; var MissingSupervisorCount: Integer; var MissingEmployeeNos: Text; var MissingSupervisorNos: Text)
+    var
+        AppraisalEmployee: Record Employee;
+        AppraiserEmployee: Record Employee;
+        EmployeeAppraisal: Record "Employee Appraisal";
+        EmployeeMaster: Record "Employee Master";
+    begin
+        ReviewPeriod.TestField("Appraisal Period");
+
+        EmployeeMaster.Reset();
+        EmployeeMaster.SetRange(Status, EmployeeMaster.Status::Active);
+        if EmployeeMaster.FindSet() then
+            repeat
+                ActiveEmployeeCount += 1;
+                if not AppraisalEmployee.Get(EmployeeMaster."No.") then begin
+                    MissingEmployeeCount += 1;
+                    AddNoToSample(MissingEmployeeNos, EmployeeMaster."No.");
+                end else begin
+                    EmployeeAppraisal.Reset();
+                    EmployeeAppraisal.SetRange("Employee No", EmployeeMaster."No.");
+                    EmployeeAppraisal.SetRange("Appraisal Period", ReviewPeriod."Appraisal Period");
+                    if EmployeeAppraisal.FindFirst() then
+                        ExistingAppraisalCount += 1
+                    else
+                        NewAppraisalCount += 1;
+
+                    if (EmployeeMaster."Appraisal Supervisor" <> '') and not AppraiserEmployee.Get(EmployeeMaster."Appraisal Supervisor") then begin
+                        MissingSupervisorCount += 1;
+                        AddNoToSample(MissingSupervisorNos, EmployeeMaster."No.");
+                    end;
+                end;
+            until EmployeeMaster.Next() = 0;
+    end;
+
+    local procedure AddNoToSample(var SampleText: Text; No: Code[20])
+    begin
+        if StrLen(SampleText) > 250 then
+            exit;
+
+        if SampleText <> '' then
+            SampleText += ', ';
+        SampleText += No;
+    end;
+
     local procedure UpdateBalScorePlanningHeader(var Employee: Record "Employee Master"; ReviewPeriod: Record "Bal Score Plan Review Period")
     begin
         BalAppraisal_2.Reset();
         BalAppraisal_2.SetRange("Employee No.", Employee."No.");
         BalAppraisal_2.SetRange("Document Type", BalAppraisal_2."Document Type"::Planning);
         BalAppraisal_2.SetRange("Plan / Review Period Code", ReviewPeriod.Code);
-        if BalAppraisal_2.FindFirst()then CreateBalScorePlanningLines(BalAppraisal_2)
+        if BalAppraisal_2.FindFirst()then begin
+            if BalAppraisal_2."Employee Appraisal Period" = '' then begin
+                ReviewPeriod.TestField("Appraisal Period");
+                BalAppraisal_2."Employee Appraisal Period" := ReviewPeriod."Appraisal Period";
+                BalAppraisal_2.Modify(true);
+            end;
+            CreateBalScorePlanningLines(BalAppraisal_2);
+        end
         else if BalAppraisal_2.FindFirst() = false then CreateBalScorePlanningLines(CreatePlanningHeader(Employee, ReviewPeriod));
     end;
-    local procedure CreatePlanningHeader(var Employ: Record "Employee Master"; PlanReviewPeriod: Record "Bal Score Plan Review Period"): Record "Bal Score Card Header" var
+    local procedure CreatePlanningHeader(var Employ: Record "Employee Master"; PlanReviewPeriod: Record "Bal Score Plan Review Period"): Record "Bal Score Card Header"
+    var
         BalAppraisal_Int: Record "Bal Score Card Header";
     begin
         BalAppraisal_Int.Init();
         BalAppraisal_Int."Document Type":=BalAppraisal_Int."Document Type"::Planning;
+        Employ.TestField("Appraisal Supervisor");
+        PlanReviewPeriod.TestField("Appraisal Period");
         BalAppraisal_Int.Validate("Employee No.", Employ."No.");
         BalAppraisal_Int.Validate(Supervisor, Employ."Appraisal Supervisor");
         BalAppraisal_Int."Plan / Review Period Code":=PlanReviewPeriod.Code;
+        BalAppraisal_Int."Employee Appraisal Period":=PlanReviewPeriod."Appraisal Period";
         BalAppraisal_Int.Status:=BalAppraisal_Int.Status::Open;
         BalAppraisal_Int.Insert(true);
         exit(BalAppraisal_Int);
@@ -120,26 +259,31 @@ codeunit 51500 "Bal Score Card Mngt."
     end;
     procedure CreateAppraisalFromPlanning(Planning_: Record "Bal Score Card Header")
     begin
-        BalScorePreviewPeriods.Reset();
-        BalScorePreviewPeriods.SetRange("Preview Period Type", BalScorePreviewPeriods."Preview Period Type"::"First Period Appraisal");
-        if BalScorePreviewPeriods.FindFirst() = false then Error('There Must be a First Period Appriasal Review Period. Contact Administrator')
+        EnsureQuarterlyPreviewPeriods();
+        if FindFirstProgressReviewPeriod(BalScorePreviewPeriods) = false then
+            Error('Set up a Q1 BSC preview period by running Initialize Quarterly Periods, or create a preview period with Review Sequence 1.')
         else
         begin
             if Planning_."No." <> '' then InsertAppraisalLines(CreateApraisalHeader(Planning_, BalScorePreviewPeriods), Planning_);
         end;
     end;
-    local procedure CreateApraisalHeader(Planning: Record "Bal Score Card Header"; BalScorePreviewPeriods: Record "Bal Score Preview Periods"): Record "Bal Score Card Header" var
+    local procedure CreateApraisalHeader(Planning: Record "Bal Score Card Header"; BalScorePreviewPeriods: Record "Bal Score Preview Periods"): Record "Bal Score Card Header"
+    var
         BalAppraisal_FromP: Record "Bal Score Card Header";
     begin
         BalAppraisal_FromP.Init();
         BalAppraisal_FromP."Document Type":=BalAppraisal_FromP."Document Type"::Appraisal;
+        Planning.TestField("Employee Appraisal Period");
         BalAppraisal_FromP.Validate("Employee No.", Planning."Employee No.");
         BalAppraisal_FromP.Validate(Supervisor, Planning.Supervisor);
-        BalAppraisal_FromP.Status:=BalAppraisal.Status::Open;
+        BalAppraisal_FromP.Status:=BalAppraisal_FromP.Status::Open;
+        BalAppraisal_FromP."Plan / Review Period Code":=Planning."Plan / Review Period Code";
+        BalAppraisal_FromP."Employee Appraisal Period":=Planning."Employee Appraisal Period";
         BalAppraisal_FromP."Progress Review Period":=BalScorePreviewPeriods.Code;
         BalAppraisal_FromP."Planning Doc No":=Planning."No.";
         BalAppraisal_FromP.Insert(true);
-        Planning."Appraisal Doc No":=BalAppraisal."No.";
+        EnsureEmployeeAppraisalForBSC(BalAppraisal_FromP, Planning);
+        Planning."Appraisal Doc No":=BalAppraisal_FromP."No.";
         Planning.Status:=Planning.Status::Closed;
         Planning.Modify(true);
         exit(BalAppraisal_FromP);
@@ -167,6 +311,7 @@ codeunit 51500 "Bal Score Card Mngt."
         LineNo: Integer;
     begin
         if Confirm(StrSubstNo(Text001, CurrentReviewPeriod, NextReviewPeriod), false) = true then begin
+            ValidateNextReviewPeriod(CurrentReviewPeriod, NextReviewPeriod);
             BalAppraisalLines.Reset();
             BalAppraisalLines.SetRange(DocNo, AppraisalNo);
             BalAppraisalLines.SetRange("Progress Review Period", NextReviewPeriod);
@@ -206,6 +351,299 @@ codeunit 51500 "Bal Score Card Mngt."
             exit;
         end;
     end;
+    local procedure EnsureEmployeeAppraisalForBSC(var BSCAppraisal: Record "Bal Score Card Header"; Planning: Record "Bal Score Card Header"): Code[20]
+    var
+        ExistingEmployeeAppraisal: Record "Employee Appraisal";
+    begin
+        BSCAppraisal.TestField("Employee No.");
+        BSCAppraisal.TestField(Supervisor);
+        BSCAppraisal.TestField("Employee Appraisal Period");
+
+        ExistingEmployeeAppraisal.Reset();
+        ExistingEmployeeAppraisal.SetRange("Employee No", BSCAppraisal."Employee No.");
+        ExistingEmployeeAppraisal.SetRange("Appraisal Period", BSCAppraisal."Employee Appraisal Period");
+        if ExistingEmployeeAppraisal.FindFirst() then begin
+            if ExistingEmployeeAppraisal."BSC Planning No." = '' then
+                ExistingEmployeeAppraisal."BSC Planning No." := Planning."No.";
+            if ExistingEmployeeAppraisal."BSC Appraisal No." = '' then
+                ExistingEmployeeAppraisal."BSC Appraisal No." := BSCAppraisal."No.";
+            if ExistingEmployeeAppraisal."Current Review Period Code" = '' then
+                ExistingEmployeeAppraisal."Current Review Period Code" := BSCAppraisal."Progress Review Period";
+            ExistingEmployeeAppraisal.Modify(true);
+        end else begin
+            HumanResourcesSetup.Get();
+            HumanResourcesSetup.TestField("Appraisal Nos");
+
+            ExistingEmployeeAppraisal.Init();
+            ExistingEmployeeAppraisal."Appraisal No" := NoSeriesMgt.GetNextNo(HumanResourcesSetup."Appraisal Nos", WorkDate());
+            ExistingEmployeeAppraisal."No. series" := HumanResourcesSetup."Appraisal Nos";
+            ExistingEmployeeAppraisal.Validate("Employee No", BSCAppraisal."Employee No.");
+            ExistingEmployeeAppraisal.Validate("Appraisal Period", BSCAppraisal."Employee Appraisal Period");
+            ExistingEmployeeAppraisal.Validate("Appraiser No", BSCAppraisal.Supervisor);
+            ExistingEmployeeAppraisal.Date := Today;
+            ExistingEmployeeAppraisal.Status := ExistingEmployeeAppraisal.Status::Open;
+            ExistingEmployeeAppraisal."Appraisal Status" := ExistingEmployeeAppraisal."Appraisal Status"::Setting;
+            ExistingEmployeeAppraisal."BSC Planning No." := Planning."No.";
+            ExistingEmployeeAppraisal."BSC Appraisal No." := BSCAppraisal."No.";
+            ExistingEmployeeAppraisal."Current Review Period Code" := BSCAppraisal."Progress Review Period";
+            ExistingEmployeeAppraisal.Insert(true);
+        end;
+
+        BSCAppraisal."Employee Appraisal No." := ExistingEmployeeAppraisal."Appraisal No";
+        BSCAppraisal.Modify(true);
+        exit(ExistingEmployeeAppraisal."Appraisal No");
+    end;
+    local procedure ValidateNextReviewPeriod(CurrentReviewPeriod: Code[20]; NextReviewPeriod: Code[20])
+    var
+        CurrentPeriod: Record "Bal Score Preview Periods";
+        NextPeriod: Record "Bal Score Preview Periods";
+    begin
+        CurrentPeriod.Get(CurrentReviewPeriod);
+        NextPeriod.Get(NextReviewPeriod);
+
+        CurrentPeriod.TestField("Review Sequence");
+        NextPeriod.TestField("Review Sequence");
+
+        if NextPeriod."Review Sequence" <> CurrentPeriod."Review Sequence" + 1 then
+            Error('Next progress review period must follow %1 in sequence.', CurrentReviewPeriod);
+
+        if NextPeriod.Closed then
+            Error('Progress review period %1 is already closed.', NextReviewPeriod);
+    end;
+
+    procedure EnsureQuarterlyPreviewPeriods()
+    var
+        FinalPreviewPeriod: Record "Bal Score Preview Periods";
+        HasFinalPreviewPeriod: Boolean;
+    begin
+        HasFinalPreviewPeriod := FindFinalProgressReviewPeriod(FinalPreviewPeriod);
+
+        // Legacy fixed-type creation retained for reference. The final period is now controlled by "Final Review Period".
+        // EnsureQuarterlyPreviewPeriod('Q1', 'Quarter 1', 1, BalScorePreviewPeriods."Preview Period Type"::"First Period Appraisal");
+        // EnsureQuarterlyPreviewPeriod('Q2', 'Quarter 2', 2, BalScorePreviewPeriods."Preview Period Type"::" ");
+        // EnsureQuarterlyPreviewPeriod('Q3', 'Quarter 3', 3, BalScorePreviewPeriods."Preview Period Type"::" ");
+        // EnsureQuarterlyPreviewPeriod('Q4', 'Quarter 4', 4, BalScorePreviewPeriods."Preview Period Type"::"Full Period Appraisal");
+        EnsureQuarterlyPreviewPeriod('Q1', 'Quarter 1', 1, false);
+        EnsureQuarterlyPreviewPeriod('Q2', 'Quarter 2', 2, false);
+        EnsureQuarterlyPreviewPeriod('Q3', 'Quarter 3', 3, false);
+        EnsureQuarterlyPreviewPeriod('Q4', 'Quarter 4', 4, not HasFinalPreviewPeriod);
+    end;
+
+    local procedure EnsureQuarterlyPreviewPeriod(PeriodCode: Code[20]; PeriodName: Text[50]; SequenceNo: Integer; IsFinalPeriod: Boolean)
+    var
+        PreviewPeriod: Record "Bal Score Preview Periods";
+        ExistingSequencePeriod: Record "Bal Score Preview Periods";
+        IsNew: Boolean;
+        NeedsModify: Boolean;
+    begin
+        // Legacy signature retained for reference:
+        // local procedure EnsureQuarterlyPreviewPeriod(PeriodCode: Code[20]; PeriodName: Text[50]; SequenceNo: Integer; PreviewPeriodType: Option " ","First Period Appraisal","Full Period Appraisal")
+        if PreviewPeriod.Get(PeriodCode) = false then begin
+            ExistingSequencePeriod.Reset();
+            ExistingSequencePeriod.SetRange("Review Sequence", SequenceNo);
+            if ExistingSequencePeriod.FindFirst() then begin
+                if IsFinalPeriod and not ExistingSequencePeriod."Final Review Period" then begin
+                    ExistingSequencePeriod.Validate("Final Review Period", true);
+                    ExistingSequencePeriod.Modify(true);
+                end;
+                exit;
+            end;
+
+            PreviewPeriod.Init();
+            PreviewPeriod.Code := PeriodCode;
+            IsNew := true;
+        end;
+
+        if PreviewPeriod.Name = '' then begin
+            PreviewPeriod.Name := PeriodName;
+            NeedsModify := true;
+        end;
+
+        if PreviewPeriod."Review Sequence" = 0 then begin
+            PreviewPeriod."Review Sequence" := SequenceNo;
+            NeedsModify := true;
+        end;
+
+        if PreviewPeriod."Quarter No." = 0 then begin
+            PreviewPeriod."Quarter No." := SequenceNo;
+            NeedsModify := true;
+        end;
+
+        if IsFinalPeriod and not PreviewPeriod."Final Review Period" then begin
+            PreviewPeriod.Validate("Final Review Period", true);
+            NeedsModify := true;
+        end;
+
+        PreviewPeriod.SetPreviewPeriodTypeFromSequence();
+
+        if IsNew then
+            PreviewPeriod.Insert(true)
+        else
+            if NeedsModify then
+                PreviewPeriod.Modify(true);
+    end;
+
+    local procedure FindFirstProgressReviewPeriod(var PreviewPeriod: Record "Bal Score Preview Periods"): Boolean
+    begin
+        PreviewPeriod.Reset();
+        PreviewPeriod.SetRange("Review Sequence", 1);
+        if PreviewPeriod.FindFirst() then
+            exit(true);
+
+        PreviewPeriod.Reset();
+        PreviewPeriod.SetRange("Preview Period Type", PreviewPeriod."Preview Period Type"::"First Period Appraisal");
+        exit(PreviewPeriod.FindFirst());
+    end;
+
+    procedure SuggestReviewPeriodDatesFromActivePlan()
+    var
+        ActivePlanReviewPeriod: Record "Bal Score Plan Review Period";
+    begin
+        ActivePlanReviewPeriod.Reset();
+        ActivePlanReviewPeriod.SetRange(Active, true);
+        if not ActivePlanReviewPeriod.FindFirst() then
+            Error('Set one appraisal plan review period as active before suggesting review dates.');
+
+        SuggestReviewPeriodDates(ActivePlanReviewPeriod);
+    end;
+
+    procedure SuggestReviewPeriodDates(PlanReviewPeriodRec: Record "Bal Score Plan Review Period")
+    var
+        AppraisalPeriod: Record "Appraisal Periods";
+        FinalPreviewPeriod: Record "Bal Score Preview Periods";
+        PreviewPeriod: Record "Bal Score Preview Periods";
+        SuggestedStartDate: Date;
+        SuggestedEndDate: Date;
+        UpdatedCount: Integer;
+        IgnoredCount: Integer;
+    begin
+        PlanReviewPeriodRec.TestField("Appraisal Period");
+        AppraisalPeriod.Get(PlanReviewPeriodRec."Appraisal Period");
+        AppraisalPeriod.TestField("Start Date");
+        AppraisalPeriod.TestField("End Date");
+
+        if AppraisalPeriod."End Date" < AppraisalPeriod."Start Date" then
+            Error('Appraisal period %1 has an end date before the start date.', AppraisalPeriod.Period);
+
+        if not FindFinalProgressReviewPeriod(FinalPreviewPeriod) then
+            Error('Select one appraisal review period as the final review period before suggesting dates.');
+
+        FinalPreviewPeriod.TestField("Review Sequence");
+
+        PreviewPeriod.Reset();
+        PreviewPeriod.SetCurrentKey("Review Sequence");
+        PreviewPeriod.SetFilter("Review Sequence", '<>%1', 0);
+        if PreviewPeriod.FindSet() then
+            repeat
+                if PreviewPeriod."Review Sequence" <= FinalPreviewPeriod."Review Sequence" then begin
+                    SuggestReviewPeriodDateRange(
+                        AppraisalPeriod."Start Date",
+                        AppraisalPeriod."End Date",
+                        PreviewPeriod."Review Sequence",
+                        FinalPreviewPeriod."Review Sequence",
+                        SuggestedStartDate,
+                        SuggestedEndDate);
+
+                    PreviewPeriod."Start Date" := SuggestedStartDate;
+                    PreviewPeriod."End Date" := SuggestedEndDate;
+                    PreviewPeriod.SetPreviewPeriodTypeFromSequence();
+                    PreviewPeriod.Modify(true);
+                    UpdatedCount += 1;
+                end else begin
+                    if (PreviewPeriod."Start Date" <> 0D) or (PreviewPeriod."End Date" <> 0D) then begin
+                        PreviewPeriod."Start Date" := 0D;
+                        PreviewPeriod."End Date" := 0D;
+                        PreviewPeriod.SetPreviewPeriodTypeFromSequence();
+                        PreviewPeriod.Modify(true);
+                    end;
+                    IgnoredCount += 1;
+                end;
+            until PreviewPeriod.Next() = 0;
+
+        Message('Suggested calendar-month start and end dates for %1 review period(s). %2 period(s) after the final review period were ignored. Due dates were not changed.', UpdatedCount, IgnoredCount);
+    end;
+
+    local procedure SuggestReviewPeriodDateRange(PeriodStartDate: Date; PeriodEndDate: Date; ReviewSequence: Integer; FinalReviewSequence: Integer; var SuggestedStartDate: Date; var SuggestedEndDate: Date)
+    var
+        MonthsPerReview: Integer;
+        PeriodMonthCount: Integer;
+        StartMonthOffset: Integer;
+    begin
+        if FinalReviewSequence <= 0 then
+            Error('Final review sequence must be greater than zero.');
+
+        if not TryGetFullCalendarMonthCount(PeriodStartDate, PeriodEndDate, PeriodMonthCount) then
+            Error('Cannot suggest review dates because the appraisal period must start on the first day of a month and end on the last day of a month. Enter review dates manually, or adjust the appraisal period dates.');
+
+        if PeriodMonthCount mod FinalReviewSequence <> 0 then
+            Error('Cannot suggest clean calendar-month review dates. Appraisal period %1 to %2 has %3 month(s), but the selected final review sequence is %4. Use a final sequence that divides the appraisal period months, or enter review dates manually.', PeriodStartDate, PeriodEndDate, PeriodMonthCount, FinalReviewSequence);
+
+        MonthsPerReview := PeriodMonthCount DIV FinalReviewSequence;
+        StartMonthOffset := (ReviewSequence - 1) * MonthsPerReview;
+
+        SuggestedStartDate := AddMonthsToDate(PeriodStartDate, StartMonthOffset);
+        if ReviewSequence = FinalReviewSequence then
+            SuggestedEndDate := PeriodEndDate
+        else
+            SuggestedEndDate := AddMonthsToDate(PeriodStartDate, (ReviewSequence * MonthsPerReview)) - 1;
+    end;
+
+    local procedure TryGetFullCalendarMonthCount(PeriodStartDate: Date; PeriodEndDate: Date; var PeriodMonthCount: Integer): Boolean
+    begin
+        if (PeriodStartDate = 0D) or (PeriodEndDate = 0D) then
+            exit(false);
+
+        if PeriodEndDate < PeriodStartDate then
+            exit(false);
+
+        if Date2DMY(PeriodStartDate, 1) <> 1 then
+            exit(false);
+
+        if PeriodEndDate <> CalcDate('<CM>', PeriodEndDate) then
+            exit(false);
+
+        PeriodMonthCount := ((Date2DMY(PeriodEndDate, 3) - Date2DMY(PeriodStartDate, 3)) * 12) + Date2DMY(PeriodEndDate, 2) - Date2DMY(PeriodStartDate, 2) + 1;
+        exit(PeriodMonthCount > 0);
+    end;
+
+    local procedure AddMonthsToDate(ReferenceDate: Date; MonthOffset: Integer): Date
+    var
+        DateExpression: DateFormula;
+    begin
+        if MonthOffset = 0 then
+            exit(ReferenceDate);
+
+        Evaluate(DateExpression, '<' + Format(MonthOffset) + 'M>');
+        exit(CalcDate(DateExpression, ReferenceDate));
+    end;
+
+    local procedure FindFinalProgressReviewPeriod(var PreviewPeriod: Record "Bal Score Preview Periods"): Boolean
+    begin
+        PreviewPeriod.Reset();
+        PreviewPeriod.SetRange("Final Review Period", true);
+        if PreviewPeriod.FindFirst() then
+            exit(true);
+
+        PreviewPeriod.Reset();
+        PreviewPeriod.SetRange("Preview Period Type", PreviewPeriod."Preview Period Type"::"Full Period Appraisal");
+        exit(PreviewPeriod.FindFirst());
+    end;
+
+    local procedure SyncPlanReviewPeriodDates(var ReviewPeriod: Record "Bal Score Plan Review Period")
+    var
+        AppraisalPeriod: Record "Appraisal Periods";
+    begin
+        ReviewPeriod.TestField("Appraisal Period");
+        AppraisalPeriod.Get(ReviewPeriod."Appraisal Period");
+
+        if (ReviewPeriod."Start Date" = AppraisalPeriod."Start Date") and (ReviewPeriod."End Date" = AppraisalPeriod."End Date") then
+            exit;
+
+        ReviewPeriod."Start Date" := AppraisalPeriod."Start Date";
+        ReviewPeriod."End Date" := AppraisalPeriod."End Date";
+        ReviewPeriod.Modify(true);
+    end;
+
     procedure FindMaturityDate()
     var
         AccPeriod: Record "Accounting Period";
@@ -228,6 +666,8 @@ codeunit 51500 "Bal Score Card Mngt."
     NewAppLines: Record "Bal Score Card Lines";
     PlanningLines: Record "Bal Score Card Lines";
     BalScoringSetup: Record "Bal Scoring Setup";
+    HumanResourcesSetup: Record "Human Resources Setup";
+    NoSeriesMgt: Codeunit "No. Series";
     Window: Dialog;
     Emp: Record "Employee Master";
     NavEmp: Record Employee;
@@ -237,7 +677,7 @@ codeunit 51500 "Bal Score Card Mngt."
     Text003: Label 'Progress Review Period %1 have been Reviewed Already';
     Text004: Label 'There is no active Balance Score Card Plan Review Period';
     Text005: Label 'You are about to create Employee Appraisals Planning for the Plan Review Period of %1, Do you wish to continue?';
-    Text006: Label 'There is no new Employee set to be  Appraised';
+    Text006: Label 'No active employees were found for appraisal creation.';
     Text007: Label '%1 Employee Appraisal Plannings have been Created/Updated, Do you wish to Open the list?';
     Text008: Label 'Balance Scoring Setup have not been Completely done, Do the setup first or contact HR Admin';
 }

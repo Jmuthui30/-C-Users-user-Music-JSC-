@@ -210,6 +210,18 @@ table 51500 "Bal Score Card Header"
         {
             Editable = false;
         }
+        field(35; "Employee Appraisal No."; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Employee Appraisal"."Appraisal No";
+            Editable = false;
+        }
+        field(36; "Employee Appraisal Period"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Appraisal Periods".Period;
+            Editable = false;
+        }
     }
     keys
     {
@@ -258,7 +270,10 @@ table 51500 "Bal Score Card Header"
         PlanReviewPeriod.SetRange(Active, true);
         PlanReviewPeriod.SetRange(FiscalStart, FiscalStart);
         PlanReviewPeriod.SetRange(MaturityDate, MaturityDate);
-        if PlanReviewPeriod.FindFirst() then "Plan / Review Period Code" := PlanReviewPeriod.Code;
+        if PlanReviewPeriod.FindFirst() then begin
+            "Plan / Review Period Code" := PlanReviewPeriod.Code;
+            "Employee Appraisal Period" := PlanReviewPeriod."Appraisal Period";
+        end;
     end;
 
     procedure FindMaturityDate()

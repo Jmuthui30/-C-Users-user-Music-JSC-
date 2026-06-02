@@ -5,7 +5,7 @@ page 52358 "Appraisal Card-Review"
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = Card;
-    PromotedActionCategories = 'New,Process,Reports,Appraisal,Approvals';
+    PromotedActionCategories = 'New,Process,Report,Review,Approvals';
     SourceTable = "Employee Appraisal";
     Caption = 'Appraisal Card-Review';
     layout
@@ -21,6 +21,22 @@ page 52358 "Appraisal Card-Review"
                     Caption = 'Appraisal No';
                     Editable = false;
                     ToolTip = 'Specifies the value of the Appraisal No field';
+                }
+                field("BSC Planning No."; Rec."BSC Planning No.")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    Visible = false;
+                    // Legacy BSC link hidden; employee appraisal is the primary document.
+                    ToolTip = 'Specifies the linked BSC planning document.';
+                }
+                field("BSC Appraisal No."; Rec."BSC Appraisal No.")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    Visible = false;
+                    // Legacy BSC link hidden; employee appraisal is the primary document.
+                    ToolTip = 'Specifies the linked BSC appraisal document used for quarterly review.';
                 }
                 group("Period Under Review:")
                 {
@@ -46,11 +62,19 @@ page 52358 "Appraisal Card-Review"
                     {
                         ToolTip = 'Specifies the value of the Appraisal Type field';
                         Caption = 'Appraisal Type';
+                        Visible = false;
                     }
                     field("Appraisal Type Description"; Rec."Appraisal Type Description")
                     {
                         ToolTip = 'Specifies the value of the Appraisal Type Description field';
                         Caption = 'Appraisal Type Description';
+                        Visible = false;
+                    }
+                    field("Current Review Period Code"; Rec."Current Review Period Code")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Review Period';
+                        ToolTip = 'Specifies the current quarterly review period.';
                     }
                 }
                 group("Personal Details")
@@ -114,6 +138,16 @@ page 52358 "Appraisal Card-Review"
                     {
                         ToolTip = 'Specifies the value of the Total Weighting field';
                         Caption = 'Total Weighting';
+                    }
+                    field("Current Review Score"; Rec."Current Review Score")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the calculated score for the current review period.';
+                    }
+                    field("Total Review Score"; Rec."Total Review Score")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the total score across appraisal review lines.';
                     }
                     group(Control46)
                     {
@@ -200,7 +234,8 @@ page 52358 "Appraisal Card-Review"
             }
             part(Control8; "Appraisal Goals")
             {
-                SubPageLink = "Appraisal No" = field("Appraisal No");
+                SubPageLink = "Appraisal No" = field("Appraisal No"),
+                              "Review Period Code" = field("Current Review Period Code");
                 UpdatePropagation = Both;
                 Caption = 'Appraisal Goals';
 
@@ -375,6 +410,12 @@ page 52358 "Appraisal Card-Review"
                 SubPageView = where(Person = filter("Dev Action"));
                 Visible = FinalVisible;
             }
+            part("Appraisal Outcomes"; "Appraisal Outcome Part")
+            {
+                ApplicationArea = All;
+                SubPageLink = "Appraisal No." = field("Appraisal No");
+                UpdatePropagation = Both;
+            }
         }
     }
 
@@ -395,23 +436,108 @@ page 52358 "Appraisal Card-Review"
                     TrainingNeedRequest: Record "Training Needs Header";
                 begin
                     TrainingNeedRequest.SetRange("Source Document No", Rec."Appraisal No");
-                    if TrainingNeedRequest.FindFirst() then
+                    if TrainingNeedRequest.FindFirst() then begin
+                        if TrainingNeedRequest."Employee No" <> Rec."Employee No" then begin
+                            TrainingNeedRequest.Rename(TrainingNeedRequest."No.", TrainingNeedRequest."Source Document No", TrainingNeedRequest."Need Source", Rec."Employee No");
+                            TrainingNeedRequest.Validate("Employee No");
+                            TrainingNeedRequest.Modify(true);
+                        end;
                         PAGE.RUN(page::"SS Training Needs Header", TrainingNeedRequest)
-                    else begin
+                    end else begin
                         TrainingNeedRequest.Reset();
                         TrainingNeedRequest.Init();
                         TrainingNeedRequest."No." := '';
-                        TrainingNeedRequest."Employee No" := Rec."Employee No";
-                        TrainingNeedRequest.Validate("Employee No");
                         TrainingNeedRequest."Source Document No" := Rec."Appraisal No";
                         TrainingNeedRequest."Need Source" := TrainingNeedRequest."Need Source"::Appraisal;
                         TrainingNeedRequest.Insert(true);
+                        if TrainingNeedRequest."Employee No" <> Rec."Employee No" then
+                            TrainingNeedRequest.Rename(TrainingNeedRequest."No.", TrainingNeedRequest."Source Document No", TrainingNeedRequest."Need Source", Rec."Employee No");
+                        TrainingNeedRequest.Validate("Employee No");
+                        TrainingNeedRequest."Source Document No" := Rec."Appraisal No";
+                        TrainingNeedRequest."Need Source" := TrainingNeedRequest."Need Source"::Appraisal;
+                        TrainingNeedRequest.Modify(true);
                         TrainingNeedRequest.SetRange("Source Document No", Rec."Appraisal No");
-                        if Rec.FindFirst() then
+                        if TrainingNeedRequest.FindFirst() then
                             PAGE.RUN(page::"SS Training Needs Header", TrainingNeedRequest);
                     end;
                 end;
 
+            }
+            action("Create Commendation Letter")
+            {
+                ApplicationArea = All;
+                Caption = 'Create Commendation Letter';
+                Image = Certificate;
+                Promoted = true;
+                PromotedCategory = Process;
+
+                trigger OnAction()
+                var
+                    Outcome: Record "Appraisal Outcome";
+                    OutcomeMgt: Codeunit "Appraisal Outcome Mgt.";
+                begin
+                    Outcome := OutcomeMgt.CreateOutcome(Rec, Enum::"Appraisal Outcome Type"::Commendation);
+                    CurrPage.Update(false);
+                    Commit();
+                    Page.Run(Page::"Appraisal Outcome Card", Outcome);
+                end;
+            }
+            action("Create Warning Letter")
+            {
+                ApplicationArea = All;
+                Caption = 'Create Warning Letter';
+                Image = Document;
+                Promoted = true;
+                PromotedCategory = Process;
+
+                trigger OnAction()
+                var
+                    Outcome: Record "Appraisal Outcome";
+                    OutcomeMgt: Codeunit "Appraisal Outcome Mgt.";
+                begin
+                    Outcome := OutcomeMgt.CreateOutcome(Rec, Enum::"Appraisal Outcome Type"::Warning);
+                    CurrPage.Update(false);
+                    Commit();
+                    Page.Run(Page::"Appraisal Outcome Card", Outcome);
+                end;
+            }
+            action("Create Outcome Memo")
+            {
+                ApplicationArea = All;
+                Caption = 'Create Outcome Memo';
+                Image = Document;
+                Promoted = true;
+                PromotedCategory = Process;
+
+                trigger OnAction()
+                var
+                    Outcome: Record "Appraisal Outcome";
+                    OutcomeMgt: Codeunit "Appraisal Outcome Mgt.";
+                begin
+                    Outcome := OutcomeMgt.CreateOutcome(Rec, Enum::"Appraisal Outcome Type"::Memo);
+                    CurrPage.Update(false);
+                    Commit();
+                    Page.Run(Page::"Appraisal Outcome Card", Outcome);
+                end;
+            }
+            action("Open BSC Appraisal")
+            {
+                ApplicationArea = All;
+                Caption = 'Open BSC Appraisal';
+                Image = Card;
+                Promoted = true;
+                PromotedCategory = Process;
+                Visible = false;
+                // Legacy BSC document drilldown hidden from the unified appraisal process.
+
+                trigger OnAction()
+                var
+                    BSCHeader: Record "Bal Score Card Header";
+                begin
+                    Rec.TestField("BSC Appraisal No.");
+                    BSCHeader.Get(Rec."BSC Appraisal No.");
+                    Page.Run(Page::"Bal Appraisal Score Card", BSCHeader);
+                end;
             }
             // action("Assign Bonus")
             // {
@@ -444,7 +570,8 @@ page 52358 "Appraisal Card-Review"
 
                 trigger OnAction()
                 begin
-                    Clear(EmployeeAppraisals);
+                    Clear(EmployeeObjectives);
+                    EmployeeApp.Reset();
                     EmployeeApp.SetRange("Appraisal No", Rec."Appraisal No");
                     EmployeeObjectives.SetTableView(EmployeeApp);
                     Commit();
@@ -463,6 +590,7 @@ page 52358 "Appraisal Card-Review"
                 trigger OnAction()
                 begin
                     Clear(EmployeeAppraisals);
+                    EmployeeApp.Reset();
                     EmployeeApp.SetRange("Appraisal No", Rec."Appraisal No");
                     EmployeeAppraisals.SetTableView(EmployeeApp);
                     Commit();
@@ -480,8 +608,10 @@ page 52358 "Appraisal Card-Review"
                 trigger OnAction()
                 begin
                     Clear(AppraisalScoreCard);
+                    EmployeeApp.Reset();
                     EmployeeApp.SetRange("Appraisal No", Rec."Appraisal No");
                     AppraisalScoreCard.SetTableView(EmployeeApp);
+                    Commit();
                     AppraisalScoreCard.RunModal();
                 end;
             }
@@ -490,14 +620,14 @@ page 52358 "Appraisal Card-Review"
             }
             action("Send For Approval")
             {
-                Caption = 'Send For further Review';
+                Caption = 'Request Further Review';
                 Enabled = DocReleased;
                 Visible = false;
                 Image = SendApprovalRequest;
                 Promoted = true;
                 PromotedCategory = Category5;
                 PromotedIsBig = true;
-                ToolTip = 'Executes the Send For further Review action';
+                ToolTip = 'Requests a further review for this appraisal.';
 
                 trigger OnAction()
                 begin
@@ -550,12 +680,12 @@ page 52358 "Appraisal Card-Review"
             }
             action(ViewApprovals)
             {
-                Caption = 'View Approvals';
+                Caption = 'View Review Approvals';
                 Image = Approvals;
                 Promoted = true;
                 PromotedCategory = Category5;
                 PromotedIsBig = true;
-                ToolTip = 'Executes the View Approvals action';
+                ToolTip = 'Shows review approval entries for this appraisal.';
 
                 trigger OnAction()
                 var
@@ -619,10 +749,45 @@ page 52358 "Appraisal Card-Review"
                 trigger OnAction()
                 begin
                     if Confirm('Are you sure you want to complete this appraisal?', true) then begin
+                        AppraisalProcessMgt.ValidateAppraiserCompletion(Rec);
                         Rec."Appraisal Status" := Rec."Appraisal Status"::Completed;
                         Rec.Modify();
                     end;
                     CurrPage.Close();
+                end;
+            }
+            action("Move to Next Review Period")
+            {
+                ApplicationArea = All;
+                Caption = 'Move to Next Review Period';
+                Image = Change;
+                Promoted = true;
+                PromotedCategory = Category4;
+                ToolTip = 'Moves this appraisal from the current quarterly review period to the next one and copies the objective lines forward.';
+
+                trigger OnAction()
+                begin
+                    if Confirm('Move appraisal %1 from %2 to the next review period?', true, Rec."Appraisal No", Rec."Current Review Period Code") then begin
+                        AppraisalProcessMgt.MoveToNextReviewPeriod(Rec);
+                        CurrPage.Update(false);
+                    end;
+                end;
+            }
+            action("View Review History")
+            {
+                ApplicationArea = All;
+                Caption = 'View Review History';
+                Image = History;
+                Promoted = true;
+                PromotedCategory = Category4;
+                ToolTip = 'Shows all quarterly objective and scoring lines for this appraisal.';
+
+                trigger OnAction()
+                var
+                    AppraisalLine: Record "Appraisal Lines";
+                begin
+                    AppraisalLine.SetRange("Appraisal No", Rec."Appraisal No");
+                    Page.RunModal(Page::"Appraisal Review History", AppraisalLine);
                 end;
             }
             // action("Send to final year")
@@ -685,6 +850,7 @@ page 52358 "Appraisal Card-Review"
         AppraisalScoreCard: Report "Employee Appraisal Scorecard";
         EmployeeObjectives: Report "Employee Objectives - New";
         ApprovalsMgmt: Codeunit "Approval Mgt HR Ext";
+        AppraisalProcessMgt: Codeunit "Appraisal Process Mgt.";
         HRManagement: Codeunit "HR Management";
         Earnings: Page "Client Earnings";
         CanCancelApprovalForRecord: Boolean;

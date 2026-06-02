@@ -64,8 +64,9 @@ table 52015 "Employee Appraisal"
                 EmpAppraisal.Reset();
                 EmpAppraisal.SetRange("Employee No", "Employee No");
                 EmpAppraisal.SetRange("Appraisal Period", "Appraisal Period");
-                if EmpAppraisal.Find('-') then
-                    // Error(Error001, "Appraisal Period");
+                // Legacy duplicate-period block retained for reference. It previously left a dangling IF while the error was commented.
+                // if EmpAppraisal.Find('-') then
+                //     Error(Error001, "Appraisal Period");
 
                 if AppraisalPeriods.Get("Appraisal Period") then begin
                         AppraisalPeriods.TestField("Start Date");
@@ -73,6 +74,8 @@ table 52015 "Employee Appraisal"
                         "Period Start" := AppraisalPeriods."Start Date";
                         "Period End" := AppraisalPeriods."End Date";
                         AppraisalType := AppraisalPeriods."Appraisal Type";
+                        if "Current Review Period Code" = '' then
+                            "Current Review Period Code" := GetDefaultReviewPeriodCode();
                     end;
             end;
         }
@@ -406,6 +409,39 @@ table 52015 "Employee Appraisal"
         {
             DataClassification = ToBeClassified;
         }
+        field(67; "BSC Planning No."; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Bal Score Card Header"."No." where("Document Type" = const(Planning));
+            Editable = false;
+        }
+        field(68; "BSC Appraisal No."; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Bal Score Card Header"."No." where("Document Type" = const(Appraisal));
+            Editable = false;
+        }
+        field(69; "Current Review Period Code"; Code[20])
+        {
+            Caption = 'Current Review Period';
+            DataClassification = CustomerContent;
+            TableRelation = "Bal Score Preview Periods";
+        }
+        field(70; "Current Review Score"; Decimal)
+        {
+            Caption = 'Current Review Score';
+            CalcFormula = sum("Appraisal Lines"."Quarter Score" where("Appraisal No" = field("Appraisal No"),
+                                                                       "Review Period Code" = field("Current Review Period Code")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(71; "Total Review Score"; Decimal)
+        {
+            Caption = 'Total Review Score';
+            CalcFormula = sum("Appraisal Lines"."Quarter Score" where("Appraisal No" = field("Appraisal No")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
 
     }
 
@@ -436,6 +472,8 @@ table 52015 "Employee Appraisal"
         end;
 
         Date := Today;
+        if "Current Review Period Code" = '' then
+            "Current Review Period Code" := GetDefaultReviewPeriodCode();
 
         "Appraisee ID" := UserId;
 
@@ -448,7 +486,7 @@ table 52015 "Employee Appraisal"
             END;*/
 
 
-        if UserSetup.Get(UserId) then begin
+        if ("Employee No" = '') and UserSetup.Get(UserId) then begin
             "Appraisee ID" := UserSetup."User ID";
             "Appraiser ID" := UserSetup."Approver ID";
             //"Department Code":=UserSetup."Responsibility Center";
@@ -457,7 +495,6 @@ table 52015 "Employee Appraisal"
                 "Appraisee Name" := Employee.FullName();
                 "Job Group" := Employee."Salary Scale";
                 "Appraisee's Job Title" := Employee."Job Position Title";
-                Employee.TestField("Responsibility Center");
                 //"Department Code":=Employee."Global Dimension 1 Code";
 
                 /*AppraisalType.RESET;
@@ -478,20 +515,26 @@ table 52015 "Employee Appraisal"
             end;
 
 
-            //Insert Workplan Codes
+        end;
+
+        //Insert Workplan Codes
+        if "Employee No" <> '' then begin
             CalcFields("Responsibilty Center");
-            AppraisalWorkplanCodes.Reset();
-            AppraisalWorkplanCodes.SetRange("Responsibility Center", "Responsibilty Center");
-            if AppraisalWorkplanCodes.FindSet() then
-                repeat
-                    AppraisalLines.Init();
-                    AppraisalLines."Appraisal No" := "Appraisal No";
-                    AppraisalLines."Line No" := LineNo;
-                    AppraisalLines.Validate("Workplan Code", AppraisalWorkplanCodes.Code);
-                    //AppraisalLines."Initiative code";
-                    AppraisalLines.Insert();
-                    LineNo += 10000;
-                until AppraisalWorkplanCodes.Next() = 0;
+            if "Responsibilty Center" <> '' then begin
+                AppraisalWorkplanCodes.Reset();
+                AppraisalWorkplanCodes.SetRange("Responsibility Center", "Responsibilty Center");
+                if AppraisalWorkplanCodes.FindSet() then
+                    repeat
+                        AppraisalLines.Init();
+                        AppraisalLines."Appraisal No" := "Appraisal No";
+                        AppraisalLines."Line No" := LineNo;
+                        AppraisalLines."Review Period Code" := "Current Review Period Code";
+                        AppraisalLines.Validate("Workplan Code", AppraisalWorkplanCodes.Code);
+                        //AppraisalLines."Initiative code";
+                        AppraisalLines.Insert(true);
+                        LineNo += 10000;
+                    until AppraisalWorkplanCodes.Next() = 0;
+            end;
         end;
 
     end;
@@ -509,6 +552,23 @@ table 52015 "Employee Appraisal"
         NoSeriesMgt: Codeunit "No. Series";
         LineNo: Integer;
         Error001: Label 'You have already created an appraisal for %1';
+
+    local procedure GetDefaultReviewPeriodCode(): Code[20]
+    var
+        PreviewPeriod: Record "Bal Score Preview Periods";
+    begin
+        PreviewPeriod.Reset();
+        PreviewPeriod.SetRange("Review Sequence", 1);
+        if PreviewPeriod.FindFirst() then
+            exit(PreviewPeriod.Code);
+
+        PreviewPeriod.Reset();
+        PreviewPeriod.SetRange("Preview Period Type", PreviewPeriod."Preview Period Type"::"First Period Appraisal");
+        if PreviewPeriod.FindFirst() then
+            exit(PreviewPeriod.Code);
+
+        exit('');
+    end;
 }
 
 

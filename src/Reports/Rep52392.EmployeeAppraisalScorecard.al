@@ -11,6 +11,7 @@ report 52392 "Employee Appraisal Scorecard"
     {
         dataitem(EmployeeAppraisal; "Employee Appraisal")
         {
+            CalcFields = "Current Review Score", "Total Review Score";
             RequestFilterFields = "Appraisal No";
             // Company Info
             column(CompPic; CompanyInfo.Picture) { }
@@ -38,9 +39,45 @@ report 52392 "Employee Appraisal Scorecard"
             column(JobGroup_Appraisal; "Job Group") { }
             column(PeriodStart_Appraisal; "Period Start") { }
             column(PeriodEnd_Appraisal; "Period End") { }
+            column(CurrentReviewPeriod; "Current Review Period Code") { }
+            column(CurrentReviewScore; "Current Review Score") { }
+            column(TotalReviewScore; "Total Review Score") { }
 
             // Responsibility Center (FlowField)
             column(UserDept; "Responsibilty Center") { }
+
+            dataitem(BSCAppraisal; "Bal Score Card Header")
+            {
+                CalcFields = Score, "Global Score", "Expected Score";
+                DataItemLink = "Employee Appraisal No." = field("Appraisal No");
+                DataItemTableView = where("Document Type" = const(Appraisal));
+
+                column(BSCNo; "No.") { }
+                column(BSCProgressReviewPeriod; "Progress Review Period") { }
+                column(BSCScore; Score) { }
+                column(BSCGlobalScore; "Global Score") { }
+                column(BSCExpectedScore; "Expected Score") { }
+                column(BSCCombinedScore; "Combined Score") { }
+                column(BSCPerformanceRating; "Performance Rating") { }
+                column(BSCAppraiseeComment; "Appraisee Comment") { }
+                column(BSCAppraiserRecommendations; "Appraiser Recommendations") { }
+                column(BSCHRReview; "HR's Review") { }
+
+                dataitem(BSCLine; "Bal Score Card Lines")
+                {
+                    DataItemLink = DocNo = field("No.");
+
+                    column(BSCLinePerspective; Percepective) { }
+                    column(BSCLineReviewPeriod; "Progress Review Period") { }
+                    column(BSCLineExpectedMaxScore; "Expected Max Score") { }
+                    column(BSCLineSelfRating; "Self Rating") { }
+                    column(BSCLineJointRating; "Joint Rating") { }
+                    column(BSCLineScore; Score) { }
+                    column(BSCLineAchievementsToDate; "Achievements ToDate") { }
+                    column(BSCLineEmphasis; Emphasis) { }
+                    column(BSCLineReviewed; Reviewed) { }
+                }
+            }
 
             dataitem(AppraisalLines; "Appraisal Lines")
             {
@@ -64,6 +101,13 @@ report 52392 "Employee Appraisal Scorecard"
                 column(Achieved; "Achieved (%)") { }
                 column(Rating; Rating) { }
                 column(WeightedRating; "Weighted Rating") { }
+                column(ReviewPeriodCode_Goals; "Review Period Code") { }
+                column(SelfRating_Goals; "Self Rating") { }
+                column(AppraiserRating_Goals; "Appraiser Rating") { }
+                column(QuarterScore_Goals; "Quarter Score") { }
+                column(AppraiseeComments_Goals; "Appraisee's comments") { }
+                column(AchievementNotes_Goals; "Achievement Notes") { }
+                column(CorrectiveAction_Goals; "Corrective Action") { }
             }
 
             dataitem("Appraisee Comments"; "Appraisal Comments")

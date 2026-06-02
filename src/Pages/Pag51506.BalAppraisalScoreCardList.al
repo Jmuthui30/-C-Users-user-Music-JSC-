@@ -5,7 +5,7 @@ page 51506 "Bal Appraisal Score Card List"
     InsertAllowed = false;
     ModifyAllowed = false;
     ApplicationArea = All;
-    UsageCategory = Lists;
+    UsageCategory = None;
     CardPageId = "Bal Appraisal Score Card";
     SourceTable = "Bal Score Card Header";
     SourceTableView = where("Document Type"=const(Appraisal));

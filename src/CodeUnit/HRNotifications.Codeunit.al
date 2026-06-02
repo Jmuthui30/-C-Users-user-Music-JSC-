@@ -7,6 +7,7 @@ codeunit 52003 "HR Notifications"
         LeaveScheduleNotification();
         RetiringEmployees();
         AppraisalSubmissionReminder();
+        AppraisalReviewDueReminder();
         BirthdayMessage();
         YearsOfServiceNotification();
         EmployeeAnniversaryNotification();
@@ -262,7 +263,9 @@ codeunit 52003 "HR Notifications"
         AppraisalPeriods.SetRange(Active, true);
         AppraisalPeriods.SetFilter("Submission Due Date", '<>%1', 0D);
         if AppraisalPeriods.FindLast() then
-            if (Today() - AppraisalPeriods."Submission Due Date") = 7 then begin //Add to setup
+            // Legacy due-date comparison retained for reference. It sent after the due date.
+            // if (Today() - AppraisalPeriods."Submission Due Date") = 7 then begin
+            if (AppraisalPeriods."Submission Due Date" - Today()) = 7 then begin //Add to setup
                 CompanyInfo.get();
                 CompanyInfo.TestField(Name);
 
@@ -276,12 +279,57 @@ codeunit 52003 "HR Notifications"
                     repeat
                         Subject := 'Performance Appraisal Submission';
                         Clear(Recipient);
-                        Recipient.Add(Employee."Company E-Mail");
-                        EmailBody := StrSubstNo(NewBody, Employee.FullName(), AppraisalPeriods.Description, CompanyInfo.Name);
-                        EmailMessage.Create(Recipient, Subject, EmailBody, true);
-                        Email.Send(EmailMessage);
+                        if Employee."Company E-Mail" <> '' then begin
+                            Recipient.Add(Employee."Company E-Mail");
+                            EmailBody := StrSubstNo(NewBody, Employee.FullName(), AppraisalPeriods.Description, CompanyInfo.Name);
+                            Clear(EmailMessage);
+                            EmailMessage.Create(Recipient, Subject, EmailBody, true);
+                            Email.Send(EmailMessage);
+                        end;
                     until Employee.Next() = 0;
             end;
+    end;
+
+    procedure AppraisalReviewDueReminder()
+    var
+        CompanyInfo: Record "Company Information";
+        Employee: Record Employee;
+        EmployeeAppraisal: Record "Employee Appraisal";
+        PreviewPeriod: Record "Bal Score Preview Periods";
+        Email: Codeunit Email;
+        EmailMessage: Codeunit "Email Message";
+        NewBody: Label '<p style="font-family:Verdana,Arial;font-size:10pt">Dear <b>%1,</b></p><p style="font-family:Verdana,Arial;font-size:10pt">This is a reminder that your Performance Appraisal review period <strong>%2</strong> is due on <strong>%3</strong>.</p><p style="font-family:Verdana,Arial;font-size:10pt">Please ignore this email if you have already completed the required appraisal action.</p><p style="font-family:Verdana,Arial;font-size:10pt">Kind Regards,<br>Human Resource Department<br>%4</p>';
+        Recipient: List of [Text];
+        EmailBody: Text;
+        Subject: Text;
+    begin
+        PreviewPeriod.Reset();
+        PreviewPeriod.SetRange(Closed, false);
+        PreviewPeriod.SetFilter("Due Date", '<>%1', 0D);
+        if PreviewPeriod.FindSet() then
+            repeat
+                if (PreviewPeriod."Due Date" - Today()) = 7 then begin
+                    CompanyInfo.Get();
+                    CompanyInfo.TestField(Name);
+
+                    EmployeeAppraisal.Reset();
+                    EmployeeAppraisal.SetRange("Current Review Period Code", PreviewPeriod.Code);
+                    EmployeeAppraisal.SetFilter("Appraisal Status", '<>%1', EmployeeAppraisal."Appraisal Status"::Completed);
+                    if EmployeeAppraisal.FindSet() then
+                        repeat
+                            if Employee.Get(EmployeeAppraisal."Employee No") then
+                                if Employee."Company E-Mail" <> '' then begin
+                                    Subject := StrSubstNo('Performance Appraisal Review Due - %1', PreviewPeriod.Code);
+                                    Clear(Recipient);
+                                    Recipient.Add(Employee."Company E-Mail");
+                                    EmailBody := StrSubstNo(NewBody, Employee.FullName(), PreviewPeriod.Name, PreviewPeriod."Due Date", CompanyInfo.Name);
+                                    Clear(EmailMessage);
+                                    EmailMessage.Create(Recipient, Subject, EmailBody, true);
+                                    Email.Send(EmailMessage);
+                                end;
+                        until EmployeeAppraisal.Next() = 0;
+                end;
+            until PreviewPeriod.Next() = 0;
     end;
 
     procedure BirthdayMessage()

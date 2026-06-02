@@ -2,7 +2,7 @@ page 51515 "Bal Score Percipectives"
 {
     PageType = List;
     ApplicationArea = All;
-    UsageCategory = Lists;
+    UsageCategory = None;
     SourceTable = "Bal Score Percipectives";
 
     layout

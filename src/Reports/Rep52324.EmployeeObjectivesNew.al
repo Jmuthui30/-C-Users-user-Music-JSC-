@@ -8,7 +8,7 @@ report 52324 "Employee Objectives - New"
     {
         dataitem(Appraisal; "Employee Appraisal")
         {
-            CalcFields = "Responsibilty Center";
+            CalcFields = "Responsibilty Center", "Current Review Score", "Total Review Score";
 
             column(AppraisalNo_Appraisal; Appraisal."Appraisal No")
             {
@@ -79,6 +79,30 @@ report 52324 "Employee Objectives - New"
             column(JobGroup; Employee."Salary Scale")
             {
             }
+            column(CurrentReviewPeriod; Appraisal."Current Review Period Code")
+            {
+            }
+            column(CurrentReviewScore; Appraisal."Current Review Score")
+            {
+            }
+            column(TotalReviewScore; Appraisal."Total Review Score")
+            {
+            }
+            dataitem(BSCObjectiveContext; "Bal Score Card Header")
+            {
+                DataItemLink = "Employee Appraisal No." = field("Appraisal No");
+                DataItemTableView = where("Document Type" = const(Appraisal));
+
+                column(ObjectiveBSCNo; "No.")
+                {
+                }
+                column(ObjectiveBSCProgressReviewPeriod; "Progress Review Period")
+                {
+                }
+                column(ObjectiveBSCPlanningNo; "Planning Doc No")
+                {
+                }
+            }
             dataitem(Goals; "Appraisal Lines")
             {
                 DataItemLink = "Appraisal No" = field("Appraisal No");
@@ -129,6 +153,27 @@ report 52324 "Employee Objectives - New"
                 {
                 }
                 column(LineTypeGoals; Goals."Appraisal Line Type")
+                {
+                }
+                column(ReviewPeriodCode_Goals; Goals."Review Period Code")
+                {
+                }
+                column(SelfRating_Goals; Goals."Self Rating")
+                {
+                }
+                column(AppraiserRating_Goals; Goals."Appraiser Rating")
+                {
+                }
+                column(QuarterScore_Goals; Goals."Quarter Score")
+                {
+                }
+                column(AppraiseeComments_Goals; Goals."Appraisee's comments")
+                {
+                }
+                column(AchievementNotes_Goals; Goals."Achievement Notes")
+                {
+                }
+                column(CorrectiveAction_Goals; Goals."Corrective Action")
                 {
                 }
 
@@ -240,9 +285,9 @@ report 52324 "Employee Objectives - New"
                 column(Description_EmployeeQualification; "Employee Qualification".Description)
                 {
                 }
-                // column(QualificationType_EmployeeQualification; "Employee Qualification"."Qualification Type")
-                // {
-                // }
+                column(QualificationType_EmployeeQualification; GetQualificationType("Employee Qualification"."Qualification Code"))
+                {
+                }
             }
 
             trigger OnAfterGetRecord()
@@ -275,6 +320,16 @@ report 52324 "Employee Objectives - New"
     var
         CompInfo: Record "Company Information";
         Employee: Record Employee;
+
+        Qualification: Record Qualification;
+
+    local procedure GetQualificationType(QualificationCode: Code[20]): Text
+    begin
+        if Qualification.Get(QualificationCode) then
+            exit(Format(Qualification."Qualification Type"));
+
+        exit('');
+    end;
 }
 
 

@@ -2,7 +2,7 @@ page 51514 "Bal Score Card Rating"
 {
     PageType = List;
     ApplicationArea = All;
-    UsageCategory = Lists;
+    UsageCategory = None;
     SourceTable = "Bal Score Card Rating";
 
     layout

@@ -1,8 +1,37 @@
-*.app
-.vscode/.alcache/
-.vscode/.alcache/
-
-*.app
-
+﻿# Business Central AL build output and symbols
 .alpackages/
+*.app
+*.runtimepackage
 *.md
+
+# AL/VS Code generated cache
+.vscode/.alcache/
+.vscode/rad.json
+.snapshots/
+
+# Local discovery/planning artifacts
+/doc/
+/docs/
+/plan.md
+/mySpreadsheet*.xlsx
+
+# Office lock/temp files
+~$*.docx
+~$*.xlsx
+
+# Logs and OS/editor noise
+*.log
+Thumbs.db
+.DS_Store
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Local History for Visual Studio Code
+.history/
+*.app
+.snapshots/*

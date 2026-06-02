@@ -180,6 +180,18 @@ table 51605 "QuantumJumps HR Setup"
             DataClassification = ToBeClassified;
             TableRelation = "No. Series";
         }
+        field(53; "Directorate Dimension Code"; Code[20])
+        {
+            Caption = 'Directorate Dimension Code';
+            DataClassification = ToBeClassified;
+            TableRelation = Dimension.Code;
+        }
+        field(54; "Appraisal Outcome Nos"; Code[20])
+        {
+            Caption = 'Appraisal Outcome Nos';
+            DataClassification = ToBeClassified;
+            TableRelation = "No. Series";
+        }
     }
     keys
     {

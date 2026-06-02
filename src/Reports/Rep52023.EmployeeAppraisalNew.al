@@ -8,7 +8,7 @@ report 52023 "Employee Appraisal - New"
     {
         dataitem(Appraisal; "Employee Appraisal")
         {
-            CalcFields = "Responsibilty Center";
+            CalcFields = "Responsibilty Center", "Current Review Score", "Total Review Score";
 
             column(AppraisalNo_Appraisal; Appraisal."Appraisal No")
             {
@@ -88,6 +88,84 @@ report 52023 "Employee Appraisal - New"
             column(FinalYear; FinalYear)
             {
             }
+            column(CurrentReviewPeriod; Appraisal."Current Review Period Code")
+            {
+            }
+            column(CurrentReviewScore; Appraisal."Current Review Score")
+            {
+            }
+            column(TotalReviewScore; Appraisal."Total Review Score")
+            {
+            }
+            dataitem(BSCAppraisal; "Bal Score Card Header")
+            {
+                CalcFields = Score, "Global Score", "Expected Score";
+                DataItemLink = "Employee Appraisal No." = field("Appraisal No");
+                DataItemTableView = where("Document Type" = const(Appraisal));
+
+                column(BSCNo; "No.")
+                {
+                }
+                column(BSCProgressReviewPeriod; "Progress Review Period")
+                {
+                }
+                column(BSCScore; Score)
+                {
+                }
+                column(BSCGlobalScore; "Global Score")
+                {
+                }
+                column(BSCExpectedScore; "Expected Score")
+                {
+                }
+                column(BSCCombinedScore; "Combined Score")
+                {
+                }
+                column(BSCPerformanceRating; "Performance Rating")
+                {
+                }
+                column(BSCAppraiseeComment; "Appraisee Comment")
+                {
+                }
+                column(BSCAppraiserRecommendations; "Appraiser Recommendations")
+                {
+                }
+                column(BSCHRReview; "HR's Review")
+                {
+                }
+                dataitem(BSCLine; "Bal Score Card Lines")
+                {
+                    DataItemLink = DocNo = field("No.");
+
+                    column(BSCLinePerspective; Percepective)
+                    {
+                    }
+                    column(BSCLineReviewPeriod; "Progress Review Period")
+                    {
+                    }
+                    column(BSCLineExpectedMaxScore; "Expected Max Score")
+                    {
+                    }
+                    column(BSCLineSelfRating; "Self Rating")
+                    {
+                    }
+                    column(BSCLineJointRating; "Joint Rating")
+                    {
+                    }
+                    column(BSCLineScore; Score)
+                    {
+                    }
+                    column(BSCLineAchievementsToDate; "Achievements ToDate")
+                    {
+                    }
+                    column(BSCLineEmphasis; Emphasis)
+                    {
+                    }
+                    column(BSCLineReviewed; Reviewed)
+                    {
+                    }
+                }
+            }
             dataitem(Goals; "Appraisal Lines")
             {
                 DataItemLink = "Appraisal No" = field("Appraisal No");
@@ -138,6 +216,27 @@ report 52023 "Employee Appraisal - New"
                 {
                 }
                 column(LineTypeGoals; Goals."Appraisal Line Type")
+                {
+                }
+                column(ReviewPeriodCode_Goals; Goals."Review Period Code")
+                {
+                }
+                column(SelfRating_Goals; Goals."Self Rating")
+                {
+                }
+                column(AppraiserRating_Goals; Goals."Appraiser Rating")
+                {
+                }
+                column(QuarterScore_Goals; Goals."Quarter Score")
+                {
+                }
+                column(AppraiseeComments_Goals; Goals."Appraisee's comments")
+                {
+                }
+                column(AchievementNotes_Goals; Goals."Achievement Notes")
+                {
+                }
+                column(CorrectiveAction_Goals; Goals."Corrective Action")
                 {
                 }
 
@@ -252,9 +351,9 @@ report 52023 "Employee Appraisal - New"
                 column(Description_EmployeeQualification; "Employee Qualification".Description)
                 {
                 }
-                // column(QualificationType_EmployeeQualification; "Employee Qualification"."Qualification Type")
-                // {
-                // }
+                column(QualificationType_EmployeeQualification; GetQualificationType("Employee Qualification"."Qualification Code"))
+                {
+                }
             }
 
             trigger OnAfterGetRecord()
@@ -303,8 +402,17 @@ report 52023 "Employee Appraisal - New"
     var
         CompInfo: Record "Company Information";
         Employee: Record Employee;
+        Qualification: Record Qualification;
         FinalYear: Boolean;
         MidYear: Boolean;
+
+    local procedure GetQualificationType(QualificationCode: Code[20]): Text
+    begin
+        if Qualification.Get(QualificationCode) then
+            exit(Format(Qualification."Qualification Type"));
+
+        exit('');
+    end;
 }
 
 

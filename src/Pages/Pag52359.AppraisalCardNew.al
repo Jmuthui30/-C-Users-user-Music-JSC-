@@ -3,6 +3,7 @@ page 52359 "Appraisal Card-New"
     ApplicationArea = All;
     Caption = 'Appraisal Card New II';
     PageType = Card;
+    PromotedActionCategories = 'New,Process,Report,Review,Approvals';
     SourceTable = "Employee Appraisal";
     layout
     {
@@ -38,7 +39,14 @@ page 52359 "Appraisal Card-New"
                     field(AppraisalType; Rec.AppraisalType)
                     {
                         ToolTip = 'Specifies the value of the Appraisal Type field';
+                        Visible = false;
 
+                    }
+                    field("Current Review Period Code"; Rec."Current Review Period Code")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Review Period';
+                        ToolTip = 'Specifies the current quarterly review period.';
                     }
 
                 }
@@ -97,6 +105,16 @@ page 52359 "Appraisal Card-New"
                     {
                         ToolTip = 'Specifies the value of the Total Weighting field';
                     }
+                    field("Current Review Score"; Rec."Current Review Score")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the calculated score for the current review period.';
+                    }
+                    field("Total Review Score"; Rec."Total Review Score")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the total score across appraisal review lines.';
+                    }
                     /*group(Control39)
                     {
                         ShowCaption = false;
@@ -141,7 +159,8 @@ page 52359 "Appraisal Card-New"
             }
             part(Control12; "Appraisal Goals")
             {
-                SubPageLink = "Appraisal No" = field("Appraisal No");
+                SubPageLink = "Appraisal No" = field("Appraisal No"),
+                              "Review Period Code" = field("Current Review Period Code");
                 UpdatePropagation = Both;
             }
             part(Control13; "Appraisal Goals Self")
@@ -256,20 +275,18 @@ page 52359 "Appraisal Card-New"
             }
             action("Send For Approval")
             {
-                Caption = 'Send For Review';
+                Caption = 'Submit for Review';
                 Enabled = not OpenApprovalEntriesExist;
                 Image = SendApprovalRequest;
                 Promoted = true;
                 PromotedCategory = Category5;
                 PromotedIsBig = true;
-                ToolTip = 'Executes the Send For Review action';
+                ToolTip = 'Submits the appraisal for review.';
 
                 trigger OnAction()
                 begin
                     // Ensure required fields are set
-                    Rec.TestField("Appraisal Period");
-                    Rec.TestField("Employee No");
-                    Rec.TestField("Appraiser No");
+                    AppraisalProcessMgt.ValidateAppraiseeSubmission(Rec);
 
                     // Check if workflow is enabled and initiate approval
                     if ApprovalsMgmt.CheckNewEmpAppraisalWorkflowEnabled(Rec) then
@@ -342,11 +359,11 @@ page 52359 "Appraisal Card-New"
             action(ViewApprovals)
             {
                 Visible = false;
-                Caption = 'Approvals';
+                Caption = 'View Review Approvals';
                 Image = Approval;
                 Promoted = true;
-                PromotedCategory = Category4;
-                ToolTip = 'Executes the Approvals action';
+                PromotedCategory = Category5;
+                ToolTip = 'Shows review approval entries for this appraisal.';
 
                 trigger OnAction()
                 var
@@ -397,6 +414,23 @@ page 52359 "Appraisal Card-New"
                     Message('Appraisal has been opened for Review');
                 end;
             }
+            action("View Review History")
+            {
+                ApplicationArea = All;
+                Caption = 'View Review History';
+                Image = History;
+                Promoted = true;
+                PromotedCategory = Category4;
+                ToolTip = 'Shows all quarterly objective and scoring lines for this appraisal.';
+
+                trigger OnAction()
+                var
+                    AppraisalLine: Record "Appraisal Lines";
+                begin
+                    AppraisalLine.SetRange("Appraisal No", Rec."Appraisal No");
+                    Page.RunModal(Page::"Appraisal Review History", AppraisalLine);
+                end;
+            }
         }
     }
 
@@ -419,6 +453,7 @@ page 52359 "Appraisal Card-New"
         EmployeeAppraisals: Report "Employee Appraisal - New";
         AppraisalScoreCard: Report "Employee Appraisal Scorecard";
         EmployeeObjectives: Report "Employee Objectives - New";
+        AppraisalProcessMgt: Codeunit "Appraisal Process Mgt.";
         ApprovalsMgmt: Codeunit "Approval Mgt HR Ext";
         CanCancelApprovalForRecord: Boolean;
         DocReleased: Boolean;

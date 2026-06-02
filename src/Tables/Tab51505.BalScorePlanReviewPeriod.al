@@ -3,6 +3,7 @@ table 51505 "Bal Score Plan Review Period"
     DataClassification = ToBeClassified;
     LookupPageId = "Bal Score Plan Review Period";
     DrillDownPageId = "Bal Score Plan Review Period";
+    Caption = 'Appraisal Planning Period';
 
     fields
     {
@@ -34,6 +35,16 @@ table 51505 "Bal Score Plan Review Period"
         {
             DataClassification = ToBeClassified;
         }
+        field(8; "Appraisal Period"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Appraisal Periods".Period;
+
+            trigger OnValidate()
+            begin
+                CopyDatesFromAppraisalPeriod();
+            end;
+        }
     }
     keys
     {
@@ -44,10 +55,10 @@ table 51505 "Bal Score Plan Review Period"
     }
     fieldgroups
     {
-        fieldgroup(DropDown; Code, Name, "Start Date", "End Date", Active)
+        fieldgroup(DropDown; Code, Name, "Start Date", "End Date", "Appraisal Period", Active)
         {
         }
-        fieldgroup(Brick; Code, Name, "Start Date", "End Date", Active)
+        fieldgroup(Brick; Code, Name, "Start Date", "End Date", "Appraisal Period", Active)
         {
         }
     }
@@ -66,5 +77,17 @@ table 51505 "Bal Score Plan Review Period"
             FiscalStart:=AccPeriod."Starting Date";
             MaturityDate:=CalcDate('1Y', FiscalStart) - 1;
         end;
+    end;
+
+    procedure CopyDatesFromAppraisalPeriod()
+    var
+        AppraisalPeriod: Record "Appraisal Periods";
+    begin
+        if "Appraisal Period" = '' then
+            exit;
+
+        AppraisalPeriod.Get("Appraisal Period");
+        "Start Date" := AppraisalPeriod."Start Date";
+        "End Date" := AppraisalPeriod."End Date";
     end;
 }

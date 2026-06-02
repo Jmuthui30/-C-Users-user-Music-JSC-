@@ -497,6 +497,12 @@ tableextension 51802 "ExtHuman Resources Setup" extends "Human Resources Setup"
             Caption = 'Effect Anniversary Increment';
             DataClassification = SystemMetadata;
         }
+        field(50120; "Appraisal Outcome Nos"; Code[20])
+        {
+            Caption = 'Appraisal Outcome Nos';
+            DataClassification = SystemMetadata;
+            TableRelation = "No. Series";
+        }
         field(52071; "Payroll Approval Nos"; Code[10])
         {
             DataClassification = SystemMetadata;

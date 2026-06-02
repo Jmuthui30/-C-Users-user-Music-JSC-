@@ -32,6 +32,8 @@ page 52246 "Appraisal Periods"
                 }
                 field("Appraisal Type"; Rec."Appraisal Type")
                 {
+                    Visible = false;
+                    // Legacy mid-year/final-year selector hidden; review stages are now controlled by Appraisal Review Periods.
                     ToolTip = 'Specifies the value of the Appraisal Type field';
                 }
                 field(Active; Rec.Active)

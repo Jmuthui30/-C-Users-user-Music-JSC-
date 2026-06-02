@@ -47,6 +47,11 @@ table 51903 "Appraisal Lines"
         {
             BlankZero = true;
             Caption = 'Weighting';
+
+            trigger OnValidate()
+            begin
+                UpdateQuarterScore();
+            end;
         }
         field(9; "Results Achieved Comments"; Text[250])
         {
@@ -102,6 +107,12 @@ table 51903 "Appraisal Lines"
         field(20; Rating; Decimal)
         {
             Caption = 'Rating(1-5)';
+
+            trigger OnValidate()
+            begin
+                if "Quarter Score" = 0 then
+                    "Quarter Score" := Rating;
+            end;
         }
         field(21; Type; Option)
         {
@@ -275,6 +286,60 @@ table 51903 "Appraisal Lines"
         {
             Caption = 'Actual';
         }
+        field(44; "Review Period Code"; Code[20])
+        {
+            Caption = 'Review Period';
+            DataClassification = CustomerContent;
+            TableRelation = "Bal Score Preview Periods";
+        }
+        field(45; "Self Rating"; Decimal)
+        {
+            Caption = 'Self Rating';
+            DataClassification = CustomerContent;
+            MinValue = 0;
+            MaxValue = 5;
+            TableRelation = "Bal Score Card Rating";
+
+            trigger OnValidate()
+            begin
+                "Final Self-Appraisal" := "Self Rating";
+            end;
+        }
+        field(46; "Appraiser Rating"; Decimal)
+        {
+            Caption = 'Appraiser Rating';
+            DataClassification = CustomerContent;
+            MinValue = 0;
+            MaxValue = 5;
+            TableRelation = "Bal Score Card Rating";
+
+            trigger OnValidate()
+            begin
+                UpdateQuarterScore();
+            end;
+        }
+        field(47; "Quarter Score"; Decimal)
+        {
+            Caption = 'Quarter Score';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(48; "Achievement Notes"; Text[250])
+        {
+            Caption = 'Achievement Notes';
+            DataClassification = CustomerContent;
+        }
+        field(49; "Corrective Action"; Text[250])
+        {
+            Caption = 'Corrective Action';
+            DataClassification = CustomerContent;
+        }
+        field(50; Reviewed; Boolean)
+        {
+            Caption = 'Reviewed';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
     }
 
     keys
@@ -289,9 +354,47 @@ table 51903 "Appraisal Lines"
     {
     }
 
+    trigger OnInsert()
+    begin
+        SetDefaultsFromHeader();
+        UpdateQuarterScore();
+    end;
+
     var
+        EmployeeAppraisal: Record "Employee Appraisal";
         PerformanceMeasures: Record "Appraisal Perfomance Measures";
         HrMgt: Codeunit "HR Management";
+
+    local procedure SetDefaultsFromHeader()
+    begin
+        if "Appraisal No" = '' then
+            exit;
+
+        if not EmployeeAppraisal.Get("Appraisal No") then
+            exit;
+
+        if "Employee No" = '' then
+            "Employee No" := EmployeeAppraisal."Employee No";
+        if "Appraisal Period" = '' then
+            "Appraisal Period" := EmployeeAppraisal."Appraisal Period";
+        if "Appraisal Type" = '' then
+            "Appraisal Type" := EmployeeAppraisal."Appraisal Type";
+        if "Review Period Code" = '' then
+            "Review Period Code" := EmployeeAppraisal."Current Review Period Code";
+    end;
+
+    local procedure UpdateQuarterScore()
+    begin
+        if ("Appraiser Rating" = 0) or (Weighting = 0) then begin
+            "Quarter Score" := 0;
+            exit;
+        end;
+
+        "Score/Points" := "Appraiser Rating";
+        "Weighted Rating" := Weighting;
+        "Quarter Score" := Round(Weighting * ("Appraiser Rating" / 5), 0.01);
+        Rating := "Quarter Score";
+    end;
 }
 
 

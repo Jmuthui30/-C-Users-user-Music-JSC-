@@ -200,13 +200,27 @@ page 51603 "QuantumJumps HR Setup"
                 {
                     ApplicationArea = All;
                 }
+                field("Appraisal Outcome Nos"; Rec."Appraisal Outcome Nos")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the number series used when creating appraisal outcome letters and memos.';
+                }
                 field("Bal Planning Score Card Nos"; Rec."Bal Planning Score Card Nos")
                 {
                     ApplicationArea = All;
+                    Visible = false;
+                    // Legacy BSC number series hidden from the unified appraisal setup.
                 }
                 field("Bal Appraisal Score Card Nos"; Rec."Bal Appraisal Score Card Nos")
                 {
                     ApplicationArea = All;
+                    Visible = false;
+                    // Legacy BSC number series hidden from the unified appraisal setup.
+                }
+                field("Directorate Dimension Code"; Rec."Directorate Dimension Code")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the dimension code that represents directorates for appraisal reporting.';
                 }
             }
             group(Job)

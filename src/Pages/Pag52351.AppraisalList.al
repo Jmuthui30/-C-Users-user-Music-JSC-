@@ -42,6 +42,12 @@ page 52351 "Appraisal List"
                 {
                     ToolTip = 'Specifies the value of the Appraisal Period field';
                 }
+                field("Current Review Period Code"; Rec."Current Review Period Code")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Review Period';
+                    ToolTip = 'Specifies the current quarterly review period.';
+                }
                 field("Appraisal Status"; Rec."Appraisal Status")
                 {
                     ToolTip = 'Specifies the value of the Appraisal Status field';
