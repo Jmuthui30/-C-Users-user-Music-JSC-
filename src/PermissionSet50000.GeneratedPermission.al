@@ -1177,6 +1177,7 @@ permissionset 50000 GeneratedPermission
         page "Client Scale Benefits" = X,
         page "Closed Recruitment Needs" = X,
         page "Coaching Header" = X,
+        page "jscstaff" = X,
         page "Coaching List" = X,
         page "Commercial Banks" = X,
         page "Commitee Creation" = X,
