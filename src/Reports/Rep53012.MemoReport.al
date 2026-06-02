@@ -97,9 +97,9 @@ report 53012 "Memo Report"
             dataitem(Cordiantion; "Imprest Memo Lines")
             {
                 DataItemLink = "No." = field("No.");
-                DataItemTableView = sorting("No.") where("Cordination Allowance" = filter(<> 0));
+                DataItemTableView = sorting("No.");
                 column(Cordiantion_Description; OtherAllowanceDesc) { }
-                column(Cordination_Allowance; "Cordination Allowance") { }
+                column(Cordination_Allowance; otherAmount) { }
                 column(Cordiantion_Days; "Total Days in the Field") { }
                 column(Cordiantion_Name; Name) { }
                 column(Cordiantion_Account_No_; "Account No.") { }
@@ -116,26 +116,46 @@ report 53012 "Memo Report"
                        ("Mileage Allowance" = 0) and ("Quarter Per Diem" = 0)
                     then
                         CurrReport.Skip();
-                    if "Cordination Allowance" > 0 then
-                        OtherAllowanceDesc := 'Cordiantion Allowance'
-                    else if "Facilitator Allowance" > 0 then
-                        OtherAllowanceDesc := 'Facilitator Allowance'
-                    else if "Secretariat Allowance" > 0 then
-                        OtherAllowanceDesc := 'Secretariat Allowance'
-                    else if "Rapporteur Allowance" > 0 then
-                        OtherAllowanceDesc := 'Rapporteur Allowance'
-                    else if "Retreat Allowance" > 0 then
-                        OtherAllowanceDesc := 'Retreat Allowance'
-                    else if "Expert Allowance" > 0 then
-                        OtherAllowanceDesc := 'Expert Allowance'
-                    else if "Out of Pocket Allowance" > 0 then
-                        OtherAllowanceDesc := 'Out of Pocket Allowance'
-                    else if "Tuition Fee" > 0 then
-                        OtherAllowanceDesc := 'Tuition Fee'
-                    else if "Mileage Allowance" > 0 then
-                        OtherAllowanceDesc := 'Mileage Allowance'
-                    else if "Quarter Per Diem" > 0 then
+                    if "Cordination Allowance" > 0 then begin
+                        OtherAllowanceDesc := 'Cordiantion Allowance';
+                        otherAmount := "Cordination Allowance";
+                    end
+                    else if "Facilitator Allowance" > 0 then begin
+                        OtherAllowanceDesc := 'Facilitator Allowance';
+                        otherAmount := "Facilitator Allowance";
+                    end
+                    else if "Secretariat Allowance" > 0 then begin
+                        OtherAllowanceDesc := 'Secretariat Allowance';
+                        otherAmount := "Secretariat Allowance";
+                    end
+                    else if "Rapporteur Allowance" > 0 then begin
+                        OtherAllowanceDesc := 'Rapporteur Allowance';
+                        otherAmount := "Rapporteur Allowance";
+                    end
+                    else if "Retreat Allowance" > 0 then begin
+                        OtherAllowanceDesc := 'Retreat Allowance';
+                        otherAmount := "Retreat Allowance";
+                    end
+                    else if "Expert Allowance" > 0 then begin
+                        OtherAllowanceDesc := 'Expert Allowance';
+                        otherAmount := "Expert Allowance";
+                    end
+                    else if "Out of Pocket Allowance" > 0 then begin
+                        OtherAllowanceDesc := 'Out of Pocket Allowance';
+                        otherAmount := "Out of Pocket Allowance";
+                    end
+                    else if "Tuition Fee" > 0 then begin
+                        OtherAllowanceDesc := 'Tuition Fee';
+                        otherAmount := "Tuition Fee";
+                    end
+                    else if "Mileage Allowance" > 0 then begin
+                        OtherAllowanceDesc := 'Mileage Allowance';
+                        otherAmount := "Mileage Allowance";
+                    end
+                    else if "Quarter Per Diem" > 0 then begin
                         OtherAllowanceDesc := 'Quarter Per Diem';
+                        otherAmount := "Quarter Per Diem";
+                    end;
 
 
                     CordiantionLine := CordiantionLine + 1;
@@ -475,10 +495,12 @@ report 53012 "Memo Report"
                          or (MemoLineApp."Out of Pocket Allowance" > 0) or (MemoLineApp."Tuition Fee" > 0) or (MemoLineApp."Mileage Allowance" > 0) or (MemoLineApp."Quarter Per Diem" > 0) then
                             TotalGrandTwice += (MemoLineApp.DSA + MemoLineApp."Cordination Allowance" + MemoLineApp."Facilitator Allowance" + MemoLineApp."Secretariat Allowance" + MemoLineApp."Rapporteur Allowance" + MemoLineApp."Retreat Allowance" + MemoLineApp."Expert Allowance"
                              + MemoLineApp."Out of Pocket Allowance" + MemoLineApp."Tuition Fee" + MemoLineApp."Mileage Allowance" + MemoLineApp."Quarter Per Diem") * memoLineApp."Total Days in the Field";
+
+
                         if (MemoLineApp."Air Ticket" > 0) or (MemoLineApp."Conference" > 0) or (MemoLineApp."Ground Transport" > 0) or (MemoLineApp.Accomodation > 0) then
                             TotalGrandonce += (MemoLineApp."Air Ticket" + MemoLineApp."Conference" + MemoLineApp."Ground Transport" + MemoLineApp.Accomodation);
                     until MemoLineApp.Next() = 0;
-                    totalGrandTotal := TotalGrandonce + (TotalGrandTwice);
+                    totalGrandTotal := TotalGrandonce + TotalGrandTwice;
                 end
 
             end;
@@ -569,6 +591,7 @@ report 53012 "Memo Report"
         DSAline: Integer;
         MemoLineApp: record "Imprest Memo Lines";
         OtherAllowanceDesc: Text[100];
+        OtherAmount: Decimal;
 
         TotalGrandTotal: Decimal;
         TotalGrandonce: Decimal;
