@@ -159,7 +159,7 @@ codeunit 55057 HRPortalQueries
         tbl_imprestLines.SetRange(No, imprestNumber);
         if tbl_imprestLines.FindSet(true) then begin
             repeat
-                data := data + tbl_imprestLines.Purpose + '*' + Format(tbl_imprestLines."Daily Rate") + '*' + Format(tbl_imprestLines."Daily Rate") + '*' + Format(tbl_imprestLines.Amount) + '*' + Format(tbl_imprestLines."Line No") + '*' + Format(tbl_imprestLines."Actual Spent") + '::::';
+                data := data + tbl_imprestLines.Purpose + '*' + Format(tbl_imprestLines."Daily Rate") + '*' + Format(tbl_imprestLines."Daily Rate") + '*' + Format(tbl_imprestLines.Amount) + '*' + Format(tbl_imprestLines."Line No") + '*' + Format(tbl_imprestLines."Actual Spent") + '*' + Format(tbl_imprestLines."Account Type") + '::::';
             until tbl_imprestLines.Next = 0;
         end;
         exit(data);
