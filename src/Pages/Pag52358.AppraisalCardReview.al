@@ -76,6 +76,20 @@ page 52358 "Appraisal Card-Review"
                         Caption = 'Review Period';
                         ToolTip = 'Specifies the current quarterly review period.';
                     }
+                    field("Review Start Date"; Rec."Review Start Date")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Review From';
+                        Editable = false;
+                        ToolTip = 'Specifies the start date of the selected review period.';
+                    }
+                    field("Review End Date"; Rec."Review End Date")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Review To';
+                        Editable = false;
+                        ToolTip = 'Specifies the end date of the selected review period.';
+                    }
                 }
                 group("Personal Details")
                 {
@@ -102,6 +116,18 @@ page 52358 "Appraisal Card-Review"
                         Editable = false;
                         ToolTip = 'Specifies the value of the Job Group field';
                         Caption = 'Job Group';
+                    }
+                    field("Directorate Code"; Rec."Directorate Code")
+                    {
+                        ApplicationArea = All;
+                        Editable = false;
+                        ToolTip = 'Specifies the employee directorate captured for this appraisal.';
+                    }
+                    field("Directorate Name"; Rec."Directorate Name")
+                    {
+                        ApplicationArea = All;
+                        Editable = false;
+                        ToolTip = 'Specifies the employee directorate name captured for this appraisal.';
                     }
                 }
                 group("Appraiser:")
@@ -250,24 +276,27 @@ page 52358 "Appraisal Card-Review"
             part("Substantial Achievements"; "Appraisee's Appraisal Comments")
             {
                 //Editable = NOT UnderReview;
-                SubPageLink = "Appraisal No." = field("Appraisal No");
+                SubPageLink = "Appraisal No." = field("Appraisal No"),
+                              "Review Period Code" = field("Current Review Period Code");
                 SubPageView = where(Person = const("Substantial Achievements"));
                 Caption = 'Substantial Achievements';
             }
             part("Significant issues that affected Performance during the period (positive)"; "Appraisee's Appraisal Comments")
             {
                 //Editable = NOT UnderReview;
-                SubPageLink = "Appraisal No." = field("Appraisal No");
+                SubPageLink = "Appraisal No." = field("Appraisal No"),
+                              "Review Period Code" = field("Current Review Period Code");
                 SubPageView = where(Person = const("Significant Positive Issues"));
-                Visible = FinalVisible;
+                Visible = true;
                 Caption = 'Significant issues that affected Performance during the period (positive)';
             }
             part("Significant issues that affected Performance during the period (negative)"; "Appraisee's Appraisal Comments")
             {
                 //Editable = NOT UnderReview;
-                SubPageLink = "Appraisal No." = field("Appraisal No");
+                SubPageLink = "Appraisal No." = field("Appraisal No"),
+                              "Review Period Code" = field("Current Review Period Code");
                 SubPageView = where(Person = const("Significant Negative Issues"));
-                Visible = FinalVisible;
+                Visible = true;
                 Caption = 'Significant issues that affected Performance during the period (negative)';
             }
             part("WorkRelatedAttributes"; "Appraisal work related attr")
@@ -790,6 +819,55 @@ page 52358 "Appraisal Card-Review"
                     Page.RunModal(Page::"Appraisal Review History", AppraisalLine);
                 end;
             }
+            action("View Comment History")
+            {
+                ApplicationArea = All;
+                Caption = 'View Comment History';
+                Image = History;
+                Promoted = true;
+                PromotedCategory = Category4;
+                ToolTip = 'Shows period-specific and final appraisal comments for this appraisal.';
+
+                trigger OnAction()
+                var
+                    AppraisalComment: Record "Appraisal Comments";
+                begin
+                    AppraisalComment.SetRange("Appraisal No.", Rec."Appraisal No");
+                    Page.RunModal(Page::"Appraisal Comment History", AppraisalComment);
+                end;
+            }
+            action("Related Grievances")
+            {
+                ApplicationArea = All;
+                Caption = 'Related Grievances';
+                Image = List;
+                Promoted = true;
+                PromotedCategory = Category4;
+                ToolTip = 'Shows incidence and grievance records for this appraisee during the current review period.';
+
+                trigger OnAction()
+                var
+                    AppraisalRelatedHRMgt: Codeunit "Appraisal Related HR Mgt.";
+                begin
+                    AppraisalRelatedHRMgt.OpenRelatedGrievances(Rec);
+                end;
+            }
+            action("Related Disciplinary Cases")
+            {
+                ApplicationArea = All;
+                Caption = 'Related Disciplinary Cases';
+                Image = List;
+                Promoted = true;
+                PromotedCategory = Category4;
+                ToolTip = 'Shows staff disciplinary and misconduct records for this appraisee during the current review period.';
+
+                trigger OnAction()
+                var
+                    AppraisalRelatedHRMgt: Codeunit "Appraisal Related HR Mgt.";
+                begin
+                    AppraisalRelatedHRMgt.OpenRelatedDisciplinaryCases(Rec);
+                end;
+            }
             // action("Send to final year")
             // {
             //     Image = ChangePaymentTolerance;
@@ -831,6 +909,8 @@ page 52358 "Appraisal Card-Review"
     begin
         // HRManagement.UpdateAppraisalScores("Appraisal No","Employee No");
         // CurrPage.UPDATE;
+        if Rec.EnsureEmployeeJobTitles() then
+            Rec.Modify(false);
 
         SetControlAppearance();
         HRManagement.GetTotalRating(Rec);
@@ -865,7 +945,7 @@ page 52358 "Appraisal Card-Review"
         App2: Codeunit "Approvals Mgmt.";
 
     begin
-        FinalVisible := true;
+        FinalVisible := IsCurrentFinalReviewPeriod();
         UnderReview := true;
         MidVisible := true;
 
@@ -900,6 +980,19 @@ page 52358 "Appraisal Card-Review"
          else
              MidVisible := false; */
 
+    end;
+
+    local procedure IsCurrentFinalReviewPeriod(): Boolean
+    var
+        ReviewPeriod: Record "Bal Score Preview Periods";
+    begin
+        if Rec."Current Review Period Code" = '' then
+            exit(false);
+
+        if not ReviewPeriod.Get(Rec."Current Review Period Code") then
+            exit(false);
+
+        exit(ReviewPeriod."Final Review Period");
     end;
 }
 

@@ -29,6 +29,7 @@ page 52354 "Appraisal Goals"
                 {
                     ApplicationArea = All;
                     Caption = 'Review Period';
+                    Editable = false;
                     ToolTip = 'Specifies the quarterly review period for this objective line.';
                 }
                 field("Actual targets"; Rec."Actual targets")

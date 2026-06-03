@@ -38,7 +38,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>DEPARTMENT</Value>
+                                  <Value>Directorate</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -70,7 +70,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!DepartmentCode_Appraisal.Value</Value>
+                                  <Value>=Fields!DirectorateName_Appraisal.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -172,7 +172,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Appraisal From</Value>
+                                  <Value>Appraisal / Review From</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -204,7 +204,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!PeriodStart_Appraisal.Value</Value>
+                                  <Value>=Fields!PeriodStart_Appraisal.Value &amp; " / " &amp; Fields!ReviewStartDate_Appraisal.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -241,7 +241,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Appraisal To</Value>
+                                  <Value>Appraisal / Review To</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -273,7 +273,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!PeriodEnd_Appraisal.Value</Value>
+                                  <Value>=Fields!PeriodEnd_Appraisal.Value &amp; " / " &amp; Fields!ReviewEndDate_Appraisal.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -1249,7 +1249,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!PeriodStart_Appraisal.Value</Value>
+                                  <Value>=Fields!PeriodStart_Appraisal.Value &amp; " / " &amp; Fields!ReviewStartDate_Appraisal.Value</Value>
                                   <Style>
                                     <Format>dd-MMM-yyyy</Format>
                                   </Style>
@@ -1308,7 +1308,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Department</Value>
+                                  <Value>Directorate</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1360,7 +1360,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!DepartmentCode_Appraisal.Value</Value>
+                                  <Value>=Fields!DirectorateName_Appraisal.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -1462,7 +1462,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!PeriodEnd_Appraisal.Value</Value>
+                                  <Value>=Fields!PeriodEnd_Appraisal.Value &amp; " / " &amp; Fields!ReviewEndDate_Appraisal.Value</Value>
                                   <Style>
                                     <Format>dd-MMM-yyyy</Format>
                                   </Style>
@@ -3924,6 +3924,12 @@ End Function
         <Field Name="DepartmentCode_Appraisal">
           <DataField>DepartmentCode_Appraisal</DataField>
         </Field>
+        <Field Name="DirectorateCode_Appraisal">
+          <DataField>DirectorateCode_Appraisal</DataField>
+        </Field>
+        <Field Name="DirectorateName_Appraisal">
+          <DataField>DirectorateName_Appraisal</DataField>
+        </Field>
         <Field Name="JobGroup_Appraisal">
           <DataField>JobGroup_Appraisal</DataField>
         </Field>
@@ -3935,6 +3941,12 @@ End Function
         </Field>
         <Field Name="CurrentReviewPeriod">
           <DataField>CurrentReviewPeriod</DataField>
+        </Field>
+        <Field Name="ReviewStartDate_Appraisal">
+          <DataField>ReviewStartDate_Appraisal</DataField>
+        </Field>
+        <Field Name="ReviewEndDate_Appraisal">
+          <DataField>ReviewEndDate_Appraisal</DataField>
         </Field>
         <Field Name="CurrentReviewScore">
           <DataField>CurrentReviewScore</DataField>
@@ -4185,8 +4197,14 @@ End Function
         <Field Name="Person_Comments">
           <DataField>Person_Comments</DataField>
         </Field>
+        <Field Name="ReviewPeriodCode_Comments">
+          <DataField>ReviewPeriodCode_Comments</DataField>
+        </Field>
         <Field Name="Comments_on_Performance_Appraiser">
           <DataField>Comments_on_Performance_Appraiser</DataField>
+        </Field>
+        <Field Name="ReviewPeriodCode_AppraiserComments">
+          <DataField>ReviewPeriodCode_AppraiserComments</DataField>
         </Field>
       </Fields>
       <Query>

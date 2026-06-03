@@ -9,7 +9,7 @@ report 52023 "Employee Appraisal - New"
     {
         dataitem(Appraisal; "Employee Appraisal")
         {
-            CalcFields = "Responsibilty Center", "Current Review Score", "Total Review Score";
+            CalcFields = "Responsibilty Center", "Current Review Score", "Total Review Score", "Review Start Date", "Review End Date";
 
             column(AppraisalNo_Appraisal; Appraisal."Appraisal No")
             {
@@ -51,6 +51,12 @@ report 52023 "Employee Appraisal - New"
             {
             }
             column(DepartmentCode_Appraisal; Appraisal."Department Code")
+            {
+            }
+            column(DirectorateCode_Appraisal; AppraisalReportingMgt.GetDirectorateCodeForAppraisal(Appraisal))
+            {
+            }
+            column(DirectorateName_Appraisal; AppraisalReportingMgt.GetDirectorateNameForAppraisal(Appraisal))
             {
             }
             column(PeriodStart_Appraisal; Appraisal."Period Start")
@@ -95,10 +101,10 @@ report 52023 "Employee Appraisal - New"
             column(CurrentReviewObjectivesText; GetObjectivesSummary(Appraisal."Appraisal No", Appraisal."Current Review Period Code"))
             {
             }
-            column(AppraiseeCommentsSummaryText; GetCommentsSummary(Appraisal."Appraisal No", 'Appraisee'))
+            column(AppraiseeCommentsSummaryText; GetCommentsSummary(Appraisal."Appraisal No", 'Appraisee', Appraisal."Current Review Period Code"))
             {
             }
-            column(AppraiserCommentsSummaryText; GetCommentsSummary(Appraisal."Appraisal No", 'Appraiser'))
+            column(AppraiserCommentsSummaryText; GetCommentsSummary(Appraisal."Appraisal No", 'Appraiser', Appraisal."Current Review Period Code"))
             {
             }
             column(MidYear; MidYear)
@@ -108,6 +114,12 @@ report 52023 "Employee Appraisal - New"
             {
             }
             column(CurrentReviewPeriod; Appraisal."Current Review Period Code")
+            {
+            }
+            column(ReviewStartDate_Appraisal; Appraisal."Review Start Date")
+            {
+            }
+            column(ReviewEndDate_Appraisal; Appraisal."Review End Date")
             {
             }
             column(CurrentReviewScore; Appraisal."Current Review Score")
@@ -314,6 +326,9 @@ report 52023 "Employee Appraisal - New"
                 column(Person_Comments; Comments.Person)
                 {
                 }
+                column(ReviewPeriodCode_Comments; Comments."Review Period Code")
+                {
+                }
                 column(PerformanceRelatedDicussions_Comments; Comments."Performance Related Dicussions")
                 {
                 }
@@ -332,6 +347,12 @@ report 52023 "Employee Appraisal - New"
                 column(Date_Comments; Comments.Date)
                 {
                 }
+
+                trigger OnPreDataItem()
+                begin
+                    if Appraisal."Current Review Period Code" <> '' then
+                        SetFilter("Review Period Code", '%1|%2', '', Appraisal."Current Review Period Code");
+                end;
             }
             dataitem("Training Request"; "Training Request")
             {
@@ -419,6 +440,7 @@ report 52023 "Employee Appraisal - New"
     end;
 
     var
+        AppraisalReportingMgt: Codeunit "Appraisal Reporting Mgt.";
         CompInfo: Record "Company Information";
         Employee: Record Employee;
         Qualification: Record Qualification;
@@ -500,7 +522,7 @@ report 52023 "Employee Appraisal - New"
         exit(Builder.ToText());
     end;
 
-    local procedure GetCommentsSummary(AppraisalNo: Code[20]; PersonFilter: Text): Text
+    local procedure GetCommentsSummary(AppraisalNo: Code[20]; PersonFilter: Text; ReviewPeriodCode: Code[20]): Text
     var
         AppraisalComment: Record "Appraisal Comments";
         Builder: TextBuilder;
@@ -509,6 +531,8 @@ report 52023 "Employee Appraisal - New"
         AppraisalComment.Reset();
         AppraisalComment.SetRange("Appraisal No.", AppraisalNo);
         AppraisalComment.SetFilter(Person, PersonFilter);
+        if ReviewPeriodCode <> '' then
+            AppraisalComment.SetFilter("Review Period Code", '%1|%2', '', ReviewPeriodCode);
         if AppraisalComment.FindSet() then
             repeat
                 HasComment := true;

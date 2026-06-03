@@ -170,7 +170,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>="FROM : " &amp; Fields!PeriodStart_Appraisal.Value</Value>
+                                      <Value>="APPRAISAL FROM : " &amp; Fields!PeriodStart_Appraisal.Value &amp; "    REVIEW FROM : " &amp; Fields!ReviewStartDate_Appraisal.Value</Value>
                                       <Style>
                                         <FontFamily>Book Antiqua</FontFamily>
                                         <FontWeight>Bold</FontWeight>
@@ -203,7 +203,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>="TO : " &amp; Fields!PeriodEnd_Appraisal.Value</Value>
+                                      <Value>="APPRAISAL TO : " &amp; Fields!PeriodEnd_Appraisal.Value &amp; "    REVIEW TO : " &amp; Fields!ReviewEndDate_Appraisal.Value</Value>
                                       <Style>
                                         <FontFamily>Book Antiqua</FontFamily>
                                         <FontWeight>Bold</FontWeight>
@@ -832,7 +832,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>CURRENT HIGHEST ACADEMIC QUALIFICATION</Value>
+                                      <Value></Value>
                                       <Style>
                                         <FontFamily>Book Antiqua</FontFamily>
                                       </Style>
@@ -873,7 +873,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Fields!AcademicQualificationText.Value</Value>
+                                      <Value></Value>
                                       <Style>
                                         <FontFamily>Book Antiqua</FontFamily>
                                         <FontWeight>Bold</FontWeight>
@@ -915,7 +915,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>PROFESSIONAL QUALIFICATION</Value>
+                                      <Value></Value>
                                       <Style>
                                         <FontFamily>Book Antiqua</FontFamily>
                                       </Style>
@@ -956,7 +956,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Fields!ProfessionalQualificationText.Value</Value>
+                                      <Value></Value>
                                       <Style>
                                         <FontFamily>Book Antiqua</FontFamily>
                                         <FontWeight>Bold</FontWeight>
@@ -5084,6 +5084,12 @@ End Function
         <Field Name="DepartmentCode_Appraisal">
           <DataField>DepartmentCode_Appraisal</DataField>
         </Field>
+        <Field Name="DirectorateCode_Appraisal">
+          <DataField>DirectorateCode_Appraisal</DataField>
+        </Field>
+        <Field Name="DirectorateName_Appraisal">
+          <DataField>DirectorateName_Appraisal</DataField>
+        </Field>
         <Field Name="PeriodStart_Appraisal">
           <DataField>PeriodStart_Appraisal</DataField>
         </Field>
@@ -5140,6 +5146,12 @@ End Function
         </Field>
         <Field Name="CurrentReviewPeriod">
           <DataField>CurrentReviewPeriod</DataField>
+        </Field>
+        <Field Name="ReviewStartDate_Appraisal">
+          <DataField>ReviewStartDate_Appraisal</DataField>
+        </Field>
+        <Field Name="ReviewEndDate_Appraisal">
+          <DataField>ReviewEndDate_Appraisal</DataField>
         </Field>
         <Field Name="CurrentReviewScore">
           <DataField>CurrentReviewScore</DataField>
@@ -5374,6 +5386,9 @@ End Function
         </Field>
         <Field Name="Person_Comments">
           <DataField>Person_Comments</DataField>
+        </Field>
+        <Field Name="ReviewPeriodCode_Comments">
+          <DataField>ReviewPeriodCode_Comments</DataField>
         </Field>
         <Field Name="PerformanceRelatedDicussions_Comments">
           <DataField>PerformanceRelatedDicussions_Comments</DataField>

@@ -1639,6 +1639,7 @@ page 51742 "HR & Admin Manager Role Center"
                     {
                         RunObject = page "Skill Codes";
                         ToolTip = 'Executes the Skill Codes action';
+                        Visible = false;
                         Caption = 'Skill Codes';
                     }
                     action("Developmental Actions Setup")

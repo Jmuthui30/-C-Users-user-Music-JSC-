@@ -9,7 +9,7 @@ report 52324 "Employee Objectives - New"
     {
         dataitem(Appraisal; "Employee Appraisal")
         {
-            CalcFields = "Responsibilty Center", "Current Review Score", "Total Review Score";
+            CalcFields = "Responsibilty Center", "Current Review Score", "Total Review Score", "Review Start Date", "Review End Date";
 
             column(AppraisalNo_Appraisal; Appraisal."Appraisal No")
             {
@@ -53,6 +53,12 @@ report 52324 "Employee Objectives - New"
             column(DepartmentCode_Appraisal; Appraisal."Department Code")
             {
             }
+            column(DirectorateCode_Appraisal; AppraisalReportingMgt.GetDirectorateCodeForAppraisal(Appraisal))
+            {
+            }
+            column(DirectorateName_Appraisal; AppraisalReportingMgt.GetDirectorateNameForAppraisal(Appraisal))
+            {
+            }
             column(PeriodStart_Appraisal; Appraisal."Period Start")
             {
             }
@@ -90,6 +96,12 @@ report 52324 "Employee Objectives - New"
             {
             }
             column(CurrentReviewPeriod; Appraisal."Current Review Period Code")
+            {
+            }
+            column(ReviewStartDate_Appraisal; Appraisal."Review Start Date")
+            {
+            }
+            column(ReviewEndDate_Appraisal; Appraisal."Review End Date")
             {
             }
             column(CurrentReviewScore; Appraisal."Current Review Score")
@@ -239,6 +251,9 @@ report 52324 "Employee Objectives - New"
                 column(Person_Comments; Comments.Person)
                 {
                 }
+                column(ReviewPeriodCode_Comments; Comments."Review Period Code")
+                {
+                }
                 column(PerformanceRelatedDicussions_Comments; Comments."Performance Related Dicussions")
                 {
                 }
@@ -257,6 +272,12 @@ report 52324 "Employee Objectives - New"
                 column(Date_Comments; Comments.Date)
                 {
                 }
+
+                trigger OnPreDataItem()
+                begin
+                    if Appraisal."Current Review Period Code" <> '' then
+                        SetFilter("Review Period Code", '%1|%2', '', Appraisal."Current Review Period Code");
+                end;
             }
             dataitem("Training Request"; "Training Request")
             {
@@ -328,6 +349,7 @@ report 52324 "Employee Objectives - New"
     end;
 
     var
+        AppraisalReportingMgt: Codeunit "Appraisal Reporting Mgt.";
         CompInfo: Record "Company Information";
         Employee: Record Employee;
 

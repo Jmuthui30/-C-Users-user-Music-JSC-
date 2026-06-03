@@ -22,6 +22,12 @@ page 52160 "HR Appraisal Comments"
                     Visible = false;
                     ToolTip = 'Specifies the value of the Person field';
                 }
+                field("Review Period Code"; Rec."Review Period Code")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
+                    ToolTip = 'Specifies the quarterly review period for this comment.';
+                }
                 field("Developmental Action"; Rec."Developmental Action")
                 {
                     ToolTip = 'Specifies the value of the Developmental Action field.';
