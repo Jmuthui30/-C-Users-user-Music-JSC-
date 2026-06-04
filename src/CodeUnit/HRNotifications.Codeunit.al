@@ -171,30 +171,79 @@ codeunit 52003 "HR Notifications"
         CompanyInfo: Record "Company Information";
         Employee: Record Employee;
         HRSetup: Record "Human Resources Setup";
+        TrainingParticipants: Record "Training Participants";
         Email: Codeunit Email;
         EmailMessage: Codeunit "Email Message";
         NewBody: Label '<p style="font-family:Verdana,Arial;font-size:10pt">Dear<b> %1,</b></p><p style="font-family:Verdana,Arial;font-size:10pt">A training entitled <strong>%2<strong> has been approved.<br> It is scheduled to begin on <strong>%3<strong> and end on <strong>%4<strong>.</p><p style="font-family:Verdana,Arial;font-size:10pt">You are hereby requested to apply for this training.</p><p style="font-family:Verdana,Arial;font-size:10pt">Kind Regards,<br>Senior HR and Admin Officer<br>%5</p>';
         Recipient: List of [Text];
-        EmailBody, Subject : Text;
+        EmailBody, RecipientEmail, Subject : Text;
+        ProposedParticipantsExist: Boolean;
+        SentCount: Integer;
+        SkippedCount: Integer;
     begin
-        Employee.Reset();
-        Employee.SetFilter("Employee Type", '<>%1', Employee."Employee Type"::"Board Member");
-        Employee.SetRange(Status, Employee.Status::Active);
-        if Employee.FindSet() then begin
-            CompanyInfo.get();
-            CompanyInfo.TestField(Name);
+        CompanyInfo.Get();
+        CompanyInfo.TestField(Name);
 
-            HRSetup.Get();
-            HRSetup.TestField("Human Resource Emails");
+        HRSetup.Get();
+        HRSetup.TestField("Human Resource Emails");
+
+        TrainingParticipants.Reset();
+        TrainingParticipants.SetRange("Training Need", TrainingNeed.Code);
+        ProposedParticipantsExist := not TrainingParticipants.IsEmpty();
+
+        if ProposedParticipantsExist then begin
+            TrainingParticipants.FindSet();
             repeat
-                Subject := TrainingNeed.Description + ' Training Notification';
-                Clear(Recipient);
-                Recipient.Add(Employee."Company E-Mail");
-                EmailBody := StrSubstNo(NewBody, Employee.FullName(), TrainingNeed.Description, Format(TrainingNeed."Start Date"), Format(TrainingNeed."End Date"), CompanyInfo.Name);
-                EmailMessage.Create(Recipient, Subject, EmailBody, true);
-                Email.Send(EmailMessage);
-            until Employee.Next() = 0;
+                if Employee.Get(TrainingParticipants."Employee No") then begin
+                    RecipientEmail := GetEmployeeEmail(Employee);
+                    if RecipientEmail <> '' then begin
+                        Subject := TrainingNeed.Description + ' Training Notification';
+                        Clear(Recipient);
+                        Clear(EmailMessage);
+                        Recipient.Add(RecipientEmail);
+                        EmailBody := StrSubstNo(NewBody, Employee.FullName(), TrainingNeed.Description, Format(TrainingNeed."Start Date"), Format(TrainingNeed."End Date"), CompanyInfo.Name);
+                        EmailMessage.Create(Recipient, Subject, EmailBody, true);
+                        Email.Send(EmailMessage);
+                        SentCount += 1;
+                    end else
+                        SkippedCount += 1;
+                end else
+                    SkippedCount += 1;
+            until TrainingParticipants.Next() = 0;
+        end else begin
+            Employee.Reset();
+            Employee.SetFilter("Employee Type", '<>%1', Employee."Employee Type"::"Board Member");
+            Employee.SetRange(Status, Employee.Status::Active);
+            if Employee.FindSet() then
+                repeat
+                    RecipientEmail := GetEmployeeEmail(Employee);
+                    if RecipientEmail <> '' then begin
+                        Subject := TrainingNeed.Description + ' Training Notification';
+                        Clear(Recipient);
+                        Clear(EmailMessage);
+                        Recipient.Add(RecipientEmail);
+                        EmailBody := StrSubstNo(NewBody, Employee.FullName(), TrainingNeed.Description, Format(TrainingNeed."Start Date"), Format(TrainingNeed."End Date"), CompanyInfo.Name);
+                        EmailMessage.Create(Recipient, Subject, EmailBody, true);
+                        Email.Send(EmailMessage);
+                        SentCount += 1;
+                    end else
+                        SkippedCount += 1;
+                until Employee.Next() = 0;
         end;
+
+        if SentCount = 0 then
+            Message('No training notification emails were sent. %1 employee(s) were skipped because no email address was available.', SkippedCount)
+        else
+            if SkippedCount <> 0 then
+                Message('%1 training notification email(s) sent. %2 employee(s) were skipped because no email address was available.', SentCount, SkippedCount);
+    end;
+
+    local procedure GetEmployeeEmail(Employee: Record Employee): Text
+    begin
+        if Employee."Company E-Mail" <> '' then
+            exit(Employee."Company E-Mail");
+
+        exit(Employee."E-Mail");
     end;
 
     procedure RetiringEmployees()
