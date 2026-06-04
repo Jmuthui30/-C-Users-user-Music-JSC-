@@ -22,8 +22,11 @@ table 52361 "Training Needs Lines"
                 TrainingBudget.SetRange(TrainingBudget."No.", "Expense Code");
                 if TrainingBudget.Find('-') then begin
                     "Approved Budget" := TrainingBudget."Approved Budget";
+                    "Approval Amount" := TrainingBudget."Approved Budget";
+                    UpdateApprovalAmountLCY();
                     "Expense name" := TrainingBudget.Description;
                     "Budget Line" := TrainingBudget."Source of Funds";
+                    "G/L Account" := TrainingBudget."Source of Funds";
                     "Training Year" := TrainingBudget."Training Year";
                 end;
 
@@ -63,6 +66,7 @@ table 52361 "Training Needs Lines"
             trigger OnValidate()
             begin
                 Validate(Amount);
+                UpdateApprovalAmountLCY();
             end;
         }
         field(8; Committed; Boolean)
@@ -136,6 +140,11 @@ table 52361 "Training Needs Lines"
         {
             DataClassification = CustomerContent;
             Caption = 'Approval Amount';
+
+            trigger OnValidate()
+            begin
+                UpdateApprovalAmountLCY();
+            end;
         }
         //"Approved Budget"
         field(118; "Approved Budget"; Decimal)
@@ -1129,6 +1138,12 @@ table 52361 "Training Needs Lines"
         {
             Caption = 'Training Year';
         }
+        field(392; "Approval Amount (LCY)"; Decimal)
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Approval Amount (LCY)';
+            Editable = false;
+        }
     }
 
     keys
@@ -1184,6 +1199,19 @@ table 52361 "Training Needs Lines"
     begin
         OldDimSetID := "Dimension Set ID";
         DimMgt.ValidateShortcutDimValues(FieldNumber, ShortcutDimCode, "Dimension Set ID");
+    end;
+
+    local procedure UpdateApprovalAmountLCY()
+    begin
+        CurrencyRec.InitRoundingPrecision();
+
+        if "Currency Code" = '' then
+            "Approval Amount (LCY)" := Round("Approval Amount", CurrencyRec."Amount Rounding Precision")
+        else
+            "Approval Amount (LCY)" := Round(
+                CurrencyExchangeRate.ExchangeAmtFCYToLCY(Today, "Currency Code",
+                    "Approval Amount", CurrencyExchangeRate.ExchangeRate(Today, "Currency Code")),
+                CurrencyRec."Amount Rounding Precision");
     end;
 }
 
