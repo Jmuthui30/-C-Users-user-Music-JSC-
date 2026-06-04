@@ -174,6 +174,7 @@ page 52170 "Training Need"
             {
                 //Visible = true;
                 SubPageLink = "Document No." = field(Code);
+                UpdatePropagation = Both;
             }
         }
     }
@@ -232,12 +233,31 @@ page 52170 "Training Need"
                 Image = "Report";
                 Promoted = true;
                 PromotedIsBig = true;
+                visible = false;
 
                 trigger OnAction()
                 begin
                     Rec.Reset;
                     // Rec.SetRange("No.", Rec."No.");
                     REPORT.Run(51608, true, false, Rec);
+                end;
+            }
+            action("Training Need Report")
+            {
+                ApplicationArea = All;
+                Caption = 'Training Need Report';
+                Image = "Report";
+                Promoted = true;
+                PromotedCategory = Report;
+                PromotedIsBig = true;
+                ToolTip = 'Print the training need report for the current record.';
+
+                trigger OnAction()
+                var
+                    TrainingNeed: Record "Training Need";
+                begin
+                    TrainingNeed.SetRange(Code, Rec.Code);
+                    Report.Run(Report::"Training Need", true, false, TrainingNeed);
                 end;
             }
             action("Proposed Training Participants")
@@ -247,6 +267,7 @@ page 52170 "Training Need"
                 PromotedCategory = Category4;
                 PromotedIsBig = true;
                 RunObject = page "Training participants";
+                RunPageLink = "Training Need" = field(Code);
                 Visible = Rec.Status <> Rec.Status::Closed;
                 ToolTip = 'Executes the Proposed Training Participants action';
             }

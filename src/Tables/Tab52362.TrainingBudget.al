@@ -790,7 +790,9 @@ table 52362 "Training Budget"
 
     fieldgroups
     {
-        fieldgroup(DropDown; "Budget Item No", Description, "No.")
+        // "Budget Item No" is often blank in uploaded/approved budget lines.
+        // Keep "No." first because Training Needs Lines."Expense Code" validates against it.
+        fieldgroup(DropDown; "No.", Description, "Approved Budget", "Source of Funds", "Training Year")
         {
         }
     }

@@ -39,6 +39,12 @@ page 52209 "Training participants"
             }
         }
     }
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    begin
+        if Rec.GetFilter("Training Need") <> '' then
+            Rec."Training Need" := Rec.GetRangeMin("Training Need");
+    end;
 }
 
 
