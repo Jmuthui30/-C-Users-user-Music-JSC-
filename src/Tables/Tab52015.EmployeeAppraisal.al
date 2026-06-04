@@ -71,14 +71,14 @@ table 52015 "Employee Appraisal"
                 //     Error(Error001, "Appraisal Period");
 
                 if AppraisalPeriods.Get("Appraisal Period") then begin
-                        AppraisalPeriods.TestField("Start Date");
-                        AppraisalPeriods.TestField("End Date");
-                        "Period Start" := AppraisalPeriods."Start Date";
-                        "Period End" := AppraisalPeriods."End Date";
-                        AppraisalType := AppraisalPeriods."Appraisal Type";
-                        if "Current Review Period Code" = '' then
-                            "Current Review Period Code" := GetDefaultReviewPeriodCode();
-                    end;
+                    AppraisalPeriods.TestField("Start Date");
+                    AppraisalPeriods.TestField("End Date");
+                    "Period Start" := AppraisalPeriods."Start Date";
+                    "Period End" := AppraisalPeriods."End Date";
+                    AppraisalType := AppraisalPeriods."Appraisal Type";
+                    if "Current Review Period Code" = '' then
+                        "Current Review Period Code" := GetDefaultReviewPeriodCode();
+                end;
             end;
         }
         field(5; "No. Supervised (Directly)"; Integer)
@@ -492,11 +492,11 @@ table 52015 "Employee Appraisal"
             HRSetup.Get();
             HRSetup.TestField("Appraisal Nos");
             // NoSeriesMgt.InitSeries(HRSetup."Appraisal Nos", xRec."No. series", 0D, "Appraisal No", "No. series");
-            if NoSeriesMgt.AreRelated(HRSetup."Appraisal Nos",xRec."No. Series") then
-            "No. Series":=xRec."No. Series"
+            if NoSeriesMgt.AreRelated(HRSetup."Appraisal Nos", xRec."No. Series") then
+                "No. Series" := xRec."No. Series"
             else
-            "No. Series":=HRSetup."Appraisal Nos";
-            "Appraisal No":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
+                "No. Series" := HRSetup."Appraisal Nos";
+            "Appraisal No" := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
         end;
 
         Date := Today;
