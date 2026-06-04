@@ -488,18 +488,66 @@ report 53012 "Memo Report"
                 end;
 
                 //// For testing purpose only, to be removed later
+                totalGrandTotal := 0;
+                totaldsaAllowance := 0;
+                TotalGrandonce := 0;
+                TotalCordinationAllowance := 0;
+                totalFacilitatorAllowance := 0;
+                totalSecretariatAllowance := 0;
+                totalRapporteurAllowance := 0;
+                totalRetreatAllowance := 0;
+                totalExpertAllowance := 0;
+                totalAirTicket := 0;
+                totalOutOfPocketAllowance := 0;
+                totalTuitionFee := 0;
+                totalMileageAllowance := 0;
+                totalQuarterPerDiem := 0;
+                OtherAmount := 0;
+
                 MemoLineApp.SetRange("No.", "No.");
                 if MemoLineApp.Find('-') then begin
                     repeat
-                        if (MemoLineApp.DSA > 0) or (MemoLineApp."Cordination Allowance" > 0) or (MemoLineApp."Facilitator Allowance" > 0) or (MemoLineApp."Secretariat Allowance" > 0) or (MemoLineApp."Rapporteur Allowance" > 0) or (MemoLineApp."Retreat Allowance" > 0) or (MemoLineApp."Expert Allowance" > 0)
-                         or (MemoLineApp."Out of Pocket Allowance" > 0) or (MemoLineApp."Tuition Fee" > 0) or (MemoLineApp."Mileage Allowance" > 0) or (MemoLineApp."Quarter Per Diem" > 0) then
-                            TotalGrandTwice += (MemoLineApp.DSA + MemoLineApp."Cordination Allowance" + MemoLineApp."Facilitator Allowance" + MemoLineApp."Secretariat Allowance" + MemoLineApp."Rapporteur Allowance" + MemoLineApp."Retreat Allowance" + MemoLineApp."Expert Allowance"
-                             + MemoLineApp."Out of Pocket Allowance" + MemoLineApp."Tuition Fee" + MemoLineApp."Mileage Allowance" + MemoLineApp."Quarter Per Diem") * memoLineApp."Total Days in the Field";
+                        if MemoLineApp.DSA > 0 then
+                            TotalDsaAllowance += MemoLineApp.DSA * MemoLineApp."Total Days in the Field";
+                        if MemoLineApp."Cordination Allowance" > 0 then
+                            TotalCordinationAllowance += MemoLineApp."Cordination Allowance" * MemoLineApp."Total Days in the Field";
+                        if MemoLineApp."Facilitator Allowance" > 0 then
+                            totalFacilitatorAllowance += MemoLineApp."Facilitator Allowance" * MemoLineApp."Total Days in the Field";
+                        if MemoLineApp."Secretariat Allowance" > 0 then
+                            totalSecretariatAllowance += MemoLineApp."Secretariat Allowance" * MemoLineApp."Total Days in the Field";
+                        if MemoLineApp."Rapporteur Allowance" > 0 then
+                            totalRapporteurAllowance += MemoLineApp."Rapporteur Allowance" * MemoLineApp."Total Days in the Field";
+                        if MemoLineApp."Retreat Allowance" > 0 then
+                            totalRetreatAllowance += MemoLineApp."Retreat Allowance" * MemoLineApp."Total Days in the Field";
+                        if MemoLineApp."Expert Allowance" > 0 then
+                            totalExpertAllowance += MemoLineApp."Expert Allowance" * MemoLineApp."Total Days in the Field";
+                        if MemoLineApp."Out of Pocket Allowance" > 0 then
+                            totalOutOfPocketAllowance += MemoLineApp."Out of Pocket Allowance" * MemoLineApp."Total Days in the Field";
+                        if MemoLineApp."Tuition Fee" > 0 then
+                            totalTuitionFee += MemoLineApp."Tuition Fee" * MemoLineApp."Total Days in the Field";
+                        if MemoLineApp."Mileage Allowance" > 0 then
+                            totalMileageAllowance += MemoLineApp."Mileage Allowance" * MemoLineApp."Total Days in the Field";
+                        if MemoLineApp."Quarter Per Diem" > 0 then
+                            totalQuarterPerDiem += MemoLineApp."Quarter Per Diem" * MemoLineApp."Total Days in the Field";
 
 
-                        if (MemoLineApp."Air Ticket" > 0) or (MemoLineApp."Conference" > 0) or (MemoLineApp."Ground Transport" > 0) or (MemoLineApp.Accomodation > 0) then
-                            TotalGrandonce += (MemoLineApp."Air Ticket" + MemoLineApp."Conference" + MemoLineApp."Ground Transport" + MemoLineApp.Accomodation);
+                        // if (MemoLineApp."Air Ticket" > 0) or (MemoLineApp."Conference" > 0) or (MemoLineApp."Ground Transport" > 0) or (MemoLineApp.Accomodation > 0) then
+                        //     TotalGrandonce += (MemoLineApp."Air Ticket" + MemoLineApp."Conference" + MemoLineApp."Ground Transport" + MemoLineApp.Accomodation);
+
+                        if (MemoLineApp."Air Ticket" > 0) then
+                            totalAirTicket += MemoLineApp."Air Ticket";
+                        if (MemoLineApp."Conference" > 0) then
+                            totalConference += MemoLineApp."Conference";
+                        if (MemoLineApp."Ground Transport" > 0) then
+                            totalGroundTransport += MemoLineApp."Ground Transport";
+                        if (MemoLineApp.Accomodation > 0) then
+                            totalAccommodation += MemoLineApp.Accomodation;
+
                     until MemoLineApp.Next() = 0;
+                    TotalGrandTwice := TotalDsaAllowance + TotalCordinationAllowance + totalFacilitatorAllowance + totalSecretariatAllowance + totalRapporteurAllowance + totalRetreatAllowance + totalExpertAllowance + totalOutOfPocketAllowance + totalTuitionFee + totalMileageAllowance + totalQuarterPerDiem;
+
+                    TotalGrandonce := totalAirTicket + totalConference + totalGroundTransport + totalAccommodation;
+
                     totalGrandTotal := TotalGrandonce + TotalGrandTwice;
                 end
 
@@ -548,18 +596,35 @@ report 53012 "Memo Report"
     end;
 
     var
+        totalConference: Decimal;
+        totalGroundTransport: Decimal;
+        totalAccommodation: Decimal;
+        DsaAllowance: Decimal;
+        TotalDsaAllowance: Decimal;
 
         CordinationAllowance: Decimal;
+        TotalCordinationAllowance: Decimal;
         FacilitatorAllowance: Decimal;
+        totalFacilitatorAllowance: Decimal;
         SecretariatAllowance: Decimal;
+        totalSecretariatAllowance: Decimal;
         RapporteurAllowance: Decimal;
+        totalRapporteurAllowance: Decimal;
         RetreatAllowance: Decimal;
+        totalRetreatAllowance: Decimal;
         ExpertAllowance: Decimal;
+        totalExpertAllowance: Decimal;
+        AirTicketAllowance: Decimal;
+        totalAirTicket: Decimal;
         OutOfPocketAllowanceDec: Decimal;
+        totalOutOfPocketAllowance: Decimal;
         TuitionFeeDEC: Decimal;
+        totalTuitionFee: Decimal;
         MileageAllowanceDec: Decimal;
+        totalMileageAllowance: Decimal;
         QuarterPerDiemDec: Decimal;
         OtherCostLine: Integer;
+        totalQuarterPerDiem: Decimal;
         myInt: Integer;
         CompInfo: Record "Company Information";
         CompanyInfo: Record "Company Information";
