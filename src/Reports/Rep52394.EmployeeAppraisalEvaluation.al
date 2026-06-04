@@ -10,7 +10,7 @@ report 52394 "Employee Appraisal Evaluation"
     {
         dataitem(EmployeeAppraisal; "Employee Appraisal")
         {
-            CalcFields = "Responsibilty Center", "Total Weighting", "Total FY Rating", "Total FY Attributes", "Current Review Score", "Total Review Score";
+            CalcFields = "Responsibilty Center", "Total Weighting", "Total FY Rating", "Total FY Attributes", "Current Review Score", "Total Review Score", "Review Start Date", "Review End Date";
             RequestFilterFields = "Appraisal Period", "Appraisal Type", "Department Code", "Current Review Period Code", Status, "Appraisal Status";
 
             column(CompName; CompanyInfo.Name) { }
@@ -24,8 +24,8 @@ report 52394 "Employee Appraisal Evaluation"
             column(ResponsibilityCenter; "Responsibilty Center") { }
             column(DirectorateDimensionCode; DirectorateDimensionCode) { }
             column(DirectorateFilter; DirectorateFilter) { }
-            column(DirectorateCode; AppraisalReportingMgt.GetDirectorateCode("Employee No")) { }
-            column(DirectorateName; AppraisalReportingMgt.GetDirectorateName("Employee No")) { }
+            column(DirectorateCode; AppraisalReportingMgt.GetDirectorateCodeForAppraisal(EmployeeAppraisal)) { }
+            column(DirectorateName; AppraisalReportingMgt.GetDirectorateNameForAppraisal(EmployeeAppraisal)) { }
             column(AppraisalPeriod; "Appraisal Period") { }
             column(AppraisalTypeCode; "Appraisal Type") { }
             column(AppraisalTypeOption; Format(AppraisalType)) { }
@@ -37,6 +37,8 @@ report 52394 "Employee Appraisal Evaluation"
             column(TotalPercentageFYRating; "Total Percentage FY Rating") { }
             column(GradeFinalYearRating; "Grade final year rating") { }
             column(CurrentReviewPeriod; "Current Review Period Code") { }
+            column(ReviewStartDate; "Review Start Date") { }
+            column(ReviewEndDate; "Review End Date") { }
             column(CurrentReviewScore; "Current Review Score") { }
             column(TotalReviewScore; "Total Review Score") { }
             column(BSCPlanningNo; "BSC Planning No.") { }
@@ -73,7 +75,7 @@ report 52394 "Employee Appraisal Evaluation"
 
             trigger OnAfterGetRecord()
             begin
-                if (DirectorateFilter <> '') and (AppraisalReportingMgt.GetDirectorateCode("Employee No") <> DirectorateFilter) then
+                if (DirectorateFilter <> '') and (AppraisalReportingMgt.GetDirectorateCodeForAppraisal(EmployeeAppraisal) <> DirectorateFilter) then
                     CurrReport.Skip();
             end;
         }

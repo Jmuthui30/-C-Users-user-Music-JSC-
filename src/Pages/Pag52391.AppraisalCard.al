@@ -54,6 +54,20 @@ page 52391 "Appraisal Card"
                     Caption = 'Review Period';
                     ToolTip = 'Specifies the current quarterly review period.';
                 }
+                field("Review Start Date"; Rec."Review Start Date")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Review From';
+                    Editable = false;
+                    ToolTip = 'Specifies the start date of the selected review period.';
+                }
+                field("Review End Date"; Rec."Review End Date")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Review To';
+                    Editable = false;
+                    ToolTip = 'Specifies the end date of the selected review period.';
+                }
                 label("PERSONAL PARTICULARS:")
                 {
                     Style = Strong;
@@ -78,6 +92,18 @@ page 52391 "Appraisal Card"
                 {
                     Editable = false;
                     ToolTip = 'Specifies the value of the Job Group field';
+                }
+                field("Directorate Code"; Rec."Directorate Code")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies the employee directorate captured for this appraisal.';
+                }
+                field("Directorate Name"; Rec."Directorate Name")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies the employee directorate name captured for this appraisal.';
                 }
                 label("Appraiser:")
                 {
@@ -521,11 +547,63 @@ page 52391 "Appraisal Card"
                     Page.RunModal(Page::"Appraisal Review History", AppraisalLine);
                 end;
             }
+            action("View Comment History")
+            {
+                ApplicationArea = All;
+                Caption = 'View Comment History';
+                Image = History;
+                Promoted = true;
+                PromotedCategory = Category4;
+                ToolTip = 'Shows period-specific and final appraisal comments for this appraisal.';
+
+                trigger OnAction()
+                var
+                    AppraisalComment: Record "Appraisal Comments";
+                begin
+                    AppraisalComment.SetRange("Appraisal No.", Rec."Appraisal No");
+                    Page.RunModal(Page::"Appraisal Comment History", AppraisalComment);
+                end;
+            }
+            action("Related Grievances")
+            {
+                ApplicationArea = All;
+                Caption = 'Related Grievances';
+                Image = List;
+                Promoted = true;
+                PromotedCategory = Category4;
+                ToolTip = 'Shows incidence and grievance records for this appraisee during the current review period.';
+
+                trigger OnAction()
+                var
+                    AppraisalRelatedHRMgt: Codeunit "Appraisal Related HR Mgt.";
+                begin
+                    AppraisalRelatedHRMgt.OpenRelatedGrievances(Rec);
+                end;
+            }
+            action("Related Disciplinary Cases")
+            {
+                ApplicationArea = All;
+                Caption = 'Related Disciplinary Cases';
+                Image = List;
+                Promoted = true;
+                PromotedCategory = Category4;
+                ToolTip = 'Shows staff disciplinary and misconduct records for this appraisee during the current review period.';
+
+                trigger OnAction()
+                var
+                    AppraisalRelatedHRMgt: Codeunit "Appraisal Related HR Mgt.";
+                begin
+                    AppraisalRelatedHRMgt.OpenRelatedDisciplinaryCases(Rec);
+                end;
+            }
         }
     }
 
     trigger OnAfterGetRecord()
     begin
+        if Rec.EnsureEmployeeJobTitles() then
+            Rec.Modify(false);
+
         HRManagement.UpdateAppraisalScores(Rec."Appraisal No", Rec."Employee No");
         CurrPage.Update();
     end;

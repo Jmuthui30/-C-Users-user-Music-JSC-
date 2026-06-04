@@ -1,14 +1,15 @@
 report 52324 "Employee Objectives - New"
 {
     ApplicationArea = All;
-    DefaultLayout = RDLC;
+    DefaultLayout = Word;
     RDLCLayout = './src/report_layout/EmployeeObjectivesNew.rdl';
+    WordLayout = './src/report_layout/EmployeeObjectivesNew.docx';
     Caption = 'Employee Objectives - New';
     dataset
     {
         dataitem(Appraisal; "Employee Appraisal")
         {
-            CalcFields = "Responsibilty Center", "Current Review Score", "Total Review Score";
+            CalcFields = "Responsibilty Center", "Current Review Score", "Total Review Score", "Review Start Date", "Review End Date";
 
             column(AppraisalNo_Appraisal; Appraisal."Appraisal No")
             {
@@ -52,6 +53,12 @@ report 52324 "Employee Objectives - New"
             column(DepartmentCode_Appraisal; Appraisal."Department Code")
             {
             }
+            column(DirectorateCode_Appraisal; AppraisalReportingMgt.GetDirectorateCodeForAppraisal(Appraisal))
+            {
+            }
+            column(DirectorateName_Appraisal; AppraisalReportingMgt.GetDirectorateNameForAppraisal(Appraisal))
+            {
+            }
             column(PeriodStart_Appraisal; Appraisal."Period Start")
             {
             }
@@ -79,7 +86,22 @@ report 52324 "Employee Objectives - New"
             column(JobGroup; Employee."Salary Scale")
             {
             }
+            column(AcademicQualificationText; GetQualificationDescription(Appraisal."Employee No", 'Academic'))
+            {
+            }
+            column(ProfessionalQualificationText; GetQualificationDescription(Appraisal."Employee No", 'Professional'))
+            {
+            }
+            column(ObjectivePlanSummaryText; GetObjectivePlanSummary(Appraisal."Appraisal No", Appraisal."Current Review Period Code"))
+            {
+            }
             column(CurrentReviewPeriod; Appraisal."Current Review Period Code")
+            {
+            }
+            column(ReviewStartDate_Appraisal; Appraisal."Review Start Date")
+            {
+            }
+            column(ReviewEndDate_Appraisal; Appraisal."Review End Date")
             {
             }
             column(CurrentReviewScore; Appraisal."Current Review Score")
@@ -229,6 +251,9 @@ report 52324 "Employee Objectives - New"
                 column(Person_Comments; Comments.Person)
                 {
                 }
+                column(ReviewPeriodCode_Comments; Comments."Review Period Code")
+                {
+                }
                 column(PerformanceRelatedDicussions_Comments; Comments."Performance Related Dicussions")
                 {
                 }
@@ -247,6 +272,12 @@ report 52324 "Employee Objectives - New"
                 column(Date_Comments; Comments.Date)
                 {
                 }
+
+                trigger OnPreDataItem()
+                begin
+                    if Appraisal."Current Review Period Code" <> '' then
+                        SetFilter("Review Period Code", '%1|%2', '', Appraisal."Current Review Period Code");
+                end;
             }
             dataitem("Training Request"; "Training Request")
             {
@@ -318,6 +349,7 @@ report 52324 "Employee Objectives - New"
     end;
 
     var
+        AppraisalReportingMgt: Codeunit "Appraisal Reporting Mgt.";
         CompInfo: Record "Company Information";
         Employee: Record Employee;
 
@@ -329,6 +361,64 @@ report 52324 "Employee Objectives - New"
             exit(Format(Qualification."Qualification Type"));
 
         exit('');
+    end;
+
+    local procedure GetQualificationDescription(EmployeeNo: Code[20]; QualificationTypeFilter: Text): Text
+    var
+        EmployeeQualification: Record "Employee Qualification";
+        QualificationDate: Date;
+        SelectedDate: Date;
+        SelectedDescription: Text;
+    begin
+        EmployeeQualification.Reset();
+        EmployeeQualification.SetRange("Employee No.", EmployeeNo);
+        if EmployeeQualification.FindSet() then
+            repeat
+                if GetQualificationType(EmployeeQualification."Qualification Code") = QualificationTypeFilter then begin
+                    QualificationDate := EmployeeQualification."To Date";
+                    if QualificationDate = 0D then
+                        QualificationDate := EmployeeQualification."From Date";
+
+                    if (SelectedDescription = '') or (QualificationDate >= SelectedDate) then begin
+                        SelectedDate := QualificationDate;
+                        SelectedDescription := EmployeeQualification.Description;
+                    end;
+                end;
+            until EmployeeQualification.Next() = 0;
+
+        exit(SelectedDescription);
+    end;
+
+    local procedure GetObjectivePlanSummary(AppraisalNo: Code[20]; ReviewPeriodCode: Code[20]): Text
+    var
+        AppraisalLine: Record "Appraisal Lines";
+        Builder: TextBuilder;
+        LineIndex: Integer;
+    begin
+        AppraisalLine.Reset();
+        AppraisalLine.SetRange("Appraisal No", AppraisalNo);
+        AppraisalLine.SetFilter("Workplan Code", '<>%1', '');
+        if ReviewPeriodCode <> '' then
+            AppraisalLine.SetRange("Review Period Code", ReviewPeriodCode);
+
+        if AppraisalLine.FindSet() then
+            repeat
+                LineIndex += 1;
+                Builder.AppendLine(StrSubstNo('%1. %2', LineIndex, AppraisalLine."Workplan Description"));
+                Builder.AppendLine(StrSubstNo('   Review Period: %1 | Measure: %2 | Target: %3 | Weighting: %4%',
+                    AppraisalLine."Review Period Code",
+                    AppraisalLine."Performance Measure",
+                    AppraisalLine."FY Target",
+                    AppraisalLine.Weighting));
+                if AppraisalLine."Appraisee's comments" <> '' then
+                    Builder.AppendLine(StrSubstNo('   Appraisee Planning Comments: %1', AppraisalLine."Appraisee's comments"));
+                Builder.AppendLine('');
+            until AppraisalLine.Next() = 0;
+
+        if LineIndex = 0 then
+            exit('No objective lines have been captured for this appraisal.');
+
+        exit(Builder.ToText());
     end;
 }
 

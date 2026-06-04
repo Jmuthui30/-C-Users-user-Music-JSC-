@@ -222,9 +222,11 @@ page 52185 "Appraisal Card-Completed"
 
                 trigger OnAction()
                 begin
-                    Clear(EmployeeAppraisals);
+                    Clear(EmployeeObjectives);
+                    EmployeeApp.Reset();
                     EmployeeApp.SetRange("Appraisal No", Rec."Appraisal No");
                     EmployeeObjectives.SetTableView(EmployeeApp);
+                    Commit();
                     EmployeeObjectives.RunModal();
                 end;
             }
@@ -239,8 +241,10 @@ page 52185 "Appraisal Card-Completed"
                 trigger OnAction()
                 begin
                     Clear(EmployeeAppraisals);
+                    EmployeeApp.Reset();
                     EmployeeApp.SetRange("Appraisal No", Rec."Appraisal No");
                     EmployeeAppraisals.SetTableView(EmployeeApp);
+                    Commit();
                     EmployeeAppraisals.RunModal();
                 end;
             }

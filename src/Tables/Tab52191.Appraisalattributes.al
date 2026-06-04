@@ -50,6 +50,7 @@ table 52191 "Appraisal - attributes"
         field(7; Rating; Decimal)
         {
             Caption = 'Rating';
+            MinValue = 0;
         }
         field(8; Remarks; Text[500])
         {
@@ -58,6 +59,7 @@ table 52191 "Appraisal - attributes"
         field(9; "Expected rating attributes"; Decimal)
         {
             Caption = 'Expected rating';
+            MinValue = 0;
         }
     }
 
@@ -68,6 +70,39 @@ table 52191 "Appraisal - attributes"
             Clustered = true;
         }
     }
+
+    trigger OnDelete()
+    begin
+        UpdateHeaderAttributeScores(-Rating, -"Expected rating attributes");
+    end;
+
+    trigger OnInsert()
+    begin
+        UpdateHeaderAttributeScores(Rating, "Expected rating attributes");
+    end;
+
+    trigger OnModify()
+    begin
+        UpdateHeaderAttributeScores(Rating - xRec.Rating, "Expected rating attributes" - xRec."Expected rating attributes");
+    end;
+
+    local procedure UpdateHeaderAttributeScores(TotalRatingAdjustment: Decimal; ExpectedRatingAdjustment: Decimal)
+    var
+        EmployeeAppraisal: Record "Employee Appraisal";
+        ExpectedAttributeRating: Decimal;
+        TotalAttributeRating: Decimal;
+    begin
+        if "Appraisal No." = '' then
+            exit;
+
+        if EmployeeAppraisal.Get("Appraisal No.") then begin
+            EmployeeAppraisal.CalcFields("Total FY Attributes", "Expected TR -attributes");
+            TotalAttributeRating := EmployeeAppraisal."Total FY Attributes" + TotalRatingAdjustment;
+            ExpectedAttributeRating := EmployeeAppraisal."Expected TR -attributes" + ExpectedRatingAdjustment;
+            EmployeeAppraisal.ApplyAttributeScoreTotals(TotalAttributeRating, ExpectedAttributeRating);
+            EmployeeAppraisal.Modify(true);
+        end;
+    end;
 }
 
 

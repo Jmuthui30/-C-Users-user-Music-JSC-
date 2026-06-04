@@ -37,6 +37,76 @@ codeunit 52393 "Appraisal Outcome Mgt."
         exit(Outcome);
     end;
 
+    procedure EmailOutcomeLetter(var Outcome: Record "Appraisal Outcome")
+    var
+        Base64Convert: Codeunit "Base64 Convert";
+        CompanyInfo: Record "Company Information";
+        Email: Codeunit Email;
+        EmailMessage: Codeunit "Email Message";
+        Employee: Record Employee;
+        OutcomeLetter: Report "Appraisal Outcome Letter";
+        OutcomeToSend: Record "Appraisal Outcome";
+        TempBlob: Codeunit "Temp Blob";
+        AttachInStream: InStream;
+        AttachOutStream: OutStream;
+        Base64Attachment: Text;
+        Body: Text;
+        FileName: Text;
+        RecipientEmail: Text;
+        Recipients: List of [Text];
+    begin
+        Outcome.TestField("Appraisal No.");
+        Outcome.TestField("Outcome Type");
+        Outcome.TestField("Line No.");
+        Outcome.TestField("Employee No.");
+        Outcome.TestField(Subject);
+
+        if Outcome.Status = Outcome.Status::Archived then
+            Error('Archived appraisal outcome letters cannot be emailed.');
+
+        Employee.Get(Outcome."Employee No.");
+        RecipientEmail := Employee."Company E-Mail";
+        if RecipientEmail = '' then
+            RecipientEmail := Employee."E-Mail";
+        if RecipientEmail = '' then
+            Error('Employee %1 does not have a company or personal email address.', Outcome."Employee No.");
+
+        CompanyInfo.Get();
+
+        OutcomeToSend.Reset();
+        OutcomeToSend.SetRange("Appraisal No.", Outcome."Appraisal No.");
+        OutcomeToSend.SetRange("Outcome Type", Outcome."Outcome Type");
+        OutcomeToSend.SetRange("Line No.", Outcome."Line No.");
+
+        Clear(OutcomeLetter);
+        OutcomeLetter.SetTableView(OutcomeToSend);
+        TempBlob.CreateOutStream(AttachOutStream);
+        if not OutcomeLetter.SaveAs('', ReportFormat::Word, AttachOutStream) then
+            Error('The appraisal outcome letter could not be generated.');
+
+        TempBlob.CreateInStream(AttachInStream);
+        Base64Attachment := Base64Convert.ToBase64(AttachInStream, true);
+
+        Recipients.Add(RecipientEmail);
+        Body :=
+            StrSubstNo(
+                '<p style="font-family:Verdana,Arial;font-size:10pt">Dear <b>%1</b>,</p>' +
+                '<p style="font-family:Verdana,Arial;font-size:10pt">Please find attached your appraisal outcome letter for appraisal <b>%2</b>, period <b>%3</b>.</p>' +
+                '<p style="font-family:Verdana,Arial;font-size:10pt">Kind Regards,<br>Human Resource Management<br>%4</p>',
+                Outcome."Employee Name",
+                Outcome."Appraisal No.",
+                Outcome."Appraisal Period",
+                CompanyInfo.Name);
+
+        EmailMessage.Create(Recipients, Outcome.Subject, Body, true);
+        FileName := GetSafeFileName(StrSubstNo('Appraisal Outcome Letter %1.docx', Outcome."Outcome No."));
+        EmailMessage.AddAttachment(FileName, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', Base64Attachment);
+        Email.Send(EmailMessage);
+
+        if Outcome.Status <> Outcome.Status::Issued then
+            Outcome.MarkIssued();
+    end;
+
     local procedure GetExistingOutcome(EmployeeAppraisal: Record "Employee Appraisal"; OutcomeType: Enum "Appraisal Outcome Type"; var Outcome: Record "Appraisal Outcome"): Boolean
     begin
         Outcome.Reset();
@@ -44,6 +114,12 @@ codeunit 52393 "Appraisal Outcome Mgt."
         Outcome.SetRange("Outcome Type", OutcomeType);
         Outcome.SetFilter(Status, '<>%1', Outcome.Status::Archived);
         exit(Outcome.FindLast());
+    end;
+
+    local procedure GetSafeFileName(FileName: Text): Text
+    begin
+        FileName := DelChr(FileName, '=', '/\:*?"<>|');
+        exit(FileName);
     end;
 
     local procedure GetAppraisalOutcomeNoSeries(): Code[20]

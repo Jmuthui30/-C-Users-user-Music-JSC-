@@ -15,6 +15,18 @@ page 51751 "Training Needs Header Approval"
                 {
                     ApplicationArea = All;
                 }
+                field("Need Source"; Rec."Need Source")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies where this training needs assessment originated.';
+                }
+                field("Source Document No"; Rec."Source Document No")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies the source document, such as the appraisal number that created this assessment.';
+                }
                 field("Employee No"; Rec."Employee No")
                 {
                     ApplicationArea = All;

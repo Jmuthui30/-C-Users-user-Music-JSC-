@@ -1,14 +1,15 @@
 report 52023 "Employee Appraisal - New"
 {
     ApplicationArea = All;
-    DefaultLayout = RDLC;
+    DefaultLayout = Word;
     RDLCLayout = './src/report_layout/EmployeeAppraisalNew.rdl';
+    WordLayout = './src/report_layout/EmployeeAppraisalNew.docx';
     Caption = 'Employee Appraisal - New';
     dataset
     {
         dataitem(Appraisal; "Employee Appraisal")
         {
-            CalcFields = "Responsibilty Center", "Current Review Score", "Total Review Score";
+            CalcFields = "Responsibilty Center", "Current Review Score", "Total Review Score", "Review Start Date", "Review End Date";
 
             column(AppraisalNo_Appraisal; Appraisal."Appraisal No")
             {
@@ -52,6 +53,12 @@ report 52023 "Employee Appraisal - New"
             column(DepartmentCode_Appraisal; Appraisal."Department Code")
             {
             }
+            column(DirectorateCode_Appraisal; AppraisalReportingMgt.GetDirectorateCodeForAppraisal(Appraisal))
+            {
+            }
+            column(DirectorateName_Appraisal; AppraisalReportingMgt.GetDirectorateNameForAppraisal(Appraisal))
+            {
+            }
             column(PeriodStart_Appraisal; Appraisal."Period Start")
             {
             }
@@ -82,6 +89,24 @@ report 52023 "Employee Appraisal - New"
             column(JobGroup; Employee."Salary Scale")
             {
             }
+            column(AcademicQualificationText; GetQualificationDescription(Appraisal."Employee No", 'Academic'))
+            {
+            }
+            column(ProfessionalQualificationText; GetQualificationDescription(Appraisal."Employee No", 'Professional'))
+            {
+            }
+            column(ObjectivesSummaryText; GetObjectivesSummary(Appraisal."Appraisal No", ''))
+            {
+            }
+            column(CurrentReviewObjectivesText; GetObjectivesSummary(Appraisal."Appraisal No", Appraisal."Current Review Period Code"))
+            {
+            }
+            column(AppraiseeCommentsSummaryText; GetCommentsSummary(Appraisal."Appraisal No", 'Appraisee', Appraisal."Current Review Period Code"))
+            {
+            }
+            column(AppraiserCommentsSummaryText; GetCommentsSummary(Appraisal."Appraisal No", 'Appraiser', Appraisal."Current Review Period Code"))
+            {
+            }
             column(MidYear; MidYear)
             {
             }
@@ -89,6 +114,12 @@ report 52023 "Employee Appraisal - New"
             {
             }
             column(CurrentReviewPeriod; Appraisal."Current Review Period Code")
+            {
+            }
+            column(ReviewStartDate_Appraisal; Appraisal."Review Start Date")
+            {
+            }
+            column(ReviewEndDate_Appraisal; Appraisal."Review End Date")
             {
             }
             column(CurrentReviewScore; Appraisal."Current Review Score")
@@ -295,6 +326,9 @@ report 52023 "Employee Appraisal - New"
                 column(Person_Comments; Comments.Person)
                 {
                 }
+                column(ReviewPeriodCode_Comments; Comments."Review Period Code")
+                {
+                }
                 column(PerformanceRelatedDicussions_Comments; Comments."Performance Related Dicussions")
                 {
                 }
@@ -313,6 +347,12 @@ report 52023 "Employee Appraisal - New"
                 column(Date_Comments; Comments.Date)
                 {
                 }
+
+                trigger OnPreDataItem()
+                begin
+                    if Appraisal."Current Review Period Code" <> '' then
+                        SetFilter("Review Period Code", '%1|%2', '', Appraisal."Current Review Period Code");
+                end;
             }
             dataitem("Training Request"; "Training Request")
             {
@@ -400,6 +440,7 @@ report 52023 "Employee Appraisal - New"
     end;
 
     var
+        AppraisalReportingMgt: Codeunit "Appraisal Reporting Mgt.";
         CompInfo: Record "Company Information";
         Employee: Record Employee;
         Qualification: Record Qualification;
@@ -412,6 +453,103 @@ report 52023 "Employee Appraisal - New"
             exit(Format(Qualification."Qualification Type"));
 
         exit('');
+    end;
+
+    local procedure GetQualificationDescription(EmployeeNo: Code[20]; QualificationTypeFilter: Text): Text
+    var
+        EmployeeQualification: Record "Employee Qualification";
+        QualificationDate: Date;
+        SelectedDate: Date;
+        SelectedDescription: Text;
+    begin
+        EmployeeQualification.Reset();
+        EmployeeQualification.SetRange("Employee No.", EmployeeNo);
+        if EmployeeQualification.FindSet() then
+            repeat
+                if GetQualificationType(EmployeeQualification."Qualification Code") = QualificationTypeFilter then begin
+                    QualificationDate := EmployeeQualification."To Date";
+                    if QualificationDate = 0D then
+                        QualificationDate := EmployeeQualification."From Date";
+
+                    if (SelectedDescription = '') or (QualificationDate >= SelectedDate) then begin
+                        SelectedDate := QualificationDate;
+                        SelectedDescription := EmployeeQualification.Description;
+                    end;
+                end;
+            until EmployeeQualification.Next() = 0;
+
+        exit(SelectedDescription);
+    end;
+
+    local procedure GetObjectivesSummary(AppraisalNo: Code[20]; ReviewPeriodCode: Code[20]): Text
+    var
+        AppraisalLine: Record "Appraisal Lines";
+        Builder: TextBuilder;
+        LineIndex: Integer;
+    begin
+        AppraisalLine.Reset();
+        AppraisalLine.SetRange("Appraisal No", AppraisalNo);
+        AppraisalLine.SetFilter("Workplan Code", '<>%1', '');
+        if ReviewPeriodCode <> '' then
+            AppraisalLine.SetRange("Review Period Code", ReviewPeriodCode);
+
+        if AppraisalLine.FindSet() then
+            repeat
+                LineIndex += 1;
+                Builder.AppendLine(StrSubstNo('%1. %2', LineIndex, AppraisalLine."Workplan Description"));
+                Builder.AppendLine(StrSubstNo('   Review Period: %1 | Measure: %2 | Target: %3 | Actual: %4 | Achieved: %5% | Weighting: %6% | Self Rating: %7 | Appraiser Rating: %8 | Score: %9',
+                    AppraisalLine."Review Period Code",
+                    AppraisalLine."Performance Measure",
+                    AppraisalLine."FY Target",
+                    AppraisalLine.Actual,
+                    AppraisalLine."Achieved (%)",
+                    AppraisalLine.Weighting,
+                    AppraisalLine."Self Rating",
+                    AppraisalLine."Appraiser Rating",
+                    AppraisalLine."Quarter Score"));
+                if AppraisalLine."Appraisee's comments" <> '' then
+                    Builder.AppendLine(StrSubstNo('   Appraisee Comments: %1', AppraisalLine."Appraisee's comments"));
+                if AppraisalLine."Results Achieved Comments" <> '' then
+                    Builder.AppendLine(StrSubstNo('   Appraiser Comments: %1', AppraisalLine."Results Achieved Comments"));
+                if AppraisalLine."Corrective Action" <> '' then
+                    Builder.AppendLine(StrSubstNo('   Corrective Action: %1', AppraisalLine."Corrective Action"));
+                Builder.AppendLine('');
+            until AppraisalLine.Next() = 0;
+
+        if LineIndex = 0 then
+            exit('No objective lines have been captured for this appraisal.');
+
+        exit(Builder.ToText());
+    end;
+
+    local procedure GetCommentsSummary(AppraisalNo: Code[20]; PersonFilter: Text; ReviewPeriodCode: Code[20]): Text
+    var
+        AppraisalComment: Record "Appraisal Comments";
+        Builder: TextBuilder;
+        HasComment: Boolean;
+    begin
+        AppraisalComment.Reset();
+        AppraisalComment.SetRange("Appraisal No.", AppraisalNo);
+        AppraisalComment.SetFilter(Person, PersonFilter);
+        if ReviewPeriodCode <> '' then
+            AppraisalComment.SetFilter("Review Period Code", '%1|%2', '', ReviewPeriodCode);
+        if AppraisalComment.FindSet() then
+            repeat
+                HasComment := true;
+                if AppraisalComment."Comments on Performance" <> '' then
+                    Builder.AppendLine(StrSubstNo('Performance: %1', AppraisalComment."Comments on Performance"));
+                if AppraisalComment."Comments On Supervisor" <> '' then
+                    Builder.AppendLine(StrSubstNo('Supervisor: %1', AppraisalComment."Comments On Supervisor"));
+                if AppraisalComment."Performance Related Dicussions" then
+                    Builder.AppendLine('Performance Discussion: Yes');
+                Builder.AppendLine(StrSubstNo('Discussion Help: %1', Format(AppraisalComment."Extent of Discussion Help")));
+                Builder.AppendLine('');
+            until AppraisalComment.Next() = 0;
+
+        if not HasComment then
+            exit('No comments have been captured.');
+
+        exit(Builder.ToText());
     end;
 }
 

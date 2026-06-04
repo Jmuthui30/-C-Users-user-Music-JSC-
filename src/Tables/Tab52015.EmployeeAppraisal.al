@@ -20,10 +20,12 @@ table 52015 "Employee Appraisal"
             begin
                 if Employee.Get("Employee No") then begin
                     "Appraisee Name" := Employee.FullName();
-                    "Appraisee's Job Title" := Employee."Job Position Title";
+                    "Appraisee's Job Title" := GetEmployeeJobTitle(Employee);
                     "Job Group" := Employee."Salary Scale";
                     "Appraisee ID" := Employee."User ID";
                 end;
+
+                UpdateDirectorateSnapshot();
             end;
         }
         field(3; "Appraisal Type"; Code[20])
@@ -141,7 +143,7 @@ table 52015 "Employee Appraisal"
 
                 if Employee.Get("Appraiser No") then begin
                     "Appraisers Name" := Employee.FullName();
-                    "Appraiser's Job Title" := Employee."Job Position Title";
+                    "Appraiser's Job Title" := GetEmployeeJobTitle(Employee);
                     "Appraiser ID" := Employee."User ID";
                 end;
             end;
@@ -342,11 +344,7 @@ table 52015 "Employee Appraisal"
             //FieldClass = FlowField;
             trigger OnValidate()
             begin
-                Matrix.Reset();
-                Matrix.SetFilter(Start, '<=%1', "Total Percentage-Attributes");
-                Matrix.SetFilter("End", '>=%1', "Total Percentage-Attributes");
-                if Matrix.FindFirst() then
-                    "Grade-Attributes" := Matrix.Grade;
+                SetAttributePerformanceGrade();
             end;
         }
         field(58; "Total Percentage FY Rating"; Decimal)
@@ -357,11 +355,7 @@ table 52015 "Employee Appraisal"
             //FieldClass = FlowField;
             trigger OnValidate()
             begin
-                Matrix.Reset();
-                Matrix.SetFilter(Start, '<=%1', "Total Percentage FY Rating");
-                Matrix.SetFilter("End", '>=%1', "Total Percentage FY Rating");
-                if Matrix.FindFirst() then
-                    "Grade final year rating" := Matrix.Grade;
+                SetFinalYearPerformanceGrade();
             end;
         }
         field(59; "Grade final year rating"; Text[50])
@@ -442,6 +436,40 @@ table 52015 "Employee Appraisal"
             Editable = false;
             FieldClass = FlowField;
         }
+        field(72; "Review Start Date"; Date)
+        {
+            Caption = 'Review From';
+            CalcFormula = lookup("Bal Score Preview Periods"."Start Date" where(Code = field("Current Review Period Code")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(73; "Review End Date"; Date)
+        {
+            Caption = 'Review To';
+            CalcFormula = lookup("Bal Score Preview Periods"."End Date" where(Code = field("Current Review Period Code")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(74; "Directorate Dimension Code"; Code[20])
+        {
+            Caption = 'Directorate Dimension Code';
+            DataClassification = CustomerContent;
+            Editable = false;
+            TableRelation = Dimension.Code;
+        }
+        field(75; "Directorate Code"; Code[20])
+        {
+            Caption = 'Directorate Code';
+            DataClassification = CustomerContent;
+            Editable = false;
+            TableRelation = "Dimension Value".Code where("Dimension Code" = field("Directorate Dimension Code"));
+        }
+        field(76; "Directorate Name"; Text[100])
+        {
+            Caption = 'Directorate Name';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
 
     }
 
@@ -494,7 +522,8 @@ table 52015 "Employee Appraisal"
                 "Employee No" := Employee."No.";
                 "Appraisee Name" := Employee.FullName();
                 "Job Group" := Employee."Salary Scale";
-                "Appraisee's Job Title" := Employee."Job Position Title";
+                "Appraisee's Job Title" := GetEmployeeJobTitle(Employee);
+                UpdateDirectorateSnapshot();
                 //"Department Code":=Employee."Global Dimension 1 Code";
 
                 /*AppraisalType.RESET;
@@ -510,7 +539,7 @@ table 52015 "Employee Appraisal"
                     if Employee.Get(UserSetup."Employee No.") then begin
                         "Appraiser No" := Employee."No.";
                         "Appraisers Name" := Employee.FullName();
-                        "Appraiser's Job Title" := Employee."Job Position Title";
+                        "Appraiser's Job Title" := GetEmployeeJobTitle(Employee);
                     end;
             end;
 
@@ -519,6 +548,7 @@ table 52015 "Employee Appraisal"
 
         //Insert Workplan Codes
         if "Employee No" <> '' then begin
+            UpdateDirectorateSnapshot();
             CalcFields("Responsibilty Center");
             if "Responsibilty Center" <> '' then begin
                 AppraisalWorkplanCodes.Reset();
@@ -568,6 +598,101 @@ table 52015 "Employee Appraisal"
             exit(PreviewPeriod.Code);
 
         exit('');
+    end;
+
+    local procedure GetEmployeeJobTitle(EmployeeRecord: Record Employee): Text[50]
+    begin
+        if EmployeeRecord."Job Position Title" <> '' then
+            exit(CopyStr(EmployeeRecord."Job Position Title", 1, 50));
+
+        exit(CopyStr(EmployeeRecord."Job Title", 1, 50));
+    end;
+
+    procedure EnsureEmployeeJobTitles(): Boolean
+    var
+        Changed: Boolean;
+        EmployeeRecord: Record Employee;
+        JobTitle: Text[50];
+    begin
+        if EmployeeRecord.Get("Employee No") then begin
+            JobTitle := GetEmployeeJobTitle(EmployeeRecord);
+            if ("Appraisee's Job Title" = '') and (JobTitle <> '') then begin
+                "Appraisee's Job Title" := JobTitle;
+                Changed := true;
+            end;
+        end;
+
+        if EmployeeRecord.Get("Appraiser No") then begin
+            JobTitle := GetEmployeeJobTitle(EmployeeRecord);
+            if ("Appraiser's Job Title" = '') and (JobTitle <> '') then begin
+                "Appraiser's Job Title" := JobTitle;
+                Changed := true;
+            end;
+        end;
+
+        exit(Changed);
+    end;
+
+    procedure RecalculateAttributeScores()
+    begin
+        CalcFields("Total FY Attributes", "Expected TR -attributes");
+
+        ApplyAttributeScoreTotals("Total FY Attributes", "Expected TR -attributes");
+    end;
+
+    procedure ApplyAttributeScoreTotals(TotalAttributeRating: Decimal; ExpectedAttributeRating: Decimal)
+    begin
+        if ExpectedAttributeRating <= 0 then begin
+            "Total Percentage-Attributes" := 0;
+            Clear("Grade-Attributes");
+            exit;
+        end;
+
+        "Total Percentage-Attributes" := Round((TotalAttributeRating / ExpectedAttributeRating) * 100, 0.01);
+        SetAttributePerformanceGrade();
+    end;
+
+    procedure UpdateDirectorateSnapshot()
+    var
+        AppraisalReportingMgt: Codeunit "Appraisal Reporting Mgt.";
+        DirectorateCode: Code[20];
+        DirectorateDimensionCode: Code[20];
+        DirectorateName: Text[100];
+    begin
+        Clear("Directorate Dimension Code");
+        Clear("Directorate Code");
+        Clear("Directorate Name");
+
+        if "Employee No" = '' then
+            exit;
+
+        if AppraisalReportingMgt.TryGetDirectorateSnapshot("Employee No", DirectorateDimensionCode, DirectorateCode, DirectorateName) then begin
+            "Directorate Dimension Code" := DirectorateDimensionCode;
+            "Directorate Code" := DirectorateCode;
+            "Directorate Name" := DirectorateName;
+        end;
+    end;
+
+    local procedure SetAttributePerformanceGrade()
+    begin
+        Clear("Grade-Attributes");
+
+        Matrix.Reset();
+        Matrix.SetFilter(Start, '<=%1', "Total Percentage-Attributes");
+        Matrix.SetFilter("End", '>=%1', "Total Percentage-Attributes");
+        if Matrix.FindFirst() then
+            "Grade-Attributes" := Matrix.Grade;
+    end;
+
+    local procedure SetFinalYearPerformanceGrade()
+    begin
+        Clear("Grade final year rating");
+
+        Matrix.Reset();
+        Matrix.SetFilter(Start, '<=%1', "Total Percentage FY Rating");
+        Matrix.SetFilter("End", '>=%1', "Total Percentage FY Rating");
+        if Matrix.FindFirst() then
+            "Grade final year rating" := Matrix.Grade;
     end;
 }
 

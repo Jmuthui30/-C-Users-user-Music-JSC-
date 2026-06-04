@@ -26,6 +26,12 @@ page 52063 "HR Appraisal Dev Actions"
                     ToolTip = 'Specifies the value of the Person field';
                     Caption = 'Person';
                 }
+                field("Review Period Code"; Rec."Review Period Code")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
+                    ToolTip = 'Specifies the quarterly review period for this comment.';
+                }
                 field("Developmental Action"; Rec."Developmental Action")
                 {
                     ToolTip = 'Specifies the value of the Developmental Action field.';

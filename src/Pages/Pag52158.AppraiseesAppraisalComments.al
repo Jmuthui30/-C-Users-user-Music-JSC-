@@ -20,6 +20,12 @@ page 52158 "Appraisee's Appraisal Comments"
                     Visible = false;
                     ToolTip = 'Specifies the value of the Person field';
                 }
+                field("Review Period Code"; Rec."Review Period Code")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
+                    ToolTip = 'Specifies the quarterly review period for this comment.';
+                }
                 field("Performance Related Dicussions"; Rec."Performance Related Dicussions")
                 {
                     Visible = false;
