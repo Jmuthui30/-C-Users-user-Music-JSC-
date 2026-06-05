@@ -1271,12 +1271,14 @@ page 51793 "AL Finance, HR & Admin Manager"
                     Caption = 'Training Needs Assesment';
                     RunObject = Page "New Training Needs Assesment";
                 }
-                action("Training Nomination")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Training Nomination';
-                    RunObject = Page "Training Nomination List";
-                }
+                // Legacy standalone nomination process commented out.
+                // Use Proposed Training Participants on the Training Need card for the current shortlist flow.
+                // action("Training Nomination")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Training Nomination';
+                //     RunObject = Page "Training Nomination List";
+                // }
                 action("Training Evaluation")
                 {
                     ApplicationArea = All;

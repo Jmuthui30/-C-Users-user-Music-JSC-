@@ -1760,13 +1760,15 @@ page 51742 "HR & Admin Manager Role Center"
                         ToolTip = 'Open consolidated planned training needs for scheduling and approval readiness.';
                         Caption = 'Consolidated Training Plan';
                     }
-                    action("Training Nomination")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Training Nomination';
-                        RunObject = Page "Training Nomination List";
-                        ToolTip = 'Nominate or shortlist employees for planned trainings.';
-                    }
+                    // Legacy standalone nomination process commented out.
+                    // Use Proposed Training Participants on the Training Need card for the current shortlist flow.
+                    // action("Training Nomination")
+                    // {
+                    //     ApplicationArea = All;
+                    //     Caption = 'Training Nomination';
+                    //     RunObject = Page "Training Nomination List";
+                    //     ToolTip = 'Nominate or shortlist employees for planned trainings.';
+                    // }
                     action("On-Going Training Needs")
                     {
                         ApplicationArea = All;
@@ -1819,8 +1821,51 @@ page 51742 "HR & Admin Manager Role Center"
                     }
                     action("Approved Training Requests")
                     {
+                        ApplicationArea = All;
                         RunObject = report "Approved Training Requests";
                         Caption = 'Approved Training Requests';
+                    }
+                    action("Training Plan Summary")
+                    {
+                        ApplicationArea = All;
+                        RunObject = report "Training Plan Summary";
+                        Caption = 'Training Plan Summary';
+                    }
+                    action("Training Requirements")
+                    {
+                        ApplicationArea = All;
+                        RunObject = report "Training Requirements";
+                        Caption = 'Training Requirements';
+                    }
+                    action("Training Attendees")
+                    {
+                        ApplicationArea = All;
+                        RunObject = report "Training Attendees";
+                        Caption = 'Training Attendees';
+                    }
+                    action("Training History")
+                    {
+                        ApplicationArea = All;
+                        RunObject = report "Training History";
+                        Caption = 'Training History';
+                    }
+                    action("Courses Offered")
+                    {
+                        ApplicationArea = All;
+                        RunObject = report "Courses Offered";
+                        Caption = 'Courses Offered';
+                    }
+                    action("Training Feedback Summary")
+                    {
+                        ApplicationArea = All;
+                        RunObject = report "Training Feedback Summary";
+                        Caption = 'Training Feedback Summary';
+                    }
+                    action("Competencies and Skills")
+                    {
+                        ApplicationArea = All;
+                        RunObject = report "Competencies and Skills";
+                        Caption = 'Competencies and Skills';
                     }
                 }
 
