@@ -1361,19 +1361,21 @@ page 51488 "HR Officer Role Center"
                     Caption = 'Training Nomination';
                     RunObject = Page "Training Nomination List";
                 }
-                action("Training Pending Approval")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Training Pending Approval';
-                    Image = PersonInCharge;
-                    RunObject = Page "Training List - Approval";
-                }
-                action("Approved Training")
-                {
-                    ApplicationArea = Suite;
-                    Caption = 'Approved Training';
-                    RunObject = Page "Training List - Approved";
-                }
+                // Legacy Staff Training Header route commented to keep one training flow:
+                // assessment -> training need/plan -> training request -> evaluation.
+                // action("Training Pending Approval")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Training Pending Approval';
+                //     Image = PersonInCharge;
+                //     RunObject = Page "Training List - Approval";
+                // }
+                // action("Approved Training")
+                // {
+                //     ApplicationArea = Suite;
+                //     Caption = 'Approved Training';
+                //     RunObject = Page "Training List - Approved";
+                // }
                 action("Training Evaluation1")
                 {
                     ApplicationArea = All;

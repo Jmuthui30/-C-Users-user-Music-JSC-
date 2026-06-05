@@ -142,7 +142,8 @@ page 51751 "Training Needs Header Approval"
             part(Control25; "Training Needs Lines")
             {
                 ApplicationArea = All;
-                SubPageLink = "Employee No."=FIELD("Employee No");
+                SubPageLink = "Document No." = FIELD("No."),
+                              "Employee No." = FIELD("Employee No");
             }
             field("Comments by HR Manager:";'')
             {
@@ -184,4 +185,9 @@ page 51751 "Training Needs Header Approval"
             }
         }
     }
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        CurrPage.Control25.Page.SetHeaderContext(Rec."No.", Rec."Employee No");
+    end;
 }

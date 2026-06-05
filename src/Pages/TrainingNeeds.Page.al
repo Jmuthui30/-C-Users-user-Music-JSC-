@@ -128,6 +128,11 @@ page 52170 "Training Need"
                     {
                         ToolTip = 'Specifies the value of the Need Source field';
                     }
+                    field("Source Assessment No."; Rec."Source Assessment No.")
+                    {
+                        Editable = false;
+                        ToolTip = 'Specifies the approved training needs assessment that created this training need.';
+                    }
                     field("Total Cost"; Rec."Total Cost")
                     {
                         Visible = false;

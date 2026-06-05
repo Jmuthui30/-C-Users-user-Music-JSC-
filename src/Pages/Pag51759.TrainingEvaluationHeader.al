@@ -43,6 +43,17 @@ page 51759 "Training Evaluation Header"
                 {
                     ApplicationArea = All;
                 }
+                field("Training Request No."; Rec."Training Request No.")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the approved training request being evaluated.';
+                }
+                field("Training Need"; Rec."Training Need")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies the training need linked to the approved request.';
+                }
                 field("Training No."; Rec."Training No.")
                 {
                     ApplicationArea = All;
@@ -67,6 +78,17 @@ page 51759 "Training Evaluation Header"
                 {
                     ApplicationArea = All;
                 }
+                field("Supervisor Comments"; Rec."Supervisor Comments")
+                {
+                    ApplicationArea = All;
+                    MultiLine = true;
+                    ToolTip = 'Specifies supervisor comments on the staff skills gained and report.';
+                }
+                field("Supervisor Evaluated"; Rec."Supervisor Evaluated")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies whether the supervisor has evaluated the training outcome.';
+                }
             }
         }
         area(factboxes)
@@ -74,6 +96,12 @@ page 51759 "Training Evaluation Header"
             systempart(Control17; Notes)
             {
                 ApplicationArea = All;
+            }
+            part(Attachments; "Doc. Attachment List Factbox")
+            {
+                ApplicationArea = All;
+                Caption = 'Attachments';
+                SubPageLink = "Table ID" = const(Database::"Training Evaluation"), "No." = field("No.");
             }
         }
     }

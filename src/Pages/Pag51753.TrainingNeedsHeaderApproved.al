@@ -142,7 +142,8 @@ page 51753 "Training Needs Header Approved"
             part(Control25; "Training Needs Lines")
             {
                 ApplicationArea = All;
-                SubPageLink = "Employee No."=FIELD("Employee No");
+                SubPageLink = "Document No." = FIELD("No."),
+                              "Employee No." = FIELD("Employee No");
             }
             field("Comments by HR Manager:";'')
             {
@@ -182,6 +183,50 @@ page 51753 "Training Needs Header Approved"
                     REPORT.Run(51608, true, false, Rec);
                 end;
             }
+            action("Create Training Need")
+            {
+                ApplicationArea = All;
+                Caption = 'Create Training Need';
+                Image = CreateDocument;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                ToolTip = 'Create the master training need used for planning, budgeting, scheduling, and applications.';
+
+                trigger OnAction()
+                var
+                    TrainingNeed: Record "Training Need";
+                begin
+                    TrainingNeed.SetRange("Source Assessment No.", Rec."No.");
+                    if TrainingNeed.FindFirst() then begin
+                        Page.Run(Page::"Training Need", TrainingNeed);
+                        exit;
+                    end;
+
+                    TrainingNeed.Init();
+                    TrainingNeed.Description := CopyStr(Rec."Required Skills", 1, MaxStrLen(TrainingNeed.Description));
+                    if TrainingNeed.Description = '' then
+                        TrainingNeed.Description := CopyStr(Rec."Missing Competencies", 1, MaxStrLen(TrainingNeed.Description));
+                    if TrainingNeed.Description = '' then
+                        TrainingNeed.Description := CopyStr('Training need for ' + Rec."Employee Name", 1, MaxStrLen(TrainingNeed.Description));
+                    TrainingNeed."Training Objectives" := CopyStr(Rec."Required Skills", 1, MaxStrLen(TrainingNeed."Training Objectives"));
+                    if TrainingNeed."Training Objectives" = '' then
+                        TrainingNeed."Training Objectives" := CopyStr(Rec."Missing Competencies", 1, MaxStrLen(TrainingNeed."Training Objectives"));
+                    TrainingNeed."Need Source" := Rec."Need Source";
+                    TrainingNeed."Shortcut Dimension 1 Code" := Rec."Global Dimension 1 Code";
+                    TrainingNeed."Shortcut Dimension 2 Code" := Rec."Global Dimension 2 Code";
+                    TrainingNeed."Source Assessment No." := Rec."No.";
+                    TrainingNeed."Applicant Type" := TrainingNeed."Applicant Type"::Individual;
+                    TrainingNeed.Status := TrainingNeed.Status::Open;
+                    TrainingNeed.Insert(true);
+                    Page.Run(Page::"Training Need", TrainingNeed);
+                end;
+            }
         }
     }
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        CurrPage.Control25.Page.SetHeaderContext(Rec."No.", Rec."Employee No");
+    end;
 }

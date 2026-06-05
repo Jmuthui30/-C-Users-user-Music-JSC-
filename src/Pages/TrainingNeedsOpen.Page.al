@@ -20,6 +20,10 @@ page 52169 "Training Needs Open"
                 {
                     ToolTip = 'Specifies the value of the Description field';
                 }
+                field("Source Assessment No."; Rec."Source Assessment No.")
+                {
+                    ToolTip = 'Specifies the approved training needs assessment that created this training need.';
+                }
                 field("Start Date"; Rec."Start Date")
                 {
                     ToolTip = 'Specifies the value of the Start Date field';

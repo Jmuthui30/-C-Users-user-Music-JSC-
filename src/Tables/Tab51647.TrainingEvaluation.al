@@ -231,6 +231,43 @@ table 51647 "Training Evaluation"
         field(52; "Areas of Improvement"; Text[250])
         {
         }
+        field(53; "Training Request No."; Code[20])
+        {
+            DataClassification = CustomerContent;
+            TableRelation = "Training Request"."Request No." where(Status = const(Released));
+
+            trigger OnValidate()
+            var
+                TrainingRequest: Record "Training Request";
+            begin
+                if TrainingRequest.Get("Training Request No.") then begin
+                    Validate("Employee No", TrainingRequest."Employee No");
+                    "Training Need" := TrainingRequest."Training Need";
+                    "Course Title" := CopyStr(TrainingRequest.Description, 1, MaxStrLen("Course Title"));
+                    Venue := CopyStr(TrainingRequest.Venue, 1, MaxStrLen(Venue));
+                    "Start Date" := TrainingRequest."Planned Start Date";
+                    "End Date" := TrainingRequest."Planned End Date";
+                    Organizers := CopyStr(TrainingRequest."Training Insitution", 1, MaxStrLen(Organizers));
+                end;
+            end;
+        }
+        field(54; "Training Need"; Code[20])
+        {
+            DataClassification = CustomerContent;
+            TableRelation = "Training Need";
+        }
+        field(55; "Back To Office Report"; Text[2048])
+        {
+            DataClassification = CustomerContent;
+        }
+        field(56; "Supervisor Comments"; Text[2048])
+        {
+            DataClassification = CustomerContent;
+        }
+        field(57; "Supervisor Evaluated"; Boolean)
+        {
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {
