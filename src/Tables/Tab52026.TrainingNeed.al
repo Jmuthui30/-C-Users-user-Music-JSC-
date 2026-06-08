@@ -277,10 +277,17 @@ table 52026 "Training Need"
             OptionMembers = " ","Individual","Organization","Board Members";
         }
         // Source Training Need No
+        // This field is used to link to the original training need when the training need is created from a training need template. It will help to copy the training need lines from the template to the new training need.
         field(37; "Source Training Need No."; Code[20])
         {
             TableRelation = "Training Need".Code;
             Caption = 'Source Training Need No.';
+        }
+        field(38; "Source Assessment No."; Code[20])
+        {
+            DataClassification = CustomerContent;
+            TableRelation = "Training Needs Header"."No.";
+            Caption = 'Source Assessment No.';
         }
     }
 
