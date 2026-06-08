@@ -74,6 +74,11 @@ codeunit 52395 "Appraisal Process Mgt."
         EmployeeAppraisal.Modify(true);
     end;
 
+    procedure StampCurrentReviewCommentsForCurrentPeriod(EmployeeAppraisal: Record "Employee Appraisal")
+    begin
+        StampCurrentReviewComments(EmployeeAppraisal, EmployeeAppraisal."Current Review Period Code");
+    end;
+
     local procedure ValidateObjectiveLines(EmployeeAppraisal: Record "Employee Appraisal"; RequireAppraiserFields: Boolean)
     var
         AppraisalLine: Record "Appraisal Lines";

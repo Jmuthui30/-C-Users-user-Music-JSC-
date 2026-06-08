@@ -772,6 +772,7 @@ page 52358 "Appraisal Card-Review"
                 PromotedCategory = Category4;
                 PromotedIsBig = true;
                 Visible = FinalVisible;
+                Enabled = ReviewActionsEnabled;
                 ToolTip = 'Executes the Complete Appraisal action';
                 Caption = 'Complete Appraisal';
 
@@ -792,6 +793,7 @@ page 52358 "Appraisal Card-Review"
                 Image = Change;
                 Promoted = true;
                 PromotedCategory = Category4;
+                Enabled = ReviewActionsEnabled;
                 ToolTip = 'Moves this appraisal from the current quarterly review period to the next one and copies the objective lines forward.';
 
                 trigger OnAction()
@@ -816,6 +818,7 @@ page 52358 "Appraisal Card-Review"
                     AppraisalLine: Record "Appraisal Lines";
                 begin
                     AppraisalLine.SetRange("Appraisal No", Rec."Appraisal No");
+                    Commit();
                     Page.RunModal(Page::"Appraisal Review History", AppraisalLine);
                 end;
             }
@@ -833,6 +836,7 @@ page 52358 "Appraisal Card-Review"
                     AppraisalComment: Record "Appraisal Comments";
                 begin
                     AppraisalComment.SetRange("Appraisal No.", Rec."Appraisal No");
+                    Commit();
                     Page.RunModal(Page::"Appraisal Comment History", AppraisalComment);
                 end;
             }
@@ -849,6 +853,7 @@ page 52358 "Appraisal Card-Review"
                 var
                     AppraisalRelatedHRMgt: Codeunit "Appraisal Related HR Mgt.";
                 begin
+                    Commit();
                     AppraisalRelatedHRMgt.OpenRelatedGrievances(Rec);
                 end;
             }
@@ -865,6 +870,7 @@ page 52358 "Appraisal Card-Review"
                 var
                     AppraisalRelatedHRMgt: Codeunit "Appraisal Related HR Mgt.";
                 begin
+                    Commit();
                     AppraisalRelatedHRMgt.OpenRelatedDisciplinaryCases(Rec);
                 end;
             }
@@ -912,6 +918,7 @@ page 52358 "Appraisal Card-Review"
         if Rec.EnsureEmployeeJobTitles() then
             Rec.Modify(false);
 
+        AppraisalProcessMgt.StampCurrentReviewCommentsForCurrentPeriod(Rec);
         SetControlAppearance();
         HRManagement.GetTotalRating(Rec);
     end;
@@ -920,6 +927,7 @@ page 52358 "Appraisal Card-Review"
     begin
         //HRManagement.UpdateAppraisalScores("Appraisal No","Employee No");
         //CurrPage.UPDATE;
+        AppraisalProcessMgt.StampCurrentReviewCommentsForCurrentPeriod(Rec);
         SetControlAppearance();
     end;
 
@@ -938,6 +946,7 @@ page 52358 "Appraisal Card-Review"
         FinalVisible: Boolean;
         MidVisible: Boolean;
         OpenApprovalEntriesExist: Boolean;
+        ReviewActionsEnabled: Boolean;
         UnderReview: Boolean;
 
     local procedure SetControlAppearance()
@@ -946,7 +955,11 @@ page 52358 "Appraisal Card-Review"
 
     begin
         FinalVisible := IsCurrentFinalReviewPeriod();
-        UnderReview := true;
+        ReviewActionsEnabled :=
+            (Rec.Status = Rec.Status::Released) and
+            ((Rec."Appraisal Status" = Rec."Appraisal Status"::Review) or
+             (Rec."Appraisal Status" = Rec."Appraisal Status"::"Further review"));
+        UnderReview := ReviewActionsEnabled;
         MidVisible := true;
 
         if (Rec.Status = Rec.Status::Released) or (Rec.Status = Rec.Status::Rejected) then

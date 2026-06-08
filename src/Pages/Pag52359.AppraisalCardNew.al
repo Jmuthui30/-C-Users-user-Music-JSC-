@@ -311,7 +311,7 @@ page 52359 "Appraisal Card-New"
             action("Send For Approval")
             {
                 Caption = 'Submit for Review';
-                Enabled = not OpenApprovalEntriesExist;
+                Enabled = SubmitForReviewEnabled;
                 Image = SendApprovalRequest;
                 Promoted = true;
                 PromotedCategory = Category5;
@@ -463,6 +463,7 @@ page 52359 "Appraisal Card-New"
                     AppraisalLine: Record "Appraisal Lines";
                 begin
                     AppraisalLine.SetRange("Appraisal No", Rec."Appraisal No");
+                    Commit();
                     Page.RunModal(Page::"Appraisal Review History", AppraisalLine);
                 end;
             }
@@ -480,6 +481,7 @@ page 52359 "Appraisal Card-New"
                     AppraisalComment: Record "Appraisal Comments";
                 begin
                     AppraisalComment.SetRange("Appraisal No.", Rec."Appraisal No");
+                    Commit();
                     Page.RunModal(Page::"Appraisal Comment History", AppraisalComment);
                 end;
             }
@@ -496,6 +498,7 @@ page 52359 "Appraisal Card-New"
                 var
                     AppraisalRelatedHRMgt: Codeunit "Appraisal Related HR Mgt.";
                 begin
+                    Commit();
                     AppraisalRelatedHRMgt.OpenRelatedGrievances(Rec);
                 end;
             }
@@ -512,6 +515,7 @@ page 52359 "Appraisal Card-New"
                 var
                     AppraisalRelatedHRMgt: Codeunit "Appraisal Related HR Mgt.";
                 begin
+                    Commit();
                     AppraisalRelatedHRMgt.OpenRelatedDisciplinaryCases(Rec);
                 end;
             }
@@ -525,6 +529,7 @@ page 52359 "Appraisal Card-New"
         if Rec.EnsureEmployeeJobTitles() then
             Rec.Modify(false);
 
+        AppraisalProcessMgt.StampCurrentReviewCommentsForCurrentPeriod(Rec);
         SetControlAppearance();
     end;
 
@@ -546,6 +551,7 @@ page 52359 "Appraisal Card-New"
         DocReleased: Boolean;
         FinalReviewVisible: Boolean;
         OpenApprovalEntriesExist: Boolean;
+        SubmitForReviewEnabled: Boolean;
         UnderReview: Boolean;
 
     local procedure SetControlAppearance()
@@ -570,6 +576,12 @@ page 52359 "Appraisal Card-New"
             UnderReview := true
         else
             UnderReview := false;
+
+        SubmitForReviewEnabled :=
+            (Rec.Status = Rec.Status::Open) and
+            ((Rec."Appraisal Status" = Rec."Appraisal Status"::Setting) or
+             (Rec."Appraisal Status" = Rec."Appraisal Status"::Set)) and
+            not OpenApprovalEntriesExist;
     end;
 
     local procedure IsCurrentFinalReviewPeriod(): Boolean

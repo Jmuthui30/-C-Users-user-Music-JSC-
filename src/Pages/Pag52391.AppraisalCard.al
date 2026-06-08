@@ -544,6 +544,7 @@ page 52391 "Appraisal Card"
                     AppraisalLine: Record "Appraisal Lines";
                 begin
                     AppraisalLine.SetRange("Appraisal No", Rec."Appraisal No");
+                    Commit();
                     Page.RunModal(Page::"Appraisal Review History", AppraisalLine);
                 end;
             }
@@ -561,6 +562,7 @@ page 52391 "Appraisal Card"
                     AppraisalComment: Record "Appraisal Comments";
                 begin
                     AppraisalComment.SetRange("Appraisal No.", Rec."Appraisal No");
+                    Commit();
                     Page.RunModal(Page::"Appraisal Comment History", AppraisalComment);
                 end;
             }
@@ -577,6 +579,7 @@ page 52391 "Appraisal Card"
                 var
                     AppraisalRelatedHRMgt: Codeunit "Appraisal Related HR Mgt.";
                 begin
+                    Commit();
                     AppraisalRelatedHRMgt.OpenRelatedGrievances(Rec);
                 end;
             }
@@ -593,6 +596,7 @@ page 52391 "Appraisal Card"
                 var
                     AppraisalRelatedHRMgt: Codeunit "Appraisal Related HR Mgt.";
                 begin
+                    Commit();
                     AppraisalRelatedHRMgt.OpenRelatedDisciplinaryCases(Rec);
                 end;
             }
