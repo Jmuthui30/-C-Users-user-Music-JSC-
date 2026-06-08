@@ -173,11 +173,11 @@ table 51641 "Training Needs Header"
             TrainingSetup.Get;
             TrainingSetup.TestField("Training Nos.");
             // NoSeriesMgt.InitSeries(TrainingSetup."Training Nos.", xRec."No. Series", 0D, "No.", "No. Series");
-            if NoSeriesMgt.AreRelated(TrainingSetup."Training Nos.",xRec."No. Series") then
-            "No. Series":=xRec."No. Series"
+            if NoSeriesMgt.AreRelated(TrainingSetup."Training Nos.", xRec."No. Series") then
+                "No. Series" := xRec."No. Series"
             else
-            "No. Series":=TrainingSetup."Training Nos.";
-            "No.":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
+                "No. Series" := TrainingSetup."Training Nos.";
+            "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
             "Required Hours" := TrainingSetup."Training Hours per Year";
         end;
         Date := Today;

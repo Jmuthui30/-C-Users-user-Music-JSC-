@@ -47,6 +47,16 @@ page 51761 "Post-Training Evaluation"
             }
             group("Course Evaluation")
             {
+                field("Training Request No."; Rec."Training Request No.")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("Training Need"; Rec."Training Need")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
                 field("Is the course content relevant to your current job description?";'')
                 {
                     ApplicationArea = All;
@@ -135,6 +145,12 @@ page 51761 "Post-Training Evaluation"
                     MultiLine = true;
                     ShowCaption = false;
                 }
+                field("Back To Office Report"; Rec."Back To Office Report")
+                {
+                    ApplicationArea = All;
+                    MultiLine = true;
+                    ToolTip = 'Specifies the back-to-office report after attending the training.';
+                }
                 field(Control31;'')
                 {
                     ApplicationArea = All;
@@ -153,6 +169,12 @@ page 51761 "Post-Training Evaluation"
             systempart(Control25; Notes)
             {
                 ApplicationArea = All;
+            }
+            part(Attachments; "Doc. Attachment List Factbox")
+            {
+                ApplicationArea = All;
+                Caption = 'Attachments';
+                SubPageLink = "Table ID" = const(Database::"Training Evaluation"), "No." = field("No.");
             }
         }
     }

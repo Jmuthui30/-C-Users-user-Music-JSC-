@@ -128,6 +128,11 @@ page 52170 "Training Need"
                     {
                         ToolTip = 'Specifies the value of the Need Source field';
                     }
+                    field("Source Assessment No."; Rec."Source Assessment No.")
+                    {
+                        Editable = false;
+                        ToolTip = 'Specifies the approved training needs assessment that created this training need.';
+                    }
                     field("Total Cost"; Rec."Total Cost")
                     {
                         Visible = false;
@@ -258,6 +263,25 @@ page 52170 "Training Need"
                 begin
                     TrainingNeed.SetRange(Code, Rec.Code);
                     Report.Run(Report::"Training Need", true, false, TrainingNeed);
+                end;
+            }
+            action("Source Assessment")
+            {
+                ApplicationArea = All;
+                Caption = 'Source Assessment';
+                Image = ViewDetails;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                ToolTip = 'Open the approved assessment that created this training need.';
+
+                trigger OnAction()
+                var
+                    TrainingNeedsHeader: Record "Training Needs Header";
+                begin
+                    Rec.TestField("Source Assessment No.");
+                    TrainingNeedsHeader.Get(Rec."Source Assessment No.");
+                    Page.Run(Page::"Training Needs Header Approved", TrainingNeedsHeader);
                 end;
             }
             action("Proposed Training Participants")

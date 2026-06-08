@@ -39,6 +39,9 @@ table 51642 "Employee Training Needs"
         key(Key1; "Employee No.", "Line No.")
         {
         }
+        key(Key2; "Document No.", "Employee No.", "Line No.")
+        {
+        }
     }
     fieldgroups
     {

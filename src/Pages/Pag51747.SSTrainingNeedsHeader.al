@@ -31,6 +31,11 @@ page 51747 "SS Training Needs Header"
                 field("Employee No"; Rec."Employee No")
                 {
                     ApplicationArea = All;
+
+                    trigger OnValidate()
+                    begin
+                        SaveHeaderAndSetLinesContext();
+                    end;
                 }
                 field("Employee Name"; Rec."Employee Name")
                 {
@@ -94,6 +99,11 @@ page 51747 "SS Training Needs Header"
                     ApplicationArea = All;
                     MultiLine = true;
                     ShowCaption = false;
+
+                    trigger OnValidate()
+                    begin
+                        SaveHeaderAndSetLinesContext();
+                    end;
                 }
                 field("Current Employee Skills (Strength):"; '')
                 {
@@ -105,6 +115,11 @@ page 51747 "SS Training Needs Header"
                     ApplicationArea = All;
                     MultiLine = true;
                     ShowCaption = false;
+
+                    trigger OnValidate()
+                    begin
+                        SaveHeaderAndSetLinesContext();
+                    end;
                 }
                 field("Missing/Deficient Competencies (Weakness):"; '')
                 {
@@ -116,6 +131,11 @@ page 51747 "SS Training Needs Header"
                     ApplicationArea = All;
                     MultiLine = true;
                     ShowCaption = false;
+
+                    trigger OnValidate()
+                    begin
+                        SaveHeaderAndSetLinesContext();
+                    end;
                 }
                 field("Required Skills to Address the Missing Competencies (Weakness):"; '')
                 {
@@ -127,6 +147,11 @@ page 51747 "SS Training Needs Header"
                     ApplicationArea = All;
                     MultiLine = true;
                     ShowCaption = false;
+
+                    trigger OnValidate()
+                    begin
+                        SaveHeaderAndSetLinesContext();
+                    end;
                 }
                 field("Comments by Departmental Head"; '')
                 {
@@ -138,6 +163,11 @@ page 51747 "SS Training Needs Header"
                     ApplicationArea = All;
                     MultiLine = true;
                     ShowCaption = false;
+
+                    trigger OnValidate()
+                    begin
+                        SaveHeaderAndSetLinesContext();
+                    end;
                 }
                 field(Status; Rec.Status)
                 {
@@ -147,7 +177,9 @@ page 51747 "SS Training Needs Header"
             part(Control25; "Training Needs Lines")
             {
                 ApplicationArea = All;
-                SubPageLink = "Employee No." = FIELD("Employee No");
+                SubPageLink = "Document No." = FIELD("No."),
+                              "Employee No." = FIELD("Employee No");
+                UpdatePropagation = Both;
             }
             field("Comments by HR Manager:"; '')
             {
@@ -159,6 +191,11 @@ page 51747 "SS Training Needs Header"
                 ApplicationArea = All;
                 MultiLine = true;
                 ShowCaption = false;
+
+                trigger OnValidate()
+                begin
+                    SaveHeaderAndSetLinesContext();
+                end;
             }
         }
         area(factboxes)
@@ -201,10 +238,12 @@ page 51747 "SS Training Needs Header"
 
                 trigger OnAction()
                 begin
-
+                    CurrPage.Update(true);
+                    EnsureTrainingNeedLinesExist();
                     // if ApprovalsMgmt.checktr(Rec) then
                     ApprovalsMgmt.OnSendTrainingNeedsForApproval(Rec);
                     Commit();
+                    CurrPage.Close();
                 end;
             }
             action("Cancel Approval Request")
@@ -246,4 +285,55 @@ page 51747 "SS Training Needs Header"
     }
     var
         ApprovalsMgmt: Codeunit "Approvals Mgmt. Ext";
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        SetLinesHeaderContext();
+    end;
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    begin
+        Rec.Status := Rec.Status::Open;
+        Rec.Date := Today;
+        SetLinesHeaderContext();
+    end;
+
+    local procedure SetLinesHeaderContext()
+    begin
+        CurrPage.Control25.Page.SetHeaderContext(Rec."No.", Rec."Employee No");
+    end;
+
+    local procedure EnsureTrainingNeedLinesExist()
+    var
+        EmployeeTrainingNeeds: Record "Employee Training Needs";
+    begin
+        Rec.TestField("No.");
+        Rec.TestField("Employee No");
+
+        LinkUnassignedTrainingNeedLines();
+
+        EmployeeTrainingNeeds.SetRange("Document No.", Rec."No.");
+        EmployeeTrainingNeeds.SetRange("Employee No.", Rec."Employee No");
+        if EmployeeTrainingNeeds.IsEmpty then
+            Error('Add at least one training need line before sending this assessment for approval.');
+    end;
+
+    local procedure LinkUnassignedTrainingNeedLines()
+    var
+        EmployeeTrainingNeeds: Record "Employee Training Needs";
+    begin
+        EmployeeTrainingNeeds.SetRange("Employee No.", Rec."Employee No");
+        EmployeeTrainingNeeds.SetRange("Document No.", '');
+        if EmployeeTrainingNeeds.FindSet(true) then
+            repeat
+                EmployeeTrainingNeeds."Document No." := Rec."No.";
+                EmployeeTrainingNeeds.Modify(true);
+            until EmployeeTrainingNeeds.Next() = 0;
+    end;
+
+    local procedure SaveHeaderAndSetLinesContext()
+    begin
+        CurrPage.Update(true);
+        SetLinesHeaderContext();
+    end;
 }

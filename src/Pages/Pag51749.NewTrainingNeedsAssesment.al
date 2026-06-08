@@ -7,6 +7,7 @@ page 51749 "New Training Needs Assesment"
     ApplicationArea = All;
     UsageCategory = Lists;
     SourceTable = "Training Needs Header";
+    SourceTableView = where(Status = filter(Open | Rejected));
 
     layout
     {
@@ -73,6 +74,11 @@ page 51749 "New Training Needs Assesment"
                 field("Comfirmation Status"; Rec."Comfirmation Status")
                 {
                     ApplicationArea = All;
+                }
+                field(Status; Rec.Status)
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the approval status of the training needs assessment.';
                 }
             }
         }

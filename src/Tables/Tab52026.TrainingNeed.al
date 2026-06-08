@@ -68,7 +68,7 @@ table 52026 "Training Need"
         }
         field(7; "Cost Of Training"; Decimal)
         {
-            CalcFormula = sum("Training Needs Lines".Amount where("Document No." = field(Code)));
+            CalcFormula = sum("Training Needs Lines"."Approval Amount" where("Document No." = field(Code)));
             FieldClass = FlowField;
             Caption = 'Cost Of Training';
 
@@ -175,7 +175,7 @@ table 52026 "Training Need"
         }
         field(22; "Cost Of Training (LCY)"; Decimal)
         {
-            CalcFormula = sum("Training Needs Lines"."Amount (LCY)" where("Document No." = field(Code)));
+            CalcFormula = sum("Training Needs Lines"."Approval Amount (LCY)" where("Document No." = field(Code)));
             FieldClass = FlowField;
             Caption = 'Cost Of Training (LCY)';
         }
@@ -282,6 +282,12 @@ table 52026 "Training Need"
         {
             TableRelation = "Training Need".Code;
             Caption = 'Source Training Need No.';
+        }
+        field(38; "Source Assessment No."; Code[20])
+        {
+            DataClassification = CustomerContent;
+            TableRelation = "Training Needs Header"."No.";
+            Caption = 'Source Assessment No.';
         }
     }
 
