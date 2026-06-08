@@ -144,6 +144,7 @@ page 51753 "Training Needs Header Approved"
                 ApplicationArea = All;
                 SubPageLink = "Document No." = FIELD("No."),
                               "Employee No." = FIELD("Employee No");
+                UpdatePropagation = Both;
             }
             field("Comments by HR Manager:";'')
             {
@@ -204,14 +205,8 @@ page 51753 "Training Needs Header Approved"
                     end;
 
                     TrainingNeed.Init();
-                    TrainingNeed.Description := CopyStr(Rec."Required Skills", 1, MaxStrLen(TrainingNeed.Description));
-                    if TrainingNeed.Description = '' then
-                        TrainingNeed.Description := CopyStr(Rec."Missing Competencies", 1, MaxStrLen(TrainingNeed.Description));
-                    if TrainingNeed.Description = '' then
-                        TrainingNeed.Description := CopyStr('Training need for ' + Rec."Employee Name", 1, MaxStrLen(TrainingNeed.Description));
-                    TrainingNeed."Training Objectives" := CopyStr(Rec."Required Skills", 1, MaxStrLen(TrainingNeed."Training Objectives"));
-                    if TrainingNeed."Training Objectives" = '' then
-                        TrainingNeed."Training Objectives" := CopyStr(Rec."Missing Competencies", 1, MaxStrLen(TrainingNeed."Training Objectives"));
+                    TrainingNeed.Description := GetTrainingNeedDescription();
+                    TrainingNeed."Training Objectives" := GetTrainingNeedObjectives();
                     TrainingNeed."Need Source" := Rec."Need Source";
                     TrainingNeed."Shortcut Dimension 1 Code" := Rec."Global Dimension 1 Code";
                     TrainingNeed."Shortcut Dimension 2 Code" := Rec."Global Dimension 2 Code";
@@ -228,5 +223,60 @@ page 51753 "Training Needs Header Approved"
     trigger OnAfterGetCurrRecord()
     begin
         CurrPage.Control25.Page.SetHeaderContext(Rec."No.", Rec."Employee No");
+    end;
+
+    local procedure GetTrainingNeedDescription(): Text[200]
+    var
+        EmployeeTrainingNeeds: Record "Employee Training Needs";
+        DescriptionText: Text;
+    begin
+        DescriptionText := Rec."Required Skills";
+        if DescriptionText = '' then
+            DescriptionText := Rec."Missing Competencies";
+
+        if DescriptionText = '' then begin
+            EmployeeTrainingNeeds.SetRange("Document No.", Rec."No.");
+            EmployeeTrainingNeeds.SetRange("Employee No.", Rec."Employee No");
+            if EmployeeTrainingNeeds.FindFirst() then
+                DescriptionText := EmployeeTrainingNeeds.Description;
+        end;
+
+        if DescriptionText = '' then
+            DescriptionText := 'Training need for ' + Rec."Employee Name";
+
+        exit(CopyStr(DescriptionText, 1, 200));
+    end;
+
+    local procedure GetTrainingNeedObjectives(): Text[250]
+    var
+        EmployeeTrainingNeeds: Record "Employee Training Needs";
+        Summary: Text;
+    begin
+        AddSummaryPart(Summary, 'Required skills', Rec."Required Skills");
+        AddSummaryPart(Summary, 'Missing competencies', Rec."Missing Competencies");
+        AddSummaryPart(Summary, 'Job function', Rec."Job Function");
+        AddSummaryPart(Summary, 'Current skills', Rec."Current Employee Skills");
+        AddSummaryPart(Summary, 'HOD comments', Rec.Comments1);
+        AddSummaryPart(Summary, 'HR comments', Rec.Comments2);
+
+        EmployeeTrainingNeeds.SetRange("Document No.", Rec."No.");
+        EmployeeTrainingNeeds.SetRange("Employee No.", Rec."Employee No");
+        if EmployeeTrainingNeeds.FindSet() then
+            repeat
+                AddSummaryPart(Summary, 'Assessment line', EmployeeTrainingNeeds.Description);
+            until EmployeeTrainingNeeds.Next() = 0;
+
+        exit(CopyStr(Summary, 1, 250));
+    end;
+
+    local procedure AddSummaryPart(var Summary: Text; Caption: Text; Value: Text)
+    begin
+        if Value = '' then
+            exit;
+
+        if Summary <> '' then
+            Summary += ' | ';
+
+        Summary += Caption + ': ' + Value;
     end;
 }

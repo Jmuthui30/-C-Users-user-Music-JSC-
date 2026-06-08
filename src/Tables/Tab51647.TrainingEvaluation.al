@@ -240,15 +240,20 @@ table 51647 "Training Evaluation"
             var
                 TrainingRequest: Record "Training Request";
             begin
-                if TrainingRequest.Get("Training Request No.") then begin
-                    Validate("Employee No", TrainingRequest."Employee No");
-                    "Training Need" := TrainingRequest."Training Need";
-                    "Course Title" := CopyStr(TrainingRequest.Description, 1, MaxStrLen("Course Title"));
-                    Venue := CopyStr(TrainingRequest.Venue, 1, MaxStrLen(Venue));
-                    "Start Date" := TrainingRequest."Planned Start Date";
-                    "End Date" := TrainingRequest."Planned End Date";
-                    Organizers := CopyStr(TrainingRequest."Training Insitution", 1, MaxStrLen(Organizers));
+                if "Training Request No." = '' then begin
+                    "Training Need" := '';
+                    exit;
                 end;
+
+                TrainingRequest.Get("Training Request No.");
+                TrainingRequest.TestField("Training Need");
+                Validate("Employee No", TrainingRequest."Employee No");
+                "Training Need" := TrainingRequest."Training Need";
+                "Course Title" := CopyStr(TrainingRequest.Description, 1, MaxStrLen("Course Title"));
+                Venue := CopyStr(TrainingRequest.Venue, 1, MaxStrLen(Venue));
+                "Start Date" := TrainingRequest."Planned Start Date";
+                "End Date" := TrainingRequest."Planned End Date";
+                Organizers := CopyStr(TrainingRequest."Training Insitution", 1, MaxStrLen(Organizers));
             end;
         }
         field(54; "Training Need"; Code[20])
@@ -308,6 +313,11 @@ table 51647 "Training Evaluation"
         end;
     end;
 
+    trigger OnModify()
+    begin
+        EnsureTrainingRequestLinked();
+    end;
+
     var
         UserSetup: Record "User Setup";
         Text000: Label 'Your are not mapped to an employee account. Kindly contact the system administrator.';
@@ -316,4 +326,10 @@ table 51647 "Training Evaluation"
         TrainingSetup: Record "QuantumJumps HR Setup";
         NoSeriesMgt: Codeunit "No. Series";
         Training: Record "Training Nomination Header";
+
+    local procedure EnsureTrainingRequestLinked()
+    begin
+        TestField("Training Request No.");
+        TestField("Training Need");
+    end;
 }

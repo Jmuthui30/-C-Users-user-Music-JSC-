@@ -46,6 +46,7 @@ page 51759 "Training Evaluation Header"
                 field("Training Request No."; Rec."Training Request No.")
                 {
                     ApplicationArea = All;
+                    ShowMandatory = true;
                     ToolTip = 'Specifies the approved training request being evaluated.';
                 }
                 field("Training Need"; Rec."Training Need")

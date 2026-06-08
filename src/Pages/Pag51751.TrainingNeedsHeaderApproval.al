@@ -144,6 +144,7 @@ page 51751 "Training Needs Header Approval"
                 ApplicationArea = All;
                 SubPageLink = "Document No." = FIELD("No."),
                               "Employee No." = FIELD("Employee No");
+                UpdatePropagation = Both;
             }
             field("Comments by HR Manager:";'')
             {

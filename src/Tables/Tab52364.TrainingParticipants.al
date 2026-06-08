@@ -25,6 +25,8 @@ table 52364 "Training Participants"
                     Designation := Employee."Job Position Title";
                     "Salary Scale" := Employee."Salary Scale";
                     "Salary Pointer" := Employee."Present Pointer";
+                    if (Employee."Company E-Mail" = '') and (Employee."E-Mail" = '') then
+                        Message('Employee %1 - %2 has no email address. Maintain Company E-Mail or E-Mail on the employee card before sending training notification.', Employee."No.", Employee.FullName());
                 end;
             end;
         }

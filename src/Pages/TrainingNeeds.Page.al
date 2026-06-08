@@ -265,6 +265,25 @@ page 52170 "Training Need"
                     Report.Run(Report::"Training Need", true, false, TrainingNeed);
                 end;
             }
+            action("Source Assessment")
+            {
+                ApplicationArea = All;
+                Caption = 'Source Assessment';
+                Image = ViewDetails;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                ToolTip = 'Open the approved assessment that created this training need.';
+
+                trigger OnAction()
+                var
+                    TrainingNeedsHeader: Record "Training Needs Header";
+                begin
+                    Rec.TestField("Source Assessment No.");
+                    TrainingNeedsHeader.Get(Rec."Source Assessment No.");
+                    Page.Run(Page::"Training Needs Header Approved", TrainingNeedsHeader);
+                end;
+            }
             action("Proposed Training Participants")
             {
                 Image = SocialSecurity;

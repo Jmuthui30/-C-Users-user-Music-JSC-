@@ -176,7 +176,7 @@ codeunit 52003 "HR Notifications"
         EmailMessage: Codeunit "Email Message";
         NewBody: Label '<p style="font-family:Verdana,Arial;font-size:10pt">Dear<b> %1,</b></p><p style="font-family:Verdana,Arial;font-size:10pt">A training entitled <strong>%2<strong> has been approved.<br> It is scheduled to begin on <strong>%3<strong> and end on <strong>%4<strong>.</p><p style="font-family:Verdana,Arial;font-size:10pt">You are hereby requested to apply for this training.</p><p style="font-family:Verdana,Arial;font-size:10pt">Kind Regards,<br>Senior HR and Admin Officer<br>%5</p>';
         Recipient: List of [Text];
-        EmailBody, RecipientEmail, Subject : Text;
+        EmailBody, RecipientEmail, SkippedEmployees, Subject : Text;
         SentCount: Integer;
         SkippedCount: Integer;
     begin
@@ -202,10 +202,14 @@ codeunit 52003 "HR Notifications"
                         EmailMessage.Create(Recipient, Subject, EmailBody, true);
                         Email.Send(EmailMessage);
                         SentCount += 1;
-                    end else
+                    end else begin
+                        AddSkippedEmployee(SkippedEmployees, Employee."No.", Employee.FullName());
                         SkippedCount += 1;
-                end else
+                    end;
+                end else begin
+                    AddSkippedEmployee(SkippedEmployees, TrainingParticipants."Employee No", '');
                     SkippedCount += 1;
+                end;
             until TrainingParticipants.Next() = 0
         else begin
             Message('No training notification emails were sent because no proposed participants exist for this training need.');
@@ -213,10 +217,10 @@ codeunit 52003 "HR Notifications"
         end;
 
         if SentCount = 0 then
-            Message('No training notification emails were sent. %1 employee(s) were skipped because no email address was available.', SkippedCount)
+            Message('No training notification emails were sent. %1 employee(s) were skipped because no email address was available: %2', SkippedCount, SkippedEmployees)
         else
             if SkippedCount <> 0 then
-                Message('%1 training notification email(s) sent. %2 employee(s) were skipped because no email address was available.', SentCount, SkippedCount);
+                Message('%1 training notification email(s) sent. %2 employee(s) were skipped because no email address was available: %3', SentCount, SkippedCount, SkippedEmployees);
     end;
 
     local procedure GetEmployeeEmail(Employee: Record Employee): Text
@@ -225,6 +229,17 @@ codeunit 52003 "HR Notifications"
             exit(Employee."Company E-Mail");
 
         exit(Employee."E-Mail");
+    end;
+
+    local procedure AddSkippedEmployee(var SkippedEmployees: Text; EmployeeNo: Code[20]; EmployeeName: Text)
+    begin
+        if SkippedEmployees <> '' then
+            SkippedEmployees += ', ';
+
+        if EmployeeName <> '' then
+            SkippedEmployees += EmployeeNo + ' - ' + EmployeeName
+        else
+            SkippedEmployees += EmployeeNo;
     end;
 
     procedure RetiringEmployees()

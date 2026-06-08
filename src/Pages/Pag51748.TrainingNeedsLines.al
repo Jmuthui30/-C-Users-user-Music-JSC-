@@ -16,11 +16,6 @@ page 51748 "Training Needs Lines"
                 field("Code"; Rec.Code)
                 {
                     ApplicationArea = All;
-
-                    trigger OnValidate()
-                    begin
-                        ApplyHeaderFilters();
-                    end;
                 }
                 field(Description; Rec.Description)
                 {
@@ -63,12 +58,20 @@ page 51748 "Training Needs Lines"
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
         ApplyHeaderFilters();
+        Rec.Status := Rec.Status::Pending;
     end;
 
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
     begin
         ApplyHeaderFilters();
-        exit(false);
+        EnsureLineKeys();
+        exit(true);
+    end;
+
+    trigger OnModifyRecord(): Boolean
+    begin
+        ApplyHeaderFilters();
+        exit(true);
     end;
 
     local procedure ApplyHeaderFilters()
@@ -100,6 +103,25 @@ page 51748 "Training Needs Lines"
     begin
         HeaderDocumentNo := DocumentNo;
         HeaderEmployeeNo := EmployeeNo;
+    end;
+
+    local procedure EnsureLineKeys()
+    var
+        EmployeeTrainingNeeds: Record "Employee Training Needs";
+    begin
+        Rec.TestField("Document No.");
+        Rec.TestField("Employee No.");
+
+        if Rec."Line No." <> 0 then
+            exit;
+
+        EmployeeTrainingNeeds.Reset();
+        EmployeeTrainingNeeds.SetRange("Document No.", Rec."Document No.");
+        EmployeeTrainingNeeds.SetRange("Employee No.", Rec."Employee No.");
+        if EmployeeTrainingNeeds.FindLast() then
+            Rec."Line No." := EmployeeTrainingNeeds."Line No." + 10000
+        else
+            Rec."Line No." := 10000;
     end;
 
     var
