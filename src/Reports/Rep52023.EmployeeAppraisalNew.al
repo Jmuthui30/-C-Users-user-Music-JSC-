@@ -10,6 +10,7 @@ report 52023 "Employee Appraisal - New"
         dataitem(Appraisal; "Employee Appraisal")
         {
             CalcFields = "Responsibilty Center", "Current Review Score", "Total Review Score", "Review Start Date", "Review End Date";
+            RequestFilterFields = "Appraisal No", "Employee No", "Appraisal Period", "Current Review Period Code";
 
             column(AppraisalNo_Appraisal; Appraisal."Appraisal No")
             {
@@ -101,10 +102,10 @@ report 52023 "Employee Appraisal - New"
             column(CurrentReviewObjectivesText; GetObjectivesSummary(Appraisal."Appraisal No", Appraisal."Current Review Period Code"))
             {
             }
-            column(AppraiseeCommentsSummaryText; GetCommentsSummary(Appraisal."Appraisal No", 'Appraisee', Appraisal."Current Review Period Code"))
+            column(AppraiseeCommentsSummaryText; GetReviewCommentsSummary(Appraisal."Appraisal No", Appraisal."Current Review Period Code", false))
             {
             }
-            column(AppraiserCommentsSummaryText; GetCommentsSummary(Appraisal."Appraisal No", 'Appraiser', Appraisal."Current Review Period Code"))
+            column(AppraiserCommentsSummaryText; GetReviewCommentsSummary(Appraisal."Appraisal No", Appraisal."Current Review Period Code", true))
             {
             }
             column(MidYear; MidYear)
@@ -550,6 +551,49 @@ report 52023 "Employee Appraisal - New"
             exit('No comments have been captured.');
 
         exit(Builder.ToText());
+    end;
+
+    local procedure GetReviewCommentsSummary(AppraisalNo: Code[20]; ReviewPeriodCode: Code[20]; AppraiserSide: Boolean): Text
+    var
+        AppraisalComment: Record "Appraisal Comments";
+        Builder: TextBuilder;
+        HasComment: Boolean;
+        SectionCaption: Text;
+    begin
+        AppraisalComment.Reset();
+        AppraisalComment.SetRange("Appraisal No.", AppraisalNo);
+        if ReviewPeriodCode <> '' then
+            AppraisalComment.SetFilter("Review Period Code", '%1|%2', '', ReviewPeriodCode);
+
+        if AppraisalComment.FindSet() then
+            repeat
+                SectionCaption := Format(AppraisalComment.Person);
+                if AppraiserSide then begin
+                    AppendCommentLine(Builder, SectionCaption, AppraisalComment."Comments On Supervisor", HasComment);
+                    AppendCommentLine(Builder, SectionCaption, AppraisalComment."Comments by Second Suprvisor", HasComment);
+                    AppendCommentLine(Builder, SectionCaption, AppraisalComment."Developmental Action", HasComment);
+                end else begin
+                    AppendCommentLine(Builder, SectionCaption, AppraisalComment."Comments on Performance", HasComment);
+                    if AppraisalComment."Performance Related Dicussions" then begin
+                        AppendCommentLine(Builder, SectionCaption, 'Performance discussion held.', HasComment);
+                        AppendCommentLine(Builder, SectionCaption, StrSubstNo('Discussion help: %1', Format(AppraisalComment."Extent of Discussion Help")), HasComment);
+                    end;
+                end;
+            until AppraisalComment.Next() = 0;
+
+        if not HasComment then
+            exit('No comments have been captured.');
+
+        exit(Builder.ToText());
+    end;
+
+    local procedure AppendCommentLine(var Builder: TextBuilder; SectionCaption: Text; CommentText: Text; var HasComment: Boolean)
+    begin
+        if CommentText = '' then
+            exit;
+
+        HasComment := true;
+        Builder.AppendLine(StrSubstNo('%1: %2', SectionCaption, CommentText));
     end;
 }
 

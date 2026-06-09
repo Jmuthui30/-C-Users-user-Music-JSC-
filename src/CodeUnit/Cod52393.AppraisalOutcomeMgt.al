@@ -31,6 +31,7 @@ codeunit 52393 "Appraisal Outcome Mgt."
         Outcome."Appraisal No." := EmployeeAppraisal."Appraisal No";
         Outcome."Outcome Type" := OutcomeType;
         Outcome."Line No." := NextLineNo;
+        Outcome."Review Period Code" := EmployeeAppraisal."Current Review Period Code";
         Outcome.Subject := GetSubject(OutcomeType);
         Outcome."Letter Body" := GetLetterBody(EmployeeAppraisal, OutcomeType);
         Outcome.Insert(true);
@@ -77,6 +78,9 @@ codeunit 52393 "Appraisal Outcome Mgt."
         OutcomeToSend.SetRange("Appraisal No.", Outcome."Appraisal No.");
         OutcomeToSend.SetRange("Outcome Type", Outcome."Outcome Type");
         OutcomeToSend.SetRange("Line No.", Outcome."Line No.");
+        OutcomeToSend.SetRange("Review Period Code", Outcome."Review Period Code");
+        if Outcome."Outcome No." <> '' then
+            OutcomeToSend.SetRange("Outcome No.", Outcome."Outcome No.");
 
         Clear(OutcomeLetter);
         OutcomeLetter.SetTableView(OutcomeToSend);
@@ -111,6 +115,7 @@ codeunit 52393 "Appraisal Outcome Mgt."
     begin
         Outcome.Reset();
         Outcome.SetRange("Appraisal No.", EmployeeAppraisal."Appraisal No");
+        Outcome.SetRange("Review Period Code", EmployeeAppraisal."Current Review Period Code");
         Outcome.SetRange("Outcome Type", OutcomeType);
         Outcome.SetFilter(Status, '<>%1', Outcome.Status::Archived);
         exit(Outcome.FindLast());
@@ -155,10 +160,13 @@ codeunit 52393 "Appraisal Outcome Mgt."
     var
         Builder: TextBuilder;
     begin
+        EmployeeAppraisal.CalcFields("Current Review Score");
+
         case OutcomeType of
             OutcomeType::Commendation:
                 begin
                     Builder.AppendLine(StrSubstNo('The Judicial Service Commission notes with appreciation your performance during the %1 appraisal period.', EmployeeAppraisal."Appraisal Period"));
+                    AppendReviewContext(Builder, EmployeeAppraisal);
                     Builder.AppendLine('Your contribution demonstrates commitment to efficient, impartial, and accountable administration of justice, and reflects positively on the standards expected of officers serving the Judiciary.');
                     Builder.AppendLine('This commendation is placed on your performance record in recognition of the results achieved and the professional conduct demonstrated during the period under review.');
                     Builder.AppendLine('You are encouraged to sustain these standards and continue supporting the Commission in the delivery of its mandate.');
@@ -166,16 +174,51 @@ codeunit 52393 "Appraisal Outcome Mgt."
             OutcomeType::Warning:
                 begin
                     Builder.AppendLine(StrSubstNo('Following the performance appraisal for the %1 period, areas requiring improvement were identified and discussed through the appraisal process.', EmployeeAppraisal."Appraisal Period"));
+                    AppendReviewContext(Builder, EmployeeAppraisal);
                     Builder.AppendLine('You are required to address the noted performance gaps, comply with the agreed performance improvement actions, and work with your supervisor to demonstrate measurable improvement within the review timelines set by Human Resource Management.');
                     Builder.AppendLine('This warning is corrective in nature and is intended to support improvement. Continued underperformance or failure to act on agreed interventions may lead to further administrative action in line with the Commission''s Human Resource policies and applicable procedures.');
                 end;
             OutcomeType::Memo:
                 begin
                     Builder.AppendLine(StrSubstNo('This memo records the outcome of the performance appraisal for the %1 period.', EmployeeAppraisal."Appraisal Period"));
+                    AppendReviewContext(Builder, EmployeeAppraisal);
                     Builder.AppendLine('The appraisal outcome, agreed interventions, training needs, and follow-up actions should be reviewed by the appraisee, supervisor, and Human Resource Management for monitoring and closure.');
                     Builder.AppendLine('All parties are expected to maintain the appraisal record and support implementation of the agreed actions within the approved review timelines.');
                 end;
         end;
         exit(CopyStr(Builder.ToText(), 1, 2048));
+    end;
+
+    local procedure AppendReviewContext(var Builder: TextBuilder; EmployeeAppraisal: Record "Employee Appraisal")
+    var
+        Grade: Text[50];
+        ReviewPeriodText: Text[50];
+    begin
+        ReviewPeriodText := EmployeeAppraisal."Current Review Period Code";
+        if ReviewPeriodText = '' then
+            ReviewPeriodText := EmployeeAppraisal."Appraisal Period";
+
+        Builder.AppendLine(StrSubstNo('Review period: %1.', ReviewPeriodText));
+        Builder.AppendLine(StrSubstNo('Current review score: %1.', EmployeeAppraisal."Current Review Score"));
+
+        Grade := GetPerformanceGrade(EmployeeAppraisal."Current Review Score");
+        if Grade <> '' then
+            Builder.AppendLine(StrSubstNo('Performance grade: %1.', Grade));
+    end;
+
+    local procedure GetPerformanceGrade(PercentageScore: Decimal): Text[50]
+    var
+        Matrix: Record "Perfomance rating matrix";
+    begin
+        if PercentageScore = 0 then
+            exit('');
+
+        Matrix.Reset();
+        Matrix.SetFilter(Start, '<=%1', PercentageScore);
+        Matrix.SetFilter("End", '>=%1', PercentageScore);
+        if Matrix.FindFirst() then
+            exit(Matrix.Grade);
+
+        exit('');
     end;
 }

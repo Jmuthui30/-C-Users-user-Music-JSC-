@@ -11,7 +11,7 @@ page 52359 "Appraisal Card-New"
         {
             group(General)
             {
-                Editable = not OpenApprovalEntriesExist;
+                Editable = CardEditable;
                 field("Appraisal No"; Rec."Appraisal No")
                 {
                     Caption = 'Appraisal No';
@@ -456,15 +456,11 @@ page 52359 "Appraisal Card-New"
                 Image = History;
                 Promoted = true;
                 PromotedCategory = Category4;
-                ToolTip = 'Shows all quarterly objective and scoring lines for this appraisal.';
+                ToolTip = 'Shows read-only snapshots for closed review periods on this appraisal.';
 
                 trigger OnAction()
-                var
-                    AppraisalLine: Record "Appraisal Lines";
                 begin
-                    AppraisalLine.SetRange("Appraisal No", Rec."Appraisal No");
-                    Commit();
-                    Page.RunModal(Page::"Appraisal Review History", AppraisalLine);
+                    AppraisalProcessMgt.OpenReviewSnapshots(Rec);
                 end;
             }
             action("View Comment History")
@@ -548,6 +544,7 @@ page 52359 "Appraisal Card-New"
         AppraisalProcessMgt: Codeunit "Appraisal Process Mgt.";
         ApprovalsMgmt: Codeunit "Approval Mgt HR Ext";
         CanCancelApprovalForRecord: Boolean;
+        CardEditable: Boolean;
         DocReleased: Boolean;
         FinalReviewVisible: Boolean;
         OpenApprovalEntriesExist: Boolean;
@@ -582,6 +579,7 @@ page 52359 "Appraisal Card-New"
             ((Rec."Appraisal Status" = Rec."Appraisal Status"::Setting) or
              (Rec."Appraisal Status" = Rec."Appraisal Status"::Set)) and
             not OpenApprovalEntriesExist;
+        CardEditable := (Rec.Status = Rec.Status::Open) and not OpenApprovalEntriesExist;
     end;
 
     local procedure IsCurrentFinalReviewPeriod(): Boolean

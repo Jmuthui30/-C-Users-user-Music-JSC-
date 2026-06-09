@@ -359,7 +359,7 @@ page 52358 "Appraisal Card-Review"
                 Caption = 'Appraisee Training and Development needs in order of priority as identified by appraisee and supervisor based on performance gaps to be completed jointly at the end of the appraisal period.';
                 //Editable = NOT UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
-                SubPageView = where(Person = const("Perfomance Improvement Plan"));
+                SubPageView = where(Person = const("Staff Training and Dev Needs"));
                 Visible = FinalVisible;
             }
             part("Appraisee's Appraisal Comments On The Performance Appraisal"; "Appraisee's Appraisal Comments")
@@ -368,7 +368,7 @@ page 52358 "Appraisal Card-Review"
                 //Editable = NOT UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter(Appraisee));
-                Visible = false;
+                Visible = FinalVisible;
             }
             part("Appraiser's Comments On The Performance Appraisal"; "HR Appraisal Comments")
             {
@@ -376,7 +376,7 @@ page 52358 "Appraisal Card-Review"
                 //Editable = UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter(Appraiser));
-                Visible = false;
+                Visible = FinalVisible;
             }
             label("SECTION VI:  COMMENTS BY THE HEAD OF DEPARTMENT")
             {
@@ -442,7 +442,8 @@ page 52358 "Appraisal Card-Review"
             part("Appraisal Outcomes"; "Appraisal Outcome Part")
             {
                 ApplicationArea = All;
-                SubPageLink = "Appraisal No." = field("Appraisal No");
+                SubPageLink = "Appraisal No." = field("Appraisal No"),
+                              "Review Period Code" = field("Current Review Period Code");
                 UpdatePropagation = Both;
             }
         }
@@ -780,6 +781,7 @@ page 52358 "Appraisal Card-Review"
                 begin
                     if Confirm('Are you sure you want to complete this appraisal?', true) then begin
                         AppraisalProcessMgt.ValidateAppraiserCompletion(Rec);
+                        AppraisalProcessMgt.CreateCurrentReviewSnapshot(Rec);
                         Rec."Appraisal Status" := Rec."Appraisal Status"::Completed;
                         Rec.Modify();
                     end;
@@ -811,15 +813,11 @@ page 52358 "Appraisal Card-Review"
                 Image = History;
                 Promoted = true;
                 PromotedCategory = Category4;
-                ToolTip = 'Shows all quarterly objective and scoring lines for this appraisal.';
+                ToolTip = 'Shows read-only snapshots for closed review periods on this appraisal.';
 
                 trigger OnAction()
-                var
-                    AppraisalLine: Record "Appraisal Lines";
                 begin
-                    AppraisalLine.SetRange("Appraisal No", Rec."Appraisal No");
-                    Commit();
-                    Page.RunModal(Page::"Appraisal Review History", AppraisalLine);
+                    AppraisalProcessMgt.OpenReviewSnapshots(Rec);
                 end;
             }
             action("View Comment History")

@@ -37,6 +37,10 @@ page 52590 "Appraisal Outcome List"
                 {
                     ApplicationArea = All;
                 }
+                field("Review Period Code"; Rec."Review Period Code")
+                {
+                    ApplicationArea = All;
+                }
                 field(Subject; Rec.Subject)
                 {
                     ApplicationArea = All;

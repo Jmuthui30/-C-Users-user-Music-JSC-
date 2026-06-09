@@ -20,6 +20,11 @@ page 52592 "Appraisal Outcome Part"
                 {
                     ApplicationArea = All;
                 }
+                field("Review Period Code"; Rec."Review Period Code")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Review Period';
+                }
                 field(Subject; Rec.Subject)
                 {
                     ApplicationArea = All;

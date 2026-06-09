@@ -7,8 +7,8 @@ page 52248 "Appraisal List - UnderReview-F"
     PageType = List;
     SourceTable = "Employee Appraisal";
     SourceTableView = where(Status = const(Released),
-                            "Appraisal Status" = filter(Review));
-    Caption = 'Appraisal List - UnderReview-F';
+                            "Appraisal Status" = filter(Review | "Further review"));
+    Caption = 'Appraisals Under Review';
     layout
     {
         area(content)
@@ -34,6 +34,22 @@ page 52248 "Appraisal List - UnderReview-F"
                 field("Appraiser No"; Rec."Appraiser No")
                 {
                     ToolTip = 'Specifies the value of the Appraiser No field';
+                }
+                field("Appraisal Period"; Rec."Appraisal Period")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the appraisal period.';
+                }
+                field("Current Review Period Code"; Rec."Current Review Period Code")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Review Period';
+                    ToolTip = 'Specifies the current quarterly review period.';
+                }
+                field("Appraisal Status"; Rec."Appraisal Status")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the appraisal status.';
                 }
             }
         }
