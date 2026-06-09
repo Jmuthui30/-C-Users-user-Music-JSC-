@@ -186,7 +186,7 @@ table 52025 "Training Request"
             trigger OnValidate()
             begin
                 if TrainingNeeds.Get("Course Title") then
-                    Description := TrainingNeeds.Description;
+                    Description := CopyStr(TrainingNeeds.Description, 1, MaxStrLen(Description));
                 if Status <> Status::Open then
                     Error('Once document has been released it cannot be edited!');
             end;
@@ -381,7 +381,7 @@ table 52025 "Training Request"
                     "Planned End Date" := TrainingNeeds."End Date";
                     "No. Of Days" := ("Planned End Date" - "Planned Start Date") + 1;
                     Destination := TrainingNeeds.Location;
-                    Description := TrainingNeeds.Description;
+                    Description := CopyStr(TrainingNeeds.Description, 1, MaxStrLen(Description));
                     "Global Dimension 1 Code" := TrainingNeeds."Shortcut Dimension 1 Code";
                     "Global Dimension 2 Code" := TrainingNeeds."Shortcut Dimension 2 Code";
                     "Dimension Set ID" := TrainingNeeds."Dimension Set ID";

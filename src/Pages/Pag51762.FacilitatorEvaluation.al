@@ -25,19 +25,25 @@ page 51762 "Facilitator Evaluation"
                     ApplicationArea = All;
                 }
             }
-            group("Facilitator Evaluation")
+            group("Training Provider")
             {
-                field("On a scale of 1-10 rate today's training facilitator. (This form should be anonymously filled).";'')
-                {
-                    ApplicationArea = All;
-                    Caption = 'On a scale of 1-10 rate today''s training facilitator. (This form should be anonymously filled).';
-                    Style = StandardAccent;
-                    StyleExpr = TRUE;
-                }
                 field("Name of Facilitator"; Rec."Name of Facilitator")
                 {
                     ApplicationArea = All;
+                    Caption = 'Training Provider';
+                    Editable = false;
+                    ToolTip = 'Specifies the training provider selected on the related training need.';
                 }
+                field("Rating Guidance"; '')
+                {
+                    ApplicationArea = All;
+                    Caption = 'Rate each item from 1 to 10, where 1 is poor and 10 is excellent.';
+                    Style = StandardAccent;
+                    StyleExpr = TRUE;
+                }
+            }
+            group("Provider Ratings")
+            {
                 field("Clear objectives"; Rec."Clear objectives")
                 {
                     ApplicationArea = All;
@@ -90,13 +96,18 @@ page 51762 "Facilitator Evaluation"
                 {
                     ApplicationArea = All;
                 }
+            }
+            group("Provider Comments")
+            {
                 field("General Observations"; Rec."General Observations")
                 {
                     ApplicationArea = All;
+                    MultiLine = true;
                 }
                 field("Areas of Improvement"; Rec."Areas of Improvement")
                 {
                     ApplicationArea = All;
+                    MultiLine = true;
                 }
             }
         }

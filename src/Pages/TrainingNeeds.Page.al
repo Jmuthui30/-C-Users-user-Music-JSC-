@@ -188,21 +188,41 @@ page 52170 "Training Need"
     {
         area(processing)
         {
+            action("Send Plan For Approval")
+            {
+                ApplicationArea = All;
+                Caption = 'Send Plan For Approval';
+                Image = SendApprovalRequest;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                Visible = Rec.Status = Rec.Status::Open;
+                ToolTip = 'Mark this planned training need as pending plan approval.';
+
+                trigger OnAction()
+                begin
+                    ValidatePlanForApproval();
+                    Rec.Status := Rec.Status::"Pending Plan Approval";
+                    Rec.Modify(true);
+                end;
+            }
             action(Ready)
             {
-                Caption = 'Set As Ready For Application';
+                Caption = 'Approve Plan / Open For Application';
                 Image = ResetStatus;
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                ToolTip = 'Executes the Set As Ready For Application action';
+                Visible = Rec.Status = Rec.Status::"Pending Plan Approval";
+                ToolTip = 'Approve this planned training need and make it available for staff application.';
                 // Visible = false;
 
                 trigger OnAction()
                 var
                     HRNofications: Codeunit "HR Notifications";
                 begin
-                    if Confirm('Are you sure you want to set this need as ready for application ?', false) then begin
+                    if Confirm('Are you sure you want to approve this plan and open it for application?', false) then begin
+                        ValidatePlanForApproval();
                         //   Committment.TrainingNeedCommittment(Rec,ErrorMsg);
                         //    IF ErrorMsg<>'' THEN
                         //      ERROR(ErrorMsg);
@@ -212,6 +232,22 @@ page 52170 "Training Need"
                         if Confirm('Do you want to notify all employees by mail?', false) then
                             HRNofications.NotifyTrainingNeeds(Rec);
                     end;
+                end;
+            }
+            action("Reopen Plan")
+            {
+                ApplicationArea = All;
+                Caption = 'Reopen Plan';
+                Image = ReOpen;
+                Promoted = true;
+                PromotedCategory = Process;
+                Visible = Rec.Status = Rec.Status::"Pending Plan Approval";
+                ToolTip = 'Return this plan item to open status for updates.';
+
+                trigger OnAction()
+                begin
+                    Rec.Status := Rec.Status::Open;
+                    Rec.Modify(true);
                 end;
             }
             action(Close)
@@ -311,12 +347,12 @@ page 52170 "Training Need"
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        Rec.Status := Rec.Status::Application;
+        Rec.Status := Rec.Status::Open;
     end;
 
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
     begin
-        Rec.Status := Rec.Status::Application;
+        Rec.Status := Rec.Status::Open;
     end;
 
     var
@@ -328,6 +364,17 @@ page 52170 "Training Need"
         BudgetAvailable: Decimal;
         Expenses: Decimal;
         AccountNoFilter: Text;
+
+    local procedure ValidatePlanForApproval()
+    begin
+        Rec.TestField(Description);
+        Rec.TestField("Start Date");
+        Rec.TestField("End Date");
+        Rec.TestField(Provider);
+        Rec.CalcFields("Cost Of Training");
+        if Rec."Cost Of Training" = 0 then
+            Error('Add at least one budget line before sending this training plan for approval.');
+    end;
 
     local procedure SetView()
     var

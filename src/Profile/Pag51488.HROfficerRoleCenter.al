@@ -1221,8 +1221,8 @@ page 51488 "HR Officer Role Center"
                     Caption = 'Training Budget';
                     action("Training Budget")
                     {
-                        RunObject = page "Training Plan";
-                        ToolTip = 'Executes the Training Budget action';
+                        RunObject = page "Training Plan Budget";
+                        ToolTip = 'Open the approved training budget and budget lines.';
                         Caption = 'Training Budget';
                     }
                 }
@@ -1397,6 +1397,13 @@ page 51488 "HR Officer Role Center"
                     ApplicationArea = All;
                     Caption = 'Training Needs Under Review';
                     RunObject = Page "Training Needs List-Approval";
+                }
+                action("Consolidated Training Plan")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Consolidated Training Plan';
+                    RunObject = Page "Consolidated Training Plan";
+                    ToolTip = 'Open planned training needs for plan approval, scheduling, and application readiness.';
                 }
                 // Legacy standalone nomination process commented out.
                 // Use Proposed Training Participants on the Training Need card for the current shortlist flow.

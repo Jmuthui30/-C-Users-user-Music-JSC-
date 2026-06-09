@@ -173,63 +173,67 @@ table 51647 "Training Evaluation"
         }
         field(37; "Name of Facilitator"; Text[50])
         {
+            Caption = 'Training Provider';
         }
         field(38; "Clear objectives"; Decimal)
         {
-            Caption = 'Clear objectives (Scale of 1 - 10)';
+            Caption = 'Were the training objectives clearly explained? (1-10)';
         }
         field(39; Organization; Decimal)
         {
-            Caption = 'Organisation of content (introduction, body, conclusion)';
+            Caption = 'Was the training content well organized? (1-10)';
         }
         field(40; Ease; Decimal)
         {
-            Caption = 'Ease of Understanding (clear, concise)';
+            Caption = 'Was the provider easy to understand? (1-10)';
         }
         field(41; Usefulness; Decimal)
         {
-            Caption = 'Usefulness of content (informative and current)';
+            Caption = 'Was the content useful and current? (1-10)';
         }
         field(42; "Meeting Objectives"; Decimal)
         {
-            Caption = 'Meeting course objectives';
+            Caption = 'Did the training meet the course objectives? (1-10)';
         }
         field(43; "Addresses Non-compliance"; Decimal)
         {
-            Caption = 'Addresses non-compliance (lateness, non-participation, disorderly conduct)';
+            Caption = 'Did the provider manage time, participation, and class conduct well? (1-10)';
         }
         field(44; "Participants Engagement"; Decimal)
         {
-            Caption = 'Participants engagement (trainer-trainee interactions)';
+            Caption = 'Did the provider keep participants engaged? (1-10)';
         }
         field(45; "Pratical Examples"; Decimal)
         {
-            Caption = 'Use of Practical examples (or clear explanations)';
+            Caption = 'Did the provider use practical examples or clear explanations? (1-10)';
         }
         field(46; "Pro-social behaviour"; Decimal)
         {
-            Caption = 'Encourages pro-social behaviour (audience maintenance)';
+            Caption = 'Did the provider create a respectful and professional learning environment? (1-10)';
         }
         field(47; "Constructive Feedback"; Decimal)
         {
-            Caption = 'Providing Constructive feedback (satisfactory answers)';
+            Caption = 'Did the provider respond well to questions and feedback? (1-10)';
         }
         field(48; "Use of materials"; Decimal)
         {
-            Caption = 'Effective use of materials';
+            Caption = 'Were the training materials used effectively? (1-10)';
         }
         field(49; Competency; Decimal)
         {
-            Caption = 'Competency (shows proper understanding of topic)';
+            Caption = 'Did the provider demonstrate strong knowledge of the topic? (1-10)';
         }
         field(50; "Communication Skills"; Decimal)
         {
+            Caption = 'How would you rate the provider''s communication skills? (1-10)';
         }
         field(51; "General Observations"; Text[250])
         {
+            Caption = 'Overall comments about the training provider';
         }
         field(52; "Areas of Improvement"; Text[250])
         {
+            Caption = 'What should the training provider improve?';
         }
         field(53; "Training Request No."; Code[20])
         {
@@ -254,12 +258,18 @@ table 51647 "Training Evaluation"
                 "Start Date" := TrainingRequest."Planned Start Date";
                 "End Date" := TrainingRequest."Planned End Date";
                 Organizers := CopyStr(TrainingRequest."Training Insitution", 1, MaxStrLen(Organizers));
+                SetFacilitatorFromTrainingNeed();
             end;
         }
         field(54; "Training Need"; Code[20])
         {
             DataClassification = CustomerContent;
             TableRelation = "Training Need";
+
+            trigger OnValidate()
+            begin
+                SetFacilitatorFromTrainingNeed();
+            end;
         }
         field(55; "Back To Office Report"; Text[2048])
         {
@@ -271,6 +281,71 @@ table 51647 "Training Evaluation"
         }
         field(57; "Supervisor Evaluated"; Boolean)
         {
+            DataClassification = CustomerContent;
+        }
+        field(58; "Course Title Evaluation"; Text[2048])
+        {
+            Caption = 'How relevant was the course content to your role?';
+            DataClassification = CustomerContent;
+        }
+        field(59; "Knowledge Evaluation"; Text[2048])
+        {
+            Caption = 'What new knowledge or skills did you gain from the training?';
+            DataClassification = CustomerContent;
+        }
+        field(60; "Were Expectations Met"; Text[2048])
+        {
+            Caption = 'Were your expectations for the training met?';
+            DataClassification = CustomerContent;
+        }
+        field(61; "Training Impact"; Text[2048])
+        {
+            Caption = 'How will this training improve your work performance?';
+            DataClassification = CustomerContent;
+        }
+        field(62; "Improve Weak Areas"; Text[2048])
+        {
+            Caption = 'Which weak areas will you improve, and how?';
+            DataClassification = CustomerContent;
+        }
+        field(63; "Training Techniques Satisfied"; Text[2048])
+        {
+            Caption = 'Were the training methods and facilitation effective?';
+            DataClassification = CustomerContent;
+        }
+        field(64; "Food Served Satisfied"; Text[2048])
+        {
+            Caption = 'Were you satisfied with the meals and refreshments?';
+            DataClassification = CustomerContent;
+        }
+        field(65; "Recommendations"; Text[2048])
+        {
+            Caption = 'What recommendations do you have for future trainings?';
+            DataClassification = CustomerContent;
+        }
+        field(66; "No Answer Explanation"; Text[2048])
+        {
+            Caption = 'If any answer was No or Unsatisfactory, please explain.';
+            DataClassification = CustomerContent;
+        }
+        field(67; "Personal Action Plans"; Text[2048])
+        {
+            Caption = 'What personal action plans will you implement after this training?';
+            DataClassification = CustomerContent;
+        }
+        field(68; "Action Plan Barriers"; Text[2048])
+        {
+            Caption = 'What barriers may affect your action plans, and how will you address them?';
+            DataClassification = CustomerContent;
+        }
+        field(69; "How To Overcome Assignments"; Text[2048])
+        {
+            Caption = 'How will you overcome assignment or workload challenges?';
+            DataClassification = CustomerContent;
+        }
+        field(70; "Resource Requirements"; Text[2048])
+        {
+            Caption = 'What resources do you need to implement your action plans?';
             DataClassification = CustomerContent;
         }
     }
@@ -331,5 +406,23 @@ table 51647 "Training Evaluation"
     begin
         TestField("Training Request No.");
         TestField("Training Need");
+    end;
+
+    local procedure SetFacilitatorFromTrainingNeed()
+    var
+        TrainingNeed: Record "Training Need";
+        Vendor: Record Vendor;
+    begin
+        if "Training Need" = '' then
+            exit;
+
+        if not TrainingNeed.Get("Training Need") then
+            exit;
+
+        if TrainingNeed."Provider Name" <> '' then
+            "Name of Facilitator" := CopyStr(TrainingNeed."Provider Name", 1, MaxStrLen("Name of Facilitator"))
+        else
+            if Vendor.Get(TrainingNeed.Provider) then
+                "Name of Facilitator" := CopyStr(Vendor.Name, 1, MaxStrLen("Name of Facilitator"));
     end;
 }
