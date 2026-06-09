@@ -2112,7 +2112,7 @@ codeunit 52001 "HR Management"
         Email: Codeunit Email;
         EmailMessage: Codeunit "Email Message";
         i: Integer;
-        ApplicantMsg: Label '<p style="font-family:Verdana,Arial;font-size:10pt">Dear %1,<br><br></p><p style="font-family:Verdana,Arial;font-size:10pt"> Your training application <Strong>%2</Strong> for <Strong>%3</Strong> has been Approved. You can proceed from <Strong>%4</Strong> to <Strong>%5</Strong> and you are to resume work after Training.<br><br>Thank you.<br><br>Kind regards,<br><br><Strong>%9<Strong></p>', Comment = '%1 = Employee Name, %2 = Application No, %3 = Leave Type, %4 = Start Date, %5 = End Date, %6 = Resumption Date, %7 = Reliever Name, %8 = Reliever Position, %9 = Company Name';
+        ApplicantMsg: Label '<p style="font-family:Verdana,Arial;font-size:10pt">Dear %1,<br><br></p><p style="font-family:Verdana,Arial;font-size:10pt"> Your training application <Strong>%2</Strong> for <Strong>%3</Strong> has been Approved. You can proceed from <Strong>%4</Strong> to <Strong>%5</Strong> and you are to resume work after Training.<br><br>Thank you.<br><br>Kind regards,<br><br><Strong>%7</Strong></p>', Comment = '%1 = Employee Name, %2 = Application No, %3 = Training Need, %4 = Start Date, %5 = End Date, %7 = Company Name';
         SpaceLbl: Label '  ';
         Receipient: List of [Text];
         RecipientCC: List of [Text];
@@ -2129,6 +2129,9 @@ codeunit 52001 "HR Management"
         HRSetup.Get();
         //Notify Employee
         if TrainingRequest.Get(ApplicationNo) then begin
+            if TrainingRequest.Status <> TrainingRequest.Status::Released then
+                exit;
+
             Employee.Reset();
             if Employee.Get(TrainingRequest."Employee No") then
                 if Employee."Company E-Mail" <> '' then begin

@@ -5,7 +5,7 @@ page 52976 "Consolidated Training Plan"
     CardPageID = "Training Need";
     PageType = List;
     SourceTable = "Training Need";
-    SourceTableView = sorting("Start Date") where(Status = filter(Open | Application));
+    SourceTableView = sorting("Start Date") where(Status = filter(Open | "Pending Plan Approval" | Application));
     UsageCategory = Lists;
 
     layout
@@ -69,4 +69,79 @@ page 52976 "Consolidated Training Plan"
             }
         }
     }
+
+    actions
+    {
+        area(processing)
+        {
+            action("Send Plan For Approval")
+            {
+                ApplicationArea = All;
+                Caption = 'Send Plan For Approval';
+                Image = SendApprovalRequest;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                Visible = Rec.Status = Rec.Status::Open;
+                ToolTip = 'Mark this planned training need as pending plan approval.';
+
+                trigger OnAction()
+                begin
+                    ValidatePlanForApproval();
+                    Rec.Status := Rec.Status::"Pending Plan Approval";
+                    Rec.Modify(true);
+                end;
+            }
+            action("Approve Plan")
+            {
+                ApplicationArea = All;
+                Caption = 'Approve Plan';
+                Image = Approve;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                Visible = Rec.Status = Rec.Status::"Pending Plan Approval";
+                ToolTip = 'Approve this planned training need and make it available for staff application.';
+
+                trigger OnAction()
+                var
+                    HRNotifications: Codeunit "HR Notifications";
+                begin
+                    ValidatePlanForApproval();
+                    Rec.Status := Rec.Status::Application;
+                    Rec.Modify(true);
+
+                    if Confirm('Do you want to notify proposed participants by mail?', false) then
+                        HRNotifications.NotifyTrainingNeeds(Rec);
+                end;
+            }
+            action("Reopen Plan")
+            {
+                ApplicationArea = All;
+                Caption = 'Reopen Plan';
+                Image = ReOpen;
+                Promoted = true;
+                PromotedCategory = Process;
+                Visible = Rec.Status = Rec.Status::"Pending Plan Approval";
+                ToolTip = 'Return this plan item to open status for updates.';
+
+                trigger OnAction()
+                begin
+                    Rec.Status := Rec.Status::Open;
+                    Rec.Modify(true);
+                end;
+            }
+        }
+    }
+
+    local procedure ValidatePlanForApproval()
+    begin
+        Rec.TestField(Description);
+        Rec.TestField("Start Date");
+        Rec.TestField("End Date");
+        Rec.TestField(Provider);
+        Rec.CalcFields("Cost Of Training");
+        if Rec."Cost Of Training" = 0 then
+            Error('Add at least one budget line before sending this training plan for approval.');
+    end;
 }

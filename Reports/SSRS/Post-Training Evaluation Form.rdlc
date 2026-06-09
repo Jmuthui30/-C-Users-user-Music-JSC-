@@ -130,6 +130,45 @@ End Function
         <Field Name="HRComments">
           <DataField>HRComments</DataField>
         </Field>
+        <Field Name="CourseTitleEvaluation">
+          <DataField>CourseTitleEvaluation</DataField>
+        </Field>
+        <Field Name="KnowledgeEvaluation">
+          <DataField>KnowledgeEvaluation</DataField>
+        </Field>
+        <Field Name="WereExpectationsMet">
+          <DataField>WereExpectationsMet</DataField>
+        </Field>
+        <Field Name="TrainingImpact">
+          <DataField>TrainingImpact</DataField>
+        </Field>
+        <Field Name="ImproveWeakAreas">
+          <DataField>ImproveWeakAreas</DataField>
+        </Field>
+        <Field Name="TrainingTechniquesSatisfied">
+          <DataField>TrainingTechniquesSatisfied</DataField>
+        </Field>
+        <Field Name="FoodServedSatisfied">
+          <DataField>FoodServedSatisfied</DataField>
+        </Field>
+        <Field Name="EvaluationRecommendations">
+          <DataField>EvaluationRecommendations</DataField>
+        </Field>
+        <Field Name="NoAnswerExplanation">
+          <DataField>NoAnswerExplanation</DataField>
+        </Field>
+        <Field Name="PersonalActionPlans">
+          <DataField>PersonalActionPlans</DataField>
+        </Field>
+        <Field Name="ActionPlanBarriers">
+          <DataField>ActionPlanBarriers</DataField>
+        </Field>
+        <Field Name="HowToOvercomeAssignments">
+          <DataField>HowToOvercomeAssignments</DataField>
+        </Field>
+        <Field Name="ResourceRequirements">
+          <DataField>ResourceRequirements</DataField>
+        </Field>
       </Fields>
       <Query>
         <DataSourceName>DataSource</DataSourceName>
