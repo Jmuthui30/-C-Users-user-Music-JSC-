@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 ﻿{"Added":[],"Modified":[],"Removed":[]}
+=======
+﻿{"Added":[],"Modified":[{"Id":53012,"Kind":13,"Name":"Memo Report","Namespace":""},{"Id":55057,"Kind":11,"Name":"HRPortalQueries","Namespace":""},{"Id":55056,"Kind":11,"Name":"HRPortal","Namespace":""},{"Kind":106,"Name":"RequestOptionsPage","Namespace":""}],"Removed":[]}
+>>>>>>> 57e833afd002d8ff4e730e711626a17b2fe7370d
