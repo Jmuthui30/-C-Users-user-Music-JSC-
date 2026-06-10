@@ -1447,8 +1447,9 @@ codeunit 55056 HRPortal
                     if UserSetup.FindLast() then begin
                         ImprestHeader."Created By" := UserSetup."User ID";
                         ImprestHeader."User Id" := UserSetup."User ID";
+                        ImprestHeader.Cashier := UserSetup."User ID";
                     end;
-                    ImprestHeader.Modify(true);
+                    ImprestHeader.Modify();
                 end;
 
             status := 'success*Requisition has been created succesfully*' + ImprestHeader."No.";
