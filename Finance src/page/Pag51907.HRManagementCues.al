@@ -109,15 +109,7 @@ page 59907 "HR Management Cues"
 
         }
     }
-    actions
-    {
-        area(Reporting)
-        {
 
-        }
-
-
-    }
 
     trigger OnOpenPage()
     begin
