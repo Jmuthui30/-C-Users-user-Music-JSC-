@@ -186,7 +186,7 @@ table 52025 "Training Request"
             trigger OnValidate()
             begin
                 if TrainingNeeds.Get("Course Title") then
-                    Description := TrainingNeeds.Description;
+                    Description := CopyStr(TrainingNeeds.Description, 1, MaxStrLen(Description));
                 if Status <> Status::Open then
                     Error('Once document has been released it cannot be edited!');
             end;
@@ -354,7 +354,7 @@ table 52025 "Training Request"
         }
         field(49; "Training Need"; Code[20])
         {
-            TableRelation = "Training Need" where(Status = const(Application), "Applicant Type" = const(Individual));
+            TableRelation = "Training Need" where(Status = const(Application));
             Caption = 'Training Need';
 
             trigger OnValidate()
@@ -367,26 +367,30 @@ table 52025 "Training Request"
                 if TrainingRequest.FindFirst() then
                     Error('You have already applied for Training %1 . Kindly choose a new one', "Training Need");
 
-                if TrainingNeeds.Get("Training Need") then
-                    if TrainingNeeds."Open/Closed" = TrainingNeeds."Open/Closed"::Open then begin
-                        TrainingNeeds.CalcFields("Cost Of Training", "Cost Of Training (LCY)");
-                        "Planned Start Date" := TrainingNeeds."Start Date";
-                        "Planned End Date" := TrainingNeeds."End Date";
-                        "No. Of Days" := ("Planned End Date" - "Planned Start Date") + 1;
-                        Destination := TrainingNeeds.Location;
-                        Description := TrainingNeeds.Description;
-                        "Global Dimension 1 Code" := TrainingNeeds."Shortcut Dimension 1 Code";
-                        "Global Dimension 2 Code" := TrainingNeeds."Shortcut Dimension 2 Code";
-                        "Dimension Set ID" := TrainingNeeds."Dimension Set ID";
-                        Venue := TrainingNeeds.Venue;
-                        "Country Code" := TrainingNeeds."Country Code";
-                        "Cost of Training" := TrainingNeeds."Cost Of Training";
-                        Message('Cost of Training for %1 is %2', "Training Need", "Cost of Training");
-                        "Cost of Training (LCY)" := TrainingNeeds."Cost Of Training (LCY)";
-                    end else begin
-                        Participants.SetRange("Employee No", "Employee No");
-                        if not Participants.FindFirst() then Error('This training can only be applied by shortlisted participants');
-                    end;
+                Participants.Reset();
+                Participants.SetRange("Training Need", "Training Need");
+                if not Participants.IsEmpty() then begin
+                    Participants.SetRange("Employee No", "Employee No");
+                    if not Participants.FindFirst() then
+                        Error('This training can only be applied by shortlisted participants');
+                end;
+
+                if TrainingNeeds.Get("Training Need") then begin
+                    TrainingNeeds.CalcFields("Cost Of Training", "Cost Of Training (LCY)");
+                    "Planned Start Date" := TrainingNeeds."Start Date";
+                    "Planned End Date" := TrainingNeeds."End Date";
+                    "No. Of Days" := ("Planned End Date" - "Planned Start Date") + 1;
+                    Destination := TrainingNeeds.Location;
+                    Description := CopyStr(TrainingNeeds.Description, 1, MaxStrLen(Description));
+                    "Global Dimension 1 Code" := TrainingNeeds."Shortcut Dimension 1 Code";
+                    "Global Dimension 2 Code" := TrainingNeeds."Shortcut Dimension 2 Code";
+                    "Dimension Set ID" := TrainingNeeds."Dimension Set ID";
+                    Venue := TrainingNeeds.Venue;
+                    "Country Code" := TrainingNeeds."Country Code";
+                    "Cost of Training" := TrainingNeeds."Cost Of Training";
+                    Message('Cost of Training for %1 is %2', "Training Need", "Cost of Training");
+                    "Cost of Training (LCY)" := TrainingNeeds."Cost Of Training (LCY)";
+                end;
 
                 //InsertPerDiemCost();
             end;

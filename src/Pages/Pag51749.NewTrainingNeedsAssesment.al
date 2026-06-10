@@ -7,6 +7,7 @@ page 51749 "New Training Needs Assesment"
     ApplicationArea = All;
     UsageCategory = Lists;
     SourceTable = "Training Needs Header";
+    SourceTableView = where(Status = filter(Open | Rejected));
 
     layout
     {
@@ -17,6 +18,18 @@ page 51749 "New Training Needs Assesment"
                 field("No."; Rec."No.")
                 {
                     ApplicationArea = All;
+                }
+                field("Need Source"; Rec."Need Source")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies where this training needs assessment originated.';
+                }
+                field("Source Document No"; Rec."Source Document No")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies the source document, such as the appraisal number that created this assessment.';
                 }
                 field("Employee No"; Rec."Employee No")
                 {
@@ -61,6 +74,11 @@ page 51749 "New Training Needs Assesment"
                 field("Comfirmation Status"; Rec."Comfirmation Status")
                 {
                     ApplicationArea = All;
+                }
+                field(Status; Rec.Status)
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the approval status of the training needs assessment.';
                 }
             }
         }

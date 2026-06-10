@@ -15,6 +15,18 @@ page 51751 "Training Needs Header Approval"
                 {
                     ApplicationArea = All;
                 }
+                field("Need Source"; Rec."Need Source")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies where this training needs assessment originated.';
+                }
+                field("Source Document No"; Rec."Source Document No")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies the source document, such as the appraisal number that created this assessment.';
+                }
                 field("Employee No"; Rec."Employee No")
                 {
                     ApplicationArea = All;
@@ -130,7 +142,9 @@ page 51751 "Training Needs Header Approval"
             part(Control25; "Training Needs Lines")
             {
                 ApplicationArea = All;
-                SubPageLink = "Employee No."=FIELD("Employee No");
+                SubPageLink = "Document No." = FIELD("No."),
+                              "Employee No." = FIELD("Employee No");
+                UpdatePropagation = Both;
             }
             field("Comments by HR Manager:";'')
             {
@@ -172,4 +186,9 @@ page 51751 "Training Needs Header Approval"
             }
         }
     }
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        CurrPage.Control25.Page.SetHeaderContext(Rec."No.", Rec."Employee No");
+    end;
 }

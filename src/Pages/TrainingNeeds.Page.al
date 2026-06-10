@@ -128,6 +128,11 @@ page 52170 "Training Need"
                     {
                         ToolTip = 'Specifies the value of the Need Source field';
                     }
+                    field("Source Assessment No."; Rec."Source Assessment No.")
+                    {
+                        Editable = false;
+                        ToolTip = 'Specifies the approved training needs assessment that created this training need.';
+                    }
                     field("Total Cost"; Rec."Total Cost")
                     {
                         Visible = false;
@@ -174,6 +179,7 @@ page 52170 "Training Need"
             {
                 //Visible = true;
                 SubPageLink = "Document No." = field(Code);
+                UpdatePropagation = Both;
             }
         }
     }
@@ -182,21 +188,41 @@ page 52170 "Training Need"
     {
         area(processing)
         {
+            action("Send Plan For Approval")
+            {
+                ApplicationArea = All;
+                Caption = 'Send Plan For Approval';
+                Image = SendApprovalRequest;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                Visible = Rec.Status = Rec.Status::Open;
+                ToolTip = 'Mark this planned training need as pending plan approval.';
+
+                trigger OnAction()
+                begin
+                    ValidatePlanForApproval();
+                    Rec.Status := Rec.Status::"Pending Plan Approval";
+                    Rec.Modify(true);
+                end;
+            }
             action(Ready)
             {
-                Caption = 'Set As Ready For Application';
+                Caption = 'Approve Plan / Open For Application';
                 Image = ResetStatus;
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                ToolTip = 'Executes the Set As Ready For Application action';
+                Visible = Rec.Status = Rec.Status::"Pending Plan Approval";
+                ToolTip = 'Approve this planned training need and make it available for staff application.';
                 // Visible = false;
 
                 trigger OnAction()
                 var
                     HRNofications: Codeunit "HR Notifications";
                 begin
-                    if Confirm('Are you sure you want to set this need as ready for application ?', false) then begin
+                    if Confirm('Are you sure you want to approve this plan and open it for application?', false) then begin
+                        ValidatePlanForApproval();
                         //   Committment.TrainingNeedCommittment(Rec,ErrorMsg);
                         //    IF ErrorMsg<>'' THEN
                         //      ERROR(ErrorMsg);
@@ -206,6 +232,22 @@ page 52170 "Training Need"
                         if Confirm('Do you want to notify all employees by mail?', false) then
                             HRNofications.NotifyTrainingNeeds(Rec);
                     end;
+                end;
+            }
+            action("Reopen Plan")
+            {
+                ApplicationArea = All;
+                Caption = 'Reopen Plan';
+                Image = ReOpen;
+                Promoted = true;
+                PromotedCategory = Process;
+                Visible = Rec.Status = Rec.Status::"Pending Plan Approval";
+                ToolTip = 'Return this plan item to open status for updates.';
+
+                trigger OnAction()
+                begin
+                    Rec.Status := Rec.Status::Open;
+                    Rec.Modify(true);
                 end;
             }
             action(Close)
@@ -232,12 +274,50 @@ page 52170 "Training Need"
                 Image = "Report";
                 Promoted = true;
                 PromotedIsBig = true;
+                visible = false;
 
                 trigger OnAction()
                 begin
                     Rec.Reset;
                     // Rec.SetRange("No.", Rec."No.");
                     REPORT.Run(51608, true, false, Rec);
+                end;
+            }
+            action("Training Need Report")
+            {
+                ApplicationArea = All;
+                Caption = 'Training Need Report';
+                Image = "Report";
+                Promoted = true;
+                PromotedCategory = Report;
+                PromotedIsBig = true;
+                ToolTip = 'Print the training need report for the current record.';
+
+                trigger OnAction()
+                var
+                    TrainingNeed: Record "Training Need";
+                begin
+                    TrainingNeed.SetRange(Code, Rec.Code);
+                    Report.Run(Report::"Training Need", true, false, TrainingNeed);
+                end;
+            }
+            action("Source Assessment")
+            {
+                ApplicationArea = All;
+                Caption = 'Source Assessment';
+                Image = ViewDetails;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                ToolTip = 'Open the approved assessment that created this training need.';
+
+                trigger OnAction()
+                var
+                    TrainingNeedsHeader: Record "Training Needs Header";
+                begin
+                    Rec.TestField("Source Assessment No.");
+                    TrainingNeedsHeader.Get(Rec."Source Assessment No.");
+                    Page.Run(Page::"Training Needs Header Approved", TrainingNeedsHeader);
                 end;
             }
             action("Proposed Training Participants")
@@ -247,6 +327,7 @@ page 52170 "Training Need"
                 PromotedCategory = Category4;
                 PromotedIsBig = true;
                 RunObject = page "Training participants";
+                RunPageLink = "Training Need" = field(Code);
                 Visible = Rec.Status <> Rec.Status::Closed;
                 ToolTip = 'Executes the Proposed Training Participants action';
             }
@@ -266,12 +347,12 @@ page 52170 "Training Need"
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        Rec.Status := Rec.Status::Application;
+        Rec.Status := Rec.Status::Open;
     end;
 
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
     begin
-        Rec.Status := Rec.Status::Application;
+        Rec.Status := Rec.Status::Open;
     end;
 
     var
@@ -283,6 +364,17 @@ page 52170 "Training Need"
         BudgetAvailable: Decimal;
         Expenses: Decimal;
         AccountNoFilter: Text;
+
+    local procedure ValidatePlanForApproval()
+    begin
+        Rec.TestField(Description);
+        Rec.TestField("Start Date");
+        Rec.TestField("End Date");
+        Rec.TestField(Provider);
+        Rec.CalcFields("Cost Of Training");
+        if Rec."Cost Of Training" = 0 then
+            Error('Add at least one budget line before sending this training plan for approval.');
+    end;
 
     local procedure SetView()
     var

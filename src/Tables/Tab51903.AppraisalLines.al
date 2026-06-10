@@ -46,7 +46,9 @@ table 51903 "Appraisal Lines"
         field(8; Weighting; Decimal)
         {
             BlankZero = true;
-            Caption = 'Weighting';
+            Caption = 'Weighting (%)';
+            MinValue = 0;
+            MaxValue = 100;
 
             trigger OnValidate()
             begin
@@ -106,7 +108,7 @@ table 51903 "Appraisal Lines"
         }
         field(20; Rating; Decimal)
         {
-            Caption = 'Rating(1-5)';
+            Caption = 'Weighted Score';
 
             trigger OnValidate()
             begin
@@ -271,7 +273,7 @@ table 51903 "Appraisal Lines"
         }
         field(40; "Weighted Rating"; Decimal)
         {
-            Caption = 'Weighted Rating';
+            Caption = 'Weighting Used (%)';
         }
         field(41; "Appraisal Category"; Code[20])
         {
@@ -298,7 +300,7 @@ table 51903 "Appraisal Lines"
             DataClassification = CustomerContent;
             MinValue = 0;
             MaxValue = 5;
-            TableRelation = "Bal Score Card Rating";
+            TableRelation = "Bal Score Card Rating".Score;
 
             trigger OnValidate()
             begin
@@ -311,7 +313,7 @@ table 51903 "Appraisal Lines"
             DataClassification = CustomerContent;
             MinValue = 0;
             MaxValue = 5;
-            TableRelation = "Bal Score Card Rating";
+            TableRelation = "Bal Score Card Rating".Score;
 
             trigger OnValidate()
             begin
@@ -386,7 +388,10 @@ table 51903 "Appraisal Lines"
     local procedure UpdateQuarterScore()
     begin
         if ("Appraiser Rating" = 0) or (Weighting = 0) then begin
+            "Score/Points" := 0;
+            "Weighted Rating" := Weighting;
             "Quarter Score" := 0;
+            Rating := 0;
             exit;
         end;
 

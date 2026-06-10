@@ -101,6 +101,24 @@ page 52591 "Appraisal Outcome Card"
                     PrintCurrentOutcome();
                 end;
             }
+            action("Email Letter")
+            {
+                ApplicationArea = All;
+                Caption = 'Email Letter';
+                Image = SendEmailPDF;
+                Promoted = true;
+                PromotedCategory = Process;
+                ToolTip = 'Emails the appraisal outcome letter to the employee and marks it as issued after successful sending.';
+
+                trigger OnAction()
+                var
+                    OutcomeMgt: Codeunit "Appraisal Outcome Mgt.";
+                begin
+                    OutcomeMgt.EmailOutcomeLetter(Rec);
+                    CurrPage.Update(false);
+                    Message('The appraisal outcome letter has been emailed to %1.', Rec."Employee Name");
+                end;
+            }
             action("Mark Issued")
             {
                 ApplicationArea = All;

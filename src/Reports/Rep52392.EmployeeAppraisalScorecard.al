@@ -11,7 +11,7 @@ report 52392 "Employee Appraisal Scorecard"
     {
         dataitem(EmployeeAppraisal; "Employee Appraisal")
         {
-            CalcFields = "Current Review Score", "Total Review Score";
+            CalcFields = "Current Review Score", "Total Review Score", "Total Weighting", "Review Start Date", "Review End Date";
             RequestFilterFields = "Appraisal No";
             // Company Info
             column(CompPic; CompanyInfo.Picture) { }
@@ -36,12 +36,19 @@ report 52392 "Employee Appraisal Scorecard"
 
             // Other Header Fields
             column(DepartmentCode_Appraisal; "Department Code") { }
+            column(DirectorateCode_Appraisal; AppraisalReportingMgt.GetDirectorateCodeForAppraisal(EmployeeAppraisal)) { }
+            column(DirectorateName_Appraisal; AppraisalReportingMgt.GetDirectorateNameForAppraisal(EmployeeAppraisal)) { }
             column(JobGroup_Appraisal; "Job Group") { }
             column(PeriodStart_Appraisal; "Period Start") { }
             column(PeriodEnd_Appraisal; "Period End") { }
             column(CurrentReviewPeriod; "Current Review Period Code") { }
+            column(ReviewStartDate_Appraisal; "Review Start Date") { }
+            column(ReviewEndDate_Appraisal; "Review End Date") { }
             column(CurrentReviewScore; "Current Review Score") { }
             column(TotalReviewScore; "Total Review Score") { }
+            column(TotalWeighting; "Total Weighting") { }
+            column(StatusText; Format(Status)) { }
+            column(AppraisalStatusText; Format("Appraisal Status")) { }
 
             // Responsibility Center (FlowField)
             column(UserDept; "Responsibilty Center") { }
@@ -95,19 +102,30 @@ report 52392 "Employee Appraisal Scorecard"
 
                 // Other existing columns
                 column(WorkplanCode; GetWorkplanName("Workplan Code")) { }
+                column(WorkplanCodeValue; "Workplan Code") { }
+                column(WorkplanDescription; "Workplan Description") { }
                 column(PerformanceMeasure; "Performance Measure") { }
                 column(Actualtargets; "Actual targets") { }
                 column(Initiativecode; "Initiative code") { }
+                column(InitiativeDescription; Description) { }
+                column(ActualValue; Actual) { }
                 column(Achieved; "Achieved (%)") { }
                 column(Rating; Rating) { }
                 column(WeightedRating; "Weighted Rating") { }
                 column(ReviewPeriodCode_Goals; "Review Period Code") { }
                 column(SelfRating_Goals; "Self Rating") { }
                 column(AppraiserRating_Goals; "Appraiser Rating") { }
+                column(AppraiserComments_Goals; "Results Achieved Comments") { }
                 column(QuarterScore_Goals; "Quarter Score") { }
                 column(AppraiseeComments_Goals; "Appraisee's comments") { }
                 column(AchievementNotes_Goals; "Achievement Notes") { }
                 column(CorrectiveAction_Goals; "Corrective Action") { }
+
+                trigger OnPreDataItem()
+                begin
+                    if EmployeeAppraisal."Current Review Period Code" <> '' then
+                        SetRange("Review Period Code", EmployeeAppraisal."Current Review Period Code");
+                end;
             }
 
             dataitem("Appraisee Comments"; "Appraisal Comments")
@@ -121,6 +139,13 @@ report 52392 "Employee Appraisal Scorecard"
                 column(ExtentofDiscussionHelp_Comments; "Extent of Discussion Help") { }
                 column(Date_Comments; Date) { }
                 column(Person_Comments; Person) { }
+                column(ReviewPeriodCode_Comments; "Review Period Code") { }
+
+                trigger OnPreDataItem()
+                begin
+                    if EmployeeAppraisal."Current Review Period Code" <> '' then
+                        SetFilter("Review Period Code", '%1|%2', '', EmployeeAppraisal."Current Review Period Code");
+                end;
             }
 
             dataitem("Appraiser Comments"; "Appraisal Comments")
@@ -129,6 +154,13 @@ report 52392 "Employee Appraisal Scorecard"
                 DataItemTableView = where(Person = const(Appraiser));
 
                 column(Comments_on_Performance_Appraiser; "Comments on Performance") { }
+                column(ReviewPeriodCode_AppraiserComments; "Review Period Code") { }
+
+                trigger OnPreDataItem()
+                begin
+                    if EmployeeAppraisal."Current Review Period Code" <> '' then
+                        SetFilter("Review Period Code", '%1|%2', '', EmployeeAppraisal."Current Review Period Code");
+                end;
             }
         }
     }
@@ -140,6 +172,7 @@ report 52392 "Employee Appraisal Scorecard"
     end;
 
     var
+        AppraisalReportingMgt: Codeunit "Appraisal Reporting Mgt.";
         Workplans: Record "Appraisal Workplan Code";
         CompanyInfo: Record "Company Information";
 

@@ -29,6 +29,7 @@ page 52354 "Appraisal Goals"
                 {
                     ApplicationArea = All;
                     Caption = 'Review Period';
+                    Editable = false;
                     ToolTip = 'Specifies the quarterly review period for this objective line.';
                 }
                 field("Actual targets"; Rec."Actual targets")
@@ -49,7 +50,7 @@ page 52354 "Appraisal Goals"
                 {
                     Caption = 'Target';
                 }
-                field(Actual;Rec.Actual)
+                field(Actual; Rec.Actual)
                 {
                     Caption = 'Actual';
                     ToolTip = 'Specifies the value of the Actual field';
@@ -68,7 +69,7 @@ page 52354 "Appraisal Goals"
                 field("Achieved (%)"; Rec."Achieved (%)")
                 {
                     ToolTip = 'Specifies the value of the Achieved (%) field.';
-                    //Editable = UnderReview;
+                    Editable = false;
                 }
                 field("Self Rating"; Rec."Self Rating")
                 {
@@ -84,35 +85,36 @@ page 52354 "Appraisal Goals"
                     ToolTip = 'Specifies the appraisee comments for this objective.';
                 }
 
-                // field(Weighting; Rec.Weighting)
-                // {
-                //     Visible = true;
-                //     //Caption = 'Expected % score (Which is 100% for each) (B)';
-                //     Caption = 'Weighting';
-                //     ToolTip = 'Specifies the value of the Expected % score (Which is 100% for each) (B) field';
+                field(Weighting; Rec.Weighting)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Weighting (%)';
+                    Editable = AppraiseeEditable;
+                    ToolTip = 'Specifies this objective''s percentage weighting within the current review period.';
 
-                //     trigger OnValidate()
-                //     begin
-                //         CurrPage.Update();
-                //     end;
-                // }
+                    trigger OnValidate()
+                    begin
+                        CurrPage.Update(false);
+                    end;
+                }
                 field("Weighted Rating"; Rec."Weighted Rating")
                 {
-                    ToolTip = 'Specifies the value of the Weighted Rating field.';
+                    Visible = false;
+                    ToolTip = 'Specifies the weighting copied into the legacy weighted rating field.';
                     Editable = false;
                     trigger OnValidate()
                     begin
-                        if Rec."Weighted Rating" <>0 then begin
+                        if Rec."Weighted Rating" <> 0 then begin
                             Rec.Rating := Round(Rec."Weighted Rating" * Rec."Achieved (%)" / 100, 0.01);
                         end;
                     end;
                 }
                 field(Rating; Rec.Rating)
                 {
-                    Caption = 'Actual % score';
-                    Visible = true;
+                    Caption = 'Weighted Score';
+                    Visible = false;
                     Editable = false;
-                    ToolTip = 'Specifies the value of the Actual % score field';
+                    ToolTip = 'Specifies the legacy weighted score value.';
                     //Editable = UnderReview;
 
                     trigger OnValidate()
@@ -222,6 +224,18 @@ page 52354 "Appraisal Goals"
     {
         area(processing)
         {
+            action("Suggest Equal Weighting")
+            {
+                ApplicationArea = All;
+                Caption = 'Suggest Equal Weighting';
+                Image = Suggest;
+                ToolTip = 'Distributes 100 percent weighting equally across the objective lines for the current review period.';
+
+                trigger OnAction()
+                begin
+                    SuggestEqualWeighting();
+                end;
+            }
         }
     }
 
@@ -317,6 +331,49 @@ page 52354 "Appraisal Goals"
             Approved := true
         else
             Approved := false;
+    end;
+
+    local procedure SuggestEqualWeighting()
+    var
+        AppraisalLine: Record "Appraisal Lines";
+        LineCount: Integer;
+        LineIndex: Integer;
+        RemainingWeight: Decimal;
+        SuggestedWeight: Decimal;
+    begin
+        GetHeader();
+        SetControlAppearance();
+        EmployeeAppraisal.TestField("Appraisal No");
+        EmployeeAppraisal.TestField("Current Review Period Code");
+
+        if not AppraiseeEditable then
+            Error('Weighting can only be suggested while appraisal %1 is open for objective setting.', EmployeeAppraisal."Appraisal No");
+
+        AppraisalLine.Reset();
+        AppraisalLine.SetRange("Appraisal No", EmployeeAppraisal."Appraisal No");
+        AppraisalLine.SetRange("Review Period Code", EmployeeAppraisal."Current Review Period Code");
+        AppraisalLine.SetFilter("Workplan Code", '<>%1', '');
+        LineCount := AppraisalLine.Count();
+        if LineCount = 0 then
+            Error('Enter objective lines before suggesting weighting for appraisal %1.', EmployeeAppraisal."Appraisal No");
+
+        RemainingWeight := 100;
+        SuggestedWeight := Round(100 / LineCount, 0.01);
+
+        if AppraisalLine.FindSet() then
+            repeat
+                LineIndex += 1;
+                if LineIndex = LineCount then
+                    AppraisalLine.Validate(Weighting, RemainingWeight)
+                else begin
+                    AppraisalLine.Validate(Weighting, SuggestedWeight);
+                    RemainingWeight -= SuggestedWeight;
+                end;
+                AppraisalLine.Modify(true);
+            until AppraisalLine.Next() = 0;
+
+        CurrPage.Update(false);
+        Message('Suggested equal weighting for %1 objective line(s). Review and adjust the weighting before submitting.', LineCount);
     end;
 }
 

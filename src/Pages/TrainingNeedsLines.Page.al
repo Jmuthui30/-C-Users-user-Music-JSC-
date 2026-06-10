@@ -22,6 +22,10 @@ page 52986 "Training Needs Line"
                 {
                     ToolTip = 'Specifies the value of the Approval Amount field';
                 }
+                field("Approval Amount (LCY)"; "Approval Amount (LCY)")
+                {
+                    ToolTip = 'Specifies the value of the Approval Amount (LCY) field';
+                }
                 field("Approved Budget"; "Approved Budget")
                 {
                     ToolTip = 'Specifies the value of the Approved Budget field';

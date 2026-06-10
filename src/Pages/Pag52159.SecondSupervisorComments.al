@@ -22,6 +22,12 @@ page 52159 "Second Supervisor Comments"
                     Visible = false;
                     ToolTip = 'Specifies the value of the Person field';
                 }
+                field("Review Period Code"; Rec."Review Period Code")
+                {
+                    ApplicationArea = All;
+                    Visible = false;
+                    ToolTip = 'Specifies the quarterly review period for this comment.';
+                }
                 field("Comments on Performance"; Rec."Comments on Performance")
                 {
                     ShowCaption = false;

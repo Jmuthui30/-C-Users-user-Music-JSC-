@@ -7,6 +7,7 @@ page 51752 "Training Needs List-Approval"
     ApplicationArea = All;
     UsageCategory = Lists;
     SourceTable = "Training Needs Header";
+    SourceTableView = where(Status = const("Pending Approval"));
 
     layout
     {
@@ -61,6 +62,11 @@ page 51752 "Training Needs List-Approval"
                 field("Comfirmation Status"; Rec."Comfirmation Status")
                 {
                     ApplicationArea = All;
+                }
+                field(Status; Rec.Status)
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the approval status of the training needs assessment.';
                 }
             }
         }

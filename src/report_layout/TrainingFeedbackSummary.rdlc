@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="No">
+          <DataField>No</DataField>
+        </Field>
+        <Field Name="Date">
+          <DataField>Date</DataField>
+        </Field>
+        <Field Name="EmployeeNo">
+          <DataField>EmployeeNo</DataField>
+        </Field>
+        <Field Name="EmployeeName">
+          <DataField>EmployeeName</DataField>
+        </Field>
+        <Field Name="JobTitle">
+          <DataField>JobTitle</DataField>
+        </Field>
+        <Field Name="TrainingRequestNo">
+          <DataField>TrainingRequestNo</DataField>
+        </Field>
+        <Field Name="TrainingNeed">
+          <DataField>TrainingNeed</DataField>
+        </Field>
+        <Field Name="CourseTitle">
+          <DataField>CourseTitle</DataField>
+        </Field>
+        <Field Name="Venue">
+          <DataField>Venue</DataField>
+        </Field>
+        <Field Name="StartDate">
+          <DataField>StartDate</DataField>
+        </Field>
+        <Field Name="EndDate">
+          <DataField>EndDate</DataField>
+        </Field>
+        <Field Name="RelevanceOfCourse">
+          <DataField>RelevanceOfCourse</DataField>
+        </Field>
+        <Field Name="LearnedSkill1">
+          <DataField>LearnedSkill1</DataField>
+        </Field>
+        <Field Name="LearnedSkill2">
+          <DataField>LearnedSkill2</DataField>
+        </Field>
+        <Field Name="LearnedSkill3">
+          <DataField>LearnedSkill3</DataField>
+        </Field>
+        <Field Name="MaterialCovered">
+          <DataField>MaterialCovered</DataField>
+        </Field>
+        <Field Name="RateTheTraining">
+          <DataField>RateTheTraining</DataField>
+        </Field>
+        <Field Name="Comments">
+          <DataField>Comments</DataField>
+        </Field>
+        <Field Name="BackToOfficeReport">
+          <DataField>BackToOfficeReport</DataField>
+        </Field>
+        <Field Name="Competency">
+          <DataField>Competency</DataField>
+        </Field>
+        <Field Name="CompetencyFormat">
+          <DataField>CompetencyFormat</DataField>
+        </Field>
+        <Field Name="CommunicationSkills">
+          <DataField>CommunicationSkills</DataField>
+        </Field>
+        <Field Name="CommunicationSkillsFormat">
+          <DataField>CommunicationSkillsFormat</DataField>
+        </Field>
+        <Field Name="SupervisorComments">
+          <DataField>SupervisorComments</DataField>
+        </Field>
+        <Field Name="SupervisorEvaluated">
+          <DataField>SupervisorEvaluated</DataField>
+        </Field>
+        <Field Name="CourseTitleEvaluation">
+          <DataField>CourseTitleEvaluation</DataField>
+        </Field>
+        <Field Name="KnowledgeEvaluation">
+          <DataField>KnowledgeEvaluation</DataField>
+        </Field>
+        <Field Name="WereExpectationsMet">
+          <DataField>WereExpectationsMet</DataField>
+        </Field>
+        <Field Name="TrainingImpact">
+          <DataField>TrainingImpact</DataField>
+        </Field>
+        <Field Name="ImproveWeakAreas">
+          <DataField>ImproveWeakAreas</DataField>
+        </Field>
+        <Field Name="TrainingTechniquesSatisfied">
+          <DataField>TrainingTechniquesSatisfied</DataField>
+        </Field>
+        <Field Name="FoodServedSatisfied">
+          <DataField>FoodServedSatisfied</DataField>
+        </Field>
+        <Field Name="EvaluationRecommendations">
+          <DataField>EvaluationRecommendations</DataField>
+        </Field>
+        <Field Name="NoAnswerExplanation">
+          <DataField>NoAnswerExplanation</DataField>
+        </Field>
+        <Field Name="PersonalActionPlans">
+          <DataField>PersonalActionPlans</DataField>
+        </Field>
+        <Field Name="ActionPlanBarriers">
+          <DataField>ActionPlanBarriers</DataField>
+        </Field>
+        <Field Name="HowToOvercomeAssignments">
+          <DataField>HowToOvercomeAssignments</DataField>
+        </Field>
+        <Field Name="ResourceRequirements">
+          <DataField>ResourceRequirements</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

@@ -28,6 +28,13 @@ page 52209 "Training participants"
                 {
                     ToolTip = 'Specifies the value of the Employee Name field';
                 }
+                field("Employee Email"; GetEmployeeEmail())
+                {
+                    ApplicationArea = All;
+                    Caption = 'Employee Email';
+                    Editable = false;
+                    ToolTip = 'Specifies the email address that will be used for training notifications.';
+                }
                 field(Designation; Rec.Designation)
                 {
                     ToolTip = 'Specifies the value of the Designation field';
@@ -39,6 +46,25 @@ page 52209 "Training participants"
             }
         }
     }
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    begin
+        if Rec.GetFilter("Training Need") <> '' then
+            Rec."Training Need" := Rec.GetRangeMin("Training Need");
+    end;
+
+    local procedure GetEmployeeEmail(): Text
+    var
+        Employee: Record Employee;
+    begin
+        if not Employee.Get(Rec."Employee No") then
+            exit('');
+
+        if Employee."Company E-Mail" <> '' then
+            exit(Employee."Company E-Mail");
+
+        exit(Employee."E-Mail");
+    end;
 }
 
 

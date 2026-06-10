@@ -227,6 +227,33 @@ page 52396 "Training Request Card"
                     ApprovalEntries.Run();
                 end;
             }
+            action("Training Evaluation")
+            {
+                ApplicationArea = All;
+                Caption = 'Training Evaluation';
+                Image = Evaluate;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                ToolTip = 'Open or create the training evaluation and back-to-office report for this approved request.';
+
+                trigger OnAction()
+                var
+                    TrainingEvaluation: Record "Training Evaluation";
+                begin
+                    Rec.TestField(Status, Rec.Status::Released);
+
+                    TrainingEvaluation.SetRange("Training Request No.", Rec."Request No.");
+                    if not TrainingEvaluation.FindFirst() then begin
+                        TrainingEvaluation.Init();
+                        TrainingEvaluation.Insert(true);
+                        TrainingEvaluation.Validate("Training Request No.", Rec."Request No.");
+                        TrainingEvaluation.Modify(true);
+                    end;
+
+                    Page.Run(Page::"Training Evaluation Header", TrainingEvaluation);
+                end;
+            }
             /* action("Apply Imprest")
             {
                 Image = NewDocument;

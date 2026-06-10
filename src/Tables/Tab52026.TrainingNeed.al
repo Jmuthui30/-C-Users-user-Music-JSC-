@@ -68,7 +68,7 @@ table 52026 "Training Need"
         }
         field(7; "Cost Of Training"; Decimal)
         {
-            CalcFormula = sum("Training Needs Lines".Amount where("Document No." = field(Code)));
+            CalcFormula = sum("Training Needs Lines"."Approval Amount" where("Document No." = field(Code)));
             FieldClass = FlowField;
             Caption = 'Cost Of Training';
 
@@ -165,8 +165,8 @@ table 52026 "Training Need"
         }
         field(20; Status; Option)
         {
-            OptionCaption = 'New,Closed,Application,Cancelled';
-            OptionMembers = Open,Closed,Application,Cancelled;
+            OptionCaption = 'New,Closed,Application,Cancelled,Pending Plan Approval';
+            OptionMembers = Open,Closed,Application,Cancelled,"Pending Plan Approval";
             Caption = 'Status';
         }
         field(21; "No. Series"; Code[20])
@@ -175,7 +175,7 @@ table 52026 "Training Need"
         }
         field(22; "Cost Of Training (LCY)"; Decimal)
         {
-            CalcFormula = sum("Training Needs Lines"."Amount (LCY)" where("Document No." = field(Code)));
+            CalcFormula = sum("Training Needs Lines"."Approval Amount (LCY)" where("Document No." = field(Code)));
             FieldClass = FlowField;
             Caption = 'Cost Of Training (LCY)';
         }
@@ -277,10 +277,17 @@ table 52026 "Training Need"
             OptionMembers = " ","Individual","Organization","Board Members";
         }
         // Source Training Need No
+        // This field is used to link to the original training need when the training need is created from a training need template. It will help to copy the training need lines from the template to the new training need.
         field(37; "Source Training Need No."; Code[20])
         {
             TableRelation = "Training Need".Code;
             Caption = 'Source Training Need No.';
+        }
+        field(38; "Source Assessment No."; Code[20])
+        {
+            DataClassification = CustomerContent;
+            TableRelation = "Training Needs Header"."No.";
+            Caption = 'Source Assessment No.';
         }
     }
 

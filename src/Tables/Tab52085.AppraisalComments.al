@@ -72,6 +72,12 @@ table 52085 "Appraisal Comments"
                     "Comments on Performance" := DevNeeds.Description;
             end;
         }
+        field(14; "Review Period Code"; Code[20])
+        {
+            Caption = 'Review Period';
+            DataClassification = CustomerContent;
+            TableRelation = "Bal Score Preview Periods";
+        }
     }
 
     keys
@@ -79,6 +85,9 @@ table 52085 "Appraisal Comments"
         key(Key1; "Appraisal No.", Person, "Comments on Performance")
         {
             Clustered = true;
+        }
+        key(ReviewPeriod; "Appraisal No.", "Review Period Code", Person)
+        {
         }
     }
 

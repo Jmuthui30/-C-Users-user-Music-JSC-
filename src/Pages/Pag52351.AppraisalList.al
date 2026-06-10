@@ -30,12 +30,18 @@ page 52351 "Appraisal List"
                 {
                     ToolTip = 'Specifies the value of the Appraisee''s Job Title field';
                 }
+                field("Directorate Code"; Rec."Directorate Code")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the employee directorate captured for this appraisal.';
+                }
                 field("Appraiser No"; Rec."Appraiser No")
                 {
                     ToolTip = 'Specifies the value of the Appraiser No field';
                 }
                 field("Appraisal Type"; Rec."Appraisal Type")
                 {
+                    Visible = false;
                     ToolTip = 'Specifies the value of the Appraisal Type field';
                 }
                 field("Appraisal Period"; Rec."Appraisal Period")
@@ -63,6 +69,12 @@ page 52351 "Appraisal List"
     actions
     {
     }
+
+    trigger OnAfterGetRecord()
+    begin
+        if Rec.EnsureEmployeeJobTitles() then
+            Rec.Modify(false);
+    end;
 
     trigger OnOpenPage()
     begin

@@ -836,7 +836,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!CurrentReviewPeriod.Value</Value>
+                                  <Value>=Fields!CurrentReviewPeriod.Value &amp; " (" &amp; Fields!ReviewStartDate.Value &amp; " - " &amp; Fields!ReviewEndDate.Value &amp; ")"</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>7.5pt</FontSize>
@@ -1107,6 +1107,12 @@
         </Field>
         <Field Name="CurrentReviewPeriod">
           <DataField>CurrentReviewPeriod</DataField>
+        </Field>
+        <Field Name="ReviewStartDate">
+          <DataField>ReviewStartDate</DataField>
+        </Field>
+        <Field Name="ReviewEndDate">
+          <DataField>ReviewEndDate</DataField>
         </Field>
         <Field Name="CurrentReviewScore">
           <DataField>CurrentReviewScore</DataField>

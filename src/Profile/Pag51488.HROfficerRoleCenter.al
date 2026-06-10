@@ -1059,6 +1059,13 @@ page 51488 "HR Officer Role Center"
                         ToolTip = 'Executes the Appraisal Periods action';
                         Caption = 'Appraisal Periods';
                     }
+                    action("Appraisal Rating Scale")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Appraisal Rating Scale';
+                        RunObject = Page "Bal Score Card Rating";
+                        ToolTip = 'Set up the 1-5 rating scale used for appraisee and appraiser ratings.';
+                    }
                     action("Perf BSC Preview Periods")
                     {
                         ApplicationArea = All;
@@ -1144,6 +1151,7 @@ page 51488 "HR Officer Role Center"
                     {
                         RunObject = page "Skill Codes";
                         ToolTip = 'Executes the Skill Codes action';
+                        Visible = false;
                         Caption = 'Skill Codes';
                     }
                     action("Developmental Actions Setup")
@@ -1213,8 +1221,8 @@ page 51488 "HR Officer Role Center"
                     Caption = 'Training Budget';
                     action("Training Budget")
                     {
-                        RunObject = page "Training Plan";
-                        ToolTip = 'Executes the Training Budget action';
+                        RunObject = page "Training Plan Budget";
+                        ToolTip = 'Open the approved training budget and budget lines.';
                         Caption = 'Training Budget';
                     }
                 }
@@ -1311,8 +1319,51 @@ page 51488 "HR Officer Role Center"
                     }
                     action("Approved Training Requests")
                     {
+                        ApplicationArea = All;
                         RunObject = report "Approved Training Requests";
                         Caption = 'Approved Training Requests';
+                    }
+                    action("Training Plan Summary")
+                    {
+                        ApplicationArea = All;
+                        RunObject = report "Training Plan Summary";
+                        Caption = 'Training Plan Summary';
+                    }
+                    action("Training Requirements")
+                    {
+                        ApplicationArea = All;
+                        RunObject = report "Training Requirements";
+                        Caption = 'Training Requirements';
+                    }
+                    action("Training Attendees")
+                    {
+                        ApplicationArea = All;
+                        RunObject = report "Training Attendees";
+                        Caption = 'Training Attendees';
+                    }
+                    action("Training History")
+                    {
+                        ApplicationArea = All;
+                        RunObject = report "Training History";
+                        Caption = 'Training History';
+                    }
+                    action("Courses Offered")
+                    {
+                        ApplicationArea = All;
+                        RunObject = report "Courses Offered";
+                        Caption = 'Courses Offered';
+                    }
+                    action("Training Feedback Summary")
+                    {
+                        ApplicationArea = All;
+                        RunObject = report "Training Feedback Summary";
+                        Caption = 'Training Feedback Summary';
+                    }
+                    action("Competencies and Skills")
+                    {
+                        ApplicationArea = All;
+                        RunObject = report "Competencies and Skills";
+                        Caption = 'Competencies and Skills';
                     }
                     //                     action("Training Evaluation Report")
                     //                     {
@@ -1347,25 +1398,36 @@ page 51488 "HR Officer Role Center"
                     Caption = 'Training Needs Under Review';
                     RunObject = Page "Training Needs List-Approval";
                 }
-                action("Training Nomination")
+                action("Consolidated Training Plan")
                 {
                     ApplicationArea = All;
-                    Caption = 'Training Nomination';
-                    RunObject = Page "Training Nomination List";
+                    Caption = 'Consolidated Training Plan';
+                    RunObject = Page "Consolidated Training Plan";
+                    ToolTip = 'Open planned training needs for plan approval, scheduling, and application readiness.';
                 }
-                action("Training Pending Approval")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Training Pending Approval';
-                    Image = PersonInCharge;
-                    RunObject = Page "Training List - Approval";
-                }
-                action("Approved Training")
-                {
-                    ApplicationArea = Suite;
-                    Caption = 'Approved Training';
-                    RunObject = Page "Training List - Approved";
-                }
+                // Legacy standalone nomination process commented out.
+                // Use Proposed Training Participants on the Training Need card for the current shortlist flow.
+                // action("Training Nomination")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Training Nomination';
+                //     RunObject = Page "Training Nomination List";
+                // }
+                // Legacy Staff Training Header route commented to keep one training flow:
+                // assessment -> training need/plan -> training request -> evaluation.
+                // action("Training Pending Approval")
+                // {
+                //     ApplicationArea = All;
+                //     Caption = 'Training Pending Approval';
+                //     Image = PersonInCharge;
+                //     RunObject = Page "Training List - Approval";
+                // }
+                // action("Approved Training")
+                // {
+                //     ApplicationArea = Suite;
+                //     Caption = 'Approved Training';
+                //     RunObject = Page "Training List - Approved";
+                // }
                 action("Training Evaluation1")
                 {
                     ApplicationArea = All;
