@@ -35,6 +35,19 @@ report 52927 "Training Feedback Summary"
             column(CommunicationSkills; "Communication Skills") { }
             column(SupervisorComments; "Supervisor Comments") { }
             column(SupervisorEvaluated; "Supervisor Evaluated") { }
+            column(CourseTitleEvaluation; "Course Title Evaluation") { }
+            column(KnowledgeEvaluation; "Knowledge Evaluation") { }
+            column(WereExpectationsMet; "Were Expectations Met") { }
+            column(TrainingImpact; "Training Impact") { }
+            column(ImproveWeakAreas; "Improve Weak Areas") { }
+            column(TrainingTechniquesSatisfied; "Training Techniques Satisfied") { }
+            column(FoodServedSatisfied; "Food Served Satisfied") { }
+            column(EvaluationRecommendations; Recommendations) { }
+            column(NoAnswerExplanation; "No Answer Explanation") { }
+            column(PersonalActionPlans; "Personal Action Plans") { }
+            column(ActionPlanBarriers; "Action Plan Barriers") { }
+            column(HowToOvercomeAssignments; "How To Overcome Assignments") { }
+            column(ResourceRequirements; "Resource Requirements") { }
         }
     }
 }

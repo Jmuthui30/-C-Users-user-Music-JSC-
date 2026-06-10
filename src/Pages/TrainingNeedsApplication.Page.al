@@ -9,6 +9,7 @@ page 52972 "Training Needs Application"
     ModifyAllowed = false;
     PageType = List;
     SourceTable = "Training Need";
+    SourceTableView = where(Status = const(Application));
     Caption = 'Training Needs Application';
     layout
     {

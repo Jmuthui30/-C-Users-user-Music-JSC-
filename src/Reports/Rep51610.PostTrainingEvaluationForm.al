@@ -74,6 +74,45 @@ report 51610 "Post-Training Evaluation Form"
             column(HRComments; "Training Evaluation"."HR Comments")
             {
             }
+            column(CourseTitleEvaluation; "Training Evaluation"."Course Title Evaluation")
+            {
+            }
+            column(KnowledgeEvaluation; "Training Evaluation"."Knowledge Evaluation")
+            {
+            }
+            column(WereExpectationsMet; "Training Evaluation"."Were Expectations Met")
+            {
+            }
+            column(TrainingImpact; "Training Evaluation"."Training Impact")
+            {
+            }
+            column(ImproveWeakAreas; "Training Evaluation"."Improve Weak Areas")
+            {
+            }
+            column(TrainingTechniquesSatisfied; "Training Evaluation"."Training Techniques Satisfied")
+            {
+            }
+            column(FoodServedSatisfied; "Training Evaluation"."Food Served Satisfied")
+            {
+            }
+            column(EvaluationRecommendations; "Training Evaluation"."Recommendations")
+            {
+            }
+            column(NoAnswerExplanation; "Training Evaluation"."No Answer Explanation")
+            {
+            }
+            column(PersonalActionPlans; "Training Evaluation"."Personal Action Plans")
+            {
+            }
+            column(ActionPlanBarriers; "Training Evaluation"."Action Plan Barriers")
+            {
+            }
+            column(HowToOvercomeAssignments; "Training Evaluation"."How To Overcome Assignments")
+            {
+            }
+            column(ResourceRequirements; "Training Evaluation"."Resource Requirements")
+            {
+            }
         }
     }
     requestpage

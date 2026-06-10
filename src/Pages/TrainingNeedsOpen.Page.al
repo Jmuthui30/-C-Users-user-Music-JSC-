@@ -4,7 +4,7 @@ page 52169 "Training Needs Open"
     CardPageID = "Training Need";
     PageType = List;
     SourceTable = "Training Need";
-    SourceTableView = where(Status = filter(Open | Application));
+    SourceTableView = where(Status = filter(Open | "Pending Plan Approval"));
     Caption = 'Training Needs Open';
     layout
     {
@@ -74,12 +74,12 @@ page 52169 "Training Needs Open"
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        Rec.Status := Rec.Status::Application;
+        Rec.Status := Rec.Status::Open;
     end;
 
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
     begin
-        Rec.Status := Rec.Status::Application;
+        Rec.Status := Rec.Status::Open;
     end;
 }
 

@@ -165,8 +165,8 @@ table 52026 "Training Need"
         }
         field(20; Status; Option)
         {
-            OptionCaption = 'New,Closed,Application,Cancelled';
-            OptionMembers = Open,Closed,Application,Cancelled;
+            OptionCaption = 'New,Closed,Application,Cancelled,Pending Plan Approval';
+            OptionMembers = Open,Closed,Application,Cancelled,"Pending Plan Approval";
             Caption = 'Status';
         }
         field(21; "No. Series"; Code[20])
