@@ -4,6 +4,7 @@ page 52240 "Appraisal work related attr"
     AutoSplitKey = true;
     PageType = ListPart;
     SourceTable = "Appraisal - attributes";
+    PopulateAllFields = true;
     Caption = 'Appraisal work related attr';
     layout
     {

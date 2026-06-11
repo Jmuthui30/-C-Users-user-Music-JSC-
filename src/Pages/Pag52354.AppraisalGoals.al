@@ -294,14 +294,15 @@ page 52354 "Appraisal Goals"
     begin
         GetHeader();
 
-        if (EmployeeAppraisal."Appraisal Status" = EmployeeAppraisal."Appraisal Status"::Review) or (EmployeeAppraisal."Appraisal Status" = EmployeeAppraisal."Appraisal Status"::"Further review") or
-            (EmployeeAppraisal."AppraisalType" = EmployeeAppraisal."AppraisalType"::"Final Year") then
-            UnderReview := true
-        else
-            UnderReview := false;
+        UnderReview :=
+            (EmployeeAppraisal.Status = EmployeeAppraisal.Status::Released) and
+            ((EmployeeAppraisal."Appraisal Status" = EmployeeAppraisal."Appraisal Status"::Review) or
+             (EmployeeAppraisal."Appraisal Status" = EmployeeAppraisal."Appraisal Status"::"Further review"));
 
-        AppraiseeEditable := (EmployeeAppraisal."Appraisal Status" = EmployeeAppraisal."Appraisal Status"::Setting) or
-            (EmployeeAppraisal."Appraisal Status" = EmployeeAppraisal."Appraisal Status"::Set);
+        AppraiseeEditable :=
+            (EmployeeAppraisal.Status = EmployeeAppraisal.Status::Open) and
+            ((EmployeeAppraisal."Appraisal Status" = EmployeeAppraisal."Appraisal Status"::Setting) or
+             (EmployeeAppraisal."Appraisal Status" = EmployeeAppraisal."Appraisal Status"::Set));
         AppraiserEditable := UnderReview;
 
         if EmployeeAppraisal."Appraisal Status" = EmployeeAppraisal."Appraisal Status"::Setting then

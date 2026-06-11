@@ -51,6 +51,12 @@ page 52591 "Appraisal Outcome Card"
                     ApplicationArea = All;
                     Editable = false;
                 }
+                field("Review Period Code"; Rec."Review Period Code")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Review Period';
+                    Editable = false;
+                }
                 field(Rating; Rec.Rating)
                 {
                     ApplicationArea = All;

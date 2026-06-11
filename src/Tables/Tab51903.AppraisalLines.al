@@ -178,6 +178,12 @@ table 51903 "Appraisal Lines"
         field(29; "FY Target"; Decimal)
         {
             caption = 'Approved performance targets';
+
+            trigger OnValidate()
+            begin
+                ValidateActualAgainstTarget();
+                UpdateAchievedPercentage();
+            end;
         }
         field(30; Variance; Decimal)
         {
@@ -287,6 +293,12 @@ table 51903 "Appraisal Lines"
         field(43; Actual; Decimal)
         {
             Caption = 'Actual';
+
+            trigger OnValidate()
+            begin
+                ValidateActualAgainstTarget();
+                UpdateAchievedPercentage();
+            end;
         }
         field(44; "Review Period Code"; Code[20])
         {
@@ -399,6 +411,28 @@ table 51903 "Appraisal Lines"
         "Weighted Rating" := Weighting;
         "Quarter Score" := Round(Weighting * ("Appraiser Rating" / 5), 0.01);
         Rating := "Quarter Score";
+    end;
+
+    local procedure ValidateActualAgainstTarget()
+    begin
+        if (Actual = 0) or ("FY Target" = 0) then
+            exit;
+
+        if Actual > "FY Target" then
+            Error('Actual value %1 cannot be greater than target %2 for objective %3.',
+                Actual,
+                "FY Target",
+                "Workplan Code");
+    end;
+
+    local procedure UpdateAchievedPercentage()
+    begin
+        if (Actual = 0) or ("FY Target" = 0) then begin
+            "Achieved (%)" := 0;
+            exit;
+        end;
+
+        "Achieved (%)" := Round((Actual / "FY Target") * 100, 0.01);
     end;
 }
 

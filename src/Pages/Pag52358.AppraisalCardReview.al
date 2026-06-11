@@ -279,6 +279,7 @@ page 52358 "Appraisal Card-Review"
                 SubPageLink = "Appraisal No." = field("Appraisal No"),
                               "Review Period Code" = field("Current Review Period Code");
                 SubPageView = where(Person = const("Substantial Achievements"));
+
                 Caption = 'Substantial Achievements';
             }
             part("Significant issues that affected Performance during the period (positive)"; "Appraisee's Appraisal Comments")
@@ -287,6 +288,7 @@ page 52358 "Appraisal Card-Review"
                 SubPageLink = "Appraisal No." = field("Appraisal No"),
                               "Review Period Code" = field("Current Review Period Code");
                 SubPageView = where(Person = const("Significant Positive Issues"));
+
                 Visible = true;
                 Caption = 'Significant issues that affected Performance during the period (positive)';
             }
@@ -296,6 +298,7 @@ page 52358 "Appraisal Card-Review"
                 SubPageLink = "Appraisal No." = field("Appraisal No"),
                               "Review Period Code" = field("Current Review Period Code");
                 SubPageView = where(Person = const("Significant Negative Issues"));
+
                 Visible = true;
                 Caption = 'Significant issues that affected Performance during the period (negative)';
             }
@@ -345,6 +348,7 @@ page 52358 "Appraisal Card-Review"
                 //Editable = NOT UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = const("Perfomance Improvement Plan"));
+
                 Visible = FinalVisible;
             }
             label("SECTION VI:  STAFF TRAINING AND DEVELOPMENT NEEDS")
@@ -359,7 +363,8 @@ page 52358 "Appraisal Card-Review"
                 Caption = 'Appraisee Training and Development needs in order of priority as identified by appraisee and supervisor based on performance gaps to be completed jointly at the end of the appraisal period.';
                 //Editable = NOT UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
-                SubPageView = where(Person = const("Perfomance Improvement Plan"));
+                SubPageView = where(Person = const("Staff Training and Dev Needs"));
+
                 Visible = FinalVisible;
             }
             part("Appraisee's Appraisal Comments On The Performance Appraisal"; "Appraisee's Appraisal Comments")
@@ -368,7 +373,8 @@ page 52358 "Appraisal Card-Review"
                 //Editable = NOT UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter(Appraisee));
-                Visible = false;
+
+                Visible = FinalVisible;
             }
             part("Appraiser's Comments On The Performance Appraisal"; "HR Appraisal Comments")
             {
@@ -376,7 +382,8 @@ page 52358 "Appraisal Card-Review"
                 //Editable = UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter(Appraiser));
-                Visible = false;
+
+                Visible = FinalVisible;
             }
             label("SECTION VI:  COMMENTS BY THE HEAD OF DEPARTMENT")
             {
@@ -398,6 +405,7 @@ page 52358 "Appraisal Card-Review"
                 //Editable = UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter("Second Supervisor"));
+
                 Visible = FinalVisible;
             }
             label("SECTION VII:  HUMAN RESOURCES DEPARTMENT ")
@@ -413,6 +421,7 @@ page 52358 "Appraisal Card-Review"
                 //Editable = UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter("HR"));
+
                 Visible = FinalVisible;
             }
             part("Recommendations"; "HR Appraisal Comments")
@@ -421,6 +430,7 @@ page 52358 "Appraisal Card-Review"
                 //Editable = UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter("Other interventions"));
+
                 Visible = FinalVisible;
             }
             part("Mitigating Factors"; "HR Appraisal Comments")
@@ -429,6 +439,7 @@ page 52358 "Appraisal Card-Review"
                 //Editable = UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter("Mitigating Factors"));
+
                 Visible = FinalVisible;
             }
             part("Developmental Action To Be Taken"; "HR Appraisal Dev Actions")
@@ -437,12 +448,14 @@ page 52358 "Appraisal Card-Review"
                 //Editable = UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter("Dev Action"));
+
                 Visible = FinalVisible;
             }
             part("Appraisal Outcomes"; "Appraisal Outcome Part")
             {
                 ApplicationArea = All;
-                SubPageLink = "Appraisal No." = field("Appraisal No");
+                SubPageLink = "Appraisal No." = field("Appraisal No"),
+                              "Review Period Code" = field("Current Review Period Code");
                 UpdatePropagation = Both;
             }
         }
@@ -772,6 +785,7 @@ page 52358 "Appraisal Card-Review"
                 PromotedCategory = Category4;
                 PromotedIsBig = true;
                 Visible = FinalVisible;
+                Enabled = ReviewActionsEnabled;
                 ToolTip = 'Executes the Complete Appraisal action';
                 Caption = 'Complete Appraisal';
 
@@ -779,6 +793,7 @@ page 52358 "Appraisal Card-Review"
                 begin
                     if Confirm('Are you sure you want to complete this appraisal?', true) then begin
                         AppraisalProcessMgt.ValidateAppraiserCompletion(Rec);
+                        AppraisalProcessMgt.CreateCurrentReviewSnapshot(Rec);
                         Rec."Appraisal Status" := Rec."Appraisal Status"::Completed;
                         Rec.Modify();
                     end;
@@ -792,6 +807,7 @@ page 52358 "Appraisal Card-Review"
                 Image = Change;
                 Promoted = true;
                 PromotedCategory = Category4;
+                Enabled = ReviewActionsEnabled;
                 ToolTip = 'Moves this appraisal from the current quarterly review period to the next one and copies the objective lines forward.';
 
                 trigger OnAction()
@@ -809,14 +825,11 @@ page 52358 "Appraisal Card-Review"
                 Image = History;
                 Promoted = true;
                 PromotedCategory = Category4;
-                ToolTip = 'Shows all quarterly objective and scoring lines for this appraisal.';
+                ToolTip = 'Shows read-only snapshots for closed review periods on this appraisal.';
 
                 trigger OnAction()
-                var
-                    AppraisalLine: Record "Appraisal Lines";
                 begin
-                    AppraisalLine.SetRange("Appraisal No", Rec."Appraisal No");
-                    Page.RunModal(Page::"Appraisal Review History", AppraisalLine);
+                    AppraisalProcessMgt.OpenReviewSnapshots(Rec);
                 end;
             }
             action("View Comment History")
@@ -833,6 +846,7 @@ page 52358 "Appraisal Card-Review"
                     AppraisalComment: Record "Appraisal Comments";
                 begin
                     AppraisalComment.SetRange("Appraisal No.", Rec."Appraisal No");
+                    Commit();
                     Page.RunModal(Page::"Appraisal Comment History", AppraisalComment);
                 end;
             }
@@ -849,6 +863,7 @@ page 52358 "Appraisal Card-Review"
                 var
                     AppraisalRelatedHRMgt: Codeunit "Appraisal Related HR Mgt.";
                 begin
+                    Commit();
                     AppraisalRelatedHRMgt.OpenRelatedGrievances(Rec);
                 end;
             }
@@ -865,6 +880,7 @@ page 52358 "Appraisal Card-Review"
                 var
                     AppraisalRelatedHRMgt: Codeunit "Appraisal Related HR Mgt.";
                 begin
+                    Commit();
                     AppraisalRelatedHRMgt.OpenRelatedDisciplinaryCases(Rec);
                 end;
             }
@@ -912,6 +928,7 @@ page 52358 "Appraisal Card-Review"
         if Rec.EnsureEmployeeJobTitles() then
             Rec.Modify(false);
 
+        AppraisalProcessMgt.StampCurrentReviewCommentsForCurrentPeriod(Rec);
         SetControlAppearance();
         HRManagement.GetTotalRating(Rec);
     end;
@@ -920,6 +937,7 @@ page 52358 "Appraisal Card-Review"
     begin
         //HRManagement.UpdateAppraisalScores("Appraisal No","Employee No");
         //CurrPage.UPDATE;
+        AppraisalProcessMgt.StampCurrentReviewCommentsForCurrentPeriod(Rec);
         SetControlAppearance();
     end;
 
@@ -938,6 +956,7 @@ page 52358 "Appraisal Card-Review"
         FinalVisible: Boolean;
         MidVisible: Boolean;
         OpenApprovalEntriesExist: Boolean;
+        ReviewActionsEnabled: Boolean;
         UnderReview: Boolean;
 
     local procedure SetControlAppearance()
@@ -946,7 +965,11 @@ page 52358 "Appraisal Card-Review"
 
     begin
         FinalVisible := IsCurrentFinalReviewPeriod();
-        UnderReview := true;
+        ReviewActionsEnabled :=
+            (Rec.Status = Rec.Status::Released) and
+            ((Rec."Appraisal Status" = Rec."Appraisal Status"::Review) or
+             (Rec."Appraisal Status" = Rec."Appraisal Status"::"Further review"));
+        UnderReview := ReviewActionsEnabled;
         MidVisible := true;
 
         if (Rec.Status = Rec.Status::Released) or (Rec.Status = Rec.Status::Rejected) then

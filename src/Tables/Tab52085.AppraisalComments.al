@@ -95,6 +95,78 @@ table 52085 "Appraisal Comments"
     {
     }
 
+    procedure ApplyDefaultsFromFilters(AppraisalNoFilter: Text; ReviewPeriodFilter: Text; PersonFilter: Text)
+    var
+        FilterValue: Text;
+    begin
+        FilterValue := GetSimpleFilterValue(AppraisalNoFilter);
+        if ("Appraisal No." = '') and (FilterValue <> '') then
+            "Appraisal No." := CopyStr(FilterValue, 1, MaxStrLen("Appraisal No."));
+
+        FilterValue := GetSimpleFilterValue(ReviewPeriodFilter);
+        if ("Review Period Code" = '') and (FilterValue <> '') then
+            "Review Period Code" := CopyStr(FilterValue, 1, MaxStrLen("Review Period Code"));
+
+        FilterValue := GetSimpleFilterValue(PersonFilter);
+        if FilterValue <> '' then
+            ApplyPersonFilter(FilterValue);
+
+        if Date = 0D then
+            Date := WorkDate();
+    end;
+
+    local procedure GetSimpleFilterValue(FilterValue: Text): Text
+    begin
+        FilterValue := DelChr(FilterValue, '<>', ' ');
+        if FilterValue = '' then
+            exit('');
+
+        if CopyStr(FilterValue, 1, 1) = '=' then
+            FilterValue := CopyStr(FilterValue, 2);
+
+        if (StrPos(FilterValue, '|') > 0) or
+           (StrPos(FilterValue, '&') > 0) or
+           (StrPos(FilterValue, '..') > 0) or
+           (StrPos(FilterValue, '<') > 0) or
+           (StrPos(FilterValue, '>') > 0) or
+           (StrPos(FilterValue, '*') > 0) then
+            exit('');
+
+        exit(DelChr(FilterValue, '<>', ' '));
+    end;
+
+    local procedure ApplyPersonFilter(PersonFilter: Text)
+    begin
+        case UpperCase(PersonFilter) of
+            'APPRAISER':
+                Person := Person::Appraiser;
+            'APPRAISEE':
+                Person := Person::Appraisee;
+            'SECOND SUPERVISOR':
+                Person := Person::"Second Supervisor";
+            'HR':
+                Person := Person::HR;
+            'TRUST SECRETARY':
+                Person := Person::"Trust Secretary";
+            'DEV ACTION':
+                Person := Person::"Dev Action";
+            'SIGNIFICANT POSITIVE ISSUES':
+                Person := Person::"Significant Positive Issues";
+            'SIGNIFICANT NEGATIVE ISSUES':
+                Person := Person::"Significant Negative Issues";
+            'SUBSTANTIAL ACHIEVEMENTS':
+                Person := Person::"Substantial Achievements";
+            'PERFOMANCE IMPROVEMENT PLAN':
+                Person := Person::"Perfomance Improvement Plan";
+            'STAFF TRAINING AND DEV NEEDS':
+                Person := Person::"Staff Training and Dev Needs";
+            'OTHER INTERVENTIOS', 'OTHER INTERVENTIONS':
+                Person := Person::"Other interventions";
+            'MITIGATING FACTORS':
+                Person := Person::"Mitigating Factors";
+        end;
+    end;
+
     var
         DevNeeds: Record "Appraisal Devt Need Setup";
 }

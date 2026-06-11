@@ -1482,6 +1482,13 @@ page 51742 "HR & Admin Manager Role Center"
                     Caption = 'Appraisal List - Pending Approval';
                     // Visible = false;
                 }
+                action("Appraisal List - Under Review")
+                {
+                    ApplicationArea = All;
+                    RunObject = page "Appraisal List - UnderReview-F";
+                    ToolTip = 'Open appraisals that have been approved and are ready for quarterly assessment.';
+                    Caption = 'Appraisals Under Review';
+                }
                 action("Appraisal List - Further review")
                 {
                     RunObject = page "Appraisal List - Pending";

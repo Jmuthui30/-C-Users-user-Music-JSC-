@@ -97,6 +97,13 @@ table 52393 "Appraisal Outcome"
             DataClassification = CustomerContent;
             Editable = false;
         }
+        field(19; "Review Period Code"; Code[20])
+        {
+            Caption = 'Review Period';
+            DataClassification = CustomerContent;
+            Editable = false;
+            TableRelation = "Bal Score Preview Periods".Code;
+        }
     }
 
     keys
@@ -106,6 +113,9 @@ table 52393 "Appraisal Outcome"
             Clustered = true;
         }
         key(EmployeePeriod; "Employee No.", "Appraisal Period", "Outcome Type")
+        {
+        }
+        key(AppraisalReviewPeriod; "Appraisal No.", "Review Period Code", "Outcome Type")
         {
         }
         key(OutcomeNo; "Outcome No.")
@@ -124,9 +134,10 @@ table 52393 "Appraisal Outcome"
             "Department Code" := EmployeeAppraisal."Department Code";
             "Appraisal Period" := EmployeeAppraisal."Appraisal Period";
             "Appraisal Type" := Format(EmployeeAppraisal.AppraisalType);
-            EmployeeAppraisal.CalcFields("Total FY Rating");
-            Rating := EmployeeAppraisal."Total FY Rating";
-            Grade := EmployeeAppraisal."Grade final year rating";
+            "Review Period Code" := EmployeeAppraisal."Current Review Period Code";
+            EmployeeAppraisal.CalcFields("Current Review Score");
+            Rating := EmployeeAppraisal."Current Review Score";
+            Grade := GetPerformanceGrade(Rating);
         end;
     end;
 
@@ -136,5 +147,21 @@ table 52393 "Appraisal Outcome"
         "Issue Date" := Today;
         "Issued By" := UserId;
         Modify(true);
+    end;
+
+    local procedure GetPerformanceGrade(PercentageScore: Decimal): Text[50]
+    var
+        Matrix: Record "Perfomance rating matrix";
+    begin
+        if PercentageScore = 0 then
+            exit('');
+
+        Matrix.Reset();
+        Matrix.SetFilter(Start, '<=%1', PercentageScore);
+        Matrix.SetFilter("End", '>=%1', PercentageScore);
+        if Matrix.FindFirst() then
+            exit(Matrix.Grade);
+
+        exit('');
     end;
 }

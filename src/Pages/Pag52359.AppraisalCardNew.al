@@ -11,7 +11,7 @@ page 52359 "Appraisal Card-New"
         {
             group(General)
             {
-                Editable = not OpenApprovalEntriesExist;
+                Editable = CardEditable;
                 field("Appraisal No"; Rec."Appraisal No")
                 {
                     Caption = 'Appraisal No';
@@ -202,6 +202,7 @@ page 52359 "Appraisal Card-New"
                 SubPageLink = "Appraisal No." = field("Appraisal No"),
                               "Review Period Code" = field("Current Review Period Code");
                 SubPageView = where(Person = const("Substantial Achievements"));
+
                 Visible = UnderReview;
             }
             part("Significant issues that affected Performance during the period (positive)"; "Second Supervisor Comments")
@@ -211,6 +212,7 @@ page 52359 "Appraisal Card-New"
                 SubPageLink = "Appraisal No." = field("Appraisal No"),
                               "Review Period Code" = field("Current Review Period Code");
                 SubPageView = where(Person = const("Significant Positive Issues"));
+
                 Visible = UnderReview;
             }
             part("Significant issues that affected Performance during the period (negative)"; "Second Supervisor Comments")
@@ -220,6 +222,7 @@ page 52359 "Appraisal Card-New"
                 SubPageLink = "Appraisal No." = field("Appraisal No"),
                               "Review Period Code" = field("Current Review Period Code");
                 SubPageView = where(Person = const("Significant Negative Issues"));
+
                 Visible = UnderReview;
             }
 
@@ -229,6 +232,7 @@ page 52359 "Appraisal Card-New"
                 //Editable = not UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter(Appraisee));
+
                 Visible = FinalReviewVisible;
             }
             part("Appraiser's Comments On The Performance Appraisal"; "Second Supervisor Comments")
@@ -237,6 +241,7 @@ page 52359 "Appraisal Card-New"
                 //Editable = not UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter(Appraiser));
+
                 Visible = FinalReviewVisible;
             }
             part("Departmental Head's Comments (If not the APPRAISER)"; "Second Supervisor Comments")
@@ -245,6 +250,7 @@ page 52359 "Appraisal Card-New"
                 //Editable = not OpenApprovalEntriesExist;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter("Second Supervisor"));
+
                 Visible = FinalReviewVisible;
             }
             part("Trust Secretary's Comments"; "Second Supervisor Comments")
@@ -253,6 +259,7 @@ page 52359 "Appraisal Card-New"
                 Enabled = not OpenApprovalEntriesExist;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter("Trust Secretary"));
+
                 Visible = FinalReviewVisible;
             }
             part("Developmental Action To Be Taken"; "Second Supervisor Comments")
@@ -261,6 +268,7 @@ page 52359 "Appraisal Card-New"
                 Enabled = not OpenApprovalEntriesExist;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter("Dev Action"));
+
                 Visible = FinalReviewVisible;
             }
         }
@@ -311,7 +319,7 @@ page 52359 "Appraisal Card-New"
             action("Send For Approval")
             {
                 Caption = 'Submit for Review';
-                Enabled = not OpenApprovalEntriesExist;
+                Enabled = SubmitForReviewEnabled;
                 Image = SendApprovalRequest;
                 Promoted = true;
                 PromotedCategory = Category5;
@@ -456,14 +464,11 @@ page 52359 "Appraisal Card-New"
                 Image = History;
                 Promoted = true;
                 PromotedCategory = Category4;
-                ToolTip = 'Shows all quarterly objective and scoring lines for this appraisal.';
+                ToolTip = 'Shows read-only snapshots for closed review periods on this appraisal.';
 
                 trigger OnAction()
-                var
-                    AppraisalLine: Record "Appraisal Lines";
                 begin
-                    AppraisalLine.SetRange("Appraisal No", Rec."Appraisal No");
-                    Page.RunModal(Page::"Appraisal Review History", AppraisalLine);
+                    AppraisalProcessMgt.OpenReviewSnapshots(Rec);
                 end;
             }
             action("View Comment History")
@@ -480,6 +485,7 @@ page 52359 "Appraisal Card-New"
                     AppraisalComment: Record "Appraisal Comments";
                 begin
                     AppraisalComment.SetRange("Appraisal No.", Rec."Appraisal No");
+                    Commit();
                     Page.RunModal(Page::"Appraisal Comment History", AppraisalComment);
                 end;
             }
@@ -496,6 +502,7 @@ page 52359 "Appraisal Card-New"
                 var
                     AppraisalRelatedHRMgt: Codeunit "Appraisal Related HR Mgt.";
                 begin
+                    Commit();
                     AppraisalRelatedHRMgt.OpenRelatedGrievances(Rec);
                 end;
             }
@@ -512,6 +519,7 @@ page 52359 "Appraisal Card-New"
                 var
                     AppraisalRelatedHRMgt: Codeunit "Appraisal Related HR Mgt.";
                 begin
+                    Commit();
                     AppraisalRelatedHRMgt.OpenRelatedDisciplinaryCases(Rec);
                 end;
             }
@@ -525,6 +533,7 @@ page 52359 "Appraisal Card-New"
         if Rec.EnsureEmployeeJobTitles() then
             Rec.Modify(false);
 
+        AppraisalProcessMgt.StampCurrentReviewCommentsForCurrentPeriod(Rec);
         SetControlAppearance();
     end;
 
@@ -543,9 +552,11 @@ page 52359 "Appraisal Card-New"
         AppraisalProcessMgt: Codeunit "Appraisal Process Mgt.";
         ApprovalsMgmt: Codeunit "Approval Mgt HR Ext";
         CanCancelApprovalForRecord: Boolean;
+        CardEditable: Boolean;
         DocReleased: Boolean;
         FinalReviewVisible: Boolean;
         OpenApprovalEntriesExist: Boolean;
+        SubmitForReviewEnabled: Boolean;
         UnderReview: Boolean;
 
     local procedure SetControlAppearance()
@@ -570,6 +581,13 @@ page 52359 "Appraisal Card-New"
             UnderReview := true
         else
             UnderReview := false;
+
+        SubmitForReviewEnabled :=
+            (Rec.Status = Rec.Status::Open) and
+            ((Rec."Appraisal Status" = Rec."Appraisal Status"::Setting) or
+             (Rec."Appraisal Status" = Rec."Appraisal Status"::Set)) and
+            not OpenApprovalEntriesExist;
+        CardEditable := (Rec.Status = Rec.Status::Open) and not OpenApprovalEntriesExist;
     end;
 
     local procedure IsCurrentFinalReviewPeriod(): Boolean

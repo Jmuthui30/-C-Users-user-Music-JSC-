@@ -10,6 +10,7 @@ report 52324 "Employee Objectives - New"
         dataitem(Appraisal; "Employee Appraisal")
         {
             CalcFields = "Responsibilty Center", "Current Review Score", "Total Review Score", "Review Start Date", "Review End Date";
+            RequestFilterFields = "Appraisal No", "Employee No", "Appraisal Period", "Current Review Period Code";
 
             column(AppraisalNo_Appraisal; Appraisal."Appraisal No")
             {
