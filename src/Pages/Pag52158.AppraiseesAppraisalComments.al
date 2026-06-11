@@ -3,6 +3,7 @@ page 52158 "Appraisee's Appraisal Comments"
     ApplicationArea = All;
     PageType = ListPart;
     SourceTable = "Appraisal Comments";
+    PopulateAllFields = true;
     Caption = 'Appraisee''s Appraisal Comments';
     layout
     {

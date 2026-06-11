@@ -202,6 +202,7 @@ page 52359 "Appraisal Card-New"
                 SubPageLink = "Appraisal No." = field("Appraisal No"),
                               "Review Period Code" = field("Current Review Period Code");
                 SubPageView = where(Person = const("Substantial Achievements"));
+
                 Visible = UnderReview;
             }
             part("Significant issues that affected Performance during the period (positive)"; "Second Supervisor Comments")
@@ -211,6 +212,7 @@ page 52359 "Appraisal Card-New"
                 SubPageLink = "Appraisal No." = field("Appraisal No"),
                               "Review Period Code" = field("Current Review Period Code");
                 SubPageView = where(Person = const("Significant Positive Issues"));
+
                 Visible = UnderReview;
             }
             part("Significant issues that affected Performance during the period (negative)"; "Second Supervisor Comments")
@@ -220,6 +222,7 @@ page 52359 "Appraisal Card-New"
                 SubPageLink = "Appraisal No." = field("Appraisal No"),
                               "Review Period Code" = field("Current Review Period Code");
                 SubPageView = where(Person = const("Significant Negative Issues"));
+
                 Visible = UnderReview;
             }
 
@@ -229,6 +232,7 @@ page 52359 "Appraisal Card-New"
                 //Editable = not UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter(Appraisee));
+
                 Visible = FinalReviewVisible;
             }
             part("Appraiser's Comments On The Performance Appraisal"; "Second Supervisor Comments")
@@ -237,6 +241,7 @@ page 52359 "Appraisal Card-New"
                 //Editable = not UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter(Appraiser));
+
                 Visible = FinalReviewVisible;
             }
             part("Departmental Head's Comments (If not the APPRAISER)"; "Second Supervisor Comments")
@@ -245,6 +250,7 @@ page 52359 "Appraisal Card-New"
                 //Editable = not OpenApprovalEntriesExist;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter("Second Supervisor"));
+
                 Visible = FinalReviewVisible;
             }
             part("Trust Secretary's Comments"; "Second Supervisor Comments")
@@ -253,6 +259,7 @@ page 52359 "Appraisal Card-New"
                 Enabled = not OpenApprovalEntriesExist;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter("Trust Secretary"));
+
                 Visible = FinalReviewVisible;
             }
             part("Developmental Action To Be Taken"; "Second Supervisor Comments")
@@ -261,6 +268,7 @@ page 52359 "Appraisal Card-New"
                 Enabled = not OpenApprovalEntriesExist;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter("Dev Action"));
+
                 Visible = FinalReviewVisible;
             }
         }

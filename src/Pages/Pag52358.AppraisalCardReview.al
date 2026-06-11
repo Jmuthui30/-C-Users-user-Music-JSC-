@@ -279,6 +279,7 @@ page 52358 "Appraisal Card-Review"
                 SubPageLink = "Appraisal No." = field("Appraisal No"),
                               "Review Period Code" = field("Current Review Period Code");
                 SubPageView = where(Person = const("Substantial Achievements"));
+
                 Caption = 'Substantial Achievements';
             }
             part("Significant issues that affected Performance during the period (positive)"; "Appraisee's Appraisal Comments")
@@ -287,6 +288,7 @@ page 52358 "Appraisal Card-Review"
                 SubPageLink = "Appraisal No." = field("Appraisal No"),
                               "Review Period Code" = field("Current Review Period Code");
                 SubPageView = where(Person = const("Significant Positive Issues"));
+
                 Visible = true;
                 Caption = 'Significant issues that affected Performance during the period (positive)';
             }
@@ -296,6 +298,7 @@ page 52358 "Appraisal Card-Review"
                 SubPageLink = "Appraisal No." = field("Appraisal No"),
                               "Review Period Code" = field("Current Review Period Code");
                 SubPageView = where(Person = const("Significant Negative Issues"));
+
                 Visible = true;
                 Caption = 'Significant issues that affected Performance during the period (negative)';
             }
@@ -345,6 +348,7 @@ page 52358 "Appraisal Card-Review"
                 //Editable = NOT UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = const("Perfomance Improvement Plan"));
+
                 Visible = FinalVisible;
             }
             label("SECTION VI:  STAFF TRAINING AND DEVELOPMENT NEEDS")
@@ -360,6 +364,7 @@ page 52358 "Appraisal Card-Review"
                 //Editable = NOT UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = const("Staff Training and Dev Needs"));
+
                 Visible = FinalVisible;
             }
             part("Appraisee's Appraisal Comments On The Performance Appraisal"; "Appraisee's Appraisal Comments")
@@ -368,6 +373,7 @@ page 52358 "Appraisal Card-Review"
                 //Editable = NOT UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter(Appraisee));
+
                 Visible = FinalVisible;
             }
             part("Appraiser's Comments On The Performance Appraisal"; "HR Appraisal Comments")
@@ -376,6 +382,7 @@ page 52358 "Appraisal Card-Review"
                 //Editable = UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter(Appraiser));
+
                 Visible = FinalVisible;
             }
             label("SECTION VI:  COMMENTS BY THE HEAD OF DEPARTMENT")
@@ -398,6 +405,7 @@ page 52358 "Appraisal Card-Review"
                 //Editable = UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter("Second Supervisor"));
+
                 Visible = FinalVisible;
             }
             label("SECTION VII:  HUMAN RESOURCES DEPARTMENT ")
@@ -413,6 +421,7 @@ page 52358 "Appraisal Card-Review"
                 //Editable = UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter("HR"));
+
                 Visible = FinalVisible;
             }
             part("Recommendations"; "HR Appraisal Comments")
@@ -421,6 +430,7 @@ page 52358 "Appraisal Card-Review"
                 //Editable = UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter("Other interventions"));
+
                 Visible = FinalVisible;
             }
             part("Mitigating Factors"; "HR Appraisal Comments")
@@ -429,6 +439,7 @@ page 52358 "Appraisal Card-Review"
                 //Editable = UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter("Mitigating Factors"));
+
                 Visible = FinalVisible;
             }
             part("Developmental Action To Be Taken"; "HR Appraisal Dev Actions")
@@ -437,6 +448,7 @@ page 52358 "Appraisal Card-Review"
                 //Editable = UnderReview;
                 SubPageLink = "Appraisal No." = field("Appraisal No");
                 SubPageView = where(Person = filter("Dev Action"));
+
                 Visible = FinalVisible;
             }
             part("Appraisal Outcomes"; "Appraisal Outcome Part")

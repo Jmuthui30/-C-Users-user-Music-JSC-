@@ -3,6 +3,7 @@ page 52159 "Second Supervisor Comments"
     ApplicationArea = All;
     PageType = ListPart;
     SourceTable = "Appraisal Comments";
+    PopulateAllFields = true;
     Caption = 'Second Supervisor Comments';
     layout
     {

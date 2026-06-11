@@ -28,6 +28,7 @@ codeunit 51813 "Release Govt. Emp Appraisal"
         if Rec.Status in[Rec.Status::Open, Rec.Status::Rejected]then Error(StrSubstNo(CanReleasedIfStatusErr, Rec.Status::"Pending Approval"));
         //TESTFIELD(Posted,FALSE);
         Rec.Status:=Rec.Status::Released;
+
         Rec.Modify(true);
         OnAfterReleaseEmpAppraisal(Rec);
     end;

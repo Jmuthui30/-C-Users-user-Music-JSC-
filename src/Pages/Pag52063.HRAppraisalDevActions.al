@@ -4,6 +4,7 @@ page 52063 "HR Appraisal Dev Actions"
     Caption = 'Appraisal Developmental Actions';
     PageType = ListPart;
     SourceTable = "Appraisal Comments";
+    PopulateAllFields = true;
 
     layout
     {

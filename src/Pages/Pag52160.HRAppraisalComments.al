@@ -3,6 +3,7 @@ page 52160 "HR Appraisal Comments"
     ApplicationArea = All;
     PageType = ListPart;
     SourceTable = "Appraisal Comments";
+    PopulateAllFields = true;
     Caption = 'HR Appraisal Comments';
     layout
     {
