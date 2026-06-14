@@ -51,7 +51,19 @@ table 51903 "Appraisal Lines"
             MaxValue = 100;
 
             trigger OnValidate()
+            var
+                AppraisalLine: Record "Appraisal Lines";
+                TotalWeighting: Decimal;
             begin
+                AppraisalLine.SetRange("Appraisal No", Rec."Appraisal No");
+                AppraisalLine.SetRange("Review Period Code", Rec."Review Period Code");
+                AppraisalLine.SetFilter("Line No", '<>%1', Rec."Line No");
+                AppraisalLine.CalcSums(Weighting);
+
+                TotalWeighting := AppraisalLine.Weighting + Rec.Weighting;
+                if TotalWeighting > 100 then
+                    Error('Total objective weighting cannot exceed 100%.\Current total for other lines is %1%, adding this makes it %2%.', AppraisalLine.Weighting, TotalWeighting);
+
                 UpdateQuarterScore();
             end;
         }
@@ -435,6 +447,7 @@ table 51903 "Appraisal Lines"
         "Achieved (%)" := Round((Actual / "FY Target") * 100, 0.01);
     end;
 }
+
 
 
 
