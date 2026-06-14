@@ -2773,6 +2773,21 @@ End Function
         <Field Name="Description_Goals">
           <DataField>Description_Goals</DataField>
         </Field>
+        <Field Name="WorkplanCode_Goals">
+          <DataField>WorkplanCode_Goals</DataField>
+        </Field>
+        <Field Name="WorkplanDescription_Goals">
+          <DataField>WorkplanDescription_Goals</DataField>
+        </Field>
+        <Field Name="PerformanceMeasure_Goals">
+          <DataField>PerformanceMeasure_Goals</DataField>
+        </Field>
+        <Field Name="InitiativeCode_Goals">
+          <DataField>InitiativeCode_Goals</DataField>
+        </Field>
+        <Field Name="InitiativeDescription_Goals">
+          <DataField>InitiativeDescription_Goals</DataField>
+        </Field>
         <Field Name="No_Goals">
           <DataField>No_Goals</DataField>
         </Field>

@@ -249,13 +249,15 @@ page 52358 "Appraisal Card-Review"
             {
                 field("Appraisee Agreed"; Rec."Appraisee Agreed")
                 {
+                    ApplicationArea = All;
+                    Editable = ReviewActionsEnabled;
                     ToolTip = 'Specifies the value of the Appraisee Agreed field.';
-                    Visible = FinalVisible;
                 }
                 field("Appraiser Agreed"; Rec."Appraiser Agreed")
                 {
+                    ApplicationArea = All;
+                    Editable = ReviewActionsEnabled;
                     ToolTip = 'Specifies the value of the Appraiser Agreed field.';
-                    Visible = FinalVisible;
                 }
             }
             part(Control8; "Appraisal Goals")
@@ -722,12 +724,12 @@ page 52358 "Appraisal Card-Review"
             }
             action(ViewApprovals)
             {
-                Caption = 'View Review Approvals';
+                Caption = 'Approval Entries';
                 Image = Approvals;
                 Promoted = true;
                 PromotedCategory = Category5;
                 PromotedIsBig = true;
-                ToolTip = 'Shows review approval entries for this appraisal.';
+                ToolTip = 'Shows all approval entries for this appraisal.';
 
                 trigger OnAction()
                 var

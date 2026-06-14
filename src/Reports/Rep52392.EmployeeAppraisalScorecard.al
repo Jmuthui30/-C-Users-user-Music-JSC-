@@ -47,6 +47,9 @@ report 52392 "Employee Appraisal Scorecard"
             column(CurrentReviewScore; "Current Review Score") { }
             column(TotalReviewScore; "Total Review Score") { }
             column(TotalWeighting; "Total Weighting") { }
+            column(CurrentReviewWeighting; GetCurrentReviewWeighting("Appraisal No", "Current Review Period Code")) { }
+            column(AppraiseeReviewComments; GetReviewComments("Appraisal No", "Current Review Period Code", false)) { }
+            column(AppraiserReviewComments; GetReviewComments("Appraisal No", "Current Review Period Code", true)) { }
             column(StatusText; Format(Status)) { }
             column(AppraisalStatusText; Format("Appraisal Status")) { }
 
@@ -123,6 +126,7 @@ report 52392 "Employee Appraisal Scorecard"
 
                 trigger OnPreDataItem()
                 begin
+                    SetRange("Appraisal Line Type", "Appraisal Line Type"::Objective);
                     if EmployeeAppraisal."Current Review Period Code" <> '' then
                         SetRange("Review Period Code", EmployeeAppraisal."Current Review Period Code");
                 end;
@@ -182,5 +186,55 @@ report 52392 "Employee Appraisal Scorecard"
             exit(Workplans.Description)
         else
             exit(WorkplanCode);
+    end;
+
+    local procedure GetCurrentReviewWeighting(AppraisalNo: Code[20]; ReviewPeriodCode: Code[20]): Decimal
+    var
+        AppraisalLine: Record "Appraisal Lines";
+    begin
+        AppraisalLine.SetRange("Appraisal No", AppraisalNo);
+        AppraisalLine.SetRange("Appraisal Line Type", AppraisalLine."Appraisal Line Type"::Objective);
+        if ReviewPeriodCode <> '' then
+            AppraisalLine.SetRange("Review Period Code", ReviewPeriodCode);
+        AppraisalLine.CalcSums(Weighting);
+        exit(AppraisalLine.Weighting);
+    end;
+
+    local procedure GetReviewComments(AppraisalNo: Code[20]; ReviewPeriodCode: Code[20]; AppraiserSide: Boolean): Text
+    var
+        AppraisalComment: Record "Appraisal Comments";
+        CommentBuilder: TextBuilder;
+        HasComment: Boolean;
+    begin
+        AppraisalComment.SetRange("Appraisal No.", AppraisalNo);
+        if AppraiserSide then
+            AppraisalComment.SetRange(Person, AppraisalComment.Person::Appraiser)
+        else
+            AppraisalComment.SetRange(Person, AppraisalComment.Person::Appraisee);
+        AppraisalComment.SetRange("Review Period Code", ReviewPeriodCode);
+
+        if AppraisalComment.FindSet() then
+            repeat
+                AppendComment(CommentBuilder, AppraisalComment."Comments on Performance", HasComment);
+                if AppraiserSide then begin
+                    AppendComment(CommentBuilder, AppraisalComment."Comments by Second Suprvisor", HasComment);
+                    AppendComment(CommentBuilder, AppraisalComment."Developmental Action", HasComment);
+                end else
+                    AppendComment(CommentBuilder, AppraisalComment."Comments On Supervisor", HasComment);
+            until AppraisalComment.Next() = 0;
+
+        if not HasComment then
+            exit('No comments captured for this review period.');
+
+        exit(CommentBuilder.ToText());
+    end;
+
+    local procedure AppendComment(var CommentBuilder: TextBuilder; CommentText: Text; var HasComment: Boolean)
+    begin
+        if CommentText = '' then
+            exit;
+
+        HasComment := true;
+        CommentBuilder.AppendLine(CommentText);
     end;
 }

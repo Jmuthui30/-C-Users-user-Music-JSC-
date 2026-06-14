@@ -73,7 +73,16 @@ codeunit 52395 "Appraisal Process Mgt."
         EmployeeAppraisal."Current Review Period Code" := NextPeriod.Code;
         EmployeeAppraisal.Status := EmployeeAppraisal.Status::Open;
         EmployeeAppraisal."Appraisal Status" := EmployeeAppraisal."Appraisal Status"::Setting;
+        EmployeeAppraisal."Appraisee Agreed" := false;
+        EmployeeAppraisal."Appraiser Agreed" := false;
         EmployeeAppraisal.Modify(true);
+
+        Commit();
+        if not TrySendNextReviewPeriodNotification(EmployeeAppraisal, CurrentPeriod, NextPeriod) then
+            Message(
+                'Appraisal %1 moved to review period %2, but the appraisee email notification could not be sent. Verify the employee email address and Business Central email account setup.',
+                EmployeeAppraisal."Appraisal No",
+                NextPeriod.Code);
     end;
 
     procedure StampCurrentReviewCommentsForCurrentPeriod(EmployeeAppraisal: Record "Employee Appraisal")
@@ -548,6 +557,44 @@ codeunit 52395 "Appraisal Process Mgt."
         //         exit(CalcDate('<9M>', PeriodStartDate));
         // end;
         exit(CalculateReviewPeriodStartDate(PeriodStartDate, PeriodEndDate, ReviewPeriod."Review Sequence", FinalPeriod."Review Sequence"));
+    end;
+
+    [TryFunction]
+    local procedure TrySendNextReviewPeriodNotification(EmployeeAppraisal: Record "Employee Appraisal"; PreviousPeriod: Record "Bal Score Preview Periods"; NextPeriod: Record "Bal Score Preview Periods")
+    var
+        CompanyInfo: Record "Company Information";
+        Email: Codeunit Email;
+        EmailMessage: Codeunit "Email Message";
+        Employee: Record Employee;
+        Body: Text;
+        RecipientEmail: Text;
+        Subject: Text[250];
+    begin
+        Employee.Get(EmployeeAppraisal."Employee No");
+        RecipientEmail := Employee."Company E-Mail";
+        if RecipientEmail = '' then
+            RecipientEmail := Employee."E-Mail";
+        if RecipientEmail = '' then
+            Error('Employee %1 does not have a company or personal email address.', Employee."No.");
+
+        CompanyInfo.Get();
+        Subject := StrSubstNo('Performance appraisal moved to %1', NextPeriod.Code);
+        Body :=
+            StrSubstNo(
+                '<p style="font-family:Verdana,Arial;font-size:10pt">Dear <b>%1</b>,</p>' +
+                '<p style="font-family:Verdana,Arial;font-size:10pt">Your performance appraisal <b>%2</b> for appraisal period <b>%3</b> has moved from review period <b>%4</b> to <b>%5</b>.</p>' +
+                '<p style="font-family:Verdana,Arial;font-size:10pt">The appraisal is now open for the new review period. Please review the carried-forward objectives and complete the required entries for this period.</p>' +
+                '<p style="font-family:Verdana,Arial;font-size:10pt">Kind Regards,<br>Human Resource Management<br>%6</p>',
+                EmployeeAppraisal."Appraisee Name",
+                EmployeeAppraisal."Appraisal No",
+                EmployeeAppraisal."Appraisal Period",
+                PreviousPeriod.Code,
+                NextPeriod.Code,
+                CompanyInfo.Name);
+
+        EmailMessage.Create(RecipientEmail, Subject, Body, true);
+        if not Email.Send(EmailMessage, Enum::"Email Scenario"::Default) then
+            Error('The appraisal review-period notification could not be sent.');
     end;
 
     local procedure CalculateReviewPeriodStartDate(PeriodStartDate: Date; PeriodEndDate: Date; ReviewSequence: Integer; FinalReviewSequence: Integer): Date

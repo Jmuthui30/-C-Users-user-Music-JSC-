@@ -318,13 +318,13 @@ page 52359 "Appraisal Card-New"
             }
             action("Send For Approval")
             {
-                Caption = 'Submit for Review';
+                Caption = 'Send for Approval';
                 Enabled = SubmitForReviewEnabled;
                 Image = SendApprovalRequest;
                 Promoted = true;
                 PromotedCategory = Category5;
                 PromotedIsBig = true;
-                ToolTip = 'Submits the appraisal for review.';
+                ToolTip = 'Sends the appraisal goals for approval.';
 
                 trigger OnAction()
                 begin
@@ -339,11 +339,16 @@ page 52359 "Appraisal Card-New"
                     if not Rec.Get(Rec."Appraisal No") then
                         Error('The appraisal record %1 no longer exists.', Rec."Appraisal No");
 
-                    // now Rec is fresh, you can safely update fields or modify
-                    Rec."Appraisal Status" := Rec."Appraisal Status"::Set;
                     Commit();
-                    Rec.Modify();
-                    Message('Appraisal sent for review successfully');
+
+                    case Rec.Status of
+                        Rec.Status::"Pending Approval":
+                            Message('Appraisal %1 has been sent for approval.', Rec."Appraisal No");
+                        Rec.Status::Released:
+                            Message('Appraisal %1 was approved automatically and is now under review.', Rec."Appraisal No");
+                        else
+                            Message('The approval workflow completed for appraisal %1. Current status: %2.', Rec."Appraisal No", Rec.Status);
+                    end;
                     CurrPage.Close();
                 end;
 
@@ -384,13 +389,13 @@ page 52359 "Appraisal Card-New"
             // }
             action("Cancel Approval Request")
             {
-                Caption = 'Cancel Review Request';
+                Caption = 'Cancel Approval Request';
                 Enabled = CanCancelApprovalForRecord;
                 Image = CancelApprovalRequest;
                 Promoted = true;
                 PromotedCategory = Category5;
                 PromotedIsBig = true;
-                ToolTip = 'Executes the Cancel Review Request action';
+                ToolTip = 'Cancels the open approval request for this appraisal.';
 
                 trigger OnAction()
                 begin
@@ -401,23 +406,20 @@ page 52359 "Appraisal Card-New"
             }
             action(ViewApprovals)
             {
-                Visible = false;
-                Caption = 'View Review Approvals';
-                Image = Approval;
+                Caption = 'Approval Entries';
+                Image = Approvals;
                 Promoted = true;
                 PromotedCategory = Category5;
-                ToolTip = 'Shows review approval entries for this appraisal.';
+                PromotedIsBig = true;
+                ToolTip = 'Shows all approval entries for this appraisal.';
 
                 trigger OnAction()
                 var
-                    ApprovalEntry: Record "Approval Entry";
                     ApprovalEntries: Page "Approval Entries";
+                    DocumentType: Enum "Approval Document Type";
                 begin
-                    ApprovalEntry.Reset();
-                    ApprovalEntry.SetCurrentKey("Document No.");
-                    ApprovalEntry.SetRange("Document No.", Rec."Appraisal No");
-                    ApprovalEntries.SetTableView(ApprovalEntry);
-                    ApprovalEntries.LookupMode(true);
+                    DocumentType := DocumentType::"Employee Appraisal";
+                    ApprovalEntries.SetRecordFilters(Database::"Employee Appraisal", DocumentType, Rec."Appraisal No");
                     ApprovalEntries.Run();
                 end;
             }

@@ -289,11 +289,11 @@ page 52185 "Appraisal Card-Completed"
             }
             action(ViewApprovals)
             {
-                Caption = 'Approvals';
-                Image = Approval;
+                Caption = 'Approval Entries';
+                Image = Approvals;
                 Promoted = true;
                 PromotedCategory = Category4;
-                ToolTip = 'Executes the Approvals action';
+                ToolTip = 'Shows all approval entries for this appraisal.';
 
                 trigger OnAction()
                 var

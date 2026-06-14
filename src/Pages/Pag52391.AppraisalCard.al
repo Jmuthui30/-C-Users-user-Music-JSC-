@@ -463,12 +463,12 @@ page 52391 "Appraisal Card"
             }
             action(ViewApprovals)
             {
-                Caption = 'Approvals';
+                Caption = 'Approval Entries';
                 Image = Approvals;
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                ToolTip = 'Executes the Approvals action';
+                ToolTip = 'Shows all approval entries for this appraisal.';
 
                 trigger OnAction()
                 var

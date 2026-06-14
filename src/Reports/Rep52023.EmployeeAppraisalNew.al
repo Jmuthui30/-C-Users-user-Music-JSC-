@@ -214,6 +214,21 @@ report 52023 "Employee Appraisal - New"
                 column(Description_Goals; Goals.Description)
                 {
                 }
+                column(WorkplanCode_Goals; Goals."Workplan Code")
+                {
+                }
+                column(WorkplanDescription_Goals; Goals."Workplan Description")
+                {
+                }
+                column(PerformanceMeasure_Goals; Goals."Performance Measure")
+                {
+                }
+                column(InitiativeCode_Goals; Goals."Initiative code")
+                {
+                }
+                column(InitiativeDescription_Goals; Goals.Description)
+                {
+                }
                 column(KPI_Goals; Goals.KPI)
                 {
                 }
@@ -221,6 +236,12 @@ report 52023 "Employee Appraisal - New"
                 {
                 }
                 column(FY_Target; "FY Target")
+                {
+                }
+                column(Actual_Goals; Goals.Actual)
+                {
+                }
+                column(AchievedPercent_Goals; Goals."Achieved (%)")
                 {
                 }
                 column(Variance; Variance)
@@ -275,6 +296,8 @@ report 52023 "Employee Appraisal - New"
                 trigger OnPreDataItem()
                 begin
                     Goals.SetFilter(Goals."Appraisal Line Type", '<>%1&<>%2', Goals."Appraisal Line Type"::"Objective Heading End", Goals."Appraisal Line Type"::"Sub-Heading End");
+                    if Appraisal."Current Review Period Code" <> '' then
+                        Goals.SetRange("Review Period Code", Appraisal."Current Review Period Code");
                 end;
             }
             dataitem(GoalsJD; "Appraisal Lines-JD")
