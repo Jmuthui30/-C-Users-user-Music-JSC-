@@ -479,6 +479,29 @@ codeunit 52006 "Wkfl Event Handle HR Ext"
     local procedure RunworkflowOnSendNewEmpAppraisalforApproval(var NewEmployeeAppraisal: Record "Employee Appraisal")
     begin
         WorkflowManagement.HandleEvent(RunworkflowOnSendNewEmpAppraisalforApprovalCode(), NewEmployeeAppraisal);
+        EnsureApprovedAppraisalIsUnderReview(NewEmployeeAppraisal);
+    end;
+
+    local procedure EnsureApprovedAppraisalIsUnderReview(var NewEmployeeAppraisal: Record "Employee Appraisal")
+    var
+        ApprovalEntry: Record "Approval Entry";
+        PendingApprovalEntry: Record "Approval Entry";
+        WorkflowResponses: Codeunit "Workflow Responses HR";
+    begin
+        ApprovalEntry.SetRange("Record ID to Approve", NewEmployeeAppraisal.RecordId);
+        if not ApprovalEntry.FindLast() then
+            exit;
+
+        if ApprovalEntry.Status <> ApprovalEntry.Status::Approved then
+            exit;
+
+        PendingApprovalEntry.SetRange("Record ID to Approve", NewEmployeeAppraisal.RecordId);
+        PendingApprovalEntry.SetFilter(Status, '%1|%2', PendingApprovalEntry.Status::Open, PendingApprovalEntry.Status::Created);
+        if not PendingApprovalEntry.IsEmpty() then
+            exit;
+
+        WorkflowResponses.ReleaseEmployeeAppraisalRequest(NewEmployeeAppraisal);
+        NewEmployeeAppraisal.Get(NewEmployeeAppraisal."Appraisal No");
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approval Mgt HR Ext", 'OnCancelNewEmpAppraisalRequestApproval', '', false, false)]

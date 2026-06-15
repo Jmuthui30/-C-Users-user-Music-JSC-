@@ -1,5 +1,6 @@
 ﻿# Business Central AL build output and symbols
 .alpackages/
+.build/
 *.app
 *.runtimepackage
 *.md
