@@ -386,6 +386,8 @@ report 51464 "Client P9A"
                 column(TOTALCummPAYE; TOTALCummPAYE) { }
                 trigger OnAfterGetRecord()
                 begin
+                    Employee.CalcFields("Total Allowances", "Taxable Allowance", "Total Deductions");
+
                     TaxableAmount := 0;
                     "30PerPension" := 0;
                     TotalV30PerPension := 0;
@@ -430,6 +432,7 @@ report 51464 "Client P9A"
                             OccupierVar := AssMatrix.Amount;
                         end;
                     end;
+
                     // Get Owner Occupier
                     //END;
                     GetPaye.CalculateTaxableAmount(Employee."No.", "Client Payroll Period"."Starting Date", IncomeTax, TaxableAmount, RetirementVar, Employee."Company Code");
@@ -530,10 +533,13 @@ report 51464 "Client P9A"
                             PRMFAmount := -AssMatrix.Amount;
                     end;
 
-
                     //*****************************************8
                     /*****Calculate the totals*******************************/
                     TotBasic := TotBasic + Employee."Total Allowances";
+
+
+                    // Employee."Total Allowances"
+                    // message(' TotBasic: %1, Total Allowances: %2', TotBasic, Employee."Total Allowances");
                     //TotNonQuarter:=TotQuarter+Employee."Total Allowances";
                     //TotQuarter:=TotQuarter+QuartersVar;
                     TotGross := TotGross + Employee."Taxable Allowance" + QuartersVar + BenefitsVar;
