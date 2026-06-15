@@ -1423,7 +1423,7 @@ codeunit 55056 HRPortal
                     // ImprestHeader.Validate("Dimension Set ID");
                     ImprestHeader.Status := ImprestHeader.Status::Open;
                     UserSetup.Reset();
-                    UserSetup.SetRange("Employee No.", employeeNo);
+                    UserSetup.SetRange("Employee No.", ImprestHeader."Staff No.");
                     if UserSetup.FindLast() then begin
                         ImprestHeader."Created By" := UserSetup."User ID";
                         ImprestHeader."User Id" := UserSetup."User ID";
@@ -1443,11 +1443,10 @@ codeunit 55056 HRPortal
                         until PaymentLine.Next() = 0;
 
                     UserSetup.Reset();
-                    UserSetup.SetRange("Employee No.", employeeNo);
+                    UserSetup.SetRange("Employee No.", ImprestHeader."Staff No.");
                     if UserSetup.FindLast() then begin
                         ImprestHeader."Created By" := UserSetup."User ID";
                         ImprestHeader."User Id" := UserSetup."User ID";
-                        ImprestHeader.Cashier := UserSetup."User ID";
                     end;
                     ImprestHeader.Modify();
                 end;
