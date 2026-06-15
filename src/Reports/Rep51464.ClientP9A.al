@@ -386,7 +386,7 @@ report 51464 "Client P9A"
                 column(TOTALCummPAYE; TOTALCummPAYE) { }
                 trigger OnAfterGetRecord()
                 begin
-                    Employee.CalcFields("Total Allowances", "Taxable Allowance", "Total Deductions");
+                    //Employee.CalcFields("Total Allowances", "Taxable Allowance", "Total Deductions");
 
                     TaxableAmount := 0;
                     "30PerPension" := 0;
@@ -400,14 +400,14 @@ report 51464 "Client P9A"
                     Relief := 0;
                     TotalSHIFInsRelief := 0;
                     TOTALCummPAYE := 0;
-                    if Employee."Pays Tax" then begin
-                        Employee.SetRange("Pay Period Filter", "Starting Date");
-                        Employee.CalcFields("Taxable Allowance", "Tax Deductible Amount", "Total Allowances", Employee."Cumm. PAYE", Employee."SHIF+InsuranceRelief", Employee.Retirement);
-                        Employee.CalcFields(Employee."Taxable Allowance", "Tax Deductible Amount", Employee."Taxable Allowance");
-                        Employee.CalcFields("Total Allowances", "Total Deductions");
-                        Employee.CalcFields(Basic);
-                        Employee.CalcFields("Benefits-Non Cash", "Owner Occupier");
-                    end;
+                    // if Employee."Pays Tax" then begin
+                    Employee.SetRange("Pay Period Filter", "Starting Date");
+                    Employee.CalcFields("Taxable Allowance", "Tax Deductible Amount", "Total Allowances", Employee."Cumm. PAYE", Employee."SHIF+InsuranceRelief", Employee.Retirement);
+                    Employee.CalcFields(Employee."Taxable Allowance", "Tax Deductible Amount", Employee."Taxable Allowance");
+                    Employee.CalcFields("Total Allowances", "Total Deductions");
+                    Employee.CalcFields(Basic);
+                    Employee.CalcFields("Benefits-Non Cash", "Owner Occupier");
+                    //   end;
                     TOTALCummPAYE := Employee."SHIF+InsuranceRelief" + Employee."Cumm. PAYE";
                     TotalSHIFInsRelief := Employee."SHIF+InsuranceRelief";
                     "30PerPension" := 30 / 100 * Employee."Taxable Allowance";
@@ -436,22 +436,7 @@ report 51464 "Client P9A"
                     // Get Owner Occupier
                     //END;
                     GetPaye.CalculateTaxableAmount(Employee."No.", "Client Payroll Period"."Starting Date", IncomeTax, TaxableAmount, RetirementVar, Employee."Company Code");
-                    //TaxableAmount:=Employee."Taxable Allowance"+Employee."Retirement Contribution"- OwnerOccupierAmt;
-                    //OccupierVar := OwnerOccupierAmt;
-                    /*
-                    Earn.RESET;
-                    Earn.SETCURRENTKEY(Earn."Earning Type");
-                    Earn.SETRANGE(Earn."Earning Type",Earn."Earning Type"::"Owner Occupier");
-                    IF Earn.FIND('-') THEN BEGIN
-                      AssMatrix.RESET;
-                      AssMatrix.SETRANGE(AssMatrix.Type,AssMatrix.Type::Payment);
-                      AssMatrix.SETRANGE(AssMatrix."Employee No",Employee."No.");
-                      AssMatrix.SETRANGE(AssMatrix."Client Payroll Period","Starting Date");
-                      AssMatrix.SETRANGE(Code,Earn.Code);
-                      IF AssMatrix.FIND('-') THEN
-                       OccupierVar:=OwnerOccupierAmt;
-                    END;
-                       */
+
                     // Get Personal Relief
                     begin
                         Earn.Reset;
@@ -478,7 +463,6 @@ report 51464 "Client P9A"
                             InsuranceRelief := 0;
                             AssMatrix.Reset;
                             AssMatrix.SetRange(AssMatrix.Type, AssMatrix.Type::Payment);
-                            //AssMatrix.SetRange(AssMatrix."Normal Earnings", AssMatrix."Normal Earnings" = false);
                             AssMatrix.SetRange(AssMatrix."Employee No", Employee."No.");
                             AssMatrix.SetRange(AssMatrix."Payroll Period", "Starting Date");
                             AssMatrix.SetRange(Code, Earn.Code);
@@ -538,10 +522,6 @@ report 51464 "Client P9A"
                     TotBasic := TotBasic + Employee."Total Allowances";
 
 
-                    // Employee."Total Allowances"
-                    // message(' TotBasic: %1, Total Allowances: %2', TotBasic, Employee."Total Allowances");
-                    //TotNonQuarter:=TotQuarter+Employee."Total Allowances";
-                    //TotQuarter:=TotQuarter+QuartersVar;
                     TotGross := TotGross + Employee."Taxable Allowance" + QuartersVar + BenefitsVar;
                     TotPercentage := TotPercentage + ((30 / 100) * (Employee."Total Allowances" + QuartersVar + BenefitsVar));
                     TotActual := ABS(TotActual + RetirementVar);
@@ -552,7 +532,6 @@ report 51464 "Client P9A"
                     TotPAYE := TotPAYE + PAYE;
                     grandPAYE := ABS(grandPAYE + PAYE);
                     TotOcc := TotOcc + Abs(OccupierVar);
-                    //TotRet:=TotRet+ABS(DefinedContrMin)+ABS(OccupierVar);
                     TaxablePound := TaxableAmount / 20;
                     TaxablePound := Round(TaxablePound, 1, '<');
                     TotPound := TotPound + TaxablePound;
@@ -565,9 +544,6 @@ report 51464 "Client P9A"
                 trigger OnPreDataItem()
                 begin
                     "Client Payroll Period".SetRange("Client Payroll Period"."Starting Date", StringDate, EndDate);
-                    /* CurrReport.CreateTotals(Employee."Total Allowances",BenefitsVar,QuartersVar,"30PerPension",PensionLimit,RetirementVar,OccupierVar)
-                         ;
-                         CurrReport.CreateTotals(TaxableAmount,Employee."Cumm. PAYE",InsuranceRelief,Relief);*/
                 end;
             }
             dataitem(Earnings; "Client Earnings")
@@ -712,6 +688,7 @@ report 51464 "Client P9A"
             }
             trigger OnAfterGetRecord()
             begin
+                GrossMasterAmont := 0;
                 TotBasic := 0;
                 TotNonQuarter := 0;
                 TotQuarter := 0;
@@ -733,6 +710,7 @@ report 51464 "Client P9A"
                 Company.Get(Employee.GetFilter("Company Code"));
                 CoPin := Company."VAT Registration No.";
                 NAVEmp.Get(Employee."No.");
+
             end;
 
             trigger OnPreDataItem()
@@ -788,6 +766,7 @@ report 51464 "Client P9A"
     end;
 
     var
+        GrossMasterAmont: Decimal;
         TOTALCummPAYE: Decimal;
         TOTALSHIF_InsuranceRelief: Decimal;
         TotalSHIFInsRelief: Decimal;
