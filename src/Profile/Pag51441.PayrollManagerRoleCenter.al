@@ -231,6 +231,7 @@ page 51441 "Payroll Manager Role Center"
                     }
                 }
             }
+
             group(Reports)
             {
                 Caption = 'Reports';
@@ -625,6 +626,7 @@ page 51441 "Payroll Manager Role Center"
                     }
                 }
             }
+
             group(Setup)
             {
                 Caption = 'Setup';
@@ -697,6 +699,7 @@ page 51441 "Payroll Manager Role Center"
                 }
             }
         }
+
         area(embedding)
         {
             ToolTip = 'Manage your business. See KPIs, trial balance, and favorite customers.';
@@ -743,6 +746,9 @@ page 51441 "Payroll Manager Role Center"
                 RunPageView = where(Status = const(Released));
             }
         }
+
+
+
         area(sections)
         {
             group(Approvals)

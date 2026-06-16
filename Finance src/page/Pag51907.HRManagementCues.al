@@ -10,6 +10,29 @@ page 59907 "HR Management Cues"
     {
         area(Content)
         {
+            cuegroup(Generalrecriutment)
+            {
+                caption = 'Recruitment Management';
+                field("Recruitment Need"; Rec."Recruitment Need")
+                {
+                    Caption = 'Recruitment Request List';
+                    DrillDownPageId = "Recruitment Request List";
+                    ToolTip = 'Specifies the value of the Recruitment Request List field';
+                }
+                field("Recruitment Need Approved"; Rec."Recruitment Need Approved")
+                {
+                    Caption = ' Recruitment ongoing List';
+                    DrillDownPageId = "Recruitment Request List";
+                    ToolTip = 'Specifies the value of the Recruitment ongoing List field';
+                }
+                field("Recruitment Need Closed"; Rec."Recruitment Need Closed")
+                {
+                    Caption = ' Recruitment Closed List';
+                    DrillDownPageId = "Recruitment Request List";
+                    ToolTip = 'Specifies the value of the Recruitment Closed List field';
+                }
+
+            }
             cuegroup(leave)
             {
                 Caption = 'Leave Management';

@@ -136,6 +136,41 @@ table 51917 "HR Management Cue"
             Editable = false;
             FieldClass = FlowField;
         }
+        // Recruitment Needs
+        // Recruitment Request List
+        field(18; "Recruitment Need"; Integer)
+        {
+            CalcFormula = count("Recruitment Needs" where(Status = const(Open)));
+            Caption = 'Recruitment Request List';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        //Approved Recruitment Requests 
+        field(19; "Recruitment Need Approved"; Integer)
+        {
+            CalcFormula = count("Recruitment Needs" where(Status = const(Released)));
+            Caption = ' Recruitment ongoing List';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+        field(20; "Recruitment Need Closed"; Integer)
+        {
+            CalcFormula = count("Recruitment Needs" where(Status = const(closed)));
+            Caption = ' Recruitment Closed List';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        // Applicant Submit-All (58985, List)
+        field(21; "Applicant Submit-All"; Integer)
+        {
+            CalcFormula = count(Applicant where(Submitted = const(true)));
+            Caption = 'Applicant Submit-All';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+
 
 
     }
