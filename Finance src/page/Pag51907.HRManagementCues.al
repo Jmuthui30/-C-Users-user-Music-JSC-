@@ -35,6 +35,14 @@ page 59907 "HR Management Cues"
                     DrillDownPageId = "Archived Recruitment Requests";
                     ToolTip = 'Specifies the value of the Recruitment Closed List field';
                 }
+                //Applicant Submit-All 
+                field("Applicant Submit-All"; Rec."Applicant Submit-All")
+                {
+                    Caption = 'Applicant Submitted list';
+                    DrillDownPageId = "Applicant Submit-All";
+                    ToolTip = 'Specifies the value of the Applicant Submit-All field';
+                    Image = User;
+                }
 
             }
 

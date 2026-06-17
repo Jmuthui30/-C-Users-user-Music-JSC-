@@ -156,7 +156,7 @@ table 51917 "HR Management Cue"
 
         field(20; "Recruitment Need Closed"; Integer)
         {
-            CalcFormula = count("Recruitment Needs" where(Status = const(closed)));
+            CalcFormula = count("Recruitment Needs" where(Status = filter(Archived | Closed)));
             Caption = ' Recruitment Closed List';
             Editable = false;
             FieldClass = FlowField;

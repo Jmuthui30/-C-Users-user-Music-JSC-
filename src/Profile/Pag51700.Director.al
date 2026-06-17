@@ -49,7 +49,8 @@ page 59991 "Director Role Center"
 
             part("PR Payroll Activities Cue"; "Payroll Activities")
             {
-                Caption = 'PAYROLL ACTIVITIES';
+                Caption = 'Payroll Management';
+
                 ApplicationArea = Basic, Suite;
             }
             part(Headline; "Headline RC Payroll Manager")
