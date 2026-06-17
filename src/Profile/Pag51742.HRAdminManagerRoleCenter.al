@@ -755,6 +755,8 @@ page 51742 "HR & Admin Manager Role Center"
                 }
 
 
+
+
             }
 
 
@@ -1422,6 +1424,7 @@ page 51742 "HR & Admin Manager Role Center"
             //         }
             //     }
             // }
+
             group("Performance Appraisal Management")
             {
                 Caption = 'Performance Management';
@@ -1657,6 +1660,8 @@ page 51742 "HR & Admin Manager Role Center"
                     }
                 }
             }
+
+
             group("Internal Memo")
             {
                 action("New Interal Memos")
