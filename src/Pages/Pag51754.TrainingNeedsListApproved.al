@@ -122,6 +122,7 @@ page 51754 "Training Needs List-Approved"
                     TrainingNeed."Applicant Type" := TrainingNeed."Applicant Type"::Individual;
                     TrainingNeed.Status := TrainingNeed.Status::Open;
                     TrainingNeed.Insert(true);
+                    CreateOriginatingParticipant(TrainingNeed.Code);
                     Page.Run(Page::"Training Need", TrainingNeed);
                 end;
             }
@@ -181,5 +182,24 @@ page 51754 "Training Needs List-Approved"
             Summary += ' | ';
 
         Summary += Caption + ': ' + Value;
+    end;
+
+    local procedure CreateOriginatingParticipant(TrainingNeedCode: Code[20])
+    var
+        TrainingParticipant: Record "Training Participants";
+    begin
+        if Rec."Employee No" = '' then
+            exit;
+
+        TrainingParticipant.SetRange("Training Need", TrainingNeedCode);
+        TrainingParticipant.SetRange("Employee No", Rec."Employee No");
+        if TrainingParticipant.FindFirst() then
+            exit;
+
+        TrainingParticipant.Init();
+        TrainingParticipant."Training Need" := TrainingNeedCode;
+        TrainingParticipant.Code := CopyStr(Rec."Employee No", 1, MaxStrLen(TrainingParticipant.Code));
+        TrainingParticipant.Validate("Employee No", Rec."Employee No");
+        TrainingParticipant.Insert(true);
     end;
 }

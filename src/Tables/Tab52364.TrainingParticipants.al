@@ -10,7 +10,7 @@ table 52364 "Training Participants"
         }
         field(2; "Training Need"; Code[20])
         {
-            TableRelation = "Training Need" where(Status = filter(Open | Application));
+            TableRelation = "Training Need" where(Status = filter(Open | "Pending Plan Approval" | "Approved Plan" | Application));
             Caption = 'Training Need';
         }
         field(3; "Employee No"; Code[10])
