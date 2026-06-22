@@ -304,6 +304,12 @@ page 51477 "Client Employee Card"
                 {
                     ApplicationArea = All;
                 }
+                // Employee."Total Allowances"
+                field("Total Allowances"; Rec."Total Allowances")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
             }
         }
         area(factboxes)

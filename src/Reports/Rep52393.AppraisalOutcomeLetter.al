@@ -10,7 +10,7 @@ report 52393 "Appraisal Outcome Letter"
     {
         dataitem(AppraisalOutcome; "Appraisal Outcome")
         {
-            RequestFilterFields = "Appraisal No.", "Outcome Type", "Employee No.", "Appraisal Period";
+            RequestFilterFields = "Appraisal No.", "Outcome Type", "Employee No.", "Appraisal Period", "Review Period Code";
 
             column(CompanyName; CompanyInfo.Name) { }
             column(CompanyAddress; CompanyInfo.Address) { }
@@ -26,12 +26,13 @@ report 52393 "Appraisal Outcome Letter"
             column(JobTitle; "Job Title") { }
             column(DepartmentCode; "Department Code") { }
             column(AppraisalPeriod; "Appraisal Period") { }
+            column(ReviewPeriodCode; "Review Period Code") { }
             column(Rating; Rating) { }
             column(Grade; Grade) { }
             column(Subject; Subject) { }
             column(LetterBody; "Letter Body") { }
-            column(IssueDate; "Issue Date") { }
-            column(IssuedBy; "Issued By") { }
+            column(IssueDate; GetIssueDate()) { }
+            column(IssuedBy; GetIssuedBy()) { }
         }
     }
 
@@ -42,4 +43,20 @@ report 52393 "Appraisal Outcome Letter"
 
     var
         CompanyInfo: Record "Company Information";
+
+    local procedure GetIssueDate(): Date
+    begin
+        if AppraisalOutcome."Issue Date" <> 0D then
+            exit(AppraisalOutcome."Issue Date");
+
+        exit(WorkDate());
+    end;
+
+    local procedure GetIssuedBy(): Code[50]
+    begin
+        if AppraisalOutcome."Issued By" <> '' then
+            exit(AppraisalOutcome."Issued By");
+
+        exit(CopyStr(UserId, 1, MaxStrLen(AppraisalOutcome."Issued By")));
+    end;
 }

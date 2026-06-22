@@ -5258,6 +5258,21 @@ End Function
         <Field Name="Description_Goals">
           <DataField>Description_Goals</DataField>
         </Field>
+        <Field Name="WorkplanCode_Goals">
+          <DataField>WorkplanCode_Goals</DataField>
+        </Field>
+        <Field Name="WorkplanDescription_Goals">
+          <DataField>WorkplanDescription_Goals</DataField>
+        </Field>
+        <Field Name="PerformanceMeasure_Goals">
+          <DataField>PerformanceMeasure_Goals</DataField>
+        </Field>
+        <Field Name="InitiativeCode_Goals">
+          <DataField>InitiativeCode_Goals</DataField>
+        </Field>
+        <Field Name="InitiativeDescription_Goals">
+          <DataField>InitiativeDescription_Goals</DataField>
+        </Field>
         <Field Name="KPI_Goals">
           <DataField>KPI_Goals</DataField>
         </Field>
@@ -5269,6 +5284,18 @@ End Function
         </Field>
         <Field Name="FY_TargetFormat">
           <DataField>FY_TargetFormat</DataField>
+        </Field>
+        <Field Name="Actual_Goals">
+          <DataField>Actual_Goals</DataField>
+        </Field>
+        <Field Name="Actual_GoalsFormat">
+          <DataField>Actual_GoalsFormat</DataField>
+        </Field>
+        <Field Name="AchievedPercent_Goals">
+          <DataField>AchievedPercent_Goals</DataField>
+        </Field>
+        <Field Name="AchievedPercent_GoalsFormat">
+          <DataField>AchievedPercent_GoalsFormat</DataField>
         </Field>
         <Field Name="Variance">
           <DataField>Variance</DataField>

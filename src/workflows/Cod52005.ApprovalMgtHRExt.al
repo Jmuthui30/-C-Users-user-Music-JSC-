@@ -187,10 +187,11 @@ codeunit 52005 "Approval Mgt HR Ext"
             Database::"Employee Appraisal":
                 begin
                     RecRef.SetTable(NewEmployeeAppraisal);
-                    if NewEmployeeAppraisal.Get(NewEmployeeAppraisal."Appraisal No") then begin  // already uses Get ✓
-                        NewEmployeeAppraisal.Validate(Status, NewEmployeeAppraisal.Status::"Pending Approval");
-                        NewEmployeeAppraisal.Modify(true);
-                    end;
+                    NewEmployeeAppraisal.Get(NewEmployeeAppraisal."Appraisal No");
+                    NewEmployeeAppraisal.Validate(Status, NewEmployeeAppraisal.Status::"Pending Approval");
+                    NewEmployeeAppraisal."Appraisal Status" := NewEmployeeAppraisal."Appraisal Status"::Set;
+                    NewEmployeeAppraisal.Modify(true);
+                    Variant := NewEmployeeAppraisal;
                     IsHandled := true;
                 end;
 

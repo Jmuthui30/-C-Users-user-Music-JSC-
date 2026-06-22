@@ -755,6 +755,8 @@ page 51742 "HR & Admin Manager Role Center"
                 }
 
 
+
+
             }
 
 
@@ -1422,6 +1424,7 @@ page 51742 "HR & Admin Manager Role Center"
             //         }
             //     }
             // }
+
             group("Performance Appraisal Management")
             {
                 Caption = 'Performance Management';
@@ -1481,6 +1484,13 @@ page 51742 "HR & Admin Manager Role Center"
                     ToolTip = 'Executes the Appraisal List - Objectives Pending Approval action';
                     Caption = 'Appraisal List - Pending Approval';
                     // Visible = false;
+                }
+                action("Appraisal List - Under Review")
+                {
+                    ApplicationArea = All;
+                    RunObject = page "Appraisal List - UnderReview-F";
+                    ToolTip = 'Open appraisals that have been approved and are ready for quarterly assessment.';
+                    Caption = 'Appraisals Under Review';
                 }
                 action("Appraisal List - Further review")
                 {
@@ -1650,6 +1660,8 @@ page 51742 "HR & Admin Manager Role Center"
                     }
                 }
             }
+
+
             group("Internal Memo")
             {
                 action("New Interal Memos")

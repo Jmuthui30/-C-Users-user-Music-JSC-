@@ -313,7 +313,8 @@ page 52391 "Appraisal Card"
             part("Appraisal Outcomes"; "Appraisal Outcome Part")
             {
                 ApplicationArea = All;
-                SubPageLink = "Appraisal No." = field("Appraisal No");
+                SubPageLink = "Appraisal No." = field("Appraisal No"),
+                              "Review Period Code" = field("Current Review Period Code");
                 UpdatePropagation = Both;
             }
         }
@@ -462,12 +463,12 @@ page 52391 "Appraisal Card"
             }
             action(ViewApprovals)
             {
-                Caption = 'Approvals';
+                Caption = 'Approval Entries';
                 Image = Approvals;
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                ToolTip = 'Executes the Approvals action';
+                ToolTip = 'Shows all approval entries for this appraisal.';
 
                 trigger OnAction()
                 var
@@ -537,14 +538,13 @@ page 52391 "Appraisal Card"
                 Image = History;
                 Promoted = true;
                 PromotedCategory = Category4;
-                ToolTip = 'Shows all quarterly objective and scoring lines for this appraisal.';
+                ToolTip = 'Shows read-only snapshots for closed review periods on this appraisal.';
 
                 trigger OnAction()
                 var
-                    AppraisalLine: Record "Appraisal Lines";
+                    AppraisalProcessMgt: Codeunit "Appraisal Process Mgt.";
                 begin
-                    AppraisalLine.SetRange("Appraisal No", Rec."Appraisal No");
-                    Page.RunModal(Page::"Appraisal Review History", AppraisalLine);
+                    AppraisalProcessMgt.OpenReviewSnapshots(Rec);
                 end;
             }
             action("View Comment History")
@@ -561,6 +561,7 @@ page 52391 "Appraisal Card"
                     AppraisalComment: Record "Appraisal Comments";
                 begin
                     AppraisalComment.SetRange("Appraisal No.", Rec."Appraisal No");
+                    Commit();
                     Page.RunModal(Page::"Appraisal Comment History", AppraisalComment);
                 end;
             }
@@ -577,6 +578,7 @@ page 52391 "Appraisal Card"
                 var
                     AppraisalRelatedHRMgt: Codeunit "Appraisal Related HR Mgt.";
                 begin
+                    Commit();
                     AppraisalRelatedHRMgt.OpenRelatedGrievances(Rec);
                 end;
             }
@@ -593,6 +595,7 @@ page 52391 "Appraisal Card"
                 var
                     AppraisalRelatedHRMgt: Codeunit "Appraisal Related HR Mgt.";
                 begin
+                    Commit();
                     AppraisalRelatedHRMgt.OpenRelatedDisciplinaryCases(Rec);
                 end;
             }

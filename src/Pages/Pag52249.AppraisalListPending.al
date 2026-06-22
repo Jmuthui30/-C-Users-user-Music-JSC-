@@ -1,12 +1,13 @@
 page 52249 "Appraisal List - Pending"
 {
     ApplicationArea = All;
-    Caption = 'Appraisal List';
-    CardPageID = "Appraisal Card-Review";
+    Caption = 'Appraisals Pending Approval';
+    CardPageID = "Appraisal Card-New";
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = List;
     SourceTable = "Employee Appraisal";
+    SourceTableView = where(Status = const("Pending Approval"));
 
     layout
     {
@@ -34,6 +35,22 @@ page 52249 "Appraisal List - Pending"
                 {
                     ToolTip = 'Specifies the value of the Appraiser No field';
                 }
+                field("Appraisal Period"; Rec."Appraisal Period")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the appraisal period.';
+                }
+                field("Current Review Period Code"; Rec."Current Review Period Code")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Review Period';
+                    ToolTip = 'Specifies the current quarterly review period.';
+                }
+                field("Appraisal Status"; Rec."Appraisal Status")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the appraisal status.';
+                }
             }
         }
     }
@@ -42,7 +59,8 @@ page 52249 "Appraisal List - Pending"
     {
     }
 
-    //SourceTableView = WHERE (Status = CONST ("Pending Approval"));
+    // Legacy commented filter retained for reference.
+    // SourceTableView = WHERE (Status = CONST ("Pending Approval"));
     trigger OnOpenPage()
     begin
         if UserSetup.Get(UserId) then begin

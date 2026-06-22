@@ -20,6 +20,11 @@ page 52592 "Appraisal Outcome Part"
                 {
                     ApplicationArea = All;
                 }
+                field("Review Period Code"; Rec."Review Period Code")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Review Period';
+                }
                 field(Subject; Rec.Subject)
                 {
                     ApplicationArea = All;
@@ -36,6 +41,29 @@ page 52592 "Appraisal Outcome Part"
                 {
                     ApplicationArea = All;
                 }
+            }
+        }
+    }
+
+    actions
+    {
+        area(Processing)
+        {
+            action("Email Letter")
+            {
+                ApplicationArea = All;
+                Caption = 'Email Letter';
+                Image = SendEmailPDF;
+                ToolTip = 'Emails the selected appraisal outcome letter to the employee.';
+
+                trigger OnAction()
+                var
+                    OutcomeMgt: Codeunit "Appraisal Outcome Mgt.";
+                begin
+                    OutcomeMgt.EmailOutcomeLetter(Rec);
+                    CurrPage.Update(false);
+                    Message('The appraisal outcome letter has been emailed to %1.', Rec."Employee Name");
+                end;
             }
         }
     }

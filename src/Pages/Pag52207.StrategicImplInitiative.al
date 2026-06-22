@@ -4,6 +4,7 @@ page 52207 "Strategic Impl Initiative"
     Caption = 'Strategic Implementation Initiative';
     PageType = ListPart;
     SourceTable = "Strategic Imp Initiatives";
+    PopulateAllFields = true;
 
     layout
     {

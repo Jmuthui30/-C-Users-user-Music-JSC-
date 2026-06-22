@@ -4,6 +4,7 @@ page 52294 "Appraisal Performance Measures"
     Caption = 'Appraisal Performance Measures';
     PageType = ListPart;
     SourceTable = "Appraisal Perfomance Measures";
+    PopulateAllFields = true;
 
     layout
     {

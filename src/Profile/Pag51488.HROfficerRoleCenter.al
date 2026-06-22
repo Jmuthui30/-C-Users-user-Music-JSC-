@@ -711,6 +711,7 @@ page 51488 "HR Officer Role Center"
                     RunObject = Page "Loan Application List";
                 }
             }
+
             group("Leave Management")
             {
                 Caption = 'Leave Management';
@@ -848,6 +849,9 @@ page 51488 "HR Officer Role Center"
                     }
                 }
             }
+
+
+
             // group("Performance Management")
             // {
             //     Caption = 'Performance Management';
