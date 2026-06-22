@@ -41,7 +41,9 @@ page 59907 "HR Management Cues"
                     Caption = 'Applicant Submitted list';
                     DrillDownPageId = "Applicant Submit-All";
                     ToolTip = 'Specifies the value of the Applicant Submit-All field';
-                    Image = User;
+                    Image = none;
+                    Style = Favorable;
+                    StyleExpr = true;
                 }
 
             }

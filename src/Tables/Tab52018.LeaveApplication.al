@@ -49,7 +49,7 @@ table 52018 "Leave Application"
 
             end;
         }
-        
+
         field(3; "Leave Code"; Code[20])
         {
             TableRelation = "Leave Type".Code where(Status = const(Active));
@@ -167,7 +167,7 @@ table 52018 "Leave Application"
                             if not HRmgt.CheckNonWorkingDay(BaseCalenderCode, NextWorkingDate, Description) then
                                 NoOfWorkingDays := NoOfWorkingDays + 1;
 
-                            // Message(' NoOfWorkingDays is %1..NextWorkingDate%2', NoOfWorkingDays, NextWorkingDate);
+                            Message(' NoOfWorkingDays is %1..NextWorkingDate%2', NoOfWorkingDays, NextWorkingDate);
                             if LeaveTypes.Get("Leave Code") then begin
                                 if LeaveTypes."Inclusive of Holidays" then begin
                                     BaseCalendar.Reset();
@@ -215,7 +215,7 @@ table 52018 "Leave Application"
                 //check if the date that the person is supposed to report back is a working day or not
                 //get base calendar to use
                 NonWorkingDay := false;
-                if ("Start Date" <> 0D) and ("Resumption Date"<>0D) then
+                if ("Start Date" <> 0D) and ("Resumption Date" <> 0D) then
                     while NonWorkingDay = false
                       do begin
                         NonWorkingDay := HRmgt.CheckNonWorkingDay(BaseCalenderCode, "Resumption Date", Description);

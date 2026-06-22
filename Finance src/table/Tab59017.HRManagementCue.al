@@ -167,6 +167,7 @@ table 51917 "HR Management Cue"
             CalcFormula = count(Applicant where(Submitted = const(true)));
             Caption = 'Applicant Submit-All';
             Editable = false;
+
             FieldClass = FlowField;
         }
 

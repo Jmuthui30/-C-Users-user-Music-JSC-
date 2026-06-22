@@ -23,6 +23,10 @@ page 59991 "Director Role Center"
                 Caption = 'Finance Management';
                 Visible = false;
             }
+            part(ApprovalActivities; "Approvals Activities")
+            {
+                Caption = 'Approval Activities';
+            }
             Part(Control15; "HR Management Cues")
             {
                 ApplicationArea = All;
@@ -77,6 +81,22 @@ page 59991 "Director Role Center"
         area(embedding)
         {
 
+
+            group(employeeManagement)
+            {
+                Caption = 'Employee Management';
+                Image = Employee;
+                ToolTip = 'All staff records';
+                action(Action34)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Employee Master';
+                    Image = PersonInCharge;
+                    RunObject = Page "HR Employee List";
+                    ToolTip = 'View the employee details';
+                }
+
+            }
             group("Leave Management")
             {
                 Caption = 'Leave Management';
@@ -215,7 +235,14 @@ page 59991 "Director Role Center"
                 ToolTip = 'Recruitment Process';
 
 
-
+                action("Approved Company Establishments")
+                {
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'Establishments';
+                    RunPageView = where(Status = const(Released));
+                    RunObject = Page "Company Job List";
+                    ToolTip = 'Approved staff Establishment Verified by Director HR';
+                }
                 action("Vacant Positions1")
                 {
                     ApplicationArea = All;

@@ -22,9 +22,10 @@ table 51476 "Client Payroll Cue"
         }
         field(4; "Active Employees"; Integer)
         {
-            CalcFormula = Count("Client Employee Master" WHERE(Status = CONST(Active)));
-            Caption = 'Ongoing Sales Invoices';
+            CalcFormula = Count("Client Employee Master" where(Status = const(Active)));
             FieldClass = FlowField;
+            Editable = false;
+
         }
         field(5; "Ongoing Purchase Invoices"; Integer)
         {
@@ -66,8 +67,7 @@ table 51476 "Client Payroll Cue"
         }
         field(11; "Inactive Employees"; Integer)
         {
-            CalcFormula = Count("Client Employee Master" WHERE(Status = FILTER(Inactive)));
-            Caption = 'Ongoing Sales Quotes';
+            CalcFormula = Count("Client Employee Master" where(Status = filter(Inactive)));
             FieldClass = FlowField;
         }
         field(12; "Requests to Approve"; Integer)

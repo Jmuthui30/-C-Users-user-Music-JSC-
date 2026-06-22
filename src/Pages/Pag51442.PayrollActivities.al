@@ -11,46 +11,23 @@ page 51442 "Payroll Activities"
     {
         area(content)
         {
-            cuegroup(Welcome)
-            {
-                Caption = 'Welcome';
-                Visible = TileGettingStartedVisible;
 
-                actions
-                {
-                    action(GettingStartedTile)
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Return to Getting Started';
-                        Image = TileVideo;
-                        ToolTip = 'Learn how to get started with Dynamics 365 for Financials.';
-
-                        trigger OnAction()
-                        begin
-                            O365GettingStartedMgt.LaunchWizard(true, false);
-                        end;
-                    }
-                }
-            }
             cuegroup(Employees)
             {
                 Caption = 'Employees';
-                // Visible = ShowSalesActivities;
 
                 field("Active Employees"; Rec."Active Employees")
                 {
-                    ApplicationArea = Basic, Suite;
                     Caption = 'Active Employees';
-                    //DrillDownPageID = "HR Employee List";
                     DrillDownPageId = "Client Payroll List";
                     ToolTip = 'Employees Active on Payroll';
+                    ApplicationArea = All;
                 }
                 field("Inactive Employees"; Rec."Inactive Employees")
                 {
-                    ApplicationArea = Basic, Suite;
+                    ApplicationArea = All;
                     Caption = 'Inactive Employees';
                     DrillDownPageID = "Client Payroll List";
-                    LookupPageID = "Client Payroll List";
                     ToolTip = 'Employees Suspended from Payroll';
                 }
             }
