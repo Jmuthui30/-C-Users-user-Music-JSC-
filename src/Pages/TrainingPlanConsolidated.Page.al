@@ -5,7 +5,7 @@ page 52976 "Consolidated Training Plan"
     CardPageID = "Training Need";
     PageType = List;
     SourceTable = "Training Need";
-    SourceTableView = sorting("Start Date") where(Status = filter(Open | "Pending Plan Approval" | Application));
+    SourceTableView = sorting("Start Date") where(Status = filter(Open | "Pending Plan Approval" | "Approved Plan" | Application));
     UsageCategory = Lists;
 
     layout
@@ -101,13 +101,31 @@ page 52976 "Consolidated Training Plan"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 Visible = Rec.Status = Rec.Status::"Pending Plan Approval";
-                ToolTip = 'Approve this planned training need and make it available for staff application.';
+                ToolTip = 'Approve this planned training need before scheduling.';
+
+                trigger OnAction()
+                begin
+                    ValidatePlanForApproval();
+                    Rec.Status := Rec.Status::"Approved Plan";
+                    Rec.Modify(true);
+                end;
+            }
+            action("Open For Application")
+            {
+                ApplicationArea = All;
+                Caption = 'Open For Application';
+                Image = ResetStatus;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                Visible = Rec.Status = Rec.Status::"Approved Plan";
+                ToolTip = 'Open the approved and scheduled training plan for staff application.';
 
                 trigger OnAction()
                 var
                     HRNotifications: Codeunit "HR Notifications";
                 begin
-                    ValidatePlanForApproval();
+                    ValidateScheduleForApplication();
                     Rec.Status := Rec.Status::Application;
                     Rec.Modify(true);
 
@@ -122,7 +140,7 @@ page 52976 "Consolidated Training Plan"
                 Image = ReOpen;
                 Promoted = true;
                 PromotedCategory = Process;
-                Visible = Rec.Status = Rec.Status::"Pending Plan Approval";
+                Visible = (Rec.Status = Rec.Status::"Pending Plan Approval") or (Rec.Status = Rec.Status::"Approved Plan");
                 ToolTip = 'Return this plan item to open status for updates.';
 
                 trigger OnAction()
@@ -137,11 +155,16 @@ page 52976 "Consolidated Training Plan"
     local procedure ValidatePlanForApproval()
     begin
         Rec.TestField(Description);
-        Rec.TestField("Start Date");
-        Rec.TestField("End Date");
-        Rec.TestField(Provider);
         Rec.CalcFields("Cost Of Training");
         if Rec."Cost Of Training" = 0 then
             Error('Add at least one budget line before sending this training plan for approval.');
+    end;
+
+    local procedure ValidateScheduleForApplication()
+    begin
+        ValidatePlanForApproval();
+        Rec.TestField("Start Date");
+        Rec.TestField("End Date");
+        Rec.TestField(Provider);
     end;
 }

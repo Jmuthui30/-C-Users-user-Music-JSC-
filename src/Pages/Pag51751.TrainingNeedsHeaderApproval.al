@@ -178,10 +178,12 @@ page 51751 "Training Needs Header Approval"
                 PromotedIsBig = true;
 
                 trigger OnAction()
+                var
+                    TrainingNeedsHeader: Record "Training Needs Header";
                 begin
-                    Rec.Reset;
-                    Rec.SetRange("No.", Rec."No.");
-                    REPORT.Run(51608, true, false, Rec);
+                    CurrPage.SaveRecord();
+                    TrainingNeedsHeader.SetRange("No.", Rec."No.");
+                    Report.Run(Report::"Training Needs Form", true, false, TrainingNeedsHeader);
                 end;
             }
         }

@@ -2,12 +2,15 @@ report 51608 "Training Needs Form"
 {
     // version THL- HRM 1.0
     DefaultLayout = RDLC;
-    RDLCLayout = './Reports/SSRS/Training Needs Form.rdlc';
+    RDLCLayout = './Reports/SSRS/Training Needs Form test.rdlc';
 
     dataset
     {
         dataitem(Header; "Training Needs Header")
         {
+            //PrintOnlyIfDetail = false;
+            RequestFilterFields = "No.";
+
             column(Logo; CompInfo.Picture)
             {
             }
@@ -83,13 +86,8 @@ report 51608 "Training Needs Form"
             column(CommentsHR; Header.Comments2)
             {
             }
-            dataitem(IssueLines; "Employee Training Needs")
+            column(IssueDescription; '')
             {
-                DataItemLink = "Employee No."=FIELD("Employee No");
-
-                column(IssueDescription; IssueLines.Description)
-                {
-                }
             }
         }
     }
@@ -110,8 +108,10 @@ report 51608 "Training Needs Form"
         CompInfo.Get;
         CompInfo.CalcFields(Picture);
     end;
-    var CompInfo: Record "Company Information";
-    GradeLevel: Text;
-    Location: Text;
-    NoOfYearsInCompany: Text;
+
+    var
+        CompInfo: Record "Company Information";
+        GradeLevel: Text;
+        Location: Text;
+        NoOfYearsInCompany: Text;
 }

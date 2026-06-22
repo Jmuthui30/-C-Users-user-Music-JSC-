@@ -4,7 +4,7 @@ page 52169 "Training Needs Open"
     CardPageID = "Training Need";
     PageType = List;
     SourceTable = "Training Need";
-    SourceTableView = where(Status = filter(Open | "Pending Plan Approval"));
+    SourceTableView = where(Status = filter(Open | "Pending Plan Approval" | "Approved Plan"));
     Caption = 'Training Needs Open';
     layout
     {
