@@ -22,7 +22,7 @@ table 51476 "Client Payroll Cue"
         }
         field(4; "Active Employees"; Integer)
         {
-            CalcFormula = Count("Client Employee Master" where(Status = const(Active)));
+            CalcFormula = Count(Employee);
             FieldClass = FlowField;
             Editable = false;
 

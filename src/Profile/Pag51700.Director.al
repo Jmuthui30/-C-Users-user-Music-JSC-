@@ -54,8 +54,8 @@ page 59991 "Director Role Center"
             part("PR Payroll Activities Cue"; "Payroll Activities")
             {
                 Caption = 'Payroll Management';
-
-                ApplicationArea = Basic, Suite;
+                Visible = false;
+                ApplicationArea = All;
             }
             part(Headline; "Headline RC Payroll Manager")
             {
@@ -92,7 +92,7 @@ page 59991 "Director Role Center"
                     ApplicationArea = All;
                     Caption = 'Employee Master';
                     Image = PersonInCharge;
-                    RunObject = Page "HR Employee List";
+                    RunObject = Page "Employee List";
                     ToolTip = 'View the employee details';
                 }
 

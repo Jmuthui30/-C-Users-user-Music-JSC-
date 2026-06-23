@@ -19,9 +19,10 @@ page 51442 "Payroll Activities"
                 field("Active Employees"; Rec."Active Employees")
                 {
                     Caption = 'Active Employees';
-                    DrillDownPageId = "Client Payroll List";
+                    DrillDownPageId = "Employee List";
                     ToolTip = 'Employees Active on Payroll';
                     ApplicationArea = All;
+
                 }
                 field("Inactive Employees"; Rec."Inactive Employees")
                 {
