@@ -962,6 +962,7 @@ permissionset 50000 GeneratedPermission
         codeunit "Appraisal Outcome Mgt." = X,
         codeunit "Appraisal Process Mgt." = X,
         codeunit "Appraisal Reporting Mgt." = X,
+        codeunit "JSC Perf Framework Seeder" = X,
         codeunit "Login Management Ext" = X,
         codeunit "Medical Claims Management" = X,
         codeunit "Motorpool Management" = X,

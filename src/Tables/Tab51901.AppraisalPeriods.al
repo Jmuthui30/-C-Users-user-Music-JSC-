@@ -17,20 +17,19 @@ table 51901 "Appraisal Periods"
         field(3; "Start Date"; Date)
         {
             DataClassification = ToBeClassified;
-            
+
             trigger OnValidate()
             begin
-                if Date2DMY("Start Date", 3) <> Date2DMY(Today, 3) then
-                    Error(DateMustBeInCurrYearErr);
+                ValidateFinancialYearDates();
             end;
         }
         field(4; "End Date"; Date)
         {
             DataClassification = ToBeClassified;
-             trigger OnValidate()
+
+            trigger OnValidate()
             begin
-                if Date2DMY("End Date", 3) <> Date2DMY(Today, 3) then
-                    Error(DateMustBeInCurrYearErr);
+                ValidateFinancialYearDates();
             end;
         } field(5; "Appraisal Category"; Code[20])
         {
@@ -78,5 +77,23 @@ table 51901 "Appraisal Periods"
     }
 
     var
-        DateMustBeInCurrYearErr: Label 'Date must be in the current year';
+        InvalidFinancialYearDatesErr: Label 'Appraisal period dates must follow the JSC financial year cycle: start on 1 July and end on 30 June of the following year.';
+
+    local procedure ValidateFinancialYearDates()
+    begin
+        if ("Start Date" = 0D) or ("End Date" = 0D) then
+            exit;
+
+        if "End Date" <= "Start Date" then
+            Error(InvalidFinancialYearDatesErr);
+
+        if (Date2DMY("Start Date", 2) <> 7) or (Date2DMY("Start Date", 1) <> 1) then
+            Error(InvalidFinancialYearDatesErr);
+
+        if (Date2DMY("End Date", 2) <> 6) or (Date2DMY("End Date", 1) <> 30) then
+            Error(InvalidFinancialYearDatesErr);
+
+        if Date2DMY("End Date", 3) <> Date2DMY("Start Date", 3) + 1 then
+            Error(InvalidFinancialYearDatesErr);
+    end;
 }

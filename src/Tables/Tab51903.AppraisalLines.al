@@ -323,7 +323,7 @@ table 51903 "Appraisal Lines"
             Caption = 'Self Rating';
             DataClassification = CustomerContent;
             MinValue = 0;
-            MaxValue = 5;
+            MaxValue = 100;
             TableRelation = "Bal Score Card Rating".Score;
 
             trigger OnValidate()
@@ -336,7 +336,7 @@ table 51903 "Appraisal Lines"
             Caption = 'Appraiser Rating';
             DataClassification = CustomerContent;
             MinValue = 0;
-            MaxValue = 5;
+            MaxValue = 100;
             TableRelation = "Bal Score Card Rating".Score;
 
             trigger OnValidate()
@@ -384,6 +384,17 @@ table 51903 "Appraisal Lines"
     begin
         SetDefaultsFromHeader();
         UpdateQuarterScore();
+        UpdateHeaderFrameworkScores(0);
+    end;
+
+    trigger OnModify()
+    begin
+        UpdateHeaderFrameworkScores(0);
+    end;
+
+    trigger OnDelete()
+    begin
+        UpdateHeaderFrameworkScores("Line No");
     end;
 
     var
@@ -421,8 +432,22 @@ table 51903 "Appraisal Lines"
 
         "Score/Points" := "Appraiser Rating";
         "Weighted Rating" := Weighting;
-        "Quarter Score" := Round(Weighting * ("Appraiser Rating" / 5), 0.01);
+        "Quarter Score" := Round(Weighting * ("Appraiser Rating" / 100), 0.01);
         Rating := "Quarter Score";
+    end;
+
+    local procedure UpdateHeaderFrameworkScores(ExcludedLineNo: Integer)
+    begin
+        if "Appraisal No" = '' then
+            exit;
+
+        if EmployeeAppraisal.Get("Appraisal No") then begin
+            if ExcludedLineNo = 0 then
+                EmployeeAppraisal.RecalculateFrameworkScores()
+            else
+                EmployeeAppraisal.RecalculateFrameworkScoresExcluding(ExcludedLineNo);
+            EmployeeAppraisal.Modify(true);
+        end;
     end;
 
     local procedure ValidateActualAgainstTarget()

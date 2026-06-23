@@ -15,7 +15,7 @@ page 51514 "Bal Score Card Rating"
                 field(Score; Rec.Score)
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the numeric appraisal rating score, normally 1 to 5.';
+                    ToolTip = 'Specifies the numeric appraisal rating percentage threshold, for example 60, 70, 80, or 90.';
                 }
                 field(Name; Rec.Name)
                 {

@@ -1133,29 +1133,11 @@ End Function
         <Field Name="Pin">
           <DataField>Pin</DataField>
         </Field>
-        <Field Name="EmployeeNSSFTierI">
-          <DataField>EmployeeNSSFTierI</DataField>
+        <Field Name="Employer_Amount">
+          <DataField>Employer_Amount</DataField>
         </Field>
-        <Field Name="EmployeeNSSFTierIFormat">
-          <DataField>EmployeeNSSFTierIFormat</DataField>
-        </Field>
-        <Field Name="EmployeeNSSFTierII">
-          <DataField>EmployeeNSSFTierII</DataField>
-        </Field>
-        <Field Name="EmployeeNSSFTierIIFormat">
-          <DataField>EmployeeNSSFTierIIFormat</DataField>
-        </Field>
-        <Field Name="EmployerTotal">
-          <DataField>EmployerTotal</DataField>
-        </Field>
-        <Field Name="EmployerTotalFormat">
-          <DataField>EmployerTotalFormat</DataField>
-        </Field>
-        <Field Name="GrandTotal">
-          <DataField>GrandTotal</DataField>
-        </Field>
-        <Field Name="GrandTotalFormat">
-          <DataField>GrandTotalFormat</DataField>
+        <Field Name="Employer_AmountFormat">
+          <DataField>Employer_AmountFormat</DataField>
         </Field>
         <Field Name="SumTotal">
           <DataField>SumTotal</DataField>

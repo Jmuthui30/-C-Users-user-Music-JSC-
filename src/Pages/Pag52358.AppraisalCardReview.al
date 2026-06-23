@@ -188,13 +188,20 @@ page 52358 "Appraisal Card-Review"
                         {
                             Visible = FinalVisible;
                             ToolTip = 'Specifies the value of the Total FY Rating field';
-                            Caption = 'Total Rating';
+                            Caption = 'Raw Objective Score';
+                        }
+                        field("Results Percentage Score"; Rec."Results Percentage Score")
+                        {
+                            ApplicationArea = All;
+                            Visible = FinalVisible;
+                            ToolTip = 'Specifies the average results score across review periods before the 70 percent framework weighting is applied.';
+                            Caption = 'Results Score (%)';
                         }
                         field("Final Year Percentage Score"; Rec."Total Percentage FY Rating")
                         {
                             Visible = FinalVisible;
                             ToolTip = 'Specifies the value of the Total percentage score field';
-                            Caption = 'Total percentage score';
+                            Caption = 'Final Framework Score (%)';
                         }
                         field("Final Year Grade"; Rec."Grade final year rating")
                         {
@@ -328,7 +335,7 @@ page 52358 "Appraisal Card-Review"
             {
                 Visible = FinalVisible;
                 ToolTip = 'Specifies the value of the Total percentage score field';
-                Caption = 'Total percentage score';
+                Caption = 'Competency Score (%)';
             }
             field("Grade"; Rec."Grade-Attributes")
             {
