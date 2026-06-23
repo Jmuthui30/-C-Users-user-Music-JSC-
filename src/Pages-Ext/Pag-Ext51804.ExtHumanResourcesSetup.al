@@ -4,6 +4,12 @@ pageextension 51804 "ExtHuman Resources Setup" extends "Human Resources Setup"
     {
         addafter("Base Unit of Measure")
         {
+
+            // "Employee Change Nos"
+            field("Employee Change Nos"; Rec."Employee Change Nos")
+            {
+                ApplicationArea = All;
+            }
             field("Normal Retirement Age"; Rec."Normal Retirement Age")
             {
                 ApplicationArea = all;

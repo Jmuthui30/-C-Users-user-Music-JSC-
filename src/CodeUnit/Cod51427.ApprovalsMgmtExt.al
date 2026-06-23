@@ -550,8 +550,29 @@ codeunit 51427 "Approvals Mgmt. Ext"
     procedure OnCancelServiceWorkSheetApprovalRequest(var ServiceLine: Record "Service Line")
     begin
     end;
+    // EmployeeChangeRequest
+    local procedure "***********************Employee Change Request******************************************"()
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    procedure OnSendEmployeeChangeRequestForApproval(var EmployeeChangeRequest: Record "Employee Change Request")
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    procedure OnCancelEmployeeChangeRequestApprovalRequest(var EmployeeChangeRequest: Record "Employee Change Request")
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    procedure OnAfterReleaseEmployeeChangeRequest(var EmployeeChangeRequest: Record "Employee Change Request")
+    begin
+    end;
+
     //#endregion
     //#region SetStatusToPending
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnSetStatusToPendingApproval', '', true, true)]
     local procedure SetStatusToPendingApproval(RecRef: RecordRef; var Variant: Variant; var IsHandled: Boolean)
     var
@@ -591,6 +612,7 @@ codeunit 51427 "Approvals Mgmt. Ext"
         RecruitmentNeed: Record "Recruitment Needs";
         ImprestMemo: Record "Imprest Memo Header";
         ImprestPayrollClaim: Record "Imprest Payroll Claims Header";
+        EmployeeChangeRequest: Record "Employee Change Request";
     begin
         case RecRef.Number of //***********************THL - BASIC FINANCE MODULE CUSTOMIZATIONS***************************
                               //1. Payment Voucher
@@ -913,6 +935,14 @@ codeunit 51427 "Approvals Mgmt. Ext"
                     ServiceLine.Modify(true);
                     IsHandled := true;
                 end;
+            //EmployeeChangeRequest
+            DATABASE::"Employee Change Request":
+                begin
+                    RecRef.SetTable(EmployeeChangeRequest);
+                    EmployeeChangeRequest.Validate("Approval Status", EmployeeChangeRequest."Approval Status"::"Pending Approval");
+                    EmployeeChangeRequest.Modify(true);
+                    IsHandled := true;
+                end;
         //
         end;
     end;
@@ -961,6 +991,7 @@ codeunit 51427 "Approvals Mgmt. Ext"
         RecruitmentNeed: Record "Recruitment Needs";
         ImprestMemo: Record "Imprest Memo Header";
         ImprestPayrollClaim: Record "Imprest Payroll Claims Header";
+        EmployeeChangeRequest: Record "Employee Change Request";
     begin
         case RecRef.Number of //**********************THL - BASIC FINANCE MODULE CUSTOMIZATIONS**************************
                               //1. Payment Voucher
@@ -1230,7 +1261,12 @@ codeunit 51427 "Approvals Mgmt. Ext"
                     ApprovalEntryArgument.Amount := ServiceLine.Amount;
                     ApprovalEntryArgument."Amount (LCY)" := ServiceLine.Amount;
                 END;
-        // 
+            // EmployeeChangeRequest
+            DATABASE::"Employee Change Request":
+                BEGIN
+                    RecRef.SETTABLE(EmployeeChangeRequest);
+                    ApprovalEntryArgument."Document No." := EmployeeChangeRequest.Number;
+                END;
         //
         end;
     end;
@@ -1526,7 +1562,13 @@ codeunit 51427 "Approvals Mgmt. Ext"
                     ApprovalCommentLine.SetRange("Record ID to Approve", RecRef.RecordId);
                     ApprovalMgnt.FindApprovalEntryForCurrUser(ApprovalEntry, RecRef.RecordId);
                 end;
-        //
+            //EmployeeChangeRequest
+            DATABASE::"Employee Change Request":
+                begin
+                    ApprovalCommentLine.SetRange("Table ID", RecRef.Number);
+                    ApprovalCommentLine.SetRange("Record ID to Approve", RecRef.RecordId);
+                    ApprovalMgnt.FindApprovalEntryForCurrUser(ApprovalEntry, RecRef.RecordId);
+                end;
         //
         end;
         if IsNullGuid(WorkflowStepInstanceID) and (not IsNullGuid(ApprovalEntry."Workflow Step Instance ID")) then WorkflowStepInstanceID := ApprovalEntry."Workflow Step Instance ID";

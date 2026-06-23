@@ -890,6 +890,7 @@ page 59991 "Director Role Center"
                     ApplicationArea = All;
                     Caption = 'Imprest Payroll Claims';
                     RunObject = Page "Imprest Payroll Claims List";
+                    Visible = false;
                 }
                 action("Imprest Payroll Claims Open")
                 {
@@ -897,6 +898,7 @@ page 59991 "Director Role Center"
                     Caption = 'Open';
                     RunObject = Page "Imprest Payroll Claims List";
                     RunPageView = where(Status = const(Open));
+                    Visible = false;
                 }
                 action("Imprest Payroll Claims Pending")
                 {
@@ -904,6 +906,7 @@ page 59991 "Director Role Center"
                     Caption = 'Pending Approval';
                     RunObject = Page "Imprest Payroll Claims List";
                     RunPageView = where(Status = const("Pending Approval"));
+                    Visible = false;
                 }
                 action("Imprest Payroll Claims Approved")
                 {
@@ -911,6 +914,7 @@ page 59991 "Director Role Center"
                     Caption = 'Approved';
                     RunObject = Page "Imprest Payroll Claims List";
                     RunPageView = where(Status = const(Released));
+                    Visible = false;
                 }
                 group(Reports)
                 {

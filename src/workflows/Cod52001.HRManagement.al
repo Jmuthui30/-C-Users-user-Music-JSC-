@@ -2164,6 +2164,22 @@ codeunit 52001 "HR Management"
     end;
 
 
+
+    procedure EmployeeChangeReq(Emp: Record Employee): Code[20]
+    var
+        EmpChangeReq: Record "Employee Change Request";
+        HRSetup: Record "Human Resources Setup";
+        NoSeriesMgt: Codeunit "No. Series";
+        NextNumber: Code[20];
+    begin
+        HRSetup.Get();
+        NextNumber := NoSeriesMgt.GetNextNo(HRSetup."Employee Change Nos", 0D, true);
+        EmpChangeReq.Init();
+        EmpChangeReq.TransferFields(Emp);
+        EmpChangeReq.Number := NextNumber;
+        EmpChangeReq.Insert();
+        exit(NextNumber);
+    end;
 }
 
 

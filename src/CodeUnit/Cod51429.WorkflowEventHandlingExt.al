@@ -177,12 +177,19 @@ codeunit 51429 "Workflow Event Handling Ext"
         JobWorksheetReleasedEventDescTxt: Label 'A Job Worksheet record has been released.';
         //
         //Payroll Approval
-          PayrollApprovalSendForApprovalEventDescTxt: Label 'Approval for a Payroll Approval is requested';
+        PayrollApprovalSendForApprovalEventDescTxt: Label 'Approval for a Payroll Approval is requested';
         PayrollApprReqCancelledEventDescTxt: Label 'An approval request for a Payroll Approval has been canceled.';
         //"*********Service Worksheet**********": ;
         ServiceWorksheetSendForApprovalEventDescTxt: Label 'Approval for Service Worksheet Requested.';
         CancelServiceWorksheetApprovalRequestEventDescTxt: Label 'Approval request for Service Worksheet Cancelled.';
         ServiceWorksheetReleasedEventDescTxt: Label 'A Service Worksheet record has been released.';
+
+        //  EmployeeChangeRequest: Record "Employee Change Request";
+        sendForApprovalEventDescTxtEmployeeChangeRequest: Label 'Approval for Employee Change Request is requested.';
+        cancelApprovalRequestEventDescTxtEmployeeChangeRequest: Label 'An approval request for Employee Change Request has been canceled.';
+        releasedEventDescTxtEmployeeChangeRequest: Label 'An Employee Change Request record has been released.';
+
+
     //#region Events
     //"**************************THL - BASIC FINANCE MODULE CUSTOMIZATIONS******************"
     // "******************** Payment Voucher Approval**************************"
@@ -978,7 +985,7 @@ codeunit 51429 "Workflow Event Handling Ext"
         WorkflowManagement.HandleEvent(RunWorkflowOnAfterReleaseTrainingNeedsCode, TrainingNeeds);
     end;
     //*************************************Training Request***********************************
-    
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt. Ext", 'OnSendTrainingRequestforApproval', '', false, false)]
     local procedure RunworkflowOnSendTrainingRequestforApproval(var TrainingReq: Record "Training Request")
     begin
@@ -1293,7 +1300,7 @@ codeunit 51429 "Workflow Event Handling Ext"
         WorkflowManagement.HandleEvent(RunWorkflowOnAfterReleaseJobWorksheetCode, WorksheetRequisitionsLines);
     end;
     //
-     //Payroll Approval
+    //Payroll Approval
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt. Ext", 'OnSendPayrollApprovalRequest', '', false, false)]
     local procedure RunWorkflowOnSendPayrollApprovalForApproval(var PayApproval: Record "Payroll Approval")
     begin
@@ -1305,6 +1312,7 @@ codeunit 51429 "Workflow Event Handling Ext"
     begin
         WorkflowManagement.HandleEvent(RunWorkflowOnCancelPayrollApprovalRequestCode(), PayApproval);
     end;
+
     procedure RunWorkflowOnSendPayrollApprovalForApprovalCode(): Code[128]
     begin
         exit(UpperCase('RunWorkflowOnSendPayrollApprovalForApproval'));
@@ -1348,6 +1356,47 @@ codeunit 51429 "Workflow Event Handling Ext"
     begin
         WorkflowManagement.HandleEvent(RunWorkflowOnAfterReleaseServiceWorksheetCode, ServiceLine);
     end;
+    // EmployeeChangeRequest
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt. Ext", 'OnSendEmployeeChangeRequestForApproval', '', false, false)]
+    local procedure RunWorkflowOnSendEmployeeChangeRequestForApproval(var EmployeeChangeRequest: Record "Employee Change Request")
+    begin
+        WorkflowManagement.HandleEvent(RunWorkflowOnSendEmployeeChangeRequestForApprovalCode(), EmployeeChangeRequest);
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt. Ext", 'OnCancelEmployeeChangeRequestApprovalRequest', '', false, false)]
+    local procedure RunWorkflowOnCancelEmployeeChangeRequestApproval(var EmployeeChangeRequest: Record "Employee Change Request")
+    begin
+        WorkflowManagement.HandleEvent(RunWorkflowOnCancelEmployeeChangeRequestApprovalCode(), EmployeeChangeRequest);
+    end;
+
+    procedure RunWorkflowOnSendEmployeeChangeRequestForApprovalCode(): Code[128]
+    begin
+        exit(UpperCase('RunWorkflowOnSendEmployeeChangeRequestForApproval'));
+    end;
+
+    procedure RunWorkflowOnCancelEmployeeChangeRequestApprovalCode(): Code[128]
+    begin
+        exit(UpperCase('RunWorkflowOnCancelEmployeeChangeRequestApproval'));
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Release Employee Change Req", 'OnAfterEmployeeChangeRequestRelease', '', false, false)]
+    local procedure RunWorkflowOnAfterReleaseEmployeeChangeRequest(var EmployeeChangeRequest: Record "Employee Change Request")
+    begin
+        WorkflowManagement.HandleEvent(RunWorkflowOnAfterReleaseEmployeeChangeRequestCode(), EmployeeChangeRequest);
+    end;
+
+    procedure RunWorkflowOnAfterReleaseEmployeeChangeRequestCode(): Code[128]
+    begin
+        exit(UpperCase('RunWorkflowOnAfterReleaseEmployeeChangeRequest'));
+    end;
+
+    // "********************EmployeeChangeRequest Approval**************************"
+
+
+
+
+
+
     //#endregion 
     //#region AddEventToLibrary
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Workflow Event Handling", 'OnAddWorkflowEventsToLibrary', '', false, false)]
@@ -1512,8 +1561,8 @@ codeunit 51429 "Workflow Event Handling Ext"
         WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnCancelCompanyEstablishmentApprovalRequestCode, DATABASE::"Company Jobs", CancelCompanyEstablishmentApprovalRequestEventDescTxt, 0, false);
         WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnAfterReleaseCompanyEstablishmentCode, DATABASE::"Company Jobs", CompanyEstablishmentReleasedEventDescTxt, 0, false);
         //
-          WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnSendPayrollApprovalForApprovalCode(), Database::"Payroll Approval",
-        PayrollApprovalSendForApprovalEventDescTxt, 0, false);
+        WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnSendPayrollApprovalForApprovalCode(), Database::"Payroll Approval",
+      PayrollApprovalSendForApprovalEventDescTxt, 0, false);
         WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnCancelPayrollApprovalRequestCode(), Database::"Payroll Approval",
         PayrollApprReqCancelledEventDescTxt, 0, false);
         //************************THL - SERVICE MANAGEMENT MODULE CUSTOMIZATIONS***************************
@@ -1528,6 +1577,10 @@ codeunit 51429 "Workflow Event Handling Ext"
         WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnCancelServiceWorksheetApprovalRequestCode, DATABASE::"Service Line", CancelServiceWorksheetApprovalRequestEventDescTxt, 0, false);
         WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnAfterReleaseServiceWorksheetCode, DATABASE::"Service Line", ServiceWorksheetReleasedEventDescTxt, 0, false);
         //
+        // EmployeeChangeRequest
+        WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnSendEmployeeChangeRequestForApprovalCode(), DATABASE::"Employee Change Request", sendForApprovalEventDescTxtEmployeeChangeRequest, 0, false);
+        WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnCancelEmployeeChangeRequestApprovalCode(), DATABASE::"Employee Change Request", cancelApprovalRequestEventDescTxtEmployeeChangeRequest, 0, false);
+        workflowEventHandling.AddEventToLibrary(RunWorkflowOnAfterReleaseEmployeeChangeRequestCode(), DATABASE::"Employee Change Request", releasedEventDescTxtEmployeeChangeRequest, 0, false);
     end;
     //#endregion
     //#region AddEventPredecessor
@@ -1671,10 +1724,14 @@ codeunit 51429 "Workflow Event Handling Ext"
             RunWorkflowOnCancelServiceWorksheetApprovalRequestCode:
                 WorkflowEventHandling.AddEventPredecessor(RunWorkflowOnCancelServiceWorksheetApprovalRequestCode, RunWorkflowOnSendServiceWorksheetForApprovalCode);
             //
-              //Payroll Approval
+            //Payroll Approval
             RunworkflowOnCancelPayrollApprovalRequestCode():
                 WorkflowEventHandling.AddEventPredecessor(RunworkflowOnCancelPayrollApprovalRequestCode(), RunworkflowOnSendPayrollApprovalforApprovalCode());
             //
+            //EmployeeChangeRequest
+            RunWorkflowOnCancelEmployeeChangeRequestApprovalCode:
+                WorkflowEventHandling.AddEventPredecessor(RunWorkflowOnCancelEmployeeChangeRequestApprovalCode, RunWorkflowOnSendEmployeeChangeRequestForApprovalCode);
+            //End: EmployeeChangeRequest
             WorkflowEventHandling.RunWorkflowOnApproveApprovalRequestCode:
                 begin
                     //*****************THL - BASIC FINANCE MODULE CUSTOMIZATIONS********************
@@ -1769,9 +1826,9 @@ codeunit 51429 "Workflow Event Handling Ext"
                     WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnApproveApprovalRequestCode, RunWorkflowOnSendConsolidatedRecruitmentPlanForApprovalCode);
                     //15. Company Establishment
                     WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnApproveApprovalRequestCode, RunWorkflowOnSendCompanyEstablishmentForApprovalCode);
-                     //Payroll Approval
+                    //Payroll Approval
                     WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnApproveApprovalRequestCode(), RunworkflowOnSendPayrollApprovalforApprovalCode());
-           
+
                     //*****************THL - SERVICE MANAGEMENT MODULE CUSTOMIZATIONS********************
                     //
                     //1. Job Worksheet
@@ -1781,7 +1838,8 @@ codeunit 51429 "Workflow Event Handling Ext"
                     WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnApproveApprovalRequestCode, RunWorkflowOnSendServiceWorksheetForApprovalCode);
                     //  //Training Request
                     WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnApproveApprovalRequestCode(), RunworkflowOnSendTrainingRequestforApprovalCode());
-
+                    //EmployeeChangeRequest
+                    WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnApproveApprovalRequestCode, RunWorkflowOnSendEmployeeChangeRequestForApprovalCode);
                 end;
             WorkflowEventHandling.RunWorkflowOnRejectApprovalRequestCode:
                 begin
@@ -1812,9 +1870,9 @@ codeunit 51429 "Workflow Event Handling Ext"
                     //6. Staff Based Budget
                     WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnRejectApprovalRequestCode, RunWorkflowOnSendStaffBasedBudgetForApprovalCode);
                     //
-                     //Payroll Approval
+                    //Payroll Approval
                     WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnRejectApprovalRequestCode(), RunworkflowOnSendPayrollApprovalforApprovalCode());
-                  
+
                     //******************THL - PROCUREMENT MODULE CUSTOMIZATIONS*********************
                     //1. Requisition
                     WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnRejectApprovalRequestCode, RunWorkflowOnSendRequisitionForApprovalCode);
@@ -1891,6 +1949,8 @@ codeunit 51429 "Workflow Event Handling Ext"
                     //2. Service Worksheet
                     WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnRejectApprovalRequestCode, RunWorkflowOnSendServiceWorksheetForApprovalCode);
                     //
+                    //EmployeeChangeRequest
+                    WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnRejectApprovalRequestCode, RunWorkflowOnSendEmployeeChangeRequestForApprovalCode);
                 end;
         end;
     end;

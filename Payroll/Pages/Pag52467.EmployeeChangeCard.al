@@ -651,465 +651,13 @@ page 52467 "Employee Change Card"
     {
         area(navigation)
         {
-            group(Picture)
-            {
-                Caption = 'Picture';
-                Image = Picture;
 
-                action("Co&mments")
-                {
-                    ApplicationArea = BasicHR;
-                    Caption = 'Co&mments';
-                    Image = ViewComments;
-                    RunObject = page "Human Resource Comment Sheet";
-                    RunPageLink = "Table Name" = const(Employee),
-                                  "No." = field("No.");
-                    ToolTip = 'View or add comments for the record.';
-                    Visible = true;
-                }
-                action(Dimensions)
-                {
-                    ApplicationArea = BasicHR;
-                    Caption = 'Dimensions';
-                    Image = Dimensions;
-                    RunObject = page "Default Dimensions";
-                    RunPageLink = "Table ID" = const(5200),
-                                  "No." = field("No.");
-                    ShortCutKey = 'Shift+Ctrl+D';
-                    ToolTip = 'View or edit dimensions, such as area, project, or department, that you can assign to sales and purchase documents to distribute costs and analyze transaction history.';
-                    Visible = true;
-                }
-                action("&Picture")
-                {
-                    ApplicationArea = BasicHR;
-                    Caption = '&Picture';
-                    Image = Picture;
-                    RunObject = page "Employee Picture";
-                    RunPageLink = "No." = field("No.");
-                    ToolTip = 'View or add a picture of the employee or, for example, the company''s logo.';
-                    Visible = true;
-                }
-            }
-            group(Employee)
-            {
-                Caption = 'Employee';
-
-                action(AlternativeAddresses)
-                {
-                    ApplicationArea = BasicHR;
-                    Caption = '&Alternate Addresses';
-                    Image = Addresses;
-                    RunObject = page "Alternative Address List";
-                    RunPageLink = "Employee No." = field("No.");
-                    ToolTip = 'Open the list of addresses that are registered for the employee.';
-                }
-                action("Next of Kin")
-                {
-                    ApplicationArea = BasicHR;
-                    Caption = 'Next of Kin';
-                    Image = Relatives;
-                    RunObject = page "Employee Relatives";
-                    RunPageLink = "Employee No." = field("No.");
-                    RunPageMode = View;
-                    ToolTip = 'Open the list of relatives that are registered for the employee.';
-                }
-                action("Mi&sc. Article Information")
-                {
-                    ApplicationArea = BasicHR;
-                    Caption = 'Mi&sc. Article Information';
-                    Image = Filed;
-                    RunObject = page "Misc. Article Information";
-                    RunPageLink = "Employee No." = field("No.");
-                    ToolTip = 'Open the list of miscellaneous articles that are registered for the employee.';
-                }
-                action("&Confidential Information")
-                {
-                    ApplicationArea = BasicHR;
-                    Caption = '&Confidential Information';
-                    Image = Lock;
-                    RunObject = page "Confidential Information";
-                    RunPageLink = "Employee No." = field("No.");
-                    ToolTip = 'Open the list of any confidential information that is registered for the employee.';
-                }
-                action("Q&ualifications")
-                {
-                    ApplicationArea = BasicHR;
-                    Caption = 'Q&ualifications';
-                    Image = Certificate;
-                    RunObject = page "Employee Qualifications";
-                    RunPageLink = "Employee No." = field("No.");
-                    ToolTip = 'Open the list of qualifications that are registered for the employee.';
-                }
-                action("A&bsences")
-                {
-                    ApplicationArea = BasicHR;
-                    Caption = 'A&bsences';
-                    Image = Absence;
-                    RunObject = page "Employee Absences";
-                    RunPageLink = "Employee No." = field("No.");
-                    ToolTip = 'View absence information for the employee.';
-                }
-                action(Disciplinary)
-                {
-                    Image = DeleteAllBreakpoints;
-                    RunObject = page "Closed Disciplinary Cases";
-                    RunPageLink = "Employee No" = field("No.");
-                    ToolTip = 'Executes the Disciplinary action';
-                }
-                separator(Action23)
-                {
-                }
-                action("Absences by Ca&tegories")
-                {
-                    ApplicationArea = BasicHR;
-                    Caption = 'Absences by Ca&tegories';
-                    Image = AbsenceCategory;
-                    RunObject = page "Empl. Absences by Categories";
-                    RunPageLink = "No." = field("No."),
-                                  "Employee No. Filter" = field("No.");
-                    ToolTip = 'View categorized absence information for the employee.';
-                }
-                action("Misc. Articles &Overview")
-                {
-                    ApplicationArea = BasicHR;
-                    Caption = 'Misc. Articles &Overview';
-                    Image = FiledOverview;
-                    RunObject = page "Misc. Articles Overview";
-                    ToolTip = 'View miscellaneous articles that are registered for the employee.';
-                }
-                action("Co&nfidential Info. Overview")
-                {
-                    ApplicationArea = BasicHR;
-                    Caption = 'Co&nfidential Info. Overview';
-                    Image = ConfidentialOverview;
-                    RunObject = page "Confidential Info. Overview";
-                    ToolTip = 'View confidential information that is registered for the employee.';
-                }
-                separator(Action61)
-                {
-                }
-                action("Ledger E&ntries")
-                {
-                    ApplicationArea = BasicHR;
-                    Caption = 'Ledger E&ntries';
-                    Image = VendorLedger;
-                    Promoted = true;
-                    PromotedCategory = Process;
-                    RunObject = page "Employee Ledger Entries";
-                    RunPageLink = "Employee No." = field("No.");
-                    RunPageView = sorting("Employee No.")
-                                  order(descending);
-                    ShortCutKey = 'Ctrl+F7';
-                    ToolTip = 'View the history of transactions that have been posted for the selected record.';
-                }
-                action("Employment History")
-                {
-                    Image = History;
-                    Promoted = false;
-                    //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                    //PromotedCategory = Category4;
-                    //The property 'PromotedIsBig' can only be set if the property 'Promoted' is set to 'true'
-                    //PromotedIsBig = true;
-                    RunObject = page "Employment History";
-                    RunPageLink = "Employee No." = field("No.");
-                    ToolTip = 'Executes the Employment History action';
-                }
-                action("Employee Appointment Checklist")
-                {
-                    Caption = 'Appointment Checklist';
-                    Image = CheckList;
-                    Promoted = false;
-                    //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                    //PromotedCategory = Category4;
-                    //The property 'PromotedIsBig' can only be set if the property 'Promoted' is set to 'true'
-                    //PromotedIsBig = true;
-                    RunObject = page "Appointment Checklist ListPart";
-                    ToolTip = 'Executes the Appointment Checklist action';
-                }
-                action("Leave Aplications")
-                {
-                    Image = JobResponsibility;
-                    Promoted = false;
-                    //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                    //PromotedCategory = Category4;
-                    //The property 'PromotedIsBig' can only be set if the property 'Promoted' is set to 'true'
-                    //PromotedIsBig = true;
-                    //The property 'PromotedOnly' can only be set if the property 'Promoted' is set to 'true'
-                    //PromotedOnly = true;
-                    RunObject = page "Leave Application List";
-                    RunPageLink = "Employee No" = field("No.");
-                    ToolTip = 'Executes the Leave Aplications action';
-                }
-                action("Professional Membership")
-                {
-                    Image = Agreement;
-                    //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                    //PromotedCategory = Category4;
-                    RunObject = page "Professional Membership";
-                    RunPageLink = "Employee No." = field("No.");
-                    ToolTip = 'Executes the Professional Membership action';
-                }
-                action(Union)
-                {
-                    Image = Union;
-                    ToolTip = 'Executes the Union action';
-                }
-                action("Acting Positions")
-                {
-                    Image = EditCustomer;
-                    RunObject = page "Acting Duties List";
-                    RunPageLink = "Acting Employee No." = field("No.");
-                    ToolTip = 'Executes the Acting Positions action';
-                }
-                action(Beneficiaries)
-                {
-                    Image = Employee;
-                    RunObject = page "Employee Beneficiaries";
-                    RunPageLink = "Employee No." = field("No.");
-                    ToolTip = 'Executes the Beneficiaries action';
-                }
-            }
-            group("Performance Management")
-            {
-                Caption = 'Performance Management';
-                Visible = false;
-
-                group(Action72)
-                {
-                    Caption = 'Performance Management';
-                    Image = Travel;
-
-                    action(Appraisal)
-                    {
-                        ToolTip = 'Executes the Appraisal action';
-
-                        trigger OnAction()
-                        begin
-                            Message('Coming Soon');
-                        end;
-                    }
-                }
-            }
-        }
-        area(creation)
-        {
-            group(Earnings)
-            {
-                Visible = false;
-            }
-            action("Assign Earnings")
-            {
-                Caption = 'Assign Earnings';
-                RunObject = page "Payments & Deductions";
-                RunPageLink = "Employee No" = field("No."),
-                              Type = const(Earning),
-                              Closed = const(false);
-                ToolTip = 'Executes the Assign Earnings action';
-            }
-            action("Dispay Reccuring Earnings")
-            {
-                RunObject = page "Payments & Deductions";
-                RunPageLink = "Employee No" = field("No."),
-                              Type = const(Earning),
-                              Frequency = const(Recurring),
-                              Closed = const(false);
-                ToolTip = 'Executes the Dispay Reccuring Earnings action';
-            }
-            action("Display Non-reccuring Earnings")
-            {
-                RunObject = page "Payments & Deductions";
-                RunPageLink = "Employee No" = field("No."),
-                              Type = const(Earning),
-                              Frequency = const("Non-recurring"),
-                              Closed = const(false);
-                ToolTip = 'Executes the Display Non-reccuring Earnings action';
-            }
-            group(Deductions)
-            {
-                Visible = false;
-            }
-            action("Assign Deductions")
-            {
-                Caption = 'Assign Deductions';
-                RunObject = page "Payments & Deductions";
-                RunPageLink = "Employee No" = field("No."),
-                              Type = const(Deduction),
-                              Closed = const(false);
-                ToolTip = 'Executes the Assign Deductions action';
-            }
-            action("Deductions List")
-            {
-                RunObject = page "Deductions";
-                ToolTip = 'Executes the Deductions List action';
-            }
-            action("Display Reccuring Deductions")
-            {
-                Caption = 'Display Reccuring Deductions';
-                RunObject = page "Payments & Deductions";
-                RunPageLink = "Employee No" = field("No."),
-                              Type = const(Deduction),
-                              Frequency = const(Recurring),
-                              Closed = const(false);
-                ToolTip = 'Executes the Display Reccuring Deductions action';
-            }
-            action("Display Non-reccuring Deductions")
-            {
-                Caption = 'Display Non-reccuring Deductions';
-                RunObject = page "Payments & Deductions";
-                RunPageLink = "Employee No" = field("No."),
-                              Type = const(Deduction),
-                              Frequency = const("Non-recurring"),
-                              Closed = const(false);
-                ToolTip = 'Executes the Display Non-reccuring Deductions action';
-            }
-            group(Loans)
-            {
-            }
-            action("Deduction Loan")
-            {
-                RunObject = page "Payments & Deductions";
-                RunPageLink = "Employee No" = field("No."),
-                              Type = const(Loan),
-                              Closed = const(false);
-                ToolTip = 'Executes the Deduction Loan action';
-            }
-            action("Employee Loan(s) List")
-            {
-                Caption = 'Employee Loan(s) List';
-                ToolTip = 'Executes the Employee Loan(s) List action';
-            }
-            action("Savings Withdrawals")
-            {
-                RunObject = page "Payments & Deductions";
-                RunPageLink = "Employee No" = field("No."),
-                              Closed = const(false),
-                              Type = const("Saving Scheme");
-                ToolTip = 'Executes the Savings Withdrawals action';
-            }
-            group("Pay Manager")
-            {
-            }
-            action("Pay Information")
-            {
-                ToolTip = 'Executes the Pay Information action';
-            }
-            separator(Action147)
-            {
-            }
-            action("Account Mapping")
-            {
-                ToolTip = 'Executes the Account Mapping action';
-            }
-        }
-        area(processing)
-        {
-            action("Assign Default Ded/Earnings")
-            {
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
-                ToolTip = 'Executes the Assign Default Ded/Earnings action';
-
-                trigger OnAction()
-                begin
-                    //DefaultAssignment();
-                end;
-            }
-            action(Payslip)
-            {
-                Image = "Report";
-                Promoted = true;
-                PromotedCategory = "Report";
-                PromotedIsBig = true;
-                ToolTip = 'Executes the Payslip action';
-
-                trigger OnAction()
-                begin
-                    PayPeriod.Reset();
-                    PayPeriod.SetRange(Closed, false);
-                    if PayPeriod.Find('-') then
-                        CurrentMonth := PayPeriod."Starting Date";
-                    Employee.SetRange("No.", Rec."No.");
-                    Employee.SetRange("Pay Period Filter", CurrentMonth);
-                    Report.Run(Report::"New Payslipx", true, false, Employee);
-                end;
-            }
-            action("Payroll Run")
-            {
-                Image = Calculate;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
-                ToolTip = 'Executes the Payroll Run action';
-
-                trigger OnAction()
-                begin
-                    PayPeriod.Reset();
-                    PayPeriod.SetRange(Closed, false);
-                    if PayPeriod.Find('-') then
-                        CurrentMonth := PayPeriod."Starting Date";
-                    Employee.SetRange("No.", Employee."No.");
-                    Employee.SetRange("Pay Period Filter", CurrentMonth);
-                    Report.Run(Report::"Payroll Run-veryold", true, false, Employee);
-                end;
-            }
-            action("Yearly Bonus")
-            {
-                Image = Holiday;
-                ToolTip = 'Executes the Yearly Bonus action';
-
-                trigger OnAction()
-                begin
-
-                    Payroll.GetYearlyBonus(Rec."No.");
-                end;
-            }
-            action("Mail Payslip")
-            {
-                Image = SendMail;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
-                ToolTip = 'Executes the Mail Payslip action';
-
-                trigger OnAction()
-                var
-                    MailBulkPayslips: Report "Mail Bulk Payslips";
-                begin
-                    if Confirm(Text0001, false) = true then begin
-                        //Mail single
-                        Employee.Reset();
-                        Employee.SetRange("No.", Rec."No.");
-                        if Employee.FindFirst() then begin
-                            MailBulkPayslips.SetTableView(Employee);
-                            MailBulkPayslips.Run();
-                        end;
-                    end else
-                        exit;
-                end;
-            }
-            action("Import Data")
-            {
-                Image = Import;
-                Promoted = true;
-                PromotedCategory = Category7;
-                PromotedIsBig = true;
-                Visible = false;
-                ToolTip = 'Executes the Import Data action';
-
-                trigger OnAction()
-                begin
-
-                    Clear(EmployeeXML);
-                    EmployeeXML.Run();
-                end;
-            }
-            action(SendApproval)
+            action(SendApproval1)
             {
                 Caption = 'Effect Changes';
                 Image = SendApprovalRequest;
                 Promoted = true;
-                PromotedCategory = Category4;
+                PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
                 ToolTip = 'Executes the Send Approval Request action';
@@ -1126,7 +674,567 @@ page 52467 "Employee Change Card"
                     CurrPage.Close();
                 end;
             }
+            action("Next of Kin")
+            {
+                ApplicationArea = BasicHR;
+                Caption = 'Next of Kin';
+                Image = Relatives;
+                RunObject = page "Employee Relatives";
+                RunPageLink = "Employee No." = field("No.");
+                RunPageMode = View;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+                ToolTip = 'Open the list of relatives that are registered for the employee.';
+            }
+            action("Absences by Ca&tegories")
+            {
+                ApplicationArea = BasicHR;
+                Caption = 'Absences by Ca&tegories';
+                Image = AbsenceCategory;
+                RunObject = page "Empl. Absences by Categories";
+                RunPageLink = "No." = field("No."),
+                                  "Employee No. Filter" = field("No.");
+                ToolTip = 'View categorized absence information for the employee.';
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+            }
+            action("Yearly Bonus")
+            {
+                Image = Holiday;
+                ToolTip = 'Executes the Yearly Bonus action';
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+                trigger OnAction()
+                begin
+
+                    Payroll.GetYearlyBonus(Rec."No.");
+                end;
+            }
+            action("Acting Positions")
+            {
+                Image = EditCustomer;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+                RunObject = page "Acting Duties List";
+                RunPageLink = "Acting Employee No." = field("No.");
+
+                ToolTip = 'Executes the Acting Positions action';
+            }
+            action(Beneficiaries)
+            {
+                Image = Employee;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+                RunObject = page "Employee Beneficiaries";
+                RunPageLink = "Employee No." = field("No.");
+                ToolTip = 'Executes the Beneficiaries action';
+            }
+
+
+            action("Send For Approval")
+            {
+                Caption = 'Send Approval Request';
+                Enabled = Rec."Approval Status" = Rec."Approval Status"::Open;
+                Image = SendApprovalRequest;
+                Promoted = true;
+                PromotedCategory = Category4;
+                PromotedIsBig = true;
+                ToolTip = 'Executes the Send Approval Request action';
+
+                trigger OnAction()
+                var
+                    LeaveType: Record "Leave Type";
+                begin
+
+                    // if ApprovalsMgmt.CheckLeaveRequestWorkflowEnabled(Rec) then
+                    //     ApprovalsMgmt.OnSendLeaveRequestApproval(Rec);
+                    // Commit();
+                    // if ApprovalManagement.CheckEmployeeAppraisalWorkflowEnabled()
+                    Rec."Approval Status" := Rec."Approval Status"::Approved;
+                    Rec.Modify();
+                    CurrPage.Close();
+
+                end;
+            }
+            action("Cancel Approval Request")
+            {
+                Caption = 'Cancel Approval Request';
+                Enabled = Rec."Approval Status" = Rec."Approval Status"::"Pending Approval";
+                Image = CancelApprovalRequest;
+                Promoted = true;
+                PromotedCategory = Category4;
+                PromotedIsBig = true;
+                ToolTip = 'Executes the Cancel Approval Request action';
+
+                trigger OnAction()
+                begin
+                    // ApprovalManagement.OnCancelLeaveRequestApproval(Rec);
+
+                end;
+            }
+
+            // group(Picture)
+            // {
+            //     Caption = 'Picture';
+            //     Image = Picture;
+            //     visible = false;
+            //     action("Co&mments")
+            //     {
+            //         ApplicationArea = BasicHR;
+            //         Caption = 'Co&mments';
+            //         Image = ViewComments;
+            //         RunObject = page "Human Resource Comment Sheet";
+            //         RunPageLink = "Table Name" = const(Employee),
+            //                       "No." = field("No.");
+            //         ToolTip = 'View or add comments for the record.';
+            //         Visible = true;
+            //     }
+            //     action(Dimensions)
+            //     {
+            //         ApplicationArea = BasicHR;
+            //         Caption = 'Dimensions';
+            //         Image = Dimensions;
+            //         RunObject = page "Default Dimensions";
+            //         RunPageLink = "Table ID" = const(5200),
+            //                       "No." = field("No.");
+            //         ShortCutKey = 'Shift+Ctrl+D';
+            //         ToolTip = 'View or edit dimensions, such as area, project, or department, that you can assign to sales and purchase documents to distribute costs and analyze transaction history.';
+            //         Visible = true;
+            //     }
+            //     action("&Picture")
+            //     {
+            //         ApplicationArea = BasicHR;
+            //         Caption = '&Picture';
+            //         Image = Picture;
+            //         RunObject = page "Employee Picture";
+            //         RunPageLink = "No." = field("No.");
+            //         ToolTip = 'View or add a picture of the employee or, for example, the company''s logo.';
+            //         Visible = true;
+            //     }
+            // }
+
+            // group(Employee)
+            // {
+            //     Caption = 'Employee';
+
+            //     action(AlternativeAddresses)
+            //     {
+            //         ApplicationArea = BasicHR;
+            //         Caption = '&Alternate Addresses';
+            //         Image = Addresses;
+            //         RunObject = page "Alternative Address List";
+            //         RunPageLink = "Employee No." = field("No.");
+            //         ToolTip = 'Open the list of addresses that are registered for the employee.';
+            //         visible = false;
+            //     }
+
+            //     action("Mi&sc. Article Information")
+            //     {
+            //         ApplicationArea = BasicHR;
+            //         Caption = 'Mi&sc. Article Information';
+            //         Image = Filed;
+            //         RunObject = page "Misc. Article Information";
+            //         RunPageLink = "Employee No." = field("No.");
+            //         ToolTip = 'Open the list of miscellaneous articles that are registered for the employee.';
+            //         Visible = false;
+            //     }
+            //     action("&Confidential Information")
+            //     {
+            //         ApplicationArea = BasicHR;
+            //         Caption = '&Confidential Information';
+            //         Image = Lock;
+            //         RunObject = page "Confidential Information";
+            //         RunPageLink = "Employee No." = field("No.");
+            //         ToolTip = 'Open the list of any confidential information that is registered for the employee.';
+            //         visible = false;
+            //     }
+            //     action("Q&ualifications")
+            //     {
+            //         ApplicationArea = BasicHR;
+            //         Caption = 'Q&ualifications';
+            //         Image = Certificate;
+            //         RunObject = page "Employee Qualifications";
+            //         RunPageLink = "Employee No." = field("No.");
+            //         ToolTip = 'Open the list of qualifications that are registered for the employee.';
+            //         visible = false;
+            //     }
+            //     action("A&bsences")
+            //     {
+            //         ApplicationArea = BasicHR;
+            //         Caption = 'A&bsences';
+            //         Image = Absence;
+            //         RunObject = page "Employee Absences";
+            //         RunPageLink = "Employee No." = field("No.");
+            //         ToolTip = 'View absence information for the employee.';
+            //         visible = false;
+            //     }
+            //     action(Disciplinary)
+            //     {
+            //         Image = DeleteAllBreakpoints;
+            //         RunObject = page "Closed Disciplinary Cases";
+            //         RunPageLink = "Employee No" = field("No.");
+            //         ToolTip = 'Executes the Disciplinary action';
+            //         visible = false;
+            //     }
+            //     separator(Action23)
+            //     {
+            //     }
+
+            //     action("Misc. Articles &Overview")
+            //     {
+            //         ApplicationArea = BasicHR;
+            //         Caption = 'Misc. Articles &Overview';
+            //         Image = FiledOverview;
+            //         RunObject = page "Misc. Articles Overview";
+            //         ToolTip = 'View miscellaneous articles that are registered for the employee.';
+            //     }
+            //     action("Co&nfidential Info. Overview")
+            //     {
+            //         ApplicationArea = BasicHR;
+            //         Caption = 'Co&nfidential Info. Overview';
+            //         Image = ConfidentialOverview;
+            //         RunObject = page "Confidential Info. Overview";
+            //         ToolTip = 'View confidential information that is registered for the employee.';
+            //     }
+            //     separator(Action61)
+            //     {
+            //     }
+            //     action("Ledger E&ntries")
+            //     {
+            //         ApplicationArea = BasicHR;
+            //         Caption = 'Ledger E&ntries';
+            //         Image = VendorLedger;
+            //         Promoted = true;
+            //         PromotedCategory = Process;
+            //         RunObject = page "Employee Ledger Entries";
+            //         RunPageLink = "Employee No." = field("No.");
+            //         RunPageView = sorting("Employee No.")
+            //                       order(descending);
+            //         ShortCutKey = 'Ctrl+F7';
+            //         ToolTip = 'View the history of transactions that have been posted for the selected record.';
+            //         visible = false;
+            //     }
+
+
+            //     action("Employment History")
+            //     {
+            //         Image = History;
+            //         Promoted = false;
+            //         //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
+            //         //PromotedCategory = Category4;
+            //         //The property 'PromotedIsBig' can only be set if the property 'Promoted' is set to 'true'
+            //         //PromotedIsBig = true;
+            //         RunObject = page "Employment History";
+            //         RunPageLink = "Employee No." = field("No.");
+            //         ToolTip = 'Executes the Employment History action';
+            //     }
+            //     action("Employee Appointment Checklist")
+            //     {
+            //         Caption = 'Appointment Checklist';
+            //         Image = CheckList;
+            //         Promoted = false;
+            //         //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
+            //         //PromotedCategory = Category4;
+            //         //The property 'PromotedIsBig' can only be set if the property 'Promoted' is set to 'true'
+            //         //PromotedIsBig = true;
+            //         RunObject = page "Appointment Checklist ListPart";
+            //         ToolTip = 'Executes the Appointment Checklist action';
+            //     }
+            //     action("Leave Aplications")
+            //     {
+            //         Image = JobResponsibility;
+            //         Promoted = false;
+            //         //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
+            //         //PromotedCategory = Category4;
+            //         //The property 'PromotedIsBig' can only be set if the property 'Promoted' is set to 'true'
+            //         //PromotedIsBig = true;
+            //         //The property 'PromotedOnly' can only be set if the property 'Promoted' is set to 'true'
+            //         //PromotedOnly = true;
+            //         RunObject = page "Leave Application List";
+            //         RunPageLink = "Employee No" = field("No.");
+            //         ToolTip = 'Executes the Leave Aplications action';
+            //         visible = false;
+            //     }
+            //     action("Professional Membership")
+            //     {
+            //         Image = Agreement;
+            //         //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
+            //         //PromotedCategory = Category4;
+            //         RunObject = page "Professional Membership";
+            //         RunPageLink = "Employee No." = field("No.");
+            //         ToolTip = 'Executes the Professional Membership action';
+            //         visible = false;
+            //     }
+            //     action(Union)
+            //     {
+            //         Image = Union;
+            //         ToolTip = 'Executes the Union action';
+            //         visible = false;
+            //     }
+
+            // }
+
+
+            // group("Performance Management")
+            // {
+            //     Caption = 'Performance Management';
+            //     Visible = false;
+
+            //     group(Action72)
+            //     {
+            //         Caption = 'Performance Management';
+            //         Image = Travel;
+
+            //         action(Appraisal)
+            //         {
+            //             ToolTip = 'Executes the Appraisal action';
+
+            //             trigger OnAction()
+            //             begin
+            //                 Message('Coming Soon');
+            //             end;
+            //         }
+            //     }
+            // }
+
+
+
         }
+
+
+        // area(creation)
+        // {
+        //     group(Earnings)
+        //     {
+        //         Visible = false;
+        //     }
+        //     action("Assign Earnings")
+        //     {
+        //         Caption = 'Assign Earnings';
+        //         RunObject = page "Payments & Deductions";
+        //         RunPageLink = "Employee No" = field("No."),
+        //                       Type = const(Earning),
+        //                       Closed = const(false);
+        //         ToolTip = 'Executes the Assign Earnings action';
+        //         visible = false;
+        //     }
+        //     action("Dispay Reccuring Earnings")
+        //     {
+        //         RunObject = page "Payments & Deductions";
+        //         RunPageLink = "Employee No" = field("No."),
+        //                       Type = const(Earning),
+        //                       Frequency = const(Recurring),
+        //                       Closed = const(false);
+        //         ToolTip = 'Executes the Dispay Reccuring Earnings action';
+        //         visible = false;
+        //     }
+        //     action("Display Non-reccuring Earnings")
+        //     {
+        //         RunObject = page "Payments & Deductions";
+        //         RunPageLink = "Employee No" = field("No."),
+        //                       Type = const(Earning),
+        //                       Frequency = const("Non-recurring"),
+        //                       Closed = const(false);
+        //         ToolTip = 'Executes the Display Non-reccuring Earnings action';
+        //         visible = false;
+        //     }
+        //     group(Deductions)
+        //     {
+        //         Visible = false;
+        //     }
+        //     action("Assign Deductions")
+        //     {
+        //         Caption = 'Assign Deductions';
+        //         RunObject = page "Payments & Deductions";
+        //         RunPageLink = "Employee No" = field("No."),
+        //                       Type = const(Deduction),
+        //                       Closed = const(false);
+        //         ToolTip = 'Executes the Assign Deductions action';
+        //         visible = false;
+        //     }
+        //     action("Deductions List")
+        //     {
+        //         RunObject = page "Deductions";
+        //         ToolTip = 'Executes the Deductions List action';
+        //         visible = false;
+        //     }
+        //     action("Display Reccuring Deductions")
+        //     {
+        //         Caption = 'Display Reccuring Deductions';
+        //         RunObject = page "Payments & Deductions";
+        //         RunPageLink = "Employee No" = field("No."),
+        //                       Type = const(Deduction),
+        //                       Frequency = const(Recurring),
+        //                       Closed = const(false);
+        //         ToolTip = 'Executes the Display Reccuring Deductions action';
+        //         visible = false;
+        //     }
+        //     action("Display Non-reccuring Deductions")
+        //     {
+        //         Caption = 'Display Non-reccuring Deductions';
+        //         RunObject = page "Payments & Deductions";
+        //         RunPageLink = "Employee No" = field("No."),
+        //                       Type = const(Deduction),
+        //                       Frequency = const("Non-recurring"),
+        //                       Closed = const(false);
+        //         ToolTip = 'Executes the Display Non-reccuring Deductions action';
+        //         visible = false;
+        //     }
+        //     group(Loans)
+        //     {
+        //     }
+        //     action("Deduction Loan")
+        //     {
+        //         RunObject = page "Payments & Deductions";
+        //         RunPageLink = "Employee No" = field("No."),
+        //                       Type = const(Loan),
+        //                       Closed = const(false);
+        //         ToolTip = 'Executes the Deduction Loan action';
+        //         visible = false;
+        //     }
+        //     action("Employee Loan(s) List")
+        //     {
+        //         Caption = 'Employee Loan(s) List';
+        //         ToolTip = 'Executes the Employee Loan(s) List action';
+        //         visible = false;
+        //     }
+        //     action("Savings Withdrawals")
+        //     {
+        //         RunObject = page "Payments & Deductions";
+        //         RunPageLink = "Employee No" = field("No."),
+        //                       Closed = const(false),
+        //                       Type = const("Saving Scheme");
+        //         ToolTip = 'Executes the Savings Withdrawals action';
+        //         visible = false;
+        //     }
+        //     group("Pay Manager")
+        //     {
+        //     }
+        //     action("Pay Information")
+        //     {
+        //         ToolTip = 'Executes the Pay Information action';
+        //     }
+        //     separator(Action147)
+        //     {
+        //     }
+        //     action("Account Mapping")
+        //     {
+        //         ToolTip = 'Executes the Account Mapping action';
+        //         visible = false;
+        //     }
+
+
+        // }
+        // area(processing)
+        // {
+        //     //   visible = false;
+        //     // action("Assign Default Ded/Earnings")
+        //     // {
+        //     //     Promoted = true;
+        //     //     PromotedCategory = Process;
+        //     //     PromotedIsBig = true;
+        //     //     ToolTip = 'Executes the Assign Default Ded/Earnings action';
+        //     //     visible = false;
+        //     //     trigger OnAction()
+        //     //     begin
+        //     //         //DefaultAssignment();
+        //     //     end;
+        //     // }
+        //     // action(Payslip)
+        //     // {
+        //     //     Image = "Report";
+        //     //     Promoted = true;
+        //     //     PromotedCategory = "Report";
+        //     //     PromotedIsBig = true;
+        //     //     ToolTip = 'Executes the Payslip action';
+        //     //     visible = false;
+        //     //     trigger OnAction()
+        //     //     begin
+        //     //         PayPeriod.Reset();
+        //     //         PayPeriod.SetRange(Closed, false);
+        //     //         if PayPeriod.Find('-') then
+        //     //             CurrentMonth := PayPeriod."Starting Date";
+        //     //         Employee.SetRange("No.", Rec."No.");
+        //     //         Employee.SetRange("Pay Period Filter", CurrentMonth);
+        //     //         Report.Run(Report::"New Payslipx", true, false, Employee);
+        //     //     end;
+        //     // }
+        //     // action("Payroll Run")
+        //     // {
+        //     //     Image = Calculate;
+        //     //     Promoted = true;
+        //     //     PromotedCategory = Process;
+        //     //     PromotedIsBig = true;
+        //     //     ToolTip = 'Executes the Payroll Run action';
+        //     //     visible = false;
+        //     //     trigger OnAction()
+        //     //     begin
+        //     //         PayPeriod.Reset();
+        //     //         PayPeriod.SetRange(Closed, false);
+        //     //         if PayPeriod.Find('-') then
+        //     //             CurrentMonth := PayPeriod."Starting Date";
+        //     //         Employee.SetRange("No.", Employee."No.");
+        //     //         Employee.SetRange("Pay Period Filter", CurrentMonth);
+        //     //         Report.Run(Report::"Payroll Run-veryold", true, false, Employee);
+        //     //     end;
+        //     // }
+
+        //     // action("Mail Payslip")
+        //     // {
+        //     //     Image = SendMail;
+        //     //     Promoted = true;
+        //     //     PromotedCategory = Process;
+        //     //     PromotedIsBig = true;
+        //     //     ToolTip = 'Executes the Mail Payslip action';
+        //     //     visible = false;
+        //     //     trigger OnAction()
+        //     //     var
+        //     //         MailBulkPayslips: Report "Mail Bulk Payslips";
+        //     //     begin
+        //     //         if Confirm(Text0001, false) = true then begin
+        //     //             //Mail single
+        //     //             Employee.Reset();
+        //     //             Employee.SetRange("No.", Rec."No.");
+        //     //             if Employee.FindFirst() then begin
+        //     //                 MailBulkPayslips.SetTableView(Employee);
+        //     //                 MailBulkPayslips.Run();
+        //     //             end;
+        //     //         end else
+        //     //             exit;
+        //     //     end;
+        //     // }
+        //     // action("Import Data")
+        //     // {
+        //     //     Image = Import;
+        //     //     Promoted = true;
+        //     //     PromotedCategory = Category7;
+        //     //     PromotedIsBig = true;
+        //     //     Visible = false;
+        //     //     ToolTip = 'Executes the Import Data action';
+
+        //     //     trigger OnAction()
+        //     //     begin
+
+        //     //         Clear(EmployeeXML);
+        //     //         EmployeeXML.Run();
+        //     //     end;
+        //     // }
+
+
+
+        // }
+
+
     }
 
     trigger OnInit()
@@ -1144,6 +1252,8 @@ page 52467 "Employee Change Card"
     end;
 
     var
+        ApprovalsMgmt: Codeunit "Approval Mgt HR Ext";
+        ApprovalManagement: Codeunit "Approval Mgt HR Ext";
         Banks: Record Banks;
         Employee: Record Employee;
         PayPeriod: Record "Payroll Period II";

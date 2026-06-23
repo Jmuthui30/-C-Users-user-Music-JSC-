@@ -1,5 +1,9 @@
 pageextension 51426 "ExtEmployee Card" extends "Employee Card"
+
 {
+    Editable = false;
+    // DeleteAllowed = false;
+    // InsertAllowed = false;
     PromotedActionCategories = 'New,Process,Report,Employee,Navigate,Payroll';
 
     layout
@@ -926,6 +930,24 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                 RunPageLink = "Applicant No." = field("No.");
                 ApplicationArea = All;
             }
+
+            action("Change Request")
+            {
+                Image = Change;
+                Promoted = true;
+                PromotedCategory = Category4;
+                PromotedIsBig = true;
+                ToolTip = 'Executes the Change Request action';
+                ApplicationArea = All;
+                trigger OnAction()
+                begin
+                    Numb := HRMgt.EmployeeChangeReq(Rec);
+                    EmployeeChange.SetRange(Number, Numb);
+                    HRMgt.EmployeeChangeReq(Rec);
+                    Page.Run(Page::"Employee Change Card", EmployeeChange);
+                end;
+            }
+
         }
         addlast(Processing)
         {
@@ -1221,22 +1243,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
             //         EmployeeXML.Run();
             //     end;
             // }
-            // action("Change Request")
-            // {
-            //     Image = Change;
-            //     Promoted = true;
-            //     PromotedCategory = Category4;
-            //     PromotedIsBig = true;
-            //     ToolTip = 'Executes the Change Request action';
-            //     ApplicationArea = All;
-            //     trigger OnAction()
-            //     begin
-            //         Numb := HRMgt.EmployeeChangeReq(Rec);
-            //         EmployeeChange.SetRange(Number, Numb);
-            //         HRMgt.EmployeeChangeReq(Rec);
-            //         Page.Run(Page::"Employee Change Card", EmployeeChange);
-            //     end;
-            // }
+
         }
     }
 
@@ -1337,6 +1344,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
         Text0001: Label 'Do you want to send the payslip?';
         InactiveDescription: Text;
         ApprovalMgt: Codeunit "Approval Mgt HR Ext";
+        EmployeeChange: Record "Employee Change Request";
 
 
     local procedure ContractFields()

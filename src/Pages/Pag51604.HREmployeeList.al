@@ -2,7 +2,7 @@ page 51604 "HR Employee List"
 {
     // version THL- HRM 1.0
     Caption = 'Employee Master';
-    CardPageID = "HR Employee Card";
+    CardPageID = "Client Employee Card";
     DeleteAllowed = false;
     Editable = false;
     PageType = List;
@@ -42,7 +42,7 @@ page 51604 "HR Employee List"
                     StyleExpr = Style;
                     ToolTip = 'Specifies the employee''s last name.';
                 }
-                
+
                 field("Contract Type"; EmployeeMaster."Contract Type")
                 {
                     ApplicationArea = All;
@@ -65,7 +65,7 @@ page 51604 "HR Employee List"
                     ToolTip = 'Specifies a resource number for the employee, if the employee is a resource in Resources Planning.';
                     Visible = false;
                 }
-                
+
             }
         }
         area(factboxes)

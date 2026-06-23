@@ -117,6 +117,9 @@ codeunit 51430 "Workflow Response Handling Ext"
                     //2. Service Worksheet
                     WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.SetStatusToPendingApprovalCode, WorkflowEventHandling.RunWorkflowOnSendServiceWorksheetForApprovalCode);
                     //
+                    // EmployeeChangeRequest
+                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.SetStatusToPendingApprovalCode, WorkflowEventHandling.RunWorkflowOnSendEmployeeChangeRequestForApprovalCode);
+
                 end;
             WorkflowResponseHandling.CreateApprovalRequestsCode:
                 begin
@@ -222,6 +225,10 @@ codeunit 51430 "Workflow Response Handling Ext"
                     //
                     //2. Service Worksheet
                     WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CreateApprovalRequestsCode, WorkflowEventHandling.RunWorkflowOnSendServiceWorksheetForApprovalCode);
+                    //
+                    //EmployeeChangeRequest
+                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CreateApprovalRequestsCode, WorkflowEventHandling.RunWorkflowOnSendEmployeeChangeRequestForApprovalCode);
+
                 end;
             WorkflowResponseHandling.SendApprovalRequestForApprovalCode:
                 begin
@@ -324,6 +331,8 @@ codeunit 51430 "Workflow Response Handling Ext"
                     //2. Service Worksheet
                     WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.SendApprovalRequestForApprovalCode, WorkflowEventHandling.RunWorkflowOnSendServiceWorksheetForApprovalCode);
                     //
+                    //EmployeeChangeRequest
+                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.SendApprovalRequestForApprovalCode, WorkflowEventHandling.RunWorkflowOnSendEmployeeChangeRequestForApprovalCode);
                 end;
             WorkflowResponseHandling.OpenDocumentCode:
                 begin
@@ -430,6 +439,8 @@ codeunit 51430 "Workflow Response Handling Ext"
                     //2. Service Worksheet
                     WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.OpenDocumentCode, WorkflowEventHandling.RunWorkflowOnCancelServiceWorksheetApprovalRequestCode);
                     //
+                    //EmployeeChangeRequest
+                    // WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.OpenDocumentCode, WorkflowEventHandling.ru);
                 end;
             WorkflowResponseHandling.CancelAllApprovalRequestsCode:
                 begin
@@ -535,6 +546,8 @@ codeunit 51430 "Workflow Response Handling Ext"
                     //2. Service Worksheet
                     WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CancelAllApprovalRequestsCode, WorkflowEventHandling.RunWorkflowOnCancelServiceWorksheetApprovalRequestCode);
                     //
+                    //EmployeeChangeRequest
+                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CancelAllApprovalRequestsCode, WorkflowEventHandling.RunWorkflowOnCancelEmployeeChangeRequestApprovalCode());
                 end;
         end;
     end;
@@ -580,6 +593,7 @@ codeunit 51430 "Workflow Response Handling Ext"
         TRequest: Record "Training Request";
         ImprestMemo: Record "Imprest Memo Header";
         ImprestPayrollClaim: Record "Imprest Payroll Claims Header";
+        EmployeeChangeRequest: Record "Employee Change Request";
     begin
         case RecRef.Number of //*******************THL - BASIC FINANCE MODULE CUSTOMIZATIONS**********************
                               //1. Payment Voucher
@@ -888,7 +902,14 @@ codeunit 51430 "Workflow Response Handling Ext"
                     ServiceWorksheet.Modify;
                     Handled := true;
                 end;
-        //
+            // EmployeeChangeRequest: Record "Employee Change Request";
+            DATABASE::"Employee Change Request":
+                begin
+                    RecRef.SetTable(EmployeeChangeRequest);
+                    EmployeeChangeRequest.Validate(Status, EmployeeChangeRequest."Approval Status"::Approved);
+                    EmployeeChangeRequest.Modify;
+                    Handled := true;
+                end;
         end;
     end;
     //#endregion
@@ -933,6 +954,7 @@ codeunit 51430 "Workflow Response Handling Ext"
         ImprestMemo: Record "Imprest Memo Header";
         TRequest: Record "Training Request";
         ImprestPayrollClaim: Record "Imprest Payroll Claims Header";
+        EmployeeChangeRequest: Record "Employee Change Request";
     begin
         case RecRef.Number of //***********THL - BASIC FINANCE MODULE CUSTOMIZATIONS*************
                               //1. Payment Voucher
@@ -1237,7 +1259,14 @@ codeunit 51430 "Workflow Response Handling Ext"
                     ServiceWorksheet.Modify;
                     Handled := true;
                 end;
-        //
+            // EmployeeChangeRequest: Record "Employee Change Request";
+            DATABASE::"Employee Change Request":
+                begin
+                    RecRef.SetTable(EmployeeChangeRequest);
+                    EmployeeChangeRequest.Validate(Status, EmployeeChangeRequest."Approval Status"::Open);
+                    EmployeeChangeRequest.Modify;
+                    Handled := true;
+                end;
         end;
     end;
     //#endregion
