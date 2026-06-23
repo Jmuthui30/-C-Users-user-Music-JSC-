@@ -55,6 +55,25 @@ page 52299 "Appraisal Workplan Codes"
                 PromotedOnly = true;
                 Image = Percentage;
             }
+
+            action(SeedJSCPerformanceFramework)
+            {
+                ApplicationArea = All;
+                Caption = 'Seed JSC Framework';
+                Image = SetupLines;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                ToolTip = 'Temporarily seeds the June 2026 JSC performance framework workplans, measures, competency setup, and rating bands.';
+                // Temporary implementation action. After tenant seeding, this action and codeunit can be commented or removed.
+
+                trigger OnAction()
+                var
+                    Seeder: Codeunit "JSC Perf Framework Seeder";
+                begin
+                    Seeder.SeedFramework();
+                end;
+            }
         }
     }
 }

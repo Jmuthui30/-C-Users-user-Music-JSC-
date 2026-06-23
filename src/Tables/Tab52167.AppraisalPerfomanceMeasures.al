@@ -15,7 +15,7 @@ table 52167 "Appraisal Perfomance Measures"
             Caption = 'Code';
             DataClassification = CustomerContent;
         }
-        field(3; Description; Text[100])
+        field(3; Description; Text[250])
         {
             Caption = 'Description';
             DataClassification = CustomerContent;

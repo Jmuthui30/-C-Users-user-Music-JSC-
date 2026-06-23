@@ -347,9 +347,15 @@ table 52015 "Employee Appraisal"
                 SetAttributePerformanceGrade();
             end;
         }
+        field(57; "Results Percentage Score"; Decimal)
+        {
+            Caption = 'Results percentage score';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
         field(58; "Total Percentage FY Rating"; Decimal)
         {
-            Caption = 'Total percentage score';
+            Caption = 'Final framework score';
             //CalcFormula = Sum("Appraisal - attributes".Rating WHERE("Appraisal No." = FIELD("Appraisal No")));
             Editable = false;
             //FieldClass = FlowField;
@@ -637,19 +643,40 @@ table 52015 "Employee Appraisal"
     begin
         CalcFields("Total FY Attributes", "Expected TR -attributes");
 
-        ApplyAttributeScoreTotals("Total FY Attributes", "Expected TR -attributes");
+        ApplyFrameworkScoreTotals(CalculateResultsPercentageScore(0), "Total FY Attributes", "Expected TR -attributes");
     end;
 
     procedure ApplyAttributeScoreTotals(TotalAttributeRating: Decimal; ExpectedAttributeRating: Decimal)
     begin
+        ApplyFrameworkScoreTotals(CalculateResultsPercentageScore(0), TotalAttributeRating, ExpectedAttributeRating);
+    end;
+
+    procedure RecalculateFrameworkScores()
+    begin
+        RecalculateFrameworkScoresExcluding(0);
+    end;
+
+    procedure RecalculateFrameworkScoresExcluding(ExcludedLineNo: Integer)
+    begin
+        CalcFields("Total FY Attributes", "Expected TR -attributes");
+        ApplyFrameworkScoreTotals(CalculateResultsPercentageScore(ExcludedLineNo), "Total FY Attributes", "Expected TR -attributes");
+    end;
+
+    procedure ApplyFrameworkScoreTotals(ResultsPercentageScore: Decimal; TotalAttributeRating: Decimal; ExpectedAttributeRating: Decimal)
+    begin
+        "Results Percentage Score" := ResultsPercentageScore;
+
         if ExpectedAttributeRating <= 0 then begin
             "Total Percentage-Attributes" := 0;
             Clear("Grade-Attributes");
-            exit;
+        end else begin
+            "Total Percentage-Attributes" := Round((TotalAttributeRating / ExpectedAttributeRating) * 100, 0.01);
+            SetAttributePerformanceGrade();
         end;
 
-        "Total Percentage-Attributes" := Round((TotalAttributeRating / ExpectedAttributeRating) * 100, 0.01);
-        SetAttributePerformanceGrade();
+        "Total Percentage FY Rating" := Round(("Results Percentage Score" * 0.70) + ("Total Percentage-Attributes" * 0.30), 0.01);
+        "Total score" := "Total Percentage FY Rating";
+        SetFinalYearPerformanceGrade();
     end;
 
     procedure UpdateDirectorateSnapshot()
@@ -693,6 +720,41 @@ table 52015 "Employee Appraisal"
         Matrix.SetFilter("End", '>=%1', "Total Percentage FY Rating");
         if Matrix.FindFirst() then
             "Grade final year rating" := Matrix.Grade;
+    end;
+
+    local procedure CalculateResultsPercentageScore(ExcludedLineNo: Integer): Decimal
+    var
+        AppraisalLine: Record "Appraisal Lines";
+        PeriodCode: Code[20];
+        PeriodScore: Decimal;
+        PeriodScores: Dictionary of [Code[20], Decimal];
+        ResultsScore: Decimal;
+    begin
+        AppraisalLine.SetRange("Appraisal No", "Appraisal No");
+        if ExcludedLineNo <> 0 then
+            AppraisalLine.SetFilter("Line No", '<>%1', ExcludedLineNo);
+
+        if AppraisalLine.FindSet() then
+            repeat
+                PeriodCode := AppraisalLine."Review Period Code";
+                if PeriodCode = '' then
+                    PeriodCode := 'UNASSIGNED';
+
+                if PeriodScores.Get(PeriodCode, PeriodScore) then
+                    PeriodScores.Set(PeriodCode, PeriodScore + AppraisalLine."Quarter Score")
+                else
+                    PeriodScores.Add(PeriodCode, AppraisalLine."Quarter Score");
+            until AppraisalLine.Next() = 0;
+
+        if PeriodScores.Count = 0 then
+            exit(0);
+
+        foreach PeriodCode in PeriodScores.Keys do begin
+            PeriodScores.Get(PeriodCode, PeriodScore);
+            ResultsScore += PeriodScore;
+        end;
+
+        exit(Round(ResultsScore / PeriodScores.Count, 0.01));
     end;
 }
 

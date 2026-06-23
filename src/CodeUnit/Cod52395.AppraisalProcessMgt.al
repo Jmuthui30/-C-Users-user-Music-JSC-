@@ -65,6 +65,9 @@ codeunit 52395 "Appraisal Process Mgt."
         if not NextPeriodLine.FindFirst() then
             CopyCurrentReviewLinesToNext(EmployeeAppraisal, CurrentPeriod.Code, NextPeriod.Code);
 
+        EmployeeAppraisal.RecalculateFrameworkScores();
+        EmployeeAppraisal.Modify(true);
+
         StampCurrentReviewComments(EmployeeAppraisal, CurrentPeriod.Code);
         StampCurrentReviewOutcomes(EmployeeAppraisal, CurrentPeriod.Code);
         CreateReviewSnapshot(EmployeeAppraisal, CurrentPeriod);
@@ -96,6 +99,8 @@ codeunit 52395 "Appraisal Process Mgt."
     begin
         EmployeeAppraisal.TestField("Current Review Period Code");
         CurrentPeriod.Get(EmployeeAppraisal."Current Review Period Code");
+        EmployeeAppraisal.RecalculateFrameworkScores();
+        EmployeeAppraisal.Modify(true);
         StampCurrentReviewComments(EmployeeAppraisal, CurrentPeriod.Code);
         StampCurrentReviewOutcomes(EmployeeAppraisal, CurrentPeriod.Code);
         CreateReviewSnapshot(EmployeeAppraisal, CurrentPeriod);
@@ -124,9 +129,7 @@ codeunit 52395 "Appraisal Process Mgt."
         SnapshotLine: Record "Appraisal Snapshot Line";
         SnapshotOutcome: Record "Appraisal Snapshot Outcome";
     begin
-        EmployeeAppraisal.CalcFields(
-            "Total FY Attributes",
-            "Expected TR -attributes");
+        EmployeeAppraisal.RecalculateFrameworkScores();
 
         SnapshotLine.Reset();
         SnapshotLine.SetRange("Appraisal No.", EmployeeAppraisal."Appraisal No");
