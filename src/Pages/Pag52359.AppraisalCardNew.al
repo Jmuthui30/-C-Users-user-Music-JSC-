@@ -525,6 +525,49 @@ page 52359 "Appraisal Card-New"
                     AppraisalRelatedHRMgt.OpenRelatedDisciplinaryCases(Rec);
                 end;
             }
+
+
+            action("Create a training need")
+            {
+                Caption = 'Create a Training need';
+                Image = Card;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                ToolTip = 'Executes the Create a Training need action';
+                trigger OnAction()
+                var
+                    TrainingNeedRequest: Record "Training Needs Header";
+                begin
+                    TrainingNeedRequest.SetRange("Source Document No", Rec."Appraisal No");
+                    if TrainingNeedRequest.FindFirst() then begin
+                        if TrainingNeedRequest."Employee No" <> Rec."Employee No" then begin
+                            TrainingNeedRequest.Rename(TrainingNeedRequest."No.", TrainingNeedRequest."Source Document No", TrainingNeedRequest."Need Source", Rec."Employee No");
+                            TrainingNeedRequest.Validate("Employee No");
+                            TrainingNeedRequest.Modify(true);
+                        end;
+                        PAGE.RUN(page::"SS Training Needs Header", TrainingNeedRequest)
+                    end else begin
+                        TrainingNeedRequest.Reset();
+                        TrainingNeedRequest.Init();
+                        TrainingNeedRequest."No." := '';
+                        TrainingNeedRequest."Source Document No" := Rec."Appraisal No";
+                        TrainingNeedRequest."Need Source" := TrainingNeedRequest."Need Source"::Appraisal;
+                        TrainingNeedRequest.Insert(true);
+                        if TrainingNeedRequest."Employee No" <> Rec."Employee No" then
+                            TrainingNeedRequest.Rename(TrainingNeedRequest."No.", TrainingNeedRequest."Source Document No", TrainingNeedRequest."Need Source", Rec."Employee No");
+                        TrainingNeedRequest.Validate("Employee No");
+                        TrainingNeedRequest."Source Document No" := Rec."Appraisal No";
+                        TrainingNeedRequest."Need Source" := TrainingNeedRequest."Need Source"::Appraisal;
+                        TrainingNeedRequest.Modify(true);
+                        TrainingNeedRequest.SetRange("Source Document No", Rec."Appraisal No");
+                        if TrainingNeedRequest.FindFirst() then
+                            PAGE.RUN(page::"SS Training Needs Header", TrainingNeedRequest);
+                    end;
+                end;
+
+            }
+
         }
     }
 

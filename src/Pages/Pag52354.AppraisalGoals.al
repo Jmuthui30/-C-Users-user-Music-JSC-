@@ -65,7 +65,7 @@ page 52354 "Appraisal Goals"
                         end;
                     end;
                 }
-                
+
                 field("Achieved (%)"; Rec."Achieved (%)")
                 {
                     ToolTip = 'Specifies the value of the Achieved (%) field.';
@@ -91,7 +91,7 @@ page 52354 "Appraisal Goals"
                     Caption = 'Weighting (%)';
                     Editable = AppraiseeEditable;
                     ToolTip = 'Specifies this objective''s percentage weighting within the current review period.';
-
+                    Visible = false;
                     trigger OnValidate()
                     begin
                         CurrPage.Update(false);

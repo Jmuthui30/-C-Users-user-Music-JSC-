@@ -35,10 +35,13 @@ codeunit 51500 "Bal Score Card Mngt."
         AppraisalPeriod.Get(AppraisalPeriodCode);
         AppraisalPeriod.TestField("Start Date");
         AppraisalPeriod.TestField("End Date");
-
+        //jkm
         PeriodCode := GetEmployeeAppraisalPeriodCode(AppraisalPeriod.Period);
+
         EnsureQuarterlyPreviewPeriods();
+
         CollectEmployeeAppraisalBatchStatsForPeriod(PeriodCode, ActiveEmployeeCount, NewAppraisalCount, ExistingAppraisalCount, MissingEmployeeCount, MissingSupervisorCount, MissingEmployeeNos, MissingSupervisorNos);
+
         if ActiveEmployeeCount = 0 then
             Error(Text006);
         if MissingEmployeeCount = ActiveEmployeeCount then
@@ -67,7 +70,7 @@ codeunit 51500 "Bal Score Card Mngt."
 
         Emp.Reset();
         Emp.SetRange(Status, Emp.Status::Active);
-        if Emp.FindSet()then begin
+        if Emp.FindSet() then begin
             NoOfRecords := ActiveEmployeeCount;
             Window.Open('#1################### @2@@@@@@@@@@@@@\');
             repeat
@@ -91,6 +94,7 @@ codeunit 51500 "Bal Score Card Mngt."
                 Page.Run(Page::"Appraisal List");
         end else
             Error(Text006);
+
     end;
 
     local procedure RunEmployeeAppraisalBatch(var PlanReviewPeriodToRun: Record "Bal Score Plan Review Period")
@@ -135,10 +139,11 @@ codeunit 51500 "Bal Score Card Mngt."
             // Emp.SetFilter("Bal Score Emp Categories", '<>%1', '');
             // Emp.SetFilter("Appraisal Supervisor", '<>%1', '');
             Emp.SetRange(Status, Emp.Status::Active);
-            if Emp.FindSet()then begin
-                NoOfRecords:=ActiveEmployeeCount;
+            if Emp.FindSet() then begin
+                NoOfRecords := ActiveEmployeeCount;
                 Window.OPEN('#1################### @2@@@@@@@@@@@@@\');
-                repeat LineCount:=LineCount + 1;
+                repeat
+                    LineCount := LineCount + 1;
                     // Legacy BSC planning creation retained for reference.
                     // UpdateBalScorePlanningHeader(Emp, PlanReviewPeriodToRun);
                     if CreateNewEmployeeAppraisalFromEmployee(Emp, PeriodCode) then
@@ -164,16 +169,14 @@ codeunit 51500 "Bal Score Card Mngt."
                     // Page.Run(Page::"Bal Admin App. Score Card List");
                     Page.Run(Page::"Appraisal List");
                 end
-                else
-                begin
+                else begin
                     exit;
                 end;
             end
             else
                 Error(Text006);
         end
-        else
-        begin
+        else begin
             exit;
         end;
     end;
@@ -293,6 +296,7 @@ codeunit 51500 "Bal Score Card Mngt."
     begin
         EmployeeMaster.Reset();
         EmployeeMaster.SetRange(Status, EmployeeMaster.Status::Active);
+        // EmployeeMaster.SetRange(EmployeeMaster.co);
         if EmployeeMaster.FindSet() then
             repeat
                 ActiveEmployeeCount += 1;
@@ -366,7 +370,7 @@ codeunit 51500 "Bal Score Card Mngt."
         BalAppraisal_2.SetRange("Employee No.", Employee."No.");
         BalAppraisal_2.SetRange("Document Type", BalAppraisal_2."Document Type"::Planning);
         BalAppraisal_2.SetRange("Plan / Review Period Code", ReviewPeriod.Code);
-        if BalAppraisal_2.FindFirst()then begin
+        if BalAppraisal_2.FindFirst() then begin
             if BalAppraisal_2."Employee Appraisal Period" = '' then begin
                 ReviewPeriod.TestField("Appraisal Period");
                 BalAppraisal_2."Employee Appraisal Period" := ReviewPeriod."Appraisal Period";
@@ -376,22 +380,24 @@ codeunit 51500 "Bal Score Card Mngt."
         end
         else if BalAppraisal_2.FindFirst() = false then CreateBalScorePlanningLines(CreatePlanningHeader(Employee, ReviewPeriod));
     end;
+
     local procedure CreatePlanningHeader(var Employ: Record "Employee Master"; PlanReviewPeriod: Record "Bal Score Plan Review Period"): Record "Bal Score Card Header"
     var
         BalAppraisal_Int: Record "Bal Score Card Header";
     begin
         BalAppraisal_Int.Init();
-        BalAppraisal_Int."Document Type":=BalAppraisal_Int."Document Type"::Planning;
+        BalAppraisal_Int."Document Type" := BalAppraisal_Int."Document Type"::Planning;
         Employ.TestField("Appraisal Supervisor");
         PlanReviewPeriod.TestField("Appraisal Period");
         BalAppraisal_Int.Validate("Employee No.", Employ."No.");
         BalAppraisal_Int.Validate(Supervisor, Employ."Appraisal Supervisor");
-        BalAppraisal_Int."Plan / Review Period Code":=PlanReviewPeriod.Code;
-        BalAppraisal_Int."Employee Appraisal Period":=PlanReviewPeriod."Appraisal Period";
-        BalAppraisal_Int.Status:=BalAppraisal_Int.Status::Open;
+        BalAppraisal_Int."Plan / Review Period Code" := PlanReviewPeriod.Code;
+        BalAppraisal_Int."Employee Appraisal Period" := PlanReviewPeriod."Appraisal Period";
+        BalAppraisal_Int.Status := BalAppraisal_Int.Status::Open;
         BalAppraisal_Int.Insert(true);
         exit(BalAppraisal_Int);
     end;
+
     local procedure CreateBalScorePlanningLines(BalScorePlanning: Record "Bal Score Card Header")
     var
         LineNo: Integer;
@@ -399,20 +405,23 @@ codeunit 51500 "Bal Score Card Mngt."
     begin
         BalAppraisalLines_2.Reset();
         BalAppraisalLines_2.SetRange(DocNo, BalScorePlanning."No.");
-        If BalAppraisalLines_2.FindSet()then LineNo:=10000 * BalAppraisalLines_2.Count
+        If BalAppraisalLines_2.FindSet() then
+            LineNo := 10000 * BalAppraisalLines_2.Count
         else
-            LineNo:=0;
+            LineNo := 0;
         Employee.Get(BalScorePlanning."Employee No.");
         BalScoringSetup.Reset();
         BalScoringSetup.SetRange("Bal Score Emp Categories", Employee."Bal Score Emp Categories");
-        if Employee.Sales = Employee.Sales::None_Sales then BalScoringSetup.SetFilter(Type, '%1|%2', BalScoringSetup.Type::Global, BalScoringSetup.Type::None_Sales)
+        if Employee.Sales = Employee.Sales::None_Sales then
+            BalScoringSetup.SetFilter(Type, '%1|%2', BalScoringSetup.Type::Global, BalScoringSetup.Type::None_Sales)
         else if Employee.Sales = Employee.Sales::Sales then BalScoringSetup.SetFilter(Type, '%1|%2', BalScoringSetup.Type::Global, BalScoringSetup.Type::Sales);
-        if BalScoringSetup.FindSet()then begin
-            repeat BalAppraisalLines_2.Reset();
+        if BalScoringSetup.FindSet() then begin
+            repeat
+                BalAppraisalLines_2.Reset();
                 BalAppraisalLines_2.SetRange(DocNo, BalScorePlanning."No.");
                 BalAppraisalLines_2.SetRange(Percepective, BalScoringSetup."Bal Score Percipectives");
                 if BalAppraisalLines_2.FindFirst() = false then begin
-                    LineNo:=LineNo + 1000;
+                    LineNo := LineNo + 1000;
                     InsertBalPlaningLines(BalScorePlanning, BalScoringSetup, LineNo);
                 end;
             until BalScoringSetup.Next() = 0;
@@ -420,77 +429,84 @@ codeunit 51500 "Bal Score Card Mngt."
         else
             Error(Text008);
     end;
+
     local procedure InsertBalPlaningLines(BalScorePlanning_: Record "Bal Score Card Header"; ScoringSetup: Record "Bal Scoring Setup"; LineNo: Integer)
     begin
         BalAppraisalLines.Init();
-        BalAppraisalLines.LineNo:=LineNo;
-        BalAppraisalLines.DocNo:=BalScorePlanning_."No.";
-        BalAppraisalLines."Document Type":=BalAppraisalLines."Document Type"::Planning;
-        BalAppraisalLines.Percepective:=ScoringSetup."Bal Score Percipectives";
-        BalAppraisalLines."Expected Max Score":=ScoringSetup."Percentage Score";
-        BalAppraisalLines.Type:=ScoringSetup.Type;
+        BalAppraisalLines.LineNo := LineNo;
+        BalAppraisalLines.DocNo := BalScorePlanning_."No.";
+        BalAppraisalLines."Document Type" := BalAppraisalLines."Document Type"::Planning;
+        BalAppraisalLines.Percepective := ScoringSetup."Bal Score Percipectives";
+        BalAppraisalLines."Expected Max Score" := ScoringSetup."Percentage Score";
+        BalAppraisalLines.Type := ScoringSetup.Type;
         BalAppraisalLines.Insert(true);
     end;
+
     procedure CreateBatchAppraisals()
     begin
         BalPlanningHeader.Reset();
         BalPlanningHeader.SetFilter(Status, '<>%1', BalPlanningHeader.Status::Closed);
         BalPlanningHeader.SetFilter("Document Type", '=%1', BalPlanningHeader."Document Type"::Planning);
         BalPlanningHeader.SetFilter("Appraisal Doc No", '=%1', '');
-        if BalPlanningHeader.FindSet()then begin
-            repeat CreateAppraisalFromPlanning(BalPlanningHeader);
+        if BalPlanningHeader.FindSet() then begin
+            repeat
+                CreateAppraisalFromPlanning(BalPlanningHeader);
             until BalPlanningHeader.Next() = 0;
         end;
     end;
+
     procedure CreateAppraisalFromPlanning(Planning_: Record "Bal Score Card Header")
     begin
         EnsureQuarterlyPreviewPeriods();
         if FindFirstProgressReviewPeriod(BalScorePreviewPeriods) = false then
             Error('Set up a Q1 BSC preview period by running Initialize Quarterly Periods, or create a preview period with Review Sequence 1.')
-        else
-        begin
+        else begin
             if Planning_."No." <> '' then InsertAppraisalLines(CreateApraisalHeader(Planning_, BalScorePreviewPeriods), Planning_);
         end;
     end;
+
     local procedure CreateApraisalHeader(Planning: Record "Bal Score Card Header"; BalScorePreviewPeriods: Record "Bal Score Preview Periods"): Record "Bal Score Card Header"
     var
         BalAppraisal_FromP: Record "Bal Score Card Header";
     begin
         BalAppraisal_FromP.Init();
-        BalAppraisal_FromP."Document Type":=BalAppraisal_FromP."Document Type"::Appraisal;
+        BalAppraisal_FromP."Document Type" := BalAppraisal_FromP."Document Type"::Appraisal;
         Planning.TestField("Employee Appraisal Period");
         BalAppraisal_FromP.Validate("Employee No.", Planning."Employee No.");
         BalAppraisal_FromP.Validate(Supervisor, Planning.Supervisor);
-        BalAppraisal_FromP.Status:=BalAppraisal_FromP.Status::Open;
-        BalAppraisal_FromP."Plan / Review Period Code":=Planning."Plan / Review Period Code";
-        BalAppraisal_FromP."Employee Appraisal Period":=Planning."Employee Appraisal Period";
-        BalAppraisal_FromP."Progress Review Period":=BalScorePreviewPeriods.Code;
-        BalAppraisal_FromP."Planning Doc No":=Planning."No.";
+        BalAppraisal_FromP.Status := BalAppraisal_FromP.Status::Open;
+        BalAppraisal_FromP."Plan / Review Period Code" := Planning."Plan / Review Period Code";
+        BalAppraisal_FromP."Employee Appraisal Period" := Planning."Employee Appraisal Period";
+        BalAppraisal_FromP."Progress Review Period" := BalScorePreviewPeriods.Code;
+        BalAppraisal_FromP."Planning Doc No" := Planning."No.";
         BalAppraisal_FromP.Insert(true);
         EnsureEmployeeAppraisalForBSC(BalAppraisal_FromP, Planning);
-        Planning."Appraisal Doc No":=BalAppraisal_FromP."No.";
-        Planning.Status:=Planning.Status::Closed;
+        Planning."Appraisal Doc No" := BalAppraisal_FromP."No.";
+        Planning.Status := Planning.Status::Closed;
         Planning.Modify(true);
         exit(BalAppraisal_FromP);
     end;
+
     local procedure InsertAppraisalLines(AppraisalHeader: Record "Bal Score Card Header"; Planning: Record "Bal Score Card Header")
     begin
         PlanningLines.Reset();
         PlanningLines.SetRange(DocNo, Planning."No.");
-        If PlanningLines.FindSet()then begin
-            repeat NewAppLines.Init();
-                NewAppLines.DocNo:=AppraisalHeader."No.";
-                NewAppLines.LineNo:=PlanningLines.LineNo;
-                NewAppLines.Type:=PlanningLines.Type;
-                NewAppLines.Percepective:=PlanningLines.Percepective;
-                NewAppLines."Expected Max Score":=PlanningLines."Expected Max Score";
-                NewAppLines."Planning Assumption":=PlanningLines."Planning Assumption";
+        If PlanningLines.FindSet() then begin
+            repeat
+                NewAppLines.Init();
+                NewAppLines.DocNo := AppraisalHeader."No.";
+                NewAppLines.LineNo := PlanningLines.LineNo;
+                NewAppLines.Type := PlanningLines.Type;
+                NewAppLines.Percepective := PlanningLines.Percepective;
+                NewAppLines."Expected Max Score" := PlanningLines."Expected Max Score";
+                NewAppLines."Planning Assumption" := PlanningLines."Planning Assumption";
                 NewAppLines.Validate("Progress Review Period", AppraisalHeader."Progress Review Period");
-                NewAppLines."Document Type":=AppraisalHeader."Document Type";
+                NewAppLines."Document Type" := AppraisalHeader."Document Type";
                 NewAppLines.Insert(true);
             until PlanningLines.Next() = 0;
         end;
     end;
+
     procedure ChangeProgressReviewPeriod(var AppraisalNo: Code[20]; var CurrentReviewPeriod: Code[20]; var NextReviewPeriod: Code[20])
     var
         LineNo: Integer;
@@ -501,41 +517,42 @@ codeunit 51500 "Bal Score Card Mngt."
             BalAppraisalLines.SetRange(DocNo, AppraisalNo);
             BalAppraisalLines.SetRange("Progress Review Period", NextReviewPeriod);
             if BalAppraisalLines.Find then Error(StrSubstNo(Text003, NextReviewPeriod));
-            if BalAppraisal.Get(AppraisalNo)then begin
+            if BalAppraisal.Get(AppraisalNo) then begin
                 BalAppraisalLines.Reset();
                 BalAppraisalLines.SetFilter(DocNo, AppraisalNo);
-                if BalAppraisalLines.FindSet()then LineNo:=((BalAppraisalLines.Count() + 1) * 1000);
+                if BalAppraisalLines.FindSet() then LineNo := ((BalAppraisalLines.Count() + 1) * 1000);
                 BalAppraisalLines.Reset();
                 BalAppraisalLines.SetRange(DocNo, AppraisalNo);
                 BalAppraisalLines.SetRange("Progress Review Period", CurrentReviewPeriod);
                 BalAppraisalLines.SetRange(Reviewed, false);
-                if BalAppraisalLines.FindSet()then begin
-                    repeat LineNo:=LineNo + 1000;
+                if BalAppraisalLines.FindSet() then begin
+                    repeat
+                        LineNo := LineNo + 1000;
                         NewAppLines.Init();
-                        NewAppLines.DocNo:=BalAppraisalLines.DocNo;
-                        NewAppLines.LineNo:=LineNo;
-                        NewAppLines.Percepective:=BalAppraisalLines.Percepective;
-                        NewAppLines."Expected Max Score":=BalAppraisalLines."Expected Max Score";
-                        NewAppLines."Planning Assumption":=BalAppraisalLines."Planning Assumption";
-                        NewAppLines."Achievements ToDate":=BalAppraisalLines."Achievements ToDate";
-                        NewAppLines.Emphasis:=BalAppraisalLines.Emphasis;
+                        NewAppLines.DocNo := BalAppraisalLines.DocNo;
+                        NewAppLines.LineNo := LineNo;
+                        NewAppLines.Percepective := BalAppraisalLines.Percepective;
+                        NewAppLines."Expected Max Score" := BalAppraisalLines."Expected Max Score";
+                        NewAppLines."Planning Assumption" := BalAppraisalLines."Planning Assumption";
+                        NewAppLines."Achievements ToDate" := BalAppraisalLines."Achievements ToDate";
+                        NewAppLines.Emphasis := BalAppraisalLines.Emphasis;
                         NewAppLines.Validate("Progress Review Period", NextReviewPeriod);
-                        NewAppLines."Document Type":=BalAppraisalLines."Document Type";
+                        NewAppLines."Document Type" := BalAppraisalLines."Document Type";
                         NewAppLines.Insert(true);
-                        BalAppraisalLines.Reviewed:=true;
+                        BalAppraisalLines.Reviewed := true;
                         BalAppraisalLines.Modify(true);
                     until BalAppraisalLines.Next() = 0;
                 end;
-                BalAppraisal."Progress Review Period":=NextReviewPeriod;
-                BalAppraisal.Status:=BalAppraisal.Status::Open;
+                BalAppraisal."Progress Review Period" := NextReviewPeriod;
+                BalAppraisal.Status := BalAppraisal.Status::Open;
                 BalAppraisal.Modify(true);
             end;
         end
-        else
-        begin
+        else begin
             exit;
         end;
     end;
+
     local procedure EnsureEmployeeAppraisalForBSC(var BSCAppraisal: Record "Bal Score Card Header"; Planning: Record "Bal Score Card Header"): Code[20]
     var
         ExistingEmployeeAppraisal: Record "Employee Appraisal";
@@ -578,6 +595,7 @@ codeunit 51500 "Bal Score Card Mngt."
         BSCAppraisal.Modify(true);
         exit(ExistingEmployeeAppraisal."Appraisal No");
     end;
+
     local procedure ValidateNextReviewPeriod(CurrentReviewPeriod: Code[20]; NextReviewPeriod: Code[20])
     var
         CurrentPeriod: Record "Bal Score Preview Periods";
@@ -844,33 +862,35 @@ codeunit 51500 "Bal Score Card Mngt."
         AccPeriod.Reset;
         AccPeriod.SetRange("Starting Date", 0D, Today);
         AccPeriod.SetRange("New Fiscal Year", true);
-        if AccPeriod.Find('+')then begin
-            FiscalStart:=AccPeriod."Starting Date";
-            MaturityDate:=CalcDate('1Y', FiscalStart) - 1;
+        if AccPeriod.Find('+') then begin
+            FiscalStart := AccPeriod."Starting Date";
+            MaturityDate := CalcDate('1Y', FiscalStart) - 1;
         end;
     end;
-    var BalAppraisal: Record "Bal Score Card Header";
-    BalPlanningHeader: Record "Bal Score Card Header";
-    BalAppraisal_2: Record "Bal Score Card Header";
-    BalScorePreviewPeriods: Record "Bal Score Preview Periods";
-    PlanReviewPeriod: Record "Bal Score Plan Review Period";
-    BalAppraisalLines: Record "Bal Score Card Lines";
-    BalAppraisalLines_2: Record "Bal Score Card Lines";
-    NewAppLines: Record "Bal Score Card Lines";
-    PlanningLines: Record "Bal Score Card Lines";
-    BalScoringSetup: Record "Bal Scoring Setup";
-    HumanResourcesSetup: Record "Human Resources Setup";
-    NoSeriesMgt: Codeunit "No. Series";
-    Window: Dialog;
-    Emp: Record "Employee Master";
-    NavEmp: Record Employee;
-    MaturityDate: Date;
-    FiscalStart: Date;
-    Text001: Label 'Do you wish to close %1 Progress Review Period and intialize %2?';
-    Text003: Label 'Progress Review Period %1 have been Reviewed Already';
-    Text004: Label 'There is no active Balance Score Card Plan Review Period';
-    Text005: Label 'You are about to create Employee Appraisals Planning for the Plan Review Period of %1, Do you wish to continue?';
-    Text006: Label 'No active employees were found for appraisal creation.';
-    Text007: Label '%1 employee appraisals have been created/updated. Do you want to open the list?';
-    Text008: Label 'Balance Scoring Setup have not been Completely done, Do the setup first or contact HR Admin';
+
+    var
+        BalAppraisal: Record "Bal Score Card Header";
+        BalPlanningHeader: Record "Bal Score Card Header";
+        BalAppraisal_2: Record "Bal Score Card Header";
+        BalScorePreviewPeriods: Record "Bal Score Preview Periods";
+        PlanReviewPeriod: Record "Bal Score Plan Review Period";
+        BalAppraisalLines: Record "Bal Score Card Lines";
+        BalAppraisalLines_2: Record "Bal Score Card Lines";
+        NewAppLines: Record "Bal Score Card Lines";
+        PlanningLines: Record "Bal Score Card Lines";
+        BalScoringSetup: Record "Bal Scoring Setup";
+        HumanResourcesSetup: Record "Human Resources Setup";
+        NoSeriesMgt: Codeunit "No. Series";
+        Window: Dialog;
+        Emp: Record "Employee Master";
+        NavEmp: Record Employee;
+        MaturityDate: Date;
+        FiscalStart: Date;
+        Text001: Label 'Do you wish to close %1 Progress Review Period and intialize %2?';
+        Text003: Label 'Progress Review Period %1 have been Reviewed Already';
+        Text004: Label 'There is no active Balance Score Card Plan Review Period';
+        Text005: Label 'You are about to create Employee Appraisals Planning for the Plan Review Period of %1, Do you wish to continue?';
+        Text006: Label 'No active employees were found for appraisal creation.';
+        Text007: Label '%1 employee appraisals have been created/updated. Do you want to open the list?';
+        Text008: Label 'Balance Scoring Setup have not been Completely done, Do the setup first or contact HR Admin';
 }

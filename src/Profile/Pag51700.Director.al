@@ -458,7 +458,7 @@ page 59991 "Director Role Center"
                         ApplicationArea = All;
                         Caption = '1. Create Appraisal Planning';
                         RunObject = Page "Bal Score Plan Review Period";
-                        Visible = false;
+                        // Visible = false;
                         // Legacy planning-cycle page hidden from the unified appraisal process.
                         ToolTip = 'Open appraisal planning periods used to create employee appraisal records.';
                     }
@@ -467,7 +467,7 @@ page 59991 "Director Role Center"
                         ApplicationArea = All;
                         Caption = '2. BSC Planning Documents';
                         RunObject = Page "Bal Planning Score Card List";
-                        Visible = false;
+                        // Visible = false;
                         // Legacy BSC planning list hidden from the unified appraisal process.
                         ToolTip = 'Open employee BSC planning documents.';
                     }
@@ -476,8 +476,7 @@ page 59991 "Director Role Center"
                         ApplicationArea = All;
                         Caption = '3. Quarterly BSC Reviews';
                         RunObject = Page "Bal Appraisal Score Card List";
-                        Visible = false;
-                        // Legacy BSC review list hidden from the unified appraisal process.
+                        // Visible = false;
                         ToolTip = 'Open quarterly BSC appraisal review documents.';
                     }
                     action("Perf BSC HR Admin Reviews")
@@ -485,8 +484,7 @@ page 59991 "Director Role Center"
                         ApplicationArea = All;
                         Caption = '4. HR Admin BSC Reviews';
                         RunObject = Page "Bal Admin App. Score Card List";
-                        Visible = false;
-                        // Legacy BSC admin review list hidden from the unified appraisal process.
+                        // Visible = false;
                         ToolTip = 'Open BSC appraisal documents for HR administration review.';
                     }
                 }
