@@ -551,24 +551,24 @@ codeunit 51427 "Approvals Mgmt. Ext"
     begin
     end;
     // EmployeeChangeRequest
-    local procedure "***********************Employee Change Request******************************************"()
-    begin
-    end;
+    // local procedure "***********************Employee Change Request******************************************"()
+    // begin
+    // end;
 
-    [IntegrationEvent(false, false)]
-    procedure OnSendEmployeeChangeRequestForApproval(var EmployeeChangeRequest: Record "Employee Change Request")
-    begin
-    end;
+    // [IntegrationEvent(false, false)]
+    // procedure OnSendEmployeeChangeRequestForApproval(var EmployeeChangeRequest: Record "Employee Change Request")
+    // begin
+    // end;
 
-    [IntegrationEvent(false, false)]
-    procedure OnCancelEmployeeChangeRequestApprovalRequest(var EmployeeChangeRequest: Record "Employee Change Request")
-    begin
-    end;
+    // [IntegrationEvent(false, false)]
+    // procedure OnCancelEmployeeChangeRequestApprovalRequest(var EmployeeChangeRequest: Record "Employee Change Request")
+    // begin
+    // end;
 
-    [IntegrationEvent(false, false)]
-    procedure OnAfterReleaseEmployeeChangeRequest(var EmployeeChangeRequest: Record "Employee Change Request")
-    begin
-    end;
+    // [IntegrationEvent(false, false)]
+    // procedure OnAfterReleaseEmployeeChangeRequest(var EmployeeChangeRequest: Record "Employee Change Request")
+    // begin
+    // end;
 
     //#endregion
     //#region SetStatusToPending
@@ -935,14 +935,14 @@ codeunit 51427 "Approvals Mgmt. Ext"
                     ServiceLine.Modify(true);
                     IsHandled := true;
                 end;
-            //EmployeeChangeRequest
-            DATABASE::"Employee Change Request":
-                begin
-                    RecRef.SetTable(EmployeeChangeRequest);
-                    EmployeeChangeRequest.Validate("Approval Status", EmployeeChangeRequest."Approval Status"::"Pending Approval");
-                    EmployeeChangeRequest.Modify(true);
-                    IsHandled := true;
-                end;
+        //EmployeeChangeRequest
+        // DATABASE::"Employee Change Request":
+        //     begin
+        //         RecRef.SetTable(EmployeeChangeRequest);
+        //         EmployeeChangeRequest.Validate("Approval Status", EmployeeChangeRequest."Approval Status"::"Pending Approval");
+        //         EmployeeChangeRequest.Modify(true);
+        //         IsHandled := true;
+        //     end;
         //
         end;
     end;

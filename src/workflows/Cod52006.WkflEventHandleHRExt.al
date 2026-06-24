@@ -33,6 +33,9 @@ codeunit 52006 "Wkfl Event Handle HR Ext"
         TransportRequestSendforApprovalDescTxt: Label 'An approval for Transport Request is requested';
         NewEmployeeSendforApprovalDescTxt: Label 'An approval for a new Employee is requested';
         NewEmployeeCancelApprovalRequestDescTxt: Label 'An approval request for a new Employee has been cancelled';
+        // EmployeeChangeRequest: Record "Employee Change Request";
+        EmployeeChangeSendforApprovalDescTxt: Label 'An approval for a new Employee Change is requested';
+        EmployeeChangeCancelApprovalRequestDescTxt: Label 'An approval request for a new Employee Change has been cancelled';
 
 
 
@@ -202,6 +205,17 @@ codeunit 52006 "Wkfl Event Handle HR Ext"
         exit(UpperCase('RunWorkflowOnCancelNewEmployeeApprovalRequest'));
     end;
 
+    // EmployeeChangeRequest: Record "Employee Change Request";
+    procedure RunWorkflowOnSendEmployeeChangeForApprovalCode(): Code[128]
+    begin
+        exit(UpperCase('RunWorkflowOnSendEmployeeChangeForApproval'));
+    end;
+
+    procedure RunWorkflowOnCancelEmployeeChangeApprovalRequestCode(): Code[128]
+    begin
+        exit(UpperCase('RunWorkflowOnCancelEmployeeChangeApprovalRequest'));
+    end;
+
 
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Workflow Event Handling", 'OnAddWorkflowEventsToLibrary', '', false, false)]
@@ -249,6 +263,11 @@ codeunit 52006 "Wkfl Event Handle HR Ext"
         TrainingRequestSendforApprovalDescTxt, 0, false);
         WorkflowEvent.AddEventToLibrary(RunworkflowOnCancelTrainingRequestApprovalRequestCode(), Database::"Training Request",
         TrainingRequestCancelApprovalRequestDescTxt, 0, false);
+        //// EmployeeChangeRequest: Record "Employee Change Request";
+        WorkflowEvent.AddEventToLibrary(RunworkflowOnSendEmployeeChangeforApprovalCode(), Database::"Employee Change Request",
+    EmployeeChangeSendforApprovalDescTxt, 0, false);
+        WorkflowEvent.AddEventToLibrary(RunworkflowOnCancelEmployeeChangeApprovalRequestCode(), Database::"Employee Change Request",
+        EmployeeChangeCancelApprovalRequestDescTxt, 0, false);
 
     end;
 
@@ -300,6 +319,9 @@ codeunit 52006 "Wkfl Event Handle HR Ext"
             // New Employee
             RunWorkflowOnCancelNewEmployeeApprovalRequestCode():
                 WorkflowEvent.AddEventPredecessor(RunWorkflowOnCancelNewEmployeeApprovalRequestCode(), RunWorkflowOnSendNewEmployeeForApprovalCode());
+            //// EmployeeChangeRequest: Record "Employee Change Request";
+            RunWorkflowOnCancelEmployeeChangeApprovalRequestCode():
+                WorkflowEvent.AddEventPredecessor(RunWorkflowOnCancelEmployeeChangeApprovalRequestCode(), RunWorkflowOnSendEmployeeChangeForApprovalCode());
 
             WorkflowEvent.RunWorkflowOnApproveApprovalRequestCode():
                 begin
@@ -331,6 +353,9 @@ codeunit 52006 "Wkfl Event Handle HR Ext"
                     WorkflowEvent.AddEventPredecessor(WorkflowEvent.RunWorkflowOnApproveApprovalRequestCode(), RunworkflowOnSendAllowanceRegisterforApprovalCode());
                     // New Employee
                     WorkflowEvent.AddEventPredecessor(WorkflowEvent.RunWorkflowOnApproveApprovalRequestCode(), RunWorkflowOnSendNewEmployeeForApprovalCode());
+                    //// EmployeeChangeRequest: Record "Employee Change Request";
+                    WorkflowEvent.AddEventPredecessor(WorkflowEvent.RunWorkflowOnApproveApprovalRequestCode(), RunWorkflowOnSendEmployeeChangeForApprovalCode());
+
                 end;
 
             WorkflowEvent.RunWorkflowOnRejectApprovalRequestCode():
@@ -363,6 +388,10 @@ codeunit 52006 "Wkfl Event Handle HR Ext"
                     WorkflowEvent.AddEventPredecessor(WorkflowEvent.RunWorkflowOnRejectApprovalRequestCode(), RunworkflowOnSendAllowanceRegisterforApprovalCode());
                     // New Employee
                     WorkflowEvent.AddEventPredecessor(WorkflowEvent.RunWorkflowOnRejectApprovalRequestCode(), RunWorkflowOnSendNewEmployeeForApprovalCode());
+                    //// EmployeeChangeRequest: Record "Employee Change Request";
+                    WorkflowEvent.AddEventPredecessor(WorkflowEvent.RunWorkflowOnRejectApprovalRequestCode(), RunWorkflowOnSendEmployeeChangeForApprovalCode());
+
+
                 end;
             WorkflowEvent.RunWorkflowOnDelegateApprovalRequestCode():
                 begin
@@ -394,6 +423,9 @@ codeunit 52006 "Wkfl Event Handle HR Ext"
                     WorkflowEvent.AddEventPredecessor(WorkflowEvent.RunWorkflowOnDelegateApprovalRequestCode(), RunworkflowOnSendAllowanceRegisterforApprovalCode());
                     // New Employee
                     WorkflowEvent.AddEventPredecessor(WorkflowEvent.RunWorkflowOnDelegateApprovalRequestCode(), RunWorkflowOnSendNewEmployeeForApprovalCode());
+                    //// EmployeeChangeRequest: Record "Employee Change Request";
+                    WorkflowEvent.AddEventPredecessor(WorkflowEvent.RunWorkflowOnDelegateApprovalRequestCode(), RunWorkflowOnSendEmployeeChangeForApprovalCode());
+
                 end;
         end;
     end;
@@ -521,9 +553,19 @@ codeunit 52006 "Wkfl Event Handle HR Ext"
     begin
         WorkflowManagement.HandleEvent(RunworkflowOnCancelTrainingRequestApprovalRequestCode(), TrainingRequest);
     end;
+    //// EmployeeChangeRequest: Record "Employee Change Request";
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approval Mgt HR Ext", 'OnSendEmployeeChangeforApproval', '', false, false)]
+    local procedure RunworkflowOnSendEmployeeChangeforApproval(var EmployeeChange: Record "Employee Change Request")
+    begin
+        WorkflowManagement.HandleEvent(RunworkflowOnSendEmployeeChangeforApprovalCode(), EmployeeChange);
+    end;
 
-
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approval Mgt HR Ext", 'OnCancelEmployeeChangeApproval', '', false, false)]
+    local procedure RunworkflowOnCancelEmployeeChangeApproval(var EmployeeChange: Record "Employee Change Request")
+    begin
+        WorkflowManagement.HandleEvent(RunworkflowOnCancelEmployeeChangeApprovalRequestCode(), EmployeeChange);
+    end;
 }
 
 

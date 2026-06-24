@@ -875,6 +875,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                 RunObject = page "Appointment Checklist ListPart";
                 ToolTip = 'Executes the Appointment Checklist action';
                 ApplicationArea = All;
+                Visible = false;
             }
             action("Leave Aplications")
             {
@@ -900,12 +901,14 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                 RunPageLink = "Employee No." = field("No.");
                 ToolTip = 'Executes the Professional Membership action';
                 ApplicationArea = All;
+                Visible = false;
             }
             action(Union)
             {
                 Image = Union;
                 ToolTip = 'Executes the Union action';
                 ApplicationArea = All;
+                Visible = false;
             }
             // action("Acting Positions")
             // {
@@ -929,6 +932,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                 RunObject = page "Jobs Applied";
                 RunPageLink = "Applicant No." = field("No.");
                 ApplicationArea = All;
+                Visible = false;
             }
 
             action("Change Request")
@@ -966,6 +970,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                     PromotedCategory = Category6;
                     PromotedIsBig = true;
                     Image = CashFlow;
+                    Visible = false;
                 }
                 action("Assign Deductions")
                 {
@@ -980,6 +985,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                     PromotedCategory = Category6;
                     PromotedIsBig = true;
                     Image = Payment;
+                    Visible = false;
                 }
             }
             // group(OpeningBalances)
@@ -1116,7 +1122,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                     ToolTip = 'Executes the Assign Default Ded/Earnings action';
                     ApplicationArea = All;
                     Image = Refresh;
-
+                    Visible = false;
                     trigger OnAction()
                     var
                         CuPayroll: Codeunit Payroll;
@@ -1160,7 +1166,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                     PromotedIsBig = true;
                     ToolTip = 'Executes the Payroll Run action';
                     ApplicationArea = All;
-
+                    Visible = false;
                     trigger OnAction()
                     var
                         CuPayroll: Codeunit Payroll;

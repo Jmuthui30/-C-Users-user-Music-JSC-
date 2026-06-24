@@ -26,6 +26,8 @@ codeunit 52005 "Approval Mgt HR Ext"
         NewEmployeeAppraisal: Record "Employee Appraisal";
         TrainingRequest: Record "Training Request";
         StaffAppraisalApprovalLbl: Label 'Staff Appraisal-%1 for the Period between %2 - %3', Comment = '%1 = Employee Name, %2 = Period Start, %3 = Period End';
+        EmployeeChangeRequest: Record "Employee Change Request";
+
     begin
         case RecRef.Number of
             //Travel Requests
@@ -83,6 +85,13 @@ codeunit 52005 "Approval Mgt HR Ext"
                     ApprovalEntryArgument."Document Type" := ApprovalEntryArgument."Document Type"::TrainingRequest;
                     ApprovalEntryArgument."Document No." := TrainingRequest."Request No.";
                 end;
+            //        EmployeeChangeRequest: Record "Employee Change Request";
+            Database::"Employee Change Request":
+                begin
+                    RecRef.SetTable(EmployeeChangeRequest);
+                    ApprovalEntryArgument."Document Type" := ApprovalEntryArgument."Document Type"::"Employee Transfer";
+                    ApprovalEntryArgument."Document No." := EmployeeChangeRequest.Number;
+                end;
 
         end;
     end;
@@ -94,6 +103,8 @@ codeunit 52005 "Approval Mgt HR Ext"
         WorkflowStepInstance: Record "Workflow Step Instance";
         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
         NextSequenceNo: Integer;
+        EmployeeChangeRequest: Record "Employee Change Request";
+
     begin
         // Case 1 - Delegated to someone else notify them
         if ApprovalEntry."Approver ID" <> CopyStr(UserId(), 1, 50) then begin
@@ -141,6 +152,8 @@ codeunit 52005 "Approval Mgt HR Ext"
         NewEmployeeAppraisal: Record "Employee Appraisal";
         RecruitmentRequest: Record "Recruitment Needs";
         TrainingRequest: Record "Training Request";
+        EmployeeChangeRequest: Record "Employee Change Request";
+
     begin
         case RecRef.Number of
 
@@ -204,6 +217,17 @@ codeunit 52005 "Approval Mgt HR Ext"
                     Variant := TrainingRequest;
                     IsHandled := true;
                 end;
+            //        EmployeeChangeRequest: Record "Employee Change Request";
+            Database::"Employee Change Request":
+                begin
+                    RecRef.SetTable(EmployeeChangeRequest);
+                    EmployeeChangeRequest.Get(EmployeeChangeRequest.Number);  // ← ADD THIS
+                    EmployeeChangeRequest.Validate("Approval Status", EmployeeChangeRequest."Approval Status"::"Pending Approval");
+                    EmployeeChangeRequest.Modify(true);
+                    Variant := EmployeeChangeRequest;
+                    IsHandled := true;
+                end;
+
 
         end;
     end;
@@ -527,8 +551,30 @@ codeunit 52005 "Approval Mgt HR Ext"
     begin
 
     end;
+    //  EmployeeChangeRequest: Record "Employee Change Request";
+    procedure CheckEmployeeChangeWorkflowEnabled(var EmployeeChange: Record "Employee Change Request"): Boolean
+    begin
+        if not IsEmployeeChangeWorkflowEnabled(EmployeeChange) then
+            Error(NoWorkflowEnabledErr);
+        exit(true);
+    end;
 
+    procedure IsEmployeeChangeWorkflowEnabled(var EmployeeChange: Record "Employee Change Request"): Boolean
+    begin
+        exit(WorkflowManagement.CanExecuteWorkflow(EmployeeChange, WorkflowEventHandling.RunworkflowOnSendEmployeeChangeforApprovalCode()));
+    end;
 
+    [IntegrationEvent(false, false)]
+    procedure OnSendEmployeeChangeforApproval(var EmployeeChange: Record "Employee Change Request")
+    begin
+
+    end;
+
+    [IntegrationEvent(false, false)]
+    procedure OnCancelEmployeeChangeApproval(var EmployeeChange: Record "Employee Change Request")
+    begin
+
+    end;
 
 
 

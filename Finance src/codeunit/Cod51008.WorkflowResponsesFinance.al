@@ -177,4 +177,28 @@ codeunit 51008 "Workflow Responses Finance"
             UserChangesRec.Modify();
         end;
     end;
+    // EmployeeChangeRequest: Record "Employee Change Request";
+    procedure ReleaseEmployeeChange(var EmployeeChange: Record "Employee Change Request")
+    var
+        EmployeeChangeRec: Record "Employee Change Request";
+    begin
+        if EmployeeChangeRec.Get(EmployeeChange.Number) then begin
+            EmployeeChangeRec.Validate("Approval Status", EmployeeChangeRec."Approval Status"::Approved);
+            //    EmployeeChangeRec.Validate("Approved By", UserId());
+            //    EmployeeChangeRec.Validate("Approved Date", Today());
+            EmployeeChangeRec.Modify();
+        end;
+    end;
+
+    procedure ReOpenEmployeeChange(var EmployeeChange: Record "Employee Change Request")
+    var
+        EmployeeChangeRec: Record "Employee Change Request";
+    begin
+        if EmployeeChangeRec.Get(EmployeeChange.Number) then begin
+            EmployeeChangeRec.Validate("Approval Status", EmployeeChange."Approval Status"::Open);
+            // EmployeeChangeRec.Validate("Approved By", '');
+            // EmployeeChangeRec.Validate("Approved Date", 0D);
+            EmployeeChangeRec.Modify();
+        end;
+    end;
 }

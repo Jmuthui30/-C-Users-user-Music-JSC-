@@ -206,5 +206,29 @@ codeunit 52004 "Workflow Responses HR"
         end;
         HRMgnt.NotifyTrainingRequest(TrainingRequest."Request No.");
     end;
+    // EmployeeChangeRequest 
+    procedure ReopenEmployeeChangeRequest(var EmployeeChangeReq: Record "Employee Change Request")
+    var
+        EmployeeChangeRequest: Record "Employee Change Request";
+    begin
+        EmployeeChangeRequest.Reset();
+        EmployeeChangeRequest.SetRange(Number, EmployeeChangeReq.Number);
+        if EmployeeChangeRequest.FindFirst() then begin
+            EmployeeChangeRequest."Approval Status" := EmployeeChangeRequest."Approval Status"::"Pending Approval";
+            EmployeeChangeRequest.Modify(true)
+        end;
+    end;
+
+    procedure ReleaseEmployeeChangeRequest(var EmployeeChangeReq: Record "Employee Change Request")
+    var
+        EmployeeChangeRequest: Record "Employee Change Request";
+    begin
+        EmployeeChangeRequest.Reset();
+        EmployeeChangeRequest.SetRange(Number, EmployeeChangeReq.Number);
+        if EmployeeChangeRequest.FindFirst() then begin
+            EmployeeChangeRequest."Approval Status" := EmployeeChangeRequest."Approval Status"::Approved;
+            EmployeeChangeRequest.Modify(true);
+        end;
+    end;
 
 }

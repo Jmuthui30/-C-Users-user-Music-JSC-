@@ -19,6 +19,9 @@ codeunit 51011 "Wkfl Event Response Finance"
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.SetStatusToPendingApprovalCode(), WorkflowEventHandling.RunWorkflowOnSendBankRecForApprovalCode());
                     //User Changes
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.SetStatusToPendingApprovalCode(), WorkflowEventHandling.RunWorkflowOnSendUserChangesForApprovalCode());
+                    // // EmployeeChangeRequest: Record "Employee Change Request";
+                    // WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.SetStatusToPendingApprovalCode(), WorkflowEventHandling.RunWorkflowOnSendEmployeeChangeForApprovalCode());
+
                 end;
             WorkFlowResponse.CreateApprovalRequestsCode():
                 begin
@@ -32,6 +35,9 @@ codeunit 51011 "Wkfl Event Response Finance"
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.CreateApprovalRequestsCode(), WorkflowEventHandling.RunWorkflowOnSendBankRecForApprovalCode());
                     //User Changes
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.CreateApprovalRequestsCode(), WorkflowEventHandling.RunWorkflowOnSendUserChangesForApprovalCode());
+                    // // EmployeeChangeRequest: Record "Employee Change Request";
+                    // WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.CreateApprovalRequestsCode(), WorkflowEventHandling.RunWorkflowOnSendEmployeeChangeForApprovalCode());
+
                 end;
             WorkFlowResponse.SendApprovalRequestForApprovalCode():
                 begin
@@ -45,6 +51,9 @@ codeunit 51011 "Wkfl Event Response Finance"
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.SendApprovalRequestForApprovalCode(), WorkflowEventHandling.RunWorkflowOnSendBankRecForApprovalCode());
                     //User Changes
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.SendApprovalRequestForApprovalCode(), WorkflowEventHandling.RunWorkflowOnSendUserChangesForApprovalCode());
+                    // //    EmployeeChangeRequest: Record "Employee Change Request";
+                    // WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.SendApprovalRequestForApprovalCode(), WorkflowEventHandling.RunWorkflowOnSendEmployeeChangeForApprovalCode());
+
                 end;
             WorkFlowResponse.OpenDocumentCode():
                 begin
@@ -58,6 +67,9 @@ codeunit 51011 "Wkfl Event Response Finance"
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.OpenDocumentCode(), WorkflowEventHandling.RunWorkflowOnCancelBankRecForApprovalCode());
                     //User Changes
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.OpenDocumentCode(), WorkflowEventHandling.RunWorkflowOnCancelUserChangesApprovalRequestCode());
+                    // //    EmployeeChangeRequest: Record "Employee Change Request";
+                    // WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.OpenDocumentCode(), WorkflowEventHandling.RunWorkflowOnCancelEmployeeChangeApprovalRequestCode());
+
                 end;
             WorkFlowResponse.CancelAllApprovalRequestsCode():
                 begin
@@ -71,6 +83,9 @@ codeunit 51011 "Wkfl Event Response Finance"
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.CancelAllApprovalRequestsCode(), WorkflowEventHandling.RunWorkflowOnCancelBankRecForApprovalCode());
                     //User Changes
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.CancelAllApprovalRequestsCode(), WorkflowEventHandling.RunWorkflowOnCancelUserChangesApprovalRequestCode());
+                    // // EmployeeChangeRequest: Record "Employee Change Request";
+                    // WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.CancelAllApprovalRequestsCode(), WorkflowEventHandling.RunWorkflowOnCancelEmployeeChangeApprovalRequestCode());
+
                 end;
             WorkFlowResponse.ReleaseDocumentCode():
                 ;
@@ -88,6 +103,7 @@ codeunit 51011 "Wkfl Event Response Finance"
         ReleasePayments: Codeunit "Release Payments";
         WorkflowResponses: Codeunit "Workflow Responses Finance";
         VarVariant: Variant;
+        EmployeeChangeRequest: Record "Employee Change Request";
     begin
         VarVariant := RecRef;
         case RecRef.Number of
@@ -126,6 +142,14 @@ codeunit 51011 "Wkfl Event Response Finance"
                     Handled := true;
                     WorkflowResponses.ReleaseUserChanges(VarVariant);
                 end;
+            // EmployeeChangeRequest: Record "Employee Change Request";
+            Database::"Employee Change Request":
+                begin
+                    EmployeeChangeRequest.SetView(RecRef.GetView());
+                    Handled := true;
+                    WorkflowResponses.ReleaseEmployeeChange(VarVariant);
+                end;
+
         end;
     end;
 
@@ -140,6 +164,7 @@ codeunit 51011 "Wkfl Event Response Finance"
         ReleasePayments: Codeunit "Release Payments";
         WorkflowResponses: Codeunit "Workflow Responses Finance";
         VarVariant: Variant;
+        EmployeeChangeRequest: Record "Employee Change Request";
     begin
         VarVariant := RecRef;
 
@@ -179,6 +204,14 @@ codeunit 51011 "Wkfl Event Response Finance"
                     Handled := true;
                     WorkflowResponses.ReOpenUserChanges(VarVariant);
                 end;
+            // EmployeeChangeRequest: Record "Employee Change Request";
+            Database::"Employee Change Request":
+                begin
+                    EmployeeChangeRequest.SetView(RecRef.GetView());
+                    Handled := true;
+                    WorkflowResponses.ReOpenEmployeeChange(VarVariant);
+                end;
+
         end;
     end;
 }

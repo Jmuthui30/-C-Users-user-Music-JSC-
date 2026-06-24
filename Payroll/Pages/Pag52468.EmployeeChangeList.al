@@ -44,6 +44,7 @@ page 52468 "Employee Change List"
                 {
                     ToolTip = 'Specifies the value of the Job Position Title field.';
                 }
+                field("Approval Status"; "Approval Status") { }
             }
         }
     }

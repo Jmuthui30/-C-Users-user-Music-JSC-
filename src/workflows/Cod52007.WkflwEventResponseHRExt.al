@@ -39,6 +39,8 @@ codeunit 52007 "Wkflw Event Response HR Ext"
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.SetStatusToPendingApprovalCode(), WorkflowEventHandling.RunworkflowOnSendAllowanceRegisterforApprovalCode());
                     // New Employee
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.SetStatusToPendingApprovalCode(), WorkflowEventHandling.RunWorkflowOnSendNewEmployeeForApprovalCode());
+                    WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.SetStatusToPendingApprovalCode(), WorkflowEventHandling.RunWorkflowOnSendEmployeechangeForApprovalCode());
+
                 end;
             WorkFlowResponse.CreateApprovalRequestsCode():
                 begin
@@ -72,6 +74,10 @@ codeunit 52007 "Wkflw Event Response HR Ext"
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.CreateApprovalRequestsCode(), WorkflowEventHandling.RunworkflowOnSendAllowanceRegisterforApprovalCode());
                     //New Employee
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.CreateApprovalRequestsCode(), WorkflowEventHandling.RunWorkflowOnSendNewEmployeeForApprovalCode());
+
+                    WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.CreateApprovalRequestsCode(), WorkflowEventHandling.RunWorkflowOnSendEmployeechangeForApprovalCode());
+
+
                 end;
             WorkFlowResponse.SendApprovalRequestForApprovalCode():
                 begin
@@ -105,6 +111,9 @@ codeunit 52007 "Wkflw Event Response HR Ext"
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.SendApprovalRequestForApprovalCode(), WorkflowEventHandling.RunworkflowOnSendAllowanceRegisterforApprovalCode());
                     // New Employee
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.SendApprovalRequestForApprovalCode(), WorkflowEventHandling.RunWorkflowOnSendNewEmployeeForApprovalCode());
+                    WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.SendApprovalRequestForApprovalCode(), WorkflowEventHandling.RunWorkflowOnSendEmployeechangeForApprovalCode());
+
+
                 end;
             WorkFlowResponse.OpenDocumentCode():
                 begin
@@ -138,6 +147,9 @@ codeunit 52007 "Wkflw Event Response HR Ext"
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.OpenDocumentCode(), WorkflowEventHandling.RunworkflowOnCancelAllowanceRegisterApprovalRequestCode());
                     // New Employee
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.OpenDocumentCode(), WorkflowEventHandling.RunWorkflowOnCancelNewEmployeeApprovalRequestCode());
+                    WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.OpenDocumentCode(), WorkflowEventHandling.RunWorkflowOnCancelEmployeechangeApprovalRequestCode());
+
+
                 end;
             WorkFlowResponse.CancelAllApprovalRequestsCode():
                 begin
@@ -171,6 +183,11 @@ codeunit 52007 "Wkflw Event Response HR Ext"
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.CancelAllApprovalRequestsCode(), WorkflowEventHandling.RunworkflowOnCancelAllowanceRegisterApprovalRequestCode());
                     // New Employee
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.CancelAllApprovalRequestsCode(), WorkflowEventHandling.RunWorkflowOnCancelNewEmployeeApprovalRequestCode());
+                    //    EmployeeChangeRequest: Record "Employee Change Request";
+
+                    WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.CancelAllApprovalRequestsCode(), WorkflowEventHandling.RunWorkflowOnCancelEmployeeChangeApprovalRequestCode());
+
+
                 end;
             WorkFlowResponse.ReleaseDocumentCode():
                 ;
@@ -193,6 +210,7 @@ codeunit 52007 "Wkflw Event Response HR Ext"
         Emp: Record "Employee";
         VarVariant: Variant;
         trainingRequest: Record "Training Request";
+        EmployeeChangeRequest: Record "Employee Change Request";
     begin
         VarVariant := RecRef;
         case RecRef.Number of
@@ -251,6 +269,14 @@ codeunit 52007 "Wkflw Event Response HR Ext"
                     Handled := true;
                     WorkflowResponses.ReleaseTrainingRequest(VarVariant);
                 end;
+            // // EmployeeChangeRequest
+            Database::"Employee Change Request":
+                begin
+                    EmployeeChangeRequest.SetView(RecRef.GetView());
+                    Handled := true;
+                    WorkflowResponses.ReleaseEmployeeChangeRequest(VarVariant);
+                end;
+
 
         end;
     end;
@@ -268,6 +294,8 @@ codeunit 52007 "Wkflw Event Response HR Ext"
         WorkflowResponses: Codeunit "Workflow Responses HR";
         TrainingRequest: Record "Training Request";
         VarVariant: Variant;
+        EmployeeChangeRequest: Record "Employee Change Request";
+
     begin
         VarVariant := RecRef;
 
@@ -324,6 +352,13 @@ codeunit 52007 "Wkflw Event Response HR Ext"
                     TrainingRequest.SetView(RecRef.GetView());
                     Handled := true;
                     WorkflowResponses.ReopenTrainingRequest(VarVariant);
+                end;
+            // //         EmployeeChangeRequest : Record "Employee Change Request";
+            Database::"Employee Change Request":
+                begin
+                    EmployeeChangeRequest.SetView(RecRef.GetView());
+                    Handled := true;
+                    WorkflowResponses.ReopenEmployeeChangeRequest(VarVariant);
                 end;
         end;
     end;

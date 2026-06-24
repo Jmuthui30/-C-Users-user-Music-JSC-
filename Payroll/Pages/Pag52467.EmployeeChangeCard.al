@@ -51,13 +51,16 @@ page 52467 "Employee Change Card"
                 field("ID No."; Rec."ID No.")
                 {
                     ToolTip = 'Specifies the value of the ID No. field';
+                    Visible = false;
                 }
                 field("Passport No."; Rec."Passport No.")
                 {
                     ToolTip = 'Specifies the value of the Passport No. field';
+                    Visible = false;
                 }
                 field("Driving Licence"; Rec."Driving Licence")
                 {
+                    Visible = false;
                     ToolTip = 'Specifies the value of the Driving Licence field';
                 }
                 field("Phone No."; Rec."Phone No.")
@@ -87,14 +90,13 @@ page 52467 "Employee Change Card"
                 field("User ID"; Rec."User ID")
                 {
                     ToolTip = 'Specifies the value of the User ID field';
+                    Editable = false;
                 }
-            }
-            group("Personal Details")
-            {
-                Caption = 'Personal Details';
+
 
                 field(Gender; Rec.Gender)
                 {
+                    Editable = false;
                     ToolTip = 'Specifies the value of the Gender field';
                 }
                 field(Disabled; Rec.Disabled)
@@ -123,6 +125,7 @@ page 52467 "Employee Change Card"
                 }
                 field("Date of Birth"; Rec."Date of Birth")
                 {
+                    Visible = false;
                     ApplicationArea = BasicHR;
                     Caption = 'Date of Birth';
                     Importance = Standard;
@@ -130,6 +133,7 @@ page 52467 "Employee Change Card"
                 }
                 field("Date of Birth - Age"; Rec."Date of Birth - Age")
                 {
+                    Editable = false;
                     Caption = ' Age';
                     Importance = Standard;
                     ToolTip = 'Specifies the value of the  Age field';
@@ -156,11 +160,13 @@ page 52467 "Employee Change Card"
                 // }
                 field("Ethnic Name"; Rec."Ethnic Name")
                 {
+                    Visible = false;
                     Caption = 'Ethnic Community';
                     ToolTip = 'Specifies the value of the Ethnic Community field';
                 }
                 field("Home District"; Rec."Home District")
                 {
+                    Visible = false;
                     ToolTip = 'Specifies the value of the Home District field';
                 }
                 field(County; Rec.County)
@@ -187,7 +193,7 @@ page 52467 "Employee Change Card"
             group("Employment Information")
             {
                 Caption = 'Employment Information';
-
+                Visible = false;
                 field("Employee Company"; Rec."Employee Company")
                 {
                     Caption = 'Company';
@@ -260,7 +266,7 @@ page 52467 "Employee Change Card"
             group("Acting Position")
             {
                 Caption = 'Acting Position';
-                Editable = false;
+                Visible = false;
 
                 field("Acting No"; Rec."Acting No")
                 {
@@ -302,6 +308,7 @@ page 52467 "Employee Change Card"
             }
             group(Administration)
             {
+                Visible = false;
                 field("Employment Date"; Rec."Employment Date")
                 {
                     ToolTip = 'Specifies the value of the Employment Date field';
@@ -522,9 +529,10 @@ page 52467 "Employee Change Card"
             group("Important Dates")
             {
                 Caption = 'Important Dates';
-
+                Visible = false;
                 field("Date Of Join"; Rec."Date Of Join")
                 {
+                    Editable = false;
                     ToolTip = 'Specifies the value of the Date Of Join field';
 
                     trigger OnValidate()
@@ -621,14 +629,17 @@ page 52467 "Employee Change Card"
                 }
                 field("Exit Interview Date"; Rec."Exit Interview Date")
                 {
+                    Visible = false;
                     ToolTip = 'Specifies the value of the Exit Interview Date field';
                 }
                 field("Exit Interview Done by"; Rec."Exit Interview Done by")
                 {
+                    Visible = false;
                     ToolTip = 'Specifies the value of the Exit Interview Done by field';
                 }
                 field("Allow Re-Employment In Future"; Rec."Allow Re-Employment In Future")
                 {
+                    Visible = false;
                     ToolTip = 'Specifies the value of the Allow Re-Employment In Future field';
                 }
             }
@@ -664,7 +675,7 @@ page 52467 "Employee Change Card"
 
                 trigger OnAction()
                 begin
-
+                    if Rec."Approval Status" <> Rec."Approval Status"::Approved then Error('Kindl send to Approval First');
                     Employee.Reset();
                     Employee.SetRange("No.", Rec."No.");
                     if Employee.Find('-') then
@@ -701,6 +712,7 @@ page 52467 "Employee Change Card"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
+                Visible = false;
             }
             action("Yearly Bonus")
             {
@@ -710,6 +722,7 @@ page 52467 "Employee Change Card"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
+                Visible = false;
                 trigger OnAction()
                 begin
 
@@ -725,7 +738,7 @@ page 52467 "Employee Change Card"
                 PromotedOnly = true;
                 RunObject = page "Acting Duties List";
                 RunPageLink = "Acting Employee No." = field("No.");
-
+                Visible = false;
                 ToolTip = 'Executes the Acting Positions action';
             }
             action(Beneficiaries)
@@ -747,7 +760,7 @@ page 52467 "Employee Change Card"
                 Enabled = Rec."Approval Status" = Rec."Approval Status"::Open;
                 Image = SendApprovalRequest;
                 Promoted = true;
-                PromotedCategory = Category4;
+                PromotedCategory = Process;
                 PromotedIsBig = true;
                 ToolTip = 'Executes the Send Approval Request action';
 
@@ -756,12 +769,17 @@ page 52467 "Employee Change Card"
                     LeaveType: Record "Leave Type";
                 begin
 
-                    // if ApprovalsMgmt.CheckLeaveRequestWorkflowEnabled(Rec) then
-                    //     ApprovalsMgmt.OnSendLeaveRequestApproval(Rec);
-                    // Commit();
-                    // if ApprovalManagement.CheckEmployeeAppraisalWorkflowEnabled()
-                    Rec."Approval Status" := Rec."Approval Status"::Approved;
-                    Rec.Modify();
+
+
+                    if Confirm('Send Approval Request for changes %1 ', false, Rec.Name) = false then begin
+                        Message('Cancelled');
+                        exit;
+                    end
+                    else begin
+                        ApprovalsCodeUnit.SendMembershipApplicationsRequestForApproval(rec."No.", Rec);
+                        Message('Approval Request Sent Successfully');
+                    end;
+
                     CurrPage.Close();
 
                 end;
@@ -772,13 +790,13 @@ page 52467 "Employee Change Card"
                 Enabled = Rec."Approval Status" = Rec."Approval Status"::"Pending Approval";
                 Image = CancelApprovalRequest;
                 Promoted = true;
-                PromotedCategory = Category4;
+                PromotedCategory = Process;
                 PromotedIsBig = true;
                 ToolTip = 'Executes the Cancel Approval Request action';
 
                 trigger OnAction()
                 begin
-                    // ApprovalManagement.OnCancelLeaveRequestApproval(Rec);
+                    ApprovalManagement.OnCancelEmployeeChangeApproval(rec);
 
                 end;
             }
@@ -1252,6 +1270,8 @@ page 52467 "Employee Change Card"
     end;
 
     var
+        ApprovalsCodeUnit: Codeunit "Altairetro ApprovalsCodeUnit";
+
         ApprovalsMgmt: Codeunit "Approval Mgt HR Ext";
         ApprovalManagement: Codeunit "Approval Mgt HR Ext";
         Banks: Record Banks;

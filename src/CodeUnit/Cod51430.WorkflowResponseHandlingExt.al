@@ -117,8 +117,8 @@ codeunit 51430 "Workflow Response Handling Ext"
                     //2. Service Worksheet
                     WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.SetStatusToPendingApprovalCode, WorkflowEventHandling.RunWorkflowOnSendServiceWorksheetForApprovalCode);
                     //
-                    // EmployeeChangeRequest
-                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.SetStatusToPendingApprovalCode, WorkflowEventHandling.RunWorkflowOnSendEmployeeChangeRequestForApprovalCode);
+                    // // EmployeeChangeRequest
+                    // WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.SetStatusToPendingApprovalCode, WorkflowEventHandling.RunWorkflowOnSendEmployeeChangeRequestForApprovalCode);
 
                 end;
             WorkflowResponseHandling.CreateApprovalRequestsCode:
@@ -226,8 +226,8 @@ codeunit 51430 "Workflow Response Handling Ext"
                     //2. Service Worksheet
                     WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CreateApprovalRequestsCode, WorkflowEventHandling.RunWorkflowOnSendServiceWorksheetForApprovalCode);
                     //
-                    //EmployeeChangeRequest
-                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CreateApprovalRequestsCode, WorkflowEventHandling.RunWorkflowOnSendEmployeeChangeRequestForApprovalCode);
+                    // //EmployeeChangeRequest
+                    // WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CreateApprovalRequestsCode, WorkflowEventHandling.RunWorkflowOnSendEmployeeChangeRequestForApprovalCode);
 
                 end;
             WorkflowResponseHandling.SendApprovalRequestForApprovalCode:
@@ -331,8 +331,7 @@ codeunit 51430 "Workflow Response Handling Ext"
                     //2. Service Worksheet
                     WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.SendApprovalRequestForApprovalCode, WorkflowEventHandling.RunWorkflowOnSendServiceWorksheetForApprovalCode);
                     //
-                    //EmployeeChangeRequest
-                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.SendApprovalRequestForApprovalCode, WorkflowEventHandling.RunWorkflowOnSendEmployeeChangeRequestForApprovalCode);
+                    // WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.SendApprovalRequestForApprovalCode, WorkflowEventHandling.RunWorkflowOnSendEmployeeChangeRequestForApprovalCode);
                 end;
             WorkflowResponseHandling.OpenDocumentCode:
                 begin
@@ -546,8 +545,8 @@ codeunit 51430 "Workflow Response Handling Ext"
                     //2. Service Worksheet
                     WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CancelAllApprovalRequestsCode, WorkflowEventHandling.RunWorkflowOnCancelServiceWorksheetApprovalRequestCode);
                     //
-                    //EmployeeChangeRequest
-                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CancelAllApprovalRequestsCode, WorkflowEventHandling.RunWorkflowOnCancelEmployeeChangeRequestApprovalCode());
+                    // //EmployeeChangeRequest
+                    // WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CancelAllApprovalRequestsCode, WorkflowEventHandling.RunWorkflowOnCancelEmployeeChangeRequestApprovalCode());
                 end;
         end;
     end;
@@ -902,14 +901,14 @@ codeunit 51430 "Workflow Response Handling Ext"
                     ServiceWorksheet.Modify;
                     Handled := true;
                 end;
-            // EmployeeChangeRequest: Record "Employee Change Request";
-            DATABASE::"Employee Change Request":
-                begin
-                    RecRef.SetTable(EmployeeChangeRequest);
-                    EmployeeChangeRequest.Validate(Status, EmployeeChangeRequest."Approval Status"::Approved);
-                    EmployeeChangeRequest.Modify;
-                    Handled := true;
-                end;
+        // // EmployeeChangeRequest: Record "Employee Change Request";
+        // DATABASE::"Employee Change Request":
+        //     begin
+        //         RecRef.SetTable(EmployeeChangeRequest);
+        //         EmployeeChangeRequest.Validate(Status, EmployeeChangeRequest."Approval Status"::Approved);
+        //         EmployeeChangeRequest.Modify;
+        //         Handled := true;
+        //     end;
         end;
     end;
     //#endregion

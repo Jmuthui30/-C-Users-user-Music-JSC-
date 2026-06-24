@@ -96,6 +96,17 @@ page 59991 "Director Role Center"
                     ToolTip = 'View the employee details';
                 }
 
+                //"Employee Change List"
+                action(Action37)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Employee Change Request';
+                    Image = PersonInCharge;
+                    RunObject = Page "Employee Change List";
+                    ToolTip = 'View the employee details';
+                }
+
+
             }
             group("Leave Management")
             {
