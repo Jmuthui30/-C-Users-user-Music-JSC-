@@ -51,6 +51,12 @@ page 52472 "Employee Beneficiaries"
                 {
                     ToolTip = 'Specifies the value of the Percentage field.';
                 }
+                field("Relative Code"; "Relative Code")
+                { ToolTip = 'Specifies the value of the Percentage field.'; }
+
+
+                field("Name of Guardian"; "Name of Guardian")
+                { }
             }
         }
     }

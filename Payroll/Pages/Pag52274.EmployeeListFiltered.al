@@ -2,7 +2,7 @@ page 52274 "Employee List-Filtered"
 {
     ApplicationArea = All;
     Caption = 'Employees-Active';
-    CardPageID = "Employee Card"; 
+    CardPageID = "Employee Card";
     Editable = false;
     DeleteAllowed = false;
     PageType = List;
@@ -48,6 +48,7 @@ page 52274 "Employee List-Filtered"
                 field("Job Position Title"; Rec."Job Position Title")
                 {
                     ToolTip = 'Specifies the value of the Job Title field';
+                    Visible = false;
                 }
                 field("Country/Region Code"; Rec."Country/Region Code")
                 {
@@ -163,7 +164,7 @@ page 52274 "Employee List-Filtered"
                     var
                         PayPeriod: Record "Payroll Period II";
                         CurrentMonth: Date;
-                                            CuPayroll: Codeunit Payroll;
+                        CuPayroll: Codeunit Payroll;
 
                     begin
                         PayPeriod.Reset();

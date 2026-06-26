@@ -96,7 +96,7 @@ Codeunit 50341 "Custom Workflow Responses"
             Database::"Employee Change Request":
                 begin
                     RecRef.SetTable(MembershipApplication);
-                    MembershipApplication.Validate("Approval Status", MembershipApplication."Approval Status"::"Pending Approval");
+                    MembershipApplication.Validate("Approval Status", MembershipApplication."Approval Status"::Approved);
                     MembershipApplication.Modify(true);
                     Variant := MembershipApplication;
                 end;
@@ -117,10 +117,9 @@ Codeunit 50341 "Custom Workflow Responses"
                 begin
                     RecRef.SetTable(MemberShipApp);
                     MemberShipApp."Approval Status" := MemberShipApp."Approval Status"::Approved;
-                    // MemberShipApp."Approved By" := UserId;
-                    // MemberShipApp."Approved Date" := Today;
                     MemberShipApp.Modify(true);
                     Handled := true;
+                    Message('Status is %1', MemberShipApp."Approval Status");
                 end;
 
 

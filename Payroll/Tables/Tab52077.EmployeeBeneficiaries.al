@@ -43,6 +43,26 @@ table 53035 "Employee Beneficiaries"
         {
             Caption = 'Percentage';
         }
+        field(13; "Relative Code"; Code[10])
+        {
+            Caption = 'Relative Code';
+            ToolTip = 'Specifies a relative code for the employee.';
+            TableRelation = Relative;
+        }
+
+        field(18; "Name of Guardian"; Text[300])
+        {
+
+            ExtendedDatatype = PhoneNo;
+        }
+        field(14; "Guardian Contract"; Code[20])
+        { }
+        field(17; "specifis Other"; Text[100])
+        { }
+        field(19; "ID No./Passport"; Code[20]) { }
+        // Guardian
+        field(20; "Guardian"; Boolean)
+        { }
     }
 
     keys

@@ -40,10 +40,41 @@ page 52474 "Beneficiary Cards"
                 {
                     ToolTip = 'Specifies the value of the Gender field';
                 }
+                field("ID No./Passport"; "ID No./Passport")
+                { }
                 field("Phone No."; Rec."Phone No.")
                 {
                     ToolTip = 'Specifies the value of the Phone No. field';
                 }
+                field("Relative Code"; "Relative Code")
+                {
+                    ToolTip = 'Specifies the value of the Percentage field.';
+                    Caption = 'Relationship';
+                }
+                field(Guardian; Guardian)
+                {
+
+                }
+                group(Details)
+                {
+                    Visible = "Relative Code" = 'Other';
+
+                    field("specifis Other"; "specifis Other")
+                    {
+                        Caption = 'Description';
+                    }
+
+                }
+                group(GuardianDetails)
+                {
+                    Visible = Guardian = true;
+                    field("Name of Guardian"; "Name of Guardian")
+                    { }
+                    field("Guardian Contract"; "Guardian Contract")
+                    { }
+
+                }
+
             }
         }
     }
