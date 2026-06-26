@@ -51,11 +51,10 @@ page 59991 "Director Role Center"
                 caption = 'Training Management';
             }
 
-            part("PR Payroll Activities Cue"; "Payroll Activities")
+            part("Payroll Cues"; "Employee Payroll Cue")
             {
-                Caption = 'Payroll Management';
-                Visible = false;
                 ApplicationArea = All;
+                Caption = 'Payroll Management';
             }
             part(Headline; "Headline RC Payroll Manager")
             {

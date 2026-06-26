@@ -970,7 +970,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                     PromotedCategory = Category6;
                     PromotedIsBig = true;
                     Image = CashFlow;
-                    Visible = false;
+                    // Visible = false;
                 }
                 action("Assign Deductions")
                 {
@@ -985,7 +985,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                     PromotedCategory = Category6;
                     PromotedIsBig = true;
                     Image = Payment;
-                    Visible = false;
+                    // Visible = false;
                 }
             }
             // group(OpeningBalances)
@@ -1166,7 +1166,7 @@ pageextension 51426 "ExtEmployee Card" extends "Employee Card"
                     PromotedIsBig = true;
                     ToolTip = 'Executes the Payroll Run action';
                     ApplicationArea = All;
-                    Visible = false;
+                    // Visible = false;
                     trigger OnAction()
                     var
                         CuPayroll: Codeunit Payroll;

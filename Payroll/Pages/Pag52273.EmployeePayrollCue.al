@@ -14,7 +14,7 @@ page 52273 "Employee Payroll Cue"
                 {
                     DrillDownPageId = "Employee List";
                     ToolTip = 'Specifies the value of the All Employees field';
-                    Visible = false;
+                    // Visible = false;
                 }
                 field("Active Employees"; Rec."Active Employees")
                 {
