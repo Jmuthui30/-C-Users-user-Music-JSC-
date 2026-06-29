@@ -89,67 +89,79 @@ codeunit 51605 "HR Communication Management"
                 Lines.TestField(Email);
                 Lines.TestField(Name);
                 if Lines.Type = Lines.Type::Staff then begin //Staff
-                    Body := 'Dear ' + Lines.Name;
+
+                    // Kindly note that this notification is for testing purposes only. No action is required.
+
+                    // Staff Email Body
+                    Body := 'Dear ' + Lines.Name + ',';
                     Body += '<br><br>';
-                    Body += 'You have been nominated for an event through the Memo ' + InternalMemo."No." + '.';
+                    Body += '<b>Kindly note that this notification is for testing purposes only. No action is required.</b>';
                     Body += '<br><br>';
-                    Body += 'The Subject of the Memo is ' + InternalMemo.Subject + '.';
+                    Body += 'You have been nominated to attend a training event through Memo Reference: <b>' + InternalMemo."No." + '</b>.';
                     Body += '<br><br>';
-                    Body += 'And Your located Amount is Ksh ' + Format(Lines.Amount) + '.';
+                    Body += 'The details are as follows:';
                     Body += '<br><br>';
-                    Body += 'The location of Event ' + Lines.Location + '. The event is scheduled to hold for ' + Format(InternalMemo."Total Days in the Field") + '.';
+                    Body += '<ul>';
+                    Body += '<li><b>Subject of the Memo:</b> ' + InternalMemo.Subject + '</li>';
+                    Body += '<li><b>Allocated Amount:</b> KSh ' + Format(Lines.Amount) + '</li>';
+                    Body += '<li><b>Event Location:</b> ' + Lines.Location + '</li>';
+                    Body += '<li><b>Duration:</b> ' + Format(InternalMemo."Total Days in the Field") + ' days</li>';
+                    Body += '<li><b>Start Date:</b> ' + Format(InternalMemo."Start Date") + '</li>';
+                    Body += '<li><b>End Date:</b> ' + Format(InternalMemo."End Date") + '</li>';
+                    Body += '</ul>';
+                    Body += 'Please go to ' + BCLink + ' and create an Imprest Request for the allocated amount and seek the relevant approval to attend.';
                     Body += '<br><br>';
-                    Body += 'Start Date: ' + Format(InternalMemo."Start Date") + '.';
+                    Body += '<b>Please Note:</b> The Microsoft Dynamics Self Service reference for this memo is <b>' + InternalMemo."No." + '</b>.';
                     Body += '<br><br>';
-                    Body += 'End Date: ' + Format(InternalMemo."End Date") + '.';
-                    Body += '<br><br>';
-                    Body += 'Please go to ' + BCLink + ' and create an imprest request for the same and seek relevant approval to attend.';
-                    Body += '<br><br>';
-                    Body += 'NB: The system reference for this Memo on Microsoft Dynamics Self Service is ' + InternalMemo."No.";
-                    Body += '<br><br>';
-                    Body += 'For any queries kindly do not hesitate to contact the undersigned.';
+                    Body += 'Should you have any questions, please do not hesitate to contact the undersigned.';
                     Body += '<br><br>';
                     Body += 'Thank you.';
                     Body += '<br><br>';
-                    Body += 'Yours Sincerely,';
+                    Body += 'Yours sincerely,';
                     Body += '<br><br>';
-                    Body += '<b>Business Central Notification System<b>';
+                    Body += '<b>Business Central Notification System</b>';
                     Body += '<br>';
                     Body += CompInfo.Name;
                     Body += '<br>';
                     Mail.Create(Lines.Email, InternalMemo.Subject, Body, true);
-                    // email.OpenInEditorModally(mail)
                     Email.Send(Mail);
+
+
+
                 end
                 else begin //Expert
-                    Body := 'Dear ' + Lines.Name;
+                           // Expert Email Body
+                    Body := 'Dear ' + Lines.Name + ',';
                     Body += '<br><br>';
-                    Body += 'You have been nominated for an event by ' + CompInfo.Name + ' as an expert through the Memo ' + InternalMemo."No." + '.';
+                    Body += '<b>Kindly note that this notification is for testing purposes only. No action is required.</b>';
                     Body += '<br><br>';
-                    Body += 'The Subject of the Memo is ' + InternalMemo.Subject + '.';
+                    Body += 'You have been nominated to attend a training event by <b>' + CompInfo.Name + '</b> as an expert through Memo Reference: <b>' + InternalMemo."No." + '</b>.';
                     Body += '<br><br>';
-                    Body += 'And Your located Amount is Ksh ' + Format(Lines.Amount) + '.';
+                    Body += 'The details are as follows:';
                     Body += '<br><br>';
-                    Body += 'The location of Event ' + Lines.Location + '. The event is scheduled to hold for ' + Format(InternalMemo."Total Days in the Field") + '.';
-                    Body += '<br><br>';
-                    Body += 'Start Date: ' + Format(InternalMemo."Start Date") + '.';
-                    Body += '<br><br>';
-                    Body += 'End Date: ' + Format(InternalMemo."End Date") + '.';
-                    Body += '<br><br>';
+                    Body += '<ul>';
+                    Body += '<li><b>Subject of the Memo:</b> ' + InternalMemo.Subject + '</li>';
+                    Body += '<li><b>Allocated Amount:</b> KSh ' + Format(Lines.Amount) + '</li>';
+                    Body += '<li><b>Event Location:</b> ' + Lines.Location + '</li>';
+                    Body += '<li><b>Duration:</b> ' + Format(InternalMemo."Total Days in the Field") + ' days</li>';
+                    Body += '<li><b>Start Date:</b> ' + Format(InternalMemo."Start Date") + '</li>';
+                    Body += '<li><b>End Date:</b> ' + Format(InternalMemo."End Date") + '</li>';
+                    Body += '</ul>';
                     Body += 'Please prepare and plan to attend.';
                     Body += '<br><br>';
-                    Body += 'For any queries kindly do not hesitate to contact the undersigned.';
+                    Body += '<b>Please Note:</b> The Microsoft Dynamics Self Service reference for this memo is <b>' + InternalMemo."No." + '</b>.';
+                    Body += '<br><br>';
+                    Body += 'Should you have any questions, please do not hesitate to contact the undersigned.';
                     Body += '<br><br>';
                     Body += 'Thank you.';
                     Body += '<br><br>';
                     Body += 'Yours Sincerely,';
                     Body += '<br><br>';
-                    Body += '<b>Business Central Notification System<b>';
+                    Body += '<b>Business Central Notification System</b>';
                     Body += '<br>';
                     Body += CompInfo.Name;
                     Body += '<br>';
                     Mail.Create(Lines.Email, InternalMemo.Subject, Body, true);
-                    // email.OpenInEditorModally(mail)
                     Email.Send(Mail);
                 end;
             until Lines.Next() = 0;
