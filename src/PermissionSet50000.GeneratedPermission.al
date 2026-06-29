@@ -139,7 +139,8 @@ permissionset 50000 GeneratedPermission
         tabledata "Employee Import Lines" = RIMD,
         tabledata "Employee Information_Data" = RIMD,
         tabledata "Employee Kins" = RIMD,
-    // tabledata "Employee Leave Application"=RIMD,
+
+tabledata "Approval Entry" = RIMD,
         tabledata "Employee Leave Plan" = RIMD,
         tabledata "Employee Leave Plan Header" = RIMD,
         tabledata "Employee Leaves" = RIMD,
@@ -463,6 +464,7 @@ permissionset 50000 GeneratedPermission
         table "Bank Branches" = X,
         table "Bidder Mandatory Requirements" = X,
         table Bidders = X,
+        table "Approval Entry" = X,
         table "Blocked Reason" = X,
         table "Board Of Directors" = X,
         table Bracket = X,
