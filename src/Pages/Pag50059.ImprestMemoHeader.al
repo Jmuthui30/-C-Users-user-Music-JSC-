@@ -149,9 +149,11 @@ page 50059 "Imprest Memo Header"
                     field("Air Ticket"; Rec."Air Ticket")
                     {
                     }
-                    field(Conference; Rec.Conference)
-                    {
-                    }
+                    // field(Conference; Rec.Conference)
+                    // {
+                    // }
+                    field("Record Allowance"; "Record Allowance")
+                    { }
                     field("Ground Transport"; Rec."Ground Transport")
                     {
                     }
@@ -303,6 +305,7 @@ page 50059 "Imprest Memo Header"
 
                         ApprovalsMngt.OnSendImprestMemoForApproval(Rec);
                         Message('Approval Request Sent');
+                        Rec.Status := Rec.Status::Released;
                         CurrPage.Close();
 
                     end;
@@ -619,7 +622,12 @@ page 50059 "Imprest Memo Header"
                     //Visible = Rec.Status = Rec.Status::Released;
                     trigger OnAction()
                     begin
+
+
+
                         HRCom.SendImprestMemoEmail(Rec);
+                        // SendProcumentEmail
+                        HRCom.SendProcumentEmail(Rec);
                         Message('Completed');
                     end;
                 }

@@ -440,6 +440,11 @@ table 50465 "Imprest Memo Lines"
 
             end;
         }
+        field(56; "Record Allowance Amount"; Decimal)
+        { }
+        field(57; "Record Allowance"; Boolean)
+        { }
+
     }
     keys
     {

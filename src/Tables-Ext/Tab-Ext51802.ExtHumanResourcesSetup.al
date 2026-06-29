@@ -613,7 +613,11 @@ tableextension 51802 "ExtHuman Resources Setup" extends "Human Resources Setup"
         }
         field(52054; "Owner occupier interest"; Code[10])
         {
-            TableRelation = Earning.Code ;
+            TableRelation = Earning.Code;
+        }
+        field(52057; "Procument Office"; Text[1000])
+        {
+
         }
     }
 }

@@ -79,7 +79,13 @@ codeunit 51605 "HR Communication Management"
         // ImprestHeader.FindSet();
         //MemoSetup.Get;
         //CompInfo.Get;
-        BCLink := '<a href=' + GETURL(CURRENTCLIENTTYPE, COMPANYNAME, ObjectType::Page, 52103, ImprestHeader, true) + '>' + 'Business Central</a>';
+        // https://selfservice.jsc.go.ke:8090/Login.aspx
+
+        // BCLink := 'https://selfservice.jsc.go.ke:8090/Login.aspx';
+        BCLink := 'selfservice.jsc.go.ke:8090/Login.aspx';
+
+
+        // BCLink := '<a href=' + GETURL(CURRENTCLIENTTYPE, COMPANYNAME, ObjectType::Page, 52103, ImprestHeader, true) + '>' + 'Business Central</a>';
         Lines.Reset();
         Lines.SetRange("No.", InternalMemo."No.");
         Lines.SetFilter(Email, '<>%1', '');
@@ -103,13 +109,17 @@ codeunit 51605 "HR Communication Management"
                     Body += '<br><br>';
                     Body += '<ul>';
                     Body += '<li><b>Subject of the Memo:</b> ' + InternalMemo.Subject + '</li>';
-                    Body += '<li><b>Allocated Amount:</b> KSh ' + Format(Lines.Amount) + '</li>';
+
                     Body += '<li><b>Event Location:</b> ' + Lines.Location + '</li>';
-                    Body += '<li><b>Duration:</b> ' + Format(InternalMemo."Total Days in the Field") + ' days</li>';
                     Body += '<li><b>Start Date:</b> ' + Format(InternalMemo."Start Date") + '</li>';
                     Body += '<li><b>End Date:</b> ' + Format(InternalMemo."End Date") + '</li>';
+
+                    Body += '<li><b> DSA :</b> KSh ' + Format(Lines.Amount) + '</li>';
+                    Body += '<li><b>Duration:</b> ' + Format(InternalMemo."Total Days in the Field") + ' days</li>';
+                    Body += '<li><b>Total Amount:</b> KSh ' + Format(Lines.Amount * Lines."Total Days in the Field") + '</li>';
+
                     Body += '</ul>';
-                    Body += 'Please go to ' + BCLink + ' and create an Imprest Request for the allocated amount and seek the relevant approval to attend.';
+                    Body += 'Please go to Portal ' + BCLink + ' and create an Imprest Request for the allocated amount and seek the relevant approval to attend.';
                     Body += '<br><br>';
                     Body += '<b>Please Note:</b> The Microsoft Dynamics Self Service reference for this memo is <b>' + InternalMemo."No." + '</b>.';
                     Body += '<br><br>';
@@ -142,8 +152,9 @@ codeunit 51605 "HR Communication Management"
                     Body += '<ul>';
                     Body += '<li><b>Subject of the Memo:</b> ' + InternalMemo.Subject + '</li>';
                     Body += '<li><b>Allocated Amount:</b> KSh ' + Format(Lines.Amount) + '</li>';
-                    Body += '<li><b>Event Location:</b> ' + Lines.Location + '</li>';
                     Body += '<li><b>Duration:</b> ' + Format(InternalMemo."Total Days in the Field") + ' days</li>';
+                    Body += '<li><b>Total Amount:</b> KSh ' + Format(Lines.Amount * Lines."Total Days in the Field") + '</li>';
+                    Body += '<li><b>Event Location:</b> ' + Lines.Location + '</li>';
                     Body += '<li><b>Start Date:</b> ' + Format(InternalMemo."Start Date") + '</li>';
                     Body += '<li><b>End Date:</b> ' + Format(InternalMemo."End Date") + '</li>';
                     Body += '</ul>';
@@ -166,6 +177,97 @@ codeunit 51605 "HR Communication Management"
                 end;
             until Lines.Next() = 0;
         end;
+    end;
+
+    /// <summary>
+    procedure SendProcumentEmail(var InternalMemo: Record "Imprest Memo Header")
+    var
+        Lines: Record "Imprest Memo Lines";
+        BCLink: Text;
+        ImprestHeader: Record Payments;
+        EmployeeRecord: Record Employee;
+        TotalAmount: Decimal;
+        VarTotalAmount: Decimal;
+        VarEmail: Text[100];
+        Humansetup: Record "Human Resources Setup";
+        TempBlob: Codeunit "Temp Blob";
+        OutStr: OutStream;
+        InStr: InStream;
+        PdfFileName: Text;
+        MailBody: Text;
+        RecordRefVar: RecordRef;
+        LocalCustomer: Record "Imprest Memo Header";
+    begin
+        CompInfo.Get;
+        Humansetup.Get();
+
+        TempBlob.CreateOutStream(OutStr);
+        LocalCustomer := InternalMemo;
+        LocalCustomer.SetRecFilter();
+        RecordRefVar.GetTable(LocalCustomer);
+        Report.SaveAs(Report::"Memo Report", '', ReportFormat::Pdf, OutStr, RecordRefVar);
+        TempBlob.CreateInStream(InStr);
+        PdfFileName := InternalMemo."No." + '_Memo_Report.pdf';
+        //  "Memo Report"
+
+
+        Lines.Reset();
+        Lines.SetRange("No.", InternalMemo."No.");
+        Lines.SetFilter(Email, '<>%1', '');
+        if Lines.FindFirst() then begin
+            repeat
+                if ((Lines.Conference > 0) or (Lines."Air Ticket" > 0)) then
+                    TotalAmount := Lines.Conference + Lines."Air Ticket";
+                VarTotalAmount += VarTotalAmount + TotalAmount;
+            until Lines.Next = 0;
+            VarEmail := Humansetup."Procument Office"; //'paul.gitau@jsc.go.ke';
+            InternalMemo.TestField(InternalMemo.Subject);
+            Message('Total amount is %1', VarTotalAmount);
+            Lines.TestField(Email);
+            Lines.TestField(Name);
+            if VarTotalAmount > 1 then begin
+
+                // Staff Email Body
+                Body := 'Dear ' + Lines.Name + ',';
+                Body += '<br><br>';
+                Body += '<b>Kindly note that this notification is for testing purposes only. No action is required.</b>';
+                Body += '<br><br>';
+                Body += 'Kindly note that the following Participants have been nominated to attend a training event. Through Memo Reference: <b>' + InternalMemo."No." + '</b>.';
+                Body += '<br><br>';
+                Body += 'The details are as follows:';
+                Body += '<br><br>';
+                Body += '<ul>';
+                Body += '<li><b>Subject of the Memo:</b> ' + InternalMemo.Subject + '</li>';
+
+                Body += '<li><b>Event Location:</b> ' + Lines.Location + '</li>';
+                Body += '<li><b>Start Date:</b> ' + Format(InternalMemo."Start Date") + '</li>';
+                Body += '<li><b>End Date:</b> ' + Format(InternalMemo."End Date") + '</li>';
+                Body += '<li><b> For A period of :</b> ' + Format(InternalMemo."Total Days in the Field") + ' days</li>';
+
+                Body += '<li><b> Total Amount :</b> KSh ' + Format(VarTotalAmount) + '</li>';
+
+                Body += '</ul>';
+                Body += '<br><br>';
+                Body += '<b>Please Note:</b> The Microsoft Dynamics Self Service reference for this memo is <b>' + InternalMemo."No." + '</b>.';
+                Body += '<br><br>';
+                Body += 'Should you have any questions, please do not hesitate to contact the undersigned.';
+                Body += '<br><br>';
+                Body += 'Thank you.';
+                Body += '<br><br>';
+                Body += 'Yours sincerely,';
+                Body += '<br><br>';
+                Body += '<b>Business Central Notification System</b>';
+                Body += '<br>';
+                Body += CompInfo.Name;
+                Body += '<br>';
+                Mail.Create(VarEmail, InternalMemo.Subject, Body, true);
+                Mail.AddAttachment(PdfFileName, 'application/pdf', InStr);
+
+                Email.Send(Mail);
+
+            end;
+        end;
+
     end;
 
     procedure HRLeaveNotification(var LeaveApp: Record "Leave Application")

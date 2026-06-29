@@ -227,6 +227,8 @@ page 50061 "Imprest Memo Lines"
                         CurrPage.Update(false);
                     end;
                 }
+                field("Record Allowance Amount"; "Record Allowance Amount")
+                { }
                 field(Description; Description)
                 {
                     trigger OnValidate()
@@ -277,6 +279,7 @@ page 50061 "Imprest Memo Lines"
                         CurrPage.Update(false);
                     end;
                 }
+
             }
         }
     }

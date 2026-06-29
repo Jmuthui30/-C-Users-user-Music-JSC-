@@ -10,6 +10,11 @@ pageextension 51804 "ExtHuman Resources Setup" extends "Human Resources Setup"
             {
                 ApplicationArea = All;
             }
+            field("Procument Office"; "Procument Office")
+            {
+                ApplicationArea = All;
+                Caption = 'Procurement Officer';
+            }
             field("Normal Retirement Age"; Rec."Normal Retirement Age")
             {
                 ApplicationArea = all;

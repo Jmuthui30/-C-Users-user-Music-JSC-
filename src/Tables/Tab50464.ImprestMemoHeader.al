@@ -483,6 +483,13 @@ table 50464 "Imprest Memo Header"
         field(123; "From Title"; Text[100])
         {
         }
+        field(124; "No of Days(D&R)"; Text[100])
+        {
+            Caption = 'Days From Departure to Return';
+        }
+        field(127; "Record Allowance"; Boolean)
+        { }
+        // field(128; "")
 
     }
     keys
