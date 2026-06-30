@@ -146,12 +146,20 @@ table 50464 "Imprest Memo Header"
         }
         field(20; "Departure Date"; Date)
         {
+            trigger OnValidate()
+            begin
+                "No of Days(D&R)" := ("Return Date" - "Departure Date")
+            end;
         }
         field(21; "Return Location"; Text[30])
         {
         }
         field(22; "Return Date"; Date)
         {
+            trigger OnValidate()
+            begin
+                "No of Days(D&R)" := ("Return Date" - "Departure Date")
+            end;
         }
         field(23; Justification; Text[150])
         {
@@ -483,7 +491,7 @@ table 50464 "Imprest Memo Header"
         field(123; "From Title"; Text[100])
         {
         }
-        field(124; "No of Days(D&R)"; Text[100])
+        field(124; "No of Days(D&R)"; Integer)
         {
             Caption = 'Days From Departure to Return';
         }

@@ -1,9 +1,12 @@
-page 50059 "Imprest Memo Header"
+page 50759 "Imprest Memo Header Appr"
 {
     ApplicationArea = All;
     Caption = 'Imprest Memo Header';
     PageType = Card;
     SourceTable = "Imprest Memo Header";
+    Editable = false;
+    DeleteAllowed = false;
+    InsertAllowed = false;
 
     layout
     {
@@ -265,7 +268,7 @@ page 50059 "Imprest Memo Header"
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     ToolTip = 'Add a file as an attachment. You can attach images as well as documents.';
-
+                    Visible = false;
                     trigger OnAction()
                     var
                         SharepointHandler: Codeunit "Portal Integration";
@@ -279,7 +282,7 @@ page 50059 "Imprest Memo Header"
                     ApplicationArea = all;
                     Ellipsis = true;
                     Image = Attachments;
-                    Visible = true;
+                    // Visible = false;
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
@@ -411,7 +414,7 @@ page 50059 "Imprest Memo Header"
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     ToolTip = 'Reject the requested changes.';
-                    Visible = OpenApprovalEntriesExistForCurrUser;
+                    Visible = false;
 
                     trigger OnAction()
                     var
@@ -435,7 +438,7 @@ page 50059 "Imprest Memo Header"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     PromotedOnly = true;
-                    Visible = OpenApprovalEntriesExistForCurrUser;
+                    Visible = false;
 
                     trigger OnAction()
                     var
@@ -545,7 +548,7 @@ page 50059 "Imprest Memo Header"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     PromotedOnly = true;
-
+                    Visible = false;
                     //Visible = Rec.Status = Rec.Status::Released;
                     trigger OnAction()
                     begin
@@ -603,7 +606,7 @@ page 50059 "Imprest Memo Header"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     PromotedOnly = true;
-
+                    Visible = false;
                     //Visible = Rec.Status = Rec.Status::Released;
                     trigger OnAction()
                     var

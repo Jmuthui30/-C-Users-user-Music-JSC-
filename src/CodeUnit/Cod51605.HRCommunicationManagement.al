@@ -65,6 +65,7 @@ codeunit 51605 "HR Communication Management"
         Mail.Create(InternalMemo."Group Email", InternalMemo.Subject, Body, true);
         // email.OpenInEditorModally(mail)
         Email.Send(Mail);
+
     end;
 
     procedure SendImprestMemoEmail(var InternalMemo: Record "Imprest Memo Header")
@@ -72,6 +73,7 @@ codeunit 51605 "HR Communication Management"
         Lines: Record "Imprest Memo Lines";
         BCLink: Text;
         ImprestHeader: Record Payments;
+        Varhttps: Text[1000];
     begin
         CompInfo.Get;
         // ImprestHeader.Reset();
@@ -80,10 +82,11 @@ codeunit 51605 "HR Communication Management"
         //MemoSetup.Get;
         //CompInfo.Get;
         // https://selfservice.jsc.go.ke:8090/Login.aspx
-
-        // BCLink := 'https://selfservice.jsc.go.ke:8090/Login.aspx';
-        BCLink := 'selfservice.jsc.go.ke:8090/Login.aspx';
-
+        // Varhttps := ' https://selfservice.jsc.go.ke:8090/Login.aspx';
+        // BCLink := '<a href= https://selfservice.jsc.go.ke:8090/Login.aspx  </a>';
+        // BCLink := 'selfservice.jsc.go.ke:8090/Login.aspx';
+        // BCLink := '<a href=' + GETURL(CURRENTCLIENTTYPE, Varhttps) + '>' + 'https://selfservice.jsc.go.ke:8090/Login.aspx </a>';
+        BCLink := '<a href="https://selfservice.jsc.go.ke:8090/Login.aspx" target="_blank">https://selfservice.jsc.go.ke:8090/Login.aspx</a>';
 
         // BCLink := '<a href=' + GETURL(CURRENTCLIENTTYPE, COMPANYNAME, ObjectType::Page, 52103, ImprestHeader, true) + '>' + 'Business Central</a>';
         Lines.Reset();
@@ -115,8 +118,8 @@ codeunit 51605 "HR Communication Management"
                     Body += '<li><b>End Date:</b> ' + Format(InternalMemo."End Date") + '</li>';
 
                     Body += '<li><b> DSA :</b> KSh ' + Format(Lines.Amount) + '</li>';
-                    Body += '<li><b>Duration:</b> ' + Format(InternalMemo."Total Days in the Field") + ' days</li>';
-                    Body += '<li><b>Total Amount:</b> KSh ' + Format(Lines.Amount * Lines."Total Days in the Field") + '</li>';
+                    Body += '<li><b>Duration:</b> ' + Format(InternalMemo."No of Days(D&R)") + ' days</li>';
+                    Body += '<li><b>Total Amount:</b> KSh ' + Format(Lines.Amount * InternalMemo."No of Days(D&R)") + '</li>';
 
                     Body += '</ul>';
                     Body += 'Please go to Portal ' + BCLink + ' and create an Imprest Request for the allocated amount and seek the relevant approval to attend.';
@@ -213,7 +216,6 @@ codeunit 51605 "HR Communication Management"
 
         Lines.Reset();
         Lines.SetRange("No.", InternalMemo."No.");
-        Lines.SetFilter(Email, '<>%1', '');
         if Lines.FindFirst() then begin
             repeat
                 if ((Lines.Conference > 0) or (Lines."Air Ticket" > 0)) then
@@ -222,7 +224,7 @@ codeunit 51605 "HR Communication Management"
             until Lines.Next = 0;
             VarEmail := Humansetup."Procument Office"; //'paul.gitau@jsc.go.ke';
             InternalMemo.TestField(InternalMemo.Subject);
-            Message('Total amount is %1', VarTotalAmount);
+            //Message('Total amount is %1', VarTotalAmount);
             Lines.TestField(Email);
             Lines.TestField(Name);
             if VarTotalAmount > 1 then begin
@@ -232,7 +234,7 @@ codeunit 51605 "HR Communication Management"
                 Body += '<br><br>';
                 Body += '<b>Kindly note that this notification is for testing purposes only. No action is required.</b>';
                 Body += '<br><br>';
-                Body += 'Kindly note that the following Participants have been nominated to attend a training event. Through Memo Reference: <b>' + InternalMemo."No." + '</b>.';
+                Body += 'Kindly Find the Attached Document,note that the following Participants have been nominated to attend a training event. Through Memo Reference: <b>' + InternalMemo."No." + '</b>.';
                 Body += '<br><br>';
                 Body += 'The details are as follows:';
                 Body += '<br><br>';
@@ -244,7 +246,7 @@ codeunit 51605 "HR Communication Management"
                 Body += '<li><b>End Date:</b> ' + Format(InternalMemo."End Date") + '</li>';
                 Body += '<li><b> For A period of :</b> ' + Format(InternalMemo."Total Days in the Field") + ' days</li>';
 
-                Body += '<li><b> Total Amount :</b> KSh ' + Format(VarTotalAmount) + '</li>';
+
 
                 Body += '</ul>';
                 Body += '<br><br>';
