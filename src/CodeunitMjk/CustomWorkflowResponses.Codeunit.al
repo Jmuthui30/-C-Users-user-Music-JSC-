@@ -132,18 +132,18 @@ Codeunit 50341 "Custom Workflow Responses"
         MemberShipApp: Record "Employee Change Request";
     begin
         case RecRef.Number of
-            //Travel Requests
+        //Travel Requests
 
-            //Leave Application
-            Database::"Employee Change Request":
-                begin
-                    // RecRef.SetTable(LoansRegister);
-                    // ApprovalEntryArgument."Document Type" := ApprovalEntryArgument."Document Type"::LoanApplication;
-                    // ApprovalEntryArgument."Document No." := LoansRegister."Loan  No.";
-                    // ApprovalEntryArgument.Description := LoansRegister."Loan  No." + '_' + LoansRegister."Client Name";
-                    // ApprovalEntryArgument.Amount := LoansRegister."Approved Amount";
-                    // ApprovalEntryArgument."Salespers./Purch. Code" := '';
-                end;
+        //Leave Application
+        // Database::"Employee Change Request":
+        //     begin
+        //         // RecRef.SetTable(LoansRegister);
+        //         ApprovalEntryArgument."Document Type" := ApprovalEntryArgument."Document Type"::LoanApplication;
+        //         ApprovalEntryArgument."Document No." := MemberShipApp."Loan  No.";
+        //         ApprovalEntryArgument.Description := MemberShipApp."Loan  No." + '_' + LoansRegister."Client Name";
+        //         ApprovalEntryArgument.Amount := MemberShipApp."Approved Amount";
+        //         ApprovalEntryArgument."Salespers./Purch. Code" := '';
+        //     end;
         end;
     end;
 }

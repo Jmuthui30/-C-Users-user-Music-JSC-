@@ -30,6 +30,7 @@ report 53012 "Memo Report"
             column(Recipient_Name; "Recipient Name") { }
             column(Sender_Name; "Sender Name") { }
             column(Total_Days_in_the_Field; "Total Days in the Field") { }
+            column(No_of_Days_D_R_; "No of Days(D&R)") { }
             //Approval flow
             column(PreparedBy; GetUserName(Approver[1]))
             {

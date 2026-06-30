@@ -79,6 +79,7 @@ page 50059 "Imprest Memo Header"
                 field("Return Date"; Rec."Return Date")
                 {
                 }
+                field("No of Days(D&R)"; "No of Days(D&R)") { }
                 field(Justification; Rec.Justification)
                 {
                     Importance = Additional;
@@ -86,10 +87,13 @@ page 50059 "Imprest Memo Header"
                 field("Start Date"; Rec."Start Date")
                 {
                 }
-                field("Total Days in the Field"; Rec."Total Days in the Field")
+
+
+                field("End Date"; Rec."End Date")
                 {
                 }
-                field("End Date"; Rec."End Date")
+
+                field("Total Days in the Field"; Rec."Total Days in the Field")
                 {
                 }
                 field(Status; Rec.Status)
@@ -101,6 +105,7 @@ page 50059 "Imprest Memo Header"
                 field("Created By"; "Created By")
                 {
                 }
+
 
 
 
