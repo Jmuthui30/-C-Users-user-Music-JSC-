@@ -1337,93 +1337,93 @@ page 51742 "HR & Admin Manager Role Center"
                     RunObject = Page "Bal Admin App. Score Card List";
                 }
             }
-            // group("Performance Management")
-            // {
-            //     Caption = 'Performance Management';
+            group("Performance Management")
+            {
+                Caption = 'Performance Management';
 
-            //     action("Appraisal Objectives")
-            //     {
-            //         ApplicationArea = All;
-            //         Caption = 'Create Employee Appraisal Objectives';
-            //         ToolTip = 'Open Create Employee Appraisal Objectives';
-            //         RunObject = Page "Create Appraisal Objectives";
-            //     }
-            //     action("Approved Appraisal Objectives")
-            //     {
-            //         ApplicationArea = All;
-            //         Caption = 'Approved Appraisal Objectives';
-            //         ToolTip = 'Open Approved Appraisal Objectives';
-            //         RunObject = Page "Approved Appraisal Objectives";
-            //     }
-            //     action("Employee Appraisal")
-            //     {
-            //         ApplicationArea = All;
-            //         Caption = 'Create Employee Appraisal';
-            //         ToolTip = 'Open Create Employee Appraisal';
-            //         RunObject = Page "Create Employee Appraisal";
-            //     }
-            //     action("Approved Appraisal")
-            //     {
-            //         ApplicationArea = All;
-            //         Caption = 'Approved Employee Appraisal';
-            //         ToolTip = 'Open Approved Employee Appraisal';
-            //         RunObject = Page "Employee Appraisals";
-            //     }
-            //     group("Performance Management Reports")
-            //     {
-            //         Caption = 'Reports & Analysis';
-            //         ToolTip = 'Performance Management Reports & Analysis';
+                action("Appraisal Objectives")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Create Employee Appraisal Objectives';
+                    ToolTip = 'Open Create Employee Appraisal Objectives';
+                    RunObject = Page "Create Appraisal Objectives";
+                }
+                action("Approved Appraisal Objectives")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Approved Appraisal Objectives';
+                    ToolTip = 'Open Approved Appraisal Objectives';
+                    RunObject = Page "Approved Appraisal Objectives";
+                }
+                action("Employee Appraisal")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Create Employee Appraisal';
+                    ToolTip = 'Open Create Employee Appraisal';
+                    RunObject = Page "Create Employee Appraisal";
+                }
+                action("Approved Appraisal")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Approved Employee Appraisal';
+                    ToolTip = 'Open Approved Employee Appraisal';
+                    RunObject = Page "Employee Appraisals";
+                }
+                group("Performance Management Reports")
+                {
+                    Caption = 'Reports & Analysis';
+                    ToolTip = 'Performance Management Reports & Analysis';
 
-            //         action("Rtp. Employee Appraisal")
-            //         {
-            //             ApplicationArea = All;
-            //             Caption = 'Employee Appraisal';
-            //             ToolTip = 'Run Employee Appraisal';
-            //             RunObject = Report "Employee Appraisals";
-            //         }
-            //         action("Rtp. Performance Appraisal")
-            //         {
-            //             ApplicationArea = All;
-            //             Caption = 'Performance Appraisal';
-            //             ToolTip = 'Run Performance Appraisal';
-            //             RunObject = Report "Performance Appraisal";
-            //         }
-            //     }
-            //     group("Performance Management Administration")
-            //     {
-            //         Caption = 'Administration';
-            //         ToolTip = 'Performance Management Setups';
+                    action("Rtp. Employee Appraisal")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Employee Appraisal';
+                        ToolTip = 'Run Employee Appraisal';
+                        RunObject = Report "Employee Appraisals";
+                    }
+                    action("Rtp. Performance Appraisal")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Performance Appraisal';
+                        ToolTip = 'Run Performance Appraisal';
+                        RunObject = Report "Performance Appraisal";
+                    }
+                }
+                group("Performance Management Administration")
+                {
+                    Caption = 'Administration';
+                    ToolTip = 'Performance Management Setups';
 
-            //         action("Adm. Appraisal Category")
-            //         {
-            //             ApplicationArea = All;
-            //             Caption = 'Appraisal Category';
-            //             ToolTip = 'Open Appraisal Category';
-            //             RunObject = Page "Appraisal Category";
-            //         }
-            //         action("Adm. Appraisal Types")
-            //         {
-            //             ApplicationArea = All;
-            //             Caption = 'Appraisal Types';
-            //             ToolTip = 'Open Appraisal Types';
-            //             RunObject = Page "Appraisal Types";
-            //         }
-            //         action("Adm. Appraisal Periods")
-            //         {
-            //             ApplicationArea = All;
-            //             Caption = 'Appraisal Periods';
-            //             ToolTip = 'Open Appraisal Periods';
-            //             RunObject = Page "Appraisal Periods";
-            //         }
-            //         action("Adm. Appraisal Ranking")
-            //         {
-            //             ApplicationArea = All;
-            //             Caption = 'Appraisal Ranking';
-            //             ToolTip = 'Open Appraisal Ranking';
-            //             RunObject = Page "Grade Matrix";
-            //         }
-            //     }
-            // }
+                    action("Adm. Appraisal Category")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Appraisal Category';
+                        ToolTip = 'Open Appraisal Category';
+                        RunObject = Page "Appraisal Category";
+                    }
+                    action("Adm. Appraisal Types")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Appraisal Types';
+                        ToolTip = 'Open Appraisal Types';
+                        RunObject = Page "Appraisal Types";
+                    }
+                    action("Adm. Appraisal Periods")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Appraisal Periods';
+                        ToolTip = 'Open Appraisal Periods';
+                        RunObject = Page "Appraisal Periods";
+                    }
+                    action("Adm. Appraisal Ranking")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Appraisal Ranking';
+                        ToolTip = 'Open Appraisal Ranking';
+                        RunObject = Page "Grade Matrix";
+                    }
+                }
+            }
 
             group("Performance Appraisal Management")
             {
@@ -1431,14 +1431,14 @@ page 51742 "HR & Admin Manager Role Center"
                 group("Quarterly Scorecard")
                 {
                     Caption = 'Appraisal Cycle';
-                    Visible = false;
+                    // Visible = false;
                     // Legacy planning-cycle group hidden. Appraisals are generated from Appraisal Periods.
                     action("Perf BSC Plan Review Periods")
                     {
                         ApplicationArea = All;
                         Caption = '1. Create Appraisal Planning';
                         RunObject = Page "Bal Score Plan Review Period";
-                        Visible = false;
+                        // Visible = false;
                         // Legacy planning-cycle page hidden from the unified appraisal process.
                         ToolTip = 'Open appraisal planning periods used to create employee appraisal records.';
                     }
@@ -1447,7 +1447,7 @@ page 51742 "HR & Admin Manager Role Center"
                         ApplicationArea = All;
                         Caption = '2. BSC Planning Documents';
                         RunObject = Page "Bal Planning Score Card List";
-                        Visible = false;
+                        // Visible = false;
                         // Legacy BSC planning list hidden from the unified appraisal process.
                         ToolTip = 'Open employee BSC planning documents.';
                     }
@@ -1456,7 +1456,7 @@ page 51742 "HR & Admin Manager Role Center"
                         ApplicationArea = All;
                         Caption = '3. Quarterly BSC Reviews';
                         RunObject = Page "Bal Appraisal Score Card List";
-                        Visible = false;
+                        // Visible = false;
                         // Legacy BSC review list hidden from the unified appraisal process.
                         ToolTip = 'Open quarterly BSC appraisal review documents.';
                     }
@@ -1465,7 +1465,7 @@ page 51742 "HR & Admin Manager Role Center"
                         ApplicationArea = All;
                         Caption = '4. HR Admin BSC Reviews';
                         RunObject = Page "Bal Admin App. Score Card List";
-                        Visible = false;
+                        // Visible = false;
                         // Legacy BSC admin review list hidden from the unified appraisal process.
                         ToolTip = 'Open BSC appraisal documents for HR administration review.';
                     }
@@ -1610,7 +1610,7 @@ page 51742 "HR & Admin Manager Role Center"
                     action("Workplan Codes")
                     {
                         RunObject = page "Appraisal Workplan Codes";
-                        Caption = 'Workplan Codes';
+                        Caption = 'Target Settings';
                     }
                     action("Strategic Implementation Frequency")
                     {
