@@ -24,6 +24,10 @@ page 52468 "Employee Change List"
                 {
                     ToolTip = 'Specifies the number of the involved entry or record, according to the specified number series.';
                 }
+                field("Full Name"; Rec."Full Name")
+                {
+                    ToolTip = 'Specifies the employee''s full name.';
+                }
                 field("First Name"; Rec."First Name")
                 {
                     ToolTip = 'Specifies the employee''s first name.';

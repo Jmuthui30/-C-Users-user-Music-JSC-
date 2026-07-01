@@ -11,6 +11,10 @@ table 53036 "Employee Change Request"
             trigger OnValidate()
             begin
 
+                if varEmploy.Get("No.") then begin
+                    "Full Name" := VarEmploy.FullName();
+                    //
+                end;
 
 
             end;
@@ -1585,6 +1589,7 @@ table 53036 "Employee Change Request"
         field(60021; Number; Code[20])
         {
             Caption = 'Number';
+            editable = false;
             trigger OnValidate()
             begin
                 if Number <> xRec.Number then begin
@@ -1600,6 +1605,13 @@ table 53036 "Employee Change Request"
             OptionMembers = Open,"Pending Approval",Rejected,Approved;
             Caption = 'Approval Status';
         }
+        //fullname
+        field(60023; "Full Name"; Text[100])
+        {
+            Caption = 'Full Name';
+            Editable = false;
+        }
+
     }
 
     keys
@@ -1637,6 +1649,14 @@ table 53036 "Employee Change Request"
             Number := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
         end;
 
+        usersetup.Get(userid);
+        if usersetup."Employee No." <> '' then
+            message('Employee Change Request is being created for Employee %1', usersetup."Employee No.");
+        "No." := usersetup."Employee No.";
+        validate("No.");
+
+
+
 
 
     end;
@@ -1644,6 +1664,8 @@ table 53036 "Employee Change Request"
     var
         HRSetup: Record "Human Resources Setup";
         NoSeriesMgt: Codeunit "No. Series";
+        VarEmploy: Record Employee;
+        usersetup: Record "User Setup";
 }
 
 
