@@ -194,7 +194,7 @@ table 51903 "Appraisal Lines"
             trigger OnValidate()
             begin
                 ValidateActualAgainstTarget();
-                UpdateAchievedPercentage();
+                RecalculateLineScores();
             end;
         }
         field(30; Variance; Decimal)
@@ -309,7 +309,7 @@ table 51903 "Appraisal Lines"
             trigger OnValidate()
             begin
                 ValidateActualAgainstTarget();
-                UpdateAchievedPercentage();
+                RecalculateLineScores();
             end;
         }
         field(44; "Review Period Code"; Code[20])
@@ -320,27 +320,27 @@ table 51903 "Appraisal Lines"
         }
         field(45; "Self Rating"; Decimal)
         {
-            Caption = 'Self Rating';
+            Caption = 'Self Score';
             DataClassification = CustomerContent;
             MinValue = 0;
-            MaxValue = 100;
-            TableRelation = "Bal Score Card Rating".Score;
+            MaxValue = 70;
 
             trigger OnValidate()
             begin
+                ValidateScoreWithinAllocation("Self Rating", 'Self score');
                 "Final Self-Appraisal" := "Self Rating";
             end;
         }
         field(46; "Appraiser Rating"; Decimal)
         {
-            Caption = 'Appraiser Rating';
+            Caption = 'Appraiser Score';
             DataClassification = CustomerContent;
             MinValue = 0;
-            MaxValue = 100;
-            TableRelation = "Bal Score Card Rating".Score;
+            MaxValue = 70;
 
             trigger OnValidate()
             begin
+                ValidateScoreWithinAllocation("Appraiser Rating", 'Appraiser score');
                 UpdateQuarterScore();
             end;
         }
@@ -363,6 +363,33 @@ table 51903 "Appraisal Lines"
         field(50; Reviewed; Boolean)
         {
             Caption = 'Reviewed';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(51; "Rating Allocation"; Decimal)
+        {
+            Caption = 'Rating Allocation';
+            DataClassification = CustomerContent;
+            MinValue = 0;
+            MaxValue = 70;
+
+            trigger OnValidate()
+            begin
+                Weighting := Round(("Rating Allocation" / 70) * 100, 0.01);
+                ValidateRatingAllocationTotal();
+                RecalculateLineScores();
+            end;
+        }
+        field(52; "Planning No."; Code[20])
+        {
+            Caption = 'Appraisal Planning No.';
+            DataClassification = CustomerContent;
+            Editable = false;
+            TableRelation = "Appraisal Planning Header"."No.";
+        }
+        field(53; "Planning Line No."; Integer)
+        {
+            Caption = 'Appraisal Planning Line No.';
             DataClassification = CustomerContent;
             Editable = false;
         }
@@ -422,7 +449,7 @@ table 51903 "Appraisal Lines"
 
     local procedure UpdateQuarterScore()
     begin
-        if ("Appraiser Rating" = 0) or (Weighting = 0) then begin
+        if ("Appraiser Rating" = 0) or ("Rating Allocation" = 0) then begin
             "Score/Points" := 0;
             "Weighted Rating" := Weighting;
             "Quarter Score" := 0;
@@ -430,9 +457,10 @@ table 51903 "Appraisal Lines"
             exit;
         end;
 
+        ValidateScoreWithinAllocation("Appraiser Rating", 'Appraiser score');
         "Score/Points" := "Appraiser Rating";
         "Weighted Rating" := Weighting;
-        "Quarter Score" := Round(Weighting * ("Appraiser Rating" / 100), 0.01);
+        "Quarter Score" := Round("Appraiser Rating", 0.01);
         Rating := "Quarter Score";
     end;
 
@@ -470,6 +498,63 @@ table 51903 "Appraisal Lines"
         end;
 
         "Achieved (%)" := Round((Actual / "FY Target") * 100, 0.01);
+    end;
+
+    local procedure RecalculateLineScores()
+    begin
+        UpdateAchievedPercentage();
+        UpdateSelfScore();
+        if ("Appraiser Rating" = 0) and ("Self Rating" <> 0) then
+            "Appraiser Rating" := "Self Rating";
+        UpdateQuarterScore();
+    end;
+
+    local procedure UpdateSelfScore()
+    begin
+        if ("Rating Allocation" = 0) or ("Achieved (%)" = 0) then begin
+            "Self Rating" := 0;
+            "Final Self-Appraisal" := 0;
+            exit;
+        end;
+
+        "Self Rating" := Round(("Rating Allocation" * "Achieved (%)") / 100, 0.01);
+        if "Self Rating" > "Rating Allocation" then
+            "Self Rating" := "Rating Allocation";
+        "Final Self-Appraisal" := "Self Rating";
+    end;
+
+    local procedure ValidateScoreWithinAllocation(ScoreValue: Decimal; ScoreCaption: Text)
+    begin
+        if (ScoreValue = 0) or ("Rating Allocation" = 0) then
+            exit;
+
+        if ScoreValue > "Rating Allocation" then
+            Error('%1 %2 cannot be greater than the rating allocation %3 for objective %4.',
+                ScoreCaption, ScoreValue, "Rating Allocation", "Workplan Code");
+    end;
+
+    local procedure ValidateRatingAllocationTotal()
+    var
+        AppraisalLine: Record "Appraisal Lines";
+        TotalAllocation: Decimal;
+    begin
+        if ("Appraisal No" = '') or ("Review Period Code" = '') then
+            exit;
+
+        AppraisalLine.Reset();
+        AppraisalLine.SetRange("Appraisal No", "Appraisal No");
+        AppraisalLine.SetRange("Review Period Code", "Review Period Code");
+        AppraisalLine.SetFilter("Line No", '<>%1', "Line No");
+        AppraisalLine.SetFilter("Workplan Code", '<>%1', '');
+        if AppraisalLine.FindSet() then
+            repeat
+                TotalAllocation += AppraisalLine."Rating Allocation";
+            until AppraisalLine.Next() = 0;
+
+        TotalAllocation += "Rating Allocation";
+        if TotalAllocation > 70 then
+            Error('Total rating allocation for appraisal %1 review period %2 cannot exceed 70. Current total would be %3.',
+                "Appraisal No", "Review Period Code", Round(TotalAllocation, 0.01));
     end;
 }
 
