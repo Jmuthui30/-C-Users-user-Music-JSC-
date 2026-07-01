@@ -1431,14 +1431,14 @@ page 51742 "HR & Admin Manager Role Center"
                 group("Quarterly Scorecard")
                 {
                     Caption = 'Appraisal Cycle';
-                    // Visible = false;
+                    Visible = false;
                     // Legacy planning-cycle group hidden. Appraisals are generated from Appraisal Periods.
                     action("Perf BSC Plan Review Periods")
                     {
                         ApplicationArea = All;
                         Caption = '1. Create Appraisal Planning';
                         RunObject = Page "Bal Score Plan Review Period";
-                        // Visible = false;
+                        Visible = false;
                         // Legacy planning-cycle page hidden from the unified appraisal process.
                         ToolTip = 'Open appraisal planning periods used to create employee appraisal records.';
                     }
@@ -1447,7 +1447,7 @@ page 51742 "HR & Admin Manager Role Center"
                         ApplicationArea = All;
                         Caption = '2. BSC Planning Documents';
                         RunObject = Page "Bal Planning Score Card List";
-                        // Visible = false;
+                        Visible = false;
                         // Legacy BSC planning list hidden from the unified appraisal process.
                         ToolTip = 'Open employee BSC planning documents.';
                     }
@@ -1456,7 +1456,7 @@ page 51742 "HR & Admin Manager Role Center"
                         ApplicationArea = All;
                         Caption = '3. Quarterly BSC Reviews';
                         RunObject = Page "Bal Appraisal Score Card List";
-                        // Visible = false;
+                        Visible = false;
                         // Legacy BSC review list hidden from the unified appraisal process.
                         ToolTip = 'Open quarterly BSC appraisal review documents.';
                     }
@@ -1465,9 +1465,55 @@ page 51742 "HR & Admin Manager Role Center"
                         ApplicationArea = All;
                         Caption = '4. HR Admin BSC Reviews';
                         RunObject = Page "Bal Admin App. Score Card List";
-                        // Visible = false;
+                        Visible = false;
                         // Legacy BSC admin review list hidden from the unified appraisal process.
                         ToolTip = 'Open BSC appraisal documents for HR administration review.';
+                    }
+                }
+                group("Appraisal Planning")
+                {
+                    Caption = 'Appraisal Planning';
+                    action("Perf Appraisal Planning All")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'All Appraisal Planning';
+                        RunObject = Page "Appraisal Planning List";
+                        ToolTip = 'Open appraisal planning documents.';
+                    }
+                    action("Perf Appraisal Planning Draft")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Draft Planning';
+                        RunObject = Page "Draft Appraisal Planning";
+                        ToolTip = 'Open draft appraisal planning documents.';
+                    }
+                    action("Perf Appraisal Planning Pending Appraiser")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Pending Appraiser Review';
+                        RunObject = Page "Appr Planning Pending App.";
+                        ToolTip = 'Open appraisal planning documents pending appraiser review.';
+                    }
+                    action("Perf Appraisal Planning Returned")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Returned Planning';
+                        RunObject = Page "Returned Appraisal Planning";
+                        ToolTip = 'Open appraisal planning documents returned for changes.';
+                    }
+                    action("Perf Appraisal Planning Pending HR")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Pending HR Approval';
+                        RunObject = Page "Appraisal Planning Pending HR";
+                        ToolTip = 'Open appraisal planning documents ready for HR to create actual appraisals.';
+                    }
+                    action("Perf Appraisal Planning Created")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Planning With Appraisals Created';
+                        RunObject = Page "Created Appraisal Planning";
+                        ToolTip = 'Open appraisal planning documents that have created actual appraisals.';
                     }
                 }
                 action("Appraisal List")

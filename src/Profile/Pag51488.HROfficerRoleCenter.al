@@ -984,6 +984,52 @@ page 51488 "HR Officer Role Center"
                         ToolTip = 'Open BSC appraisal documents for HR administration review.';
                     }
                 }
+                group("Appraisal Planning")
+                {
+                    Caption = 'Appraisal Planning';
+                    action("Perf Appraisal Planning All")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'All Appraisal Planning';
+                        RunObject = Page "Appraisal Planning List";
+                        ToolTip = 'Open appraisal planning documents.';
+                    }
+                    action("Perf Appraisal Planning Draft")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Draft Planning';
+                        RunObject = Page "Draft Appraisal Planning";
+                        ToolTip = 'Open draft appraisal planning documents.';
+                    }
+                    action("Perf Appraisal Planning Pending Appraiser")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Pending Appraiser Review';
+                        RunObject = Page "Appr Planning Pending App.";
+                        ToolTip = 'Open appraisal planning documents pending appraiser review.';
+                    }
+                    action("Perf Appraisal Planning Returned")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Returned Planning';
+                        RunObject = Page "Returned Appraisal Planning";
+                        ToolTip = 'Open appraisal planning documents returned for changes.';
+                    }
+                    action("Perf Appraisal Planning Pending HR")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Pending HR Approval';
+                        RunObject = Page "Appraisal Planning Pending HR";
+                        ToolTip = 'Open appraisal planning documents ready for HR to create actual appraisals.';
+                    }
+                    action("Perf Appraisal Planning Created")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Planning With Appraisals Created';
+                        RunObject = Page "Created Appraisal Planning";
+                        ToolTip = 'Open appraisal planning documents that have created actual appraisals.';
+                    }
+                }
                 action("Appraisal List")
                 {
                     RunObject = page "Appraisal List";

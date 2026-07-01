@@ -349,7 +349,7 @@ table 52015 "Employee Appraisal"
         }
         field(57; "Results Percentage Score"; Decimal)
         {
-            Caption = 'Results percentage score';
+            Caption = 'Results score (70%)';
             DataClassification = CustomerContent;
             Editable = false;
         }
@@ -475,6 +475,13 @@ table 52015 "Employee Appraisal"
             Caption = 'Directorate Name';
             DataClassification = CustomerContent;
             Editable = false;
+        }
+        field(77; "Appraisal Planning No."; Code[20])
+        {
+            Caption = 'Appraisal Planning No.';
+            DataClassification = CustomerContent;
+            Editable = false;
+            TableRelation = "Appraisal Planning Header"."No.";
         }
 
     }
@@ -670,11 +677,11 @@ table 52015 "Employee Appraisal"
             "Total Percentage-Attributes" := 0;
             Clear("Grade-Attributes");
         end else begin
-            "Total Percentage-Attributes" := Round((TotalAttributeRating / ExpectedAttributeRating) * 100, 0.01);
+            "Total Percentage-Attributes" := Round((TotalAttributeRating / ExpectedAttributeRating) * 30, 0.01);
             SetAttributePerformanceGrade();
         end;
 
-        "Total Percentage FY Rating" := Round(("Results Percentage Score" * 0.70) + ("Total Percentage-Attributes" * 0.30), 0.01);
+        "Total Percentage FY Rating" := Round("Results Percentage Score" + "Total Percentage-Attributes", 0.01);
         "Total score" := "Total Percentage FY Rating";
         SetFinalYearPerformanceGrade();
     end;

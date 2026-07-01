@@ -50,19 +50,21 @@ page 52354 "Appraisal Goals"
                 {
                     Caption = 'Target';
                 }
+                field("Rating Allocation"; Rec."Rating Allocation")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Rating Allocation';
+                    Editable = false;
+                    ToolTip = 'Specifies the maximum result score allocated to this objective for the review period.';
+                }
                 field(Actual; Rec.Actual)
                 {
                     Caption = 'Actual';
+                    Editable = AppraiseeEditable;
                     ToolTip = 'Specifies the value of the Actual field';
                     trigger OnValidate()
                     begin
-                        if (Rec.Actual <> 0) and (Rec."FY Target" <> 0) then begin
-                            Rec."Achieved (%)" := Round((Rec.Actual / Rec."FY Target") * 100, 0.01);
-                            // Rec."Weighted Rating" := Round((Rec."Achieved (%)" * Rec.Weighting) / 100, 0.01);
-                        end else begin
-                            Rec."Achieved (%)" := 0;
-                            // Rec."Weighted Rating" := 0;
-                        end;
+                        CurrPage.Update(false);
                     end;
                 }
 
@@ -74,8 +76,9 @@ page 52354 "Appraisal Goals"
                 field("Self Rating"; Rec."Self Rating")
                 {
                     ApplicationArea = All;
-                    Editable = AppraiseeEditable;
-                    ToolTip = 'Specifies the appraisee self-rating for this review period.';
+                    Caption = 'Self Score';
+                    Editable = false;
+                    ToolTip = 'Specifies the appraisee self score calculated from actual, target, and rating allocation.';
                 }
                 field("Appraisee's comments"; Rec."Appraisee's comments")
                 {
@@ -89,9 +92,8 @@ page 52354 "Appraisal Goals"
                 {
                     ApplicationArea = All;
                     Caption = 'Weighting (%)';
-                    Editable = AppraiseeEditable;
-                    ToolTip = 'Specifies this objective''s percentage weighting within the current review period.';
-                    Visible = false;
+                    Editable = false;
+                    ToolTip = 'Specifies this objective''s calculated percentage weighting within the current review period.';
                     trigger OnValidate()
                     begin
                         CurrPage.Update(false);
@@ -149,13 +151,14 @@ page 52354 "Appraisal Goals"
                 field("Appraiser Rating"; Rec."Appraiser Rating")
                 {
                     ApplicationArea = All;
+                    Caption = 'Appraiser Score';
                     Editable = AppraiserEditable;
-                    ToolTip = 'Specifies the appraiser rating for this objective.';
+                    ToolTip = 'Specifies the appraiser score for this objective. The cap is this objective''s proportional share of the appraiser 30 percent score.';
                 }
                 field("Quarter Score"; Rec."Quarter Score")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the calculated score for this review period.';
+                    ToolTip = 'Specifies the calculated objective score, standardized back to the 70 percent objective bucket.';
                 }
                 field("Achievement Notes"; Rec."Achievement Notes")
                 {
@@ -229,6 +232,8 @@ page 52354 "Appraisal Goals"
                 ApplicationArea = All;
                 Caption = 'Suggest Equal Weighting';
                 Image = Suggest;
+                Visible = false;
+                // Legacy action hidden: weighting now derives from the 70-point rating allocation agreed during Appraisal Planning.
                 ToolTip = 'Distributes 100 percent weighting equally across the objective lines for the current review period.';
 
                 trigger OnAction()
@@ -299,10 +304,7 @@ page 52354 "Appraisal Goals"
             ((EmployeeAppraisal."Appraisal Status" = EmployeeAppraisal."Appraisal Status"::Review) or
              (EmployeeAppraisal."Appraisal Status" = EmployeeAppraisal."Appraisal Status"::"Further review"));
 
-        AppraiseeEditable :=
-            (EmployeeAppraisal.Status = EmployeeAppraisal.Status::Open) and
-            ((EmployeeAppraisal."Appraisal Status" = EmployeeAppraisal."Appraisal Status"::Setting) or
-             (EmployeeAppraisal."Appraisal Status" = EmployeeAppraisal."Appraisal Status"::Set));
+        AppraiseeEditable := UnderReview;
         AppraiserEditable := UnderReview;
 
         if EmployeeAppraisal."Appraisal Status" = EmployeeAppraisal."Appraisal Status"::Setting then
