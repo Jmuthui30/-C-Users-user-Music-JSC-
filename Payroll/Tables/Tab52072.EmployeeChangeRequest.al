@@ -7,6 +7,13 @@ table 53036 "Employee Change Request"
         field(1; "No."; Code[20])
         {
             Caption = 'No.';
+            tableRelation = employee."No.";
+            trigger OnValidate()
+            begin
+
+
+
+            end;
         }
         field(2; "First Name"; Text[30])
         {
@@ -1578,6 +1585,14 @@ table 53036 "Employee Change Request"
         field(60021; Number; Code[20])
         {
             Caption = 'Number';
+            trigger OnValidate()
+            begin
+                if Number <> xRec.Number then begin
+                    HRSetup.Get;
+                    NoSeriesMgt.TestManual(HRSetup."Employee Change Nos");
+                    "No. Series" := '';
+                end;
+            end;
         }
         field(60022; "Approval Status"; Option)
         {
@@ -1602,15 +1617,28 @@ table 53036 "Employee Change Request"
     trigger OnInsert()
     begin
 
-        if "Employee Bank Sort Code" = '' then begin
+        // if "Employee Bank Sort Code" = '' then begin
+        //     HRSetup.Get();
+        //     // NoSeriesMgt.InitSeries(HRSetup."Employee Change Nos", xRec."No. Series", 0D, "Employee Bank Sort Code", "No. Series");
+        //     if NoSeriesMgt.AreRelated(HRSetup."Employee Change Nos", xRec."No. Series") then
+        //         "No. Series" := xRec."No. Series"
+        //     else
+        //         "No. Series" := HRSetup."Employee Change Nos";
+        //     "Employee Bank Sort Code" := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
+        // end;
+
+        if Number = '' then begin
             HRSetup.Get();
-            // NoSeriesMgt.InitSeries(HRSetup."Employee Change Nos", xRec."No. Series", 0D, "Employee Bank Sort Code", "No. Series");
-            if NoSeriesMgt.AreRelated(HRSetup."Employee Change Nos",xRec."No. Series") then
-            "No. Series":=xRec."No. Series"
+            HRSetup.TestField("Employee Change Nos");
+            if NoSeriesMgt.AreRelated(HRSetup."Employee Change Nos", xRec."No. Series") then
+                "No. Series" := xRec."No. Series"
             else
-            "No. Series":=HRSetup."Employee Change Nos";
-            "Employee Bank Sort Code":=NoSeriesMgt.GetNextNo("No. Series",WorkDate());
+                "No. Series" := HRSetup."Employee Change Nos";
+            Number := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
         end;
+
+
+
     end;
 
     var

@@ -13,13 +13,16 @@ page 52467 "Employee Change Card"
             group("General Information")
             {
                 Caption = 'General Information';
-
+                field(Number; Rec.Number)
+                {
+                    ToolTip = 'Specifies the value of the Number field.';
+                }
                 field("No."; Rec."No.")
                 {
                     Importance = Standard;
                     ToolTip = 'Specifies the number of the involved entry or record, according to the specified number series.';
-                    Visible = NoFieldVisible;
-                    Editable = false;
+                    // Visible = NoFieldVisible;
+                    //Editable = false;
 
                     trigger OnAssistEdit()
                     begin
