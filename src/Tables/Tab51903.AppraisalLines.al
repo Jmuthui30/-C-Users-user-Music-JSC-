@@ -336,11 +336,11 @@ table 51903 "Appraisal Lines"
             Caption = 'Appraiser Score';
             DataClassification = CustomerContent;
             MinValue = 0;
-            MaxValue = 70;
+            MaxValue = 30;
 
             trigger OnValidate()
             begin
-                ValidateScoreWithinAllocation("Appraiser Rating", 'Appraiser score');
+                ValidateAppraiserScoreWithinAllocation();
                 UpdateQuarterScore();
             end;
         }
@@ -448,8 +448,10 @@ table 51903 "Appraisal Lines"
     end;
 
     local procedure UpdateQuarterScore()
+    var
+        RawObjectiveScore: Decimal;
     begin
-        if ("Appraiser Rating" = 0) or ("Rating Allocation" = 0) then begin
+        if "Rating Allocation" = 0 then begin
             "Score/Points" := 0;
             "Weighted Rating" := Weighting;
             "Quarter Score" := 0;
@@ -457,10 +459,13 @@ table 51903 "Appraisal Lines"
             exit;
         end;
 
-        ValidateScoreWithinAllocation("Appraiser Rating", 'Appraiser score');
-        "Score/Points" := "Appraiser Rating";
+        ValidateScoreWithinAllocation("Self Rating", 'Self score');
+        ValidateAppraiserScoreWithinAllocation();
+
+        RawObjectiveScore := "Self Rating" + "Appraiser Rating";
+        "Score/Points" := RawObjectiveScore;
         "Weighted Rating" := Weighting;
-        "Quarter Score" := Round("Appraiser Rating", 0.01);
+        "Quarter Score" := Round(RawObjectiveScore * 0.70, 0.01);
         Rating := "Quarter Score";
     end;
 
@@ -504,8 +509,6 @@ table 51903 "Appraisal Lines"
     begin
         UpdateAchievedPercentage();
         UpdateSelfScore();
-        if ("Appraiser Rating" = 0) and ("Self Rating" <> 0) then
-            "Appraiser Rating" := "Self Rating";
         UpdateQuarterScore();
     end;
 
@@ -531,6 +534,27 @@ table 51903 "Appraisal Lines"
         if ScoreValue > "Rating Allocation" then
             Error('%1 %2 cannot be greater than the rating allocation %3 for objective %4.',
                 ScoreCaption, ScoreValue, "Rating Allocation", "Workplan Code");
+    end;
+
+    local procedure ValidateAppraiserScoreWithinAllocation()
+    var
+        AppraiserScoreCap: Decimal;
+    begin
+        if ("Appraiser Rating" = 0) or ("Rating Allocation" = 0) then
+            exit;
+
+        AppraiserScoreCap := GetAppraiserScoreCap();
+        if "Appraiser Rating" > AppraiserScoreCap then
+            Error('Appraiser score %1 cannot be greater than the proportional 30%% cap %2 for objective %3.',
+                "Appraiser Rating", AppraiserScoreCap, "Workplan Code");
+    end;
+
+    local procedure GetAppraiserScoreCap(): Decimal
+    begin
+        if "Rating Allocation" = 0 then
+            exit(0);
+
+        exit(Round(("Rating Allocation" / 70) * 30, 0.01));
     end;
 
     local procedure ValidateRatingAllocationTotal()

@@ -153,12 +153,12 @@ page 52354 "Appraisal Goals"
                     ApplicationArea = All;
                     Caption = 'Appraiser Score';
                     Editable = AppraiserEditable;
-                    ToolTip = 'Specifies the appraiser score for this objective, capped by the rating allocation.';
+                    ToolTip = 'Specifies the appraiser score for this objective. The cap is this objective''s proportional share of the appraiser 30 percent score.';
                 }
                 field("Quarter Score"; Rec."Quarter Score")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the calculated score for this review period.';
+                    ToolTip = 'Specifies the calculated objective score, standardized back to the 70 percent objective bucket.';
                 }
                 field("Achievement Notes"; Rec."Achievement Notes")
                 {
