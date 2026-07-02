@@ -896,7 +896,7 @@ codeunit 55056 HRPortal
         end;
     end;
 
-    procedure CreateImprestMemoLines(imprestno: Code[30]; type: Integer; accountNo: code[50]; otherCosts: Decimal; expertName: Text; expertEmail: Text; DSA: Decimal; airTicket: Decimal; conference: Decimal; groundTransport: Decimal; accommodation: Decimal; coordinationAllowance: Decimal; facillitatorAllowance: Decimal; secretarioteAllowance: Decimal; outOfPocketAllowance: Decimal; rapparteurAllowance: Decimal; driverAllowance: Decimal; retreatAllowance: Decimal; expertAllowance: Decimal; tuitionFee: Decimal; millageAllowance: Decimal; quarterperDiem: Decimal; description: Text; noOfDays: Integer) status: Text
+    procedure CreateImprestMemoLines(imprestno: Code[30]; type: Integer; accountNo: code[50]; otherCosts: Decimal; expertName: Text; expertEmail: Text; DSA: Decimal; airTicket: Decimal; conference: Decimal; groundTransport: Decimal; accommodation: Decimal; coordinationAllowance: Decimal; facillitatorAllowance: Decimal; secretarioteAllowance: Decimal; outOfPocketAllowance: Decimal; rapparteurAllowance: Decimal; driverAllowance: Decimal; retreatAllowance: Decimal; expertAllowance: Decimal; tuitionFee: Decimal; millageAllowance: Decimal; quarterperDiem: Decimal; recordAllowance: Decimal; description: Text; noOfDays: Integer) status: Text
     var
         memolines1: Record "Imprest Memo Lines";
         prevLineNo: Integer;
@@ -953,6 +953,8 @@ codeunit 55056 HRPortal
             memoLines.Validate("Mileage Allowance");
             memoLines."Quarter Per Diem" := quarterperDiem;
             memoLines.Validate("Quarter Per Diem");
+            memoLines."Record Allowance Amount" := recordAllowance;
+            memoLines.Validate("Record Allowance Amount");
             memoLines."Total Days in the Field" := noOfDays;
             memoLines.Validate("Total Days in the Field");
             //compute totals
