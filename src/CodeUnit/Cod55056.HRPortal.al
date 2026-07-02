@@ -751,7 +751,7 @@ codeunit 55056 HRPortal
             exit(HrEmployees."No.");
     end;
 
-    procedure CreateImprestMemo(No: Code[30]; ToWho: Code[50]; employeeNumber: code[10]; subject: Text[2048]; memoBody1: Text[2048]; memoBody2: Text[2048]; Purpose: Text[2048]; location: Text[2048]; deaprturelocation: Text[2048]; departureDate: DateTime; returnlocation: Text[2048]; returnDate: DateTime; startDate: DateTime; totaldays: Integer; noOfDaysInField: Integer; international: Boolean; DSA: Boolean; CordinationAllowance: Boolean; FacilitatorAllowance: Boolean; SecritariateAllowance: Boolean; RapporteurAllowance: Boolean; DriverAllowance: Boolean; retreatAllowance: Boolean; expertAllowance: Boolean; AirTicket: Boolean; conference: Boolean; groundTransport: Boolean; accommodation: Boolean; outOfPocket: Boolean; tutorialFee: Boolean; mileageAllowance: Boolean; quarterPerDiem: Boolean; directorate: code[50]; department: code[50]) status: Text
+    procedure CreateImprestMemo(No: Code[30]; ToWho: Code[50]; employeeNumber: code[10]; subject: Text[2048]; memoBody1: Text[2048]; memoBody2: Text[2048]; Purpose: Text[2048]; location: Text[2048]; deaprturelocation: Text[2048]; departureDate: DateTime; returnlocation: Text[2048]; returnDate: DateTime; startDate: DateTime; totaldays: Integer; noOfDaysInField: Integer; international: Boolean; DSA: Boolean; CordinationAllowance: Boolean; FacilitatorAllowance: Boolean; SecritariateAllowance: Boolean; RapporteurAllowance: Boolean; DriverAllowance: Boolean; retreatAllowance: Boolean; expertAllowance: Boolean; AirTicket: Boolean; conference: Boolean; groundTransport: Boolean; accommodation: Boolean; outOfPocket: Boolean; tutorialFee: Boolean; mileageAllowance: Boolean; quarterPerDiem: Boolean; directorate: code[50]; department: code[50]; recordAllowance: Boolean) status: Text
     var
         glsetup: Record "General Ledger Setup";
         Staff: Record Employee;
@@ -801,7 +801,7 @@ codeunit 55056 HRPortal
             memo."Out of Pocket Allowance" := outOfPocket;
             memo."Tuition Fee" := tutorialFee;
             memo."Mileage Allowance" := mileageAllowance;
-            memo."Quarter Per Diem" := quarterPerDiem;
+            memo."Record Allowance" := recordAllowance;
             Staff.Get(employeeNumber);
             memo.From := Staff."Job Id";
             memo."Sender Name" := Staff."Job Title";
@@ -871,6 +871,7 @@ codeunit 55056 HRPortal
             memo."Tuition Fee" := tutorialFee;
             memo."Mileage Allowance" := mileageAllowance;
             memo."Quarter Per Diem" := quarterPerDiem;
+            memo."Record Allowance" := recordAllowance;
             memo."Global Dimension 1 Code" := directorate;
             memo."Global Dimension 2 Code" := department;
             memo.Status := memo.Status::Open;
