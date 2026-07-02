@@ -148,7 +148,7 @@ table 50464 "Imprest Memo Header"
         {
             trigger OnValidate()
             begin
-                "No of Days(D&R)" := ("Return Date" - "Departure Date")
+                // "No of Days(D&R)" := ("Return Date" - "Departure Date")
             end;
         }
         field(21; "Return Location"; Text[30])
@@ -158,6 +158,8 @@ table 50464 "Imprest Memo Header"
         {
             trigger OnValidate()
             begin
+
+
                 "No of Days(D&R)" := ("Return Date" - "Departure Date")
             end;
         }

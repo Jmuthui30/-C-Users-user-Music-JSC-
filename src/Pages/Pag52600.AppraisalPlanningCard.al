@@ -266,11 +266,14 @@ page 52600 "Appraisal Planning Card"
 
                 trigger OnAction()
                 var
-                    ReturnReason: Record "Appraisal Planning Review" temporary;
+                    ReturnReason: Record "Appraisal Planning Review";
                 begin
                     ReturnReason.Init();
                     if Page.RunModal(Page::"Appr. Planning Return Reason", ReturnReason) = Action::OK then begin
                         AppraisalPlanningMgt.ReturnPlan(Rec."No.", '', ReturnReason.Comment);
+                        Rec."Planning Status" := Rec."Planning Status"::"Returned for Changes";
+                        Rec.Modify();
+                        message('Appraisal Planning document %1 has been returned for changes.', Rec."No.");
                         CurrPage.Update(false);
                     end;
                 end;

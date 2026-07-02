@@ -68,16 +68,20 @@ page 52602 "Appraisal Planning Lines"
                 field(Actual; Rec.Actual)
                 {
                     ApplicationArea = All;
+                    Visible = false;
                     ToolTip = 'Specifies the actual value. Actual entry is done on the Employee Appraisal card, not during planning.';
                 }
                 field("Achieved (%)"; Rec."Achieved (%)")
                 {
                     ApplicationArea = All;
+                    visible = false;
                     ToolTip = 'Specifies the calculated achievement percentage. This remains blank during planning.';
                 }
                 field("Weighting (%)"; Rec."Weighting (%)")
                 {
                     ApplicationArea = All;
+                    visible = false;
+                    Editable = false;
                     ToolTip = 'Specifies the calculated weighting percentage derived from the 70-point rating allocation.';
                 }
             }

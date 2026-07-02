@@ -145,13 +145,13 @@ codeunit 52600 "Appraisal Planning Mgt."
         TotalAllocation: Decimal;
     begin
         if not FindFinalReviewPeriod(FinalReviewPeriod) then
-            Error('Select one appraisal review period as the final review period before submitting appraisal planning %1.', PlanHeader."No.");
+            message('Select one appraisal review period as the final review period before submitting appraisal planning %1.', PlanHeader."No.");
         FinalReviewPeriod.TestField("Review Sequence");
 
         PlanLine.Reset();
         PlanLine.SetRange("Plan No.", PlanHeader."No.");
         if PlanLine.IsEmpty() then
-            Error('Enter at least one objective planning line for appraisal planning %1.', PlanHeader."No.");
+            message('Enter at least one objective planning line for appraisal planning %1.', PlanHeader."No.");
 
         if PlanLine.FindSet() then
             repeat
@@ -161,9 +161,9 @@ codeunit 52600 "Appraisal Planning Mgt."
                 PlanLine.TestField(Target);
                 PlanLine.TestField("Rating Allocation");
                 if PlanLine.Actual <> 0 then
-                    Error('Actual must remain blank during planning for plan %1 line %2.', PlanLine."Plan No.", PlanLine."Line No");
+                    message('Actual must remain blank during planning for plan %1 line %2.', PlanLine."Plan No.", PlanLine."Line No");
                 if PlanLine."Achieved (%)" <> 0 then
-                    Error('Achieved percentage must remain blank during planning for plan %1 line %2.', PlanLine."Plan No.", PlanLine."Line No");
+                    message('Achieved percentage must remain blank during planning for plan %1 line %2.', PlanLine."Plan No.", PlanLine."Line No");
             until PlanLine.Next() = 0;
 
         ReviewPeriod.Reset();
@@ -173,7 +173,7 @@ codeunit 52600 "Appraisal Planning Mgt."
             repeat
                 TotalAllocation := CalculateReviewAllocation(PlanHeader."No.", ReviewPeriod.Code);
                 if Round(TotalAllocation, 0.01) <> 70 then
-                    Error('Total rating allocation for appraisal planning %1 review period %2 must be 70. Current total is %3.',
+                    message('Total rating allocation for appraisal planning %1 review period %2 must be 70. Current total is %3.',
                         PlanHeader."No.", ReviewPeriod.Code, Round(TotalAllocation, 0.01));
             until ReviewPeriod.Next() = 0;
     end;

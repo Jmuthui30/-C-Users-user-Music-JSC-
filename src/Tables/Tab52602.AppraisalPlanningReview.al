@@ -2,6 +2,7 @@ table 52602 "Appraisal Planning Review"
 {
     Caption = 'Appraisal Planning Review';
     DataClassification = CustomerContent;
+    LookupPageId = "Appr. Planning Return Reason";
 
     fields
     {

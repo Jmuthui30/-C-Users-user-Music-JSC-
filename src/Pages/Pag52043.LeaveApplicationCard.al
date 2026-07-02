@@ -256,7 +256,7 @@ page 52043 "Leave Application Card"
                                 Message('Please attach the required documents before sending for approval.');
                                 exit;
                             end;
-                        // HRMgt.CheckIfLeaveRelieversExist(Rec);
+                        HRMgt.CheckIfLeaveRelieversExist(Rec);
 
                         if ApprovalsMgmt.CheckLeaveRequestWorkflowEnabled(Rec) then
                             ApprovalsMgmt.OnSendLeaveRequestApproval(Rec);

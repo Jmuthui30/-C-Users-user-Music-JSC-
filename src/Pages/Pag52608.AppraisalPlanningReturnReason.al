@@ -5,6 +5,10 @@ page 52608 "Appr. Planning Return Reason"
     PageType = StandardDialog;
     SourceTable = "Appraisal Planning Review";
     SourceTableTemporary = true;
+    Editable = true;
+    InsertAllowed = true;
+    modifyAllowed = true;
+
 
     layout
     {
@@ -15,6 +19,7 @@ page 52608 "Appr. Planning Return Reason"
                 ApplicationArea = All;
                 Caption = 'Return Reason';
                 MultiLine = true;
+                editable = true;
                 ToolTip = 'Specifies why the appraisal planning document is being returned.';
             }
         }
