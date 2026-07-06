@@ -6,6 +6,7 @@ page 58042 "Leave Application List"
     Editable = false;
     PageType = List;
     SourceTable = "Leave Application";
+    sourceTableView = sorting("Application No") order(ascending);
     Caption = 'Leave Application List';
     layout
     {

@@ -443,6 +443,10 @@ page 51020 "Imprestjsc Card"
                                 ModifyHODApprovals.RunModal();
                             end;
 
+                        Rec."Created By" := UserId;
+                        Rec.Modify();
+                        message('Approval Request Sent Successfully');
+
                         CurrPage.Close();
                     end;
                 }

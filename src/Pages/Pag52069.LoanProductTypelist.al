@@ -6,6 +6,7 @@ page 52069 "Loan Product Type list"
     ApplicationArea = All;
     UsageCategory = Lists;
     SourceTable = "Loan Product";
+    SourceTableView = sorting("Code");
 
     layout
     {

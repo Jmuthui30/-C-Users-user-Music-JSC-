@@ -6,6 +6,7 @@ page 52068 "Loan Application List"
     ApplicationArea = All;
     UsageCategory = Lists;
     SourceTable = "Loan Application";
+    SourceTableView = sorting("Loan No");
 
     layout
     {
@@ -85,7 +86,8 @@ page 52068 "Loan Application List"
     actions
     {
     }
-    var GetGroup: Codeunit "Payroll Management";
-    GroupCode: Code[20];
-    CUser: Code[50];
+    var
+        GetGroup: Codeunit "Payroll Management";
+        GroupCode: Code[20];
+        CUser: Code[50];
 }

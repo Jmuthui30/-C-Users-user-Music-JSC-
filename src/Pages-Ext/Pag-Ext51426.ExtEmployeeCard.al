@@ -1,7 +1,7 @@
 pageextension 51426 "ExtEmployee Card" extends "Employee Card"
 
 {
-    Editable = false;
+    Editable = true;
     // DeleteAllowed = false;
     // InsertAllowed = false;
     PromotedActionCategories = 'New,Process,Report,Employee,Navigate,Payroll';

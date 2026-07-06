@@ -444,6 +444,33 @@ table 50465 "Imprest Memo Lines"
         { }
         field(57; "Record Allowance"; Boolean)
         { }
+        field(124; "No of Days(D&R)"; Integer)
+        {
+            Caption = 'Days From Departure to Return';
+        }
+        field(120; "Departure Date"; Date)
+        {
+            trigger OnValidate()
+            begin
+            end;
+        }
+        field(122; "Return Date"; Date)
+        {
+            trigger OnValidate()
+            begin
+
+
+                "No of Days(D&R)" := ("Return Date" - "Departure Date")
+            end;
+        }
+        field(125; "Start Date"; Date)
+        {
+            NotBlank = true;
+        }
+        field(127; "End Date"; Date)
+        {
+            Editable = false;
+        }
 
     }
     keys
@@ -527,12 +554,12 @@ table 50465 "Imprest Memo Lines"
         Rec."Amount LCY" := Rec.Amount * Rec."Exchange Rate";
         GetHeader();
         //Check Employee On Leave
-        Leave.Reset();
-        Leave.SetRange("Employee No", EmpNo);
-        Leave.SetRange("Start Date", 0D, Header."Start Date");
-        Leave.SetRange("Resumption Date", Header."Start Date", Header."End Date");
-        Leave.SetRange(Status, Leave.Status::Released);
-        if Leave.FindFirst() then Error('An employee on leave cannot be picked for an event.');
+        // Leave.Reset();
+        // Leave.SetRange("Employee No", EmpNo);
+        // Leave.SetRange("Start Date", 0D, Header."Start Date");
+        // Leave.SetRange("Resumption Date", Header."Start Date", Header."End Date");
+        // Leave.SetRange(Status, Leave.Status::Released);
+        // if Leave.FindFirst() then Error('An employee on leave cannot be picked for an event.');
         //Check Employee with unsurrendered imprest
         // Imprest.Reset();
         // Imprest.SetRange("Employee No.", EmpNo);

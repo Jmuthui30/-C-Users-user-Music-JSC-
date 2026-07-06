@@ -95,7 +95,7 @@ codeunit 51605 "HR Communication Management"
         if Lines.FindFirst() then begin
             repeat
                 InternalMemo.TestField(InternalMemo.Subject);
-                Lines.TestField(Email);
+                // Lines.TestField(Email);
                 Lines.TestField(Name);
                 if Lines.Type = Lines.Type::Staff then begin //Staff
 
@@ -104,8 +104,8 @@ codeunit 51605 "HR Communication Management"
                     // Staff Email Body
                     Body := 'Dear ' + Lines.Name + ',';
                     Body += '<br><br>';
-                    Body += '<b>Kindly note that this notification is for testing purposes only. No action is required.</b>';
-                    Body += '<br><br>';
+                    // Body += '<b>Kindly note that this notification is for testing purposes only. No action is required.</b>';
+                    // Body += '<br><br>';
                     Body += 'You have been nominated to attend a training event through Memo Reference: <b>' + InternalMemo."No." + '</b>.';
                     Body += '<br><br>';
                     Body += 'The details are as follows:';
@@ -146,8 +146,8 @@ codeunit 51605 "HR Communication Management"
                            // Expert Email Body
                     Body := 'Dear ' + Lines.Name + ',';
                     Body += '<br><br>';
-                    Body += '<b>Kindly note that this notification is for testing purposes only. No action is required.</b>';
-                    Body += '<br><br>';
+                    // Body += '<b>Kindly note that this notification is for testing purposes only. No action is required.</b>';
+                    // Body += '<br><br>';
                     Body += 'You have been nominated to attend a training event by <b>' + CompInfo.Name + '</b> as an expert through Memo Reference: <b>' + InternalMemo."No." + '</b>.';
                     Body += '<br><br>';
                     Body += 'The details are as follows:';
@@ -213,26 +213,27 @@ codeunit 51605 "HR Communication Management"
         PdfFileName := InternalMemo."No." + '_Memo_Report.pdf';
         //  "Memo Report"
 
+        if Humansetup."Procument Office" <> '' then begin
+            VarEmail := Humansetup."Procument Office";
 
-        Lines.Reset();
-        Lines.SetRange("No.", InternalMemo."No.");
-        if Lines.FindFirst() then begin
-            repeat
-                if ((Lines.Conference > 0) or (Lines."Air Ticket" > 0)) then
-                    TotalAmount := Lines.Conference + Lines."Air Ticket";
-                VarTotalAmount += VarTotalAmount + TotalAmount;
-            until Lines.Next = 0;
-            VarEmail := Humansetup."Procument Office"; //'paul.gitau@jsc.go.ke';
-            InternalMemo.TestField(InternalMemo.Subject);
-            //Message('Total amount is %1', VarTotalAmount);
-            Lines.TestField(Email);
-            Lines.TestField(Name);
-            if VarTotalAmount > 1 then begin
+            Lines.Reset();
+            Lines.SetRange("No.", InternalMemo."No.");
+            if Lines.FindFirst() then begin
+                repeat
+                    if ((Lines.Conference > 0) or (Lines."Air Ticket" > 0)) then
+                        TotalAmount := Lines.Conference + Lines."Air Ticket";
+                    VarTotalAmount += VarTotalAmount + TotalAmount;
+                until Lines.Next = 0;
+                InternalMemo.TestField(InternalMemo.Subject);
+                //Message('Total amount is %1', VarTotalAmount);
+                // Lines.TestField(Email);
+                Lines.TestField(Name);
+                //if VarTotalAmount > 1 then begin
 
                 // Staff Email Body
                 Body := 'Dear ' + Lines.Name + ',';
                 Body += '<br><br>';
-                Body += '<b>Kindly note that this notification is for testing purposes only. No action is required.</b>';
+                // Body += '<b>Kindly note that this notification is for testing purposes only. No action is required.</b>';
                 Body += '<br><br>';
                 Body += 'Kindly Find the Attached Document,note that the following Participants have been nominated to attend a training event. Through Memo Reference: <b>' + InternalMemo."No." + '</b>.';
                 Body += '<br><br>';
@@ -266,7 +267,7 @@ codeunit 51605 "HR Communication Management"
                 Mail.AddAttachment(PdfFileName, 'application/pdf', InStr);
 
                 Email.Send(Mail);
-
+                //  end;
             end;
         end;
 

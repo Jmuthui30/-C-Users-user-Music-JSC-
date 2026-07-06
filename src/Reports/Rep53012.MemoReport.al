@@ -99,8 +99,8 @@ report 53012 "Memo Report"
             {
                 DataItemLink = "No." = field("No.");
                 DataItemTableView = sorting("No.") WHERE("Cordination Allowance" = filter(<> 0));
-                column(Cordiantion_Description; OtherAllowanceDesc) { }
-                column(Cordination_Allowance; otherAmount) { }
+                column(Cordiantion_Description; Description) { }
+                column(Cordination_Allowance; "Cordination Allowance") { }
                 column(Cordiantion_Days; "Total Days in the Field") { }
                 column(Cordiantion_Name; Name) { }
                 column(Cordiantion_Account_No_; "Account No.") { }
@@ -109,58 +109,7 @@ report 53012 "Memo Report"
                 }
                 trigger OnAfterGetRecord()
                 begin
-                    // // Skip records where ALL allowances are zero
-                    // if ("Cordination Allowance" = 0) and ("Facilitator Allowance" = 0) and
-                    //    ("Secretariat Allowance" = 0) and ("Rapporteur Allowance" = 0) and
-                    //    ("Retreat Allowance" = 0) and ("Expert Allowance" = 0) and
-                    //    ("Out of Pocket Allowance" = 0) and ("Tuition Fee" = 0) and
-                    //    ("Mileage Allowance" = 0) and ("Quarter Per Diem" = 0)
-                    // then
-                    //     CurrReport.Skip();
-                    // if "Cordination Allowance" > 0 then begin
-                    //     OtherAllowanceDesc := 'Cordiantion Allowance';
-                    //     otherAmount := "Cordination Allowance";
-                    // end
-                    // else if "Facilitator Allowance" > 0 then begin
-                    //     OtherAllowanceDesc := 'Facilitator Allowance';
-                    //     otherAmount := "Facilitator Allowance";
-                    // end
-                    // else if "Secretariat Allowance" > 0 then begin
-                    //     OtherAllowanceDesc := 'Secretariat Allowance';
-                    //     otherAmount := "Secretariat Allowance";
-                    // end
-                    // else if "Rapporteur Allowance" > 0 then begin
-                    //     OtherAllowanceDesc := 'Rapporteur Allowance';
-                    //     otherAmount := "Rapporteur Allowance";
-                    // end
-                    // else if "Retreat Allowance" > 0 then begin
-                    //     OtherAllowanceDesc := 'Retreat Allowance';
-                    //     otherAmount := "Retreat Allowance";
-                    // end
-                    // else if "Expert Allowance" > 0 then begin
-                    //     OtherAllowanceDesc := 'Expert Allowance';
-                    //     otherAmount := "Expert Allowance";
-                    // end
-                    // else if "Out of Pocket Allowance" > 0 then begin
-                    //     OtherAllowanceDesc := 'Out of Pocket Allowance';
-                    //     otherAmount := "Out of Pocket Allowance";
-                    // end
-                    // else if "Tuition Fee" > 0 then begin
-                    //     OtherAllowanceDesc := 'Tuition Fee';
-                    //     otherAmount := "Tuition Fee";
-                    // end
-                    // else if "Mileage Allowance" > 0 then begin
-                    //     OtherAllowanceDesc := 'Mileage Allowance';
-                    //     otherAmount := "Mileage Allowance";
-                    // end
-                    // else if "Quarter Per Diem" > 0 then begin
-                    //     OtherAllowanceDesc := 'Quarter Per Diem';
-                    //     otherAmount := "Quarter Per Diem";
-                    // end;
-
-
                     CordiantionLine := CordiantionLine + 1;
-
                 end;
             }
             // Facilitator Allowance
@@ -432,7 +381,25 @@ report 53012 "Memo Report"
                 end;
             }
 
+            //Record Allowances
+            dataitem(RecordAllowances; "Imprest Memo Lines")
+            {
+                DataItemLink = "No." = field("No.");
+                DataItemTableView = sorting("No.") where("Record Allowance Amount" = filter(<> 0));
+                column(RecordAllowances_Description; Description) { }
+                column(RecordAllowances_Amount; "Record Allowance Amount") { }
+                column(RecordAllowances_Days; "Total Days in the Field") { }
+                column(RecordAllowances_Name; Name) { }
+                column(RecordAllowances_Account_No_; "Account No.") { }
+                column(RecordAllowancesLine; RecordAllowancesLine)
+                {
+                }
+                trigger OnAfterGetRecord()
+                begin
+                    RecordAllowancesLine := RecordAllowancesLine + 1;
 
+                end;
+            }
             //other cost
             dataitem(OtherCost; "Imprest Memo Lines")
             {
@@ -517,7 +484,7 @@ report 53012 "Memo Report"
                     repeat
                         // Per-line accumulation — must use += not :=
                         if MemoLineApp.DSA > 0 then
-                            TotalDsaAllowance += MemoLineApp.DSA * MemoLineApp."Total Days in the Field";
+                            TotalDsaAllowance += MemoLineApp.DSA * "No of Days(D&R)";
                         if MemoLineApp."Cordination Allowance" > 0 then
                             TotalCordinationAllowance += MemoLineApp."Cordination Allowance" * MemoLineApp."Total Days in the Field";
                         if MemoLineApp."Facilitator Allowance" > 0 then
@@ -666,6 +633,7 @@ report 53012 "Memo Report"
         MileageAllowanceLine: Integer;
         QuarterPerDiemLine: Integer;
         DSAline: Integer;
+        RecordAllowancesLine: Integer;
         MemoLineApp: record "Imprest Memo Lines";
         OtherAllowanceDesc: Text[100];
         OtherAmount: Decimal;
