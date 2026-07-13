@@ -49,6 +49,15 @@ page 58122 "HR Leave Ledger Entries"
                 {
                     ToolTip = 'Specifies the value of the No. of days field';
                 }
+                field("Leave Balance"; Rec.Entitlement)
+                {
+                    ToolTip = 'Specifies the value of the Leave Balance field';
+                }
+                field(carryForward; Rec.VarCarryForward)
+                {
+                    ToolTip = 'Specifies the value of the Carry Forward field';
+                }
+
                 field("Leave Approval Date"; Rec."Leave Approval Date")
                 {
                     ToolTip = 'Specifies the value of the Leave Approval Date field';

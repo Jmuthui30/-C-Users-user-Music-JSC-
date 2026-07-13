@@ -228,6 +228,17 @@ table 52061 "HR Leave Ledger Entries"
             Caption = 'Country/Region Code';
             TableRelation = "Country/Region".Code;
         }
+        //carry forword
+        field(39; "Carry Forward"; Decimal)
+        {
+            Caption = 'Carry Forward';
+            fieldClass = FlowField;
+            CalcFormula = Sum("HR Leave Ledger Entries"."No. of days" WHERE("Staff No." = FIELD("Staff No."), "Leave Period" = FIELD("Leave Period"), "Leave Type" = filter('ANNUAL LEAVE')));
+        }
+        field(40; VarCarryForward; Decimal)
+        {
+            Caption = 'Var Carry Forward';
+        }
     }
 
     keys

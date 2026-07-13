@@ -16,6 +16,7 @@ codeunit 52004 "Workflow Responses HR"
         LeaveRec.SetRange("No.", LeaveRecall."No.");
         if LeaveRec.FindFirst() then begin
             LeaveRec.Status := LeaveRec.Status::Released;
+
             LeaveRec.Modify(true);
             //Recall
             HRMgnt.LeaveRecall(LeaveRec."No.");
@@ -42,6 +43,9 @@ codeunit 52004 "Workflow Responses HR"
         Leave.SetRange("Application No", LeaveReq."Application No");
         if Leave.FindFirst() then begin
             Leave.Validate(Status, Leave.Status::Released);
+            Leave."Approval By" := USERID;
+            Leave."Approval Date" := WORKDATE;
+            leave."Approval Time" := TIME;
             Leave.Modify(true);
             Commit();
             HRMgnt.NotifyLeaveReliever(Leave."Application No");
@@ -58,7 +62,8 @@ codeunit 52004 "Workflow Responses HR"
 
         if leave.Get(LeaveReq."Application No") then begin
             Leave."Status" := Leave."Status"::Open;
-
+            Leave."Approval By" := '';
+            Leave."Approval Date" := 0D;
             Leave.Modify(true);
         end;
     end;

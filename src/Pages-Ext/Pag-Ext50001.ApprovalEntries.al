@@ -2,7 +2,7 @@ pageextension 50001 "Approval Entries" extends "Approval Entries"
 {
     Editable = true;
 
-    
+
     actions
     {
         addlast(Processing)
@@ -19,8 +19,8 @@ pageextension 50001 "Approval Entries" extends "Approval Entries"
                     // Logic to open the entry
                 end;
             }
-           
-           
+
+
         }
     }
 }

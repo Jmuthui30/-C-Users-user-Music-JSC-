@@ -624,6 +624,17 @@ table 52018 "Leave Application"
         {
             Caption = 'Leave Allowance Paid';
         }
+        //Approval Date
+        field(80; "Approval By"; Text[100])
+        {
+            Caption = 'Approval By';
+        }
+        //Approval Time
+        field(81; "Approval Time"; Time)
+        {
+            Caption = 'Approval Time';
+        }
+
     }
 
     keys

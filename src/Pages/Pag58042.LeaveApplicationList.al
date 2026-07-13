@@ -6,7 +6,7 @@ page 58042 "Leave Application List"
     Editable = false;
     PageType = List;
     SourceTable = "Leave Application";
-    sourceTableView = sorting("Application No") order(ascending);
+    sourceTableView = sorting("Application No") order(descending);
     Caption = 'Leave Application List';
     layout
     {
@@ -65,6 +65,18 @@ page 58042 "Leave Application List"
                 field("Leave Balance"; Rec."Leave Balance")
                 {
                     ToolTip = 'Specifies the value of the Available Leave Balance field';
+                }
+                field("Approval By"; Rec."Approval By")
+                {
+                    ToolTip = 'Specifies the value of the Approval By field';
+                }
+                field("Approval Date"; Rec."Approval Date")
+                {
+                    ToolTip = 'Specifies the value of the Approval Date field';
+                }
+                field("Approval Time"; Rec."Approval Time")
+                {
+                    ToolTip = 'Specifies the value of the Approval Time field';
                 }
             }
         }

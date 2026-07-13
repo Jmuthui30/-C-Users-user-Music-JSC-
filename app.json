@@ -6,7 +6,7 @@
 
 
 
-  "version": "1.0.1.997",
+  "version": "1.0.2.019",
 
 
   
@@ -17,7 +17,7 @@
   "help": "https://jsc.go.ke/",
   "url": "https://jsc.go.ke/", 
   "dependencies": [
-    
+     
   ],
   "screenshots": [],
   "platform": "1.0.0.0",

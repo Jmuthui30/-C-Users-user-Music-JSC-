@@ -1,6 +1,6 @@
 pageextension 51431 "ExtRequests to Approve" extends "Requests to Approve"
 {
-
+    //sourceTableView = sorting("Due Date") order(descending);
 
     actions
     {

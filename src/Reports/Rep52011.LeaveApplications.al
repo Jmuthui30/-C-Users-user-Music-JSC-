@@ -8,8 +8,8 @@ report 52011 "Leave Applications"
     {
         dataitem("Leave Application"; "Leave Application")
         {
-            // DataItemTableView = where(Status = filter(Rele));
-            RequestFilterFields = "Employee No", "Leave Code", "Responsibility Center", "Application Date", "Leave Status", Status;
+            DataItemTableView = where("Leave Code" = filter('ANNUAL LEAVE'));
+            RequestFilterFields = "Leave Period", "Employee No", "Leave Code", "Responsibility Center", "Application Date", "Leave Status", Status;
 
             column(Company_Name; CompanyInfo.Name)
             {
@@ -80,7 +80,7 @@ report 52011 "Leave Applications"
             column(Leave_Balancenew; "Leave Balance")
             {
             }
-            column(Leave_Entitlment; Entitlement)
+            column(Leave_Entitlment; "Leave Application"."Leave Entitlment")
             {
             }
             // "Leave Entitlement"
@@ -89,9 +89,10 @@ report 52011 "Leave Applications"
 
             trigger OnAfterGetRecord()
             begin
+                // "Leave Type" = const('ANNUAL LEAVE')
                 HrLeaveledger.Reset();
                 // HrLeaveledger.SetRange("Staff No.", "Leave Application"."Employee No");
-                /// HrLeaveledger.SetRange(Closed, false);
+                HrLeaveledger.SetRange(Closed, false);
                 HrLeaveledger.SetFilter("Leave Period", '..%1', "Leave Application"."Start Date");
                 if HrLeaveledger.FindFirst() then begin
                     //  HrLeaveledger.CalcSums("No. of days");
@@ -101,6 +102,7 @@ report 52011 "Leave Applications"
                 Entitlement := 0;
                 Employ.Reset();
                 Employ.SetRange(Employ."No.", "Leave Application"."Employee No");
+
                 if Employ.FindFirst() then
                     Employ.CalcFields("Leave Entitlement");
                 Entitlement := Employ."Leave Entitlement";

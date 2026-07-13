@@ -1,6 +1,7 @@
 tableextension 50001 "Approval Entry" extends "Approval Entry"
 
 {
+    ///sourceTableView = sorting("Application No") order(descending);
     fields
     {
         field(50000; "Approval Stage"; Code[20])

@@ -1026,12 +1026,9 @@ tableextension 51424 "ExtEmployee" extends "Employee"
         }
         field(52061; "Leave Entitlement"; Decimal)
         {
-            //CalcFormula = lookup("Leave Type".Days where(Code = field("Leave Type Filter")));
             CalcFormula = sum("HR Leave Ledger Entries"."No. of days" where("Staff No." = field("No."),
-             Closed = FILTER(false),
-                                                                            "Transaction Type" = filter("Leave Allocation"),
-                                                                            "Leave Type" = field("Leave Type Filter"),
-                                                                            "Leave Period Code" = field("Leave Period Filter")));
+             Closed = FILTER(false), "Transaction Type" = filter("Leave Allocation"), "Leave Type" = field("Leave Type Filter"),
+                   "Leave Period Code" = field("Leave Period Filter")));
             Caption = 'Leave Entitlement';
             Editable = false;
             FieldClass = FlowField;
