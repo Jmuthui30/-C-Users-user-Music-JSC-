@@ -206,7 +206,7 @@ table 52018 "Leave Application"
 
                             NextWorkingDate := CalcDate('1D', NextWorkingDate);
                         until NoOfWorkingDays = "Days Applied";
-
+                        //Date2DMY(NextWorkingDate)
                         "End Date" := NextWorkingDate - 1;
                         "Resumption Date" := NextWorkingDate;
                         // Message('End date is %1', "Resumption Date");

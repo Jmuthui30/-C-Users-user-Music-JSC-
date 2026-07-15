@@ -1577,6 +1577,13 @@ tableextension 51424 "ExtEmployee" extends "Employee"
             Caption = 'Global Dimension 3 Code';
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(3));
         }
+        //Employer Category
+        field(52244; "Employer Category"; Option)
+        {
+            Caption = 'Employer Category';
+            DataClassification = CustomerContent;
+            OptionMembers = ,Judiciary,JSC,BOARD,KJA;
+        }
     }
 
     trigger OnInsert()

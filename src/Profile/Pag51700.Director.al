@@ -27,6 +27,12 @@ page 59991 "Director Role Center"
             {
                 Caption = 'Approval Activities';
             }
+            //"Employee Management Cues"
+            part("Employee Management Cues"; "Employee Management Cues")
+            {
+                ApplicationArea = All;
+                caption = 'Employee Management';
+            }
             Part(Control15; "HR Management Cues")
             {
                 ApplicationArea = All;
@@ -102,6 +108,42 @@ page 59991 "Director Role Center"
                     Caption = 'Employee Change Request';
                     Image = PersonInCharge;
                     RunObject = Page "Employee Change List";
+                    ToolTip = 'View the employee details';
+                }
+                //"Employee JSC List"
+                action(Action38)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Employee JSC List';
+                    Image = PersonInCharge;
+                    RunObject = Page "Employee JSC List";
+                    ToolTip = 'View the employee details';
+                }
+                //"Employee KJC List"
+                action(Action39)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Employee KJC List';
+                    Image = PersonInCharge;
+                    RunObject = Page "Employee KJC List";
+                    ToolTip = 'View the employee details';
+                }
+                // "Employee Judiciary List"
+                action(Action40)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Employee Judiciary List';
+                    Image = PersonInCharge;
+                    RunObject = Page "Employee Judiciary List";
+                    ToolTip = 'View the employee details';
+                }
+                //"Employee Board List"
+                action(Action41)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Employee Board List';
+                    Image = PersonInCharge;
+                    RunObject = Page "Employee Board List";
                     ToolTip = 'View the employee details';
                 }
 
@@ -236,8 +278,6 @@ page 59991 "Director Role Center"
 
 
             }
-
-
 
             group(Recruitment)
             {
@@ -442,7 +482,6 @@ page 59991 "Director Role Center"
 
 
             }
-
 
             group("Performance Appraisal Management")
             {

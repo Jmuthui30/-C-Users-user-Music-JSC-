@@ -68,7 +68,7 @@ codeunit 52600 "Appraisal Planning Mgt."
         EmployeeAppraisal: Record "Employee Appraisal";
         PlanHeader: Record "Appraisal Planning Header";
         StatusBefore: Text[50];
-    begin
+    begin//jmk
         PlanHeader.Get(PlanNo);
         if PlanHeader."Actual Appraisal No." <> '' then begin
             if EmployeeAppraisal.Get(PlanHeader."Actual Appraisal No.") then
@@ -97,6 +97,8 @@ codeunit 52600 "Appraisal Planning Mgt."
         EmployeeAppraisal."Current Review Period Code" := FindFirstReviewPeriodCode();
         EmployeeAppraisal."Appraisal Planning No." := PlanHeader."No.";
         EmployeeAppraisal.UpdateDirectorateSnapshot();
+
+        // Employee Appraisal (52015)
         EmployeeAppraisal.RecalculateFrameworkScores();
         EmployeeAppraisal.Modify(true);
 

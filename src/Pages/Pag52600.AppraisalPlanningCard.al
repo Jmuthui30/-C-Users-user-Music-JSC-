@@ -234,8 +234,16 @@ page 52600 "Appraisal Planning Card"
                 ToolTip = 'Prints the appraisal planning report.';
 
                 trigger OnAction()
+                var
+                    //Report: Report "Appraisal Planning Report";
+                    AppraisalPH: record "Appraisal Planning Header";
                 begin
-                    Report.RunModal(Report::"Appraisal Planning Report", true, false, Rec);
+                    AppraisalPH.Reset();
+                    AppraisalPH.SetRange("No.", Rec."No.");
+                    if AppraisalPH.FindFirst() then
+                        Report.RunModal(Report::"Appraisal Planning Report", true, false, AppraisalPH);
+
+                    // Report.RunModal(Report::"Appraisal Planning Report", true, false, Rec);
                 end;
             }
             action(SendForAppraiserReview)
@@ -251,6 +259,9 @@ page 52600 "Appraisal Planning Card"
                 trigger OnAction()
                 begin
                     AppraisalPlanningMgt.SubmitPlan(Rec."No.", '');
+
+
+
                     CurrPage.Update(false);
                 end;
             }

@@ -202,6 +202,14 @@ table 52600 "Appraisal Planning Header"
             Editable = false;
             TableRelation = "No. Series";
         }
+        // AppraisalDepartment
+        // field(38; "Appraisal Department"; Code[20])
+        // {
+        //     Caption = 'Appraisal Department';
+        //     TableRelation = Code;
+        // }
+
+
     }
 
     keys

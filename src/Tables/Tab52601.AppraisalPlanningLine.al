@@ -187,8 +187,8 @@ table 52601 "Appraisal Planning Line"
             until PlanLine.Next() = 0;
 
         TotalAllocation += "Rating Allocation";
-        if TotalAllocation > 70 then
-            Error('Total rating allocation for plan %1 review period %2 cannot exceed 70. Current total would be %3.',
+        if TotalAllocation > 80 then
+            Error('Total rating allocation for plan %1 review period %2 cannot exceed 80. Current total would be %3.',
                 "Plan No.", "Review Period Code", Round(TotalAllocation, 0.01));
     end;
 

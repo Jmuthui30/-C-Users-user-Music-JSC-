@@ -171,6 +171,42 @@ table 51917 "HR Management Cue"
             FieldClass = FlowField;
         }
 
+        // SourceTable = Employee;
+        //SourceTableView = WHERE("Employer Category" = CONST(Board));
+        // "Employee Board List"
+        field(22; "Employee Board List"; Integer)
+        {
+            CalcFormula = count(Employee where("Employer Category" = const(Board)));
+            Caption = 'Employee Board List';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        // /"Employee KJC List"
+        field(23; "Employee KJC List"; Integer)
+        {
+            CalcFormula = count(Employee where("Employer Category" = const(KJA)));
+            Caption = 'Employee KJC List';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        // "Employee JSC List"/
+        field(24; "Employee JSC List"; Integer)
+        {
+            CalcFormula = count(Employee where("Employer Category" = const(JSC)));
+            Caption = 'Employee JSC List';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        // "Employee Judiciary List"
+        field(25; "Employee Judiciary List"; Integer)
+        {
+            CalcFormula = count(Employee where("Employer Category" = const(Judiciary)));
+            Caption = 'Employee Judiciary List';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
+
 
 
 

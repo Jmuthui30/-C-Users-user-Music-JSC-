@@ -19,7 +19,7 @@ page 51747 "SS Training Needs Header"
                 field("Need Source"; Rec."Need Source")
                 {
                     ApplicationArea = All;
-                    Editable = false;
+                    //Editable = false;
                     ToolTip = 'Specifies where this training needs assessment originated.';
                 }
                 field("Source Document No"; Rec."Source Document No")
@@ -60,6 +60,7 @@ page 51747 "SS Training Needs Header"
                 field("Global Dimension 3 Code"; Rec."Global Dimension 3 Code")
                 {
                     ApplicationArea = All;
+                    visible = false;
                 }
                 field("Mobile No"; Rec."Mobile No")
                 {
