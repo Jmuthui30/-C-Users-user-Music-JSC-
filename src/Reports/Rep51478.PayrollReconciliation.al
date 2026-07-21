@@ -75,21 +75,30 @@ report 51478 "Payroll Reconciliation"
                     else
                         LastMonthVal := 0;
 
-                end else if "Assignment Matrix-X"."Payroll Period" = Lastmonth then begin
-                    // Last month record - check if there's a current month record
-                    Assignmat.Reset;
-                    Assignmat.SetRange(Assignmat."Employee No", "Assignment Matrix-X"."Employee No");
-                    Assignmat.SetRange(Assignmat.Type, "Assignment Matrix-X".Type);
-                    Assignmat.SetRange(Assignmat.Code, "Assignment Matrix-X".Code);
-                    Assignmat.SetRange(Assignmat."Payroll Period", Thismonth);
-                    if Assignmat.FindFirst then
-                        CurrReport.Skip  // Already processed in current month section
-                    else begin
-                        // No current month record - this is an inactive employee
-                        LastMonthVal := "Assignment Matrix-X".Amount;
-                        CurrentMonthVal := 0;
+                end else
+                    if "Assignment Matrix-X"."Payroll Period" = Lastmonth then begin
+                        // Last month record - check if there's a current month record
+
+
+                        //qwetyu
+
+                        Assignmat.Reset;
+                        Assignmat.SetRange(Assignmat."Employee No", "Assignment Matrix-X"."Employee No");
+                        Assignmat.SetRange(Assignmat.Type, "Assignment Matrix-X".Type);
+                        Assignmat.SetRange(Assignmat.Code, "Assignment Matrix-X".Code);
+                        Assignmat.SetRange(Assignmat."Payroll Period", Thismonth);
+                        if Assignmat.FindFirst then
+                            CurrReport.Skip  // Already processed in current month section
+                        else begin
+                            // No current month record - this is an inactive employee
+                            LastMonthVal := "Assignment Matrix-X".Amount;
+                            // CurrentMonthVal := 0;
+                        end;
                     end;
-                end;
+
+
+
+                ///asdfghjk
 
                 Difference := CurrentMonthVal - LastMonthVal;
 

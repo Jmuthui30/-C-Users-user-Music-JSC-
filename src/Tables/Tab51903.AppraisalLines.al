@@ -309,6 +309,8 @@ table 51903 "Appraisal Lines"
             trigger OnValidate()
             begin
                 ValidateActualAgainstTarget();
+
+                //kji
                 RecalculateLineScores();
             end;
         }
@@ -323,7 +325,7 @@ table 51903 "Appraisal Lines"
             Caption = 'Self Score';
             DataClassification = CustomerContent;
             MinValue = 0;
-            MaxValue = 70;
+            MaxValue = 80;
 
             trigger OnValidate()
             begin
@@ -336,7 +338,7 @@ table 51903 "Appraisal Lines"
             Caption = 'Appraiser Score';
             DataClassification = CustomerContent;
             MinValue = 0;
-            MaxValue = 30;
+            MaxValue = 20;
 
             trigger OnValidate()
             begin
@@ -371,11 +373,11 @@ table 51903 "Appraisal Lines"
             Caption = 'Rating Allocation';
             DataClassification = CustomerContent;
             MinValue = 0;
-            MaxValue = 70;
+            MaxValue = 80;
 
             trigger OnValidate()
             begin
-                Weighting := Round(("Rating Allocation" / 70) * 100, 0.01);
+                Weighting := Round(("Rating Allocation" / 80) * 100, 0.01);
                 ValidateRatingAllocationTotal();
                 RecalculateLineScores();
             end;
@@ -465,7 +467,7 @@ table 51903 "Appraisal Lines"
         RawObjectiveScore := "Self Rating" + "Appraiser Rating";
         "Score/Points" := RawObjectiveScore;
         "Weighted Rating" := Weighting;
-        "Quarter Score" := Round(RawObjectiveScore * 0.70, 0.01);
+        "Quarter Score" := Round(RawObjectiveScore * 0.80, 0.01);
         Rating := "Quarter Score";
     end;
 
@@ -507,6 +509,7 @@ table 51903 "Appraisal Lines"
 
     local procedure RecalculateLineScores()
     begin
+        //kji
         UpdateAchievedPercentage();
         UpdateSelfScore();
         UpdateQuarterScore();
@@ -521,6 +524,7 @@ table 51903 "Appraisal Lines"
         end;
 
         "Self Rating" := Round(("Rating Allocation" * "Achieved (%)") / 100, 0.01);
+
         if "Self Rating" > "Rating Allocation" then
             "Self Rating" := "Rating Allocation";
         "Final Self-Appraisal" := "Self Rating";
@@ -554,7 +558,7 @@ table 51903 "Appraisal Lines"
         if "Rating Allocation" = 0 then
             exit(0);
 
-        exit(Round(("Rating Allocation" / 70) * 30, 0.01));
+        exit(Round(("Rating Allocation" / 80) * 20, 0.01));
     end;
 
     local procedure ValidateRatingAllocationTotal()
@@ -576,8 +580,8 @@ table 51903 "Appraisal Lines"
             until AppraisalLine.Next() = 0;
 
         TotalAllocation += "Rating Allocation";
-        if TotalAllocation > 70 then
-            Error('Total rating allocation for appraisal %1 review period %2 cannot exceed 70. Current total would be %3.',
+        if TotalAllocation > 80 then
+            Error('Total rating allocation for appraisal %1 review period %2 cannot exceed 80. Current total would be %3.',
                 "Appraisal No", "Review Period Code", Round(TotalAllocation, 0.01));
     end;
 }

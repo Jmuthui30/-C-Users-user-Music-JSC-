@@ -618,7 +618,7 @@ page 52358 "Appraisal Card-Review"
                 PromotedCategory = "Report";
                 ToolTip = 'Executes the Print Objectives action';
                 Caption = 'Print Objectives';
-
+                Visible = false;
                 trigger OnAction()
                 begin
                     Clear(EmployeeObjectives);

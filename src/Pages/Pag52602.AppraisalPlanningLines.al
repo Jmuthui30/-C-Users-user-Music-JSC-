@@ -19,7 +19,7 @@ page 52602 "Appraisal Planning Lines"
                     Editable = LinesEditable;
                     ToolTip = 'Specifies the appraisal review period for this planned objective.';
                 }
-                field("Department Code"; "Department Code")
+                field("Department Code"; Rec."Department Code")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the department code.';
@@ -89,6 +89,27 @@ page 52602 "Appraisal Planning Lines"
                     visible = false;
                     Editable = false;
                     ToolTip = 'Specifies the calculated weighting percentage derived from the 70-point rating allocation.';
+                }
+                field("Appraisal Period"; "Appraisal Period")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies the appraisal period.';
+                    visible = false;
+                }
+                field("Plan No."; "Plan No.")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies the appraisal planning number.';
+                    visible = false;
+                }
+                field("Employee No."; "Employee No.")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    visible = false;
+                    ToolTip = 'Specifies the employee number.';
                 }
             }
         }

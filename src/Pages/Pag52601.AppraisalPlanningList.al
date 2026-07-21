@@ -5,6 +5,7 @@ page 52601 "Appraisal Planning List"
     Caption = 'Appraisal Planning';
     PageType = List;
     SourceTable = "Appraisal Planning Header";
+    SourceTableView = where("Planning Status" = filter("Returned for Changes" | Open));
     UsageCategory = Lists;
 
     layout

@@ -11,14 +11,25 @@ page 52292 "Leave Planner Lines"
         area(content)
         {
             repeater(General)
+
             {
+                Field("Document No."; Rec."Document No.")
+                {
+                    ToolTip = 'Specifies the value of the Document No. field.';
+                }
+                field("Line No."; "Line No.")
+                {
+                    ToolTip = 'Specifies the value of the Line No. field.';
+                }
                 field("Employee No."; Rec."Employee No.")
                 {
                     ToolTip = 'Specifies the value of the Employee No. field.';
+                    editable = false;
                 }
                 field("Employee Name"; Rec."Employee Name")
                 {
                     ToolTip = 'Specifies the value of the Employee Name field.';
+                    editable = false;
                 }
                 field("Leave Type"; Rec."Leave Type")
                 {

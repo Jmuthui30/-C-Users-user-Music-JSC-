@@ -277,6 +277,10 @@ page 52043 "Leave Application Card"
                               end;
                           end;
                           */
+                        Rec."Send Approval Date" := workDate;
+                        Rec."Send Approval Time" := TIME;
+                        Rec.Modify();
+                        Message('Approval request sent successfully.');
                         CurrPage.Close();
 
                     end;

@@ -227,7 +227,7 @@ table 52600 "Appraisal Planning Header"
     begin
         if "No." = '' then
             AssignNoSeries();
-
+        "Planning Status" := "Planning Status"::Open;
         if "Planning Status" = "Planning Status"::Draft then;
 
         if "Employee No." <> '' then

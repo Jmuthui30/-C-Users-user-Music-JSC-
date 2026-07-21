@@ -2,7 +2,7 @@ report 52600 "Appraisal Planning Report"
 {
     ApplicationArea = All;
     Caption = 'Appraisal Planning Report';
-    DefaultRenderingLayout = PlanningWord;
+    DefaultRenderingLayout = PlanningRDLC;
     UsageCategory = ReportsAndAnalysis;
 
     dataset
@@ -57,7 +57,8 @@ report 52600 "Appraisal Planning Report"
             {
                 DataItemLink = "Plan No." = field("No."), "Employee No." = field("Employee No."), "Appraisal Period" = field("Appraisal Period");
                 DataItemTableView = sorting("Plan No.", "Line No");
-
+                // "Plan No."
+                column(PlanNo; "Plan No.") { }
                 column(ObjectiveEntryNo; "Line No") { }
                 column(ObjectiveCode; "Workplan Code") { }
                 column(ObjectiveDescription; "Workplan Description") { }

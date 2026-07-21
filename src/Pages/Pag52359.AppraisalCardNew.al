@@ -630,6 +630,7 @@ page 52359 "Appraisal Card-New"
         SubmitForReviewEnabled :=
             (Rec.Status = Rec.Status::Open) and
             ((Rec."Appraisal Status" = Rec."Appraisal Status"::Setting) or
+             (Rec."Appraisal Status" = Rec."Appraisal Status"::Review) or
              (Rec."Appraisal Status" = Rec."Appraisal Status"::Set)) and
             not OpenApprovalEntriesExist;
         CardEditable := (Rec.Status = Rec.Status::Open) and not OpenApprovalEntriesExist;

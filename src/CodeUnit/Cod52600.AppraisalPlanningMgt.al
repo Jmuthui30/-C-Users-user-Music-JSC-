@@ -93,6 +93,7 @@ codeunit 52600 "Appraisal Planning Mgt."
         CopyPlanningLinesToAppraisal(PlanHeader, EmployeeAppraisal);
 
         EmployeeAppraisal.Status := EmployeeAppraisal.Status::Open;
+
         EmployeeAppraisal."Appraisal Status" := EmployeeAppraisal."Appraisal Status"::Review;
         EmployeeAppraisal."Current Review Period Code" := FindFirstReviewPeriodCode();
         EmployeeAppraisal."Appraisal Planning No." := PlanHeader."No.";
@@ -174,8 +175,8 @@ codeunit 52600 "Appraisal Planning Mgt."
         if ReviewPeriod.FindSet() then
             repeat
                 TotalAllocation := CalculateReviewAllocation(PlanHeader."No.", ReviewPeriod.Code);
-                if Round(TotalAllocation, 0.01) <> 70 then
-                    message('Total rating allocation for appraisal planning %1 review period %2 must be 70. Current total is %3.',
+                if Round(TotalAllocation, 0.01) <> 80 then
+                    message('Total rating allocation for appraisal planning %1 review period %2 must be 80. Current total is %3.',
                         PlanHeader."No.", ReviewPeriod.Code, Round(TotalAllocation, 0.01));
             until ReviewPeriod.Next() = 0;
     end;

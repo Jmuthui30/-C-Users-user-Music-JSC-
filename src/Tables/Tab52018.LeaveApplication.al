@@ -634,6 +634,15 @@ table 52018 "Leave Application"
         {
             Caption = 'Approval Time';
         }
+        //send approval Date
+        field(82; "Send Approval Date"; Date)
+        {
+            Caption = 'Send Approval Date';
+        }
+        field(83; "Send Approval Time"; Time)
+        {
+            Caption = 'Send Approval Time';
+        }
 
     }
 

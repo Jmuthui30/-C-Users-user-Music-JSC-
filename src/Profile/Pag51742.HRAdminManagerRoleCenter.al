@@ -1062,6 +1062,16 @@ page 51742 "HR & Admin Manager Role Center"
                         ToolTip = 'Executes the Assign Leave Days action';
                         Caption = 'Leave Planner';
                     }
+
+                    action("Leave Planner Requests")
+                    {
+                        RunObject = page "Leave Planner app List";
+                        ApplicationArea = All;
+                        ToolTip = 'Executes the Assign Leave Days action';
+                        Caption = 'Leave Planner Requests';
+                    }
+
+
                 }
                 group("Leave Reports")
                 {

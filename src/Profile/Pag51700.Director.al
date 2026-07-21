@@ -240,6 +240,16 @@ page 59991 "Director Role Center"
                         ToolTip = 'Executes the Assign Leave Days action';
                         Caption = 'Leave Planner';
                     }
+
+                    action("Leave Planner Requests")
+                    {
+                        RunObject = page "Leave Planner app List";
+                        ApplicationArea = All;
+                        ToolTip = 'Executes the Assign Leave Days action';
+                        Caption = 'Leave Planner Requests';
+                    }
+
+
                 }
                 group("Leave Reports")
                 {
@@ -275,6 +285,8 @@ page 59991 "Director Role Center"
                         Caption = 'Leave Statement';
                     }
                 }
+
+
 
 
             }

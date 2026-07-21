@@ -216,7 +216,9 @@ page 51747 "SS Training Needs Header"
                 ApplicationArea = All;
                 Image = "Report";
                 Promoted = true;
+                PromotedCategory = Process;
                 PromotedIsBig = true;
+                PromotedOnly = true;
 
                 trigger OnAction()
                 var
@@ -246,6 +248,7 @@ page 51747 "SS Training Needs Header"
                     // if ApprovalsMgmt.checktr(Rec) then
                     ApprovalsMgmt.OnSendTrainingNeedsForApproval(Rec);
                     Commit();
+                    message('Training Needs Assessment has been sent for approval successfully.');
                     CurrPage.Close();
                 end;
             }

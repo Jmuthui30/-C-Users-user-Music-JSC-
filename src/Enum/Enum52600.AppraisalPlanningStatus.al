@@ -23,4 +23,14 @@ enum 52600 "Appraisal Planning Status"
     {
         Caption = 'Appraisal Created';
     }
+    value(5; "Appraisal Rejected")
+    {
+        Caption = 'Appraisal Rejected';
+    }
+    //open
+    value(6; Open)
+    {
+        Caption = 'Open';
+    }
+
 }

@@ -260,9 +260,9 @@ page 52600 "Appraisal Planning Card"
                 begin
                     AppraisalPlanningMgt.SubmitPlan(Rec."No.", '');
 
-
-
+                    Message('Appraisal Planning document %1 has been submitted for appraiser review.', Rec."No.");
                     CurrPage.Update(false);
+                    currPage.Close();
                 end;
             }
             action(ReturnForChanges)
@@ -286,6 +286,7 @@ page 52600 "Appraisal Planning Card"
                         Rec.Modify();
                         message('Appraisal Planning document %1 has been returned for changes.', Rec."No.");
                         CurrPage.Update(false);
+                        CurrPage.Close();
                     end;
                 end;
             }
@@ -324,6 +325,8 @@ page 52600 "Appraisal Planning Card"
                     CurrPage.Update(false);
                     if EmployeeAppraisal.Get(AppraisalNo) then
                         Page.Run(Page::"Appraisal Card-Review", EmployeeAppraisal);
+
+                    message('Actual Employee Appraisal %1 has been created from the approved planning document.', AppraisalNo);
                 end;
             }
         }

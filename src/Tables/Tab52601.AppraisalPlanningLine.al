@@ -34,7 +34,8 @@ table 52601 "Appraisal Planning Line"
         field(6; "Workplan Code"; Code[50])
         {
             Caption = 'Objective Code';
-            TableRelation = "Appraisal Workplan Code".Code;
+            TableRelation = "Appraisal Workplan Code".Code;//where("Workplan Code"= field("Department Code"));
+            //where( "Workplan Code"= field("Department Code"));
             trigger OnValidate()
             begin
                 PopulateWorkplanDetails();
@@ -217,7 +218,7 @@ table 52601 "Appraisal Planning Line"
             exit;
 
         WorkplanCode.Get("Workplan Code");
-        setRange("Workplan Code", "Department Code");
+        //setRange("Workplan Code", "Department Code");
         "Workplan Description" := WorkplanCode.Description;
     end;
 

@@ -66,6 +66,14 @@ page 58042 "Leave Application List"
                 {
                     ToolTip = 'Specifies the value of the Available Leave Balance field';
                 }
+                field(sendApprovalDate; Rec."Send Approval Date")
+                {
+                    ToolTip = 'Specifies the value of the Send Approval Date field';
+                }
+                field(sendApprovalTime; Rec."Send Approval Time")
+                {
+                    ToolTip = 'Specifies the value of the Send Approval Time field';
+                }
                 field("Approval By"; Rec."Approval By")
                 {
                     ToolTip = 'Specifies the value of the Approval By field';
