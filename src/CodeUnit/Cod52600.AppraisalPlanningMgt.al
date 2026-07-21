@@ -92,7 +92,7 @@ codeunit 52600 "Appraisal Planning Mgt."
         ClearAutoInsertedObjectiveLines(EmployeeAppraisal."Appraisal No");
         CopyPlanningLinesToAppraisal(PlanHeader, EmployeeAppraisal);
 
-        EmployeeAppraisal.Status := EmployeeAppraisal.Status::Released;
+        EmployeeAppraisal.Status := EmployeeAppraisal.Status::Open;
         EmployeeAppraisal."Appraisal Status" := EmployeeAppraisal."Appraisal Status"::Review;
         EmployeeAppraisal."Current Review Period Code" := FindFirstReviewPeriodCode();
         EmployeeAppraisal."Appraisal Planning No." := PlanHeader."No.";

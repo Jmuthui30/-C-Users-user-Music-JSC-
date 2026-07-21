@@ -35,7 +35,6 @@ table 52601 "Appraisal Planning Line"
         {
             Caption = 'Objective Code';
             TableRelation = "Appraisal Workplan Code".Code;
-
             trigger OnValidate()
             begin
                 PopulateWorkplanDetails();
@@ -85,7 +84,7 @@ table 52601 "Appraisal Planning Line"
         {
             Caption = 'Rating Allocation';
             MinValue = 0;
-            MaxValue = 70;
+            MaxValue = 80;
 
             trigger OnValidate()
             begin
@@ -112,6 +111,11 @@ table 52601 "Appraisal Planning Line"
         {
             Caption = 'Weighting (%)';
             Editable = false;
+        }
+        //Department Code
+        field(17; "Department Code"; Code[200])
+        {
+            Caption = 'Department Code';
         }
     }
 
@@ -156,6 +160,7 @@ table 52601 "Appraisal Planning Line"
         PlanHeader.Get("Plan No.");
         "Employee No." := PlanHeader."Employee No.";
         "Appraisal Period" := PlanHeader."Appraisal Period";
+        "Department Code" := PlanHeader."Directorate Code";
     end;
 
     procedure UpdateWeighting()
@@ -163,7 +168,7 @@ table 52601 "Appraisal Planning Line"
         if "Rating Allocation" = 0 then
             "Weighting (%)" := 0
         else
-            "Weighting (%)" := Round(("Rating Allocation" / 70) * 100, 0.01);
+            "Weighting (%)" := Round(("Rating Allocation" / 80) * 100, 0.01);
 
         Actual := 0;
         "Achieved (%)" := 0;
@@ -212,6 +217,7 @@ table 52601 "Appraisal Planning Line"
             exit;
 
         WorkplanCode.Get("Workplan Code");
+        setRange("Workplan Code", "Department Code");
         "Workplan Description" := WorkplanCode.Description;
     end;
 

@@ -55,7 +55,7 @@ report 52600 "Appraisal Planning Report"
 
             dataitem(Objectives; "Appraisal Planning Line")
             {
-                DataItemLink = "Plan No." = field("No.");
+                DataItemLink = "Plan No." = field("No."), "Employee No." = field("Employee No."), "Appraisal Period" = field("Appraisal Period");
                 DataItemTableView = sorting("Plan No.", "Line No");
 
                 column(ObjectiveEntryNo; "Line No") { }

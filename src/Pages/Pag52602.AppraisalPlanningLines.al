@@ -19,6 +19,12 @@ page 52602 "Appraisal Planning Lines"
                     Editable = LinesEditable;
                     ToolTip = 'Specifies the appraisal review period for this planned objective.';
                 }
+                field("Department Code"; "Department Code")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the department code.';
+                    visible = false;
+                }
                 field("Workplan Code"; Rec."Workplan Code")
                 {
                     ApplicationArea = All;
