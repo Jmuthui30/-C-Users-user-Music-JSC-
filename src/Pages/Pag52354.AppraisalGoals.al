@@ -49,6 +49,7 @@ page 52354 "Appraisal Goals"
                 field("FY Target"; Rec."FY Target")
                 {
                     Caption = 'Target';
+                    Editable = AppraiseeEditable;
                 }
                 field("Rating Allocation"; Rec."Rating Allocation")
                 {
@@ -60,7 +61,7 @@ page 52354 "Appraisal Goals"
                 field(Actual; Rec.Actual)
                 {
                     Caption = 'Actual';
-                    Editable = AppraiseeEditable;
+                    //Editable = AppraiseeEditable;
                     ToolTip = 'Specifies the value of the Actual field';
                     trigger OnValidate()
                     begin
@@ -77,13 +78,13 @@ page 52354 "Appraisal Goals"
                 {
                     ApplicationArea = All;
                     Caption = 'Self Score';
-                    Editable = false;
+                    //Editable = false;
                     ToolTip = 'Specifies the appraisee self score calculated from actual, target, and rating allocation.';
                 }
                 field("Appraisee's comments"; Rec."Appraisee's comments")
                 {
                     ApplicationArea = All;
-                    Editable = AppraiseeEditable;
+                    //  Editable = AppraiseeEditable;
                     Caption = 'Appraisee Comments';
                     ToolTip = 'Specifies the appraisee comments for this objective.';
                 }
@@ -302,7 +303,7 @@ page 52354 "Appraisal Goals"
         UnderReview :=
             (EmployeeAppraisal.Status = EmployeeAppraisal.Status::Released) and
             ((EmployeeAppraisal."Appraisal Status" = EmployeeAppraisal."Appraisal Status"::Review) or
-             (EmployeeAppraisal."Appraisal Status" = EmployeeAppraisal."Appraisal Status"::"Further review"));
+            (EmployeeAppraisal."Appraisal Status" = EmployeeAppraisal."Appraisal Status"::"Further review"));
 
         AppraiseeEditable := UnderReview;
         AppraiserEditable := UnderReview;

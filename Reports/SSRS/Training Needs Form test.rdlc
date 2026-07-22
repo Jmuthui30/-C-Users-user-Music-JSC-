@@ -1,26 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
-  <rd:ReportUnitType>Inch</rd:ReportUnitType>
-  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
-  <am:AuthoringMetadata>
-    <am:CreatedBy>
-      <am:Name>MSRB</am:Name>
-      <am:Version>15.1.30001.02</am:Version>
-    </am:CreatedBy>
-    <am:UpdatedBy>
-      <am:Name>MSRB</am:Name>
-      <am:Version>15.1.30001.02</am:Version>
-    </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-06-09T08:45:24.9231693Z</am:LastModifiedTimestamp>
-  </am:AuthoringMetadata>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource">
-      <rd:SecurityType>None</rd:SecurityType>
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
         <ConnectString />
       </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
       <rd:DataSourceID>bcd59168-7b8a-4ed4-86f3-aa0ab4935e27</rd:DataSourceID>
     </DataSource>
   </DataSources>
@@ -49,6 +36,8 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
+            <Top>0.97in</Top>
+            <Left>0.125in</Left>
             <Height>0.35in</Height>
             <Width>7.25in</Width>
             <Style>
@@ -56,7 +45,7 @@
                 <Color>#1f1f1f</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>#1f1f1f</BackgroundColor>
+              <BackgroundColor>DarkGoldenrod</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>4pt</PaddingLeft>
               <PaddingRight>4pt</PaddingRight>
@@ -81,7 +70,8 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>6.95in</Top>
+            <Top>7.92in</Top>
+            <Left>0.125in</Left>
             <Height>0.45in</Height>
             <Width>7.25in</Width>
             <ZIndex>1</ZIndex>
@@ -114,7 +104,8 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>6.7in</Top>
+            <Top>7.67in</Top>
+            <Left>0.125in</Left>
             <Height>0.25in</Height>
             <Width>7.25in</Width>
             <ZIndex>2</ZIndex>
@@ -123,7 +114,7 @@
                 <Color>#d9d9d9</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>#f7f7f7</BackgroundColor>
+              <BackgroundColor>DarkGreen</BackgroundColor>
               <PaddingLeft>3pt</PaddingLeft>
               <PaddingRight>3pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -153,7 +144,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=RowNumber("DataSet_Result")</Value>
+                                  <Value>=Fields!DocumentNo.Value</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>9pt</FontSize>
@@ -187,7 +178,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!IssueDescription.Value</Value>
+                                  <Value>=Fields!TrainingNeedDescription.Value</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>9pt</FontSize>
@@ -229,7 +220,17 @@
             </TablixRowHierarchy>
             <NoRowsMessage>No training need lines were found for this assessment.</NoRowsMessage>
             <DataSetName>DataSet_Result</DataSetName>
-            <Top>6.23in</Top>
+            <Filters>
+              <Filter>
+                <FilterExpression>=Fields!DocumentNo.Value</FilterExpression>
+                <Operator>GreaterThan</Operator>
+                <FilterValues>
+                  <FilterValue>0</FilterValue>
+                </FilterValues>
+              </Filter>
+            </Filters>
+            <Top>7.2in</Top>
+            <Left>0.125in</Left>
             <Height>0.25in</Height>
             <Width>7.25in</Width>
             <ZIndex>3</ZIndex>
@@ -253,7 +254,8 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>5.95in</Top>
+            <Top>6.92in</Top>
+            <Left>0.125in</Left>
             <Height>0.25in</Height>
             <Width>7.25in</Width>
             <ZIndex>4</ZIndex>
@@ -262,7 +264,7 @@
                 <Color>#d9d9d9</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>#f7f7f7</BackgroundColor>
+              <BackgroundColor>DarkGoldenrod</BackgroundColor>
               <PaddingLeft>3pt</PaddingLeft>
               <PaddingRight>3pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -286,7 +288,8 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>5.25in</Top>
+            <Top>6.22in</Top>
+            <Left>0.125in</Left>
             <Height>0.55in</Height>
             <Width>7.25in</Width>
             <ZIndex>5</ZIndex>
@@ -319,7 +322,8 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>5in</Top>
+            <Top>5.97in</Top>
+            <Left>0.125in</Left>
             <Height>0.25in</Height>
             <Width>7.25in</Width>
             <ZIndex>6</ZIndex>
@@ -328,7 +332,7 @@
                 <Color>#d9d9d9</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>#f7f7f7</BackgroundColor>
+              <BackgroundColor>DarkGreen</BackgroundColor>
               <PaddingLeft>3pt</PaddingLeft>
               <PaddingRight>3pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -352,7 +356,8 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>4.3in</Top>
+            <Top>5.27in</Top>
+            <Left>0.125in</Left>
             <Height>0.55in</Height>
             <Width>7.25in</Width>
             <ZIndex>7</ZIndex>
@@ -385,7 +390,8 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>4.05in</Top>
+            <Top>5.02in</Top>
+            <Left>0.125in</Left>
             <Height>0.25in</Height>
             <Width>7.25in</Width>
             <ZIndex>8</ZIndex>
@@ -394,7 +400,7 @@
                 <Color>#d9d9d9</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>#f7f7f7</BackgroundColor>
+              <BackgroundColor>DarkGreen</BackgroundColor>
               <PaddingLeft>3pt</PaddingLeft>
               <PaddingRight>3pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -418,7 +424,8 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>3.35in</Top>
+            <Top>4.32in</Top>
+            <Left>0.125in</Left>
             <Height>0.55in</Height>
             <Width>7.25in</Width>
             <ZIndex>9</ZIndex>
@@ -451,7 +458,8 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>3.1in</Top>
+            <Top>4.07in</Top>
+            <Left>0.125in</Left>
             <Height>0.25in</Height>
             <Width>7.25in</Width>
             <ZIndex>10</ZIndex>
@@ -460,7 +468,7 @@
                 <Color>#d9d9d9</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>#f7f7f7</BackgroundColor>
+              <BackgroundColor>DarkGreen</BackgroundColor>
               <PaddingLeft>3pt</PaddingLeft>
               <PaddingRight>3pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -484,7 +492,8 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>2.4in</Top>
+            <Top>3.37in</Top>
+            <Left>0.125in</Left>
             <Height>0.55in</Height>
             <Width>7.25in</Width>
             <ZIndex>11</ZIndex>
@@ -517,7 +526,8 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>2.15in</Top>
+            <Top>3.12in</Top>
+            <Left>0.125in</Left>
             <Height>0.25in</Height>
             <Width>7.25in</Width>
             <ZIndex>12</ZIndex>
@@ -526,7 +536,7 @@
                 <Color>#d9d9d9</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>#f7f7f7</BackgroundColor>
+              <BackgroundColor>DarkGreen</BackgroundColor>
               <PaddingLeft>3pt</PaddingLeft>
               <PaddingRight>3pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -978,7 +988,8 @@
                 <TablixMember />
               </TablixMembers>
             </TablixRowHierarchy>
-            <Top>1.1in</Top>
+            <Top>2.07in</Top>
+            <Left>0.125in</Left>
             <Height>0.9in</Height>
             <Width>7.25in</Width>
             <ZIndex>13</ZIndex>
@@ -1001,7 +1012,8 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>0.8in</Top>
+            <Top>1.77in</Top>
+            <Left>0.125in</Left>
             <Height>0.25in</Height>
             <Width>7.25in</Width>
             <ZIndex>14</ZIndex>
@@ -1010,7 +1022,7 @@
                 <Color>#d0d0d0</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>#ededed</BackgroundColor>
+              <BackgroundColor>DarkGreen</BackgroundColor>
               <PaddingLeft>4pt</PaddingLeft>
               <PaddingRight>4pt</PaddingRight>
               <PaddingTop>3pt</PaddingTop>
@@ -1036,11 +1048,13 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>0.45in</Top>
+            <Top>1.42in</Top>
+            <Left>0.125in</Left>
             <Height>0.22in</Height>
             <Width>7.25in</Width>
             <ZIndex>15</ZIndex>
             <Style>
+              <BackgroundColor>DarkGreen</BackgroundColor>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -1065,7 +1079,8 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>7.55in</Top>
+            <Top>8.52in</Top>
+            <Left>0.125in</Left>
             <Height>0.25in</Height>
             <Width>7.25in</Width>
             <ZIndex>16</ZIndex>
@@ -1074,7 +1089,7 @@
                 <Color>#d9d9d9</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>#f7f7f7</BackgroundColor>
+              <BackgroundColor>DarkGreen</BackgroundColor>
               <PaddingLeft>3pt</PaddingLeft>
               <PaddingRight>3pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -1098,7 +1113,8 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>7.8in</Top>
+            <Top>8.77in</Top>
+            <Left>0.125in</Left>
             <Height>0.45in</Height>
             <Width>7.25in</Width>
             <ZIndex>17</ZIndex>
@@ -1113,11 +1129,85 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
+          <Image Name="Image1">
+            <Source>Database</Source>
+            <Value>=First(Fields!Logo.Value, "DataSet_Result")</Value>
+            <MIMEType>image/png</MIMEType>
+            <Sizing>FitProportional</Sizing>
+            <Left>0.125in</Left>
+            <Height>0.89667in</Height>
+            <Width>1.7in</Width>
+            <ZIndex>18</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Image>
+          <Textbox Name="Textbox1">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=First(Fields!CompName.Value, "DataSet_Result")</Value>
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox1</rd:DefaultName>
+            <Left>1.83889in</Left>
+            <Height>0.2in</Height>
+            <Width>3.83611in</Width>
+            <ZIndex>19</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox2">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=First(Fields!Address.Value, "DataSet_Result")</Value>
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox2</rd:DefaultName>
+            <Top>0.2in</Top>
+            <Left>1.86667in</Left>
+            <Height>0.18056in</Height>
+            <Width>3.80833in</Width>
+            <ZIndex>20</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
         </ReportItems>
-        <Height>8.25in</Height>
+        <Height>9.22in</Height>
         <Style />
       </Body>
-      <Width>7.25in</Width>
+      <Width>7.55in</Width>
       <Page>
         <Style />
       </Page>
@@ -1160,6 +1250,8 @@ End Function
 </Code>
   <Language>=User!Language</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
   <DataSets>
     <DataSet Name="DataSet_Result">
       <Fields>
@@ -1240,6 +1332,21 @@ End Function
         </Field>
         <Field Name="IssueDescription">
           <DataField>IssueDescription</DataField>
+        </Field>
+        <Field Name="TrainingNeed">
+          <DataField>TrainingNeed</DataField>
+        </Field>
+        <Field Name="TrainingNeedDescription">
+          <DataField>TrainingNeedDescription</DataField>
+        </Field>
+        <Field Name="TrainingNeedStatus">
+          <DataField>TrainingNeedStatus</DataField>
+        </Field>
+        <Field Name="ReferenceNo">
+          <DataField>ReferenceNo</DataField>
+        </Field>
+        <Field Name="DocumentNo">
+          <DataField>DocumentNo</DataField>
         </Field>
       </Fields>
       <Query>

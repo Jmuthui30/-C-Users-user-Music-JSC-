@@ -154,12 +154,21 @@ table 52173 "Leave Planner Lines"
         {
             Caption = 'Line No.';
         }
+        // "User ID"
+        field(10; "User ID"; Code[50])
+        {
+            Caption = 'User ID';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {
         key(PK; "Document No.", "Line No.")
         {
             Clustered = true;
+        }
+        key(Secondary; "Employee No.")
+        {
         }
     }
 
@@ -168,6 +177,26 @@ table 52173 "Leave Planner Lines"
         HumanResSetup: Record "Human Resources Setup";
         LeaveTypes: Record "Leave Type";
         NonWorkingDay: Boolean;
+        EmployeeRec: Record Employee;
+        UserSertup: Record "User Setup";
+
+    trigger OnInsert()
+    begin
+        // "Employee No." :=  UserSertup."Employee No.";
+        "User ID" := UserId;
+
+        if GuiAllowed then
+            UserSertup.Get("User ID");
+        UserSertup.TestField("Employee No.");
+        EmployeeRec.Get(UserSertup."Employee No.");
+        "Employee No." := EmployeeRec."No.";
+
+        "Employee Name" := EmployeeRec.FullName();
+        // else
+        // Validate("Employee No.");
+
+
+    end;
 }
 
 

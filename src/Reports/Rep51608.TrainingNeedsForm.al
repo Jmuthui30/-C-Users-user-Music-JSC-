@@ -89,6 +89,31 @@ report 51608 "Training Needs Form"
             column(IssueDescription; '')
             {
             }
+            //Employee Training Needs
+            dataitem(Lines; "Employee Training Needs")
+            {
+                dataitemlink = "Document No." = field("No.");
+                RequestFilterFields = "Document No.", "Employee No.";
+
+                column(TrainingNeed; Lines."Employee No.")
+                {
+                }
+                // "Line No."                       Integer (PK2)
+                column(TrainingNeedDescription; Lines.Description)
+                {
+                }
+                column(TrainingNeedStatus; Lines.Status)
+                {
+                }
+                column(ReferenceNo; Lines."Reference No.")
+                {
+                }
+                column(DocumentNo; Lines."Document No.")
+                {
+                }
+
+
+            }
         }
     }
     requestpage

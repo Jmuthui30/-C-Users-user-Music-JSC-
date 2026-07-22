@@ -83,7 +83,7 @@ page 51753 "Training Needs Header Approved"
                 {
                     ApplicationArea = All;
                 }
-                field("Brief Description of Job Function:";'')
+                field("Brief Description of Job Function:"; '')
                 {
                     ApplicationArea = All;
                     Caption = 'Brief Description of Job Function:';
@@ -94,7 +94,7 @@ page 51753 "Training Needs Header Approved"
                     MultiLine = true;
                     ShowCaption = false;
                 }
-                field("Current Employee Skills (Strength):";'')
+                field("Current Employee Skills (Strength):"; '')
                 {
                     ApplicationArea = All;
                     Caption = 'Current Employee Skills (Strength):';
@@ -105,7 +105,7 @@ page 51753 "Training Needs Header Approved"
                     MultiLine = true;
                     ShowCaption = false;
                 }
-                field("Missing/Deficient Competencies (Weakness):";'')
+                field("Missing/Deficient Competencies (Weakness):"; '')
                 {
                     ApplicationArea = All;
                     Caption = 'Missing/Deficient Competencies (Weakness):';
@@ -116,7 +116,7 @@ page 51753 "Training Needs Header Approved"
                     MultiLine = true;
                     ShowCaption = false;
                 }
-                field("Required Skills to Address the Missing Competencies (Weakness):";'')
+                field("Required Skills to Address the Missing Competencies (Weakness):"; '')
                 {
                     ApplicationArea = All;
                     Caption = 'Required Skills to Address the Missing Competencies (Weakness):';
@@ -127,7 +127,7 @@ page 51753 "Training Needs Header Approved"
                     MultiLine = true;
                     ShowCaption = false;
                 }
-                field("Comments by Departmental Head";'')
+                field("Comments by Departmental Head"; '')
                 {
                     ApplicationArea = All;
                     Caption = 'Comments by Departmental Head';
@@ -146,7 +146,7 @@ page 51753 "Training Needs Header Approved"
                               "Employee No." = FIELD("Employee No");
                 UpdatePropagation = Both;
             }
-            field("Comments by HR Manager:";'')
+            field("Comments by HR Manager:"; '')
             {
                 ApplicationArea = All;
                 Caption = 'Comments by HR Manager:';
@@ -175,8 +175,8 @@ page 51753 "Training Needs Header Approved"
                 ApplicationArea = All;
                 Image = "Report";
                 Promoted = true;
+                PromotedCategory = Process;
                 PromotedIsBig = true;
-
                 trigger OnAction()
                 begin
                     Rec.Reset;

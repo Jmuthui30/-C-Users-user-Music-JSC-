@@ -305,8 +305,8 @@ codeunit 52395 "Appraisal Process Mgt."
         if not HasObjectiveLine then
             Error('Enter at least one appraisal objective line before submitting appraisal %1.', EmployeeAppraisal."Appraisal No");
 
-        if Round(TotalAllocation, 0.01) <> 70 then
-            Error('Total rating allocation for appraisal %1 review period %2 must be 70. Current total is %3.',
+        if Round(TotalAllocation, 0.01) <> 80 then
+            Error('Total rating allocation for appraisal %1 review period %2 must be 80. Current total is %3.',
                 EmployeeAppraisal."Appraisal No",
                 EmployeeAppraisal."Current Review Period Code",
                 Round(TotalAllocation, 0.01));
