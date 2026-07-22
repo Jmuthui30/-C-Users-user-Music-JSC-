@@ -65,6 +65,8 @@ codeunit 55056 HRPortal
         employeeAppraisal: Record "Employee Appraisal";
         employeeAppraisal1: Record "Employee Appraisal";
         employeeAppraisalLines: Record "Appraisal Lines";
+        HRSetup: Record "Human Resources Setup";
+        AppraisalPlanningHeader: Record "Appraisal Planning Header";
 
     procedure SendEmailNotification(recepient: Text; emailSubject: Text; emailBody: Text)
     var
@@ -470,7 +472,110 @@ codeunit 55056 HRPortal
             status := 'danger*An error occured while submitting your Appraisal Line';
         end;
 
+    end;
 
+    procedure CreateAppraisalPlanningHeader(
+        PlanningNo: Code[50];
+    EmpNo: Code[50];
+    AppraisorNo: Code[50];
+    AppraisalPeriod: Code[30]
+    ) Status: Text
+
+    begin
+        HrEmployees.Reset();
+        HrEmployees.SetRange("No.", EmpNo);
+
+        if HrEmployees.FindFirst() then begin
+
+            AppraisalPlanningHeader.Reset();
+            AppraisalPlanningHeader.SetRange("No.", PlanningNo);
+
+            if AppraisalPlanningHeader.FindFirst() then begin
+                // Update existing planning
+                AppraisalPlanningHeader."Employee No." := HrEmployees."No.";
+                AppraisalPlanningHeader.Validate("Employee No.");
+
+                AppraisalPlanningHeader."Appraiser No." := AppraisorNo;
+                AppraisalPlanningHeader.Validate("Appraiser No.");
+
+                AppraisalPlanningHeader."Appraisal Period" := AppraisalPeriod;
+                AppraisalPlanningHeader.Validate("Appraisal Period");
+
+                AppraisalPlanningHeader.Modify(true);
+
+                Status :=
+                    'success*Appraisal Planning has been modified successfully*' +
+                    AppraisalPlanningHeader."No.";
+
+            end else begin
+                // Create new planning
+                AppraisalPlanningHeader.Init();
+                AppraisalPlanningHeader."Planning Status" :=
+                    AppraisalPlanningHeader."Planning Status"::Draft;
+
+                AppraisalPlanningHeader."Employee No." := HrEmployees."No.";
+                AppraisalPlanningHeader.Validate("Employee No.");
+
+
+                AppraisalPlanningHeader."Appraiser No." := AppraisorNo;
+                AppraisalPlanningHeader.Validate("Appraiser No.");
+
+                AppraisalPlanningHeader."Appraisal Period" := AppraisalPeriod;
+                AppraisalPlanningHeader.Validate("Appraisal Period");
+
+                AppraisalPlanningHeader.Insert(true);
+
+                Status :=
+                    'success*Appraisal Planning has been created successfully*' +
+                    AppraisalPlanningHeader."No.";
+            end;
+        end else
+            Status := 'error*Employee not found';
+    end;
+
+    procedure AddAppraisalPlanningLine(
+    PlanningNo: Code[50];
+    ReviewPeriod: Code[30];
+    ObjectiveCode: Code[30];
+    PerformanceMeasure: Code[30];
+    InitiativeCode: Code[30];
+    Target: Decimal;
+    RatingAllocation: Decimal) Status: Text
+    var
+        AppraisalPlanningLine: Record "Appraisal Planning Line";
+        PrevLineNo: Integer;
+    begin
+        AppraisalPlanningLine.Reset();
+        AppraisalPlanningLine.SetRange("Plan No.", PlanningNo);
+
+        if AppraisalPlanningLine.FindLast() then
+            PrevLineNo := AppraisalPlanningLine."Line No" + 1000
+        else
+            PrevLineNo := 1000;
+
+        AppraisalPlanningLine.Init();
+        AppraisalPlanningLine."Plan No." := PlanningNo;
+        AppraisalPlanningLine."Line No" := PrevLineNo;
+
+        AppraisalPlanningLine."Review Period Code" := ReviewPeriod;
+        AppraisalPlanningLine.Validate("Review Period Code");
+
+        AppraisalPlanningLine."Workplan Code" := ObjectiveCode;
+        AppraisalPlanningLine.Validate("Workplan Code");
+
+        AppraisalPlanningLine."Performance Measure" := PerformanceMeasure;
+        AppraisalPlanningLine.Validate("Performance Measure");
+
+        AppraisalPlanningLine."Initiative Code" := InitiativeCode;
+        AppraisalPlanningLine.Validate("Initiative Code");
+
+        AppraisalPlanningLine.Target := Target;
+        AppraisalPlanningLine."Rating Allocation" := RatingAllocation;
+
+        if AppraisalPlanningLine.Insert(true) then
+            Status := 'success*Appraisal Planning Line has been created successfully'
+        else
+            Status := 'danger*An error occurred while creating the Appraisal Planning Line';
     end;
 
     procedure DeleteAppraisalLines(ApplicationNo: Code[50]; employeeNo: Code[50]; lineNo: Integer) status: Text
