@@ -32,6 +32,7 @@ page 58082 "Recruitment Request New"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Description field';
+                    multiLine = true;
                 }
 
                 field("Appointment Type"; Rec."Appointment Type")
@@ -193,11 +194,13 @@ page 58082 "Recruitment Request New"
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the';
+                        multiLine = true;
                     }
                     field("Functions of the Judge1"; "Functions of the Judge1")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the';
+                        multiLine = true;
                     }
                 }
 

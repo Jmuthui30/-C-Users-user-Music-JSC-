@@ -333,7 +333,7 @@ table 51880 "Recruitment Needs"
         field(68; "Vacancy Announcement"; Text[2048])
         {
             DataClassification = CustomerContent;
-            Editable = false;
+            Editable = true;
         }
         field(69; "Tems of Service"; Enum "TermsOf Service")
         {
