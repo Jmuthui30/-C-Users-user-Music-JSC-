@@ -67,6 +67,9 @@ codeunit 55056 HRPortal
         employeeAppraisalLines: Record "Appraisal Lines";
         HRSetup: Record "Human Resources Setup";
         AppraisalPlanningHeader: Record "Appraisal Planning Header";
+        TrainingNeedsHeader: Record "Training Needs Header";
+        LeavePlannerHeader: Record "Leave Planner Header";
+        LeavePlannerHeaderLine: Record "Leave Planner Lines";
 
     procedure SendEmailNotification(recepient: Text; emailSubject: Text; emailBody: Text)
     var
@@ -393,6 +396,71 @@ codeunit 55056 HRPortal
 
     end;
 
+    procedure CreateLeavePlanner(ApplicationNo: Code[50]; leavePeriod: Code[30]) status: Text
+    var
+        HRSetup: Record "Human Resources Setup";
+        LeaveReliever: Record "Leave Relievers";
+    begin
+        LeaveReliever.Reset();
+        LeaveReliever.SetRange("Leave Code", ApplicationNo);
+        if LeaveReliever.Find('-') then begin
+            LeavePlannerHeader."Leave Period" := leavePeriod;
+            if LeavePlannerHeader.Modify(true) then begin
+                status := 'success*Leave Planner has been updated succesfully';
+            end else begin
+                status := 'danger*An error occured while submitting your Reliever Planner';
+            end;
+        end else begin
+            LeavePlannerHeader.Init();
+            LeavePlannerHeader."Leave Period" := leavePeriod;
+            if LeavePlannerHeader.Insert(true) then begin
+                status := 'success*Leave Planner has been created succesfully';
+            end else begin
+                status := 'danger*An error occured while submitting your Reliever Planner';
+            end;
+        end;
+
+    end;
+
+    procedure AddLeavePlannerLine(ApplicationNo: Code[50]; empNo: code[30]; LeaveType: Code[30]; noOfDays: Integer; startDate: Date) status: Text
+    var
+        HRSetup: Record "Human Resources Setup";
+        LeaveReliever: Record "Leave Relievers";
+    begin
+
+        LeavePlannerHeaderLine.Init();
+        LeavePlannerHeaderLine."Document No." := ApplicationNo;
+        LeavePlannerHeaderLine."Employee No." := empNo;
+        LeavePlannerHeaderLine.Validate("Employee No.");
+        LeavePlannerHeaderLine."Leave Type" := LeaveType;
+        LeavePlannerHeaderLine."No. of Days" := noOfDays;
+        LeavePlannerHeaderLine."Start Date" := startDate;
+        if LeavePlannerHeaderLine.Insert(true) then begin
+            status := 'success*Leave Planning line has been created succesfully';
+        end else begin
+            status := 'danger*An error occured while submitting your Leave planning Line';
+        end;
+    end;
+
+    procedure DeleteLeavePlanningLine(ApplicationNo: Code[50]; lineNo: Integer) status: Text
+    var
+        HRSetup: Record "Human Resources Setup";
+        LeaveReliever: Record "Leave Relievers";
+    begin
+
+        LeavePlannerHeaderLine.Reset();
+        LeavePlannerHeaderLine.SetRange("Document No.", ApplicationNo);
+        LeavePlannerHeaderLine.setrange("Line No.", lineNo);
+        if LeavePlannerHeaderLine.FindFirst() THEN begin
+            if LeavePlannerHeaderLine.Delete(true) then begin
+                status := 'success*Leave Planning Line has been deleted succesfully';
+            end else begin
+                status := 'danger*An error occured while deleted your Leave Planning Line';
+            end;
+        end;
+
+    end;
+
     procedure CreateEmployeeAppraisalApplication(EmpNo: Code[50]; AppraisorNo: Code[50]; appraisalPeriod: Code[30]; appraisalType: Code[30]; ApplicationNo: Code[50]) status: Text
     var
         HRSetup: Record "Human Resources Setup";
@@ -478,7 +546,14 @@ codeunit 55056 HRPortal
         PlanningNo: Code[50];
     EmpNo: Code[50];
     AppraisorNo: Code[50];
-    AppraisalPeriod: Code[30]
+    AppraisalPeriod: Code[30];
+    PersonalDevObjectives: Text[2048];
+    AdditionalResponsibilities: Text[2048];
+    KnowledgeAndInnovation: Text[2048];
+    CoreValuesMaintained: Text[2048];
+    ActionsToMaintain: Text[2048];
+    CoreValuesToDevelop: Text[2048];
+    ActionsToDevelop: Text[2048]
     ) Status: Text
 
     begin
@@ -501,6 +576,14 @@ codeunit 55056 HRPortal
                 AppraisalPlanningHeader."Appraisal Period" := AppraisalPeriod;
                 AppraisalPlanningHeader.Validate("Appraisal Period");
 
+                AppraisalPlanningHeader."Personal Dev. Objectives" := PersonalDevObjectives;
+                AppraisalPlanningHeader."Additional Responsibilities" := AdditionalResponsibilities;
+                AppraisalPlanningHeader."Knowledge Innovation" := KnowledgeAndInnovation;
+                AppraisalPlanningHeader."Core Values Maintained" := CoreValuesMaintained;
+                AppraisalPlanningHeader."Core Values Maintenance" := ActionsToMaintain;
+                AppraisalPlanningHeader."Core Values To Develop" := CoreValuesToDevelop;
+                AppraisalPlanningHeader."Core Values Development" := ActionsToDevelop;
+
                 AppraisalPlanningHeader.Modify(true);
 
                 Status :=
@@ -522,6 +605,14 @@ codeunit 55056 HRPortal
 
                 AppraisalPlanningHeader."Appraisal Period" := AppraisalPeriod;
                 AppraisalPlanningHeader.Validate("Appraisal Period");
+
+                AppraisalPlanningHeader."Personal Dev. Objectives" := PersonalDevObjectives;
+                AppraisalPlanningHeader."Additional Responsibilities" := AdditionalResponsibilities;
+                AppraisalPlanningHeader."Knowledge Innovation" := KnowledgeAndInnovation;
+                AppraisalPlanningHeader."Core Values Maintained" := CoreValuesMaintained;
+                AppraisalPlanningHeader."Core Values Maintenance" := ActionsToMaintain;
+                AppraisalPlanningHeader."Core Values To Develop" := CoreValuesToDevelop;
+                AppraisalPlanningHeader."Core Values Development" := ActionsToDevelop;
 
                 AppraisalPlanningHeader.Insert(true);
 
@@ -576,6 +667,48 @@ codeunit 55056 HRPortal
             Status := 'success*Appraisal Planning Line has been created successfully'
         else
             Status := 'danger*An error occurred while creating the Appraisal Planning Line';
+    end;
+
+    procedure DeleteAppraisalPlanningLine(ApplicationNo: Code[50]; employeeNo: Code[50]; lineNo: Integer) status: Text
+    var
+        AppraisalPlanningLine: Record "Appraisal Planning Line";
+    begin
+        AppraisalPlanningLine.Reset();
+        AppraisalPlanningLine.SetRange("Plan No.", ApplicationNo);
+        AppraisalPlanningLine.setrange("Line No", lineNo);
+        //employeeAppraisalLines.setrange("Employee No", employeeNo);
+        if AppraisalPlanningLine.FindFirst() THEN begin
+            if AppraisalPlanningLine.Delete(true) then begin
+                status := 'success*Appraisal planning Line has been deleted succesfully';
+            end else begin
+                status := 'danger*An error occured while deleted your Appraisal planning Line';
+            end;
+        end;
+    end;
+
+    procedure SendAppraisalPlanningTOSupervisor(
+       PlanningNo: Code[50];
+   EmpNo: Code[50]
+   ) Status: Text
+    var
+        AppraisalPlanningMgt: Codeunit "Appraisal Planning Mgt.";
+    begin
+        AppraisalPlanningHeader.Reset();
+        AppraisalPlanningHeader.SetRange("No.", PlanningNo);
+        if AppraisalPlanningHeader.FindFirst() then begin
+            AppraisalPlanningHeader."Appraiser Agreed" := true;
+            AppraisalPlanningHeader.Modify(true);
+
+            AppraisalPlanningMgt.SubmitPlan(AppraisalPlanningHeader."No.", '');
+
+            Status :=
+                'success*Appraisal Planning has been modified successfully*' +
+                AppraisalPlanningHeader."No.";
+
+        end else begin
+
+        end;
+
     end;
 
     procedure DeleteAppraisalLines(ApplicationNo: Code[50]; employeeNo: Code[50]; lineNo: Integer) status: Text
@@ -2062,6 +2195,8 @@ codeunit 55056 HRPortal
         end;
     end;
 
+
+
     procedure DeleteTrainingRequestLine(empNo: Code[30]; applicationNo: Code[50]; lineNo: Integer) status: Text
     var
 
@@ -2088,8 +2223,6 @@ codeunit 55056 HRPortal
             ApprovalsMgmt.OnSendTrainingNeedsForApproval(TrainingRequest);
             status := 'success*Training Request has been succesfully sent for approval.';
         end;
-
-
     end;
 
     procedure CancelTrainingRequestApproval(DocNo: Code[50]) Status: Text
@@ -2102,6 +2235,144 @@ codeunit 55056 HRPortal
         if TrainingRequest.FindFirst() then begin
             // ApprovalsMgmt.OnCancelTrainingRequestApproval(TrainingRequest);
             status := 'success*Training Request approval request has been successfully cancelled.';
+        end;
+
+    end;
+
+    procedure CreateTrainingNeed(No: Code[30]; EmpNo: Code[30]; sourceDocumentNo: Text; needSource: integer; jobFunction: Text[1000]; currentEmployeeSkills: Text[1000]; missingCompetencies: Text[1000]; requiredSkills: Text[1000]; commentsByDepartment: Text[1000]) status: Text
+    var
+        EmpRec: Record "Employee Master";
+        TrainingSetup: Record "QuantumJumps HR Setup";
+    begin
+        CashMgt.Get();
+        HrEmployees.Get(EmpNo);
+        if No <> '' then begin
+            TrainingNeedsHeader.Reset();
+            TrainingNeedsHeader.SetRange("No.", No);
+            if TrainingNeedsHeader.FindFirst() then begin
+                TrainingNeedsHeader.Date := Today;
+                // TrainingNeedsHeader."Source Document No" := sourceDocumentNo;
+                TrainingNeedsHeader."Need Source" := needSource;
+                TrainingNeedsHeader."Employee No" := EmpNo;
+                TrainingNeedsHeader.Validate("Employee No");
+                TrainingNeedsHeader.Status := TrainingRequest.Status::Open;
+                if EmpRec.Get(EmpNo) then begin
+                    TrainingNeedsHeader."Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                    TrainingNeedsHeader."Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                    TrainingNeedsHeader."Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
+                end;
+                TrainingNeedsHeader."Job Title" := HrEmployees."Job Title";
+                TrainingNeedsHeader."Employee Name" := HrEmployees."First Name" + ' ' + HrEmployees."Last Name";
+                TrainingNeedsHeader."Job Function" := jobFunction;
+                TrainingNeedsHeader."Current Employee Skills" := currentEmployeeSkills;
+                TrainingNeedsHeader."Missing Competencies" := missingCompetencies;
+                TrainingNeedsHeader."Required Skills" := requiredSkills;
+                if TrainingNeedsHeader.Modify(true) then begin
+                    status := 'success*Training Need has been modified succesfully*' + TrainingNeedsHeader."No.";
+                end else begin
+                    status := 'danger*An error occured while submitting your Training Need';
+                end;
+            end else begin
+                status := 'danger*Document could not be found';
+            end;
+        end else begin
+            TrainingNeedsHeader.Init();
+            TrainingNeedsHeader.Date := Today;
+            // TrainingNeedsHeader."Source Document No" := sourceDocumentNo;
+            TrainingNeedsHeader."Need Source" := needSource;
+            TrainingNeedsHeader."Employee No" := EmpNo;
+            TrainingNeedsHeader.Validate("Employee No");
+            TrainingNeedsHeader.Status := TrainingRequest.Status::Open;
+            if EmpRec.Get(EmpNo) then begin
+                TrainingNeedsHeader."Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                TrainingNeedsHeader."Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                TrainingNeedsHeader."Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
+            end;
+            TrainingNeedsHeader."Job Title" := HrEmployees."Job Title";
+            TrainingNeedsHeader."Employee Name" := HrEmployees."First Name" + ' ' + HrEmployees."Last Name";
+            TrainingNeedsHeader."Job Function" := jobFunction;
+            TrainingNeedsHeader."Current Employee Skills" := currentEmployeeSkills;
+            TrainingNeedsHeader."Missing Competencies" := missingCompetencies;
+            TrainingNeedsHeader."Required Skills" := requiredSkills;
+            if TrainingRequest.Insert() then begin
+                TrainingRequest."Employee No" := EmpNo;
+                TrainingRequest.Validate("Employee No");
+                if EmpRec.Get(EmpNo) then begin
+                    TrainingRequest."Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                    TrainingRequest."Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                    TrainingRequest."Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
+                end;
+                TrainingRequest."Job Title" := HrEmployees."Job Title";
+                TrainingRequest."Employee Name" := HrEmployees."First Name" + ' ' + HrEmployees."Last Name";
+                TrainingRequest.Modify(true);
+                status := 'success*Training Need has been modified succesfully*' + TrainingRequest."No.";
+            end else begin
+                status := 'danger*An error occured while submitting your Training Need';
+            end;
+        end;
+    end;
+
+    procedure CreateTrainingNeedLines(No: Code[30]; EmpNo: Code[30]; needCode: Code[30]) status: Text
+    var
+        lineNo: Integer;
+    begin
+        TrainingRequestLines.Reset();
+        TrainingRequestLines."Employee No." := EmpNo;
+        TrainingRequestLines1.Reset();
+        TrainingRequestLines1.SetRange("Employee No.", EmpNo);
+        if TrainingRequestLines1.FindLast() then
+            lineNo := TrainingRequestLines1."Line No." + 1
+        else
+            lineNo := 1;
+        TrainingRequestLines."Line No." := lineNo;
+        TrainingRequestLines."Document No." := No;
+        TrainingRequestLines.Code := needCode;
+        TrainingRequestLines.Validate(Code);
+        if TrainingRequestLines.Insert(true) then begin
+            status := 'success*Training request line added succesfully.';
+        end else begin
+            status := 'danger*An error occured while submitting your Training request line';
+        end;
+    end;
+
+    procedure DeleteTrainingNeedsLine(empNo: Code[30]; applicationNo: Code[50]; lineNo: Integer) status: Text
+    var
+
+    begin
+        TrainingRequestLines.SetRange("Employee No.", EmpNo);
+        TrainingRequestLines.SetRange("Line No.", lineNo);
+        TrainingRequestLines.SetRange("Document No.", applicationNo);
+        if TrainingRequestLines.FindFirst() then
+            if TrainingRequestLines.Delete() then begin
+                status := 'success*Training Need line deleted succesfully.';
+            end else begin
+                status := 'danger*An error occured while submitting your Training need line';
+            end;
+    end;
+
+    procedure SendTrainingNeedsApproval(DocNo: Code[50]) Status: Text
+    var
+        ApprovalsMgmt: Codeunit "Approvals Mgmt. Ext";
+
+    begin
+        TrainingRequest.Reset();
+        TrainingRequest.SetRange("No.", DocNo);
+        if TrainingRequest.FindFirst() then begin
+            ApprovalsMgmt.OnSendTrainingNeedsForApproval(TrainingRequest);
+            status := 'success*Training need has been succesfully sent for approval.';
+        end;
+    end;
+
+    procedure CancelTrainingNeedsApproval(DocNo: Code[50]) Status: Text
+    var
+        ApprovalsMgmt: Codeunit "Approvals Mgmt. Ext";
+    begin
+        TrainingRequest.Get(DocNo);
+        TrainingRequest.Reset();
+        TrainingRequest.SetRange("No.", DocNo);
+        if TrainingRequest.FindFirst() then begin
+            // ApprovalsMgmt.OnCancelTrainingRequestApproval(TrainingRequest);
+            status := 'success*Training need approval request has been successfully cancelled.';
         end;
 
     end;
