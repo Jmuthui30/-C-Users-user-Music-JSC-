@@ -36,6 +36,9 @@ codeunit 52006 "Wkfl Event Handle HR Ext"
         // EmployeeChangeRequest: Record "Employee Change Request";
         EmployeeChangeSendforApprovalDescTxt: Label 'An approval for a new Employee Change is requested';
         EmployeeChangeCancelApprovalRequestDescTxt: Label 'An approval request for a new Employee Change has been cancelled';
+        //        LeavePlannerHeader: Record "Leave Planner Header";
+        LeavePlannerHeaderSendforApprovalDescTxt: Label 'An approval for a Leave Planner is requested';
+        LeavePlannerHeaderCancelApprovalRequestDescTxt: Label 'An approval request for a Leave Planner has been cancelled';
 
 
 
@@ -215,6 +218,17 @@ codeunit 52006 "Wkfl Event Handle HR Ext"
     begin
         exit(UpperCase('RunWorkflowOnCancelEmployeeChangeApprovalRequest'));
     end;
+    // LeavePlannerHeader: Record "Leave Planner Header";
+    procedure RunWorkflowOnSendLeavePlannerForApprovalCode(): Code[128]
+    begin
+        exit(UpperCase('RunWorkflowOnSendLeavePlannerForApproval'));
+    end;
+
+    procedure RunWorkflowOnCancelLeavePlannerApprovalRequestCode(): Code[128]
+    begin
+        exit(UpperCase('RunWorkflowOnCancelLeavePlannerApprovalRequest'));
+    end;
+
 
 
 
@@ -268,6 +282,11 @@ codeunit 52006 "Wkfl Event Handle HR Ext"
     EmployeeChangeSendforApprovalDescTxt, 0, false);
         WorkflowEvent.AddEventToLibrary(RunworkflowOnCancelEmployeeChangeApprovalRequestCode(), Database::"Employee Change Request",
         EmployeeChangeCancelApprovalRequestDescTxt, 0, false);
+        // LeavePlannerHeader: Record "Leave Planner Header";
+        WorkflowEvent.AddEventToLibrary(RunWorkflowOnSendLeavePlannerForApprovalCode(), Database::"Leave Planner Header",
+        LeavePlannerHeaderSendforApprovalDescTxt, 0, false);
+        WorkflowEvent.AddEventToLibrary(RunWorkflowOnCancelLeavePlannerApprovalRequestCode(), Database::"Leave Planner Header",
+        LeavePlannerHeaderCancelApprovalRequestDescTxt, 0, false);
 
     end;
 
@@ -322,6 +341,11 @@ codeunit 52006 "Wkfl Event Handle HR Ext"
             //// EmployeeChangeRequest: Record "Employee Change Request";
             RunWorkflowOnCancelEmployeeChangeApprovalRequestCode():
                 WorkflowEvent.AddEventPredecessor(RunWorkflowOnCancelEmployeeChangeApprovalRequestCode(), RunWorkflowOnSendEmployeeChangeForApprovalCode());
+            // LeavePlannerHeader: Record "Leave Planner Header";
+            RunWorkflowOnCancelLeavePlannerApprovalRequestCode():
+                WorkflowEvent.AddEventPredecessor(RunWorkflowOnCancelLeavePlannerApprovalRequestCode(), RunWorkflowOnSendLeavePlannerForApprovalCode());
+
+
 
             WorkflowEvent.RunWorkflowOnApproveApprovalRequestCode():
                 begin
@@ -355,6 +379,9 @@ codeunit 52006 "Wkfl Event Handle HR Ext"
                     WorkflowEvent.AddEventPredecessor(WorkflowEvent.RunWorkflowOnApproveApprovalRequestCode(), RunWorkflowOnSendNewEmployeeForApprovalCode());
                     //// EmployeeChangeRequest: Record "Employee Change Request";
                     WorkflowEvent.AddEventPredecessor(WorkflowEvent.RunWorkflowOnApproveApprovalRequestCode(), RunWorkflowOnSendEmployeeChangeForApprovalCode());
+                    // LeavePlannerHeader: Record "Leave Planner Header";
+                    WorkflowEvent.AddEventPredecessor(WorkflowEvent.RunWorkflowOnApproveApprovalRequestCode(), RunWorkflowOnSendLeavePlannerForApprovalCode());
+
 
                 end;
 
@@ -390,6 +417,8 @@ codeunit 52006 "Wkfl Event Handle HR Ext"
                     WorkflowEvent.AddEventPredecessor(WorkflowEvent.RunWorkflowOnRejectApprovalRequestCode(), RunWorkflowOnSendNewEmployeeForApprovalCode());
                     //// EmployeeChangeRequest: Record "Employee Change Request";
                     WorkflowEvent.AddEventPredecessor(WorkflowEvent.RunWorkflowOnRejectApprovalRequestCode(), RunWorkflowOnSendEmployeeChangeForApprovalCode());
+                    // LeavePlannerHeader: Record "Leave Planner Header";
+                    WorkflowEvent.AddEventPredecessor(WorkflowEvent.RunWorkflowOnRejectApprovalRequestCode(), RunWorkflowOnSendLeavePlannerForApprovalCode());
 
 
                 end;
@@ -425,6 +454,8 @@ codeunit 52006 "Wkfl Event Handle HR Ext"
                     WorkflowEvent.AddEventPredecessor(WorkflowEvent.RunWorkflowOnDelegateApprovalRequestCode(), RunWorkflowOnSendNewEmployeeForApprovalCode());
                     //// EmployeeChangeRequest: Record "Employee Change Request";
                     WorkflowEvent.AddEventPredecessor(WorkflowEvent.RunWorkflowOnDelegateApprovalRequestCode(), RunWorkflowOnSendEmployeeChangeForApprovalCode());
+                    // LeavePlannerHeader: Record "Leave Planner Header";
+                    WorkflowEvent.AddEventPredecessor(WorkflowEvent.RunWorkflowOnDelegateApprovalRequestCode(), RunWorkflowOnSendLeavePlannerForApprovalCode());
 
                 end;
         end;
@@ -566,6 +597,19 @@ codeunit 52006 "Wkfl Event Handle HR Ext"
     begin
         WorkflowManagement.HandleEvent(RunworkflowOnCancelEmployeeChangeApprovalRequestCode(), EmployeeChange);
     end;
+    // LeavePlannerHeader: Record "Leave Planner Header";
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approval Mgt HR Ext", 'OnSendLeavePlannerForApproval', '', false, false)]
+    local procedure RunWorkflowOnSendLeavePlannerForApproval(var LeavePlannerHeader: Record "Leave Planner Header")
+    begin
+        WorkflowManagement.HandleEvent(RunWorkflowOnSendLeavePlannerForApprovalCode(), LeavePlannerHeader);
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approval Mgt HR Ext", 'OnCancelLeavePlannerApproval', '', false, false)]
+    local procedure RunWorkflowOnCancelLeavePlannerApprovalRequest(var LeavePlannerHeader: Record "Leave Planner Header")
+    begin
+        WorkflowManagement.HandleEvent(RunWorkflowOnCancelLeavePlannerApprovalRequestCode(), LeavePlannerHeader);
+    end;
+
 }
 
 

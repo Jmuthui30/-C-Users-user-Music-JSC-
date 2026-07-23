@@ -27,6 +27,7 @@ codeunit 52005 "Approval Mgt HR Ext"
         TrainingRequest: Record "Training Request";
         StaffAppraisalApprovalLbl: Label 'Staff Appraisal-%1 for the Period between %2 - %3', Comment = '%1 = Employee Name, %2 = Period Start, %3 = Period End';
         EmployeeChangeRequest: Record "Employee Change Request";
+        LeavePlannerHeader: Record "Leave Planner Header";
 
     begin
         case RecRef.Number of
@@ -85,6 +86,13 @@ codeunit 52005 "Approval Mgt HR Ext"
                     ApprovalEntryArgument."Document Type" := ApprovalEntryArgument."Document Type"::TrainingRequest;
                     ApprovalEntryArgument."Document No." := TrainingRequest."Request No.";
                 end;
+            // LeavePlannerHeader: Record "Leave Planner Header";
+            Database::"Leave Planner Header":
+                begin
+                    RecRef.SetTable(LeavePlannerHeader);
+                    ApprovalEntryArgument."Document Type" := ApprovalEntryArgument."Document Type"::"Leave Recall";
+                    ApprovalEntryArgument."Document No." := LeavePlannerHeader."No.";
+                end;
             //        EmployeeChangeRequest: Record "Employee Change Request";
             Database::"Employee Change Request":
                 begin
@@ -104,6 +112,7 @@ codeunit 52005 "Approval Mgt HR Ext"
         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
         NextSequenceNo: Integer;
         EmployeeChangeRequest: Record "Employee Change Request";
+        LeavePlannerHeader: Record "Leave Planner Header";
 
     begin
         // Case 1 - Delegated to someone else notify them
@@ -153,6 +162,7 @@ codeunit 52005 "Approval Mgt HR Ext"
         RecruitmentRequest: Record "Recruitment Needs";
         TrainingRequest: Record "Training Request";
         EmployeeChangeRequest: Record "Employee Change Request";
+        LeavePlannerHeader: Record "Leave Planner Header";
 
     begin
         case RecRef.Number of
@@ -227,6 +237,16 @@ codeunit 52005 "Approval Mgt HR Ext"
                     Variant := EmployeeChangeRequest;
                     IsHandled := true;
                 end;
+            //LeavePlannerHeader: Record "Leave Planner Header";
+            Database::"Leave Planner Header":
+                begin
+                    RecRef.SetTable(LeavePlannerHeader);
+                    LeavePlannerHeader.Get(LeavePlannerHeader."No.");  // ← ADD THIS
+                    LeavePlannerHeader.Validate(Status, LeavePlannerHeader.Status::"Pending Approval");
+                    LeavePlannerHeader.Modify(true);
+                    Variant := LeavePlannerHeader;
+                    IsHandled := true;
+                end;
 
 
         end;
@@ -269,82 +289,7 @@ codeunit 52005 "Approval Mgt HR Ext"
     end;
 
 
-    //    [EventSubscriber(ObjectType::Table, Database::"Approval Entry", 'OnAfterModifyEvent', '', false, false)]
-    //     local procedure OnAfterModifyApprovalEntry(var Rec: Record "Approval Entry"; var xRec: Record "Approval Entry"; RunTrigger: Boolean)
-    //     var
-    //         LeaveApplication: Record "Leave Application";
-    //         OpenEntries: Record "Approval Entry";
-    //     begin
-    //         if Rec.IsTemporary then
-    //             exit;
 
-    //         // Only care about Leave Application entries
-    //         if Rec."Table ID" <> Database::"Leave Application" then
-    //             exit;
-
-    //         // Only fire when this entry just became Approved
-    //         if Rec.Status <> Rec.Status::Approved then
-    //             exit;
-
-    //         if xRec.Status = xRec.Status::Approved then
-    //             exit; // Already was approved, not a new transition
-
-    //         // Check no other open or created entries remain for this document
-    //         OpenEntries.SetRange("Table ID", Database::"Leave Application");
-    //         OpenEntries.SetRange("Document No.", Rec."Document No.");
-    //         OpenEntries.SetFilter(Status, '%1|%2', OpenEntries.Status::Open, OpenEntries.Status::Created);
-    //         if not OpenEntries.IsEmpty() then
-    //             exit;
-
-    //         // Fetch the Leave Application and confirm it is Released
-    //         if not LeaveApplication.Get(Rec."Document No.") then
-    //             exit;
-
-    //         if LeaveApplication.Status <> LeaveApplication.Status::Released then
-    //             exit;
-
-    //         SendLeaveNotification(LeaveApplication);
-    //     end;
-
-    //     local procedure SendLeaveNotification(LeaveApplication: Record "Leave Application")
-    //     var
-    //         Employee: Record Employee;
-    //         EmailMessage: Codeunit "Email Message";
-    //         Email: Codeunit Email;
-    //         Subject: Text;
-    //         Body: Text;
-    //     begin
-    //         Subject := StrSubstNo('Leave Approved: %1 - %2',
-    //             LeaveApplication."Application No",
-    //             LeaveApplication."Employee Name");
-
-    //         Body := StrSubstNo(
-    //             '<p>Dear Team,</p><p>Leave Application <b>%1</b> has been fully approved.</p>' +
-    //             '<p><b>Employee:</b> %2<br/>' +
-    //             '<b>Leave Type:</b> %3<br/>' +
-    //             '<b>From:</b> %4<br/>' +
-    //             '<b>To:</b> %5<br/>' +
-    //             '<b>Days Applied:</b> %6</p>' +
-    //             '<p>Regards,<br/>HR System</p>',
-    //             LeaveApplication."Application No",
-    //             LeaveApplication."Employee Name",
-    //             LeaveApplication."Leave Code",
-    //             LeaveApplication."Start Date",
-    //             LeaveApplication."End Date",
-    //             LeaveApplication."Days Applied");
-
-    //         Employee.Reset();
-    //         Employee.SetRange(Notify, true);
-    //         if Employee.FindSet() then
-    //             repeat
-    //                 if Employee."Company E-Mail" <> '' then begin
-    //                     Clear(EmailMessage);
-    //                     Clear(Email);
-    //                     EmailMessage.Create(Employee."Company E-Mail", Subject, Body, true);
-    //                     Email.Send(EmailMessage, Enum::"Email Scenario"::Default);
-    //                 end;
-    //             until Employee.Next() = 0;
-    //     end;
 
 
     procedure CheckLeaveRequestWorkflowEnabled(var LeaveRequest: Record "Leave Application"): Boolean
@@ -358,6 +303,17 @@ codeunit 52005 "Approval Mgt HR Ext"
     begin
         exit(WorkflowManagement.CanExecuteWorkflow(LeaveRequest, WorkflowEventHandling.RunworkflowOnSendLeaveApplicationforApprovalCode()));
     end;
+    // LeavePlannerHeader: Record "Leave Planner Header";
+    // procedure CheckLeavePlannerWorkflowEnabled(var LeavePlanner: Record "Leave Planner Header"): Boolean
+    // begin
+    //     if not IsLeavePlannerWorkflowEnabled(LeavePlanner) then
+    //         Error(NoWorkflowEnabledErr);
+    //     exit(true);
+    // end;
+    // procedure IsLeavePlannerWorkflowEnabled(var LeavePlanner: Record "Leave Planner Header"): Boolean
+    // begin
+    //     exit(WorkflowManagement.CanExecuteWorkflow(LeavePlanner, WorkflowEventHandling.RunworkflowOnSendLeavePlannerforApprovalCode()));
+    // end;
 
     procedure CheckRecruitmentRequestWorkflowEnabled(var RecruitmentRequest: Record "Recruitment Needs"): Boolean
     begin
@@ -572,6 +528,31 @@ codeunit 52005 "Approval Mgt HR Ext"
 
     [IntegrationEvent(false, false)]
     procedure OnCancelEmployeeChangeApproval(var EmployeeChange: Record "Employee Change Request")
+    begin
+
+    end;
+
+    // LeavePlannerHeader: Record "Leave Planner Header";
+    procedure CheckLeavePlannerWorkflowEnabled(var LeavePlanner: Record "Leave Planner Header"): Boolean
+    begin
+        if not IsLeavePlannerWorkflowEnabled(LeavePlanner) then
+            Error(NoWorkflowEnabledErr);
+        exit(true);
+    end;
+
+    procedure IsLeavePlannerWorkflowEnabled(var LeavePlannerHeader: Record "Leave Planner Header"): Boolean
+    begin
+        exit(WorkflowManagement.CanExecuteWorkflow(LeavePlannerHeader, WorkflowEventHandling.RunworkflowOnSendLeavePlannerforApprovalCode()));
+    end;
+
+    [IntegrationEvent(false, false)]
+    procedure OnSendLeavePlannerforApproval(var LeavePlannerHeader: Record "Leave Planner Header")
+    begin
+
+    end;
+
+    [IntegrationEvent(false, false)]
+    procedure OnCancelLeavePlannerApproval(var LeavePlannerHeader: Record "Leave Planner Header")
     begin
 
     end;

@@ -142,6 +142,6 @@ page 52602 "Appraisal Planning Lines"
         if Rec."Plan No." = '' then
             exit;
         if PlanHeader.Get(Rec."Plan No.") then
-            LinesEditable := PlanHeader."Planning Status" in [PlanHeader."Planning Status"::Draft, PlanHeader."Planning Status"::"Returned for Changes"];
+            LinesEditable := PlanHeader."Planning Status" in [PlanHeader."Planning Status"::Draft, PlanHeader."Planning Status"::"Returned for Changes", PlanHeader."Planning Status"::Open];
     end;
 }
