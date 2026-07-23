@@ -422,7 +422,7 @@ codeunit 55056 HRPortal
 
     end;
 
-    procedure AddLeavePlannerLine(ApplicationNo: Code[50]; empNo: code[30]; LeaveType: Code[30]; noOfDays: Integer; startDate: Date) status: Text
+    procedure AddLeavePlannerLine(ApplicationNo: Code[50]; empNo: code[30]; LeaveType: Code[30]; noOfDays: Integer; startDate: DateTime) status: Text
     var
         HRSetup: Record "Human Resources Setup";
         LeaveReliever: Record "Leave Relievers";
@@ -434,7 +434,7 @@ codeunit 55056 HRPortal
         LeavePlannerHeaderLine.Validate("Employee No.");
         LeavePlannerHeaderLine."Leave Type" := LeaveType;
         LeavePlannerHeaderLine."No. of Days" := noOfDays;
-        LeavePlannerHeaderLine."Start Date" := startDate;
+        LeavePlannerHeaderLine."Start Date" := DT2Date(startDate);
         if LeavePlannerHeaderLine.Insert(true) then begin
             status := 'success*Leave Planning line has been created succesfully';
         end else begin
@@ -2350,7 +2350,7 @@ codeunit 55056 HRPortal
             end;
     end;
 
-    procedure SendTrainingNeedsApproval(DocNo: Code[50]) Status: Text
+    procedure SendTrainingNeedsApprovalFAWE(DocNo: Code[50]) Status: Text
     var
         ApprovalsMgmt: Codeunit "Approvals Mgmt. Ext";
 
@@ -2363,7 +2363,7 @@ codeunit 55056 HRPortal
         end;
     end;
 
-    procedure CancelTrainingNeedsApproval(DocNo: Code[50]) Status: Text
+    procedure CancelTrainingNeedsApprovalFAWE(DocNo: Code[50]) Status: Text
     var
         ApprovalsMgmt: Codeunit "Approvals Mgmt. Ext";
     begin
