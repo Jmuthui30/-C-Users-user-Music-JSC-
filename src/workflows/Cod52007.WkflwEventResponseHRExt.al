@@ -35,6 +35,9 @@ codeunit 52007 "Wkflw Event Response HR Ext"
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.SetStatusToPendingApprovalCode(), WorkflowEventHandling.RunworkflowOnSendPayrollApprovalforApprovalCode());
                     //Payroll Request
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.SetStatusToPendingApprovalCode(), WorkflowEventHandling.RunworkflowOnSendPayrollRequestforApprovalCode());
+                    //    LeavePlannerHeader: Record "Leave Planner Header";
+                    workFlowResponse.AddResponsePredecessor(WorkFlowResponse.SetStatusToPendingApprovalCode(), WorkflowEventHandling.RunWorkflowOnSendLeavePlannerForApprovalCode());
+                    // 
                     //Allowance Register
                     WorkFlowResponse.AddResponsePredecessor(WorkFlowResponse.SetStatusToPendingApprovalCode(), WorkflowEventHandling.RunworkflowOnSendAllowanceRegisterforApprovalCode());
                     // New Employee
@@ -211,6 +214,7 @@ codeunit 52007 "Wkflw Event Response HR Ext"
         VarVariant: Variant;
         trainingRequest: Record "Training Request";
         EmployeeChangeRequest: Record "Employee Change Request";
+        LeavePlannerHeader: Record "Leave Planner Header";
     begin
         VarVariant := RecRef;
         case RecRef.Number of
@@ -269,6 +273,13 @@ codeunit 52007 "Wkflw Event Response HR Ext"
                     Handled := true;
                     WorkflowResponses.ReleaseTrainingRequest(VarVariant);
                 end;
+            //  LeavePlannerHeader: Record "Leave Planner Header";
+            Database::"Leave Planner Header":
+                begin
+                    LeavePlannerHeader.SetView(RecRef.GetView());
+                    Handled := true;
+                    WorkflowResponses.ReleaseLeavePlanner(VarVariant);
+                end;
             // // EmployeeChangeRequest
             Database::"Employee Change Request":
                 begin
@@ -295,6 +306,7 @@ codeunit 52007 "Wkflw Event Response HR Ext"
         TrainingRequest: Record "Training Request";
         VarVariant: Variant;
         EmployeeChangeRequest: Record "Employee Change Request";
+        LeavePlannerHeader: Record "Leave Planner Header";
 
     begin
         VarVariant := RecRef;
@@ -352,6 +364,13 @@ codeunit 52007 "Wkflw Event Response HR Ext"
                     TrainingRequest.SetView(RecRef.GetView());
                     Handled := true;
                     WorkflowResponses.ReopenTrainingRequest(VarVariant);
+                end;
+            //                //  LeavePlannerHeader: Record "Leave Planner Header";
+            Database::"Leave Planner Header":
+                begin
+                    LeavePlannerHeader.SetView(RecRef.GetView());
+                    Handled := true;
+                    WorkflowResponses.ReopenLeavePlanner(VarVariant);
                 end;
             // //         EmployeeChangeRequest : Record "Employee Change Request";
             Database::"Employee Change Request":

@@ -186,7 +186,19 @@ codeunit 52004 "Workflow Responses HR"
             EmployeeApp.Modify(true);
         end;
     end;
-
+    //ReopenLeavePlanner
+    procedure ReopenLeavePlanner(var LeavePlanner: Record "Leave Planner Header")
+    var
+        LeavePlannerHeader: Record "Leave Planner Header";
+    begin
+        LeavePlannerHeader.Reset();
+        LeavePlannerHeader.SetRange("No.", LeavePlanner."No.");
+        if LeavePlannerHeader.FindFirst() then begin
+            LeavePlannerHeader.Status := LeavePlannerHeader.Status::Open;
+            LeavePlannerHeader.Modify(true);
+        end;
+    end;
+    // ReopenTrainingRequest
     procedure ReopenTrainingRequest(var TrainingReq: Record "Training Request")
     var
         TrainingRequest: Record "Training Request";
@@ -196,6 +208,18 @@ codeunit 52004 "Workflow Responses HR"
         if TrainingRequest.FindFirst() then begin
             TrainingRequest.Status := TrainingRequest.Status::Open;
             TrainingRequest.Modify(true)
+        end;
+    end;
+    // ReleaseLeavePlanner
+    procedure ReleaseLeavePlanner(var LeavePlanner: Record "Leave Planner Header")
+    var
+        LeavePlannerHeader: Record "Leave Planner Header";
+    begin
+        LeavePlannerHeader.Reset();
+        LeavePlannerHeader.SetRange("No.", LeavePlanner."No.");
+        if LeavePlannerHeader.FindFirst() then begin
+            LeavePlannerHeader.Status := LeavePlannerHeader.Status::Approved;
+            LeavePlannerHeader.Modify(true);
         end;
     end;
 

@@ -36,6 +36,8 @@ report 51478 "Payroll Reconciliation"
 
             trigger OnAfterGetRecord()
             begin
+
+
                 // Get employee name
                 if Emp.Get("Assignment Matrix-X"."Employee No") then begin
                     EmpName := Emp."First Name" + ' ' + Emp."Middle Name" + ' ' + Emp."Last Name";
@@ -59,12 +61,10 @@ report 51478 "Payroll Reconciliation"
                         Desc := ClientDeductions.Description;
                 end;
 
-                // Check if this is current month or last month record
+                //  Check if this is current month or last month record
                 if "Assignment Matrix-X"."Payroll Period" = Thismonth then begin
-                    // Current month record - get its value
                     CurrentMonthVal := "Assignment Matrix-X".Amount;
 
-                    // Look for corresponding last month value
                     Assignmat.Reset;
                     Assignmat.SetRange(Assignmat."Employee No", "Assignment Matrix-X"."Employee No");
                     Assignmat.SetRange(Assignmat.Type, "Assignment Matrix-X".Type);
@@ -75,27 +75,19 @@ report 51478 "Payroll Reconciliation"
                     else
                         LastMonthVal := 0;
 
-                end else
-                    if "Assignment Matrix-X"."Payroll Period" = Lastmonth then begin
-                        // Last month record - check if there's a current month record
-
-
-                        //qwetyu
-
-                        Assignmat.Reset;
-                        Assignmat.SetRange(Assignmat."Employee No", "Assignment Matrix-X"."Employee No");
-                        Assignmat.SetRange(Assignmat.Type, "Assignment Matrix-X".Type);
-                        Assignmat.SetRange(Assignmat.Code, "Assignment Matrix-X".Code);
-                        Assignmat.SetRange(Assignmat."Payroll Period", Thismonth);
-                        if Assignmat.FindFirst then
-                            CurrReport.Skip  // Already processed in current month section
-                        else begin
-                            // No current month record - this is an inactive employee
-                            LastMonthVal := "Assignment Matrix-X".Amount;
-                            // CurrentMonthVal := 0;
-                        end;
+                end else if "Assignment Matrix-X"."Payroll Period" = Lastmonth then begin
+                    Assignmat.Reset;
+                    Assignmat.SetRange(Assignmat."Employee No", "Assignment Matrix-X"."Employee No");
+                    Assignmat.SetRange(Assignmat.Type, "Assignment Matrix-X".Type);
+                    Assignmat.SetRange(Assignmat.Code, "Assignment Matrix-X".Code);
+                    Assignmat.SetRange(Assignmat."Payroll Period", Thismonth);
+                    if Assignmat.FindFirst then
+                        CurrReport.Skip  // handled by the this-month branch already
+                    else begin
+                        LastMonthVal := "Assignment Matrix-X".Amount;
+                        CurrentMonthVal := 0;
                     end;
-
+                end;
 
 
                 ///asdfghjk

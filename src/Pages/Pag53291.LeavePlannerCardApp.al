@@ -81,8 +81,80 @@ page 53291 "Leave Planner App Card"
                     end;
                 end;
             }
+            action("Send For Approval")
+            {
+                Caption = 'Send Approval Request';
+                Enabled = Rec."Status" = Rec."Status"::Open;
+                Image = SendApprovalRequest;
+                Promoted = true;
+                PromotedCategory = Category4;
+                PromotedIsBig = true;
+                ToolTip = 'Executes the Send Approval Request action';
+
+                trigger OnAction()
+                var
+                    LeaveType: Record "Leave Type";
+                begin
+                    Rec.TestField("Leave Period");
+
+                    if approvalsMgmt.CheckLeavePlannerWorkflowEnabled(Rec) then
+                        ApprovalsMgmt.OnSendLeavePlannerforApproval(Rec);
+
+
+                    Commit();
+
+                    Rec."Send Approval Date" := workDate;
+                    Rec.Modify();
+                    Message('Approval request sent successfully.');
+                    CurrPage.Close();
+
+                end;
+            }
+            action("Cancel Approval Request")
+            {
+                Caption = 'Cancel Approval Request';
+                Enabled = Rec."Status" = Rec."Status"::"Pending Approval";
+                Image = CancelApprovalRequest;
+                Promoted = true;
+                PromotedCategory = Category4;
+                PromotedIsBig = true;
+                ToolTip = 'Executes the Cancel Approval Request action';
+
+                trigger OnAction()
+                begin
+                    ApprovalManagement.OnCancelLeavePlannerApproval(Rec);
+                    message('Approval request cancelled successfully.');
+                    CurrPage.Close();
+                end;
+            }
+            action(ViewApprovals)
+            {
+                Caption = 'Approvals';
+                Enabled = Rec."Status" = Rec."Status"::"Pending Approval";
+                Image = Approvals;
+                Promoted = true;
+                PromotedCategory = Category4;
+                PromotedIsBig = true;
+                ToolTip = 'Executes the Approvals action';
+
+                trigger OnAction()
+                var
+                    Approvals: Record "Approval Entry";
+                    Approvalentries: Page "Approval Entries";
+                begin
+                    Approvals.Reset();
+                    Approvals.SetRange("Table ID", Database::"Leave Planner Header");
+                    Approvals.SetRange("Document No.", Rec."No.");
+                    ApprovalEntries.SetTableView(Approvals);
+                    ApprovalEntries.RunModal();
+                end;
+            }
         }
     }
+    var
+        ApprovalManagement: Codeunit "Approval Mgt HR Ext";
+        ApprovalsMgmt: Codeunit "Approval Mgt HR Ext";
+        HRMgt: Codeunit "HR Management";
 }
 
 

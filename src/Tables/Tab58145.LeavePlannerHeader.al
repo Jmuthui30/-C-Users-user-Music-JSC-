@@ -177,6 +177,8 @@ table 58145 "Leave Planner Header"
         LeavePeriodExistsErr: Label 'Another Leave Planner Document %1 for %2 Leave Period already exists';
         EmployeeRec: Record Employee;
         UserSertup: Record "User Setup";
+        // "Leave Period"."Leave Period Code";
+        LeavePeriodRec: Record "Leave Period";
 
     trigger OnInsert()
     begin
@@ -188,11 +190,7 @@ table 58145 "Leave Planner Header"
             "No. Series" := HRSetup."Leave Plan Nos";
         "No." := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
 
-        LeavePlannerRec.Reset();
-        LeavePlannerRec.SetRange("Leave Period", "Leave Period");
-        if LeavePlannerRec.FindFirst()
-        then
-            "Leave Period" := LeavePlannerRec."Leave Period";
+
         "User ID" := UserId;
 
         if GuiAllowed then begin
@@ -209,6 +207,9 @@ table 58145 "Leave Planner Header"
         end else
             Validate("Employee Code");
 
+        LeavePeriodRec.Get();
+        leaveperiodRec.FindLast();
+        "Leave Period" := LeavePeriodRec."Leave Period Code";
 
     end;
 }
