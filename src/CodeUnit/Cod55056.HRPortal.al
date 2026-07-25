@@ -583,7 +583,7 @@ codeunit 55056 HRPortal
                 AppraisalPlanningHeader."Core Values Maintenance" := ActionsToMaintain;
                 AppraisalPlanningHeader."Core Values To Develop" := CoreValuesToDevelop;
                 AppraisalPlanningHeader."Core Values Development" := ActionsToDevelop;
-
+                AppraisalPlanningHeader."Planning Status" := AppraisalPlanningHeader."Planning Status"::Draft;
                 AppraisalPlanningHeader.Modify(true);
 
                 Status :=
@@ -613,7 +613,7 @@ codeunit 55056 HRPortal
                 AppraisalPlanningHeader."Core Values Maintenance" := ActionsToMaintain;
                 AppraisalPlanningHeader."Core Values To Develop" := CoreValuesToDevelop;
                 AppraisalPlanningHeader."Core Values Development" := ActionsToDevelop;
-
+                AppraisalPlanningHeader."Planning Status" := AppraisalPlanningHeader."Planning Status"::Draft;
                 AppraisalPlanningHeader.Insert(true);
 
                 Status :=
