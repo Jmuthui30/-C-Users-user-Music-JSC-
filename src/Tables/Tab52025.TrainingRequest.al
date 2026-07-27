@@ -4,7 +4,7 @@ table 52025 "Training Request"
     LookupPageId = "Training Request List";
     DataClassification = CustomerContent;
     Caption = 'Training Request';
-    fields
+    fields  
     {
         field(1; "Request No."; Code[20])
         {

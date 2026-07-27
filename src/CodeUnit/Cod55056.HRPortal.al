@@ -2912,7 +2912,7 @@ codeunit 55056 HRPortal
     EmployeeNo: Code[20];
     RelativeCode: Code[20];
     FirstName: Text[100];
-    BirthDate: Date;
+    BirthDate: DateTime;
     PhoneNo: Text[30]
 ) Status: Text
     var
@@ -2922,7 +2922,7 @@ codeunit 55056 HRPortal
             EmployeeRelative."Employee No." := EmployeeNo;
             EmployeeRelative."Relative Code" := CopyStr(RelativeCode, 1, MaxStrLen(EmployeeRelative."Relative Code"));
             EmployeeRelative."First Name" := CopyStr(FirstName, 1, MaxStrLen(EmployeeRelative."First Name"));
-            EmployeeRelative."Birth Date" := BirthDate;
+            EmployeeRelative."Birth Date" := DT2Date(BirthDate);
             EmployeeRelative."Phone No." := CopyStr(PhoneNo, 1, MaxStrLen(EmployeeRelative."Phone No."));
             //EmployeeRelative.Comment := CopyStr(Comment, 1, MaxStrLen(EmployeeRelative.Comment));
             if EmployeeRelative.Insert(true) then
@@ -2953,7 +2953,7 @@ codeunit 55056 HRPortal
     FirstName: Text[100];
     MiddleName: Text[100];
     LastName: Text[100];
-    DateOfBirth: Date;
+    DateOfBirth: DateTime;
     Gender: Integer;
     PhoneNo: Text[30]
 ) Status: Text
@@ -2966,7 +2966,7 @@ codeunit 55056 HRPortal
             EmployeeBeneficiary."First Name" := CopyStr(FirstName, 1, MaxStrLen(EmployeeBeneficiary."First Name"));
             EmployeeBeneficiary."Middle Name" := CopyStr(MiddleName, 1, MaxStrLen(EmployeeBeneficiary."Middle Name"));
             EmployeeBeneficiary."Last Name" := CopyStr(LastName, 1, MaxStrLen(EmployeeBeneficiary."Last Name"));
-            EmployeeBeneficiary."Date of Birth" := DateOfBirth;
+            EmployeeBeneficiary."Date of Birth" := DT2Date(DateOfBirth);
             EmployeeBeneficiary.Gender := Gender;
             EmployeeBeneficiary."Phone No." := CopyStr(PhoneNo, 1, MaxStrLen(EmployeeBeneficiary."Phone No."));
 
