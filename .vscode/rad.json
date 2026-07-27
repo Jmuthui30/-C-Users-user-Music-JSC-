@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-﻿{"Added":[{"Id":59001,"Kind":13,"Name":"Imprest Notification","Namespace":""}],"Modified":[{"Id":50059,"Kind":12,"Name":"Imprest Memo Header","Namespace":""},{"Id":53012,"Kind":13,"Name":"Memo Report","Namespace":""},{"Id":52102,"Kind":10,"Name":"Advanced Finance Setup","Namespace":""},{"Id":59991,"Kind":12,"Name":"Director Role Center","Namespace":""},{"Id":50465,"Kind":10,"Name":"Imprest Memo Lines","Namespace":""},{"Id":50061,"Kind":12,"Name":"Imprest Memo Lines","Namespace":""},{"Id":52100,"Kind":12,"Name":"Advanced Finance Setup","Namespace":""},{"Id":50464,"Kind":10,"Name":"Imprest Memo Header","Namespace":""},{"Id":52100,"Kind":11,"Name":"Imprest Management","Namespace":""},{"Kind":106,"Name":"RequestOptionsPage","Namespace":""},{"Id":51004,"Kind":10,"Name":"Payments","Namespace":""}],"Removed":[]}
-=======
-﻿{"Added":[],"Modified":[{"Id":55056,"Kind":11,"Name":"HRPortal","Namespace":""}],"Removed":[]}
->>>>>>> ff1e5cb1f990f9e5a0d5a8220d44d935edb5c945
+﻿{"Added":[],"Modified":[],"Removed":[]}

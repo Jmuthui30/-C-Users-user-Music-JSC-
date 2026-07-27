@@ -93,10 +93,7 @@ report 59001 "Imprest Notification"
         {
             area(processing)
             {
-                action(LayoutName)
-                {
 
-                }
             }
         }
     }
