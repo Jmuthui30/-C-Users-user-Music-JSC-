@@ -316,7 +316,24 @@ table 52102 "Advanced Finance Setup"
         {
             DataClassification = ToBeClassified;
         }
-        //Limits    
+        //Limits  
+        // 9.	Hardship allowance 
+        field(87; "Hardship Allowance"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        // 9.	Hardship allowance 
+        field(88; "Max. No. of Hardship"; Integer)
+        {
+            DataClassification = ToBeClassified;
+        }
+        // 9.	Hardship allowance 
+        field(89; "Hardship Expense Code"; Code[50])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Expense Codes";
+            Caption = 'Hardship Expense Code';
+        }
 
     }
     keys

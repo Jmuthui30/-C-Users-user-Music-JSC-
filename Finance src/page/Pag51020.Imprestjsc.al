@@ -290,6 +290,8 @@ page 51020 "Imprestjsc Card"
                     }
                 }
                 field("Payment Type"; "Payment Type") { ApplicationArea = all; Visible = false; }
+                field(Email; Email) { ApplicationArea = all; Editable = false; }
+                field(surrenderEmailDate; "Surrender Email Date") { Caption = 'Surrender Email Date'; ApplicationArea = all; Editable = false; }
             }
             part(ImprestLines; "Imprest Lines")
             {

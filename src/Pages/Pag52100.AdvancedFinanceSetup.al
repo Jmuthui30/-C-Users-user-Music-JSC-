@@ -181,6 +181,9 @@ page 52100 "Advanced Finance Setup"
                 field("Qtr. Per Diem Expense Code"; Rec."Qtr. Per Diem Expense Code")
                 {
                 }
+                field("Hardship Allowance Expense Code"; Rec."Hardship Expense Code")
+                {
+                }
                 field("Others Expense Code"; Rec."Others Expense Code")
                 {
                 }
@@ -230,6 +233,9 @@ page 52100 "Advanced Finance Setup"
                 {
                 }
                 field("Max. No. of Facilitators"; Rec."Max. No. of Facilitators")
+                {
+                }
+                field("Hardship Allowance"; Rec."Hardship Allowance")
                 {
                 }
                 field("Others Allowance"; Rec."Others Allowance")

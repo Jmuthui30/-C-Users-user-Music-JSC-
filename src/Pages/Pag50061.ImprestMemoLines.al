@@ -229,6 +229,13 @@ page 50061 "Imprest Memo Lines"
                 }
                 field("Record Allowance Amount"; "Record Allowance Amount")
                 { }
+                field("Hardship Allowance"; Rec."Hardship Allowance")
+                {
+                    trigger OnValidate()
+                    begin
+                        CurrPage.Update(false);
+                    end;
+                }
                 field(Description; Description)
                 {
                     trigger OnValidate()

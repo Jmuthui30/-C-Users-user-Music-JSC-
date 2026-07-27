@@ -43,123 +43,224 @@ codeunit 52116 "Portal Integration"
         PaymentsRec: Record Payments;
 
     /// [ServiceEnabled]
-    procedure SubmitJobApplication(No: Code[30]; ApplicantNo: Code[30]): Boolean
+    procedure SubmitJobApplication(
+    JobId: Code[30];
+    RecruitmentRequestNo: Code[30];
+    ApplicantNo: Code[30]
+): Boolean
     var
         RecruitmentNeeds: Record "Recruitment Needs";
         JobApplication: Record "Job Application";
-        Applicants: Record Applicant;
+        Applicant: Record Applicant;
     begin
-
-
-
-        // Check if job is already closed
+        // Get the exact recruitment request.
         RecruitmentNeeds.Reset();
-        RecruitmentNeeds.SetRange("Job ID", No);
-        RecruitmentNeeds.SetRange(Status, RecruitmentNeeds.Status::Closed);
-        RecruitmentNeeds.SetRange("Advertisement Status", RecruitmentNeeds."Advertisement Status"::Closed);
-        if RecruitmentNeeds.Find('-') then
-            Error('You cannot submit; job is already closed.');
+        RecruitmentNeeds.SetRange("No.", RecruitmentRequestNo);
+        RecruitmentNeeds.SetRange("Job ID", JobId);
 
-        // Look for an unsubmitted application
+        if not RecruitmentNeeds.FindFirst() then
+            Error(
+                'Recruitment request %1 for job %2 could not be found.',
+                RecruitmentRequestNo,
+                JobId);
+
+        // Check the exact recruitment request, not every advert for this Job ID.
+        if (RecruitmentNeeds.Status = RecruitmentNeeds.Status::Closed) or
+           (RecruitmentNeeds."Advertisement Status" =
+                RecruitmentNeeds."Advertisement Status"::Closed)
+        then
+            Error(
+                'You cannot submit because recruitment request %1 is already closed.',
+                RecruitmentRequestNo);
+
+        if not Applicant.Get(ApplicantNo) then
+            Error('Applicant %1 could not be found.', ApplicantNo);
+
+        // Look for an unsubmitted application belonging to this exact request.
         JobApplication.Reset();
         JobApplication.SetRange("Applicant No.", ApplicantNo);
-        JobApplication.SetRange("Job Applied Code", No);
+        JobApplication.SetRange("Job Applied Code", JobId);
+        JobApplication.SetRange(
+            "Recruitment Needs No.",
+            RecruitmentRequestNo);
         JobApplication.SetRange(Submitted, false);
-        if JobApplication.Find('-') then begin
-            // Update Applicant's Job ID
-            Applicants.Reset();
-            Applicants.SetRange("No.", ApplicantNo);
-            if Applicants.Find('-') then begin
-                Applicants."Job ID" := No;
-                Applicants.Validate("Job ID");
-                Applicants.Modify();
-                Commit();
 
-                // Update existing job application
-                JobApplication."Applicant Type" := JobApplication."Applicant Type"::External;
-                // JobApplication."Applicant Type" := JobApplication."Applicant Type"::External;
-                JobApplication."Job Applied Code" := No;
-                JobApplication.Validate("Job Applied Code");
-                JobApplication."Applicant No." := ApplicantNo;
-                JobApplication."Applicant Name" :=
-                    Applicants."First Name" + ' ' +
-                    Applicants."Middle Name" + ' ' +
-                    Applicants."Last Name";
-                JobApplication.Gender := Applicants.Gender;
-                JobApplication."Date-Time Created" := CurrentDateTime;
-                JobApplication.Submitted := true;
-                JobApplication."Applicant Types" := applicants."Applicant Type";
+        if JobApplication.FindFirst() then begin
+            JobApplication."Applicant Type" :=
+                JobApplication."Applicant Type"::External;
+            JobApplication.Validate("Job Applied Code", JobId);
+            JobApplication."Applicant No." := ApplicantNo;
+            JobApplication."Applicant Name" :=
+                DelChr(
+                    StrSubstNo(
+                        '%1 %2 %3',
+                        Applicant."First Name",
+                        Applicant."Middle Name",
+                        Applicant."Last Name"),
+                    '<>',
+                    ' ');
+            JobApplication.Gender := Applicant.Gender;
+            JobApplication."Date-Time Created" := CurrentDateTime;
+            JobApplication.Submitted := true;
+            JobApplication."Applicant Types" := Applicant."Applicant Type";
+            JobApplication."Recruitment Needs No." := RecruitmentRequestNo;
+            JobApplication."Application Status" :=
+                JobApplication."Application Status"::Submited;
 
-                RecruitmentNeeds.Reset();
-                RecruitmentNeeds.SetRange("Job ID", No);
-                if RecruitmentNeeds.FindFirst() then
-                    JobApplication."Recruitment Needs No." := RecruitmentNeeds."No.";
-
-                JobApplication."Application Status" := JobApplication."Application Status"::Submited;
-
-                if JobApplication.Modify(true) then
-                    if Applicants.Get(ApplicantNo) then begin
-                        Applicants.Submitted := true;
-
-                        Applicants."Recruitment Needs NO" := RecruitmentNeeds."No.";
-                        Applicants."Submitted Date" := Today;
-                        Applicants."Submitted Time" := Time;
-                        Applicants.Modify();
-                    end;
-                exit(true);
-            end;
+            JobApplication.Modify(true);
         end else begin
-            // New application
-            Applicants.Reset();
-            Applicants.SetRange("No.", ApplicantNo);
-            if Applicants.Find('-') then begin
-                Applicants."Job ID" := No;
-                Applicants.Validate("Job ID");
-                Applicants.Modify();
-                Commit();
+            JobApplication.Init();
+            JobApplication."Applicant Type" :=
+                JobApplication."Applicant Type"::External;
+            JobApplication.Validate("Job Applied Code", JobId);
+            JobApplication."Applicant No." := ApplicantNo;
+            JobApplication."Applicant Name" :=
+                DelChr(
+                    StrSubstNo(
+                        '%1 %2 %3',
+                        Applicant."First Name",
+                        Applicant."Middle Name",
+                        Applicant."Last Name"),
+                    '<>',
+                    ' ');
+            JobApplication.Gender := Applicant.Gender;
+            JobApplication."Date-Time Created" := CurrentDateTime;
+            JobApplication.Submitted := true;
+            JobApplication."Applicant Types" := Applicant."Applicant Type";
+            JobApplication."Recruitment Needs No." := RecruitmentRequestNo;
+            JobApplication."Application Status" :=
+                JobApplication."Application Status"::Submited;
 
-                JobApplication.Init();
-                JobApplication."Applicant Type" := JobApplication."Applicant Type"::External;
-
-                JobApplication."Job Applied Code" := No;
-                JobApplication.Validate("Job Applied Code");
-                JobApplication."Applicant No." := ApplicantNo;
-                JobApplication."Applicant Name" :=
-                    Applicants."First Name" + ' ' +
-                    Applicants."Middle Name" + ' ' +
-                    Applicants."Last Name";
-                JobApplication.Gender := Applicants.Gender;
-                JobApplication."Date-Time Created" := CurrentDateTime;
-                JobApplication.Submitted := true;
-                JobApplication."Applicant Types" := applicants."Applicant Type";
-
-                // RecruitmentNeeds.Reset();
-                // RecruitmentNeeds.SetRange("Job ID", No);
-                // if RecruitmentNeeds.FindFirst() then
-                //     JobApplication."Recruitment Needs No." := RecruitmentNeeds."No.";
-
-                RecruitmentNeeds.Reset();
-                RecruitmentNeeds.SetCurrentKey("Job ID", "No.");
-                RecruitmentNeeds.SetRange("Job ID", No);
-                if RecruitmentNeeds.FindLast() then
-                    JobApplication."Recruitment Needs No." := RecruitmentNeeds."No.";
-
-
-                JobApplication."Application Status" := JobApplication."Application Status"::Submited;
-
-                if JobApplication.Insert(true) then
-                    if Applicants.Get(ApplicantNo) then begin
-                        Applicants.Submitted := true;
-                        Applicants."Recruitment Needs NO" := RecruitmentNeeds."No.";
-                        Applicants."Submitted Date" := Today;
-                        Applicants."Submitted Time" := Time;
-                        Applicants.Modify();
-                    end;
-
-                exit(true);
-            end;
+            JobApplication.Insert(true);
         end;
+
+        // Applicant card may show the most recent application.
+        Applicant.Validate("Job ID", JobId);
+        Applicant.Submitted := true;
+        Applicant."Recruitment Needs NO" := RecruitmentRequestNo;
+        Applicant."Submitted Date" := Today;
+        Applicant."Submitted Time" := Time;
+        Applicant.Modify(true);
+
+        exit(true);
     end;
+    // procedure SubmitJobApplication(No: Code[30]; ApplicantNo: Code[30]): Boolean
+    // var
+    //     RecruitmentNeeds: Record "Recruitment Needs";
+    //     JobApplication: Record "Job Application";
+    //     Applicants: Record Applicant;
+    // begin
+
+
+
+    //     // Check if job is already closed
+    //     RecruitmentNeeds.Reset();
+    //     RecruitmentNeeds.SetRange("Job ID", No);
+    //     RecruitmentNeeds.SetRange(Status, RecruitmentNeeds.Status::Closed);
+    //     RecruitmentNeeds.SetRange("Advertisement Status", RecruitmentNeeds."Advertisement Status"::Closed);
+    //     if RecruitmentNeeds.Find('-') then
+    //         Error('You cannot submit; job is already closed.');
+
+    //     // Look for an unsubmitted application
+    //     JobApplication.Reset();
+    //     JobApplication.SetRange("Applicant No.", ApplicantNo);
+    //     JobApplication.SetRange("Job Applied Code", No);
+    //     JobApplication.SetRange(Submitted, false);
+    //     if JobApplication.Find('-') then begin
+    //         // Update Applicant's Job ID
+    //         Applicants.Reset();
+    //         Applicants.SetRange("No.", ApplicantNo);
+    //         if Applicants.Find('-') then begin
+    //             Applicants."Job ID" := No;
+    //             Applicants.Validate("Job ID");
+    //             Applicants.Modify();
+    //             Commit();
+
+    //             // Update existing job application
+    //             JobApplication."Applicant Type" := JobApplication."Applicant Type"::External;
+    //             // JobApplication."Applicant Type" := JobApplication."Applicant Type"::External;
+    //             JobApplication."Job Applied Code" := No;
+    //             JobApplication.Validate("Job Applied Code");
+    //             JobApplication."Applicant No." := ApplicantNo;
+    //             JobApplication."Applicant Name" :=
+    //                 Applicants."First Name" + ' ' +
+    //                 Applicants."Middle Name" + ' ' +
+    //                 Applicants."Last Name";
+    //             JobApplication.Gender := Applicants.Gender;
+    //             JobApplication."Date-Time Created" := CurrentDateTime;
+    //             JobApplication.Submitted := true;
+    //             JobApplication."Applicant Types" := applicants."Applicant Type";
+
+    //             RecruitmentNeeds.Reset();
+    //             RecruitmentNeeds.SetRange("Job ID", No);
+    //             if RecruitmentNeeds.FindFirst() then
+    //                 JobApplication."Recruitment Needs No." := RecruitmentNeeds."No.";
+
+    //             JobApplication."Application Status" := JobApplication."Application Status"::Submited;
+
+    //             if JobApplication.Modify(true) then
+    //                 if Applicants.Get(ApplicantNo) then begin
+    //                     Applicants.Submitted := true;
+
+    //                     Applicants."Recruitment Needs NO" := RecruitmentNeeds."No.";
+    //                     Applicants."Submitted Date" := Today;
+    //                     Applicants."Submitted Time" := Time;
+    //                     Applicants.Modify();
+    //                 end;
+    //             exit(true);
+    //         end;
+    //     end else begin
+    //         // New application
+    //         Applicants.Reset();
+    //         Applicants.SetRange("No.", ApplicantNo);
+    //         if Applicants.Find('-') then begin
+    //             Applicants."Job ID" := No;
+    //             Applicants.Validate("Job ID");
+    //             Applicants.Modify();
+    //             Commit();
+
+    //             JobApplication.Init();
+    //             JobApplication."Applicant Type" := JobApplication."Applicant Type"::External;
+
+    //             JobApplication."Job Applied Code" := No;
+    //             JobApplication.Validate("Job Applied Code");
+    //             JobApplication."Applicant No." := ApplicantNo;
+    //             JobApplication."Applicant Name" :=
+    //                 Applicants."First Name" + ' ' +
+    //                 Applicants."Middle Name" + ' ' +
+    //                 Applicants."Last Name";
+    //             JobApplication.Gender := Applicants.Gender;
+    //             JobApplication."Date-Time Created" := CurrentDateTime;
+    //             JobApplication.Submitted := true;
+    //             JobApplication."Applicant Types" := applicants."Applicant Type";
+
+    //             // RecruitmentNeeds.Reset();
+    //             // RecruitmentNeeds.SetRange("Job ID", No);
+    //             // if RecruitmentNeeds.FindFirst() then
+    //             //     JobApplication."Recruitment Needs No." := RecruitmentNeeds."No.";
+
+    //             RecruitmentNeeds.Reset();
+    //             RecruitmentNeeds.SetCurrentKey("Job ID", "No.");
+    //             RecruitmentNeeds.SetRange("Job ID", No);
+    //             if RecruitmentNeeds.FindLast() then
+    //                 JobApplication."Recruitment Needs No." := RecruitmentNeeds."No.";
+
+
+    //             JobApplication."Application Status" := JobApplication."Application Status"::Submited;
+
+    //             if JobApplication.Insert(true) then
+    //                 if Applicants.Get(ApplicantNo) then begin
+    //                     Applicants.Submitted := true;
+    //                     Applicants."Recruitment Needs NO" := RecruitmentNeeds."No.";
+    //                     Applicants."Submitted Date" := Today;
+    //                     Applicants."Submitted Time" := Time;
+    //                     Applicants.Modify();
+    //                 end;
+
+    //             exit(true);
+    //         end;
+    //     end;
+    // end;
 
     [ServiceEnabled]
     procedure fnInsertPortalAttachments(DocumentNo: Code[100]; Description: Text; Url: Text; Type: Text) uploaded: Boolean

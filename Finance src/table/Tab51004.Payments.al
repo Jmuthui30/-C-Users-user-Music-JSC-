@@ -1571,7 +1571,18 @@ table 51004 Payments
 
         field(50068; "Paying Bank Balance"; Decimal)
         { }
-
+        field(50069; Email; Text[100])
+        { }
+        // imprest Email
+        field(50070; "Imprest Email"; boolean)
+        {
+            Caption = 'Imprest Email';
+        }
+        //Payment Advice Email Date
+        field(50071; "Surrender Email Date"; Date)
+        {
+            Caption = 'Surrender Email Date';
+        }
     }
 
     keys
@@ -1796,7 +1807,7 @@ table 51004 Payments
         "User Id" := CopyStr(UserId, 1, MaxStrLen("User Id"));
         "Created By" := CopyStr(UserId, 1, MaxStrLen("Created By"));
         if UserSetup.Get("User Id") then
-        "User Department":=UserSetup."Global Dimension 2 Code";
+            "User Department" := UserSetup."Global Dimension 2 Code";
     end;
 
     procedure DefaultPettyCash(var BankCode: Code[20]): Code[20]
@@ -2118,5 +2129,5 @@ table 51004 Payments
         end;
     end;
 
-   
+
 }
