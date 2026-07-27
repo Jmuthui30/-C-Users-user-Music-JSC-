@@ -49,6 +49,9 @@ codeunit 52116 "Portal Integration"
         JobApplication: Record "Job Application";
         Applicants: Record Applicant;
     begin
+
+
+
         // Check if job is already closed
         RecruitmentNeeds.Reset();
         RecruitmentNeeds.SetRange("Job ID", No);
@@ -130,10 +133,17 @@ codeunit 52116 "Portal Integration"
                 JobApplication.Submitted := true;
                 JobApplication."Applicant Types" := applicants."Applicant Type";
 
+                // RecruitmentNeeds.Reset();
+                // RecruitmentNeeds.SetRange("Job ID", No);
+                // if RecruitmentNeeds.FindFirst() then
+                //     JobApplication."Recruitment Needs No." := RecruitmentNeeds."No.";
+
                 RecruitmentNeeds.Reset();
+                RecruitmentNeeds.SetCurrentKey("Job ID", "No.");
                 RecruitmentNeeds.SetRange("Job ID", No);
-                if RecruitmentNeeds.FindFirst() then
+                if RecruitmentNeeds.FindLast() then
                     JobApplication."Recruitment Needs No." := RecruitmentNeeds."No.";
+
 
                 JobApplication."Application Status" := JobApplication."Application Status"::Submited;
 
