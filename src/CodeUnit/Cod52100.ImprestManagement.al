@@ -951,6 +951,7 @@ codeunit 52100 "Imprest Management"
         TuitionExpenseAcc: Code[20];
         MileageExpenseAcc: Code[20];
         QtrPerDiemExpenseAcc: Code[20];
+        HardshipExpenseAcc: Code[20];
         othersExpenseAcc: Code[20];
 
     begin
@@ -980,6 +981,7 @@ codeunit 52100 "Imprest Management"
         AdvancedFinanceSetup.TestField("Tuition Expense Code");
         AdvancedFinanceSetup.TestField("Mileage Expense Code");
         AdvancedFinanceSetup.TestField("Qtr. Per Diem Expense Code");
+        AdvancedFinanceSetup.TestField("Hardship Expense Code");
 
         // Resolve DSA GL Account
         ExpenseCodes.Get(AdvancedFinanceSetup."DSA Expense Code");
@@ -1051,6 +1053,10 @@ codeunit 52100 "Imprest Management"
         ExpenseCodes.Get(AdvancedFinanceSetup."Others Expense Code");
         ExpenseCodes.TestField("Account No");
         OthersExpenseAcc := ExpenseCodes."Account No";
+        //Hardship allowance 
+        expenseCodes.Get(AdvancedFinanceSetup."Hardship Expense Code");
+        ExpenseCodes.TestField("Account No");
+        HardshipExpenseAcc := ExpenseCodes."Account No";
 
 
         Counter := 0;
@@ -1068,6 +1074,7 @@ codeunit 52100 "Imprest Management"
                     PRHeader."Payment Type" := PRHeader."Payment Type"::Imprest;
                     PRHeader."Account Type" := PRHeader."Account Type"::Customer;
                     PRHeader.Date := Today;
+                    PRHeader."Surrender Email Date" := memo."End Date" + 7;
                     PRHeader."Time Inserted" := Time;
                     PRHeader."Apply on behalf" := false;
                     PRHeader."Account Name" := Lines.Name;
@@ -1085,6 +1092,8 @@ codeunit 52100 "Imprest Management"
                     PRHeader.Destination := Memo."Activity Location";
                     PRHeader."No of Days" := Memo."Total Days in the Field";
                     PRHeader."Total Amount" := Lines.Amount;
+                    PRHeader.Email := Lines.Email;
+
                     PRHeader.Payee := Lines.Name;
                     if Lines.Type = Lines.Type::Expert then begin
                         PRHeader."Apply on behalf" := true;
@@ -1497,6 +1506,31 @@ codeunit 52100 "Imprest Management"
                         PRLines.Amount := Lines."Quarter Per Diem" * Memo."Total Days in the Field";
                         PRLines."Posted Date" := Today;
                         PRLines."Daily Rate" := Lines."Quarter Per Diem";
+                        PRLines.Insert();
+                    end;
+                    // Hardship Expense Code
+                    if Lines."Hardship Allowance" > 0 then begin
+                        ReceiptsandPaymentTypes.Reset();
+                        ReceiptsandPaymentTypes.SetRange("Account No.", HardshipExpenseAcc);
+                        if not ReceiptsandPaymentTypes.FindFirst() then
+                            Error('No Receipt and Payment Type found for Hardship Allow Account %1', HardshipExpenseAcc);
+
+                        LineCounter += 1;
+                        PRLines.Init();
+                        PRLines."Expenditure Type" := ReceiptsandPaymentTypes.Code;
+                        PRLines.Validate("Expenditure Type");
+                        PRLines."Account Name" := ReceiptsandPaymentTypes.Description;
+                        PRLines."Account No" := HardshipExpenseAcc;
+                        PRLines.Validate("Account No");
+                        PRLines."No of Days" := Memo."Total Days in the Field";
+                        PRLines.No := PRHeader."No.";
+                        PRLines."Line No" := LineCounter;
+                        PRLines."Shortcut Dimension 1 Code" := Lines."Global Dimension 1 Code";
+                        PRLines."Shortcut Dimension 2 Code" := Lines."Global Dimension 2 Code";
+                        PRLines.Description := CopyStr(Memo.Purpose, 1, 100);
+                        PRLines.Amount := Lines."Hardship Allowance" * Memo."Total Days in the Field";
+                        PRLines."Posted Date" := Today;
+                        PRLines."Daily Rate" := Lines."Hardship Allowance";
                         PRLines.Insert();
                     end;
                     if Lines."Other Costs" > 0 then begin

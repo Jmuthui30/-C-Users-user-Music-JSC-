@@ -149,6 +149,9 @@ page 50059 "Imprest Memo Header"
                     field("Expert Allowance"; Rec."Expert Allowance")
                     {
                     }
+                    field("Hardship Allowance"; Rec."Hardship Allowance")
+                    {
+                    }
                 }
                 group(OptionalOptions)
                 {

@@ -400,6 +400,25 @@ report 53012 "Memo Report"
 
                 end;
             }
+            // HardshipExpenseAccount
+            dataitem(HardshipExpenseAccount; "Imprest Memo Lines")
+            {
+                DataItemLink = "No." = field("No.");
+                DataItemTableView = sorting("No.") where("Hardship Allowance" = filter(<> 0));
+                column(HardshipExpenseAccount_Description; Description) { }
+                column(HardshipExpenseAccount_Amount; "Hardship Allowance") { }
+                column(HardshipExpenseAccount_Days; "Total Days in the Field") { }
+                column(HardshipExpenseAccount_Name; Name) { }
+                column(HardshipExpenseAccount_Account_No_; "Account No.") { }
+                column(HardshipExpenseAccountLine; hardshipAllowanceLine)
+                {
+                }
+                trigger OnAfterGetRecord()
+                begin
+                    hardshipAllowanceLine := hardshipAllowanceLine + 1;
+
+                end;
+            }
             //other cost
             dataitem(OtherCost; "Imprest Memo Lines")
             {
@@ -477,6 +496,8 @@ report 53012 "Memo Report"
                 totalQuarterPerDiem := 0;
                 totalOtherCosts := 0;
                 OtherAmount := 0;
+                hardshipAllowance := 0;
+                totalHardshipAllowance := 0;
 
                 MemoLineApp.Reset();
                 MemoLineApp.SetRange("No.", "No.");
@@ -505,6 +526,8 @@ report 53012 "Memo Report"
                             totalMileageAllowance += MemoLineApp."Mileage Allowance" * MemoLineApp."Total Days in the Field";
                         if MemoLineApp."Quarter Per Diem" > 0 then
                             totalQuarterPerDiem += MemoLineApp."Quarter Per Diem" * MemoLineApp."Total Days in the Field";
+                        if MemoLineApp."Hardship Allowance" > 0 then
+                            totalHardshipAllowance += MemoLineApp."Hardship Allowance" * MemoLineApp."Total Days in the Field";
                         if MemoLineApp."Other Costs" > 0 then
                             totalOtherCosts += MemoLineApp."Other Costs";
                         if MemoLineApp."Air Ticket" > 0 then
@@ -522,7 +545,7 @@ report 53012 "Memo Report"
                     TotalGrandTwice := TotalDsaAllowance + TotalCordinationAllowance + totalFacilitatorAllowance +
                                        totalSecretariatAllowance + totalRapporteurAllowance + totalRetreatAllowance +
                                        totalExpertAllowance + totalOutOfPocketAllowance + totalTuitionFee +
-                                       totalMileageAllowance + totalQuarterPerDiem;
+                                       totalMileageAllowance + totalQuarterPerDiem + totalHardshipAllowance;
 
                     TotalGrandonce := totalAirTicket + totalConference + totalGroundTransport + totalAccommodation;
 
@@ -603,6 +626,9 @@ report 53012 "Memo Report"
         totalMileageAllowance: Decimal;
         QuarterPerDiemDec: Decimal;
         OtherCostLine: Integer;
+        hardshipAllowance: Decimal;
+        totalHardshipAllowance: Decimal;
+        hardshipAllowanceLine: Integer;
         totalQuarterPerDiem: Decimal;
         myInt: Integer;
         CompInfo: Record "Company Information";

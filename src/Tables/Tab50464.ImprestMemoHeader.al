@@ -500,6 +500,10 @@ table 50464 "Imprest Memo Header"
         field(127; "Record Allowance"; Boolean)
         { }
         // field(128; "")
+        // 9.	Hardship allowance 
+        Field(128; "Hardship Allowance"; Boolean)
+        {
+        }
 
     }
     keys

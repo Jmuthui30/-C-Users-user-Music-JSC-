@@ -471,6 +471,15 @@ table 50465 "Imprest Memo Lines"
         {
             Editable = false;
         }
+        // 9.	Hardship allowance 
+        field(128; "Hardship Allowance"; Decimal)
+        {
+            Caption = 'Hardship Allowance';
+        }
+        field(129; "Hardship Allowance Enabled"; Boolean)
+        {
+            Caption = 'Hardship Allowance Enabled';
+        }
 
     }
     keys
