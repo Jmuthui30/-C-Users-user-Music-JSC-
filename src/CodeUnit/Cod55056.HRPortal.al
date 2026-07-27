@@ -2955,7 +2955,8 @@ codeunit 55056 HRPortal
     LastName: Text[100];
     DateOfBirth: DateTime;
     Gender: Integer;
-    PhoneNo: Text[30]
+    PhoneNo: Text[30];
+    RelativeCode: Code[20]
 ) Status: Text
     var
     begin
@@ -2968,6 +2969,7 @@ codeunit 55056 HRPortal
             EmployeeBeneficiary."Last Name" := CopyStr(LastName, 1, MaxStrLen(EmployeeBeneficiary."Last Name"));
             EmployeeBeneficiary."Date of Birth" := DT2Date(DateOfBirth);
             EmployeeBeneficiary.Gender := Gender;
+            EmployeeBeneficiary."Relative Code" := RelativeCode;
             EmployeeBeneficiary."Phone No." := CopyStr(PhoneNo, 1, MaxStrLen(EmployeeBeneficiary."Phone No."));
 
             if EmployeeBeneficiary.Insert(true) then
