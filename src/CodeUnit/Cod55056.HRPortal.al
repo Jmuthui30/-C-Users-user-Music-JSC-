@@ -70,6 +70,11 @@ codeunit 55056 HRPortal
         TrainingNeedsHeader: Record "Training Needs Header";
         LeavePlannerHeader: Record "Leave Planner Header";
         LeavePlannerHeaderLine: Record "Leave Planner Lines";
+        EmployeeRelative: Record "Employee Relative";
+        EmployeeBeneficiary: Record "Employee Beneficiaries";
+
+    var
+        EmployeeChangeRequest: Record "Employee Change Request";
 
     procedure SendEmailNotification(recepient: Text; emailSubject: Text; emailBody: Text)
     var
@@ -419,7 +424,6 @@ codeunit 55056 HRPortal
                 status := 'danger*An error occured while submitting your Reliever Planner';
             end;
         end;
-
     end;
 
     procedure AddLeavePlannerLine(ApplicationNo: Code[50]; empNo: code[30]; LeaveType: Code[30]; noOfDays: Integer; startDate: DateTime) status: Text
@@ -2093,37 +2097,30 @@ codeunit 55056 HRPortal
         end;
     end;
 
-    procedure CreateTrainingRequest(No: Code[30]; EmpNo: Code[30]; sourceDocumentNo: Text; needSource: integer; jobFunction: Text[1000]; currentEmployeeSkills: Text[1000]; missingCompetencies: Text[1000]; requiredSkills: Text[1000]; commentsByDepartment: Text[1000]) status: Text
+    procedure CreateTrainingRequest(No: Code[30]; EmpNo: Code[30]; Adhoc: Boolean; TrainingNeed: Code[30]) status: Text
     var
         EmpRec: Record "Employee Master";
         TrainingSetup: Record "QuantumJumps HR Setup";
+        TrainingRequest: Record "Training Request";
     begin
         CashMgt.Get();
         HrEmployees.Get(EmpNo);
         if No <> '' then begin
             TrainingRequest.Reset();
-            TrainingRequest.SetRange("No.", No);
+            TrainingRequest.SetRange("Request No.", No);
             if TrainingRequest.FindFirst() then begin
-                TrainingRequest.Date := Today;
-                TrainingRequest."Source Document No" := sourceDocumentNo;
-                TrainingRequest."Need Source" := needSource;
                 TrainingRequest."Employee No" := EmpNo;
                 TrainingRequest.Validate("Employee No");
-                TrainingRequest."Job Function" := jobFunction;
-                TrainingRequest."Current Employee Skills" := currentEmployeeSkills;
-                TrainingRequest."Missing Competencies" := missingCompetencies;
-                TrainingRequest."Required Skills" := requiredSkills;
-                TrainingRequest.Comments1 := commentsByDepartment;
-                TrainingRequest.Status := TrainingRequest.Status::Open;
+                TrainingRequest."Training Need" := TrainingNeed;
+                TrainingRequest.Validate("Training Need");
+                TrainingRequest."Request Date" := Today;
                 if EmpRec.Get(EmpNo) then begin
                     TrainingRequest."Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
                     TrainingRequest."Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
-                    TrainingRequest."Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
                 end;
-                TrainingRequest."Job Title" := HrEmployees."Job Title";
                 TrainingRequest."Employee Name" := HrEmployees."First Name" + ' ' + HrEmployees."Last Name";
                 if TrainingRequest.Modify(true) then begin
-                    status := 'success*Training request has been modified succesfully*' + TrainingRequest."No.";
+                    status := 'success*Training request has been modified succesfully*' + TrainingRequest."Request No.";
                 end else begin
                     status := 'danger*An error occured while submitting your Training request';
                 end;
@@ -2135,23 +2132,15 @@ codeunit 55056 HRPortal
             TrainingSetup.Get;
             TrainingSetup.TestField("Training Nos.");
             // NoSeriesMgt.InitSeries(TrainingSetup."Training Nos.", TrainingRequest."No. Series", 0D, TrainingRequest."No.", TrainingRequest."No. Series");
-            TrainingRequest."Required Hours" := TrainingSetup."Training Hours per Year";
-            TrainingRequest.Date := Today;
             TrainingRequest."Employee No" := EmpNo;
-            TrainingRequest."Source Document No" := sourceDocumentNo;
-            TrainingRequest."Need Source" := needSource;
             TrainingRequest.Validate("Employee No");
-            TrainingRequest."Job Function" := jobFunction;
-            TrainingRequest."Current Employee Skills" := currentEmployeeSkills;
-            TrainingRequest."Missing Competencies" := missingCompetencies;
-            TrainingRequest."Required Skills" := requiredSkills;
-            TrainingRequest.Comments1 := commentsByDepartment;
+            TrainingRequest."Training Need" := TrainingNeed;
+            TrainingRequest.Validate("Training Need");
+            TrainingRequest."Request Date" := Today;
             if EmpRec.Get(EmpNo) then begin
                 TrainingRequest."Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
                 TrainingRequest."Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
-                TrainingRequest."Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
             end;
-            TrainingRequest."Job Title" := HrEmployees."Job Title";
             TrainingRequest."Employee Name" := HrEmployees."First Name" + ' ' + HrEmployees."Last Name";
             TrainingRequest.Status := TrainingRequest.Status::Open;
             if TrainingRequest.Insert() then begin
@@ -2160,12 +2149,10 @@ codeunit 55056 HRPortal
                 if EmpRec.Get(EmpNo) then begin
                     TrainingRequest."Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
                     TrainingRequest."Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
-                    TrainingRequest."Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
                 end;
-                TrainingRequest."Job Title" := HrEmployees."Job Title";
                 TrainingRequest."Employee Name" := HrEmployees."First Name" + ' ' + HrEmployees."Last Name";
                 TrainingRequest.Modify(true);
-                status := 'success*Training request has been modified succesfully*' + TrainingRequest."No.";
+                status := 'success*Training request has been modified succesfully*' + TrainingRequest."Request No.";
             end else begin
                 status := 'danger*An error occured while submitting your Training request';
             end;
@@ -2196,7 +2183,6 @@ codeunit 55056 HRPortal
     end;
 
 
-
     procedure DeleteTrainingRequestLine(empNo: Code[30]; applicationNo: Code[50]; lineNo: Integer) status: Text
     var
 
@@ -2215,12 +2201,14 @@ codeunit 55056 HRPortal
     procedure SendTrainingRequestApproval(DocNo: Code[50]) Status: Text
     var
         ApprovalsMgmt: Codeunit "Approvals Mgmt. Ext";
+        TrainingRequest: Record "Training Request";
 
     begin
         TrainingRequest.Reset();
-        TrainingRequest.SetRange("No.", DocNo);
+        TrainingRequest.SetRange("Request No.", DocNo);
         if TrainingRequest.FindFirst() then begin
-            ApprovalsMgmt.OnSendTrainingNeedsForApproval(TrainingRequest);
+            if ApprovalsMgmt.CheckTrainingRequestWorkflowEnabled(TrainingRequest) then
+                ApprovalsMgmt.OnSendTrainingRequestforApproval(TrainingRequest);
             status := 'success*Training Request has been succesfully sent for approval.';
         end;
     end;
@@ -2850,5 +2838,157 @@ codeunit 55056 HRPortal
             BaseImage := Base64Convert.ToBase64(InStr);
         end;
 
+    end;
+
+    procedure CreateEmployeeChangeRequest(
+    ChangeNo: Code[30];
+    EmployeeNo: Code[30];
+    LastName: Text[100];
+    FirstName: Text[100];
+    MiddleName: Text[100];
+    Initials: Text[30];
+    PhoneNo: Text[30];
+    Email: Text[100];
+    Address: Text[250];
+    PostCode: Code[30];
+    City: Text[100];
+    Gender: Integer;
+    Disabled: Integer;
+    MaritalStatus: Integer;
+    HomeDistrict: Code[50]
+) Status: Text
+    var
+    begin
+        if EmployeeChangeRequest.Get(ChangeNo) then begin
+            EmployeeChangeRequest."No." := ChangeNo;
+            EmployeeChangeRequest.Number := CopyStr(EmployeeNo, 1, MaxStrLen(EmployeeChangeRequest.Number));
+            EmployeeChangeRequest."Last Name" := CopyStr(LastName, 1, MaxStrLen(EmployeeChangeRequest."Last Name"));
+            EmployeeChangeRequest."First Name" := CopyStr(FirstName, 1, MaxStrLen(EmployeeChangeRequest."First Name"));
+            EmployeeChangeRequest."Middle Name" := CopyStr(MiddleName, 1, MaxStrLen(EmployeeChangeRequest."Middle Name"));
+            EmployeeChangeRequest.Initials := CopyStr(Initials, 1, MaxStrLen(EmployeeChangeRequest.Initials));
+            EmployeeChangeRequest."Phone No." := CopyStr(PhoneNo, 1, MaxStrLen(EmployeeChangeRequest."Phone No."));
+            EmployeeChangeRequest."E-Mail" := CopyStr(Email, 1, MaxStrLen(EmployeeChangeRequest."E-Mail"));
+            EmployeeChangeRequest.Address := CopyStr(Address, 1, MaxStrLen(EmployeeChangeRequest.Address));
+            EmployeeChangeRequest."Post Code" := CopyStr(PostCode, 1, MaxStrLen(EmployeeChangeRequest."Post Code"));
+            EmployeeChangeRequest.City := CopyStr(City, 1, MaxStrLen(EmployeeChangeRequest.City));
+            EmployeeChangeRequest.Gender := Gender;
+            EmployeeChangeRequest.Disabled := Disabled;
+            EmployeeChangeRequest."Marital Status" := MaritalStatus;
+            EmployeeChangeRequest."Home District" := CopyStr(HomeDistrict, 1, MaxStrLen(EmployeeChangeRequest."Home District"));
+
+            if EmployeeChangeRequest.Modify(true) then
+                Status := 'success*Employee Change Request has been modified successfully*' + EmployeeChangeRequest."No."
+            else
+                Status := 'danger*An error occurred while updating the Employee Change Request';
+
+        end else begin
+            EmployeeChangeRequest.Init();
+            // EmployeeChangeRequest."No." := NoSeriesMgt.DoGetNextNo(...);
+
+            EmployeeChangeRequest."No." := ChangeNo;
+            EmployeeChangeRequest.Number := CopyStr(EmployeeNo, 1, MaxStrLen(EmployeeChangeRequest.Number));
+            EmployeeChangeRequest."Last Name" := CopyStr(LastName, 1, MaxStrLen(EmployeeChangeRequest."Last Name"));
+            EmployeeChangeRequest."First Name" := CopyStr(FirstName, 1, MaxStrLen(EmployeeChangeRequest."First Name"));
+            EmployeeChangeRequest."Middle Name" := CopyStr(MiddleName, 1, MaxStrLen(EmployeeChangeRequest."Middle Name"));
+            EmployeeChangeRequest.Initials := CopyStr(Initials, 1, MaxStrLen(EmployeeChangeRequest.Initials));
+            EmployeeChangeRequest."Phone No." := CopyStr(PhoneNo, 1, MaxStrLen(EmployeeChangeRequest."Phone No."));
+            EmployeeChangeRequest."E-Mail" := CopyStr(Email, 1, MaxStrLen(EmployeeChangeRequest."E-Mail"));
+            EmployeeChangeRequest.Address := CopyStr(Address, 1, MaxStrLen(EmployeeChangeRequest.Address));
+            EmployeeChangeRequest."Post Code" := CopyStr(PostCode, 1, MaxStrLen(EmployeeChangeRequest."Post Code"));
+            EmployeeChangeRequest.City := CopyStr(City, 1, MaxStrLen(EmployeeChangeRequest.City));
+            EmployeeChangeRequest.Gender := Gender;
+            EmployeeChangeRequest.Disabled := Disabled;
+            EmployeeChangeRequest."Marital Status" := MaritalStatus;
+            EmployeeChangeRequest."Home District" := CopyStr(HomeDistrict, 1, MaxStrLen(EmployeeChangeRequest."Home District"));
+
+            if EmployeeChangeRequest.Insert(true) then
+                Status := 'success*Employee Change Request has been created successfully*' + EmployeeChangeRequest."No."
+            else
+                Status := 'danger*An error occurred while creating the Employee Change Request';
+        end;
+    end;
+
+    procedure CreateEmployeeRelative(
+    EmployeeNo: Code[20];
+    RelativeCode: Code[20];
+    FirstName: Text[100];
+    BirthDate: Date;
+    PhoneNo: Text[30]
+) Status: Text
+    var
+    begin
+        if Employee.Get(EmployeeNo) then begin
+            EmployeeRelative.Init();
+            EmployeeRelative."Employee No." := EmployeeNo;
+            EmployeeRelative."Relative Code" := CopyStr(RelativeCode, 1, MaxStrLen(EmployeeRelative."Relative Code"));
+            EmployeeRelative."First Name" := CopyStr(FirstName, 1, MaxStrLen(EmployeeRelative."First Name"));
+            EmployeeRelative."Birth Date" := BirthDate;
+            EmployeeRelative."Phone No." := CopyStr(PhoneNo, 1, MaxStrLen(EmployeeRelative."Phone No."));
+            //EmployeeRelative.Comment := CopyStr(Comment, 1, MaxStrLen(EmployeeRelative.Comment));
+            if EmployeeRelative.Insert(true) then
+                Status := 'success*Employee Relative has been created successfully'
+            else
+                Status := 'danger*An error occurred while creating the Employee Relative';
+        end else
+            Status := 'danger*Employee does not exist';
+    end;
+
+    procedure DeleteEmployeeRelative(EmployeeNo: Code[20]; RelativeCode: Code[20]) Status: Text
+    begin
+        EmployeeRelative.Reset();
+        EmployeeRelative.SetRange("Employee No.", EmployeeNo);
+        EmployeeRelative.SetRange("Relative Code", RelativeCode);
+        if EmployeeRelative.FindFirst() then begin
+            if EmployeeRelative.Delete(true) then
+                Status := 'success*Employee Relative has been deleted successfully'
+            else
+                Status := 'danger*An error occurred while deleting the Employee Relative';
+        end else
+            Status := 'danger*Employee Relative not found';
+    end;
+
+    procedure CreateEmployeeBeneficiary(
+    EmployeeNo: Code[20];
+    BeneficiaryNo: Code[20];
+    FirstName: Text[100];
+    MiddleName: Text[100];
+    LastName: Text[100];
+    DateOfBirth: Date;
+    Gender: Integer;
+    PhoneNo: Text[30]
+) Status: Text
+    var
+    begin
+        if Employee.Get(EmployeeNo) then begin
+            EmployeeBeneficiary.Init();
+            EmployeeBeneficiary."Employee No." := EmployeeNo;
+            EmployeeBeneficiary."Beneficiary No." := CopyStr(BeneficiaryNo, 1, MaxStrLen(EmployeeBeneficiary."Beneficiary No."));
+            EmployeeBeneficiary."First Name" := CopyStr(FirstName, 1, MaxStrLen(EmployeeBeneficiary."First Name"));
+            EmployeeBeneficiary."Middle Name" := CopyStr(MiddleName, 1, MaxStrLen(EmployeeBeneficiary."Middle Name"));
+            EmployeeBeneficiary."Last Name" := CopyStr(LastName, 1, MaxStrLen(EmployeeBeneficiary."Last Name"));
+            EmployeeBeneficiary."Date of Birth" := DateOfBirth;
+            EmployeeBeneficiary.Gender := Gender;
+            EmployeeBeneficiary."Phone No." := CopyStr(PhoneNo, 1, MaxStrLen(EmployeeBeneficiary."Phone No."));
+
+            if EmployeeBeneficiary.Insert(true) then
+                Status := 'success*Employee Beneficiary has been created successfully'
+            else
+                Status := 'danger*An error occurred while creating the Employee Beneficiary';
+        end else
+            Status := 'danger*Employee does not exist';
+    end;
+
+    procedure DeleteEmployeeBeneficiary(EmployeeNo: Code[20]; BeneficiaryNo: Code[20]) Status: Text
+    begin
+        EmployeeBeneficiary.Reset();
+        EmployeeBeneficiary.SetRange("Employee No.", EmployeeNo);
+        EmployeeBeneficiary.SetRange("Beneficiary No.", BeneficiaryNo);
+        if EmployeeBeneficiary.FindFirst() then begin
+            if EmployeeBeneficiary.Delete(true) then
+                Status := 'success*Employee Beneficiary has been deleted successfully'
+            else
+                Status := 'danger*An error occurred while deleting the Employee Beneficiary';
+        end else
+            Status := 'danger*Employee Beneficiary not found';
     end;
 }
