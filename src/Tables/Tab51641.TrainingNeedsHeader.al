@@ -182,19 +182,21 @@ table 51641 "Training Needs Header"
         end;
         Date := Today;
         Status := Status::Open;
-        if UserSetup.Get(UserId) then begin
-            "Employee No" := UserSetup."Employee No.";
-            Validate("Employee No");
-        end;
-        "Created By" := UserId;
-        if EmpRec.Get("Employee No") then begin
-            "Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
-            "Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
-            "Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
-        end;
-        if NAVemp.Get("Employee No") then begin
-            "Job Title" := NAVemp."Job Title";
-            "Employee Name" := NAVemp."First Name" + ' ' + NAVemp."Last Name";
+        if (UserId <> 'ADMINCLOUD') then begin
+            if UserSetup.Get(UserId) then begin
+                "Employee No" := UserSetup."Employee No.";
+                Validate("Employee No");
+            end;
+            "Created By" := UserId;
+            if EmpRec.Get("Employee No") then begin
+                "Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                "Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                "Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
+            end;
+            if NAVemp.Get("Employee No") then begin
+                "Job Title" := NAVemp."Job Title";
+                "Employee Name" := NAVemp."First Name" + ' ' + NAVemp."Last Name";
+            end;
         end;
     end;
 

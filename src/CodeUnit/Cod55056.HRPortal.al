@@ -2258,7 +2258,7 @@ codeunit 55056 HRPortal
                 if TrainingNeedsHeader.Modify(true) then begin
                     status := 'success*Training Need has been modified succesfully*' + TrainingNeedsHeader."No.";
                 end else begin
-                    status := 'danger*An error occured while submitting your Training Need';
+                    status := 'danger*An error occured while updating your Training Need';
                 end;
             end else begin
                 status := 'danger*Document could not be found';
@@ -2282,18 +2282,18 @@ codeunit 55056 HRPortal
             TrainingNeedsHeader."Current Employee Skills" := currentEmployeeSkills;
             TrainingNeedsHeader."Missing Competencies" := missingCompetencies;
             TrainingNeedsHeader."Required Skills" := requiredSkills;
-            if TrainingRequest.Insert() then begin
-                TrainingRequest."Employee No" := EmpNo;
-                TrainingRequest.Validate("Employee No");
+            if TrainingNeedsHeader.Insert() then begin
+                TrainingNeedsHeader."Employee No" := EmpNo;
+                TrainingNeedsHeader.Validate("Employee No");
                 if EmpRec.Get(EmpNo) then begin
-                    TrainingRequest."Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
-                    TrainingRequest."Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
-                    TrainingRequest."Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
+                    TrainingNeedsHeader."Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                    TrainingNeedsHeader."Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                    TrainingNeedsHeader."Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
                 end;
-                TrainingRequest."Job Title" := HrEmployees."Job Title";
-                TrainingRequest."Employee Name" := HrEmployees."First Name" + ' ' + HrEmployees."Last Name";
-                TrainingRequest.Modify(true);
-                status := 'success*Training Need has been modified succesfully*' + TrainingRequest."No.";
+                TrainingNeedsHeader."Job Title" := HrEmployees."Job Title";
+                TrainingNeedsHeader."Employee Name" := HrEmployees."First Name" + ' ' + HrEmployees."Last Name";
+                TrainingNeedsHeader.Modify(true);
+                status := 'success*Training Need has been created succesfully*' + TrainingNeedsHeader."No.";
             end else begin
                 status := 'danger*An error occured while submitting your Training Need';
             end;
@@ -2859,7 +2859,8 @@ codeunit 55056 HRPortal
 ) Status: Text
     var
     begin
-        if EmployeeChangeRequest.Get(ChangeNo) then begin
+        if ChangeNo <> '' then begin
+            EmployeeChangeRequest.Get(ChangeNo);
             EmployeeChangeRequest."No." := ChangeNo;
             EmployeeChangeRequest.Number := CopyStr(EmployeeNo, 1, MaxStrLen(EmployeeChangeRequest.Number));
             EmployeeChangeRequest."Last Name" := CopyStr(LastName, 1, MaxStrLen(EmployeeChangeRequest."Last Name"));
