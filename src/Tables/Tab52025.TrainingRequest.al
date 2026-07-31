@@ -4,7 +4,7 @@ table 52025 "Training Request"
     LookupPageId = "Training Request List";
     DataClassification = CustomerContent;
     Caption = 'Training Request';
-    fields  
+    fields
     {
         field(1; "Request No."; Code[20])
         {
@@ -461,14 +461,17 @@ table 52025 "Training Request"
         end;
 
         "User ID" := UserId;
-        if UserSetup.Get(UserId) then begin
-            Employee.SetRange("No.", UserSetup."Employee No.");
-            if Employee.Find('-') then
-                "Employee No" := Employee."No.";
-            "Employee Name" := Employee."First Name" + ' ' + Employee."Middle Name" + ' ' + Employee."Last Name";
-            Designation := Employee."Job Title";
-            "Salary Scale" := Employee."Salary Scale";
+        if (UserId <> 'ADMINCLOUD') THEN begin
+            if UserSetup.Get(UserId) then begin
+                Employee.SetRange("No.", UserSetup."Employee No.");
+                if Employee.Find('-') then
+                    "Employee No" := Employee."No.";
+                "Employee Name" := Employee."First Name" + ' ' + Employee."Middle Name" + ' ' + Employee."Last Name";
+                Designation := Employee."Job Title";
+                "Salary Scale" := Employee."Salary Scale";
+            end;
         end;
+
 
         "Request Date" := Today;
     end;
