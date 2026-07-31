@@ -1338,6 +1338,9 @@ xT+zh468Lu5OkNqMC8+bYHzQfw6/pXnl3o+oafI0dzZXFs6nDLNEykfmK/UTy19Kr3Wm2t8my5top1/u
         <Field Name="CompInfoName">
           <DataField>CompInfoName</DataField>
         </Field>
+        <Field Name="Company">
+          <DataField>Company</DataField>
+        </Field>
         <Field Name="CompInfoAddress">
           <DataField>CompInfoAddress</DataField>
         </Field>
@@ -1412,6 +1415,9 @@ xT+zh468Lu5OkNqMC8+bYHzQfw6/pXnl3o+oafI0dzZXFs6nDLNEykfmK/UTy19Kr3Wm2t8my5top1/u
         </Field>
         <Field Name="Full_Name">
           <DataField>Full_Name</DataField>
+        </Field>
+        <Field Name="Company_Code">
+          <DataField>Company_Code</DataField>
         </Field>
       </Fields>
       <Query>

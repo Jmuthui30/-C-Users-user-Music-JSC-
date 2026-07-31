@@ -2911,7 +2911,7 @@ codeunit 55056 HRPortal
             EmployeeChangeRequest."Last Date Modified" := Today;
 
             if EmployeeChangeRequest.Modify(true) then
-                Status := 'success*Employee Change Request has been modified successfully*' + EmployeeChangeRequest."No."
+                Status := 'success*Employee Change Request has been modified successfully*' + EmployeeChangeRequest.Number
             else
                 Status := 'danger*An error occurred while updating the Employee Change Request';
 
@@ -2937,7 +2937,7 @@ codeunit 55056 HRPortal
             EmployeeChangeRequest."Last Date Modified" := Today;
 
             if EmployeeChangeRequest.Insert(true) then
-                Status := 'success*Employee Change Request has been created successfully*' + EmployeeChangeRequest."No."
+                Status := 'success*Employee Change Request has been created successfully*' + EmployeeChangeRequest.Number
             else
                 Status := 'danger*An error occurred while creating the Employee Change Request';
         end;
