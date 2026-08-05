@@ -185,13 +185,16 @@ table 52173 "Leave Planner Lines"
         // "Employee No." :=  UserSertup."Employee No.";
         "User ID" := UserId;
 
-        if GuiAllowed then
-            UserSertup.Get("User ID");
-        UserSertup.TestField("Employee No.");
-        EmployeeRec.Get(UserSertup."Employee No.");
-        "Employee No." := EmployeeRec."No.";
+        if UserId <> 'ADMINCLOUD' then begin
+            if GuiAllowed then
+                UserSertup.Get("User ID");
+            UserSertup.TestField("Employee No.");
+            EmployeeRec.Get(UserSertup."Employee No.");
+            "Employee No." := EmployeeRec."No.";
 
-        "Employee Name" := EmployeeRec.FullName();
+            "Employee Name" := EmployeeRec.FullName();
+        end;
+
         // else
         // Validate("Employee No.");
 

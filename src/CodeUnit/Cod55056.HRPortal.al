@@ -412,7 +412,7 @@ codeunit 55056 HRPortal
             if LeaveReliever.Find('-') then begin
                 LeavePlannerHeader."Leave Period" := leavePeriod;
                 if LeavePlannerHeader.Modify(true) then begin
-                    status := 'success*Leave Planner has been updated succesfully';
+                    status := 'success*Leave Planner has been updated succesfully*' + LeavePlannerHeader."No.";
                 end else begin
                     status := 'danger*An error occured while submitting your Reliever Planner';
                 end;
@@ -423,7 +423,7 @@ codeunit 55056 HRPortal
             LeavePlannerHeader.Init();
             LeavePlannerHeader."Leave Period" := leavePeriod;
             if LeavePlannerHeader.Insert(true) then begin
-                status := 'success*Leave Planner has been created succesfully';
+                status := 'success*Leave Planner has been created succesfully*' + LeavePlannerHeader."No.";
             end else begin
                 status := 'danger*An error occured while submitting your Reliever Planner';
             end;
@@ -623,6 +623,8 @@ codeunit 55056 HRPortal
                 AppraisalPlanningHeader."Core Values Development" := ActionsToDevelop;
                 AppraisalPlanningHeader."Planning Status" := AppraisalPlanningHeader."Planning Status"::Draft;
                 AppraisalPlanningHeader.Insert(true);
+                AppraisalPlanningHeader."Planning Status" := AppraisalPlanningHeader."Planning Status"::Draft;
+                AppraisalPlanningHeader.Modify();
 
                 Status :=
                     'success*Appraisal Planning has been created successfully*' +
