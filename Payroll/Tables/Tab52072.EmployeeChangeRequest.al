@@ -1649,15 +1649,13 @@ table 53036 "Employee Change Request"
             Number := NoSeriesMgt.GetNextNo("No. Series", WorkDate());
         end;
 
-        usersetup.Get(userid);
-        if usersetup."Employee No." <> '' then
-            message('Employee Change Request is being created for Employee %1', usersetup."Employee No.");
-        "No." := usersetup."Employee No.";
-        validate("No.");
-
-
-
-
+        if (UserId <> 'ADMINCLOUD') then begin
+            usersetup.Get(userid);
+            if usersetup."Employee No." <> '' then
+                message('Employee Change Request is being created for Employee %1', usersetup."Employee No.");
+            "No." := usersetup."Employee No.";
+            validate("No.");
+        end;
 
     end;
 

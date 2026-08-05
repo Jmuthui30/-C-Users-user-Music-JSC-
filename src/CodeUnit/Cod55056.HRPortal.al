@@ -406,20 +406,24 @@ codeunit 55056 HRPortal
         HRSetup: Record "Human Resources Setup";
         LeaveReliever: Record "Leave Relievers";
     begin
-        LeaveReliever.Reset();
-        LeaveReliever.SetRange("Leave Code", ApplicationNo);
-        if LeaveReliever.Find('-') then begin
-            LeavePlannerHeader."Leave Period" := leavePeriod;
-            if LeavePlannerHeader.Modify(true) then begin
-                status := 'success*Leave Planner has been updated succesfully';
+        if ApplicationNo <> '' then begin
+            LeaveReliever.Reset();
+            LeaveReliever.SetRange("Leave Code", ApplicationNo);
+            if LeaveReliever.Find('-') then begin
+                LeavePlannerHeader."Leave Period" := leavePeriod;
+                if LeavePlannerHeader.Modify(true) then begin
+                    status := 'success*Leave Planner has been updated succesfully*' + LeavePlannerHeader."No.";
+                end else begin
+                    status := 'danger*An error occured while submitting your Reliever Planner';
+                end;
             end else begin
-                status := 'danger*An error occured while submitting your Reliever Planner';
+                status := 'danger*Document not found.';
             end;
         end else begin
             LeavePlannerHeader.Init();
             LeavePlannerHeader."Leave Period" := leavePeriod;
             if LeavePlannerHeader.Insert(true) then begin
-                status := 'success*Leave Planner has been created succesfully';
+                status := 'success*Leave Planner has been created succesfully*' + LeavePlannerHeader."No.";
             end else begin
                 status := 'danger*An error occured while submitting your Reliever Planner';
             end;
@@ -587,6 +591,7 @@ codeunit 55056 HRPortal
                 AppraisalPlanningHeader."Core Values Maintenance" := ActionsToMaintain;
                 AppraisalPlanningHeader."Core Values To Develop" := CoreValuesToDevelop;
                 AppraisalPlanningHeader."Core Values Development" := ActionsToDevelop;
+                AppraisalPlanningHeader."Appraiser Agreed" := true;
                 AppraisalPlanningHeader."Planning Status" := AppraisalPlanningHeader."Planning Status"::Draft;
                 AppraisalPlanningHeader.Modify(true);
 
@@ -617,8 +622,11 @@ codeunit 55056 HRPortal
                 AppraisalPlanningHeader."Core Values Maintenance" := ActionsToMaintain;
                 AppraisalPlanningHeader."Core Values To Develop" := CoreValuesToDevelop;
                 AppraisalPlanningHeader."Core Values Development" := ActionsToDevelop;
+                AppraisalPlanningHeader."Appraiser Agreed" := true;
                 AppraisalPlanningHeader."Planning Status" := AppraisalPlanningHeader."Planning Status"::Draft;
                 AppraisalPlanningHeader.Insert(true);
+                AppraisalPlanningHeader."Planning Status" := AppraisalPlanningHeader."Planning Status"::Draft;
+                AppraisalPlanningHeader.Modify();
 
                 Status :=
                     'success*Appraisal Planning has been created successfully*' +
@@ -2143,7 +2151,7 @@ codeunit 55056 HRPortal
             end;
             TrainingRequest."Employee Name" := HrEmployees."First Name" + ' ' + HrEmployees."Last Name";
             TrainingRequest.Status := TrainingRequest.Status::Open;
-            if TrainingRequest.Insert() then begin
+            if TrainingRequest.Insert(true) then begin
                 TrainingRequest."Employee No" := EmpNo;
                 TrainingRequest.Validate("Employee No");
                 if EmpRec.Get(EmpNo) then begin
@@ -2243,7 +2251,7 @@ codeunit 55056 HRPortal
                 TrainingNeedsHeader."Need Source" := needSource;
                 TrainingNeedsHeader."Employee No" := EmpNo;
                 TrainingNeedsHeader.Validate("Employee No");
-                TrainingNeedsHeader.Status := TrainingRequest.Status::Open;
+                TrainingNeedsHeader.Status := TrainingNeedsHeader.Status::Open;
                 if EmpRec.Get(EmpNo) then begin
                     TrainingNeedsHeader."Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
                     TrainingNeedsHeader."Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
@@ -2258,7 +2266,7 @@ codeunit 55056 HRPortal
                 if TrainingNeedsHeader.Modify(true) then begin
                     status := 'success*Training Need has been modified succesfully*' + TrainingNeedsHeader."No.";
                 end else begin
-                    status := 'danger*An error occured while submitting your Training Need';
+                    status := 'danger*An error occured while updating your Training Need';
                 end;
             end else begin
                 status := 'danger*Document could not be found';
@@ -2270,7 +2278,7 @@ codeunit 55056 HRPortal
             TrainingNeedsHeader."Need Source" := needSource;
             TrainingNeedsHeader."Employee No" := EmpNo;
             TrainingNeedsHeader.Validate("Employee No");
-            TrainingNeedsHeader.Status := TrainingRequest.Status::Open;
+            TrainingNeedsHeader.Status := TrainingNeedsHeader.Status::Open;
             if EmpRec.Get(EmpNo) then begin
                 TrainingNeedsHeader."Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
                 TrainingNeedsHeader."Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
@@ -2282,18 +2290,18 @@ codeunit 55056 HRPortal
             TrainingNeedsHeader."Current Employee Skills" := currentEmployeeSkills;
             TrainingNeedsHeader."Missing Competencies" := missingCompetencies;
             TrainingNeedsHeader."Required Skills" := requiredSkills;
-            if TrainingRequest.Insert() then begin
-                TrainingRequest."Employee No" := EmpNo;
-                TrainingRequest.Validate("Employee No");
+            if TrainingNeedsHeader.Insert(true) then begin
+                TrainingNeedsHeader."Employee No" := EmpNo;
+                TrainingNeedsHeader.Validate("Employee No");
                 if EmpRec.Get(EmpNo) then begin
-                    TrainingRequest."Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
-                    TrainingRequest."Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
-                    TrainingRequest."Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
+                    TrainingNeedsHeader."Global Dimension 1 Code" := EmpRec."Global Dimension 1 Code";
+                    TrainingNeedsHeader."Global Dimension 2 Code" := EmpRec."Global Dimension 2 Code";
+                    TrainingNeedsHeader."Global Dimension 3 Code" := EmpRec."Global Dimension 3 Code";
                 end;
-                TrainingRequest."Job Title" := HrEmployees."Job Title";
-                TrainingRequest."Employee Name" := HrEmployees."First Name" + ' ' + HrEmployees."Last Name";
-                TrainingRequest.Modify(true);
-                status := 'success*Training Need has been modified succesfully*' + TrainingRequest."No.";
+                TrainingNeedsHeader."Job Title" := HrEmployees."Job Title";
+                TrainingNeedsHeader."Employee Name" := HrEmployees."First Name" + ' ' + HrEmployees."Last Name";
+                TrainingNeedsHeader.Modify(true);
+                status := 'success*Training Need has been created succesfully*' + TrainingNeedsHeader."No.";
             end else begin
                 status := 'danger*An error occured while submitting your Training Need';
             end;
@@ -2603,7 +2611,7 @@ codeunit 55056 HRPortal
                 RecordIDNumber := Payments.RecordId;
             RecordLink."Record ID" := RecordIDNumber;
             if RecordLink.Insert(true) then begin
-                fnInsertPortalAttachments(staffclaimnumber, filename, sharepointlink, 'Staff Claim');
+                fnInsertPortalAttachments(staffclaimnumber, filename, sharepointlink, 'TrainingApplicationcard');
                 status := 'success*Link successfully created';
             end else begin
                 status := 'error*An error occured during the process of creating link';
@@ -2611,34 +2619,62 @@ codeunit 55056 HRPortal
         end;
     end;
 
-    procedure FAWEaddTrainingSharepointLinks(staffclaimnumber: Code[50]; filename: Text; sharepointlink: Text) status: Text
+    procedure FAWEaddTrainingNeedSharepointLinks(staffclaimnumber: Code[50]; filename: Text; sharepointlink: Text) status: Text
     var
         staffclaim: Record payments;
         RecordLink: Record "Record Link";
         RecordIDNumber: RecordID;
         Payments: Record payments;
     begin
-        // Create Document Link to Sharepoint **********Obadiah Korir****************
-        // RecordLink.Reset;
-        // if RecordLink."Link ID" = 0 then begin
-        //     RecordLink.URL1 := sharepointlink;
-        //     RecordLink.Description := filename;
-        //     RecordLink.Type := RecordLink.Type::Link;
-        //     RecordLink.Company := COMPANYNAME;
-        //     // RecordLink."User ID" := UserId;
-        //     RecordLink.Created := CreateDatetime(Today, Time);
-        //     TrainingRequest.Reset;
-        //     TrainingRequest.SetRange("Request No.", staffclaimnumber);
-        //     if TrainingRequest.Find('=') then
-        //         RecordIDNumber := TrainingRequest.RecordId;
-        //     RecordLink."Record ID" := RecordIDNumber;
-        //     if RecordLink.Insert(true) then begin
-        //         fnInsertPortalAttachments(staffclaimnumber, filename, sharepointlink, 'Training Request');
-        //         status := 'success*Link successfully created';
-        //     end else begin
-        //         status := 'error*An error occured during the process of creating link';
-        //     end;
-        // end;
+        RecordLink.Reset;
+        if RecordLink."Link ID" = 0 then begin
+            RecordLink.URL1 := sharepointlink;
+            RecordLink.Description := filename;
+            RecordLink.Type := RecordLink.Type::Link;
+            RecordLink.Company := COMPANYNAME;
+            // RecordLink."User ID" := UserId;
+            RecordLink.Created := CreateDatetime(Today, Time);
+            TrainingNeedsHeader.Reset;
+            TrainingNeedsHeader.SetRange("No.", staffclaimnumber);
+            if TrainingNeedsHeader.Find('=') then
+                RecordIDNumber := TrainingNeedsHeader.RecordId;
+            RecordLink."Record ID" := RecordIDNumber;
+            if RecordLink.Insert(true) then begin
+                fnInsertPortalAttachments(staffclaimnumber, filename, sharepointlink, 'TrainingNeeds');
+                status := 'success*Link successfully created';
+            end else begin
+                status := 'error*An error occured during the process of creating link';
+            end;
+        end;
+    end;
+
+    procedure FAWEaddTrainingRequestSharepointLinks(staffclaimnumber: Code[50]; filename: Text; sharepointlink: Text) status: Text
+    var
+        staffclaim: Record payments;
+        RecordLink: Record "Record Link";
+        RecordIDNumber: RecordID;
+        Payments: Record payments;
+    begin
+        RecordLink.Reset;
+        if RecordLink."Link ID" = 0 then begin
+            RecordLink.URL1 := sharepointlink;
+            RecordLink.Description := filename;
+            RecordLink.Type := RecordLink.Type::Link;
+            RecordLink.Company := COMPANYNAME;
+            // RecordLink."User ID" := UserId;
+            RecordLink.Created := CreateDatetime(Today, Time);
+            TrainingRequest.Reset;
+            TrainingRequest.SetRange("No.", staffclaimnumber);
+            if TrainingRequest.Find('=') then
+                RecordIDNumber := TrainingRequest.RecordId;
+            RecordLink."Record ID" := RecordIDNumber;
+            if RecordLink.Insert(true) then begin
+                fnInsertPortalAttachments(staffclaimnumber, filename, sharepointlink, 'Training Request');
+                status := 'success*Link successfully created';
+            end else begin
+                status := 'error*An error occured during the process of creating link';
+            end;
+        end;
     end;
 
     procedure FAWEgenerateImprestMemo(employeeNumber: Code[20]; docNo: Text) BaseImage: Text
@@ -2859,9 +2895,10 @@ codeunit 55056 HRPortal
 ) Status: Text
     var
     begin
-        if EmployeeChangeRequest.Get(ChangeNo) then begin
-            EmployeeChangeRequest."No." := ChangeNo;
-            EmployeeChangeRequest.Number := CopyStr(EmployeeNo, 1, MaxStrLen(EmployeeChangeRequest.Number));
+        if ChangeNo <> '' then begin
+            EmployeeChangeRequest.Get(ChangeNo);
+            EmployeeChangeRequest.Number := ChangeNo;
+            EmployeeChangeRequest."No." := CopyStr(EmployeeNo, 1, MaxStrLen(EmployeeChangeRequest.Number));
             EmployeeChangeRequest."Last Name" := CopyStr(LastName, 1, MaxStrLen(EmployeeChangeRequest."Last Name"));
             EmployeeChangeRequest."First Name" := CopyStr(FirstName, 1, MaxStrLen(EmployeeChangeRequest."First Name"));
             EmployeeChangeRequest."Middle Name" := CopyStr(MiddleName, 1, MaxStrLen(EmployeeChangeRequest."Middle Name"));
@@ -2875,9 +2912,10 @@ codeunit 55056 HRPortal
             EmployeeChangeRequest.Disabled := Disabled;
             EmployeeChangeRequest."Marital Status" := MaritalStatus;
             EmployeeChangeRequest."Home District" := CopyStr(HomeDistrict, 1, MaxStrLen(EmployeeChangeRequest."Home District"));
+            EmployeeChangeRequest."Last Date Modified" := Today;
 
             if EmployeeChangeRequest.Modify(true) then
-                Status := 'success*Employee Change Request has been modified successfully*' + EmployeeChangeRequest."No."
+                Status := 'success*Employee Change Request has been modified successfully*' + EmployeeChangeRequest.Number
             else
                 Status := 'danger*An error occurred while updating the Employee Change Request';
 
@@ -2885,8 +2923,8 @@ codeunit 55056 HRPortal
             EmployeeChangeRequest.Init();
             // EmployeeChangeRequest."No." := NoSeriesMgt.DoGetNextNo(...);
 
-            EmployeeChangeRequest."No." := ChangeNo;
-            EmployeeChangeRequest.Number := CopyStr(EmployeeNo, 1, MaxStrLen(EmployeeChangeRequest.Number));
+            // EmployeeChangeRequest."No." := ChangeNo;
+            EmployeeChangeRequest."No." := CopyStr(EmployeeNo, 1, MaxStrLen(EmployeeChangeRequest.Number));
             EmployeeChangeRequest."Last Name" := CopyStr(LastName, 1, MaxStrLen(EmployeeChangeRequest."Last Name"));
             EmployeeChangeRequest."First Name" := CopyStr(FirstName, 1, MaxStrLen(EmployeeChangeRequest."First Name"));
             EmployeeChangeRequest."Middle Name" := CopyStr(MiddleName, 1, MaxStrLen(EmployeeChangeRequest."Middle Name"));
@@ -2900,9 +2938,10 @@ codeunit 55056 HRPortal
             EmployeeChangeRequest.Disabled := Disabled;
             EmployeeChangeRequest."Marital Status" := MaritalStatus;
             EmployeeChangeRequest."Home District" := CopyStr(HomeDistrict, 1, MaxStrLen(EmployeeChangeRequest."Home District"));
+            EmployeeChangeRequest."Last Date Modified" := Today;
 
             if EmployeeChangeRequest.Insert(true) then
-                Status := 'success*Employee Change Request has been created successfully*' + EmployeeChangeRequest."No."
+                Status := 'success*Employee Change Request has been created successfully*' + EmployeeChangeRequest.Number
             else
                 Status := 'danger*An error occurred while creating the Employee Change Request';
         end;
@@ -2955,7 +2994,8 @@ codeunit 55056 HRPortal
     LastName: Text[100];
     DateOfBirth: DateTime;
     Gender: Integer;
-    PhoneNo: Text[30]
+    PhoneNo: Text[30];
+    RelativeCode: Code[20]
 ) Status: Text
     var
     begin
@@ -2968,6 +3008,7 @@ codeunit 55056 HRPortal
             EmployeeBeneficiary."Last Name" := CopyStr(LastName, 1, MaxStrLen(EmployeeBeneficiary."Last Name"));
             EmployeeBeneficiary."Date of Birth" := DT2Date(DateOfBirth);
             EmployeeBeneficiary.Gender := Gender;
+            EmployeeBeneficiary."Relative Code" := RelativeCode;
             EmployeeBeneficiary."Phone No." := CopyStr(PhoneNo, 1, MaxStrLen(EmployeeBeneficiary."Phone No."));
 
             if EmployeeBeneficiary.Insert(true) then

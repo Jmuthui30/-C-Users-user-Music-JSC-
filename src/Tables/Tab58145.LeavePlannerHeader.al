@@ -204,12 +204,13 @@ table 58145 "Leave Planner Header"
             "Shortcut Dimension 2 Code" := EmployeeRec."Global Dimension 2 Code";
             "Responsibility Center" := EmployeeRec."responsibility center";
             "Email Adress" := EmployeeRec."Company E-Mail";
-        end else
             Validate("Employee Code");
 
-        LeavePeriodRec.Get();
-        leaveperiodRec.FindLast();
-        "Leave Period" := LeavePeriodRec."Leave Period Code";
+            LeavePeriodRec.Get();
+            leaveperiodRec.FindLast();
+            "Leave Period" := LeavePeriodRec."Leave Period Code";
+        end;
+
 
     end;
 }
