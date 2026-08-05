@@ -1296,6 +1296,9 @@ End Function
         <Field Name="Type">
           <DataField>Type</DataField>
         </Field>
+        <Field Name="Payroll_Period">
+          <DataField>Payroll_Period</DataField>
+        </Field>
         <Field Name="EanEarningCode">
           <DataField>EanEarningCode</DataField>
         </Field>
@@ -1304,6 +1307,12 @@ End Function
         </Field>
         <Field Name="EarningRefNo">
           <DataField>EarningRefNo</DataField>
+        </Field>
+        <Field Name="Payroll_Period_">
+          <DataField>Payroll_Period_</DataField>
+        </Field>
+        <Field Name="CompanyInfo">
+          <DataField>CompanyInfo</DataField>
         </Field>
       </Fields>
       <Query>
