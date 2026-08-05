@@ -17,57 +17,120 @@ report 59001 "Imprest Notification"
             column(RecipientEmail; Email)
             {
             }
+            // trigger OnAfterGetRecord()
+            // begin
+            //     CompInfo.Get;
+            //     Humansetup.Get();
+
+            //     TempBlob.CreateOutStream(OutStr);
+            //     if payments."Surrender Email Date" = Today then begin
+
+            //         VarEmail := payments.Email;
+
+            //         // Staff Email Body
+            //         Body := 'Dear ' + "Account Name" + ',';
+            //         Body += '<br><br>';
+            //         // Body += '<b>Kindly note that this notification is for testing purposes only. No action is required.</b>';
+            //         Body += '<br><br>';
+            //         Body += 'Kindly submit your Imperst allocated to you Imprest No : <b>' + InternalMemo."No." + '</b>.';
+            //         Body += '<br><br>';
+            //         Body += 'The details are as follows:';
+            //         body += '<br><br>';
+            //         body += '<ul>';
+            //         Body += '<li><b>Imprest No:</b> ' + InternalMemo."Payment Narration" + '</li>';
+            //         Body += '<li><b>Imprest Date:</b> ' + Format(InternalMemo."Date") + '</li>';
+            //         Body += '<li><b> Amount :</b> ' + Format(InternalMemo."Total Amount") + '</li>';
+            //         Body += '</ul>';
+
+            //         Body += '<br><br>';
+
+
+
+            //         Body += '</ul>';
+            //         Body += '<br><br>';
+            //         Body += '<b>Please Note:</b> The Microsoft Dynamics Self Service reference for this memo is <b>' + InternalMemo."No." + '</b>.';
+            //         Body += '<br><br>';
+            //         Body += 'Should you have any questions, please do not hesitate to contact the undersigned.';
+            //         Body += '<br><br>';
+            //         Body += 'Thank you.';
+            //         Body += '<br><br>';
+            //         Body += 'Yours sincerely,';
+            //         Body += '<br><br>';
+            //         Body += '<b>Business Central Notification System</b>';
+            //         Body += '<br>';
+            //         Body += CompInfo.Name;
+            //         Body += '<br>';
+            //         Mail.Create(VarEmail, InternalMemo."Payment Narration", Body, true);
+            //         Mail.AddAttachment(PdfFileName, 'application/pdf', InStr);
+
+            //         EmailReg.Send(Mail);
+
+            //         payments."Imprest Email" := true;
+            //         payments.Modify();
+            //     end;
+            // end;
+
+
             trigger OnAfterGetRecord()
             begin
-                CompInfo.Get;
+                CompInfo.Get();
                 Humansetup.Get();
 
-                TempBlob.CreateOutStream(OutStr);
-                if payments."Surrender Email Date" = Today then begin
+                if "Surrender Email Date" <> Today then
+                    exit;
 
-                    VarEmail := payments.Email;
+                if Email = '' then
+                    exit;
 
-                    // Staff Email Body
-                    Body := 'Dear ' + "Account Name" + ',';
-                    Body += '<br><br>';
-                    // Body += '<b>Kindly note that this notification is for testing purposes only. No action is required.</b>';
-                    Body += '<br><br>';
-                    Body += 'Kindly submit your Imperst allocated to you Imprest No : <b>' + InternalMemo."No." + '</b>.';
-                    Body += '<br><br>';
-                    Body += 'The details are as follows:';
-                    body += '<br><br>';
-                    body += '<ul>';
-                    Body += '<li><b>Imprest No:</b> ' + InternalMemo."Payment Narration" + '</li>';
-                    Body += '<li><b>Imprest Date:</b> ' + Format(InternalMemo."Date") + '</li>';
-                    Body += '<li><b> Amount :</b> ' + Format(InternalMemo."Total Amount") + '</li>';
-                    Body += '</ul>';
+                VarEmail := Email;
 
-                    Body += '<br><br>';
+                // //Generate PDF
+                // TempBlob.CreateOutStream(OutStr);
+                // Report.SaveAs(
+                //     Report::"Imprest Notification",
+                //     '',
+                //     ReportFormat::Pdf,
+                //     OutStr,
+                //     Rec);
 
+                TempBlob.CreateInStream(InStr);
+                PdfFileName := 'Imprest_' + "No." + '.pdf';
 
+                //Email Body
+                Body := 'Dear ' + "Account Name" + ',';
+                Body += '<br/><br/>';
+                Body += 'This is a reminder to submit your <b>Imprest Surrender</b>.';
+                Body += '<br/><br/>';
 
-                    Body += '</ul>';
-                    Body += '<br><br>';
-                    Body += '<b>Please Note:</b> The Microsoft Dynamics Self Service reference for this memo is <b>' + InternalMemo."No." + '</b>.';
-                    Body += '<br><br>';
-                    Body += 'Should you have any questions, please do not hesitate to contact the undersigned.';
-                    Body += '<br><br>';
-                    Body += 'Thank you.';
-                    Body += '<br><br>';
-                    Body += 'Yours sincerely,';
-                    Body += '<br><br>';
-                    Body += '<b>Business Central Notification System</b>';
-                    Body += '<br>';
-                    Body += CompInfo.Name;
-                    Body += '<br>';
-                    Mail.Create(VarEmail, InternalMemo."Payment Narration", Body, true);
-                    Mail.AddAttachment(PdfFileName, 'application/pdf', InStr);
+                Body += '<table border="1" cellpadding="4" cellspacing="0">';
+                Body += '<tr><td><b>Imprest No.</b></td><td>' + "No." + '</td></tr>';
+                Body += '<tr><td><b>Description</b></td><td>' + "Payment Narration" + '</td></tr>';
+                Body += '<tr><td><b>Date</b></td><td>' + Format(Date) + '</td></tr>';
+                Body += '<tr><td><b>Amount</b></td><td>' + Format("Total Amount") + '</td></tr>';
+                Body += '</table>';
 
-                    EmailReg.Send(Mail);
+                Body += '<br/><br/>';
+                Body += 'Please submit the surrender at your earliest convenience.';
+                Body += '<br/><br/>';
+                Body += 'Thank you.';
+                Body += '<br/><br/>';
+                Body += 'Yours sincerely,';
+                Body += '<br/><br/>';
+                Body += '<b>Business Central Notification System</b>';
+                Body += '<br/>' + CompInfo.Name;
 
-                    payments."Imprest Email" := true;
-                    payments.Modify();
-                end;
+                Mail.Create(
+                    VarEmail,
+                    'Imprest Surrender Reminder - ' + "No.",
+                    Body,
+                    true);
+
+                // Mail.AddAttachment(PdfFileName, 'application/pdf', InStr);
+
+                EmailReg.Send(Mail);
+
+                "Imprest Email" := true;
+                Modify();
             end;
 
 
