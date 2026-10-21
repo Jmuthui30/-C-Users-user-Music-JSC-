@@ -19,6 +19,19 @@ pageextension 50001 "Approval Entries" extends "Approval Entries"
                     // Logic to open the entry
                 end;
             }
+            action(Approve)
+            {
+                ApplicationArea = All;
+                Caption = 'Approve';
+                ToolTip = 'Approve the selected entry.';
+                Image = Approve;
+
+
+                trigger OnAction()
+                begin
+                    // Logic to close the entry
+                end;
+            }
 
 
         }

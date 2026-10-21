@@ -92,6 +92,38 @@ page 58042 "Leave Application List"
 
     actions
     {
+        area(Processing)
+        {
+            action(Open)
+            {
+                ApplicationArea = All;
+                Caption = 'Open';
+                ToolTip = 'Open the selected entry.';
+                Image = Open;
+
+                trigger OnAction()
+                begin
+                    // Logic to open the entry
+                end;
+            }
+            action(Approve)
+            {
+                ApplicationArea = All;
+                Caption = 'Approve';
+                ToolTip = 'Approve the selected entry.';
+                Image = Approve;
+
+                trigger OnAction()
+                begin
+                    // Logic to approve the entry
+                    status := Rec.Status::Released;
+                    modify(true);
+
+                    message('Leave Application Approved Successfully');
+
+                end;
+            }
+        }
     }
 
     trigger OnOpenPage()
