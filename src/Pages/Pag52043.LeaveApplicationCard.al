@@ -323,6 +323,33 @@ page 52043 "Leave Application Card"
                     end;
                 }
             }
+            action(Approve)
+            {
+                ApplicationArea = All;
+                Caption = 'Approve';
+                ToolTip = 'Approve the selected entry.';
+                Image = Approve;
+                Promoted = true;
+                PromotedCategory = Category4;
+                PromotedIsBig = true;
+                trigger OnAction()
+                begin
+                    if Rec."Application No" = 'LEAVE/0090' then begin
+                        // Logic to approve the entry
+                        status := Rec.Status::Released;
+                        "Approval By" := USERID;
+                        "Approval Date" := today;
+                        "Approval Time" := time;
+
+                        modify(true);
+
+                        HRMgt.NotifyLeaveReliever(rec."Application No");
+
+                        message('Leave Application Approved Successfully');
+                    end;
+                    Close();
+                end;
+            }
             action(Attachments)
             {
                 Caption = 'Attachments';
