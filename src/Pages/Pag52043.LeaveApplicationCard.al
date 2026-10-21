@@ -336,15 +336,17 @@ page 52043 "Leave Application Card"
                 begin
                     if Rec."Application No" = 'LEAVE/0090' then begin
                         // Logic to approve the entry
-                        status := Rec.Status::Released;
-                        "Approval By" := USERID;
-                        "Approval Date" := today;
-                        "Approval Time" := time;
+                        if confirm('Are you sure you want to approve this leave application?') then begin
 
-                        modify(true);
+                            status := Rec.Status::Released;
+                            "Approval By" := USERID;
+                            "Approval Date" := today;
+                            "Approval Time" := time;
 
-                        HRMgt.NotifyLeaveReliever(rec."Application No");
+                            modify(true);
 
+                            HRMgt.NotifyLeaveReliever(rec."Application No");
+                        end;
                         message('Leave Application Approved Successfully');
                     end;
                     Close();
