@@ -1380,6 +1380,9 @@ End Function
         <Field Name="Bank_Branch">
           <DataField>Bank_Branch</DataField>
         </Field>
+        <Field Name="PayPeriodDisplay">
+          <DataField>PayPeriodDisplay</DataField>
+        </Field>
         <Field Name="Bank_Branch_Name">
           <DataField>Bank_Branch_Name</DataField>
         </Field>

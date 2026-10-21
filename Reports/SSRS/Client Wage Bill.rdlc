@@ -3394,6 +3394,9 @@ Edm203V/4v8AhOf7cRRjLgcAbdTkgTzsLk/KonH7Y2jidJcQIUP2MOCp9XPeryrNUVNoVZZLIZjgoL8m
         <Field Name="Taxableamount_AssignmentMatrixX1Format">
           <DataField>Taxableamount_AssignmentMatrixX1Format</DataField>
         </Field>
+        <Field Name="TaxDeductible_AssignmentMatrixX1">
+          <DataField>TaxDeductible_AssignmentMatrixX1</DataField>
+        </Field>
         <Field Name="TaxCharged">
           <DataField>TaxCharged</DataField>
         </Field>
