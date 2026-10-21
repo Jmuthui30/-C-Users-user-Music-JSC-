@@ -117,6 +117,10 @@ page 58042 "Leave Application List"
                 begin
                     // Logic to approve the entry
                     status := Rec.Status::Released;
+                    "Approval By" := USERID;
+                    "Approval Date" := today;
+                    "Approval Time" := time;
+
                     modify(true);
 
                     message('Leave Application Approved Successfully');
