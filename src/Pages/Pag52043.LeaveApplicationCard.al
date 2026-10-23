@@ -344,6 +344,7 @@ page 52043 "Leave Application Card"
                             "Approval Time" := time;
 
                             modify(true);
+                            //ss
 
                             HRMgt.NotifyLeaveReliever(rec."Application No");
                         end;
